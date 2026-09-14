@@ -1,0 +1,72 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, cancelling in-progress runs for the same ref.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Publish
+        run: dotnet publish Respondeo.csproj -c Release -o release
+
+      - name: Compute base href
+        id: base
+        run: |
+          repo="${GITHUB_REPOSITORY#*/}"
+          owner="${GITHUB_REPOSITORY%%/*}"
+          # A user/org site repo (<name>.github.io) is served from the domain root.
+          # Any other repo is served from a project sub-path (/<repo>/).
+          if [[ "$repo" == "${owner}.github.io" ]]; then
+            echo "href=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "href=/${repo}/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Rewrite base href
+        run: |
+          sed -i "s|<base href=\"/\" />|<base href=\"${{ steps.base.outputs.href }}\" />|" release/wwwroot/index.html
+
+      - name: Add SPA 404 fallback
+        run: cp release/wwwroot/index.html release/wwwroot/404.html
+
+      - name: Disable Jekyll processing
+        run: touch release/wwwroot/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: release/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Include=".github\copilot-instructions.md" />
     <None Include=".github\instructions\conventional-commits.instructions.md" />
+    <None Include=".github\workflows\deploy.yml" />
   </ItemGroup>
 
   <ItemGroup>
