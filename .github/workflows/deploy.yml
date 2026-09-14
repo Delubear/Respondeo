@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Unit and Component Tests
+  build:
+    name: Build & Verify
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,27 +30,15 @@ jobs:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
 
-      - name: Build tests
-        run: dotnet build tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+      # Compile the app and unit tests once; later steps reuse this output via --no-build.
+      - name: Build
+        run: dotnet build Respondeo.csproj tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
 
       - name: Run unit and component tests
         run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-          dotnet-quality: 'preview'
-
       - name: Publish
-        run: dotnet publish Respondeo.csproj -c Release -o release
+        run: dotnet publish Respondeo.csproj -c Release -o release --no-build
 
       - name: Compute base href
         id: base
@@ -135,6 +123,7 @@ jobs:
         run: dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
 
   deploy:
+    name: Deploy
     needs: e2e
     runs-on: ubuntu-latest
     environment:
