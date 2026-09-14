@@ -31,13 +31,13 @@ For example, jump to [Does God exist?](node/does-god-exist) or back to the [star
 
 **Embedded viewer** — the PDF is shown inline using the browser's built-in viewer:
 
-::: pdf content/assets/sample.pdf
+::: pdf _content/Respondeo.Content/content/assets/sample.pdf
 :::
 
 **Buttons** — open the PDF in a new tab or download it:
 
-::: button content/assets/sample.pdf | Open PDF in new tab
+::: button _content/Respondeo.Content/content/assets/sample.pdf | Open PDF in new tab
 :::
 
-::: button content/assets/sample.pdf | Download PDF | download
+::: button _content/Respondeo.Content/content/assets/sample.pdf | Download PDF | download
 :::

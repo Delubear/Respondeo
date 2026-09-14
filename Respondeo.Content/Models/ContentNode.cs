@@ -1,6 +1,6 @@
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Models;
+namespace Respondeo.Content.Models;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter.
