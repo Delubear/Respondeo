@@ -1,0 +1,83 @@
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ---------- Masthead ---------- */
+.masthead {
+    background: var(--ink);
+    color: var(--parchment);
+    text-align: center;
+    padding: 1.75rem 1rem 1.5rem;
+    border-bottom: 4px double var(--parchment);
+}
+
+.masthead__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--parchment);
+    font-family: var(--display);
+    font-size: 1.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.masthead__brand:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.masthead__mark {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.masthead__tag {
+    margin: 0.35rem 0 0;
+    font-style: italic;
+    color: #cfcfcf;
+    letter-spacing: 0.05em;
+}
+
+/* ---------- Main content ---------- */
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.content__inner {
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+}
+
+/* ---------- Colophon / footer ---------- */
+.colophon {
+    background: var(--ink);
+    color: #c9c9c9;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 1.5rem 1.25rem;
+    line-height: 1.5;
+}
+
+.colophon p {
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .masthead__brand {
+        font-size: 1.5rem;
+    }
+
+    .content__inner {
+        padding: 1.75rem 1rem 2.5rem;
+    }
+}

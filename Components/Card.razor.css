@@ -1,0 +1,38 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    background: var(--parchment);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 1.25rem 1.35rem;
+    color: var(--ink);
+    box-shadow: 0 1px 0 var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--shadow);
+    background: #fff;
+}
+
+.card__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+.card__summary {
+    margin: 0 0 1rem;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    flex: 1 1 auto;
+}
+
+.card__cta {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
