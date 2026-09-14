@@ -7,7 +7,7 @@
   </Folder>
   <Project Path="Respondeo.csproj" />
   <Project Path="Respondeo.Content/Respondeo.Content.csproj" />
-  <Folder Name="/tests/">
+  <Folder Name="/Tests/">
     <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
     <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
   </Folder>
