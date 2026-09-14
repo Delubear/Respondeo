@@ -1,0 +1,41 @@
+@page "/"
+@inject ContentService Content
+
+<PageTitle>Respondeo &mdash; Real questions. Reasoned answers.</PageTitle>
+
+<section class="hero">
+    <p class="hero__motto">Veritas</p>
+    <h1 class="hero__title">Where are you, and where are you headed?</h1>
+    <p class="hero__lede">
+        This is a path of reason toward the God who has revealed Himself in
+        Jesus Christ and His Church. It begins wherever you honestly stand.
+        Choose the starting point that fits you best.
+    </p>
+</section>
+
+@if (_entryPoints is null)
+{
+    <p class="loading">Preparing the way&hellip;</p>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var node in _entryPoints)
+        {
+            <a class="card" href="@($"node/{node.Id}")">
+                <h2 class="card__title">@node.Title</h2>
+                <p class="card__summary">@node.Summary</p>
+                <span class="card__cta">Begin &rarr;</span>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<ContentNode>? _entryPoints;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _entryPoints = await Content.GetEntryPointsAsync();
+    }
+}

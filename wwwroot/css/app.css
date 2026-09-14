@@ -1,0 +1,379 @@
+/* ============================================================
+   Respondeo — Dominican theme
+   Palette: Dominican black & white with a restrained sanguine
+   accent (the "cappa" red used sparingly for emphasis).
+   ============================================================ */
+
+:root {
+    --ink: #111111;
+    --ink-soft: #333333;
+    --parchment: #ffffff;
+    --paper: #faf9f6;
+    --rule: #d9d6cf;
+    --accent: #7b1113;
+    --accent-ink: #ffffff;
+    --shadow: rgba(17, 17, 17, 0.08);
+    --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    --display: 'Cinzel', 'EB Garamond', Georgia, serif;
+    --maxw: 46rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Masthead ---------- */
+.masthead {
+    background: var(--ink);
+    color: var(--parchment);
+    text-align: center;
+    padding: 1.75rem 1rem 1.5rem;
+    border-bottom: 4px double var(--parchment);
+}
+
+.masthead__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--parchment);
+    font-family: var(--display);
+    font-size: 1.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.masthead__brand:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.masthead__mark {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.masthead__tag {
+    margin: 0.35rem 0 0;
+    font-style: italic;
+    color: #cfcfcf;
+    letter-spacing: 0.05em;
+}
+
+/* ---------- Main content ---------- */
+.content {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+}
+
+.loading {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    padding: 3rem 0;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    text-align: center;
+    padding: 1rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2.5rem;
+}
+
+.hero__motto {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+}
+
+.hero__title {
+    font-size: 2.15rem;
+    margin: 0 0 1rem;
+}
+
+.hero__lede {
+    max-width: 34rem;
+    margin: 0 auto;
+    color: var(--ink-soft);
+}
+
+/* ---------- Card grid (branches / entry points) ---------- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.1rem;
+    margin: 1.5rem 0;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background: var(--parchment);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 1.25rem 1.35rem;
+    color: var(--ink);
+    box-shadow: 0 1px 0 var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--shadow);
+    background: #fff;
+}
+
+.card__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+.card__summary {
+    margin: 0 0 1rem;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    flex: 1 1 auto;
+}
+
+.card__cta {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.breadcrumb__sep {
+    margin: 0 0.5rem;
+    color: var(--rule);
+}
+
+.breadcrumb__current {
+    color: var(--ink);
+}
+
+/* ---------- Node article ---------- */
+.node__header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px double var(--ink);
+}
+
+.node__title {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+}
+
+.node__summary {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+.node__body {
+    font-size: 1.15rem;
+}
+
+.node__body h2 {
+    margin-top: 2rem;
+    font-size: 1.4rem;
+}
+
+.node__body blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.node__body code {
+    background: #f0eee9;
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.node__body ol,
+.node__body ul {
+    padding-left: 1.4rem;
+}
+
+.node__body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border: 1px solid var(--rule);
+}
+
+/* ---------- Branches section ---------- */
+.branches {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+
+.branches__heading {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.6rem 1.4rem;
+    font-family: var(--display);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border: 1px solid var(--ink);
+}
+
+.btn:hover {
+    text-decoration: none;
+    background: var(--parchment);
+    color: var(--ink);
+}
+
+/* ---------- Colophon / footer ---------- */
+.colophon {
+    background: var(--ink);
+    color: #c9c9c9;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 1.5rem 1.25rem;
+    line-height: 1.5;
+}
+
+.colophon p {
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+/* ---------- Blazor error UI (retained from template) ---------- */
+#blazor-error-ui {
+    background: #ffe9e9;
+    border-top: 3px solid var(--accent);
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke: #e0ddd6;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke: var(--accent);
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+    color: var(--ink);
+}
+
+.loading-progress-text:after {
+    content: var(--blazor-load-percentage-text, "Loading");
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    html, body {
+        font-size: 1.05rem;
+    }
+
+    .masthead__brand {
+        font-size: 1.5rem;
+    }
+
+    .hero__title {
+        font-size: 1.7rem;
+    }
+
+    .content {
+        padding: 1.75rem 1rem 2.5rem;
+    }
+}
