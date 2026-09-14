@@ -8,9 +8,7 @@ namespace Respondeo.Services;
 
 /// <summary>
 /// Loads author-curated content nodes from static Markdown files under <c>wwwroot/content/</c>.
-/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>,
-/// splits YAML front-matter from the Markdown body,
-/// and caches the parsed graph in memory for the app's lifetime.
+/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, splits YAML front-matter from the Markdown body, and caches the parsed graph in memory for the app's lifetime.
 /// </summary>
 public sealed class ContentService
 {
@@ -73,8 +71,7 @@ public sealed class ContentService
                 return _nodes;
             }
 
-            var manifest = await _http.GetFromJsonAsync<ContentManifest>(ManifestPath)
-                           ?? new ContentManifest();
+            var manifest = await _http.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
             var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
             foreach (var file in manifest.Files)

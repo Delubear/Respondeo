@@ -7,11 +7,6 @@
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include=".github\copilot-instructions.md" />
-    <None Include=".github\instructions\conventional-commits.instructions.md" />
-    <None Include=".github\workflows\deploy.yml" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="1.3.2" />

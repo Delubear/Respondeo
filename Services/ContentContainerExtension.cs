@@ -7,9 +7,8 @@ using Markdig.Renderers.Html;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Renders a small vocabulary of authoring directives so content authors can embed
-/// media without hand-writing HTML. Each directive expands to the canonical markup
-/// (and CSS classes) in one place, keeping embeds consistent as content grows.
+/// Renders a small vocabulary of authoring directives so content authors can embed media without hand-writing HTML.
+/// Each directive expands to the canonical markup (and CSS classes) in one place, keeping embeds consistent as content grows.
 ///
 /// Usage in Markdown (custom-container syntax, enabled by UseAdvancedExtensions):
 ///   ::: youtube aqz-KE-bpKQ
@@ -47,8 +46,7 @@ public sealed class ContentContainerExtension : IMarkdownExtension
 }
 
 /// <summary>
-/// Expands known content directives to canonical HTML; delegates unknown ones
-/// to the standard custom-container rendering.
+/// Expands known content directives to canonical HTML; delegates unknown ones to the standard custom-container rendering.
 /// </summary>
 internal sealed class ContentContainerRenderer : HtmlObjectRenderer<CustomContainer>
 {

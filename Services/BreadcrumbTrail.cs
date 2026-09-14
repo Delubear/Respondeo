@@ -40,16 +40,11 @@ public sealed class BreadcrumbTrail : IBreadcrumbTrail
         try
         {
             var json = await _js.InvokeAsync<string?>("sessionStorage.getItem", StorageKey);
-            if (string.IsNullOrWhiteSpace(json))
-            {
-                return new List<string>();
-            }
-
-            return JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+            return string.IsNullOrWhiteSpace(json) ? [] : JsonSerializer.Deserialize<List<string>>(json) ?? [];
         }
         catch (JsonException)
         {
-            return new List<string>();
+            return [];
         }
     }
 

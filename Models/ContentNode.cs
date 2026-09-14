@@ -4,8 +4,7 @@ namespace Respondeo.Models;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter.
-/// Everything here is author-edited; the Markdown body (below the front-matter)
-/// holds the rich content (text, links, images).
+/// Everything here is author-edited; the Markdown body (below the front-matter) holds the rich content (text, links, images).
 /// </summary>
 public sealed class ContentFrontMatter
 {
@@ -22,8 +21,8 @@ public sealed class ContentFrontMatter
     public string Summary { get; set; } = string.Empty;
 
     /// <summary>
-    /// Faith starting points this node speaks to (e.g. "atheist", "agnostic",
-    /// "protestant", "non-practicing-catholic"). Used to surface entry points.
+    /// Faith starting points this node speaks to (e.g. "atheist", "agnostic", "protestant", "non-practicing-catholic").
+    /// Used to surface entry points.
     /// </summary>
     [YamlMember(Alias = "audiences")]
     public List<string> Audiences { get; set; } = new();
@@ -43,8 +42,7 @@ public sealed class ContentFrontMatter
 }
 
 /// <summary>
-/// A directed link from one node to another,
-/// optionally labelled so the prompt can be phrased as a question/choice for the visitor.
+/// A directed link from one node to another, optionally labelled so the prompt can be phrased as a question/choice for the visitor.
 /// </summary>
 public sealed class BranchLink
 {
