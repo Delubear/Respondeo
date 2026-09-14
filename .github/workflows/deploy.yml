@@ -30,8 +30,11 @@ jobs:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
 
+      - name: Build tests
+        run: dotnet build tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+
       - name: Run unit and component tests
-        run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+        run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
   build:
     needs: test
@@ -77,6 +80,12 @@ jobs:
         with:
           path: release/wwwroot
 
+      - name: Upload site for E2E
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: release/wwwroot
+
   e2e:
     name: Acceptance Tests (Playwright)
     needs: build
@@ -91,8 +100,12 @@ jobs:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
 
-      - name: Publish app under test
-        run: dotnet publish Respondeo.csproj -c Release -o e2e-release
+      - name: Download deployed site
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          # Served under the Pages sub-path so the rewritten <base href="/Respondeo/"> resolves like production.
+          path: site/Respondeo
 
       - name: Install static file server
         run: dotnet tool install --global dotnet-serve
@@ -103,13 +116,13 @@ jobs:
       - name: Install Playwright browsers
         run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
 
-      - name: Serve published app
-        run: dotnet serve -d e2e-release/wwwroot -p 5000 --fallback-file index.html &
+      - name: Serve deployed site
+        run: dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html &
 
       - name: Wait for app
         run: |
           for i in {1..30}; do
-            if curl -sSf http://localhost:5000/ > /dev/null; then
+            if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
               echo "App is up"; exit 0
             fi
             sleep 1
@@ -118,7 +131,7 @@ jobs:
 
       - name: Run acceptance tests
         env:
-          RESPONDEO_BASE_URL: http://localhost:5000
+          RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
         run: dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
 
   deploy:
