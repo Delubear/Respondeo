@@ -1,19 +1,20 @@
 using System.Net.Http.Json;
 using Markdig;
-using Respondeo.Models;
+using Respondeo.Content.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace Respondeo.Services;
 
 /// <summary>
-/// Loads author-curated content nodes from static Markdown files under <c>wwwroot/content/</c>.
+/// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content library.
+/// The files live in that library's <c>wwwroot/content/</c> and are served by Blazor under the <c>_content/Respondeo.Content/</c> static-web-asset path.
 /// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, splits YAML front-matter from the Markdown body, and caches the parsed graph in memory for the app's lifetime.
 /// </summary>
 public sealed class ContentService
 {
-    private const string ContentRoot = "content";
-    private const string ManifestPath = "content/manifest.json";
+    private const string ContentRoot = "_content/Respondeo.Content/content";
+    private const string ManifestPath = "_content/Respondeo.Content/content/manifest.json";
 
     private readonly HttpClient _http;
     private readonly IDeserializer _yaml;

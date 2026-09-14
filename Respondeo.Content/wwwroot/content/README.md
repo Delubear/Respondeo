@@ -1,6 +1,7 @@
 # Authoring Content Nodes
 
-This folder holds the site's content. Each **node** is a single Markdown file made of two
+This folder holds the site's content, shipped as static web assets from the
+`Respondeo.Content` library. Each **node** is a single Markdown file made of two
 parts:
 
 1. **YAML front-matter** — structured metadata between two `---` lines.
@@ -103,7 +104,7 @@ arguments, then a closing `:::`.
 ### PDF (inline viewer)
 
 ```markdown
-::: pdf content/assets/sample.pdf
+::: pdf _content/Respondeo.Content/content/assets/sample.pdf
 :::
 ```
 
@@ -113,10 +114,10 @@ arguments, then a closing `:::`.
 ### Button (link styled as a button)
 
 ```markdown
-::: button content/assets/sample.pdf | Open PDF in new tab
+::: button _content/Respondeo.Content/content/assets/sample.pdf | Open PDF in new tab
 :::
 
-::: button content/assets/sample.pdf | Download PDF | download
+::: button _content/Respondeo.Content/content/assets/sample.pdf | Download PDF | download
 :::
 ```
 

@@ -16,9 +16,9 @@ public class ContentServiceLoadingTests
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["content/manifest.json"] = Manifest,
-            ["content/home.md"] = HomeMd,
-            ["content/branch.md"] = BranchMd,
+            ["_content/Respondeo.Content/content/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/content/home.md"] = HomeMd,
+            ["_content/Respondeo.Content/content/branch.md"] = BranchMd,
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };

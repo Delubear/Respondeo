@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -11,11 +11,14 @@
     <InternalsVisibleTo Include="Respondeo.UnitTests" />
   </ItemGroup>
 
-  <!-- Test projects live under tests/ and are built separately; keep their sources out of the app compilation. -->
+  <!-- These folders contain sibling projects nested under the app directory; keep their sources out of the app compilation. -->
   <ItemGroup>
     <Compile Remove="tests/**/*.cs" />
     <Content Remove="tests/**/*" />
     <None Remove="tests/**/*" />
+    <Compile Remove="Respondeo.Content/**/*.cs" />
+    <Content Remove="Respondeo.Content/**/*" />
+    <None Remove="Respondeo.Content/**/*" />
   </ItemGroup>
 
 
@@ -24,6 +27,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
     <PackageReference Include="YamlDotNet" Version="18.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Respondeo.Content\Respondeo.Content.csproj" />
   </ItemGroup>
 
 </Project>

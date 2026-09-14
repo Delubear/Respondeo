@@ -6,6 +6,7 @@
     <File Path=".github/workflows/pr.yml" />
   </Folder>
   <Project Path="Respondeo.csproj" />
+  <Project Path="Respondeo.Content/Respondeo.Content.csproj" />
   <Folder Name="/tests/">
     <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
     <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
