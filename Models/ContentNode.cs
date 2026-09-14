@@ -35,16 +35,16 @@ public sealed class ContentFrontMatter
     public bool IsEntryPoint { get; set; }
 
     /// <summary>
-    /// Child branches. Overlap and multiple paths are allowed &mdash; several
-    /// nodes may link to the same child id, forming a graph rather than a tree.
+    /// Child branches.
+    /// Overlap and multiple paths are allowed &mdash; several nodes may link to the same child id, forming a graph rather than a tree.
     /// </summary>
     [YamlMember(Alias = "branches")]
     public List<BranchLink> Branches { get; set; } = new();
 }
 
 /// <summary>
-/// A directed link from one node to another, optionally labelled so the
-/// prompt can be phrased as a question/choice for the visitor.
+/// A directed link from one node to another,
+/// optionally labelled so the prompt can be phrased as a question/choice for the visitor.
 /// </summary>
 public sealed class BranchLink
 {
@@ -62,8 +62,7 @@ public sealed class BranchLink
 }
 
 /// <summary>
-/// A fully materialized content node: its front-matter metadata plus the
-/// rendered HTML produced from the Markdown body.
+/// A fully materialized content node: its front-matter metadata plus the rendered HTML produced from the Markdown body.
 /// </summary>
 public sealed class ContentNode
 {

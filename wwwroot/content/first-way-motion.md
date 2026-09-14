@@ -13,8 +13,7 @@ branches:
     prompt: If there is a God, has He spoken? That points us toward Christ.
 ---
 
-> "It is certain, and evident to our senses, that in the world some things are
-> in motion." — *Summa Theologiae* I, q.2, a.3
+> "It is certain, and evident to our senses, that in the world some things are in motion." — *Summa Theologiae* I, q.2, a.3
 
 **The argument, step by step:**
 
@@ -22,9 +21,7 @@ branches:
 2. Nothing moves itself; whatever is moved is moved by another already actual.
 3. This cannot regress to infinity, for then there would be no *first* mover,
    and so no motion now — which is false.
-4. Therefore there exists a First Mover, itself unmoved: *and this everyone
-   understands to be God.*
+4. Therefore there exists a First Mover, itself unmoved: *and this everyone understands to be God.*
 
-The point is not a "first" domino in time, but a **first** in the order of
-explanation — something whose actuality is not received from another. Change
-here and now requires a source of actuality that is not itself in potency.
+The point is not a "first" domino in time, but a **first** in the order of explanation — something whose actuality is not received from another.
+Change here and now requires a source of actuality that is not itself in potency.
