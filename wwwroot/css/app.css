@@ -22,6 +22,12 @@
     box-sizing: border-box;
 }
 
+/* Blazor's FocusOnNavigate moves focus to the <h1> on navigation, which shows the default focus ring.
+    Hide it for programmatic/mouse focus while keeping a visible ring for keyboard users. */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
 html, body {
     margin: 0;
     padding: 0;
