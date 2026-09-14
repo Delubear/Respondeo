@@ -1,0 +1,69 @@
+/* ---------- Node article ---------- */
+.node__header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px double var(--ink);
+}
+
+.node__title {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+}
+
+.node__summary {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+.node__body {
+    font-size: 1.15rem;
+}
+
+/* Body content is rendered via @((MarkupString)…), so its children are not scoped. ::deep cascades these rules into that runtime-injected HTML. */
+.node__body ::deep h2 {
+    margin-top: 2rem;
+    font-size: 1.4rem;
+}
+
+.node__body ::deep blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.node__body ::deep code {
+    background: #f0eee9;
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.node__body ::deep ol,
+.node__body ::deep ul {
+    padding-left: 1.4rem;
+}
+
+.node__body ::deep img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border: 1px solid var(--rule);
+}
+
+/* ---------- Branches section ---------- */
+.branches {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+
+.branches__heading {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
