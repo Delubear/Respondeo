@@ -31,8 +31,9 @@ jobs:
           dotnet-quality: 'preview'
 
       # Compile the app and unit tests once; later steps reuse this output via --no-build.
+      # Building the test project also builds the app it references.
       - name: Build
-        run: dotnet build Respondeo.csproj tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+        run: dotnet build tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
 
       - name: Run unit and component tests
         run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
