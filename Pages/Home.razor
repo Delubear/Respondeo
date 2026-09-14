@@ -1,5 +1,6 @@
 @page "/"
 @inject ContentService Content
+@inject IBreadcrumbTrail Trail
 
 <PageTitle>Respondeo &mdash; Real questions. Reasoned answers.</PageTitle>
 
@@ -36,6 +37,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await Trail.ClearAsync();
         _entryPoints = await Content.GetEntryPointsAsync();
     }
 }

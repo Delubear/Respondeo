@@ -35,6 +35,11 @@ public sealed class BreadcrumbTrail : IBreadcrumbTrail
         return trail;
     }
 
+    public async Task ClearAsync()
+    {
+        await _js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
+    }
+
     private async Task<List<string>> LoadAsync()
     {
         try

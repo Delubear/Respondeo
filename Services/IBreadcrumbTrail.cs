@@ -11,4 +11,9 @@ public interface IBreadcrumbTrail
     /// Revisiting a node already in the trail truncates the trail back to that node, so loops and back-navigation don't accumulate duplicates.
     /// </summary>
     Task<IReadOnlyList<string>> VisitAsync(string nodeId);
+
+    /// <summary>
+    /// Clears the trail. Called when the visitor returns to the Start page so a new journey begins fresh rather than continuing a previous one.
+    /// </summary>
+    Task ClearAsync();
 }
