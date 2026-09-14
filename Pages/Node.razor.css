@@ -95,11 +95,17 @@
 
 /* ---------- Breadcrumb ---------- */
 .breadcrumb {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--paper);
     font-size: 0.85rem;
     letter-spacing: 0.03em;
     color: var(--ink-soft);
+    padding: 0.75rem 0;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
 }
 
 .breadcrumb__sep {
