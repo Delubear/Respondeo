@@ -17,7 +17,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    name: Unit and Component Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Run unit and component tests
+        run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -60,8 +77,52 @@ jobs:
         with:
           path: release/wwwroot
 
-  deploy:
+  e2e:
+    name: Acceptance Tests (Playwright)
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Publish app under test
+        run: dotnet publish Respondeo.csproj -c Release -o e2e-release
+
+      - name: Install static file server
+        run: dotnet tool install --global dotnet-serve
+
+      - name: Build acceptance tests
+        run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
+
+      - name: Install Playwright browsers
+        run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+
+      - name: Serve published app
+        run: dotnet serve -d e2e-release/wwwroot -p 5000 --fallback-file index.html &
+
+      - name: Wait for app
+        run: |
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5000/ > /dev/null; then
+              echo "App is up"; exit 0
+            fi
+            sleep 1
+          done
+          echo "App did not start in time"; exit 1
+
+      - name: Run acceptance tests
+        env:
+          RESPONDEO_BASE_URL: http://localhost:5000
+        run: dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
+
+  deploy:
+    needs: e2e
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -115,7 +115,7 @@ public sealed class ContentService
     /// Splits a "---" delimited YAML front-matter block from the Markdown body.
     /// Returns (null, raw) when no front-matter block is present.
     /// </summary>
-    private static (string? FrontMatter, string Body) SplitFrontMatter(string raw)
+    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw)
     {
         var text = raw.Replace("\r\n", "\n").TrimStart('\uFEFF', ' ', '\n');
         if (!text.StartsWith("---\n"))
