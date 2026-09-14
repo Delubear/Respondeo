@@ -13,7 +13,9 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [Given("I open the start page")]
     public async Task GivenIOpenTheStartPage()
     {
-        await Page.GotoAsync(context.BaseUrl + "/");
+        // Blazor WebAssembly downloads its runtime after the load event, so wait for the
+        // network to settle before asserting the app has rendered its entry-point cards.
+        await Page.GotoAsync(context.BaseUrl + "/", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
         await Page.WaitForSelectorAsync(".card");
     }
 

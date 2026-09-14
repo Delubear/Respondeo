@@ -105,23 +105,47 @@ jobs:
       - name: Install Playwright browsers
         run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
 
-      - name: Serve deployed site
-        run: dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html &
-
-      - name: Wait for app
+      - name: List served artifact
         run: |
-          for i in {1..30}; do
-            if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
-              echo "App is up"; exit 0
-            fi
-            sleep 1
-          done
-          echo "App did not start in time"; exit 1
+          echo "Top-level of site/Respondeo:"
+          ls -la site/Respondeo
+          echo "RCL content assets:"
+          ls -la site/Respondeo/_content/Respondeo.Content/content || echo "MISSING: _content/Respondeo.Content/content"
 
-      - name: Run acceptance tests
+      - name: Serve site and run acceptance tests
         env:
           RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
-        run: dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
+          RESPONDEO_ARTIFACTS: ${{ github.workspace }}/playwright-artifacts
+        run: |
+          # Start the static server in the background within the SAME step so it
+          # stays alive while the tests run. Backgrounded processes from a prior
+          # step can be terminated when that step's shell exits.
+          dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
+              echo "App is up"; break
+            fi
+            if [ "$i" -eq 30 ]; then echo "App did not start in time"; exit 1; fi
+            sleep 1
+          done
+
+          # Sanity check the RCL manifest is actually served after the content move.
+          echo "Fetching content manifest:"
+          curl -sS -o /dev/null -w "manifest status: %{http_code}\n" \
+            http://localhost:5000/Respondeo/_content/Respondeo.Content/content/manifest.json
+
+          dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
+
+      - name: Upload Playwright diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: playwright-artifacts
+          if-no-files-found: ignore
 
   deploy:
     name: Deploy
