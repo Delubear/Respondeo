@@ -39,7 +39,7 @@ jobs:
         run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
       - name: Publish
-        run: dotnet publish Respondeo.csproj -c Release -o release --no-build
+        run: dotnet publish Respondeo.csproj -c Release -o release
 
       - name: Compute base href
         id: base
