@@ -14,4 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 // In a WASM app there is a single client-side scope, so the cache still lives for the app lifetime.
 builder.Services.AddScoped<ContentService>();
 
+// Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
+builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
+
 await builder.Build().RunAsync();
