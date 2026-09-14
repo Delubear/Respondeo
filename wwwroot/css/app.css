@@ -1,7 +1,6 @@
 /* ============================================================
    Respondeo — Dominican theme
-   Palette: Dominican black & white with a restrained sanguine
-   accent (the "cappa" red used sparingly for emphasis).
+   Palette: Dominican black & white with a restrained sanguine accent (the "cappa" red used sparingly for emphasis).
    ============================================================ */
 
 :root {
@@ -56,9 +55,10 @@ h1, h2, h3 {
 }
 
 .page {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 /* ---------- Masthead ---------- */
@@ -101,6 +101,11 @@ h1, h2, h3 {
 /* ---------- Main content ---------- */
 .content {
     flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.content__inner {
     width: 100%;
     max-width: var(--maxw);
     margin: 0 auto;
@@ -349,7 +354,7 @@ h1, h2, h3 {
         font-size: 1.7rem;
     }
 
-    .content {
+    .content__inner {
         padding: 1.75rem 1rem 2.5rem;
     }
 }
