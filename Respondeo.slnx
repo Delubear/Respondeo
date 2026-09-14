@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/Files/">
+    <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/instructions/conventional-commits.instructions.md" />
+  </Folder>
   <Project Path="Respondeo.csproj" />
 </Solution>
