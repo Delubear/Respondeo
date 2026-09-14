@@ -24,27 +24,20 @@ For example, jump to [Does God exist?](node/does-god-exist) or back to the [star
 
 ## Embedded YouTube video
 
-<div class="video-embed">
-    <iframe
-        src="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
-        title="Embedded YouTube video"
-        loading="lazy"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen></iframe>
-</div>
+::: youtube aqz-KE-bpKQ
+:::
 
 ## PDF integration
 
 **Embedded viewer** — the PDF is shown inline using the browser's built-in viewer:
 
-<div class="pdf-embed">
-    <iframe src="content/assets/sample.pdf" title="Embedded PDF document" loading="lazy"></iframe>
-</div>
+::: pdf content/assets/sample.pdf
+:::
 
 **Buttons** — open the PDF in a new tab or download it:
 
-<div class="test-actions">
-    <a class="btn" href="content/assets/sample.pdf" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a>
-    <a class="btn" href="content/assets/sample.pdf" download>Download PDF</a>
-</div>
+::: button content/assets/sample.pdf | Open PDF in new tab
+:::
+
+::: button content/assets/sample.pdf | Download PDF | download
+:::

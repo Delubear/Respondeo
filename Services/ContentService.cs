@@ -33,6 +33,7 @@ public sealed class ContentService
             .Build();
         _markdown = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
+            .Use<ContentContainerExtension>()
             .Build();
     }
 
