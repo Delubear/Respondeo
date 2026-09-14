@@ -81,9 +81,7 @@ else
             foreach (var link in _node.Branches)
             {
                 var target = await Content.GetByIdAsync(link.To);
-                var label = link.Label
-                            ?? target?.Title
-                            ?? link.To;
+                var label = link.Label ?? target?.Title ?? link.To;
                 _branches.Add(new ResolvedBranch(link, label));
             }
         }

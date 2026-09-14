@@ -14,10 +14,9 @@ branches:
     prompt: Reconsider the reasons the Church claims Christ's own authority.
 ---
 
-Many who leave never really rejected the faith — they set down a
-child's understanding of it and never picked up an adult's. That is worth
-repairing.
+Many who leave never really rejected the faith — they set down a child's understanding of it and never picked up an adult's.
+That is worth repairing.
 
-You do not have to force a feeling. Faith is not sustained by mood but by
-truth. So we can start wherever your honest doubt lives: with whether God
-exists at all, or with why the Church deserves the trust you once gave it.
+You do not have to force a feeling.
+Faith is not sustained by mood but by truth.
+So we can start wherever your honest doubt lives: with whether God exists at all, or with why the Church deserves the trust you once gave it.

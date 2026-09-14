@@ -7,9 +7,9 @@ using YamlDotNet.Serialization.NamingConventions;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Loads author-curated content nodes from static Markdown files under
-/// <c>wwwroot/content/</c>. Runs entirely client-side: it fetches files via
-/// <see cref="HttpClient"/>, splits YAML front-matter from the Markdown body,
+/// Loads author-curated content nodes from static Markdown files under <c>wwwroot/content/</c>.
+/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>,
+/// splits YAML front-matter from the Markdown body,
 /// and caches the parsed graph in memory for the app's lifetime.
 /// </summary>
 public sealed class ContentService
@@ -54,10 +54,7 @@ public sealed class ContentService
     public async Task<IReadOnlyList<ContentNode>> GetEntryPointsAsync()
     {
         var nodes = await EnsureLoadedAsync();
-        return nodes.Values
-            .Where(n => n.Meta.IsEntryPoint)
-            .OrderBy(n => n.Title, StringComparer.OrdinalIgnoreCase)
-            .ToList();
+        return nodes.Values.Where(n => n.Meta.IsEntryPoint).OrderBy(n => n.Title, StringComparer.OrdinalIgnoreCase).ToList();
     }
 
     private async Task<Dictionary<string, ContentNode>> EnsureLoadedAsync()

@@ -15,9 +15,8 @@ branches:
     prompt: Why does anything exist at all rather than nothing?
 ---
 
-St. Thomas offered *Five Ways* to demonstrate God's existence. They do not
-rest on faith or Scripture; each begins with a plain feature of the world and
-reasons to its necessary source.
+St. Thomas offered *Five Ways* to demonstrate God's existence.
+They do not rest on faith or Scripture; each begins with a plain feature of the world and reasons to its necessary source.
 
 We will walk two of them. Each has the same shape:
 
@@ -25,5 +24,5 @@ We will walk two of them. Each has the same shape:
 2. Show that this feature cannot explain itself in an infinite regress.
 3. Conclude to a first term — and identify it with God.
 
-Choose a path below. They lead to the same summit by different slopes, and you
-are welcome to walk both.
+Choose a path below.
+They lead to the same summit by different slopes, and you are welcome to walk both.
