@@ -1,0 +1,31 @@
+@* Reusable link card used for entry points and branches. *@
+
+<a class="card" href="@Href">
+    @if (Level <= 2)
+    {
+        <h2 class="card__title">@Title</h2>
+    }
+    else
+    {
+        <h3 class="card__title">@Title</h3>
+    }
+    @if (!string.IsNullOrWhiteSpace(Summary))
+    {
+        <p class="card__summary">@Summary</p>
+    }
+    <span class="card__cta">@Cta</span>
+</a>
+
+@code {
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    [Parameter] public string? Summary { get; set; }
+
+    /// <summary>Call-to-action text shown at the foot of the card.</summary>
+    [Parameter] public string Cta { get; set; } = "Continue \u2192";
+
+    /// <summary>Heading level for the title (2 or 3) so cards nest correctly under their section.</summary>
+    [Parameter] public int Level { get; set; } = 2;
+}

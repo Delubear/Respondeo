@@ -1,0 +1,6 @@
+.loading {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    padding: 3rem 0;
+}

@@ -15,7 +15,7 @@
 
 @if (_loading)
 {
-    <p class="loading">Loading&hellip;</p>
+    <Loading>Loading&hellip;</Loading>
 }
 else if (_node is null)
 {
@@ -44,19 +44,16 @@ else
         {
             <section class="branches">
                 <h2 class="branches__heading">Where would you like to go next?</h2>
-                <div class="card-grid">
+                <CardGrid>
                     @foreach (var branch in _branches)
                     {
-                        <a class="card" href="@($"node/{branch.Link.To}")">
-                            <h3 class="card__title">@branch.Label</h3>
-                            @if (!string.IsNullOrWhiteSpace(branch.Link.Prompt))
-                            {
-                                <p class="card__summary">@branch.Link.Prompt</p>
-                            }
-                            <span class="card__cta">Continue &rarr;</span>
-                        </a>
+                        <Card Href="@($"node/{branch.Link.To}")"
+                              Title="@branch.Label"
+                              Summary="@branch.Link.Prompt"
+                              Cta="Continue →"
+                              Level="3" />
                     }
-                </div>
+                </CardGrid>
             </section>
         }
     </article>
