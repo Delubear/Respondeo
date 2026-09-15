@@ -73,13 +73,13 @@ Examples:
 ::: youtube aqz-KE-bpKQ
 :::
 
-::: pdf _content/Respondeo.Content/content/assets/sample.pdf
+::: pdf _content/Respondeo.Content.Markdown/content/assets/sample.pdf
 :::
 
-::: button _content/Respondeo.Content/content/assets/sample.pdf | Open PDF in new tab
+::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Open PDF in new tab
 :::
 
-::: button _content/Respondeo.Content/content/assets/sample.pdf | Download PDF | download
+::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Download PDF | download
 :::
 ```
 
