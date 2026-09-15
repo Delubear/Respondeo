@@ -4,17 +4,44 @@
    ============================================================ */
 
 :root {
+    color-scheme: light;
     --ink: #111111;
     --ink-soft: #333333;
     --parchment: #ffffff;
+    --parchment-hover: #ffffff;
     --paper: #faf9f6;
     --rule: #d9d6cf;
     --accent: #7b1113;
     --accent-ink: #ffffff;
     --shadow: rgba(17, 17, 17, 0.08);
+    --code-bg: #f0eee9;
+    /* Masthead and colophon stay dark in both themes, so they use dedicated tokens. */
+    --masthead-bg: #111111;
+    --masthead-fg: #ffffff;
+    --masthead-fg-soft: #cfcfcf;
+    --masthead-rule: #ffffff;
     --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
     --display: 'Cinzel', 'EB Garamond', Georgia, serif;
     --maxw: 46rem;
+}
+
+/* ---------- Dark theme ---------- */
+[data-theme="dark"] {
+    color-scheme: dark;
+    --ink: #ece9e1;
+    --ink-soft: #b8b4a9;
+    --parchment: #1e1c17;
+    --parchment-hover: #26241d;
+    --paper: #15140f;
+    --rule: #3a372f;
+    --accent: #c6474a;
+    --accent-ink: #15140f;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --code-bg: #26241d;
+    --masthead-bg: #0e0d0a;
+    --masthead-fg: #ece9e1;
+    --masthead-fg-soft: #b8b4a9;
+    --masthead-rule: #3a372f;
 }
 
 * {

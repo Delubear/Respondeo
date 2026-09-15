@@ -15,6 +15,20 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="Respondeo.styles.css" rel="stylesheet" />
     <script type="importmap"></script>
+    <script>
+        // Defines the theme helper and applies the persisted (or OS) theme before Blazor boots, so there is no flash of the wrong theme on first paint.
+        window.respondeoTheme = {
+            apply: function (theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+        };
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('respondeo.theme'); } catch (e) { }
+            var theme = stored || 'light';
+            window.respondeoTheme.apply(theme);
+        })();
+    </script>
 </head>
 
 <body>

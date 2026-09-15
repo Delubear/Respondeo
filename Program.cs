@@ -19,4 +19,7 @@ builder.Services.AddScoped<ContentService>();
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
+// Applies and persists the visitor's preferred light/dark theme.
+builder.Services.AddScoped<IThemeService, ThemeService>();
+
 await builder.Build().RunAsync();

@@ -14,7 +14,7 @@
     text-decoration: none;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px var(--shadow);
-    background: #fff;
+    background: var(--parchment-hover);
 }
 
 .card__title {
