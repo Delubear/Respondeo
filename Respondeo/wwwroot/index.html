@@ -39,12 +39,18 @@
 
         // Smoothly brings an element into view by its id. Used to reveal a freshly opened
         // accordion section (or a deep-linked one on load) when it sits below the fold.
+        // We offset by the sticky breadcrumb's height so the section header isn't left
+        // hidden underneath it (scrollIntoView block:'start' would tuck it behind the bar).
         window.respondeoScroll = {
             intoView: function (id) {
                 var el = document.getElementById(id);
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (!el) {
+                    return;
                 }
+                var breadcrumb = document.querySelector('.breadcrumb');
+                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
+                var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
             }
         };
     </script>
