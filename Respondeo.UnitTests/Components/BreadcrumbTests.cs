@@ -6,13 +6,23 @@ namespace Respondeo.UnitTests.Components;
 public class BreadcrumbTests : TestContext
 {
     [Fact]
-    public void Always_renders_the_start_link()
+    public void Always_renders_the_home_link()
     {
         var cut = RenderComponent<Breadcrumb>();
 
-        var start = cut.Find("nav.breadcrumb a");
-        Assert.Equal("Start", start.TextContent);
-        Assert.Equal("", start.GetAttribute("href"));
+        var home = cut.Find("nav.breadcrumb a");
+        Assert.Equal("Home", home.TextContent);
+        Assert.Equal("", home.GetAttribute("href"));
+    }
+
+    [Fact]
+    public void Always_renders_the_articles_link()
+    {
+        var cut = RenderComponent<Breadcrumb>();
+
+        var articles = cut.Find("a.breadcrumb__articles");
+        Assert.Equal("Articles", articles.TextContent);
+        Assert.Equal("articles", articles.GetAttribute("href"));
     }
 
     [Fact]
@@ -71,8 +81,8 @@ public class BreadcrumbTests : TestContext
             .Add(c => c.Crumbs, crumbs)
             .Add(c => c.CurrentTitle, "First Way: Motion"));
 
-        // One separator before each ancestor crumb, plus one before the current node.
-        Assert.Equal(crumbs.Length + 1, cut.FindAll(".breadcrumb__sep").Count);
+        // One separator before the Articles link, one before each ancestor crumb, plus one before the current node.
+        Assert.Equal(crumbs.Length + 2, cut.FindAll(".breadcrumb__sep").Count);
     }
 
     [Fact]
@@ -81,7 +91,7 @@ public class BreadcrumbTests : TestContext
         var cut = RenderComponent<Breadcrumb>(p => p.Add(c => c.CurrentTitle, "Home"));
 
         Assert.Empty(cut.FindAll("a.breadcrumb__link"));
-        // Only the separator preceding the current node should be present.
-        Assert.Single(cut.FindAll(".breadcrumb__sep"));
+        // Separators before the Articles link and before the current node.
+        Assert.Equal(2, cut.FindAll(".breadcrumb__sep").Count);
     }
 }

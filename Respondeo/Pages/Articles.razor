@@ -1,0 +1,66 @@
+@page "/articles"
+@inject IContentService Content
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>All Articles &mdash; Respondeo</PageTitle>
+
+<nav class="breadcrumb">
+    <a href="">Home</a>
+    <span class="breadcrumb__sep">/</span>
+    <span class="breadcrumb__current">All Articles</span>
+</nav>
+
+<section class="articles">
+    <header class="articles__header">
+        <h1 class="articles__title">All Articles</h1>
+        <p class="articles__lede">
+            Every article in one place. Sections are folded into their parent articles, so this is
+            the complete set of standalone pieces you can explore.
+        </p>
+    </header>
+
+    @if (_articles is null)
+    {
+        <Loading>Gathering the articles&hellip;</Loading>
+    }
+    else if (_articles.Count == 0)
+    {
+        <p class="articles__empty">There are no articles to show yet.</p>
+    }
+    else
+    {
+        <CardGrid>
+            @foreach (var node in _articles)
+            {
+                <Card Href="@($"node/{node.Id}")"
+                      Title="@node.Title"
+                      Summary="@node.Summary"
+                      Cta="Read →"
+                      Level="2" />
+            }
+        </CardGrid>
+    }
+</section>
+
+@code {
+    private IReadOnlyList<ContentNode>? _articles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+
+        var all = await Content.GetAllAsync();
+
+        // A "section" is any node referenced in another node's Sections list; those are
+        // presented inline on their parent page, so exclude them here. What remains are the
+        // standalone articles.
+        var sectionIds = all
+            .SelectMany(n => n.Sections)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        _articles = all
+            .Where(n => !sectionIds.Contains(n.Id))
+            .OrderBy(n => n.Title, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+    }
+}

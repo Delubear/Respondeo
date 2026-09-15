@@ -26,6 +26,12 @@
     color: var(--ink-soft);
 }
 
+/* ---------- Browse all ---------- */
+.home__browse {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
     .hero__title {
