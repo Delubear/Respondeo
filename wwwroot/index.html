@@ -28,6 +28,25 @@
             var theme = stored || 'light';
             window.respondeoTheme.apply(theme);
         })();
+
+        // Updates the address bar without triggering a Blazor navigation (no focus shift
+        // or scroll). Used to keep accordion state shareable while staying put on the page.
+        window.respondeoUrl = {
+            replace: function (url) {
+                history.replaceState(history.state, '', url);
+            }
+        };
+
+        // Smoothly brings an element into view by its id. Used to reveal a freshly opened
+        // accordion section (or a deep-linked one on load) when it sits below the fold.
+        window.respondeoScroll = {
+            intoView: function (id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        };
     </script>
 </head>
 
