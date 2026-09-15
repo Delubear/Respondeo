@@ -1,6 +1,5 @@
 using Bunit;
 using Respondeo.Components;
-using Xunit;
 
 namespace Respondeo.UnitTests.Components;
 

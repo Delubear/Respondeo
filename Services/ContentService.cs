@@ -11,30 +11,21 @@ namespace Respondeo.Services;
 /// The files live in that library's <c>wwwroot/content/</c> and are served by Blazor under the <c>_content/Respondeo.Content/</c> static-web-asset path.
 /// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, splits YAML front-matter from the Markdown body, and caches the parsed graph in memory for the app's lifetime.
 /// </summary>
-public sealed class ContentService
+public sealed class ContentService(HttpClient http)
 {
     private const string ContentRoot = "_content/Respondeo.Content/content";
     private const string ManifestPath = "_content/Respondeo.Content/content/manifest.json";
-
-    private readonly HttpClient _http;
-    private readonly IDeserializer _yaml;
-    private readonly MarkdownPipeline _markdown;
-
-    private readonly SemaphoreSlim _gate = new(1, 1);
-    private Dictionary<string, ContentNode>? _nodes;
-
-    public ContentService(HttpClient http)
-    {
-        _http = http;
-        _yaml = new DeserializerBuilder()
+    private readonly IDeserializer _yaml = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .IgnoreUnmatchedProperties()
             .Build();
-        _markdown = new MarkdownPipelineBuilder()
+    private readonly MarkdownPipeline _markdown = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
             .Use<ContentContainerExtension>()
             .Build();
-    }
+
+    private readonly SemaphoreSlim _gate = new(1, 1);
+    private Dictionary<string, ContentNode>? _nodes;
 
     /// <summary>Returns every loaded node, loading the content set if needed.</summary>
     public async Task<IReadOnlyCollection<ContentNode>> GetAllAsync()
@@ -72,7 +63,7 @@ public sealed class ContentService
                 return _nodes;
             }
 
-            var manifest = await _http.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
+            var manifest = await http.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
             var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
             foreach (var file in manifest.Files)
@@ -95,7 +86,7 @@ public sealed class ContentService
 
     private async Task<ContentNode?> LoadNodeAsync(string fileName)
     {
-        var raw = await _http.GetStringAsync($"{ContentRoot}/{fileName}");
+        var raw = await http.GetStringAsync($"{ContentRoot}/{fileName}");
         var (frontMatter, body) = SplitFrontMatter(raw);
         if (frontMatter is null)
         {

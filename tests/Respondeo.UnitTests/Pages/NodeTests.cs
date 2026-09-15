@@ -31,8 +31,7 @@ public class NodeTests : TestContext
 
         _trail = Substitute.For<IBreadcrumbTrail>();
         // Default: the trail contains just the current node (no ancestors).
-        _trail.VisitAsync(Arg.Any<string>())
-            .Returns(call => Task.FromResult<IReadOnlyList<string>>(new[] { (string)call[0] }));
+        _trail.VisitAsync(Arg.Any<string>()).Returns(call => Task.FromResult<IReadOnlyList<string>>(new[] { (string)call[0] }));
 
         Services.AddSingleton(new ContentService(http));
         Services.AddSingleton(_trail);
@@ -87,8 +86,7 @@ public class NodeTests : TestContext
     public void Renders_ancestor_crumbs_from_the_trail()
     {
         // Visiting "child" yields a trail of root -> child; root is the ancestor crumb.
-        _trail.VisitAsync("child")
-            .Returns(Task.FromResult<IReadOnlyList<string>>(new[] { "root", "child" }));
+        _trail.VisitAsync("child").Returns(Task.FromResult<IReadOnlyList<string>>(new[] { "root", "child" }));
 
         var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "child"));
 

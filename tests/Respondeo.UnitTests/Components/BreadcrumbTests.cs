@@ -1,6 +1,5 @@
 using Bunit;
 using Respondeo.Components;
-using Xunit;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -79,8 +78,7 @@ public class BreadcrumbTests : TestContext
     [Fact]
     public void Renders_no_ancestor_links_when_trail_is_empty()
     {
-        var cut = RenderComponent<Breadcrumb>(p => p
-            .Add(c => c.CurrentTitle, "Home"));
+        var cut = RenderComponent<Breadcrumb>(p => p.Add(c => c.CurrentTitle, "Home"));
 
         Assert.Empty(cut.FindAll("a.breadcrumb__link"));
         // Only the separator preceding the current node should be present.
