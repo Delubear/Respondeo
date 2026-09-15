@@ -6,6 +6,7 @@ audiences:
   - atheist-agnostic
   - non-practicing-catholic
 sections:
+  - five-ways-act-potency
   - five-ways-motion
   - five-ways-causation
   - five-ways-contingency
@@ -13,30 +14,13 @@ sections:
   - five-ways-governance
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 St. Thomas offered *Five Ways* to demonstrate God's existence.
 They do not rest on faith or Scripture; each begins with a plain feature of the world and reasons to its necessary source.
 
-We will walk two of them. Each has the same shape:
+Begin with the foundational distinction between **act and potency** — the single idea every way relies on — then walk the ways themselves. Each has the same shape:
 
 1. Observe a feature of reality (change, or dependent existence).
 2. Show that this feature cannot explain itself in an infinite regress.
 3. Conclude to a first term — and identify it with God.
 
-Choose a path below.
-They lead to the same summit by different slopes, and you are welcome to walk both.
-
-
-
-In the *Summa Theologiae* (I, q. 2, a. 3), St. Thomas Aquinas offers five arguments &mdash;
-the *Quinque Viae*, or **Five Ways** &mdash; for the existence of God.
-None of them begins with faith or Scripture. Each starts from a plain, observable feature
-of the world and reasons to its necessary source.
-
-Each way has the same broad shape: observe something about reality, show that it cannot
-account for itself in an infinite regress of dependent causes, and conclude to a first
-term that everyone understands to be God.
-
-Expand a section below to walk through each way. Opening one closes the others, and the
-address bar updates so you can share a link straight to the way you are reading.
+Expand a section below to walk through each way.
