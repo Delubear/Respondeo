@@ -1,7 +1,9 @@
 @* Presentational breadcrumb of the visitor's navigation trail. Pure UI: it renders the already-resolved crumbs and the current node title. Trail building stays with the caller. *@
 
 <nav class="breadcrumb">
-    <a href="">Start</a>
+    <a href="">Home</a>
+    <span class="breadcrumb__sep">/</span>
+    <a class="breadcrumb__articles" href="articles">Articles</a>
     @foreach (var crumb in Crumbs)
     {
         <span class="breadcrumb__sep">/</span>

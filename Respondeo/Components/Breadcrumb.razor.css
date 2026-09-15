@@ -23,6 +23,7 @@
 
 /* Keep individual crumbs from sprawling: cap width and ellipsize long titles. The full title remains available via the title attribute on hover. */
 .breadcrumb__link,
+.breadcrumb__articles,
 .breadcrumb__current {
     display: inline-block;
     max-width: 16ch;
