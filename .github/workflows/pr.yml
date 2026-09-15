@@ -30,3 +30,67 @@ jobs:
         with:
           name: unit-test-results
           path: TestResults/*.trx
+
+      - name: Publish
+        run: dotnet publish Respondeo/Respondeo.csproj -c Release -o release
+
+      - name: Rewrite base href
+        run: |
+          sed -i "s|<base href=\"/\" />|<base href=\"/Respondeo/\" />|" release/wwwroot/index.html
+
+      - name: Upload site for E2E
+        uses: actions/upload-artifact@v5
+        with:
+          name: site
+          path: release/wwwroot
+
+  e2e:
+    name: Acceptance Tests (Playwright)
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Download published site
+        uses: actions/download-artifact@v5
+        with:
+          name: site
+          # Served under the Pages sub-path so the rewritten <base href="/Respondeo/"> resolves like production.
+          path: site/Respondeo
+
+      - name: Install static file server
+        run: dotnet tool install --global dotnet-serve
+
+      - name: Build acceptance tests
+        run: dotnet build Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
+
+      - name: Install Playwright browsers
+        run: pwsh Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+
+      - name: Serve site and run acceptance tests
+        env:
+          RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
+        run: |
+          # Start the static server in the background within the SAME step so it
+          # stays alive while the tests run. Backgrounded processes from a prior
+          # step can be terminated when that step's shell exits.
+          dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
+              echo "App is up"; break
+            fi
+            if [ "$i" -eq 30 ]; then echo "App did not start in time"; exit 1; fi
+            sleep 1
+          done
+
+          dotnet test Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
