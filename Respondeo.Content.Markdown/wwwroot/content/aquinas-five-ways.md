@@ -3,8 +3,7 @@ id: aquinas-five-ways
 title: "The Five Ways"
 summary: St. Thomas Aquinas's five demonstrations of the existence of God.
 audiences:
-  - atheist
-  - agnostic
+  - atheist-agnostic
   - non-practicing-catholic
 sections:
   - five-ways-motion
@@ -15,6 +14,20 @@ sections:
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
+St. Thomas offered *Five Ways* to demonstrate God's existence.
+They do not rest on faith or Scripture; each begins with a plain feature of the world and reasons to its necessary source.
+
+We will walk two of them. Each has the same shape:
+
+1. Observe a feature of reality (change, or dependent existence).
+2. Show that this feature cannot explain itself in an infinite regress.
+3. Conclude to a first term — and identify it with God.
+
+Choose a path below.
+They lead to the same summit by different slopes, and you are welcome to walk both.
+
+
 
 In the *Summa Theologiae* (I, q. 2, a. 3), St. Thomas Aquinas offers five arguments &mdash;
 the *Quinque Viae*, or **Five Ways** &mdash; for the existence of God.

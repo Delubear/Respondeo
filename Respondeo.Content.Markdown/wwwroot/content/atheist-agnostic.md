@@ -6,7 +6,7 @@ audiences:
   - atheist-agnostic
 isEntryPoint: true
 branches:
-  - to: does-god-exist
+  - to: aquinas-five-ways
     label: "Can reason show that God exists?"
     prompt: Before revelation, we can ask what unaided reason discovers.
 ---
@@ -28,5 +28,7 @@ The Thomistic approach respects your caution.
 - It asks only that you follow the evidence of change and existence wherever it leads.
 - If the arguments fail, you should remain atheist or agnostic.
 - If they succeed, atheism and agnosticism is no longer the honest position.
+
+The only thing asked of you is to be willing to follow the evidence.
 
 If you already know God exists, you may want to start with [Protestant](node/protestant) or [Non-Practicing Catholic](node/non-practicing-catholic) instead.

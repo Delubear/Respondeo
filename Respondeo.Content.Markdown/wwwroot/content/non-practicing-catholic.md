@@ -6,7 +6,7 @@ audiences:
   - non-practicing-catholic
 isEntryPoint: true
 branches:
-  - to: does-god-exist
+  - to: aquinas-five-ways
     label: "Rebuild from the foundation: does God exist?"
     prompt: Sometimes it helps to re-examine the ground floor with adult eyes.
   - to: why-jesus

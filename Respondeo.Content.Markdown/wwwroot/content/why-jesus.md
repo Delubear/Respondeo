@@ -6,7 +6,7 @@ audiences:
   - protestant
   - non-practicing-catholic
 branches:
-  - to: does-god-exist
+  - to: aquinas-five-ways
     label: "Revisit whether God exists"
     prompt: If this step feels premature, return to the foundation.
 ---
