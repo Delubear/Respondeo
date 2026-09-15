@@ -1,5 +1,4 @@
 using Microsoft.Playwright;
-using Reqnroll;
 
 namespace Respondeo.AcceptanceTests.Support;
 

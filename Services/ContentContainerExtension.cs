@@ -1,4 +1,3 @@
-using System.Linq;
 using Markdig;
 using Markdig.Extensions.CustomContainers;
 using Markdig.Renderers;

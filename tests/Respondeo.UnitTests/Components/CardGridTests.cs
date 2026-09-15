@@ -10,8 +10,7 @@ public class CardGridTests : TestContext
     [Fact]
     public void Wraps_child_content_in_the_grid_container()
     {
-        var cut = RenderComponent<CardGrid>(p => p
-            .AddChildContent("<div class=\"child\">Hello</div>"));
+        var cut = RenderComponent<CardGrid>(p => p.AddChildContent("<div class=\"child\">Hello</div>"));
 
         var grid = cut.Find("div.card-grid");
         var child = grid.QuerySelector("div.child");
