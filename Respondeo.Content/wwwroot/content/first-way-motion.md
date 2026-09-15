@@ -13,6 +13,8 @@ branches:
     prompt: If there is a God, has He spoken? That points us toward Christ.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 > "It is certain, and evident to our senses, that in the world some things are in motion." — *Summa Theologiae* I, q.2, a.3
 
 **The argument, step by step:**

@@ -11,6 +11,8 @@ branches:
     prompt: Aquinas argues the question is answerable by reason, not only by faith.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 Suspending judgment is reasonable when evidence is genuinely balanced.
 But the question of God is not a coin toss — it is a question about whether reality has an ultimate explanation.
 

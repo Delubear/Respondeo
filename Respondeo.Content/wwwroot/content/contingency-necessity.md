@@ -13,6 +13,8 @@ branches:
     prompt: A necessary source of being invites the question of revelation.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 Look at any ordinary thing — a tree, a star, yourself.
 Each **might not have existed.**
 Its existence is not part of what it is; it is *received.*

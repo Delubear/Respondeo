@@ -11,6 +11,8 @@ branches:
     prompt: Before revelation, we can ask what unaided reason discovers.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 Welcome.
 It takes intellectual honesty to ask whether the universe explains itself.
 The Catholic tradition does not begin by demanding faith — it begins with reason.

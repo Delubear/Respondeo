@@ -15,6 +15,8 @@ branches:
     prompt: Why does anything exist at all rather than nothing?
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 St. Thomas offered *Five Ways* to demonstrate God's existence.
 They do not rest on faith or Scripture; each begins with a plain feature of the world and reasons to its necessary source.
 

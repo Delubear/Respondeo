@@ -11,6 +11,8 @@ branches:
     prompt: If Jesus is Lord, the question becomes which Church He established.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 We share the most important truths: the Triune God, the Incarnation, and the Resurrection of Jesus Christ.
 The question between us is not *whether* God has revealed Himself, but *how* and *through whom* that revelation is preserved.
 
