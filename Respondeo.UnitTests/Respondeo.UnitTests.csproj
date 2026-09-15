@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\..\Respondeo\Respondeo.csproj" />
-	<ProjectReference Include="..\..\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
+	<ProjectReference Include="..\Respondeo\Respondeo.csproj" />
+	<ProjectReference Include="..\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
   </ItemGroup>
 
 </Project>
