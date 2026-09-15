@@ -29,5 +29,22 @@ export function scrollToTop() {
 }
 
 export function jumpToTop() {
-    window.scrollTo(0, 0);
+    // On navigation, settle the viewport at the top of the content region (which begins
+    // with the breadcrumb) rather than the very top of the page, so the masthead stays
+    // out of view and the reader lands on their breadcrumb trail.
+    const scrollToContent = () => {
+        const content = document.querySelector('.content');
+        const top = content ? content.getBoundingClientRect().top + window.pageYOffset : 0;
+        window.scrollTo(0, top);
+    };
+
+    // Pin immediately (before the new page paints) so the masthead never flashes into
+    // view. The content element's top is stable regardless of which page is loading.
+    scrollToContent();
+
+    // LocationChanged fires BEFORE the new page renders, and Blazor's
+    // <FocusOnNavigate Selector="h1"> focuses the new heading AFTER render, which nudges
+    // the scroll. Re-assert on a double requestAnimationFrame so we run after that render
+    // + focus cycle and remain authoritative.
+    requestAnimationFrame(() => requestAnimationFrame(scrollToContent));
 }
