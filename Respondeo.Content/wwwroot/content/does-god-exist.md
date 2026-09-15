@@ -13,6 +13,9 @@ branches:
   - to: contingency-necessity
     label: "The argument from contingency"
     prompt: Why does anything exist at all rather than nothing?
+  - to: aquinas-five-ways
+    label: "All Five Ways at a glance"
+    prompt: Read each of Aquinas's five demonstrations in one place.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
