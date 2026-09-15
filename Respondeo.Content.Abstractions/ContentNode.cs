@@ -1,0 +1,47 @@
+namespace Respondeo.Content.Models;
+
+/// <summary>
+/// A fully materialized content node: author-curated metadata plus the rendered HTML of its Markdown body.
+/// This is the pure domain model exposed to consumers; it carries no serialization concerns.
+/// </summary>
+public sealed class ContentNode
+{
+    /// <summary>Stable unique id used for linking between nodes (the graph key) and the URL slug.</summary>
+    public required string Id { get; init; }
+
+    /// <summary>Headline shown on the node page and in link cards.</summary>
+    public required string Title { get; init; }
+
+    /// <summary>Short one-line description used on cards and previews.</summary>
+    public string Summary { get; init; } = string.Empty;
+
+    /// <summary>Rendered HTML of the Markdown body (safe, author-curated).</summary>
+    public required string BodyHtml { get; init; }
+
+    /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
+    public bool IsEntryPoint { get; init; }
+
+    /// <summary>Faith starting points this node speaks to (e.g. "atheist", "agnostic").</summary>
+    public IReadOnlyList<string> Audiences { get; init; } = Array.Empty<string>();
+
+    /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
+    public IReadOnlyList<BranchLink> Branches { get; init; } = Array.Empty<BranchLink>();
+
+    /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
+    public IReadOnlyList<string> Sections { get; init; } = Array.Empty<string>();
+}
+
+/// <summary>
+/// A directed link from one node to another, optionally labelled so the prompt can be phrased for the visitor.
+/// </summary>
+public sealed class BranchLink
+{
+    /// <summary>The id of the target <see cref="ContentNode"/>.</summary>
+    public required string To { get; init; }
+
+    /// <summary>Optional override label; falls back to the target's title.</summary>
+    public string? Label { get; init; }
+
+    /// <summary>Optional short reason/prompt shown beneath the label.</summary>
+    public string? Prompt { get; init; }
+}

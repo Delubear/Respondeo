@@ -1,0 +1,43 @@
+@page "/"
+@inject IContentService Content
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>Respondeo &mdash; Real questions. Reasoned answers.</PageTitle>
+
+<section class="hero">
+    <p class="hero__motto">Veritas</p>
+    <h1 class="hero__title">Where are you, and where are you headed?</h1>
+    <p class="hero__lede">
+        This is a path of reason toward the God who has revealed Himself in Jesus Christ and His Church.
+        It begins wherever you honestly stand.
+        Choose the starting point that fits you best.
+    </p>
+</section>
+
+@if (_entryPoints is null)
+{
+    <Loading>Preparing the way&hellip;</Loading>
+}
+else
+{
+    <CardGrid>
+        @foreach (var node in _entryPoints)
+        {
+            <Card Href="@($"node/{node.Id}")"
+                  Title="@node.Title"
+                  Summary="@node.Summary"
+                  Cta="Begin →"
+                  Level="2" />
+        }
+    </CardGrid>
+}
+
+@code {
+    private IReadOnlyList<ContentNode>? _entryPoints;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        _entryPoints = await Content.GetEntryPointsAsync();
+    }
+}

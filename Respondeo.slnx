@@ -5,10 +5,11 @@
     <File Path=".github/workflows/deploy.yml" />
     <File Path=".github/workflows/pr.yml" />
   </Folder>
-  <Project Path="Respondeo.csproj" />
-  <Project Path="Respondeo.Content/Respondeo.Content.csproj" />
+  <Project Path="Respondeo/Respondeo.csproj" />
+  <Project Path="Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
+  <Project Path="Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
   <Folder Name="/Tests/">
-    <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
-    <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
+    <Project Path="Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
+    <Project Path="Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
   </Folder>
 </Solution>

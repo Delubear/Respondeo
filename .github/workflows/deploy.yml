@@ -33,13 +33,13 @@ jobs:
       # Compile the app and unit tests once; later steps reuse this output via --no-build.
       # Building the test project also builds the app it references.
       - name: Build
-        run: dotnet build tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+        run: dotnet build Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
 
       - name: Run unit and component tests
-        run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
+        run: dotnet test Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
       - name: Publish
-        run: dotnet publish Respondeo.csproj -c Release -o release
+        run: dotnet publish Respondeo/Respondeo.csproj -c Release -o release
 
       - name: Compute base href
         id: base
@@ -100,10 +100,10 @@ jobs:
         run: dotnet tool install --global dotnet-serve
 
       - name: Build acceptance tests
-        run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
+        run: dotnet build Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
 
       - name: Install Playwright browsers
-        run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+        run: pwsh Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
 
       - name: Serve site and run acceptance tests
         env:
@@ -124,7 +124,7 @@ jobs:
             sleep 1
           done
 
-          dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
+          dotnet test Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
 
   deploy:
     name: Deploy
