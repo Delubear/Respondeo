@@ -22,7 +22,7 @@ public class ContentServiceLoadingTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new ContentService(http);
+        return new ContentService(http, new ContentParser());
     }
 
     [Fact]

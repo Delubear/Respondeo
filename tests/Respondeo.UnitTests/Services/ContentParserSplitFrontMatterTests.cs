@@ -2,12 +2,12 @@ using Respondeo.Services;
 
 namespace Respondeo.UnitTests.Services;
 
-public class ContentServiceSplitFrontMatterTests
+public class ContentParserSplitFrontMatterTests
 {
     [Fact]
     public void Returns_null_frontmatter_when_no_delimiter()
     {
-        var (fm, body) = ContentService.SplitFrontMatter("# Just a heading\n\nText");
+        var (fm, body) = ContentParser.SplitFrontMatter("# Just a heading\n\nText");
 
         Assert.Null(fm);
         Assert.Equal("# Just a heading\n\nText", body);
@@ -18,7 +18,7 @@ public class ContentServiceSplitFrontMatterTests
     {
         var raw = "---\nid: home\ntitle: Home\n---\n# Body\n\nHello";
 
-        var (fm, body) = ContentService.SplitFrontMatter(raw);
+        var (fm, body) = ContentParser.SplitFrontMatter(raw);
 
         Assert.NotNull(fm);
         Assert.Contains("id: home", fm);
@@ -31,7 +31,7 @@ public class ContentServiceSplitFrontMatterTests
     {
         var raw = "---\r\nid: node\r\n---\r\nBody text";
 
-        var (fm, body) = ContentService.SplitFrontMatter(raw);
+        var (fm, body) = ContentParser.SplitFrontMatter(raw);
 
         Assert.NotNull(fm);
         Assert.Contains("id: node", fm);
@@ -43,7 +43,7 @@ public class ContentServiceSplitFrontMatterTests
     {
         var raw = "\uFEFF\n---\nid: node\n---\nBody";
 
-        var (fm, body) = ContentService.SplitFrontMatter(raw);
+        var (fm, body) = ContentParser.SplitFrontMatter(raw);
 
         Assert.NotNull(fm);
         Assert.Contains("id: node", fm);
@@ -55,7 +55,7 @@ public class ContentServiceSplitFrontMatterTests
     {
         var raw = "---\nid: node\nno closing delimiter";
 
-        var (fm, _) = ContentService.SplitFrontMatter(raw);
+        var (fm, _) = ContentParser.SplitFrontMatter(raw);
 
         Assert.Null(fm);
     }
