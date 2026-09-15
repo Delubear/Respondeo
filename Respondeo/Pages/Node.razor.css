@@ -1,4 +1,29 @@
 /* ---------- Node article ---------- */
+.node {
+    /* Gentle fade + rise when a new node's content is shown, so switching between
+       nodes feels like a deliberate page turn rather than a hard swap. Keyed on the
+       node id in the markup so each navigation re-mounts and re-runs the animation. */
+    animation: node-enter 0.45s ease both;
+}
+
+@keyframes node-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .node {
+        animation: none;
+    }
+}
+
 .node__header {
     margin-bottom: 1.75rem;
     padding-bottom: 1rem;
