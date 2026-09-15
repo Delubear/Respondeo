@@ -1,0 +1,23 @@
+@* Presentational breadcrumb of the visitor's navigation trail. Pure UI: it renders the already-resolved crumbs and the current node title. Trail building stays with the caller. *@
+
+<nav class="breadcrumb">
+    <a href="">Start</a>
+    @foreach (var crumb in Crumbs)
+    {
+        <span class="breadcrumb__sep">/</span>
+        <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
+    }
+    <span class="breadcrumb__sep">/</span>
+    <span class="breadcrumb__current" title="@CurrentTitle">@(CurrentTitle ?? "…")</span>
+</nav>
+
+@code {
+    /// <summary>The ancestor crumbs leading up to (but excluding) the current node.</summary>
+    [Parameter] public IReadOnlyList<Crumb> Crumbs { get; set; } = Array.Empty<Crumb>();
+
+    /// <summary>Title of the node currently being viewed, shown as the final, non-linked crumb.</summary>
+    [Parameter] public string? CurrentTitle { get; set; }
+
+    /// <summary>A single ancestor step in the breadcrumb trail.</summary>
+    public sealed record Crumb(string Id, string Title);
+}
