@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using Respondeo.Content.Abstractions;
-using Respondeo.Content.Models;
 
 namespace Respondeo.Content.Markdown.Services;
 

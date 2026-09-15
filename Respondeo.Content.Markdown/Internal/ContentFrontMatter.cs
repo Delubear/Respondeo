@@ -4,8 +4,7 @@ namespace Respondeo.Content.Markdown.Internal;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter block.
-/// This is an internal serialization DTO; the parser maps it onto the public
-/// <see cref="Respondeo.Content.Models.ContentNode"/> so YAML concerns never leak past the boundary.
+/// This is an internal serialization DTO; the parser maps it onto the public <see cref="Abstractions.ContentNode"/> so YAML concerns never leak past the boundary.
 /// </summary>
 internal sealed class ContentFrontMatter
 {

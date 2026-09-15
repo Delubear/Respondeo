@@ -1,6 +1,6 @@
 using Markdig;
+using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Internal;
-using Respondeo.Content.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -49,9 +49,7 @@ internal sealed class ContentParser
             BodyHtml = html,
             IsEntryPoint = meta.IsEntryPoint,
             Audiences = meta.Audiences,
-            Branches = meta.Branches
-                .Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })
-                .ToList(),
+            Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
             Sections = meta.Sections,
         };
     }
