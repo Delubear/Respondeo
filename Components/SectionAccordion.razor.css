@@ -1,0 +1,74 @@
+.accordion {
+    margin: 2rem 0;
+    border-top: 1px solid var(--rule);
+}
+
+.accordion__item {
+    border-bottom: 1px solid var(--rule);
+}
+
+.accordion__heading {
+    margin: 0;
+    font-family: var(--serif);
+}
+
+.accordion__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 0.25rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 1.15rem;
+    line-height: 1.3;
+    transition: color 0.15s ease;
+}
+
+.accordion__trigger:hover {
+    color: var(--accent);
+}
+
+.accordion__trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.accordion__item--open .accordion__trigger {
+    color: var(--accent);
+}
+
+.accordion__marker {
+    flex: 0 0 auto;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--ink-soft);
+}
+
+.accordion__panel {
+    padding: 0.25rem 0.25rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.accordion__panel ::deep p:first-child {
+    margin-top: 0;
+}
+
+.accordion__panel ::deep blockquote {
+    margin: 1.25rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.accordion__panel ::deep ol,
+.accordion__panel ::deep ul {
+    padding-left: 1.4rem;
+}

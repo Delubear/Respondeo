@@ -37,6 +37,11 @@ else
             @((MarkupString)_node.BodyHtml)
         </div>
 
+        @if (_node.Sections.Count > 0)
+        {
+            <SectionAccordion NodeId="@_node.Id" SectionIds="_node.Sections" />
+        }
+
         @if (_branches.Count > 0)
         {
             <section class="branches">

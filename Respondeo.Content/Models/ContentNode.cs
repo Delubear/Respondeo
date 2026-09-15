@@ -39,6 +39,14 @@ public sealed class ContentFrontMatter
     /// </summary>
     [YamlMember(Alias = "branches")]
     public List<BranchLink> Branches { get; set; } = new();
+
+    /// <summary>
+    /// Ordered ids of child content nodes to present as collapsible sections on this page.
+    /// Each id resolves to a separate content file whose title becomes the section header and whose body becomes the expandable panel.
+    /// Used for long, organized material.
+    /// </summary>
+    [YamlMember(Alias = "sections")]
+    public List<string> Sections { get; set; } = new();
 }
 
 /// <summary>
@@ -73,4 +81,5 @@ public sealed class ContentNode
     public string Title => Meta.Title;
     public string Summary => Meta.Summary;
     public IReadOnlyList<BranchLink> Branches => Meta.Branches;
+    public IReadOnlyList<string> Sections => Meta.Sections;
 }
