@@ -1,28 +1,17 @@
 using System.Net.Http.Json;
-using Markdig;
 using Respondeo.Content.Models;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Respondeo.Services;
 
 /// <summary>
 /// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content library.
 /// The files live in that library's <c>wwwroot/content/</c> and are served by Blazor under the <c>_content/Respondeo.Content/</c> static-web-asset path.
-/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, splits YAML front-matter from the Markdown body, and caches the parsed graph in memory for the app's lifetime.
+/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ContentParser"/>, and caches the parsed graph in memory for the app's lifetime.
 /// </summary>
-public sealed class ContentService(HttpClient http)
+public sealed class ContentService(HttpClient http, ContentParser parser)
 {
     private const string ContentRoot = "_content/Respondeo.Content/content";
     private const string ManifestPath = "_content/Respondeo.Content/content/manifest.json";
-    private readonly IDeserializer _yaml = new DeserializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .IgnoreUnmatchedProperties()
-            .Build();
-    private readonly MarkdownPipeline _markdown = new MarkdownPipelineBuilder()
-            .UseAdvancedExtensions()
-            .Use<ContentContainerExtension>()
-            .Build();
 
     private readonly SemaphoreSlim _gate = new(1, 1);
     private Dictionary<string, ContentNode>? _nodes;
@@ -87,44 +76,7 @@ public sealed class ContentService(HttpClient http)
     private async Task<ContentNode?> LoadNodeAsync(string fileName)
     {
         var raw = await http.GetStringAsync($"{ContentRoot}/{fileName}");
-        var (frontMatter, body) = SplitFrontMatter(raw);
-        if (frontMatter is null)
-        {
-            return null;
-        }
-
-        var meta = _yaml.Deserialize<ContentFrontMatter>(frontMatter);
-        if (meta is null || string.IsNullOrWhiteSpace(meta.Id))
-        {
-            return null;
-        }
-
-        var html = Markdown.ToHtml(body, _markdown);
-        return new ContentNode { Meta = meta, BodyHtml = html };
-    }
-
-    /// <summary>
-    /// Splits a "---" delimited YAML front-matter block from the Markdown body.
-    /// Returns (null, raw) when no front-matter block is present.
-    /// </summary>
-    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw)
-    {
-        var text = raw.Replace("\r\n", "\n").TrimStart('\uFEFF', ' ', '\n');
-        if (!text.StartsWith("---\n"))
-        {
-            return (null, raw);
-        }
-
-        var end = text.IndexOf("\n---", 4, StringComparison.Ordinal);
-        if (end < 0)
-        {
-            return (null, raw);
-        }
-
-        var frontMatter = text.Substring(4, end - 4);
-        var bodyStart = text.IndexOf('\n', end + 1);
-        var body = bodyStart < 0 ? string.Empty : text[(bodyStart + 1)..];
-        return (frontMatter, body);
+        return parser.Parse(raw);
     }
 
     private sealed class ContentManifest

@@ -28,7 +28,7 @@ public class HomeTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton(new ContentService(http));
+        Services.AddSingleton(new ContentService(http, new ContentParser()));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
     }
 
