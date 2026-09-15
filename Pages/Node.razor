@@ -13,10 +13,10 @@
     @foreach (var crumb in _crumbs)
     {
         <span class="breadcrumb__sep">/</span>
-        <a href="@($"node/{crumb.Id}")">@crumb.Title</a>
+        <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
     }
     <span class="breadcrumb__sep">/</span>
-    <span class="breadcrumb__current">@(_node?.Title ?? "…")</span>
+    <span class="breadcrumb__current" title="@(_node?.Title)">@(_node?.Title ?? "…")</span>
 </nav>
 
 @if (_loading)
