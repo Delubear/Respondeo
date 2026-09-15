@@ -22,7 +22,13 @@
                             aria-expanded="@(isOpen ? "true" : "false")"
                             aria-controls="@panelId"
                             @onclick="() => ToggleAsync(section.Id)">
-                        <span class="accordion__title">@section.Title</span>
+                        <span class="accordion__label">
+                            <span class="accordion__title">@section.Title</span>
+                            @if (!string.IsNullOrWhiteSpace(section.Summary))
+                            {
+                                <span class="accordion__summary">@section.Summary</span>
+                            }
+                        </span>
                         <span class="accordion__marker" aria-hidden="true">@(isOpen ? "\u2212" : "+")</span>
                     </button>
                 </h3>

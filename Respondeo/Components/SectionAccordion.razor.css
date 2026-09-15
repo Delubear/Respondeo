@@ -50,6 +50,24 @@
     color: var(--ink-soft);
 }
 
+.accordion__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.accordion__summary {
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: normal;
+}
+
 .accordion__panel {
     padding: 0.25rem 0.25rem 1.5rem;
     font-size: 1.1rem;
