@@ -14,6 +14,8 @@ branches:
     prompt: Reconsider the reasons the Church claims Christ's own authority.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 Many who leave never really rejected the faith — they set down a child's understanding of it and never picked up an adult's.
 That is worth repairing.
 

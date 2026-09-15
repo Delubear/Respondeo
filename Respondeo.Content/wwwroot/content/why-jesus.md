@@ -11,6 +11,8 @@ branches:
     prompt: If this step feels premature, return to the foundation.
 ---
 
+<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+
 Reason can reach *that* God exists and something of *what* He is.
 But reason alone cannot tell us whether this God has freely chosen to speak to us.
 That is a question of **history**, not only philosophy.

@@ -1,6 +1,6 @@
 # Authoring Content Nodes
 
-This folder holds the site's content, shipped as static web assets from the
+This project holds the site's content, shipped as static web assets from the
 `Respondeo.Content` library. Each **node** is a single Markdown file made of two
 parts:
 
