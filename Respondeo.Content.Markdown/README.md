@@ -20,8 +20,8 @@ title: "Does God exist?"
 summary: A short one-line description used on cards and previews.
 isEntryPoint: true
 audiences:
-  - atheist
-  - agnostic
+  - atheist-agnostic
+  - non-practicing-catholic
 branches:
   - to: what-is-faith
     label: "What do you mean by faith?"
@@ -39,7 +39,7 @@ Your Markdown body starts here.
 | `title` | Yes | Headline shown on the page and in link cards. |
 | `summary` | No | One-line description used on cards and previews. |
 | `isEntryPoint` | No | `true` surfaces the node as a starting point on the home page. Defaults to `false`. |
-| `audiences` | No | Faith starting points this node speaks to (e.g. `atheist`, `agnostic`, `protestant`, `non-practicing-catholic`). |
+| `audiences` | No | Faith starting points this node speaks to (e.g. `atheist-agnostic`, `protestant`, `non-practicing-catholic`). |
 | `branches` | No | Outgoing links to other nodes (see below). |
 
 ### Branch links
@@ -65,7 +65,7 @@ auto-identifiers, generic attributes, etc.).
 ### Links
 
 ```markdown
-Internal (no full reload): jump to [Does God exist?](node/does-god-exist) or the [start](.).
+Internal (no full reload): jump to [Does God exist?](node/aquinas-five-ways) or the [home](.).
 External: visit the [Vatican website](https://www.vatican.va){target="_blank" rel="noopener noreferrer"}.
 ```
 

@@ -50,7 +50,7 @@ public class BreadcrumbTests : TestContext
         var crumbs = new[]
         {
             new Breadcrumb.Crumb("atheist", "Atheist"),
-            new Breadcrumb.Crumb("does-god-exist", "Does God exist?"),
+            new Breadcrumb.Crumb("aquinas-five-ways", "Does God exist?"),
         };
 
         var cut = RenderComponent<Breadcrumb>(p => p
@@ -65,7 +65,7 @@ public class BreadcrumbTests : TestContext
         Assert.Equal("Atheist", links[0].GetAttribute("title"));
 
         Assert.Equal("Does God exist?", links[1].TextContent);
-        Assert.Equal("node/does-god-exist", links[1].GetAttribute("href"));
+        Assert.Equal("node/aquinas-five-ways", links[1].GetAttribute("href"));
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class BreadcrumbTests : TestContext
         var crumbs = new[]
         {
             new Breadcrumb.Crumb("atheist", "Atheist"),
-            new Breadcrumb.Crumb("does-god-exist", "Does God exist?"),
+            new Breadcrumb.Crumb("aquinas-five-ways", "Does God exist?"),
         };
 
         var cut = RenderComponent<Breadcrumb>(p => p

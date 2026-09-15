@@ -4,8 +4,8 @@ title: "Test"
 summary: A sandbox for trying out different content types.
 isEntryPoint: true
 branches:
-  - to: does-god-exist
-    label: "Internal branch link (does-god-exist)"
+  - to: aquinas-five-ways
+    label: "Internal branch link (aquinas-five-ways)"
     prompt: Branch links are the built-in way to navigate between nodes.
 ---
 
@@ -20,7 +20,7 @@ Here is one to the [Vatican website](https://www.vatican.va){target="_blank" rel
 ## Internal link
 
 An internal link navigates to another node within Respondeo without a full page reload.
-For example, jump to [Does God exist?](node/does-god-exist) or back to the [start](.).
+For example, jump to [Does God exist?](node/aquinas-five-ways) or back to the [home](.).
 
 ## Embedded YouTube video
 
