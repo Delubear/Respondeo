@@ -17,8 +17,7 @@
     private DotNetObjectReference<ScrollAffordances>? _ref;
     private IJSObjectReference? _module;
 
-    private string ProgressStyle =>
-        _progress.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "%";
+    private string ProgressStyle => _progress.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "%";
 
     protected override void OnInitialized()
     {
