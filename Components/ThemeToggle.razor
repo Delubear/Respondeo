@@ -1,0 +1,33 @@
+@using Respondeo.Services
+@inject IThemeService Theme
+
+<button type="button"
+        class="theme-toggle"
+        @onclick="ToggleAsync"
+        title="@Label"
+        aria-label="@Label">
+    <span class="theme-toggle__glyph" aria-hidden="true">@Glyph</span>
+</button>
+
+@code {
+    private bool _isDark;
+
+    private string Glyph => _isDark ? "\u2600" : "\u263E"; // sun when dark (offer light), moon when light
+    private string Label => _isDark ? "Switch to light theme" : "Switch to dark theme";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Theme.InitializeAsync();
+            _isDark = Theme.Current == Respondeo.Services.Theme.Dark;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ToggleAsync()
+    {
+        await Theme.ToggleAsync();
+        _isDark = Theme.Current == Respondeo.Services.Theme.Dark;
+    }
+}

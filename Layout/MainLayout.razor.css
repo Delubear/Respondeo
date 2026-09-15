@@ -6,18 +6,19 @@
 
 /* ---------- Masthead ---------- */
 .masthead {
-    background: var(--ink);
-    color: var(--parchment);
+    position: relative;
+    background: var(--masthead-bg);
+    color: var(--masthead-fg);
     text-align: center;
     padding: 1.75rem 1rem 1.5rem;
-    border-bottom: 4px double var(--parchment);
+    border-bottom: 4px double var(--masthead-rule);
 }
 
 .masthead__brand {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    color: var(--parchment);
+    color: var(--masthead-fg);
     font-family: var(--display);
     font-size: 1.9rem;
     letter-spacing: 0.08em;
@@ -26,7 +27,7 @@
 
 .masthead__brand:hover {
     text-decoration: none;
-    color: #fff;
+    color: var(--masthead-fg);
 }
 
 .masthead__mark {
@@ -37,7 +38,7 @@
 .masthead__tag {
     margin: 0.35rem 0 0;
     font-style: italic;
-    color: #cfcfcf;
+    color: var(--masthead-fg-soft);
     letter-spacing: 0.05em;
 }
 
@@ -55,8 +56,8 @@
 
 /* ---------- Colophon / footer ---------- */
 .colophon {
-    background: var(--ink);
-    color: #c9c9c9;
+    background: var(--masthead-bg);
+    color: var(--masthead-fg-soft);
     text-align: center;
     font-size: 0.82rem;
     padding: 1.5rem 1.25rem;
