@@ -13,7 +13,7 @@ namespace Respondeo.UnitTests.Components;
 public class SectionAccordionTests : TestContext
 {
     private const string Manifest = "{\"files\":[\"one.md\",\"two.md\"]}";
-    private const string OneMd = "---\nid: one\ntitle: Section One\n---\nBody one";
+    private const string OneMd = "---\nid: one\ntitle: Section One\nsummary: The first summary\n---\nBody one";
     private const string TwoMd = "---\nid: two\ntitle: Section Two\n---\nBody two";
 
     private readonly FakeNavigationManager _nav;
@@ -55,6 +55,17 @@ public class SectionAccordionTests : TestContext
         Assert.Equal(2, triggers.Count);
         Assert.All(triggers, t => Assert.Equal("false", t.GetAttribute("aria-expanded")));
         Assert.Empty(cut.FindAll(".accordion__panel"));
+    }
+
+    [Fact]
+    public void Renders_the_section_summary_when_present()
+    {
+        var cut = Render();
+
+        var summaries = cut.FindAll(".accordion__summary").ToList();
+        // Only the first section defines a summary; the second omits it.
+        Assert.Single(summaries);
+        Assert.Equal("The first summary", summaries[0].TextContent);
     }
 
     [Fact]
