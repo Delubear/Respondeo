@@ -8,16 +8,7 @@
     <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
 }
 
-<nav class="breadcrumb">
-    <a href="">Start</a>
-    @foreach (var crumb in _crumbs)
-    {
-        <span class="breadcrumb__sep">/</span>
-        <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
-    }
-    <span class="breadcrumb__sep">/</span>
-    <span class="breadcrumb__current" title="@(_node?.Title)">@(_node?.Title ?? "…")</span>
-</nav>
+<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" />
 
 @if (_loading)
 {
@@ -71,7 +62,7 @@ else
     private ContentNode? _node;
     private bool _loading = true;
     private readonly List<ResolvedBranch> _branches = new();
-    private IReadOnlyList<Crumb> _crumbs = Array.Empty<Crumb>();
+    private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -100,17 +91,15 @@ else
         var trail = await Trail.VisitAsync(Id);
 
         // The trail includes the current node as its last element; the rest are ancestors.
-        var crumbs = new List<Crumb>(trail.Count);
+        var crumbs = new List<Breadcrumb.Crumb>(trail.Count);
         for (var i = 0; i < trail.Count - 1; i++)
         {
             var ancestor = await Content.GetByIdAsync(trail[i]);
-            crumbs.Add(new Crumb(trail[i], ancestor?.Title ?? trail[i]));
+            crumbs.Add(new Breadcrumb.Crumb(trail[i], ancestor?.Title ?? trail[i]));
         }
 
         _crumbs = crumbs;
     }
 
     private sealed record ResolvedBranch(BranchLink Link, string Label);
-
-    private sealed record Crumb(string Id, string Title);
 }
