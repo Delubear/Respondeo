@@ -106,11 +106,27 @@
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
 }
 
 .breadcrumb__sep {
     margin: 0 0.5rem;
     color: var(--rule);
+}
+
+/* Keep individual crumbs from sprawling: cap width and ellipsize long titles.
+   The full title remains available via the title attribute on hover. */
+.breadcrumb__link,
+.breadcrumb__current {
+    display: inline-block;
+    max-width: 16ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
 }
 
 .breadcrumb__current {
