@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Components;
 using Respondeo.Services;
-using Xunit;
 
 namespace Respondeo.UnitTests.Components;
 
