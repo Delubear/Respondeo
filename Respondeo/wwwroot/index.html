@@ -34,11 +34,20 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="app-loading" role="status" aria-live="polite">
+            <svg class="app-loading__mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <!-- open book -->
+                <path class="app-loading__book" d="M32 20C25.5 15.5 16.5 14.5 9 16.5v33c7.5-2 16.5-1 23 3.5 6.5-4.5 15.5-5.5 23-3.5v-33C47.5 14.5 38.5 15.5 32 20Z" />
+                <path class="app-loading__spine" d="M32 20v33" />
+                <path class="app-loading__lines" d="M14.5 25.5c4-1 8.5-.6 12 1M14.5 32c4-1 8.5-.6 12 1M14.5 38.5c4-1 8.5-.6 12 1M37.5 26.5c3.5-1.6 8-2 12-1M37.5 33c3.5-1.6 8-2 12-1M37.5 39.5c3.5-1.6 8-2 12-1" />
+                <!-- feather quill -->
+                <path class="app-loading__plume" d="M53 9c-8 1-14.5 4.5-18.5 9.5-3.4 4.2-5 9.2-5.3 14.2l3.4-3.4c1-4.2 2.9-8 6-11.2 3.8-4 9-6.6 14.4-9.1Z" />
+                <path class="app-loading__rachis" d="M53 9 29.5 32.5M31 31l-3.5 3.5" />
+                <path class="app-loading__nib" d="m27.5 34.5-2.5 2.5" />
+            </svg>
+            <div class="app-loading__caption">Respondeo</div>
+            <div class="app-loading__bar"><span class="app-loading__fill"></span></div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
