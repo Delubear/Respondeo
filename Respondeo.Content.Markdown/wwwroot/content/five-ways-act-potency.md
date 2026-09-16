@@ -38,3 +38,6 @@ Each way, especially the First Way from **motion**, is really an argument about 
 *This being of Pure Actuality, Aquinas says, is what everyone understands to be God.*
 
 Keep this distinction in mind as you read the ways below: wherever you see "motion," "cause," or "dependence," you are watching potency being reduced to act.
+
+::: youtube 7AzrbXjDLiM
+:::
