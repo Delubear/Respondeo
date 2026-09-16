@@ -1,0 +1,54 @@
+@* Topic filter sidebar for the articles index. Owns only selection UI; the parent owns the topic list and decides what to do with the selection (two-way bound via @bind-Selected). *@
+
+@if (Topics.Count == 0)
+{
+    <p class="topic-filter__empty">No topics yet.</p>
+}
+else
+{
+    <ul class="topic-filter">
+        @foreach (var topic in Topics)
+        {
+            <li>
+                <button type="button"
+                        class="topic-filter__item @(IsSelected(topic) ? "topic-filter__item--active" : "")"
+                        aria-pressed="@(IsSelected(topic) ? "true" : "false")"
+                        @onclick="() => ToggleTopic(topic)">
+                    @topic
+                </button>
+            </li>
+        }
+    </ul>
+    @if (Selected.Count > 0)
+    {
+        <button type="button" class="topic-filter__clear" @onclick="ClearTopics">
+            Clear filters
+        </button>
+    }
+}
+
+@code {
+    /// <summary>All selectable topics, in display order.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<string> Topics { get; set; } = Array.Empty<string>();
+
+    /// <summary>The currently selected topics. Two-way bindable via <c>@bind-Selected</c>.</summary>
+    [Parameter] public IReadOnlySet<string> Selected { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Raised with a new selection set whenever the visitor toggles or clears topics.</summary>
+    [Parameter] public EventCallback<IReadOnlySet<string>> SelectedChanged { get; set; }
+
+    private bool IsSelected(string topic) => Selected.Contains(topic);
+
+    private Task ToggleTopic(string topic)
+    {
+        var next = new HashSet<string>(Selected, StringComparer.OrdinalIgnoreCase);
+        if (!next.Remove(topic))
+        {
+            next.Add(topic);
+        }
+
+        return SelectedChanged.InvokeAsync(next);
+    }
+
+    private Task ClearTopics() => SelectedChanged.InvokeAsync(new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+}
