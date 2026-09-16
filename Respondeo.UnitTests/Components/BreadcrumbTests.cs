@@ -46,6 +46,23 @@ public class BreadcrumbTests : TestContext
     }
 
     [Fact]
+    public void Marks_the_current_crumb_with_aria_current()
+    {
+        var cut = RenderComponent<Breadcrumb>(p => p
+            .Add(c => c.CurrentTitle, "Does God exist?"));
+
+        Assert.Equal("page", cut.Find(".breadcrumb__current").GetAttribute("aria-current"));
+    }
+
+    [Fact]
+    public void Exposes_a_breadcrumb_navigation_label()
+    {
+        var cut = RenderComponent<Breadcrumb>();
+
+        Assert.Equal("Breadcrumb", cut.Find("nav.breadcrumb").GetAttribute("aria-label"));
+    }
+
+    [Fact]
     public void Shows_ellipsis_placeholder_when_current_title_is_null()
     {
         var cut = RenderComponent<Breadcrumb>();

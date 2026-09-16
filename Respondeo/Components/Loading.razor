@@ -1,6 +1,6 @@
 @* Centered, italicised loading/placeholder message. *@
 
-<p class="loading">@ChildContent</p>
+<p class="loading" role="status" aria-live="polite">@ChildContent</p>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }

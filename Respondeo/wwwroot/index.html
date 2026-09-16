@@ -50,7 +50,8 @@
                 var breadcrumb = document.querySelector('.breadcrumb');
                 var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
                 var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-                window.scrollTo({ top: top, behavior: 'smooth' });
+                var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
             }
         };
     </script>

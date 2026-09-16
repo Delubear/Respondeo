@@ -39,3 +39,16 @@
     background: var(--parchment);
     color: var(--ink);
 }
+
+.back-to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Respect users who prefer reduced motion: drop the reveal transition. */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-progress,
+    .back-to-top {
+        transition: none;
+    }
+}
