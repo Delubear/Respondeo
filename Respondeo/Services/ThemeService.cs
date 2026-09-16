@@ -7,19 +7,15 @@ namespace Respondeo.Services;
 /// (so it survives across sessions) and applies it by setting <c>data-theme</c> on the document root.
 /// When no preference has been stored it falls back to the operating system's color scheme.
 /// </summary>
-public sealed class ThemeService : IThemeService
+public sealed class ThemeService(IJSRuntime js) : IThemeService
 {
     private const string StorageKey = "respondeo.theme";
-
-    private readonly IJSRuntime _js;
-
-    public ThemeService(IJSRuntime js) => _js = js;
 
     public Theme Current { get; private set; } = Theme.Light;
 
     public async Task InitializeAsync()
     {
-        var stored = await _js.InvokeAsync<string?>("localStorage.getItem", StorageKey);
+        var stored = await js.InvokeAsync<string?>("localStorage.getItem", StorageKey);
 
         Current = stored switch
         {
@@ -33,12 +29,11 @@ public sealed class ThemeService : IThemeService
     public async Task ToggleAsync()
     {
         Current = Current == Theme.Dark ? Theme.Light : Theme.Dark;
-        await _js.InvokeVoidAsync("localStorage.setItem", StorageKey, Name(Current));
+        await js.InvokeVoidAsync("localStorage.setItem", StorageKey, Name(Current));
         await ApplyAsync();
     }
 
-    private async Task ApplyAsync() =>
-        await _js.InvokeVoidAsync("respondeoTheme.apply", Name(Current));
+    private async Task ApplyAsync() => await js.InvokeVoidAsync("respondeoTheme.apply", Name(Current));
 
     private static string Name(Theme theme) => theme == Theme.Dark ? "dark" : "light";
 }
