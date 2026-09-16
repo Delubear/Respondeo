@@ -1,19 +1,29 @@
 @* Presentational breadcrumb of the visitor's navigation trail. Pure UI: it renders the already-resolved crumbs and the current node title. Trail building stays with the caller. *@
 
-<nav class="breadcrumb">
-    <a href="">Home</a>
-    @if (ShowArticles)
-    {
-        <span class="breadcrumb__sep">/</span>
-        <a class="breadcrumb__articles" href="articles">Articles</a>
-    }
-    @foreach (var crumb in Crumbs)
-    {
-        <span class="breadcrumb__sep">/</span>
-        <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
-    }
-    <span class="breadcrumb__sep">/</span>
-    <span class="breadcrumb__current" title="@CurrentTitle">@(CurrentTitle ?? "…")</span>
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+            <a href="">Home</a>
+        </li>
+        @if (ShowArticles)
+        {
+            <li class="breadcrumb__item">
+                <span class="breadcrumb__sep" aria-hidden="true">/</span>
+                <a class="breadcrumb__articles" href="articles">Articles</a>
+            </li>
+        }
+        @foreach (var crumb in Crumbs)
+        {
+            <li class="breadcrumb__item">
+                <span class="breadcrumb__sep" aria-hidden="true">/</span>
+                <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
+            </li>
+        }
+        <li class="breadcrumb__item">
+            <span class="breadcrumb__sep" aria-hidden="true">/</span>
+            <span class="breadcrumb__current" aria-current="page" title="@CurrentTitle">@(CurrentTitle ?? "…")</span>
+        </li>
+    </ol>
 </nav>
 
 @code {

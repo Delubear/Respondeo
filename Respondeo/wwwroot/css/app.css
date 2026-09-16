@@ -48,6 +48,29 @@
     box-sizing: border-box;
 }
 
+/* Skip link: hidden until focused, then pinned to the top-left for keyboard users. */
+.skip-link {
+    position: absolute;
+    left: 0.5rem;
+    top: -3rem;
+    z-index: 2000;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.55rem 1rem;
+    font-family: var(--display);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+    top: 0.5rem;
+    text-decoration: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* Blazor's FocusOnNavigate moves focus to the <h1> on navigation, which shows the default focus ring.
     Hide it for programmatic/mouse focus while keeping a visible ring for keyboard users. */
 :focus:not(:focus-visible) {

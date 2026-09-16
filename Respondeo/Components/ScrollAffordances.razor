@@ -4,7 +4,8 @@
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
 
-<button class="back-to-top @(_showBackToTop ? "is-visible" : string.Empty)"
+<button type="button"
+        class="back-to-top @(_showBackToTop ? "is-visible" : string.Empty)"
         @onclick="ScrollToTopAsync"
         aria-label="Back to top"
         title="Back to top">
