@@ -4,17 +4,7 @@
 
 <PageTitle>All Articles &mdash; Respondeo</PageTitle>
 
-<nav class="breadcrumb" aria-label="Breadcrumb">
-    <ol class="breadcrumb__list">
-        <li class="breadcrumb__item">
-            <a href="">Home</a>
-        </li>
-        <li class="breadcrumb__item">
-            <span class="breadcrumb__sep" aria-hidden="true">/</span>
-            <span class="breadcrumb__current" aria-current="page">All Articles</span>
-        </li>
-    </ol>
-</nav>
+<Breadcrumb CurrentTitle="All Articles" />
 
 <section class="articles">
     <header class="articles__header">
@@ -34,32 +24,7 @@
         <div class="articles__layout">
             <aside class="articles__sidebar">
                 <h2 class="articles__sidebar-title">Topics</h2>
-                @if (_topics.Count == 0)
-                {
-                    <p class="articles__sidebar-empty">No topics yet.</p>
-                }
-                else
-                {
-                    <ul class="topic-filter">
-                        @foreach (var topic in _topics)
-                        {
-                            <li>
-                                <button type="button"
-                                        class="topic-filter__item @(IsSelected(topic) ? "topic-filter__item--active" : "")"
-                                        aria-pressed="@(IsSelected(topic) ? "true" : "false")"
-                                        @onclick="() => ToggleTopic(topic)">
-                                    @topic
-                                </button>
-                            </li>
-                        }
-                    </ul>
-                    @if (_selected.Count > 0)
-                    {
-                        <button type="button" class="topic-filter__clear" @onclick="ClearTopics">
-                            Clear filters
-                        </button>
-                    }
-                }
+                <TopicFilter Topics="_topics" @bind-Selected="_selected" />
             </aside>
 
             <div class="articles__results">
@@ -88,8 +53,7 @@
 @code {
     private IReadOnlyList<ContentNode>? _articles;
     private IReadOnlyList<string> _topics = Array.Empty<string>();
-    private readonly HashSet<string> _selected = new(StringComparer.OrdinalIgnoreCase);
-
+    private IReadOnlySet<string> _selected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
@@ -125,16 +89,4 @@
                 : _articles
                     .Where(n => _selected.All(s => n.Topics.Contains(s, StringComparer.OrdinalIgnoreCase)))
                     .ToList();
-
-    private bool IsSelected(string topic) => _selected.Contains(topic);
-
-    private void ToggleTopic(string topic)
-    {
-        if (!_selected.Remove(topic))
-        {
-            _selected.Add(topic);
-        }
-    }
-
-    private void ClearTopics() => _selected.Clear();
 }
