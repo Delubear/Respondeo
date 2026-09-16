@@ -8,14 +8,10 @@ namespace Respondeo.Services;
 /// This keeps URLs clean (nothing is added to the query string) while surviving accidental refreshes within the same tab.
 /// A shared or deep-linked URL naturally starts a fresh trail.
 /// </summary>
-public sealed class BreadcrumbTrail : IBreadcrumbTrail
+public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
 {
     private const string StorageKey = "respondeo.breadcrumb";
     private const string ArticlesOriginKey = "respondeo.breadcrumb.fromArticles";
-
-    private readonly IJSRuntime _js;
-
-    public BreadcrumbTrail(IJSRuntime js) => _js = js;
 
     public async Task<IReadOnlyList<string>> VisitAsync(string nodeId)
     {
@@ -38,25 +34,25 @@ public sealed class BreadcrumbTrail : IBreadcrumbTrail
 
     public async Task ClearAsync()
     {
-        await _js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
-        await _js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
+        await js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
+        await js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
     }
 
     public async Task SetArticlesOriginAsync(bool fromArticles)
     {
         if (fromArticles)
         {
-            await _js.InvokeVoidAsync("sessionStorage.setItem", ArticlesOriginKey, "1");
+            await js.InvokeVoidAsync("sessionStorage.setItem", ArticlesOriginKey, "1");
         }
         else
         {
-            await _js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
+            await js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
         }
     }
 
     public async Task<bool> IsFromArticlesAsync()
     {
-        var value = await _js.InvokeAsync<string?>("sessionStorage.getItem", ArticlesOriginKey);
+        var value = await js.InvokeAsync<string?>("sessionStorage.getItem", ArticlesOriginKey);
         return value == "1";
     }
 
@@ -64,7 +60,7 @@ public sealed class BreadcrumbTrail : IBreadcrumbTrail
     {
         try
         {
-            var json = await _js.InvokeAsync<string?>("sessionStorage.getItem", StorageKey);
+            var json = await js.InvokeAsync<string?>("sessionStorage.getItem", StorageKey);
             return string.IsNullOrWhiteSpace(json) ? [] : JsonSerializer.Deserialize<List<string>>(json) ?? [];
         }
         catch (JsonException)
@@ -76,6 +72,6 @@ public sealed class BreadcrumbTrail : IBreadcrumbTrail
     private async Task SaveAsync(List<string> trail)
     {
         var json = JsonSerializer.Serialize(trail);
-        await _js.InvokeVoidAsync("sessionStorage.setItem", StorageKey, json);
+        await js.InvokeVoidAsync("sessionStorage.setItem", StorageKey, json);
     }
 }
