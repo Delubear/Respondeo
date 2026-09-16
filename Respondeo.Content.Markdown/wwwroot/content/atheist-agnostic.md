@@ -2,8 +2,9 @@
 id: atheist-agnostic
 title: "I don't believe / I'm not sure God exists"
 summary: Start here if you hold that there is no God, that the material world is all there is, if you think the question may be unanswerable, or you simply haven't decided.
-audiences:
-  - atheist-agnostic
+topics:
+  - Getting Started
+  - Existence of God
 isEntryPoint: true
 branches:
   - to: aquinas-five-ways

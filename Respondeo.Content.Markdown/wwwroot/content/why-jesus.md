@@ -2,9 +2,9 @@
 id: why-jesus
 title: "If God exists, has He revealed Himself in Christ?"
 summary: From the God of the philosophers to the God who speaks in history.
-audiences:
-  - protestant
-  - non-practicing-catholic
+topics:
+  - Divine Revelation
+  - Jesus Christ
 branches:
   - to: aquinas-five-ways
     label: "Revisit whether God exists"

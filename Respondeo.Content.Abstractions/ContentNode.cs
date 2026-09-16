@@ -21,14 +21,14 @@ public sealed class ContentNode
     /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
     public bool IsEntryPoint { get; init; }
 
-    /// <summary>Faith starting points this node speaks to (e.g. "atheist", "agnostic").</summary>
-    public IReadOnlyList<string> Audiences { get; init; } = Array.Empty<string>();
+    /// <summary>Categories this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
+    public IReadOnlyList<string> Topics { get; init; } = [];
 
     /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
-    public IReadOnlyList<BranchLink> Branches { get; init; } = Array.Empty<BranchLink>();
+    public IReadOnlyList<BranchLink> Branches { get; init; } = [];
 
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
-    public IReadOnlyList<string> Sections { get; init; } = Array.Empty<string>();
+    public IReadOnlyList<string> Sections { get; init; } = [];
 }
 
 /// <summary>

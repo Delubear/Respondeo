@@ -2,8 +2,11 @@
 
 <nav class="breadcrumb">
     <a href="">Home</a>
-    <span class="breadcrumb__sep">/</span>
-    <a class="breadcrumb__articles" href="articles">Articles</a>
+    @if (ShowArticles)
+    {
+        <span class="breadcrumb__sep">/</span>
+        <a class="breadcrumb__articles" href="articles">Articles</a>
+    }
     @foreach (var crumb in Crumbs)
     {
         <span class="breadcrumb__sep">/</span>
@@ -19,6 +22,9 @@
 
     /// <summary>Title of the node currently being viewed, shown as the final, non-linked crumb.</summary>
     [Parameter] public string? CurrentTitle { get; set; }
+
+    /// <summary>When true, renders an Articles link after Home (the visitor arrived via the /articles index).</summary>
+    [Parameter] public bool ShowArticles { get; set; }
 
     /// <summary>A single ancestor step in the breadcrumb trail.</summary>
     public sealed record Crumb(string Id, string Title);

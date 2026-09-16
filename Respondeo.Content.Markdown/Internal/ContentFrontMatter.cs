@@ -20,9 +20,9 @@ internal sealed class ContentFrontMatter
     [YamlMember(Alias = "summary")]
     public string Summary { get; set; } = string.Empty;
 
-    /// <summary>Faith starting points this node speaks to (used to surface entry points).</summary>
-    [YamlMember(Alias = "audiences")]
-    public List<string> Audiences { get; set; } = new();
+    /// <summary>Categories this node belongs to, used to group and filter articles.</summary>
+    [YamlMember(Alias = "topics")]
+    public List<string> Topics { get; set; } = new();
 
     /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
     [YamlMember(Alias = "isEntryPoint")]

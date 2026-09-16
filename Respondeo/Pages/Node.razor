@@ -8,7 +8,7 @@
     <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
 }
 
-<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" />
+<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" ShowArticles="_fromArticles" />
 
 @if (_loading)
 {
@@ -66,6 +66,7 @@ else
 
     private ContentNode? _node;
     private bool _loading = true;
+    private bool _fromArticles;
     private readonly List<ResolvedBranch> _branches = new();
     private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
 
@@ -93,6 +94,7 @@ else
         }
 
         _node = node;
+        _fromArticles = await Trail.IsFromArticlesAsync();
         _branches.Clear();
         _branches.AddRange(branches);
         _crumbs = crumbs;

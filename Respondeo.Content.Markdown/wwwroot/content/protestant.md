@@ -2,8 +2,9 @@
 id: protestant
 title: "I'm a Protestant Christian"
 summary: Start here if you already believe in God and Christ, but not in the Catholic Church's claims.
-audiences:
-  - protestant
+topics:
+  - Getting Started
+  - The Catholic Church
 isEntryPoint: true
 branches:
   - to: why-jesus
