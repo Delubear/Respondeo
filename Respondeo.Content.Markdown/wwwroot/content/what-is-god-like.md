@@ -56,6 +56,9 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 
 > "In God there exists the most perfect knowledge... since immateriality is the reason of knowledge, and God is in the highest degree immaterial." &mdash; *Summa Theologiae* I, q. 14, a. 1
 
+::: youtube 3j79qY0RqRw
+:::
+
 **The God of the philosophers — and beyond.**
 Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.
 

@@ -25,6 +25,9 @@ branches:
 St. Thomas offered *Five Ways* to demonstrate God's existence.
 They do not rest on faith or Scripture; each begins with a plain feature of the world and reasons to its necessary source.
 
+::: youtube 42Eg6UUBqqo
+:::
+
 Begin with the foundational distinction between **act and potency** — the single idea every way relies on — then walk the ways themselves. Each has the same shape:
 
 1. Observe a feature of reality (change, or dependent existence).

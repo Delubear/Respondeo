@@ -58,3 +58,5 @@ And order-toward-an-end throughout all of nature &mdash; in things that could ne
 
 Like an arrow directed by an archer, the ordered striving of unknowing nature points to a directing intelligence.
 
+::: youtube oU48R8ZJ2HA
+:::
