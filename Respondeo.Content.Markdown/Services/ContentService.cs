@@ -75,8 +75,17 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
 
     private async Task<ContentNode?> LoadNodeAsync(string fileName)
     {
-        var raw = await http.GetStringAsync($"{ContentRoot}/{fileName}");
-        return parser.Parse(raw);
+        try
+        {
+            var raw = await http.GetStringAsync($"{ContentRoot}/{fileName}");
+            return parser.Parse(raw);
+        }
+        catch (HttpRequestException)
+        {
+            // A single missing or unreachable file (e.g. a stale static-web-asset manifest returning 404) must not take down the entire content set.
+            // Skip it and keep the rest of the site working; the absent node simply resolves to "not found".
+            return null;
+        }
     }
 
     private sealed class ContentManifest

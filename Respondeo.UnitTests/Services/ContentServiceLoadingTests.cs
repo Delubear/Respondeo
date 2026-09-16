@@ -78,6 +78,31 @@ public class ContentServiceLoadingTests
         Assert.Equal(2, all.Count);
     }
 
+    [Fact]
+    public async Task A_file_that_fails_to_load_is_skipped_without_breaking_the_rest()
+    {
+        // Manifest references a file the server does not serve (simulates a 404 from a stale
+        // static-web-asset manifest). The remaining nodes must still load.
+        const string manifest = "{\"files\":[\"home.md\",\"missing.md\",\"branch.md\"]}";
+
+        var handler = new StubHandler(new Dictionary<string, string>
+        {
+            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = manifest,
+            ["_content/Respondeo.Content.Markdown/content/home.md"] = HomeMd,
+            ["_content/Respondeo.Content.Markdown/content/branch.md"] = BranchMd,
+            // "missing.md" is intentionally absent, so the handler returns 404 for it.
+        });
+
+        var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
+        var service = new ContentService(http, new ContentParser());
+
+        var all = await service.GetAllAsync();
+
+        Assert.Equal(2, all.Count);
+        Assert.NotNull(await service.GetByIdAsync("home"));
+        Assert.NotNull(await service.GetByIdAsync("branch"));
+    }
+
     private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
