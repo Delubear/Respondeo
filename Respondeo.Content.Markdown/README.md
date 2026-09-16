@@ -1,7 +1,7 @@
 # Authoring Content Nodes
 
 This project holds the site's content, shipped as static web assets from the
-`Respondeo.Content` library. Each **node** is a single Markdown file made of two
+`Respondeo.Content.Markdown` library. Each **node** is a single Markdown file made of two
 parts:
 
 1. **YAML front-matter** — structured metadata between two `---` lines.
@@ -41,6 +41,7 @@ Your Markdown body starts here.
 | `isEntryPoint` | No | `true` surfaces the node as a starting point on the home page. Defaults to `false`. |
 | `topics` | No | Categories this node belongs to, used to group and filter articles (e.g. `Existence of God`, `St. Thomas Aquinas`). |
 | `branches` | No | Outgoing links to other nodes (see below). |
+| `sections` | No | Ids of section nodes rendered inline as a collapsible accordion on this page. |
 
 ### Branch links
 
@@ -84,7 +85,7 @@ CSS in `Pages/Node.razor.css`.
 
 For recurring embeds, use the **custom-container directives** instead of hand-writing HTML. They
 expand to canonical, consistent markup (defined once in
-[`Services/ContentContainerExtension.cs`](../../Services/ContentContainerExtension.cs)), so class
+[`Services/ContentContainerExtension.cs`](Services/ContentContainerExtension.cs)), so class
 names and required attributes never drift.
 
 The syntax is a fenced container: `:::` on its own opening line with the directive name and
@@ -98,8 +99,9 @@ arguments, then a closing `:::`.
 ```
 
 - Argument: the YouTube **video id** (the part after `watch?v=`).
-- Renders a privacy-friendly (`youtube-nocookie`) responsive embed with the correct
-  `allow` / `referrerpolicy` / `loading` attributes.
+- Renders a click-to-load facade (a lazy thumbnail plus a play button). The privacy-friendly
+  (`youtube-nocookie`) player is only loaded when the visitor clicks play, so opening a page
+  makes no requests to YouTube.
 
 ### PDF (inline viewer)
 

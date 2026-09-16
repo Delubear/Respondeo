@@ -7,6 +7,8 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
 - **Breadcrumb.feature** — the breadcrumb grows as you go deeper and resets when you return to Start.
+- **Sections.feature** — collapsible sections open/close and deep-link via the URL.
+- **Theme.feature** — the light/dark theme toggle switches and persists.
 
 These are intentionally few and focused on the core journey. Unit and component tests
 (in `Respondeo.UnitTests`) cover the fine-grained logic.
@@ -17,10 +19,10 @@ These are intentionally few and focused on the core journey. Unit and component 
 
    ```powershell
    # Option A: dev server
-   dotnet run --project ..\..\Respondeo.csproj
+   dotnet run --project ..\Respondeo\Respondeo.csproj
 
    # Option B: serve a publish output (matches CI)
-   dotnet publish ..\..\Respondeo.csproj -c Release -o publish
+   dotnet publish ..\Respondeo\Respondeo.csproj -c Release -o publish
    dotnet tool install --global dotnet-serve
    dotnet serve -d publish\wwwroot -p 5000 --fallback-file index.html
    ```
