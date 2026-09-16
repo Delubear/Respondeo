@@ -1,6 +1,6 @@
 ---
 id: five-ways-act-potency
-title: "Act & Potency — the foundation"
+title: "Act & Potency — The Foundation"
 summary: Aristotle's and Aquinas's distinction between actuality and potentiality.
 ---
 

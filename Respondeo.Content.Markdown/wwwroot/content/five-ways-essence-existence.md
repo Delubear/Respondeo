@@ -1,6 +1,6 @@
 ---
 id: five-ways-essence-existence
-title: "Essence & Existence — the foundation"
+title: "Essence & Existence — The Second Foundation"
 summary: Aristotle's and Aquinas's distinction between essence and existence.
 ---
 
