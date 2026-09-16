@@ -22,7 +22,7 @@ internal sealed class ContentFrontMatter
 
     /// <summary>Categories this node belongs to, used to group and filter articles.</summary>
     [YamlMember(Alias = "topics")]
-    public List<string> Topics { get; set; } = new();
+    public List<string> Topics { get; set; } = [];
 
     /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
     [YamlMember(Alias = "isEntryPoint")]
@@ -30,11 +30,11 @@ internal sealed class ContentFrontMatter
 
     /// <summary>Child branches; several nodes may link to the same child id, forming a graph.</summary>
     [YamlMember(Alias = "branches")]
-    public List<BranchLinkDto> Branches { get; set; } = new();
+    public List<BranchLinkDto> Branches { get; set; } = [];
 
     /// <summary>Ordered ids of child content nodes to present as collapsible sections on this page.</summary>
     [YamlMember(Alias = "sections")]
-    public List<string> Sections { get; set; } = new();
+    public List<string> Sections { get; set; } = [];
 }
 
 /// <summary>
