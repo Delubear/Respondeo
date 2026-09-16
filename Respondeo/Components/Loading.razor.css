@@ -1,6 +1,32 @@
 .loading {
     text-align: center;
+    padding: 3rem 0;
+}
+
+.loading__mark {
+    display: flex;
+    justify-content: center;
+    animation: loading-pulse 1.8s ease-in-out infinite;
+}
+
+.loading__text {
+    margin: 0.75rem 0 0 0;
     font-style: italic;
     color: var(--ink-soft);
-    padding: 3rem 0;
+}
+
+@keyframes loading-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading__mark {
+        animation: none;
+    }
 }

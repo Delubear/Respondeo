@@ -1,0 +1,23 @@
+@* Shared Respondeo mark: an open book with a feather quill.
+   Used by the in-app Loading component and mirrored (as static SVG) by the boot loader in index.html. *@
+
+<svg class="book-quill book-quill--@Size.ToString().ToLowerInvariant()" viewBox="0 0 64 64" fill="none"
+     role="img" aria-label="Respondeo">
+    <path class="book-quill__book" d="M32 20C25.5 15.5 16.5 14.5 9 16.5v33c7.5-2 16.5-1 23 3.5 6.5-4.5 15.5-5.5 23-3.5v-33C47.5 14.5 38.5 15.5 32 20Z" />
+    <path class="book-quill__spine" d="M32 20v33" />
+    <path class="book-quill__lines" d="M14.5 25.5c4-1 8.5-.6 12 1M14.5 32c4-1 8.5-.6 12 1M14.5 38.5c4-1 8.5-.6 12 1M37.5 26.5c3.5-1.6 8-2 12-1M37.5 33c3.5-1.6 8-2 12-1M37.5 39.5c3.5-1.6 8-2 12-1" />
+    <path class="book-quill__plume" d="M53 9c-8 1-14.5 4.5-18.5 9.5-3.4 4.2-5 9.2-5.3 14.2l3.4-3.4c1-4.2 2.9-8 6-11.2 3.8-4 9-6.6 14.4-9.1Z" />
+    <path class="book-quill__rachis" d="M53 9 29.5 32.5M31 31l-3.5 3.5" />
+    <path class="book-quill__nib" d="m27.5 34.5-2.5 2.5" />
+</svg>
+
+@code {
+    public enum MarkSize
+    {
+        Small,
+        Large,
+    }
+
+    /// <summary>Controls the rendered size of the mark. Small suits inline spots; Large suits full-page loaders.</summary>
+    [Parameter] public MarkSize Size { get; set; } = MarkSize.Large;
+}
