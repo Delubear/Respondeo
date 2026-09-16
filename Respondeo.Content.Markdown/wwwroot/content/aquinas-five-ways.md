@@ -13,6 +13,10 @@ sections:
   - five-ways-contingency
   - five-ways-gradation
   - five-ways-governance
+branches:
+  - to: objections-to-god
+    label: "Objections to God"
+    prompt: What are the strongest objections to the existence of God, and how do we respond?
 ---
 
 St. Thomas offered *Five Ways* to demonstrate God's existence.
