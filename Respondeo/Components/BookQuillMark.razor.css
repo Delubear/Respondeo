@@ -1,0 +1,45 @@
+.book-quill--large {
+    width: 4rem;
+    height: 4rem;
+}
+
+.book-quill--small {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.book-quill__book {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.book-quill__spine,
+.book-quill__lines {
+    stroke: var(--ink-soft);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.book-quill__plume {
+    fill: var(--rule);
+    stroke: var(--ink-soft);
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+}
+
+.book-quill__rachis {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 1;
+    stroke-linecap: round;
+}
+
+.book-quill__nib {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+}

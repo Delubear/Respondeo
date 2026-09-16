@@ -1,6 +1,11 @@
-@* Centered, italicised loading/placeholder message. *@
+@* Centered loading/placeholder: the Respondeo mark above an italicised message. *@
 
-<p class="loading" role="status" aria-live="polite">@ChildContent</p>
+<div class="loading" role="status" aria-live="polite">
+    <div class="loading__mark">
+        <BookQuillMark Size="BookQuillMark.MarkSize.Large" />
+    </div>
+    <p class="loading__text">@ChildContent</p>
+</div>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
