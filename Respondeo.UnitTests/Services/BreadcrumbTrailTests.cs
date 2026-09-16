@@ -58,6 +58,50 @@ public class BreadcrumbTrailTests
         Assert.Equal(["a"], result);
     }
 
+    [Fact]
+    public async Task Articles_origin_defaults_to_false()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        Assert.False(await trail.IsFromArticlesAsync());
+    }
+
+    [Fact]
+    public async Task Articles_origin_round_trips_when_set()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        await trail.SetArticlesOriginAsync(true);
+
+        Assert.True(await trail.IsFromArticlesAsync());
+    }
+
+    [Fact]
+    public async Task Articles_origin_can_be_unset()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        await trail.SetArticlesOriginAsync(true);
+        await trail.SetArticlesOriginAsync(false);
+
+        Assert.False(await trail.IsFromArticlesAsync());
+    }
+
+    [Fact]
+    public async Task Clear_resets_the_articles_origin()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        await trail.SetArticlesOriginAsync(true);
+        await trail.ClearAsync();
+
+        Assert.False(await trail.IsFromArticlesAsync());
+    }
+
     /// <summary>Minimal in-memory IJSRuntime emulating the sessionStorage calls the trail makes.</summary>
     private sealed class FakeSessionStorage : IJSRuntime
     {
