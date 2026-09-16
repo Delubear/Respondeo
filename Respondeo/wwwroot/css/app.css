@@ -144,38 +144,104 @@ h1, h2, h3 {
     top: 0.5rem;
 }
 
-.loading-progress {
-    position: relative;
-    display: block;
-    width: 8rem;
-    height: 8rem;
-    margin: 20vh auto 1rem auto;
-}
-
-.loading-progress circle {
-    fill: none;
-    stroke: #e0ddd6;
-    stroke-width: 0.6rem;
-    transform-origin: 50% 50%;
-    transform: rotate(-90deg);
-}
-
-.loading-progress circle:last-child {
-    stroke: var(--accent);
-    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
-    transition: stroke-dasharray 0.05s ease-in-out;
-}
-
-.loading-progress-text {
-    position: absolute;
+.app-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 22vh auto 1rem auto;
+    padding: 0 1rem;
     text-align: center;
-    font-weight: bold;
-    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
     color: var(--ink);
 }
 
-.loading-progress-text:after {
-    content: var(--blazor-load-percentage-text, "Loading");
+.app-loading__mark {
+    width: 5rem;
+    height: 5rem;
+    animation: app-loading-pulse 1.8s ease-in-out infinite;
+}
+
+.app-loading__book {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.app-loading__spine,
+.app-loading__lines {
+    stroke: var(--ink-soft);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.app-loading__plume {
+    fill: var(--rule);
+    stroke: var(--ink-soft);
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+}
+
+.app-loading__rachis {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 1;
+    stroke-linecap: round;
+}
+
+.app-loading__nib {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.app-loading__caption {
+    margin-top: 0.75rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    /* Cinzel is small-caps by nature; nudge the tracking so the wordmark reads calmly. */
+    padding-left: 0.35em;
+}
+
+.app-loading__bar {
+    position: relative;
+    width: 8rem;
+    height: 2px;
+    margin-top: 1.25rem;
+    background: var(--rule);
+    overflow: hidden;
+}
+
+.app-loading__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--blazor-load-percentage, 0%);
+    background: var(--accent);
+    transition: width 0.1s ease-in-out;
+}
+
+@keyframes app-loading-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app-loading__mark {
+        animation: none;
+    }
+
+    .app-loading__fill {
+        transition: none;
+    }
 }
 
 /* ---------- Responsive ---------- */
