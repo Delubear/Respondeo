@@ -1,4 +1,11 @@
 /* ---------- Articles index ---------- */
+.articles {
+    /* Break out of the global narrow content column so the sidebar plus a
+       multi-column card grid can breathe. Stays centered on the viewport. */
+    width: min(72rem, 100vw - 2.5rem);
+    margin-inline: calc(50% - min(72rem, 100vw - 2.5rem) / 2);
+}
+
 .breadcrumb {
     position: sticky;
     top: 0;
