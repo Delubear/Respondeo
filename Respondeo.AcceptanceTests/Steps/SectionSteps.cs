@@ -8,7 +8,7 @@ namespace Respondeo.AcceptanceTests.Steps;
 public sealed class SectionSteps(PlaywrightContext context)
 {
     private const string PageId = "aquinas-five-ways";
-    private const string SecondSectionId = "five-ways-motion";
+    private const string SecondSectionId = "five-ways-essence-existence";
 
     private IPage Page => context.Page;
 
