@@ -16,4 +16,15 @@ public interface IBreadcrumbTrail
     /// Clears the trail. Called when the visitor returns to the Start page so a new journey begins fresh rather than continuing a previous one.
     /// </summary>
     Task ClearAsync();
+
+    /// <summary>
+    /// Records whether the visitor's current journey began from the /articles index, so the
+    /// breadcrumb can surface an Articles link only when that page was actually part of the route.
+    /// </summary>
+    Task SetArticlesOriginAsync(bool fromArticles);
+
+    /// <summary>
+    /// Returns <c>true</c> when the current journey was entered from the /articles index.
+    /// </summary>
+    Task<bool> IsFromArticlesAsync();
 }

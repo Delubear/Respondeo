@@ -2,8 +2,8 @@
 id: non-practicing-catholic
 title: "I was raised Catholic but no longer practice"
 summary: Start here if the faith feels distant, doubtful, or something you drifted away from.
-audiences:
-  - non-practicing-catholic
+topics:
+  - Getting Started
 isEntryPoint: true
 branches:
   - to: aquinas-five-ways

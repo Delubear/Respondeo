@@ -19,9 +19,9 @@ id: does-god-exist
 title: "Does God exist?"
 summary: A short one-line description used on cards and previews.
 isEntryPoint: true
-audiences:
-  - atheist-agnostic
-  - non-practicing-catholic
+topics:
+  - Existence of God
+  - Getting Started
 branches:
   - to: what-is-faith
     label: "What do you mean by faith?"
@@ -39,7 +39,7 @@ Your Markdown body starts here.
 | `title` | Yes | Headline shown on the page and in link cards. |
 | `summary` | No | One-line description used on cards and previews. |
 | `isEntryPoint` | No | `true` surfaces the node as a starting point on the home page. Defaults to `false`. |
-| `audiences` | No | Faith starting points this node speaks to (e.g. `atheist-agnostic`, `protestant`, `non-practicing-catholic`). |
+| `topics` | No | Categories this node belongs to, used to group and filter articles (e.g. `Existence of God`, `St. Thomas Aquinas`). |
 | `branches` | No | Outgoing links to other nodes (see below). |
 
 ### Branch links

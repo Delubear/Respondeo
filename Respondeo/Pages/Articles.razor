@@ -23,31 +23,71 @@
     {
         <Loading>Gathering the articles&hellip;</Loading>
     }
-    else if (_articles.Count == 0)
-    {
-        <p class="articles__empty">There are no articles to show yet.</p>
-    }
     else
     {
-        <CardGrid>
-            @foreach (var node in _articles)
-            {
-                <Card Href="@($"node/{node.Id}")"
-                      Title="@node.Title"
-                      Summary="@node.Summary"
-                      Cta="Read →"
-                      Level="2" />
-            }
-        </CardGrid>
+        <div class="articles__layout">
+            <aside class="articles__sidebar">
+                <h2 class="articles__sidebar-title">Topics</h2>
+                @if (_topics.Count == 0)
+                {
+                    <p class="articles__sidebar-empty">No topics yet.</p>
+                }
+                else
+                {
+                    <ul class="topic-filter">
+                        @foreach (var topic in _topics)
+                        {
+                            <li>
+                                <button type="button"
+                                        class="topic-filter__item @(IsSelected(topic) ? "topic-filter__item--active" : "")"
+                                        aria-pressed="@(IsSelected(topic) ? "true" : "false")"
+                                        @onclick="() => ToggleTopic(topic)">
+                                    @topic
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    @if (_selected.Count > 0)
+                    {
+                        <button type="button" class="topic-filter__clear" @onclick="ClearTopics">
+                            Clear filters
+                        </button>
+                    }
+                }
+            </aside>
+
+            <div class="articles__results">
+                @if (Filtered.Count == 0)
+                {
+                    <p class="articles__empty">No articles match the selected topics.</p>
+                }
+                else
+                {
+                    <CardGrid>
+                        @foreach (var node in Filtered)
+                        {
+                            <Card Href="@($"node/{node.Id}")"
+                                  Title="@node.Title"
+                                  Summary="@node.Summary"
+                                  Cta="Read →"
+                                  Level="2" />
+                        }
+                    </CardGrid>
+                }
+            </div>
+        </div>
     }
 </section>
 
 @code {
     private IReadOnlyList<ContentNode>? _articles;
+    private IReadOnlyList<string> _topics = Array.Empty<string>();
+    private readonly HashSet<string> _selected = new(StringComparer.OrdinalIgnoreCase);
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        await Trail.SetArticlesOriginAsync(true);
 
         var all = await Content.GetAllAsync();
 
@@ -62,5 +102,33 @@
             .Where(n => !sectionIds.Contains(n.Id))
             .OrderBy(n => n.Title, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
+
+        _topics = _articles
+            .SelectMany(n => n.Topics)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
     }
+
+    // Articles must contain ALL selected topics (intersection). No selection shows everything.
+    private IReadOnlyList<ContentNode> Filtered =>
+        _articles is null
+            ? Array.Empty<ContentNode>()
+            : _selected.Count == 0
+                ? _articles
+                : _articles
+                    .Where(n => _selected.All(s => n.Topics.Contains(s, StringComparer.OrdinalIgnoreCase)))
+                    .ToList();
+
+    private bool IsSelected(string topic) => _selected.Contains(topic);
+
+    private void ToggleTopic(string topic)
+    {
+        if (!_selected.Remove(topic))
+        {
+            _selected.Add(topic);
+        }
+    }
+
+    private void ClearTopics() => _selected.Clear();
 }
