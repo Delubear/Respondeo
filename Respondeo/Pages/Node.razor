@@ -45,7 +45,7 @@ else
         @if (_branches.Count > 0)
         {
             <section class="branches">
-                <h2 class="branches__heading">Where would you like to go next?</h2>
+                <h2 class="branches__heading">@(_branches.Count == 1 ? "Where to go next" : "Where would you like to go next?")</h2>
                 <CardGrid>
                     @foreach (var branch in _branches)
                     {
