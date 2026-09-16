@@ -17,6 +17,9 @@ branches:
   - to: objections-to-god
     label: "Objections to God"
     prompt: What are the strongest objections to the existence of God, and how do we respond?
+  - to: what-is-god-like
+    label: "What is God like?"
+    prompt: If the arguments succeed, what must this first being actually be?
 ---
 
 St. Thomas offered *Five Ways* to demonstrate God's existence.
