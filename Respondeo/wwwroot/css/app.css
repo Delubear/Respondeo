@@ -77,12 +77,6 @@
     outline: none;
 }
 
-/* Headings receive programmatic focus from FocusOnNavigate but are not keyboard-tabbable,
-    so suppress their focus ring entirely (focus still moves for screen readers). */
-h1:focus {
-    outline: none;
-}
-
 html, body {
     margin: 0;
     padding: 0;

@@ -44,8 +44,8 @@ export function jumpToTop() {
     scrollToContent();
 
     // LocationChanged fires BEFORE the new page renders, and Blazor's
-    // <FocusOnNavigate Selector="h1"> focuses the new heading AFTER render, which nudges
-    // the scroll. Re-assert on a double requestAnimationFrame so we run after that render
-    // + focus cycle and remain authoritative.
+    // <FocusOnNavigate Selector="#content"> focuses the content region AFTER render, which
+    // nudges the scroll. Re-assert on a double requestAnimationFrame so we run after that
+    // render + focus cycle and remain authoritative.
     requestAnimationFrame(() => requestAnimationFrame(scrollToContent));
 }
