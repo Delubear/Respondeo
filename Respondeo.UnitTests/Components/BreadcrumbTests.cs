@@ -101,6 +101,6 @@ public class BreadcrumbTests : TestContext
 
         Assert.Empty(cut.FindAll("a.breadcrumb__link"));
         // Only the separator before the current node.
-        Assert.Equal(1, cut.FindAll(".breadcrumb__sep").Count);
+        Assert.Single(cut.FindAll(".breadcrumb__sep"));
     }
 }
