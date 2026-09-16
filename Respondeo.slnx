@@ -4,6 +4,7 @@
     <File Path=".github/instructions/conventional-commits.instructions.md" />
     <File Path=".github/workflows/deploy.yml" />
     <File Path=".github/workflows/pr.yml" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="Respondeo/Respondeo.csproj" />
   <Project Path="Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
