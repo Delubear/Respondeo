@@ -73,13 +73,20 @@ internal sealed class ContentContainerRenderer : HtmlObjectRenderer<CustomContai
 
     private static void WriteYouTube(HtmlRenderer renderer, string videoId)
     {
+        // Render a lightweight "façade" instead of an eager iframe: a lazy thumbnail plus a
+        // play button. The heavy YouTube player (and its many requests) is only loaded when the
+        // visitor clicks play — see the delegated click handler in index.html. This keeps
+        // article loads fast and private (no YouTube requests until the user opts in).
         renderer.EnsureLine();
-        renderer.Write("<div class=\"video-embed\">");
-        renderer.Write("<iframe src=\"https://www.youtube-nocookie.com/embed/");
+        renderer.Write("<div class=\"video-embed video-facade\" data-youtube=\"");
+        renderer.WriteEscape(videoId);
+        renderer.Write("\">");
+        renderer.Write("<button type=\"button\" class=\"video-facade__play\" aria-label=\"Play video\">");
+        renderer.Write("<img class=\"video-facade__thumb\" src=\"https://i.ytimg.com/vi/");
         renderer.WriteEscapeUrl(videoId);
-        renderer.Write("\" title=\"Embedded YouTube video\" loading=\"lazy\" ");
-        renderer.Write("allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" ");
-        renderer.Write("referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>");
+        renderer.Write("/hqdefault.jpg\" alt=\"\" loading=\"lazy\" />");
+        renderer.Write("<span class=\"video-facade__icon\" aria-hidden=\"true\"></span>");
+        renderer.Write("</button>");
         renderer.WriteLine("</div>");
     }
 

@@ -16,6 +16,7 @@
     <script type="importmap"></script>
     <script>
         // Defines the theme helper and applies the persisted (or OS) theme before Blazor boots, so there is no flash of the wrong theme on first paint.
+        // This block MUST stay inline: it has to run before first paint to avoid a flash of the wrong theme (an external fetch could resolve after paint).
         window.respondeoTheme = {
             apply: function (theme) {
                 document.documentElement.setAttribute('data-theme', theme);
@@ -27,33 +28,8 @@
             var theme = stored || 'light';
             window.respondeoTheme.apply(theme);
         })();
-
-        // Updates the address bar without triggering a Blazor navigation (no focus shift
-        // or scroll). Used to keep accordion state shareable while staying put on the page.
-        window.respondeoUrl = {
-            replace: function (url) {
-                history.replaceState(history.state, '', url);
-            }
-        };
-
-        // Smoothly brings an element into view by its id. Used to reveal a freshly opened
-        // accordion section (or a deep-linked one on load) when it sits below the fold.
-        // We offset by the sticky breadcrumb's height so the section header isn't left
-        // hidden underneath it (scrollIntoView block:'start' would tuck it behind the bar).
-        window.respondeoScroll = {
-            intoView: function (id) {
-                var el = document.getElementById(id);
-                if (!el) {
-                    return;
-                }
-                var breadcrumb = document.querySelector('.breadcrumb');
-                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
-                var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-                var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
-            }
-        };
     </script>
+    <script src="js/site.js"></script>
 </head>
 
 <body>

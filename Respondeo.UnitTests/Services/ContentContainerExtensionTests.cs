@@ -13,13 +13,23 @@ public class ContentContainerExtensionTests
     private static string Render(string markdown) => Markdown.ToHtml(markdown, Pipeline);
 
     [Fact]
-    public void Youtube_directive_renders_nocookie_iframe()
+    public void Youtube_directive_renders_click_to_load_facade()
     {
         var html = Render("::: youtube aqz-KE-bpKQ\n:::");
 
-        Assert.Contains("class=\"video-embed\"", html);
-        Assert.Contains("https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ", html);
-        Assert.Contains("allowfullscreen", html);
+        Assert.Contains("class=\"video-embed video-facade\"", html);
+        Assert.Contains("data-youtube=\"aqz-KE-bpKQ\"", html);
+        Assert.Contains("class=\"video-facade__play\"", html);
+        Assert.Contains("https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg", html);
+    }
+
+    [Fact]
+    public void Youtube_facade_does_not_eagerly_load_the_player()
+    {
+        var html = Render("::: youtube aqz-KE-bpKQ\n:::");
+
+        Assert.DoesNotContain("<iframe", html);
+        Assert.DoesNotContain("youtube-nocookie.com", html);
     }
 
     [Fact]
