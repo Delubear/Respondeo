@@ -7,6 +7,7 @@ topics:
   - St. Thomas Aquinas
 sections:
   - five-ways-act-potency
+  - five-ways-essence-existence
   - five-ways-motion
   - five-ways-causation
   - five-ways-contingency
@@ -22,5 +23,7 @@ Begin with the foundational distinction between **act and potency** — the sing
 1. Observe a feature of reality (change, or dependent existence).
 2. Show that this feature cannot explain itself in an infinite regress.
 3. Conclude to a first term — and identify it with God.
+
+Then follow up with the distinction between **essence and existence**, which undergirds the last three ways.
 
 Expand a section below to walk through each way.
