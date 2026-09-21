@@ -48,7 +48,6 @@ internal sealed class ContentParser
             Title = meta.Title,
             Summary = meta.Summary,
             BodyHtml = html,
-            IsEntryPoint = meta.IsEntryPoint,
             Topics = meta.Topics,
             Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
             Sections = meta.Sections,

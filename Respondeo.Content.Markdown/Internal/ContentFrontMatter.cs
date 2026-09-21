@@ -24,10 +24,6 @@ internal sealed class ContentFrontMatter
     [YamlMember(Alias = "topics")]
     public List<string> Topics { get; set; } = [];
 
-    /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
-    [YamlMember(Alias = "isEntryPoint")]
-    public bool IsEntryPoint { get; set; }
-
     /// <summary>Child branches; several nodes may link to the same child id, forming a graph.</summary>
     [YamlMember(Alias = "branches")]
     public List<BranchLinkDto> Branches { get; set; } = [];

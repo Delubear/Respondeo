@@ -12,21 +12,19 @@ namespace Respondeo.UnitTests.Pages;
 
 public class HomeTests : TestContext
 {
-    private const string Manifest = "{\"files\":[\"home.md\",\"deeper.md\",\"branch.md\"]}";
+    private const string Manifest = "{\"files\":[\"why-god/why-god.md\",\"why-jesus/why-jesus.md\"]}";
 
-    // Two entry points and one non-entry-point node.
-    private const string HomeMd = "---\nid: home\ntitle: Home\nsummary: Start here\nisEntryPoint: true\n---\nWelcome";
-    private const string DeeperMd = "---\nid: deeper\ntitle: Deeper\nisEntryPoint: true\n---\nMore";
-    private const string BranchMd = "---\nid: branch\ntitle: Branch\nisEntryPoint: false\n---\nA branch";
+    // Two stage landing nodes whose ids match SiteNavigation slugs.
+    private const string WhyGodMd = "---\nid: why-god\ntitle: Why God?\nsummary: Start here\n---\nWelcome";
+    private const string WhyJesusMd = "---\nid: why-jesus\ntitle: Why Jesus?\n---\nMore";
 
     public HomeTests()
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/home.md"] = HomeMd,
-            ["_content/Respondeo.Content.Markdown/content/deeper.md"] = DeeperMd,
-            ["_content/Respondeo.Content.Markdown/content/branch.md"] = BranchMd,
+            ["_content/Respondeo.Content.Markdown/content/why-god/why-god.md"] = WhyGodMd,
+            ["_content/Respondeo.Content.Markdown/content/why-jesus/why-jesus.md"] = WhyJesusMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
@@ -35,7 +33,7 @@ public class HomeTests : TestContext
     }
 
     [Fact]
-    public void Renders_a_card_for_each_entry_point()
+    public void Renders_a_card_for_each_stage()
     {
         var cut = RenderComponent<Home>();
 
@@ -44,22 +42,13 @@ public class HomeTests : TestContext
     }
 
     [Fact]
-    public void Entry_point_cards_link_to_their_node()
+    public void Stage_cards_link_to_their_stage_page()
     {
         var cut = RenderComponent<Home>();
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("node/home", hrefs);
-        Assert.Contains("node/deeper", hrefs);
-    }
-
-    [Fact]
-    public void Does_not_render_non_entry_point_nodes()
-    {
-        var cut = RenderComponent<Home>();
-
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.DoesNotContain("node/branch", hrefs);
+        Assert.Contains("why-god", hrefs);
+        Assert.Contains("why-jesus", hrefs);
     }
 
     [Fact]

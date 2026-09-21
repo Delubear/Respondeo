@@ -11,7 +11,4 @@ public interface IContentService
 
     /// <summary>Returns a single node by id, or null if it does not exist.</summary>
     Task<ContentNode?> GetByIdAsync(string id);
-
-    /// <summary>Returns the top-level entry-point nodes for the home page.</summary>
-    Task<IReadOnlyList<ContentNode>> GetEntryPointsAsync();
 }

@@ -31,13 +31,6 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
         return nodes.TryGetValue(id, out var node) ? node : null;
     }
 
-    /// <summary>Returns the top-level entry-point nodes for the home page.</summary>
-    public async Task<IReadOnlyList<ContentNode>> GetEntryPointsAsync()
-    {
-        var nodes = await EnsureLoadedAsync();
-        return nodes.Values.Where(n => n.IsEntryPoint).OrderBy(n => n.Title, StringComparer.OrdinalIgnoreCase).ToList();
-    }
-
     private async Task<Dictionary<string, ContentNode>> EnsureLoadedAsync()
     {
         if (_nodes is not null)

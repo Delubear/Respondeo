@@ -3,6 +3,7 @@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject Respondeo.Services.NavigationIntent NavIntent
+@inject Respondeo.Services.IBreadcrumbTrail Trail
 
 <nav class="mastnav" aria-label="Primary">
     <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="mastnav-list"
@@ -31,8 +32,13 @@
 
     private void Toggle() => _open = !_open;
 
-    // Masthead nav is top-level navigation, so the following route change should reset to the top.
-    private void MarkTopLevel() => NavIntent.ResetToTop = true;
+    // Masthead nav is top-level navigation, so the following route change should reset to the top
+    // and start a fresh breadcrumb trail.
+    private async Task MarkTopLevel()
+    {
+        NavIntent.ResetToTop = true;
+        await Trail.ClearAsync();
+    }
 
     // Collapse the menu after navigating so it never stays open over the new page.
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

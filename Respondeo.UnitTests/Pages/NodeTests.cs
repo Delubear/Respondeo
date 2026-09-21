@@ -15,8 +15,8 @@ public class NodeTests : TestContext
     private const string Manifest = "{\"files\":[\"root.md\",\"child.md\"]}";
 
     // root branches to child.
-    private const string RootMd = "---\nid: root\ntitle: Root Question\nsummary: The root\nisEntryPoint: true\nbranches:\n  - to: child\n    label: Go deeper\n    prompt: Explore this path\n---\nRoot body";
-    private const string ChildMd = "---\nid: child\ntitle: Child Node\nisEntryPoint: false\n---\nChild body";
+    private const string RootMd = "---\nid: root\ntitle: Root Question\nsummary: The root\nbranches:\n  - to: child\n    label: Go deeper\n    prompt: Explore this path\n---\nRoot body";
+    private const string ChildMd = "---\nid: child\ntitle: Child Node\n---\nChild body";
 
     private IBreadcrumbTrail _trail = default!;
 

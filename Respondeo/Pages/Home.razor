@@ -14,7 +14,7 @@
     </p>
 </section>
 
-@if (_entryPoints is null)
+@if (_stages is null)
 {
     <Loading>Preparing the way&hellip;</Loading>
 }
@@ -29,14 +29,6 @@ else
                   Cta="Begin →"
                   Level="2" />
         }
-        @foreach (var node in _entryPoints)
-        {
-            <Card Href="@ContentRoutes.NodeHref(node)"
-                  Title="@node.Title"
-                  Summary="@node.Summary"
-                  Cta="Begin →"
-                  Level="2" />
-        }
     </CardGrid>
 
     <div class="home__browse">
@@ -45,25 +37,24 @@ else
 }
 
 @code {
-    private IReadOnlyList<ContentNode>? _entryPoints;
-    private readonly List<StageCard> _stages = new();
+    private List<StageCard>? _stages;
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
 
         // A card for each stage landing node (id == the stage slug), linking to the stage page.
-        _stages.Clear();
+        var stages = new List<StageCard>();
         foreach (var item in SiteNavigation.Items.Where(i => i.Href.Length > 0))
         {
             var node = await Content.GetByIdAsync(item.Href);
             if (node is not null)
             {
-                _stages.Add(new StageCard(item.Href, node));
+                stages.Add(new StageCard(item.Href, node));
             }
         }
 
-        _entryPoints = await Content.GetEntryPointsAsync();
+        _stages = stages;
     }
 
     private sealed record StageCard(string Slug, ContentNode Node);

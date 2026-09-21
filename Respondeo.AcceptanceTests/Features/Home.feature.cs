@@ -128,14 +128,14 @@ namespace Respondeo.AcceptanceTests.Features
             await this.TestTearDownAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The start page shows entry-point cards")]
+        [Xunit.SkippableFactAttribute(DisplayName="The start page shows stage cards")]
         [Xunit.TraitAttribute("FeatureTitle", "Home page")]
-        [Xunit.TraitAttribute("Description", "The start page shows entry-point cards")]
-        public async global::System.Threading.Tasks.Task TheStartPageShowsEntry_PointCards()
+        [Xunit.TraitAttribute("Description", "The start page shows stage cards")]
+        public async global::System.Threading.Tasks.Task TheStartPageShowsStageCards()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The start page shows entry-point cards", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The start page shows stage cards", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -150,20 +150,20 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 8
- await testRunner.ThenAsync("I should see at least one entry-point card", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("I should see at least one stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Choosing an entry point navigates to a node")]
+        [Xunit.SkippableFactAttribute(DisplayName="Choosing a stage and branch navigates to a node")]
         [Xunit.TraitAttribute("FeatureTitle", "Home page")]
-        [Xunit.TraitAttribute("Description", "Choosing an entry point navigates to a node")]
-        public async global::System.Threading.Tasks.Task ChoosingAnEntryPointNavigatesToANode()
+        [Xunit.TraitAttribute("Description", "Choosing a stage and branch navigates to a node")]
+        public async global::System.Threading.Tasks.Task ChoosingAStageAndBranchNavigatesToANode()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Choosing an entry point navigates to a node", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Choosing a stage and branch navigates to a node", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 10
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -178,9 +178,12 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 12
- await testRunner.WhenAsync("I choose the first entry-point card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I choose the first stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 13
+ await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 14
  await testRunner.ThenAsync("the page should show a breadcrumb", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

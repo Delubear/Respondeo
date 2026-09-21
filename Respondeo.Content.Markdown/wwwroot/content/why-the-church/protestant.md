@@ -5,7 +5,6 @@ summary: Start here if you already believe in God and Christ, but not in the Cat
 topics:
   - Getting Started
   - The Catholic Church
-isEntryPoint: true
 branches:
   - to: why-jesus
     label: "Why trust the Church Christ founded?"

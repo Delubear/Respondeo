@@ -18,9 +18,6 @@ public sealed class ContentNode
     /// <summary>Rendered HTML of the Markdown body (safe, author-curated).</summary>
     public required string BodyHtml { get; init; }
 
-    /// <summary>True if this node is a top-level starting point shown on the home page.</summary>
-    public bool IsEntryPoint { get; init; }
-
     /// <summary>Categories this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
     public IReadOnlyList<string> Topics { get; init; } = [];
 

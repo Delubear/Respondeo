@@ -17,11 +17,12 @@ public sealed class NavigationSteps(PlaywrightContext context)
         await Page.WaitForSelectorAsync(".card");
     }
 
-    [When("I choose the first entry-point card")]
-    public async Task WhenIChooseTheFirstEntryPointCard()
+    [When("I choose the first stage card")]
+    public async Task WhenIChooseTheFirstStageCard()
     {
+        // Landing on a stage page, which renders its branch cards (but no breadcrumb yet).
         await Page.Locator(".card").First.ClickAsync();
-        await Page.WaitForSelectorAsync(".breadcrumb");
+        await Page.WaitForSelectorAsync(".card");
     }
 
     [When("I choose the first branch card")]
@@ -38,8 +39,8 @@ public sealed class NavigationSteps(PlaywrightContext context)
         await Page.WaitForSelectorAsync(".card");
     }
 
-    [Then("I should see at least one entry-point card")]
-    public async Task ThenIShouldSeeAtLeastOneEntryPointCard()
+    [Then("I should see at least one stage card")]
+    public async Task ThenIShouldSeeAtLeastOneStageCard()
     {
         var count = await Page.Locator(".card").CountAsync();
         Assert.True(count >= 1, $"Expected at least one card, found {count}.");
@@ -65,11 +66,11 @@ public sealed class NavigationSteps(PlaywrightContext context)
         Assert.Equal(expected, count);
     }
 
-    // A "step" is a visited node: crumb links to a node plus the current node marker.
-    // The static "Start" link and the "/" separators are intentionally excluded.
+    // A "step" is a visited node: an ancestor crumb link plus the current node marker.
+    // The static "Home" link and the "/" separators are intentionally excluded.
     private async Task<int> CountBreadcrumbStepsAsync()
     {
-        var crumbLinks = await Page.Locator(".breadcrumb a[href^='node']").CountAsync();
+        var crumbLinks = await Page.Locator(".breadcrumb__link").CountAsync();
         var current = await Page.Locator(".breadcrumb__current").CountAsync();
         return crumbLinks + current;
     }

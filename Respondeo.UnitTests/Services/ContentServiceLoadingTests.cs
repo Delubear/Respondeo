@@ -8,9 +8,9 @@ public class ContentServiceLoadingTests
 {
     private const string Manifest = "{\"files\":[\"home.md\",\"branch.md\"]}";
 
-    private const string HomeMd = "---\nid: home\ntitle: Home\nisEntryPoint: true\nbranches:\n  - to: branch\n---\nWelcome home";
+    private const string HomeMd = "---\nid: home\ntitle: Home\nbranches:\n  - to: branch\n---\nWelcome home";
 
-    private const string BranchMd = "---\nid: branch\ntitle: Branch\nisEntryPoint: false\n---\nA branch node";
+    private const string BranchMd = "---\nid: branch\ntitle: Branch\n---\nA branch node";
 
     private static ContentService CreateService()
     {
@@ -55,17 +55,6 @@ public class ContentServiceLoadingTests
         var node = await service.GetByIdAsync("missing");
 
         Assert.Null(node);
-    }
-
-    [Fact]
-    public async Task GetEntryPoints_returns_only_entry_point_nodes()
-    {
-        var service = CreateService();
-
-        var entries = await service.GetEntryPointsAsync();
-
-        Assert.Single(entries);
-        Assert.Equal("home", entries[0].Id);
     }
 
     [Fact]

@@ -15,9 +15,6 @@ summary: A template node that demonstrates every field and directive.  # REQUIRE
 topics:
   - Existence of God
 
-# OPTIONAL. Set true to surface this node as a top-level card on the home page.
-isEntryPoint: false
-
 # OPTIONAL. Directed links to other nodes (a graph — several nodes may link to one id).
 branches:
   - to: does-god-exist           # REQUIRED per branch: target node id.

@@ -4,7 +4,6 @@ title: "I was raised Catholic but no longer practice"
 summary: Start here if the faith feels distant, doubtful, or something you drifted away from.
 topics:
   - Getting Started
-isEntryPoint: true
 branches:
   - to: aquinas-five-ways
     label: "Rebuild from the foundation: does God exist?"

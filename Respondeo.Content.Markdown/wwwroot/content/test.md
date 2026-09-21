@@ -2,7 +2,6 @@
 id: test
 title: "Test"
 summary: A sandbox for trying out different content types.
-isEntryPoint: true
 branches:
   - to: aquinas-five-ways
     label: "Internal branch link (aquinas-five-ways)"
