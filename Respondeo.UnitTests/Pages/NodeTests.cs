@@ -81,9 +81,7 @@ public class NodeTests : TestContext
         var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
 
         Assert.Equal("Root Question", cut.Find(".breadcrumb__current").TextContent);
-    }
-
-    [Fact]
+    }    [Fact]
     public void Renders_ancestor_crumbs_from_the_trail()
     {
         // Visiting "child" yields a trail of root -> child; root is the ancestor crumb.
@@ -94,6 +92,32 @@ public class NodeTests : TestContext
         var link = cut.Find("a.breadcrumb__link");
         Assert.Equal("node/root", link.GetAttribute("href"));
         Assert.Equal("Root Question", link.TextContent);
+    }
+
+    [Fact]
+    public void Redirects_to_the_canonical_url_when_the_stage_segment_is_wrong()
+    {
+        // root has no stage, so its canonical URL is the flat node/root. A stray stage segment
+        // in the URL should trigger a replace-navigation to the canonical route.
+        var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
+
+        RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
+
+        Assert.Equal(nav.ToAbsoluteUri("node/root").ToString(), nav.Uri);
+    }
+
+    [Fact]
+    public void Does_not_redirect_when_the_stage_segment_matches()
+    {
+        var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
+        var start = nav.Uri;
+
+        // root is stageless; rendering without a stage segment is already canonical.
+        RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
+
+        Assert.Equal(start, nav.Uri);
     }
 
     private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
