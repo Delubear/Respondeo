@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- css/app.css is fingerprinted automatically at publish time by the
+         FingerprintStylesheets target in Respondeo.csproj, which rewrites this href to the
+         content-hashed file name. That lets browsers cache it forever yet always pick up a new
+         version after a deploy (needed on GitHub Pages, where we cannot set cache headers). -->
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link href="Respondeo.styles.css" rel="stylesheet" />
@@ -29,7 +33,7 @@
             window.respondeoTheme.apply(theme);
         })();
     </script>
-    <script src="js/site.js"></script>
+    <script src="js/site#[.{fingerprint}].js"></script>
 </head>
 
 <body>

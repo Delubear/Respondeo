@@ -12,6 +12,53 @@
   </ItemGroup>
 
   <ItemGroup>
+    <StaticWebAssetFingerprintPattern Include="Css" Pattern="*.css" Expression="#[.{fingerprint}]!" />
+    <StaticWebAssetFingerprintPattern Include="Js" Pattern="*.js" Expression="#[.{fingerprint}]!" />
+  </ItemGroup>
+
+  <!--
+    Fingerprint the app stylesheet link in the published index.html.
+
+    Background: the Blazor WASM SDK rewrites <script src> fingerprint placeholders (so
+    js/site.js is fingerprinted automatically) but does NOT rewrite <link rel="stylesheet">
+    hrefs in a standalone WASM app. The StaticWebAssetFingerprintPattern items above still make
+    the SDK emit a content-hashed css/app.<hash>.css file and a matching endpoint whose "label"
+    is the original "css/app.css". This target reads that generated endpoints manifest, finds the
+    hashed route for css/app.css, and rewrites the published index.html to point at it. The result
+    is fully automatic cache-busting: the URL changes only when the file's contents change.
+  -->
+  <Target Name="FingerprintStylesheets" AfterTargets="Publish">
+    <PropertyGroup>
+      <_PublishedIndexHtml>$(PublishDir)wwwroot\index.html</_PublishedIndexHtml>
+      <_EndpointsManifest>$(IntermediateOutputPath)staticwebassets.publish.endpoints.json</_EndpointsManifest>
+    </PropertyGroup>
+
+    <!-- Extract the fingerprinted route for css/app.css from the endpoints manifest.
+         Matches "Route":"css/app.<hash>.css" entries and captures the file name. -->
+    <ReadLinesFromFile File="$(_EndpointsManifest)">
+      <Output TaskParameter="Lines" ItemName="_EndpointsLines" />
+    </ReadLinesFromFile>
+
+    <PropertyGroup>
+      <_EndpointsText>@(_EndpointsLines, '')</_EndpointsText>
+      <_HashedCssRoute>$([System.Text.RegularExpressions.Regex]::Match($(_EndpointsText), 'css/app\.[0-9a-z]+\.css').Value)</_HashedCssRoute>
+    </PropertyGroup>
+
+    <Warning Text="FingerprintStylesheets: could not find a fingerprinted css/app.css route; index.html left unchanged."
+             Condition="'$(_HashedCssRoute)' == ''" />
+
+    <WriteLinesToFile
+      Condition="'$(_HashedCssRoute)' != '' and Exists('$(_PublishedIndexHtml)')"
+      File="$(_PublishedIndexHtml)"
+      Lines="$([System.IO.File]::ReadAllText($(_PublishedIndexHtml)).Replace('href=&quot;css/app.css&quot;', 'href=&quot;$(_HashedCssRoute)&quot;'))"
+      Overwrite="true" />
+
+    <Message Importance="high"
+             Condition="'$(_HashedCssRoute)' != ''"
+             Text="FingerprintStylesheets: rewrote app stylesheet link to $(_HashedCssRoute)." />
+  </Target>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
   </ItemGroup>

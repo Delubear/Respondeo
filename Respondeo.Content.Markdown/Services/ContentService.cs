@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Respondeo.Content.Abstractions;
 
@@ -52,7 +53,7 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
                 return _nodes;
             }
 
-            var manifest = await http.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
+            var manifest = await GetFromJsonNoCacheAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
             var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
             foreach (var file in manifest.Files)
@@ -77,7 +78,7 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
     {
         try
         {
-            var raw = await http.GetStringAsync($"{ContentRoot}/{fileName}");
+            var raw = await GetStringNoCacheAsync($"{ContentRoot}/{fileName}");
             return parser.Parse(raw);
         }
         catch (HttpRequestException)
@@ -86,6 +87,33 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
             // Skip it and keep the rest of the site working; the absent node simply resolves to "not found".
             return null;
         }
+    }
+
+    // Content is fetched at runtime and served as ordinary static files, so the browser/CDN would
+    // otherwise be free to hand back a stale copy after a deploy. On hosts where we cannot set
+    // server cache headers (e.g. GitHub Pages), sending a no-cache request directive forces the
+    // browser to revalidate with the origin so users never run against an outdated manifest or node.
+    private async Task<string> GetStringNoCacheAsync(string url)
+    {
+        using var response = await SendNoCacheAsync(url);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
+
+    private async Task<T?> GetFromJsonNoCacheAsync<T>(string url)
+    {
+        using var response = await SendNoCacheAsync(url);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<T>();
+    }
+
+    private Task<HttpResponseMessage> SendNoCacheAsync(string url)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, url)
+        {
+            Headers = { CacheControl = new CacheControlHeaderValue { NoCache = true } }
+        };
+        return http.SendAsync(request);
     }
 
     private sealed class ContentManifest
