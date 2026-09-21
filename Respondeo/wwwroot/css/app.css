@@ -250,3 +250,20 @@ h1, h2, h3 {
         font-size: 1.05rem;
     }
 }
+
+/* ---------- Journey landing pages ---------- */
+.landing__title {
+    margin: 0 0 0.5rem;
+}
+
+.landing__lede {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 42rem;
+}
+
+.landing__placeholder {
+    margin-top: 2rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}

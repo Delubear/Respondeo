@@ -1,0 +1,43 @@
+@* Persistent primary navigation, rendered from the central SiteNavigation.Items list.
+   Collapses behind a toggle button on small screens. *@
+@implements IDisposable
+@inject NavigationManager Nav
+
+<nav class="mastnav" aria-label="Primary">
+    <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="mastnav-list"
+            @onclick="Toggle">
+        <span class="mastnav__toggle-icon" aria-hidden="true"></span>
+        <span class="mastnav__toggle-label">Menu</span>
+    </button>
+    <ul id="mastnav-list" class="mastnav__list @(_open ? "mastnav__list--open" : "")">
+        @foreach (var item in SiteNavigation.Items)
+        {
+            <li class="mastnav__item">
+                <NavLink class="mastnav__link" href="@item.Href"
+                         Match="@(item.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)">
+                    @item.Label
+                </NavLink>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    private bool _open;
+
+    protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
+
+    private void Toggle() => _open = !_open;
+
+    // Collapse the menu after navigating so it never stays open over the new page.
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_open)
+        {
+            _open = false;
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}
