@@ -120,6 +120,21 @@ public class NodeTests : TestContext
         Assert.Equal(start, nav.Uri);
     }
 
+    [Fact]
+    public void Preserves_the_query_string_when_redirecting_to_the_canonical_url()
+    {
+        // A deep link such as ?section=... must survive the canonical redirect so shared section
+        // links keep working when the URL's stage segment is corrected.
+        var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
+        nav.NavigateTo("why-god/node/root?section=intro");
+
+        RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
+
+        Assert.Equal(nav.ToAbsoluteUri("node/root?section=intro").ToString(), nav.Uri);
+    }
+
     private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

@@ -52,10 +52,12 @@ else
 
         // Keep URLs canonical: the stage segment is cosmetic, so a mismatched (or missing) stage
         // in the URL would show the wrong breadcrumb root. When the URL's stage doesn't match the
-        // node's real stage, redirect to the node's canonical URL.
+        // node's real stage, redirect to the node's canonical URL, preserving any query string
+        // (e.g. ?section=...) so deep links keep working across the redirect.
         if (node is not null && !string.Equals(Stage ?? string.Empty, node.Stage ?? string.Empty, StringComparison.OrdinalIgnoreCase))
         {
-            Nav.NavigateTo(ContentRoutes.NodeHref(node), replace: true);
+            var query = new Uri(Nav.Uri).Query;
+            Nav.NavigateTo(ContentRoutes.NodeHref(node) + query, replace: true);
             return;
         }
 

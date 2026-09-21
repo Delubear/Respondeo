@@ -56,7 +56,11 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstMastheadStage()
     {
         // The first masthead link is Home; the first stage link is the next one.
+        // We may be on a node page whose branch cards are still in the DOM, so wait for the
+        // client-side navigation to actually land on the stage page (which has no breadcrumb)
+        // before proceeding, otherwise a later step could click a stale card mid-transition.
         await Page.Locator(".mastnav__link").Nth(1).ClickAsync();
+        await Page.WaitForSelectorAsync(".breadcrumb", new PageWaitForSelectorOptions { State = WaitForSelectorState.Detached });
         await Page.WaitForSelectorAsync(".card");
     }
 
