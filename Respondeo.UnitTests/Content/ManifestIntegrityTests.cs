@@ -50,10 +50,10 @@ public class ManifestIntegrityTests
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         var onDisk = Directory
-            .EnumerateFiles(contentDir, "*.md", SearchOption.TopDirectoryOnly)
-            .Select(Path.GetFileName)!
+            .EnumerateFiles(contentDir, "*.md", SearchOption.AllDirectories)
+            .Select(path => Path.GetRelativePath(contentDir, path).Replace(Path.DirectorySeparatorChar, '/'))!
             // example*.md are documented copy-me templates, deliberately not shipped in the manifest.
-            .Where(f => !f!.StartsWith("example", StringComparison.OrdinalIgnoreCase))
+            .Where(f => !Path.GetFileName(f)!.StartsWith("example", StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         var unlisted = onDisk
