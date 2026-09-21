@@ -39,11 +39,48 @@ public sealed class NavigationSteps(PlaywrightContext context)
         await Page.WaitForSelectorAsync(".card");
     }
 
+    [Given("I open the \"(.*)\" stage directly")]
+    public async Task GivenIOpenTheStageDirectly(string slug)
+    {
+        await Page.GotoAsync($"{context.BaseUrl}/{slug}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+        await Page.WaitForSelectorAsync(".card");
+    }
+
+    [Given("I open the \"(.*)\" path directly")]
+    public async Task GivenIOpenThePathDirectly(string slug)
+    {
+        await Page.GotoAsync($"{context.BaseUrl}/{slug}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+    }
+
+    [When("I choose the first masthead stage")]
+    public async Task WhenIChooseTheFirstMastheadStage()
+    {
+        // The first masthead link is Home; the first stage link is the next one.
+        await Page.Locator(".mastnav__link").Nth(1).ClickAsync();
+        await Page.WaitForSelectorAsync(".card");
+    }
+
     [Then("I should see at least one stage card")]
     public async Task ThenIShouldSeeAtLeastOneStageCard()
     {
         var count = await Page.Locator(".card").CountAsync();
         Assert.True(count >= 1, $"Expected at least one card, found {count}.");
+    }
+
+    [Then("I should see the not found page")]
+    public async Task ThenIShouldSeeTheNotFoundPage()
+    {
+        await Page.WaitForSelectorAsync("h3");
+        Assert.Contains("Not Found", await Page.Locator("h3").First.InnerTextAsync());
+    }
+
+    [Then("the breadcrumb root should not be \"(.*)\"")]
+    public async Task ThenTheBreadcrumbRootShouldNotBe(string label)
+    {
+        await Page.WaitForSelectorAsync(".breadcrumb");
+        // The root crumb is the first link in the breadcrumb list.
+        var root = await Page.Locator(".breadcrumb__list a").First.InnerTextAsync();
+        Assert.NotEqual(label, root.Trim());
     }
 
     [Then("the page should show a breadcrumb")]
