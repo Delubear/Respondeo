@@ -79,7 +79,7 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
         try
         {
             var raw = await GetStringNoCacheAsync($"{ContentRoot}/{fileName}");
-            return parser.Parse(raw);
+            return parser.Parse(raw, StageFromFileName(fileName));
         }
         catch (HttpRequestException)
         {
@@ -87,6 +87,17 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
             // Skip it and keep the rest of the site working; the absent node simply resolves to "not found".
             return null;
         }
+    }
+
+    // A node's stage is the content sub-folder it lives in (e.g. "why-god/aquinas-five-ways.md"
+    // belongs to the "why-god" stage). Files at the content root belong to no stage. Deriving it
+    // from the folder keeps the folder layout as the single source of truth, so it survives header
+    // renames and never drifts out of sync with a hand-authored value.
+    private static string? StageFromFileName(string fileName)
+    {
+        var normalized = fileName.Replace('\\', '/');
+        var slash = normalized.IndexOf('/');
+        return slash > 0 ? normalized[..slash] : null;
     }
 
     // Content is fetched at runtime and served as ordinary static files, so the browser/CDN would

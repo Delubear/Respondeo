@@ -1,4 +1,5 @@
 @page "/node/{Id}"
+@page "/{Stage}/node/{Id}"
 @inject IContentService Content
 @inject NavigationManager Nav
 @inject IBreadcrumbTrail Trail
@@ -29,6 +30,10 @@ else
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
+
+    // Captured from the nested "/{Stage}/node/{Id}" route. Not used for lookup (the id is the key);
+    // it is present only so the stage-scoped URL resolves to this same page.
+    [Parameter] public string? Stage { get; set; }
 
     private ContentNode? _node;
     private bool _loading = true;
@@ -65,7 +70,7 @@ else
         for (var i = 0; i < trail.Count - 1; i++)
         {
             var ancestor = await Content.GetByIdAsync(trail[i]);
-            crumbs.Add(new Breadcrumb.Crumb(trail[i], ancestor?.Title ?? trail[i]));
+            crumbs.Add(new Breadcrumb.Crumb(trail[i], ancestor?.Title ?? trail[i], ancestor?.Stage));
         }
 
         return crumbs;

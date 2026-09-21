@@ -24,9 +24,10 @@ internal sealed class ContentParser
 
     /// <summary>
     /// Parses raw file content into a node, or returns null when there is no valid front-matter
-    /// block or the front-matter lacks an id.
+    /// block or the front-matter lacks an id. The <paramref name="stage"/> is supplied by the
+    /// loader (derived from the file's content folder) rather than authored in front matter.
     /// </summary>
-    public ContentNode? Parse(string raw)
+    public ContentNode? Parse(string raw, string? stage = null)
     {
         var (frontMatter, body) = SplitFrontMatter(raw);
         if (frontMatter is null)
@@ -54,6 +55,7 @@ internal sealed class ContentParser
             NextStage = meta.NextStage is null
                 ? null
                 : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt },
+            Stage = stage,
         };
     }
 

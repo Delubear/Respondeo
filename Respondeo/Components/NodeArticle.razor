@@ -28,7 +28,7 @@
             <CardGrid>
                 @foreach (var branch in _branches)
                 {
-                    <Card Href="@($"node/{branch.Link.To}")"
+                    <Card Href="@branch.Href"
                           Title="@branch.Label"
                           Summary="@branch.Link.Prompt"
                           Cta="Continue →"
@@ -80,7 +80,8 @@
         {
             var target = await Content.GetByIdAsync(link.To);
             var label = link.Label ?? target?.Title ?? link.To;
-            branches.Add(new ResolvedBranch(link, label));
+            var href = ContentRoutes.NodeHref(link.To, target?.Stage);
+            branches.Add(new ResolvedBranch(link, label, href));
         }
 
         _branches.Clear();
@@ -94,5 +95,5 @@
             .Split(prompt.Trim(), @"(?<=[.!?])\s+")
             .Where(s => !string.IsNullOrWhiteSpace(s));
 
-    private sealed record ResolvedBranch(BranchLink Link, string Label);
+    private sealed record ResolvedBranch(BranchLink Link, string Label, string Href);
 }

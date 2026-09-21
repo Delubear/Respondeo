@@ -31,6 +31,13 @@ public sealed class ContentNode
     public IReadOnlyList<string> Sections { get; init; } = [];
 
     /// <summary>
+    /// The stage this node belongs to (e.g. "why-god"), derived from its content sub-folder.
+    /// Null for nodes that live at the content root and belong to no stage. Used to nest node
+    /// routes under the stage so the URL reflects the section and the masthead tab lights up.
+    /// </summary>
+    public string? Stage { get; init; }
+
+    /// <summary>
     /// Optional culminating transition to the next stage of the journey (e.g. from the end of
     /// "Why God?" onward to "Why Jesus?"). Unlike a branch, this points at a stage landing route
     /// rather than another node, and is presented as a distinct, prominent call to action.

@@ -16,7 +16,7 @@
         {
             <li class="breadcrumb__item">
                 <span class="breadcrumb__sep" aria-hidden="true">/</span>
-                <a class="breadcrumb__link" href="@($"node/{crumb.Id}")" title="@crumb.Title">@crumb.Title</a>
+                <a class="breadcrumb__link" href="@ContentRoutes.NodeHref(crumb.Id, crumb.Stage)" title="@crumb.Title">@crumb.Title</a>
             </li>
         }
         <li class="breadcrumb__item">
@@ -37,5 +37,5 @@
     [Parameter] public bool ShowArticles { get; set; }
 
     /// <summary>A single ancestor step in the breadcrumb trail.</summary>
-    public sealed record Crumb(string Id, string Title);
+    public sealed record Crumb(string Id, string Title, string? Stage = null);
 }

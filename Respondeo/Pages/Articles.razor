@@ -37,7 +37,7 @@
                     <CardGrid>
                         @foreach (var node in Filtered)
                         {
-                            <Card Href="@($"node/{node.Id}")"
+                            <Card Href="@ContentRoutes.NodeHref(node)"
                                   Title="@node.Title"
                                   Summary="@node.Summary"
                                   Cta="Read →"

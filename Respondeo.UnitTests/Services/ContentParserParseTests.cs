@@ -47,4 +47,26 @@ public class ContentParserParseTests
         Assert.NotNull(node);
         Assert.Empty(node!.Topics);
     }
+
+    [Fact]
+    public void Stage_is_taken_from_the_supplied_value()
+    {
+        var raw = "---\nid: aquinas\ntitle: Aquinas\n---\nBody";
+
+        var node = new ContentParser().Parse(raw, "why-god");
+
+        Assert.NotNull(node);
+        Assert.Equal("why-god", node!.Stage);
+    }
+
+    [Fact]
+    public void Stage_defaults_to_null_when_not_supplied()
+    {
+        var raw = "---\nid: parent\ntitle: Parent\n---\nBody";
+
+        var node = new ContentParser().Parse(raw);
+
+        Assert.NotNull(node);
+        Assert.Null(node!.Stage);
+    }
 }
