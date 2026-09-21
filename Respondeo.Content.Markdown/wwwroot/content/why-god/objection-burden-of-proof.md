@@ -34,3 +34,5 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
 
 - **Everyone reasons past strict proof.** We accept other minds, the reliability of memory, and the external world without deductive proof. 
   Demanding a standard for God that we apply to nothing else we actually believe is special pleading in the other direction.
+
+*The positive arguments offered in place of mere assertion are laid out in [The Five Ways](node/aquinas-five-ways).*

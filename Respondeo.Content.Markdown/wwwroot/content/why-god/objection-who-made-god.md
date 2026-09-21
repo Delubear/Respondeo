@@ -31,3 +31,5 @@ summary: If everything needs a cause, doesn't God need one too?
 
 - **"Why not the universe?" is a fair question with an answer.** The universe is the very thing whose contingency we observe &mdash; it changes, it is composite, it could have been otherwise. 
   Those are exactly the marks of something that *does* need explaining, not the marks of a necessary ground.
+
+*This is exactly the reasoning of [the Second Way &mdash; Causation](node/aquinas-five-ways?section=five-ways-causation).*

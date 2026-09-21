@@ -36,3 +36,5 @@ Aquinas answers that nature and reason are not self-explaining first principles 
 > is done by nature must needs be traced back to God, as to its first cause. So also
 > whatever is done voluntarily must also be traced back to some higher cause other than
 > human reason or will, since these can change or fail." &mdash; *Summa Theologiae* I, q. 2, a. 3, reply to obj. 2
+
+*That nature is directed to an end rather than self-explaining is developed in [the Fifth Way &mdash; Governance](node/aquinas-five-ways?section=five-ways-governance).*

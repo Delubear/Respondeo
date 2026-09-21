@@ -32,3 +32,5 @@ Aquinas grants the core of the objection &mdash; God's existence is *not* obviou
 > us, though less known in their nature &mdash; namely, by His effects." &mdash; *Summa Theologiae* I, q. 2, a. 1
 - **The search itself is data.** 
   The very longing that fuels the objection &mdash; that things *ought* to be more clear, more just, more whole &mdash; is itself difficult to explain if there is nothing answering to it.
+
+*On knowing God through his effects rather than face-to-face, see [The Five Ways](node/aquinas-five-ways).*
