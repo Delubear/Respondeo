@@ -1,6 +1,6 @@
 ---
-id: atheist-agnostic
-title: "I don't believe / I'm not sure God exists"
+id: why-god
+title: "Why God?"
 summary: Start here if you hold that there is no God, that the material world is all there is, if you think the question may be unanswerable, or you simply haven't decided.
 topics:
   - Getting Started
