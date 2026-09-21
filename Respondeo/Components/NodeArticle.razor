@@ -42,7 +42,7 @@
     {
         <section class="next-stage">
             <p class="next-stage__eyebrow"><span>The Next Stage</span></p>
-            <a class="next-stage__cta" href="@Node.NextStage.Href">
+            <a class="next-stage__cta" href="@RelativeHref(Node.NextStage.Href)">
                 <span class="next-stage__emblem" aria-hidden="true">
                     <svg viewBox="0 0 24 24" role="presentation" focusable="false">
                         <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6z" />
@@ -90,10 +90,14 @@
 
     // Splits the prompt into its sentences so each renders on its own line, keeping the
     // terminating punctuation attached to each sentence.
-    private static IEnumerable<string> SplitSentences(string prompt) =>
-        System.Text.RegularExpressions.Regex
+    private static IEnumerable<string> SplitSentences(string prompt) => System.Text.RegularExpressions.Regex
             .Split(prompt.Trim(), @"(?<=[.!?])\s+")
             .Where(s => !string.IsNullOrWhiteSpace(s));
+
+    // Authored next-stage hrefs may include a leading slash (e.g. "/why-jesus"). A root-absolute
+    // href ignores <base href> and would escape the app's sub-path when hosted under one (e.g.
+    // GitHub Pages at /Respondeo/). Trim the leading slash so the link resolves relative to base.
+    private static string RelativeHref(string href) => href.TrimStart('/');
 
     private sealed record ResolvedBranch(BranchLink Link, string Label, string Href);
 }
