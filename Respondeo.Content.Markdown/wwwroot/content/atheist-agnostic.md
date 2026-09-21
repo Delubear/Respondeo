@@ -5,7 +5,7 @@ summary: Start here if you hold that there is no God, that the material world is
 topics:
   - Getting Started
   - Existence of God
-isEntryPoint: true
+isEntryPoint: false
 branches:
   - to: aquinas-five-ways
     label: "Can reason show that God exists?"
