@@ -29,6 +29,29 @@ public sealed class ContentNode
 
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
+
+    /// <summary>
+    /// Optional culminating transition to the next stage of the journey (e.g. from the end of
+    /// "Why God?" onward to "Why Jesus?"). Unlike a branch, this points at a stage landing route
+    /// rather than another node, and is presented as a distinct, prominent call to action.
+    /// </summary>
+    public StageLink? NextStage { get; init; }
+}
+
+/// <summary>
+/// A prominent link that carries the visitor from the end of one stage to the beginning of the next.
+/// It targets a page route (e.g. "/why-jesus") rather than a node id.
+/// </summary>
+public sealed class StageLink
+{
+    /// <summary>The route of the next stage's landing page (e.g. "/why-jesus").</summary>
+    public required string Href { get; init; }
+
+    /// <summary>Headline shown on the transition button.</summary>
+    public required string Label { get; init; }
+
+    /// <summary>Optional short reason/prompt shown beneath the label.</summary>
+    public string? Prompt { get; init; }
 }
 
 /// <summary>

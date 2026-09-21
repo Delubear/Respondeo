@@ -184,3 +184,95 @@
     text-align: center;
     margin-bottom: 0.5rem;
 }
+
+/* ---------- Next stage transition ---------- */
+/* A culminating call to action that carries the reader from the end of one stage
+   to the beginning of the next. Deliberately distinct from branch cards: an
+   accent-filled banner rather than a parchment card, signalling a larger step.
+   Colours use theme tokens so it reads correctly in both light and dark mode. */
+.next-stage {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+}
+
+.next-stage__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+}
+
+.next-stage__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    max-width: 32rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0.5rem 1.25rem var(--shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.next-stage__cta:hover,
+.next-stage__cta:focus-visible {
+    transform: translateY(-0.15rem);
+    box-shadow: 0 0.75rem 1.75rem var(--shadow);
+    filter: brightness(1.08);
+    outline: none;
+}
+
+.next-stage__cta:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.next-stage__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.next-stage__prompt {
+    font-size: 1rem;
+    color: var(--accent-ink);
+    opacity: 0.85;
+}
+
+.next-stage__arrow {
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.next-stage__cta:hover .next-stage__arrow,
+.next-stage__cta:focus-visible .next-stage__arrow {
+    transform: translateX(0.25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .next-stage__cta,
+    .next-stage__arrow {
+        transition: none;
+    }
+
+    .next-stage__cta:hover,
+    .next-stage__cta:focus-visible {
+        transform: none;
+    }
+
+    .next-stage__cta:hover .next-stage__arrow,
+    .next-stage__cta:focus-visible .next-stage__arrow {
+        transform: none;
+    }
+}

@@ -35,6 +35,25 @@ internal sealed class ContentFrontMatter
     /// <summary>Ordered ids of child content nodes to present as collapsible sections on this page.</summary>
     [YamlMember(Alias = "sections")]
     public List<string> Sections { get; set; } = [];
+
+    /// <summary>Optional culminating transition to the next stage's landing page.</summary>
+    [YamlMember(Alias = "nextStage")]
+    public StageLinkDto? NextStage { get; set; }
+}
+
+/// <summary>
+/// Serialization DTO for a culminating stage transition declared in front-matter.
+/// </summary>
+internal sealed class StageLinkDto
+{
+    [YamlMember(Alias = "href")]
+    public string Href { get; set; } = string.Empty;
+
+    [YamlMember(Alias = "label")]
+    public string Label { get; set; } = string.Empty;
+
+    [YamlMember(Alias = "prompt")]
+    public string? Prompt { get; set; }
 }
 
 /// <summary>

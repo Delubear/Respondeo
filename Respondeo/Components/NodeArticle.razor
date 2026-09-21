@@ -37,6 +37,23 @@
             </CardGrid>
         </section>
     }
+
+    @if (Node.NextStage is not null)
+    {
+        <section class="next-stage">
+            <p class="next-stage__eyebrow">The next stage</p>
+            <a class="next-stage__cta" href="@Node.NextStage.Href">
+                <span class="next-stage__label">
+                    @Node.NextStage.Label
+                    <span class="next-stage__arrow" aria-hidden="true">→</span>
+                </span>
+                @if (!string.IsNullOrWhiteSpace(Node.NextStage.Prompt))
+                {
+                    <span class="next-stage__prompt">@Node.NextStage.Prompt</span>
+                }
+            </a>
+        </section>
+    }
 </article>
 
 @code {

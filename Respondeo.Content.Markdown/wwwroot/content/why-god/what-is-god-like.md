@@ -5,10 +5,10 @@ summary: From the arguments to the God of classical theism — the divine attrib
 topics:
   - Existence of God
   - St. Thomas Aquinas
-branches:
-  - to: aquinas-five-ways
-    label: "Revisit the Five Ways"
-    prompt: Return to the arguments these attributes are drawn from.
+nextStage:
+  href: /why-jesus
+  label: "Why Jesus?"
+  prompt: Reason has brought us to the God of classical theism. The next road asks whether He has spoken.
 ---
 
 The Five Ways each conclude to a first term — an Unmoved Mover, a First Cause, a Necessary Being, a source of all perfection, an ordering Intellect.

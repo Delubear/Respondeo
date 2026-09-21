@@ -51,6 +51,9 @@ internal sealed class ContentParser
             Topics = meta.Topics,
             Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
             Sections = meta.Sections,
+            NextStage = meta.NextStage is null
+                ? null
+                : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt },
         };
     }
 
