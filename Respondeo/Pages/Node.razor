@@ -24,41 +24,7 @@ else if (_node is null)
 }
 else
 {
-    <article class="node" @key="_node.Id">
-        <header class="node__header">
-            <h1 class="node__title">@_node.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(_node.Summary))
-            {
-                <p class="node__summary">@_node.Summary</p>
-            }
-        </header>
-
-        <div class="node__body">
-            @((MarkupString)_node.BodyHtml)
-        </div>
-
-        @if (_node.Sections.Count > 0)
-        {
-            <SectionAccordion NodeId="@_node.Id" SectionIds="_node.Sections" />
-        }
-
-        @if (_branches.Count > 0)
-        {
-            <section class="branches">
-                <h2 class="branches__heading">@(_branches.Count == 1 ? "Where to go next" : "Where would you like to go next?")</h2>
-                <CardGrid>
-                    @foreach (var branch in _branches)
-                    {
-                        <Card Href="@($"node/{branch.Link.To}")"
-                              Title="@branch.Label"
-                              Summary="@branch.Link.Prompt"
-                              Cta="Continue →"
-                              Level="3" />
-                    }
-                </CardGrid>
-            </section>
-        }
-    </article>
+    <NodeArticle Node="_node" />
 }
 
 @code {
@@ -67,7 +33,6 @@ else
     private ContentNode? _node;
     private bool _loading = true;
     private bool _fromArticles;
-    private readonly List<ResolvedBranch> _branches = new();
     private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
 
     protected override async Task OnParametersSetAsync()
@@ -78,25 +43,15 @@ else
         // which removes the flash/flicker when moving between nodes.
         var node = await Content.GetByIdAsync(Id);
 
-        var branches = new List<ResolvedBranch>();
         IReadOnlyList<Breadcrumb.Crumb> crumbs = Array.Empty<Breadcrumb.Crumb>();
 
         if (node is not null)
         {
-            foreach (var link in node.Branches)
-            {
-                var target = await Content.GetByIdAsync(link.To);
-                var label = link.Label ?? target?.Title ?? link.To;
-                branches.Add(new ResolvedBranch(link, label));
-            }
-
             crumbs = await BuildBreadcrumbAsync(Id);
         }
 
         _node = node;
         _fromArticles = await Trail.IsFromArticlesAsync();
-        _branches.Clear();
-        _branches.AddRange(branches);
         _crumbs = crumbs;
         _loading = false;
     }
@@ -115,6 +70,4 @@ else
 
         return crumbs;
     }
-
-    private sealed record ResolvedBranch(BranchLink Link, string Label);
 }
