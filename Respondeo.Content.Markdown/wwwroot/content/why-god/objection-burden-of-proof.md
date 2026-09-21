@@ -22,5 +22,15 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
 - **There is an argument, not a mere assertion.** The believer is not saying "prove me wrong." 
   Classical natural theology offers positive arguments &mdash; from contingency, causation, and order &mdash; that reason from features of the world to their necessary source. 
   One may dispute those arguments, but they are evidence offered, which is exactly what "meeting the burden" looks like.
+
+  Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from his effects &mdash; the same logic by which we infer any unseen cause from what it produces:
+
+  > "When an effect is better known to us than its cause, from the effect we proceed to the
+  > knowledge of the cause. And from every effect the existence of its proper cause can be
+  > demonstrated, so long as its effects are better known to us; because since every effect
+  > depends upon its cause, if the effect exists, the cause must pre-exist. Hence the
+  > existence of God... can be demonstrated from those of His effects which are known to us."
+  > &mdash; *Summa Theologiae* I, q. 2, a. 2
+
 - **Everyone reasons past strict proof.** We accept other minds, the reliability of memory, and the external world without deductive proof. 
   Demanding a standard for God that we apply to nothing else we actually believe is special pleading in the other direction.

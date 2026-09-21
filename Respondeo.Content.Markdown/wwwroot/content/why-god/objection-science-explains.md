@@ -12,6 +12,14 @@ summary: As science advances, doesn't it leave less and less for God to do?
 2. The gaps where God was invoked keep shrinking.
 3. So God is an outdated placeholder for what we do not yet understand.
 
+This is essentially Aquinas's second objection &mdash; that natural and human causes are a *complete* explanatory set, leaving God redundant:
+
+> "It is superfluous to suppose that what can be accounted for by a few principles has been
+> produced by many. But it seems that everything we see in the world can be accounted for by
+> other principles, supposing God did not exist. For all natural things can be reduced to one
+> principle, which is nature; and all voluntary things... to human reason or will. Therefore
+> there is no need to suppose God's existence." &mdash; *Summa Theologiae* I, q. 2, a. 3, obj. 2
+
 **In response:**
 
 - **This attacks a "God of the gaps" no serious theist defends.** Classical theism does not put God *inside* the causal chain as one force among others, filling holes in our knowledge. 
@@ -21,3 +29,10 @@ summary: As science advances, doesn't it leave less and less for God to do?
 - **Science rests on assumptions it cannot prove.** That the universe is rational, that its order is stable and discoverable, that our minds track truth &mdash; these are not results of science but conditions for it. 
   A created, intelligible cosmos makes better sense of *why science works* than brute, unexplained regularity does.
 - **The history cuts both ways.** Many founders of modern science pursued it *because* they expected a law-giver's ordered world. The success of science is comfortable company for theism, not its refutation.
+
+Aquinas answers that nature and reason are not self-explaining first principles at all, but themselves *changeable and caused* &mdash; and so point beyond themselves:
+
+> "Since nature works for a determinate end under the direction of a higher agent, whatever
+> is done by nature must needs be traced back to God, as to its first cause. So also
+> whatever is done voluntarily must also be traced back to some higher cause other than
+> human reason or will, since these can change or fail." &mdash; *Summa Theologiae* I, q. 2, a. 3, reply to obj. 2
