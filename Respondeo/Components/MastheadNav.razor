@@ -2,6 +2,7 @@
    Collapses behind a toggle button on small screens. *@
 @implements IDisposable
 @inject NavigationManager Nav
+@inject Respondeo.Services.NavigationIntent NavIntent
 
 <nav class="mastnav" aria-label="Primary">
     <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="mastnav-list"
@@ -14,7 +15,8 @@
         {
             <li class="mastnav__item">
                 <NavLink class="mastnav__link" href="@item.Href"
-                         Match="@(item.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)">
+                         Match="@(item.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)"
+                         @onclick="MarkTopLevel">
                     @item.Label
                 </NavLink>
             </li>
@@ -28,6 +30,9 @@
     protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
 
     private void Toggle() => _open = !_open;
+
+    // Masthead nav is top-level navigation, so the following route change should reset to the top.
+    private void MarkTopLevel() => NavIntent.ResetToTop = true;
 
     // Collapse the menu after navigating so it never stays open over the new page.
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

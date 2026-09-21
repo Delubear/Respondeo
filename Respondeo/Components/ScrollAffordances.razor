@@ -1,6 +1,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Nav
+@inject Respondeo.Services.NavigationIntent NavIntent
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
 
@@ -53,10 +54,17 @@
 
     private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
-        if (_module is not null)
+        if (_module is null)
         {
-            _ = _module.InvokeVoidAsync("jumpToTop");
+            return;
         }
+
+        // The masthead nav tabs and content cards can target the same route, so the destination
+        // URL alone cannot distinguish them. The masthead nav flags its clicks as top-level, which
+        // resets to the very top. Everything else — entry cards, node/article navigation — scrolls
+        // down to the content region so the reader lands on their breadcrumb trail.
+        var resetToTop = NavIntent.ConsumeResetToTop();
+        _ = _module.InvokeVoidAsync(resetToTop ? "jumpToTop" : "jumpToContent");
     }
 
     public async ValueTask DisposeAsync()

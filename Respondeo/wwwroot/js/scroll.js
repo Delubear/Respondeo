@@ -30,8 +30,23 @@ export function scrollToTop() {
 }
 
 export function jumpToTop() {
-    // On navigation, settle the viewport at the top of the content region (which begins
-    // with the breadcrumb) rather than the very top of the page, so the masthead stays
+    // Used for top-level (masthead) navigation: jump straight to the very top of the page with
+    // no animation. Landing at the top (masthead included) is the expected reset for a top-level move.
+    const jump = () => window.scrollTo(0, 0);
+
+    // Pin immediately (before the new page paints) so there's no visible scroll movement.
+    jump();
+
+    // LocationChanged fires BEFORE the new page renders, and Blazor's
+    // <FocusOnNavigate Selector="#content"> focuses the content region AFTER render, which
+    // nudges the scroll. Re-assert on a double requestAnimationFrame so we run after that
+    // render + focus cycle and remain authoritative.
+    requestAnimationFrame(() => requestAnimationFrame(jump));
+}
+
+export function jumpToContent() {
+    // Used for card/node navigation: settle the viewport at the top of the content region (which
+    // begins with the breadcrumb) rather than the very top of the page, so the masthead stays
     // out of view and the reader lands on their breadcrumb trail.
     const scrollToContent = () => {
         const content = document.querySelector('.content');
@@ -43,9 +58,6 @@ export function jumpToTop() {
     // view. The content element's top is stable regardless of which page is loading.
     scrollToContent();
 
-    // LocationChanged fires BEFORE the new page renders, and Blazor's
-    // <FocusOnNavigate Selector="#content"> focuses the content region AFTER render, which
-    // nudges the scroll. Re-assert on a double requestAnimationFrame so we run after that
-    // render + focus cycle and remain authoritative.
+    // See jumpToTop for why we re-assert after the render + focus cycle.
     requestAnimationFrame(() => requestAnimationFrame(scrollToContent));
 }

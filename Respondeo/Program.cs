@@ -20,4 +20,7 @@ builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 // Applies and persists the visitor's preferred light/dark theme.
 builder.Services.AddScoped<IThemeService, ThemeService>();
 
+// Signals whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
+builder.Services.AddScoped<NavigationIntent>();
+
 await builder.Build().RunAsync();
