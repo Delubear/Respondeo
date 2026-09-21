@@ -41,16 +41,28 @@
     @if (Node.NextStage is not null)
     {
         <section class="next-stage">
-            <p class="next-stage__eyebrow">The next stage</p>
+            <p class="next-stage__eyebrow"><span>The Next Stage</span></p>
             <a class="next-stage__cta" href="@Node.NextStage.Href">
-                <span class="next-stage__label">
-                    @Node.NextStage.Label
-                    <span class="next-stage__arrow" aria-hidden="true">→</span>
+                <span class="next-stage__emblem" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                        <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6z" />
+                    </svg>
                 </span>
-                @if (!string.IsNullOrWhiteSpace(Node.NextStage.Prompt))
-                {
-                    <span class="next-stage__prompt">@Node.NextStage.Prompt</span>
-                }
+                <span class="next-stage__body">
+                    <span class="next-stage__label">
+                        @Node.NextStage.Label
+                        <span class="next-stage__arrow" aria-hidden="true">→</span>
+                    </span>
+                    @if (!string.IsNullOrWhiteSpace(Node.NextStage.Prompt))
+                    {
+                        <span class="next-stage__prompt">
+                            @foreach (var sentence in SplitSentences(Node.NextStage.Prompt))
+                            {
+                                <span class="next-stage__prompt-line">@sentence</span>
+                            }
+                        </span>
+                    }
+                </span>
             </a>
         </section>
     }
@@ -74,6 +86,13 @@
         _branches.Clear();
         _branches.AddRange(branches);
     }
+
+    // Splits the prompt into its sentences so each renders on its own line, keeping the
+    // terminating punctuation attached to each sentence.
+    private static IEnumerable<string> SplitSentences(string prompt) =>
+        System.Text.RegularExpressions.Regex
+            .Split(prompt.Trim(), @"(?<=[.!?])\s+")
+            .Where(s => !string.IsNullOrWhiteSpace(s));
 
     private sealed record ResolvedBranch(BranchLink Link, string Label);
 }

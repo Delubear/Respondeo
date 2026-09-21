@@ -13,6 +13,8 @@
     --rule: #d9d6cf;
     --accent: #7b1113;
     --accent-ink: #ffffff;
+    --gold: #b08d34;
+    --gold-bright: #e8c874;
     --shadow: rgba(17, 17, 17, 0.08);
     --code-bg: #f0eee9;
     /* Masthead and colophon stay dark in both themes, so they use dedicated tokens. */
@@ -36,6 +38,8 @@
     --rule: #3a372f;
     --accent: #c6474a;
     --accent-ink: #15140f;
+    --gold: #c9a54e;
+    --gold-bright: #f0d488;
     --shadow: rgba(0, 0, 0, 0.5);
     --code-bg: #26241d;
     --masthead-bg: #0e0d0a;
