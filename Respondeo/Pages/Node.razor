@@ -9,7 +9,7 @@
     <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
 }
 
-<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" ShowArticles="_fromArticles" />
+<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" ShowArticles="_fromArticles" StageHref="@_stageHref" StageLabel="@_stageLabel" />
 
 @if (_loading)
 {
@@ -38,6 +38,8 @@ else
     private ContentNode? _node;
     private bool _loading = true;
     private bool _fromArticles;
+    private string? _stageHref;
+    private string? _stageLabel;
     private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
 
     protected override async Task OnParametersSetAsync()
@@ -57,6 +59,20 @@ else
 
         _node = node;
         _fromArticles = await Trail.IsFromArticlesAsync();
+
+        // When the node belongs to a stage (and the visitor didn't arrive via Articles), root the
+        // breadcrumb at that stage's landing page instead of Home so it reflects the section.
+        if (!_fromArticles && node?.Stage is { Length: > 0 } stage)
+        {
+            _stageHref = stage;
+            _stageLabel = SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label ?? node.Stage;
+        }
+        else
+        {
+            _stageHref = null;
+            _stageLabel = null;
+        }
+
         _crumbs = crumbs;
         _loading = false;
     }

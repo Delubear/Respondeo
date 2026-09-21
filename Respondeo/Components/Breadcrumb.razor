@@ -2,9 +2,18 @@
 
 <nav class="breadcrumb" aria-label="Breadcrumb">
     <ol class="breadcrumb__list">
-        <li class="breadcrumb__item">
-            <a href="">Home</a>
-        </li>
+        @if (StageHref is not null)
+        {
+            <li class="breadcrumb__item">
+                <a href="@StageHref">@StageLabel</a>
+            </li>
+        }
+        else
+        {
+            <li class="breadcrumb__item">
+                <a href="">Home</a>
+            </li>
+        }
         @if (ShowArticles)
         {
             <li class="breadcrumb__item">
@@ -35,6 +44,12 @@
 
     /// <summary>When true, renders an Articles link after Home (the visitor arrived via the /articles index).</summary>
     [Parameter] public bool ShowArticles { get; set; }
+
+    /// <summary>Optional stage landing route (e.g. "why-god"); when set it replaces Home as the breadcrumb root.</summary>
+    [Parameter] public string? StageHref { get; set; }
+
+    /// <summary>Label for the stage root crumb (e.g. "Why God?").</summary>
+    [Parameter] public string? StageLabel { get; set; }
 
     /// <summary>A single ancestor step in the breadcrumb trail.</summary>
     public sealed record Crumb(string Id, string Title, string? Stage = null);

@@ -120,4 +120,16 @@ public class BreadcrumbTests : TestContext
         // Only the separator before the current node.
         Assert.Single(cut.FindAll(".breadcrumb__sep"));
     }
+
+    [Fact]
+    public void Roots_the_breadcrumb_at_the_stage_when_stage_href_is_set()
+    {
+        var cut = RenderComponent<Breadcrumb>(p => p
+            .Add(c => c.StageHref, "why-god")
+            .Add(c => c.StageLabel, "Why God?"));
+
+        var root = cut.Find("nav.breadcrumb a");
+        Assert.Equal("Why God?", root.TextContent);
+        Assert.Equal("why-god", root.GetAttribute("href"));
+    }
 }
