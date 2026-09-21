@@ -21,11 +21,11 @@
 else
 {
     <CardGrid>
-        @if (_whyGod is not null)
+        @foreach (var stage in _stages)
         {
-            <Card Href="why-god"
-                  Title="@_whyGod.Title"
-                  Summary="@_whyGod.Summary"
+            <Card Href="@stage.Slug"
+                  Title="@stage.Node.Title"
+                  Summary="@stage.Node.Summary"
                   Cta="Begin →"
                   Level="2" />
         }
@@ -46,12 +46,25 @@ else
 
 @code {
     private IReadOnlyList<ContentNode>? _entryPoints;
-    private ContentNode? _whyGod;
+    private readonly List<StageCard> _stages = new();
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _whyGod = await Content.GetByIdAsync("why-god");
+
+        // A card for each stage landing node (id == the stage slug), linking to the stage page.
+        _stages.Clear();
+        foreach (var item in SiteNavigation.Items.Where(i => i.Href.Length > 0))
+        {
+            var node = await Content.GetByIdAsync(item.Href);
+            if (node is not null)
+            {
+                _stages.Add(new StageCard(item.Href, node));
+            }
+        }
+
         _entryPoints = await Content.GetEntryPointsAsync();
     }
+
+    private sealed record StageCard(string Slug, ContentNode Node);
 }

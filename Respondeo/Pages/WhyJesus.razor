@@ -1,11 +1,33 @@
 @page "/why-jesus"
+@inject IContentService Content
 
 <PageTitle>Why Jesus? &mdash; Respondeo</PageTitle>
 
-<section class="landing">
-    <h1 class="landing__title">Why Jesus?</h1>
-    <p class="landing__lede">
-        For those who accept that God exists, but not yet the Christian claim &mdash; why Jesus of Nazareth is who He says He is.
-    </p>
-    <p class="landing__placeholder">Content for this stage is coming soon.</p>
-</section>
+@if (_loading)
+{
+    <Loading>Loading&hellip;</Loading>
+}
+else if (_node is null)
+{
+    <section class="landing">
+        <h1 class="landing__title">Why Jesus?</h1>
+        <p class="landing__placeholder">Content for this stage is coming soon.</p>
+    </section>
+}
+else
+{
+    <NodeArticle Node="_node" />
+}
+
+@code {
+    private const string NodeId = "why-jesus";
+
+    private ContentNode? _node;
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _node = await Content.GetByIdAsync(NodeId);
+        _loading = false;
+    }
+}

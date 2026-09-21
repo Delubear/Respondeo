@@ -18,7 +18,7 @@ public static class SiteNavigation
         new("", "Home"),
         new("why-god", "Why God?"),
         new("why-jesus", "Why Jesus?"),
-        new("why-church", "Why the Church?"),
+        new("why-the-church", "Why the Church?"),
         new("coming-home", "Coming Home"),
     ];
 }

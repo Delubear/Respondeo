@@ -1,6 +1,6 @@
 ---
 id: why-jesus
-title: "If God exists, has He revealed Himself in Christ?"
+title: "Why Jesus?"
 summary: From the God of the philosophers to the God who speaks in history.
 topics:
   - Divine Revelation
