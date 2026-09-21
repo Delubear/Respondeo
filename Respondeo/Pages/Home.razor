@@ -21,6 +21,14 @@
 else
 {
     <CardGrid>
+        @if (_whyGod is not null)
+        {
+            <Card Href="why-god"
+                  Title="@_whyGod.Title"
+                  Summary="@_whyGod.Summary"
+                  Cta="Begin →"
+                  Level="2" />
+        }
         @foreach (var node in _entryPoints)
         {
             <Card Href="@($"node/{node.Id}")"
@@ -38,10 +46,12 @@ else
 
 @code {
     private IReadOnlyList<ContentNode>? _entryPoints;
+    private ContentNode? _whyGod;
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        _whyGod = await Content.GetByIdAsync("why-god");
         _entryPoints = await Content.GetEntryPointsAsync();
     }
 }
