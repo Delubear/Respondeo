@@ -1,11 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-	<TargetFramework>net10.0</TargetFramework>
-	<Nullable>enable</Nullable>
-	<ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-
   <ItemGroup>
 	<Content Include="README.md" />
   </ItemGroup>
@@ -19,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="Markdig" Version="1.3.2" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-	<PackageReference Include="YamlDotNet" Version="18.1.0" />
+	<PackageReference Include="Markdig" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+	<PackageReference Include="YamlDotNet" />
   </ItemGroup>
 
   <ItemGroup>

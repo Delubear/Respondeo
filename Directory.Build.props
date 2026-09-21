@@ -1,0 +1,15 @@
+<Project>
+
+  <!--
+	Solution-wide MSBuild defaults. Every project imports this automatically, so common settings
+	(target framework, nullable/implicit-usings, language) live in one place and a future .NET
+	bump is a single edit here. Individual projects can still override any property locally.
+  -->
+  <PropertyGroup>
+	<TargetFramework>net10.0</TargetFramework>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+</Project>

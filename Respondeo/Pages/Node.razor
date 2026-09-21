@@ -50,6 +50,15 @@ else
         // which removes the flash/flicker when moving between nodes.
         var node = await Content.GetByIdAsync(Id);
 
+        // Keep URLs canonical: the stage segment is cosmetic, so a mismatched (or missing) stage
+        // in the URL would show the wrong breadcrumb root. When the URL's stage doesn't match the
+        // node's real stage, redirect to the node's canonical URL.
+        if (node is not null && !string.Equals(Stage ?? string.Empty, node.Stage ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+        {
+            Nav.NavigateTo(ContentRoutes.NodeHref(node), replace: true);
+            return;
+        }
+
         IReadOnlyList<Breadcrumb.Crumb> crumbs = Array.Empty<Breadcrumb.Crumb>();
 
         if (node is not null)

@@ -1,0 +1,55 @@
+@page "/{Slug}"
+@inject IContentService Content
+
+@if (_isKnownStage)
+{
+    <PageTitle>@_label &mdash; Respondeo</PageTitle>
+
+    @if (_loading)
+    {
+        <Loading>Loading&hellip;</Loading>
+    }
+    else if (_node is null)
+    {
+        <section class="landing">
+            <h1 class="landing__title">@_label</h1>
+            <p class="landing__placeholder">Content for this stage is coming soon.</p>
+        </section>
+    }
+    else
+    {
+        <NodeArticle Node="_node" />
+    }
+}
+else
+{
+    <NotFound />
+}
+
+@code {
+    // Stage landing pages share one route (/{Slug}). The slug is matched against SiteNavigation,
+    // the single source of truth, so adding a stage is a content + navigation change only.
+    [Parameter] public string Slug { get; set; } = string.Empty;
+
+    private ContentNode? _node;
+    private bool _loading = true;
+    private bool _isKnownStage;
+    private string _label = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var item = SiteNavigation.Items.FirstOrDefault(i => i.Href.Length > 0 && string.Equals(i.Href, Slug, StringComparison.OrdinalIgnoreCase));
+
+        _isKnownStage = item is not null;
+        if (item is null)
+        {
+            _loading = false;
+            return;
+        }
+
+        _label = item.Label;
+        _loading = true;
+        _node = await Content.GetByIdAsync(item.Href);
+        _loading = false;
+    }
+}
