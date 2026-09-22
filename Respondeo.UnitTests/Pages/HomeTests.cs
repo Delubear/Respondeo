@@ -30,6 +30,12 @@ public class HomeTests : TestContext
 
         Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+
+        // Home imports the reel JS module in OnAfterRenderAsync and calls init on it;
+        // let bUnit handle the import and the module's method invocations.
+        var reelModule = JSInterop.SetupModule("./js/reel.js");
+        reelModule.SetupVoid("init", _ => true);
+        reelModule.SetupVoid("dispose", _ => true);
     }
 
     [Fact]
@@ -37,7 +43,7 @@ public class HomeTests : TestContext
     {
         var cut = RenderComponent<Home>();
 
-        var cards = cut.FindAll("a.card");
+        var cards = cut.FindAll("a.stage-card");
         Assert.Equal(2, cards.Count);
     }
 
@@ -46,7 +52,7 @@ public class HomeTests : TestContext
     {
         var cut = RenderComponent<Home>();
 
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.stage-card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("why-god", hrefs);
         Assert.Contains("why-jesus", hrefs);
     }
@@ -66,7 +72,7 @@ public class HomeTests : TestContext
     {
         var cut = RenderComponent<Home>();
 
-        Assert.Equal("Where are you, and where are you headed?", cut.Find("h1.hero__title").TextContent);
+        Assert.Equal("One question leads to the next", cut.Find("h1.hero__title").TextContent);
     }
 
     private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler

@@ -31,7 +31,7 @@ public class NodeArticleTests : TestContext
         // sub-path when hosted under one (e.g. GitHub Pages). It must render as relative.
         var cut = RenderComponent<NodeArticle>(p => p.Add(c => c.Node, NodeWithNextStage("/why-jesus")));
 
-        Assert.Equal("why-jesus", cut.Find("a.next-stage__cta").GetAttribute("href"));
+        Assert.Equal("why-jesus", cut.Find("a.stage-card").GetAttribute("href"));
     }
 
     [Fact]
@@ -39,6 +39,6 @@ public class NodeArticleTests : TestContext
     {
         var cut = RenderComponent<NodeArticle>(p => p.Add(c => c.Node, NodeWithNextStage("why-jesus")));
 
-        Assert.Equal("why-jesus", cut.Find("a.next-stage__cta").GetAttribute("href"));
+        Assert.Equal("why-jesus", cut.Find("a.stage-card").GetAttribute("href"));
     }
 }
