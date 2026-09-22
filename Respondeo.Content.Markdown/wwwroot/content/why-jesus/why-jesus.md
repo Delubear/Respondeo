@@ -6,6 +6,15 @@ topics:
   - Divine Revelation
   - Jesus Christ
 branches:
+  - to: jesus-divine-claims
+    label: "Did Jesus claim to be God?"
+    prompt: Did Jesus claim a divine authority, and how was that claim understood?
+  - to: jesus-resurrection
+    label: "The Resurrection"
+    prompt: Is the Resurrection a historical event that vindicates His claims?
+  - to: jesus-founded-church
+    label: "Did Jesus found a Church?"
+    prompt: Did He establish a visible Church and entrust it with His teaching?
   - to: aquinas-five-ways
     label: "Revisit whether God exists"
     prompt: If this step feels premature, return to the foundation.
@@ -24,4 +33,4 @@ From here the path continues:
 - Did He found a visible Church and entrust it with His teaching office?
 - Where is that Church, with its marks, today?
 
-*This node is a branch point for the next stage of the journey — add child nodes here as the site grows.*
+Choose a question below to begin.

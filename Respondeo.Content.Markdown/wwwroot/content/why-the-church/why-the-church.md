@@ -5,6 +5,16 @@ summary: For Christians who follow Christ, but not yet His Church — why the Ca
 topics:
   - Getting Started
   - The Catholic Church
+branches:
+  - to: church-founded-by-christ
+    label: "Did Christ found a Church?"
+    prompt: Did Christ establish a visible Church and give it a teaching office?
+  - to: church-recognizing-it
+    label: "Which Church is it?"
+    prompt: How do we recognize that Church among the many that claim His name?
+  - to: church-four-marks
+    label: "The four marks"
+    prompt: One, holy, catholic, apostolic — where are they found today?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -18,4 +28,4 @@ From here the path continues:
 - How do we recognize that Church among the many that claim His name?
 - What are the marks — one, holy, catholic, apostolic — and where are they found today?
 
-*This node is a branch point for the next stage of the journey — add child nodes here as the site grows.*
+Choose a question below to begin.

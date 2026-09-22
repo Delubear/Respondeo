@@ -4,6 +4,16 @@ title: "Coming Home"
 summary: For those who know the Church is true, but have kept their distance — an invitation to come home.
 topics:
   - Getting Started
+branches:
+  - to: home-what-church-offers
+    label: "What the Church offers"
+    prompt: What does the Church actually offer the one who returns?
+  - to: home-how-to-begin
+    label: "How to begin again"
+    prompt: How does one begin again — confession, the sacraments, a parish?
+  - to: home-obstacles
+    label: "What holds people back"
+    prompt: What holds people back, and how are those obstacles met?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -17,4 +27,4 @@ From here the path continues:
 - How does one begin again — confession, the sacraments, a parish?
 - What holds people back, and how are those obstacles met?
 
-*This node is a branch point for the next stage of the journey — add child nodes here as the site grows.*
+Choose a question below to begin.
