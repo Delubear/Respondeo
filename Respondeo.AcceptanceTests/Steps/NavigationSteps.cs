@@ -25,27 +25,11 @@ public sealed class NavigationSteps(PlaywrightContext context)
         // card specifically to become centred before interacting.
         var stageOne = Page.Locator(".reel__step:last-child.is-centered");
         await stageOne.WaitForAsync();
-        var card = stageOne.Locator(".stage-card");
 
-        // Clicking a CENTRED card follows its link, but Playwright's pre-click auto-scroll (or a
-        // snap-settle) can momentarily un-centre the card, so the reel's capture-phase handler
-        // treats the click as "re-centre this neighbour" and swallows it instead of navigating.
-        // That leaves the card centred, so a retry navigates. Loop until the URL actually changes.
-        var href = await card.GetAttributeAsync("href");
-        for (var attempt = 0; attempt < 3; attempt++)
-        {
-            await card.ClickAsync();
-            try
-            {
-                await Page.WaitForURLAsync($"**/{href}", new PageWaitForURLOptions { Timeout = 5000 });
-                break;
-            }
-            catch (TimeoutException)
-            {
-                // Click was intercepted and the card re-centred; retry now that it is centred.
-            }
-        }
-
+        // Clicking a card at (or near) centre always follows its link — the reel only intercepts
+        // clicks on cards that are far off-centre. Stage 1 is centred here, so a single click
+        // navigates deterministically with no retry needed.
+        await stageOne.Locator(".stage-card").ClickAsync();
         await Page.WaitForSelectorAsync(".card");
     }
 

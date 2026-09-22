@@ -224,11 +224,13 @@ export function init(reel) {
     };
     reel.addEventListener('wheel', onWheel, { passive: false });
 
-    // --- Click a peeking neighbour to centre it (instead of following its link). ---
-    // The centred card (the one carrying `is-centered`, kept in sync by notify()) always
-    // follows its link; only a NON-centred peeking neighbour is intercepted and centred.
-    // Keying off the class — the same signal the UI and tests observe — avoids geometry
-    // races when the browser auto-scrolls a card into view just before the click.
+    // --- Click a far-off-centre peeking neighbour to centre it (instead of following its link). ---
+    // Navigation is the DEFAULT: a click on the card the user is looking at always follows its
+    // link. Only a card that is genuinely near the reel's edge — more than FAR_THRESHOLD of the
+    // viewport away from centre — is intercepted and centred instead. The distance is measured
+    // synchronously from scroll geometry (not the async `is-centered` class), so the outcome is
+    // deterministic and never races the browser auto-scrolling a card into view before the click.
+    const FAR_THRESHOLD = 0.4; // Fraction of the reel viewport height.
     const onClick = (e) => {
         const step = e.target.closest('.reel__step');
         if (!step || !reel.contains(step)) {
@@ -238,10 +240,13 @@ export function init(reel) {
         if (index === -1) {
             return;
         }
-        if (step.classList.contains('is-centered')) {
-            return; // Centred card: follow its link.
+        const centre = reel.scrollTop + (reel.clientHeight / 2);
+        const stepCentre = step.offsetTop + (step.offsetHeight / 2);
+        const distance = Math.abs(stepCentre - centre);
+        if (distance <= reel.clientHeight * FAR_THRESHOLD) {
+            return; // Near centre: follow its link.
         }
-        // A peeking neighbour was clicked: centre it rather than navigating away.
+        // A far-off-centre peeking neighbour was clicked: centre it rather than navigating away.
         e.preventDefault();
         goToIndex(reel, index);
     };
