@@ -5,9 +5,9 @@ summary: How the God of Abraham relates to Islam, deism, and Eastern conceptions
 topics:
   - Divine Revelation
 branches:
-  - to: why-jesus
-    label: "Has this God entered history?"
-    prompt: If the God of Israel is the one who speaks, the next question is whether He became man in Jesus.
+  - to: which-god-of-israel
+    label: "Why the God of Israel?"
+    prompt: Having weighed the claimants, why the covenant God of Abraham in particular?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

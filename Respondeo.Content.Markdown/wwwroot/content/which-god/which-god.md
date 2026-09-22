@@ -6,21 +6,9 @@ topics:
   - Getting Started
   - Divine Revelation
 branches:
-  - to: which-god-personal
-    label: "Is the first cause personal?"
-    prompt: Does the God reason reaches have mind and will, or is it a blind principle?
-  - to: which-god-can-reveal
-    label: "Could God speak to us?"
-    prompt: Can a personal God reveal Himself, and how would we recognize it?
   - to: which-god-monotheism
     label: "Why one God, not many?"
-    prompt: Why does the ultimate source have to be one?
-  - to: which-god-of-israel
-    label: "Why the God of Israel?"
-    prompt: Of all the claimants, why the covenant God of Abraham?
-  - to: which-god-other-faiths
-    label: "What about other faiths?"
-    prompt: How does this God relate to Islam, deism, and Eastern conceptions?
+    prompt: Reason's own arguments reach a single unlimited being — begin by seeing why the ultimate source must be one.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -29,12 +17,11 @@ The arguments for God's existence bring us a long way — to a being that is one
 
 We have shown *that* a God exists. We have not yet shown *which* God — whether this first cause is a distant abstraction or a personal God who knows and loves, and whether He has ever spoken to us.
 
-Between "some ultimate explanation" and "the God of Abraham, Isaac, and Jacob" there is ground to cover. This stage walks it.
-From here the path continues:
+Between "some ultimate explanation" and "the God of Abraham, Isaac, and Jacob" there is ground to cover. This stage walks it as an ordered path, one question leading to the next:
 
-- Is the first cause personal — does it have mind and will, or is it a blind principle?
-- Could such a God reveal Himself to us at all?
 - Why one God rather than many?
-- Of all the claimants, why the God of Israel?
+- Is that one God personal — does it have mind and will, or is it a blind principle?
+- Could such a God reveal Himself to us at all?
+- And of all the claimants to revelation, why the God of Israel?
 
-Choose a question below to begin.
+Begin below, and follow the path from step to step.

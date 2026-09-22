@@ -5,6 +5,10 @@ summary: Whether the God reason reaches has mind and will, or is a blind princip
 topics:
   - Divine Revelation
   - Existence of God
+branches:
+  - to: which-god-can-reveal
+    label: "Could God speak to us?"
+    prompt: If this God is personal, could He reveal Himself — and how would we recognize it?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
