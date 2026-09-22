@@ -56,6 +56,12 @@ public sealed class StageLink
 
     /// <summary>Optional short reason/prompt shown beneath the label.</summary>
     public string? Prompt { get; init; }
+
+    /// <summary>
+    /// Optional name of the emblem shown in the golden box (e.g. "cross", "compass").
+    /// Falls back to the cross when unset.
+    /// </summary>
+    public string? Icon { get; init; }
 }
 
 /// <summary>

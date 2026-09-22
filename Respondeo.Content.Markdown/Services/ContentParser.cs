@@ -53,7 +53,7 @@ internal sealed class ContentParser
             Sections = meta.Sections,
             NextStage = meta.NextStage is null
                 ? null
-                : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt },
+                : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt, Icon = meta.NextStage.Icon },
             Stage = stage,
         };
     }

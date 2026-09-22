@@ -8,6 +8,7 @@ topics:
 nextStage:
   href: which-god
   label: "Which God?"
+  icon: compass
   prompt: Reason has brought us to the God of classical theism. The next road asks which God this is — whether He is personal, and whether He has spoken.
 ---
 

@@ -50,6 +50,9 @@ internal sealed class StageLinkDto
 
     [YamlMember(Alias = "prompt")]
     public string? Prompt { get; set; }
+
+    [YamlMember(Alias = "icon")]
+    public string? Icon { get; set; }
 }
 
 /// <summary>
