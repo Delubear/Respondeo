@@ -42,19 +42,49 @@
     position: relative;
     margin: 1.5rem auto 0;
     max-width: 38rem;
+    /* Room on the right for the progress-dot rail. */
+    padding-right: 1.75rem;
+}
+
+/* A faint vertical "thread" the stages are strung along, hinting at one continuous
+   path climbing upward. It sits behind the cards and fades at both ends. */
+.reel-wrap::before {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    left: calc(50% - 0.875rem);
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, var(--gold) 18%, var(--gold) 82%, transparent);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .reel {
+    position: relative;
+    z-index: 1;
     /* A fixed viewport the reel scrolls within, so the page itself stays put. */
     height: 26rem;
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     /* Room above/below so the first and last cards can still centre. */
     padding: 8.5rem 0;
-    /* Fade the top and bottom edges so peeking neighbours dissolve away. */
-    -webkit-mask: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
-    mask: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+    /* Vignette: fade the top and bottom edges so peeking neighbours dissolve away. */
+    -webkit-mask: linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent);
+    mask: linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent);
     scrollbar-width: none;
+}
+
+.reel:focus-visible {
+    outline: none;
+}
+
+.reel:focus-visible .reel__step.is-centered {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+    border-radius: 1rem;
 }
 
 .reel::-webkit-scrollbar {
@@ -68,6 +98,28 @@
     justify-content: center;
     padding: 0.5rem 0.75rem;
     transform-origin: center center;
+    cursor: pointer;
+}
+
+/* Peeking neighbours read as tappable; the centred card behaves as a normal link. */
+.reel__step.is-centered {
+    cursor: default;
+}
+
+/* Entrance: cards drift gently into place once the reel is positioned on load. */
+.reel.is-ready .reel__step {
+    animation: reel-enter 0.5s ease both;
+}
+
+@keyframes reel-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Native scroll-driven turn: each card leans as it enters and settles at centre. */
@@ -99,9 +151,67 @@
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.reel--js .reel__step.is-centered {
+.reel--js .reel__step.is-in-view {
     opacity: 1;
     transform: scale(1);
+}
+
+/* Emblem glow: the centred stage's gilded plate warms up to draw the eye. Works in
+   both native and fallback modes since `is-centered` is always kept in sync by JS. */
+.reel__step.is-centered ::deep .stage-card__emblem {
+    box-shadow: 0 0 0 1px var(--gold), 0 0 1.4rem var(--gold-glow, rgba(198, 160, 74, 0.55));
+    transition: box-shadow 0.35s ease;
+}
+
+/* ---------- Progress dots ----------
+   A slim rail down the right edge: one dot per stage, filling from the bottom up.
+   Click a dot to jump straight to that stage. */
+.reel-dots {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 2;
+}
+
+/* The dots are created in reel.js, so they do NOT carry this component's scoped-CSS
+   attribute. We must reach them with ::deep from the (scoped) .reel-dots container,
+   otherwise none of these rules apply and they render as unstyled buttons. */
+.reel-dots ::deep .reel-dots__dot {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    width: 0.55rem;
+    height: 0.55rem;
+    padding: 0;
+    line-height: 0;
+    aspect-ratio: 1;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.reel-dots ::deep .reel-dots__dot:hover,
+.reel-dots ::deep .reel-dots__dot:focus-visible {
+    opacity: 1;
+}
+
+.reel-dots ::deep .reel-dots__dot:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.reel-dots ::deep .reel-dots__dot.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    opacity: 1;
+    transform: scale(1.4);
 }
 
 /* ---------- Scroll affordance ----------
@@ -110,6 +220,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -156,8 +267,10 @@
     font-family: var(--display);
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 0.62rem;
-    opacity: 0.7;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink);
+    opacity: 1;
 }
 
 .reel__chevron {
@@ -188,10 +301,23 @@
     50%      { transform: rotate(45deg) translate(0.15rem, 0.15rem); }
 }
 
-/* Honour reduced-motion: drop the turning and bobbing, keep the snap reel + affordances. */
+/* Honour reduced-motion: drop the turning, bobbing, entrance and glow transitions,
+   keep the snap reel + affordances so navigation still works. */
 @media (prefers-reduced-motion: reduce) {
     .reel--native .reel__step {
         animation: none;
+    }
+
+    .reel.is-ready .reel__step {
+        animation: none;
+    }
+
+    .reel__step.is-centered ::deep .stage-card__emblem {
+        transition: none;
+    }
+
+    .reel-dots ::deep .reel-dots__dot {
+        transition: none;
     }
 
     .reel__hint--up .reel__chevron,
@@ -206,8 +332,16 @@
         font-size: 1.7rem;
     }
 
+    .reel-wrap {
+        padding-right: 1.25rem;
+    }
+
     .reel {
         height: 24rem;
         padding: 8rem 0;
+    }
+
+    .reel-dots {
+        gap: 0.45rem;
     }
 }

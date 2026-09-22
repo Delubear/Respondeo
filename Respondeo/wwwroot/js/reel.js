@@ -3,13 +3,13 @@
 // The reel renders Stage 1 at the BOTTOM and Stage 5 at the TOP so the journey
 // visually climbs upward toward God. This module:
 //   1. Starts the reader at the bottom (Stage 1) on load.
-//   2. Provides a fallback "turning"/emphasis effect via IntersectionObserver
-//      for browsers without scroll-driven CSS animations (animation-timeline).
-//   3. Lets the up/down hint buttons scroll one card at a time, and hides the
-//      hint for whichever end the reader has already reached.
-//
-// The CSS handles the turn natively where supported; the fallback simply toggles
-// an `is-centered` class on whichever step is nearest the middle of the reel.
+//   2. Tracks the centred step and, from a single notify path, updates the top/bottom
+//      hint visibility, per-step "centred" classes, and the progress-dot rail.
+//   3. Provides a fallback "turning"/emphasis effect via IntersectionObserver for
+//      browsers without scroll-driven CSS animations (animation-timeline).
+//   4. Adds guided interactions: click the hint buttons, use the keyboard (arrows /
+//      page keys / home / end), flick the mouse wheel one card at a time, click a
+//      peeking neighbour to centre it, or click a progress dot to jump.
 
 const state = new WeakMap();
 
@@ -17,6 +17,14 @@ function supportsScrollTimeline() {
     return typeof CSS !== 'undefined'
         && typeof CSS.supports === 'function'
         && CSS.supports('animation-timeline', 'view()');
+}
+
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function stepsOf(reel) {
+    return Array.from(reel.querySelectorAll('.reel__step'));
 }
 
 // Index of the step whose centre is nearest the reel's current viewport centre.
@@ -34,32 +42,90 @@ function nearestStepIndex(reel, steps) {
     return nearest;
 }
 
-// Toggle the top/bottom hint visibility based on which card is currently centred.
-// We use the nearest step (not raw scrollTop) because scroll-snap centring stops
-// short of scrollTop 0 / max, so the raw extremes are never actually reached.
-function updateHints(reel) {
-    const wrap = reel.closest('.reel-wrap');
-    if (!wrap) {
+// Scroll position (within the reel's scroll space) that centres a given step.
+function centreOf(reel, step) {
+    return step.offsetTop + (step.offsetHeight / 2) - (reel.clientHeight / 2);
+}
+
+// Smoothly (or instantly under reduced motion) centre the step at the given index.
+function goToIndex(reel, index) {
+    const steps = stepsOf(reel);
+    if (steps.length === 0) {
         return;
     }
-    const up = wrap.querySelector('.reel__hint--up');
-    const down = wrap.querySelector('.reel__hint--down');
-    const steps = Array.from(reel.querySelectorAll('.reel__step'));
+    const clamped = Math.min(steps.length - 1, Math.max(0, index));
+    reel.scrollTo({ top: centreOf(reel, steps[clamped]), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
+
+// The single source of truth for "which card is centred": updates hints, the
+// per-step centred class (used by the JS fallback + emblem glow), and the dot rail.
+function notify(reel) {
+    const entry = state.get(reel);
+    const steps = stepsOf(reel);
     if (steps.length === 0) {
         return;
     }
     const nearest = nearestStepIndex(reel, steps);
+    if (entry) {
+        entry.centered = nearest;
+    }
 
-    // The reel renders top-to-bottom as Stage 5 … Stage 1, so index 0 is the top
-    // card and the last index is the bottom card.
-    // "Keep climbing" (up) advances toward the top; hide it on the top card.
-    if (up) {
-        up.classList.toggle('is-hidden', nearest === 0);
+    // Mark the centred step so CSS can emphasise it (fallback turn + emblem glow).
+    steps.forEach((step, i) => step.classList.toggle('is-centered', i === nearest));
+
+    // Hint visibility. The reel renders top-to-bottom as Stage 5 … Stage 1, so index 0
+    // is the top card and the last index is the bottom card.
+    const wrap = reel.closest('.reel-wrap');
+    if (wrap) {
+        const up = wrap.querySelector('.reel__hint--up');
+        const down = wrap.querySelector('.reel__hint--down');
+        if (up) {
+            up.classList.toggle('is-hidden', nearest === 0);
+        }
+        if (down) {
+            down.classList.toggle('is-hidden', nearest === steps.length - 1);
+        }
+
+        // Progress dots: one per step, in DOM order (top → bottom). Mark the centred one.
+        const dots = wrap.querySelectorAll('.reel-dots__dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('is-active', i === nearest);
+            dot.setAttribute('aria-current', i === nearest ? 'true' : 'false');
+        });
     }
-    // "Earlier steps" (down) advances toward the bottom; hide it on the bottom card.
-    if (down) {
-        down.classList.toggle('is-hidden', nearest === steps.length - 1);
+}
+
+// Build the progress-dot rail: one dot per step, clickable to jump to that stage.
+function buildDots(reel) {
+    const wrap = reel.closest('.reel-wrap');
+    if (!wrap) {
+        return () => { };
     }
+    const rail = wrap.querySelector('.reel-dots');
+    if (!rail) {
+        return () => { };
+    }
+    const steps = stepsOf(reel);
+    const listeners = [];
+    rail.replaceChildren();
+    steps.forEach((step, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'reel-dots__dot';
+        // Dot order matches DOM order (top → bottom). Label with the human stage number.
+        const stageNumber = steps.length - i;
+        dot.setAttribute('aria-label', `Go to stage ${stageNumber}`);
+        const onClick = () => goToIndex(reel, i);
+        dot.addEventListener('click', onClick);
+        listeners.push({ dot, onClick });
+        rail.appendChild(dot);
+    });
+    return () => {
+        for (const { dot, onClick } of listeners) {
+            dot.removeEventListener('click', onClick);
+        }
+        rail.replaceChildren();
+    };
 }
 
 export function init(reel) {
@@ -67,66 +133,144 @@ export function init(reel) {
         return;
     }
 
+    state.set(reel, { centered: 0 });
+    const entry = state.get(reel);
+
+    const disposeDots = buildDots(reel);
+
     // Land on Stage 1 (the bottom-most card) without any visible scroll animation.
     // Do it after paint so the reel has its final scrollHeight.
     requestAnimationFrame(() => {
         reel.scrollTop = reel.scrollHeight;
-        updateHints(reel);
+        notify(reel);
+        // Reveal the cards with a gentle entrance once positioned (CSS gates on reduced motion).
+        reel.classList.add('is-ready');
     });
 
-    const onScroll = () => updateHints(reel);
+    // --- Scroll: keep the centred state in sync (throttled to animation frames). ---
+    let scrollScheduled = false;
+    const onScroll = () => {
+        if (scrollScheduled) {
+            return;
+        }
+        scrollScheduled = true;
+        requestAnimationFrame(() => {
+            scrollScheduled = false;
+            notify(reel);
+        });
+    };
     reel.addEventListener('scroll', onScroll, { passive: true });
 
-    const observers = [];
+    // --- Keyboard: arrows / page keys step one card; Home/End jump to the ends. ---
+    const onKeyDown = (e) => {
+        const steps = stepsOf(reel);
+        if (steps.length === 0) {
+            return;
+        }
+        const current = entry.centered;
+        let target = null;
+        switch (e.key) {
+            case 'ArrowUp':
+            case 'PageUp':
+                target = current - 1;
+                break;
+            case 'ArrowDown':
+            case 'PageDown':
+                target = current + 1;
+                break;
+            case 'Home':
+                target = 0;
+                break;
+            case 'End':
+                target = steps.length - 1;
+                break;
+            default:
+                return;
+        }
+        e.preventDefault();
+        goToIndex(reel, target);
+    };
+    reel.addEventListener('keydown', onKeyDown);
 
+    // --- Wheel: advance exactly one card per gesture; pass through at the ends. ---
+    let wheelLock = false;
+    const onWheel = (e) => {
+        const steps = stepsOf(reel);
+        if (steps.length === 0) {
+            return;
+        }
+        const direction = e.deltaY < 0 ? -1 : 1;
+        const target = entry.centered + direction;
+        // At an end and still pushing outward: let the page scroll normally.
+        if (target < 0 || target > steps.length - 1) {
+            return;
+        }
+        e.preventDefault();
+        if (wheelLock) {
+            return;
+        }
+        wheelLock = true;
+        goToIndex(reel, target);
+        // Release the lock after the smooth scroll settles so one flick = one card.
+        window.setTimeout(() => { wheelLock = false; }, prefersReducedMotion() ? 60 : 380);
+    };
+    reel.addEventListener('wheel', onWheel, { passive: false });
+
+    // --- Click a peeking neighbour to centre it (instead of following its link). ---
+    const onClick = (e) => {
+        const step = e.target.closest('.reel__step');
+        if (!step || !reel.contains(step)) {
+            return;
+        }
+        const steps = stepsOf(reel);
+        const index = steps.indexOf(step);
+        if (index === -1 || index === entry.centered) {
+            return; // Already centred: let the card's link handle the click.
+        }
+        // A neighbour was clicked: centre it rather than navigating away.
+        e.preventDefault();
+        goToIndex(reel, index);
+    };
+    // Capture phase so we can intercept before the anchor's default navigation.
+    reel.addEventListener('click', onClick, true);
+
+    // --- Turn effect: native scroll-timeline where supported, else IO fallback. ---
+    const observers = [];
     if (supportsScrollTimeline()) {
-        // Native scroll-driven animations cover the turn effect.
         reel.classList.add('reel--native');
     } else {
-        // Fallback: mark the most-centred step so CSS can emphasise it.
         reel.classList.add('reel--js');
         const observer = new IntersectionObserver((entries) => {
-            for (const entry of entries) {
-                entry.target.classList.toggle('is-centered', entry.isIntersecting);
+            for (const item of entries) {
+                item.target.classList.toggle('is-in-view', item.isIntersecting);
             }
         }, {
             root: reel,
-            // A thin band across the middle of the reel: the step overlapping it is "centred".
             rootMargin: '-45% 0px -45% 0px',
             threshold: 0
         });
-        for (const step of reel.querySelectorAll('.reel__step')) {
+        for (const step of stepsOf(reel)) {
             observer.observe(step);
         }
         observers.push(observer);
     }
 
-    state.set(reel, { onScroll, observers });
+    entry.onScroll = onScroll;
+    entry.onKeyDown = onKeyDown;
+    entry.onWheel = onWheel;
+    entry.onClick = onClick;
+    entry.observers = observers;
+    entry.disposeDots = disposeDots;
 }
 
 // Scroll by one card. direction: -1 scrolls up (toward God), +1 scrolls down.
-// We snap to the actual neighbouring step rather than nudging by a fixed amount,
-// so a click always advances a full card even from an unsnapped position.
 export function scrollByStep(reel, direction) {
     if (!reel) {
         return;
     }
-    const steps = Array.from(reel.querySelectorAll('.reel__step'));
-    if (steps.length === 0) {
-        return;
-    }
-
-    // Position (within the reel's scroll space) that centres a given step.
-    const centreOf = (step) => step.offsetTop + (step.offsetHeight / 2) - (reel.clientHeight / 2);
-    const nearest = nearestStepIndex(reel, steps);
-
-    const target = Math.min(steps.length - 1, Math.max(0, nearest + direction));
-    if (target === nearest) {
-        return;
-    }
-
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    reel.scrollTo({ top: centreOf(steps[target]), behavior: reduce ? 'auto' : 'smooth' });
+    const entry = state.get(reel);
+    const current = entry ? entry.centered : nearestStepIndex(reel, stepsOf(reel));
+    goToIndex(reel, current + direction);
 }
 
 export function dispose(reel) {
@@ -135,8 +279,14 @@ export function dispose(reel) {
         return;
     }
     reel.removeEventListener('scroll', entry.onScroll);
-    for (const observer of entry.observers) {
+    reel.removeEventListener('keydown', entry.onKeyDown);
+    reel.removeEventListener('wheel', entry.onWheel);
+    reel.removeEventListener('click', entry.onClick, true);
+    for (const observer of entry.observers || []) {
         observer.disconnect();
+    }
+    if (entry.disposeDots) {
+        entry.disposeDots();
     }
     state.delete(reel);
 }

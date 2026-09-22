@@ -23,11 +23,11 @@
 else
 {
     <div class="reel-wrap">
-        <div class="reel" role="list" aria-label="The journey, stage by stage" @ref="_reel">
+        <div class="reel" role="listbox" tabindex="0" aria-label="The journey, stage by stage. Use the arrow keys to move between stages." @ref="_reel">
             @for (var i = _stages.Count - 1; i >= 0; i--)
             {
                 var stage = _stages[i];
-                <div class="reel__step" role="listitem">
+                <div class="reel__step" role="option">
                     <StageCard Href="@stage.Slug"
                                Icon="@Emblems.ForStage(stage.Slug)"
                                Label="@stage.Node.Title"
@@ -45,6 +45,8 @@ else
             <span class="reel__hint-label">Earlier steps</span>
             <span class="reel__chevron"></span>
         </button>
+
+        <div class="reel-dots" role="tablist" aria-label="Jump to a stage"></div>
     </div>
 
     <div class="home__browse">
