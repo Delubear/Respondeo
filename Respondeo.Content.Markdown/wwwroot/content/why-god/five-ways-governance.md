@@ -9,7 +9,7 @@ summary: From the purposeful order of nature to an intelligent designer.
 The earlier ways traced *change* and *causal dependence*. The Fifth Way notices something different: **directedness**. 
 Things that have no minds of their own nevertheless behave *as if aimed* &mdash; consistently, and toward outcomes that benefit them.
 
-An **end** here does not mean a conscious goal; it means a *toward-which*: a definite result that a thing reliably tends to produce. 
+An **end** here does not mean a conscious goal; it means a *result aimed at*: a definite outcome that a thing reliably tends to produce. 
 A seed tends toward becoming a plant, not a puddle. Fire tends toward heating, not freezing.
 
 Aquinas&rsquo;s point is that **aiming requires an aimer**:
@@ -42,8 +42,8 @@ Consider everything the plant does, none of which it *understands*:
 Notice two things at once. First, the plant has **no awareness** of any of this &mdash; it does not know what water is, or light, or sugar. 
 Second, its parts and processes are unmistakably **aimed**: each reliably tends toward the plant&rsquo;s flourishing, "nearly always in the same way, so as to obtain the best result."
 
-Here is the pivot. **A tendency toward a specific outcome is a kind of pointing** &mdash; and pointing is about something that does not yet exist (the mature plant, the sugar not-yet-made). 
-How can a present, mindless process be *ordered to* a future good it cannot conceive?
+Here is the pivot. **Tending toward a specific outcome is a kind of pointing** &mdash; and pointing is aimed at something that does not exist yet (the mature plant, the sugar not-yet-made). 
+How can a present, mindless process be *aimed at* a future good it cannot picture or understand?
 
 - It cannot be **chance**: chance does not repeat "nearly always in the same way." Randomness scatters; the plant converges.
 - It cannot come **from the plant&rsquo;s own knowledge**: it has none.

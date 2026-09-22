@@ -22,12 +22,12 @@ And no such cause is the efficient cause of *itself*:
 4. An infinite regress of *essentially ordered* causes would remove the first cause, and with it every intermediate and final effect &mdash; but effects plainly exist.
 5. Therefore there must be a first efficient cause &mdash; *to which everyone gives the name of God.*
 
-**The crucial distinction: essential vs. accidental order.**
+**The crucial distinction: causes lined up in time vs. causes working right now.**
 This is the point most often missed.
 Aquinas is *not* arguing about a chain stretching back in time (a father begets a son, who begets a son&hellip;). 
-That is an **accidentally ordered** series, where each cause, once it has acted, is no longer needed for the effect to continue.
+That is an **accidentally ordered** series: once a cause has done its part, it is no longer needed for the effect to keep going. Your grandfather can die and you carry on existing.
 
-He means an **essentially ordered** series, where every member depends *here and now* on the one prior to it for its very causal power:
+He means an **essentially ordered** series, where every member depends *at this very moment* on the one before it for its power to act:
 
 - A hand moves a stick, which moves a stone. The stick has no power to move the stone except as the hand moves it *at this moment*.
 - Links hold a chandelier: each link hangs only because the one above holds it right now.
@@ -38,9 +38,8 @@ An infinite regress of instruments explains nothing: a chain of infinitely many 
 
 **Why this connects to act and potency.**
 An efficient cause gives being or actuality to its effect.
-But nothing gives what it does not have.
-A series of causes that each *receive* their causal power must ultimately terminate in something that *has* causal power of itself — a cause that is not actualized by another, 
-but is the unsourced source of the whole order.
+But nothing can give what it does not have.
+So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own — a cause that is not switched on by anything else, but is the unsourced source of the whole chain.
 
 > There must be a first efficient cause, to which everyone gives the name of God. &mdash; *Summa Theologiae* I, q. 2, a. 3
 

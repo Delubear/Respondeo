@@ -8,7 +8,7 @@ Before walking the Five Ways, it helps to grasp the single distinction they all 
 Aristotle introduced it to solve an ancient puzzle about change; Aquinas made it the backbone of his demonstrations.
 
 **The puzzle of change.**
-The early Greeks asked how anything can change. If a thing becomes what it *is not*, does it come from nothing? Parmenides concluded that change must be an illusion. Aristotle answered with a middle term between "being" and "non-being."
+The early Greeks asked how anything can change at all. If a thing becomes what it *is not* yet, where does the new state come from — out of nothing? One thinker, Parmenides, concluded that change must be an illusion. Aristotle solved the puzzle by finding a middle ground between plain "being" and "non-being."
 
 **The distinction, in plain terms:**
 
@@ -24,8 +24,8 @@ And here is the key principle Aquinas draws out:
 
 > Whatever is moved is moved by another. Nothing reduces itself from potency to act; it must be actualized by something already actual.
 
-The cold coffee does not warm itself — the hot stove, already actually hot, actualizes its potential for heat.
-A potential cannot actualize itself, for then it would have to already possess what it lacks.
+The cold coffee does not warm itself — the hot stove, already actually hot, turns its potential warmth into real warmth.
+A potential cannot make itself actual, because then it would already have to possess the very thing it still lacks.
 
 **Why this matters for the Five Ways.**
 Each way, especially the First Way from **motion**, is really an argument about act and potency:

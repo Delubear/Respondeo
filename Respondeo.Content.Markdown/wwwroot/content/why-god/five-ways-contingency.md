@@ -13,16 +13,15 @@ Aquinas asks what such fragile, borrowed existence ultimately depends on.
 
 **The argument, step by step:**
 
-1. Contingent things exist &mdash; things that are generated and corrupt, that can be or not be.
+1. Contingent things exist &mdash; things that come into being and later pass away, that can be or not be.
 2. What can *not be* at some time *is not*; so if everything were contingent, then at some point nothing would have existed.
 3. But from nothing, nothing comes &mdash; so if there had ever been nothing, nothing would exist now. Yet things plainly exist.
 4. Therefore not everything is contingent; there must exist something whose existence is **necessary**.
 5. A necessary being either has its necessity from another or not. This cannot regress infinitely, so there must exist a being **necessary of itself**, not receiving existence from another &mdash; *this all men speak of as God.*
 
-**A clarification.** Step 2 is the famously debated one, so it is worth stating charitably. Aquinas is not making a simple logical slip about "if each thing can fail, the whole must fail." 
-His point, read in its strongest form, is that **merely-possible existence cannot be the whole story** &mdash; a reality composed entirely of things that borrow their being, with no lender, 
-is a reality of borrowed existence with nothing to borrow *from*. Whether you frame it temporally (as the medieval text does) or as a here-and-now dependence (as the parallel argument from contingency does), 
-the conclusion is the same: contingent being points beyond itself to necessary being.
+**A clarification.** Step 2 is the famously debated one, so it is worth stating fairly. Aquinas is not making a simple logical slip like "if each thing can fail, then the whole must fail." 
+His real point is that **things which merely *might* exist cannot be the whole story** — a world made up entirely of things that borrow their being, with nothing to borrow it from, has no ultimate source of existence. 
+Whether you put it in terms of time (as the medieval text does) or in terms of a dependence happening right now, the conclusion is the same: things that could have failed to exist point beyond themselves to something that cannot.
 
 ## See it today: the flame of a candle
 
