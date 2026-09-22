@@ -224,20 +224,18 @@ export function init(reel) {
     };
     reel.addEventListener('wheel', onWheel, { passive: false });
 
-    // --- Click a far-off-centre peeking neighbour to centre it (instead of following its link). ---
+    // --- Click a far-off-centre peeking neighbour to nudge the reel one stage toward it. ---
     // Navigation is the DEFAULT: a click on the card the user is looking at always follows its
     // link. Only a card that is genuinely near the reel's edge — more than FAR_THRESHOLD of the
-    // viewport away from centre — is intercepted and centred instead. The distance is measured
-    // synchronously from scroll geometry (not the async `is-centered` class), so the outcome is
-    // deterministic and never races the browser auto-scrolling a card into view before the click.
+    // viewport away from centre — is intercepted. Rather than jumping straight to it, the click
+    // mirrors the hint buttons: it advances exactly one stage in that card's direction (up toward
+    // God if it sits above centre, back down if below). The distance is measured synchronously
+    // from scroll geometry (not the async `is-centered` class), so the outcome is deterministic
+    // and never races the browser auto-scrolling a card into view before the click.
     const FAR_THRESHOLD = 0.4; // Fraction of the reel viewport height.
     const onClick = (e) => {
         const step = e.target.closest('.reel__step');
         if (!step || !reel.contains(step)) {
-            return;
-        }
-        const index = stepsOf(reel).indexOf(step);
-        if (index === -1) {
             return;
         }
         const centre = reel.scrollTop + (reel.clientHeight / 2);
@@ -246,9 +244,11 @@ export function init(reel) {
         if (distance <= reel.clientHeight * FAR_THRESHOLD) {
             return; // Near centre: follow its link.
         }
-        // A far-off-centre peeking neighbour was clicked: centre it rather than navigating away.
+        // A far-off-centre peeking neighbour was clicked: nudge one stage toward it, exactly like
+        // the hint buttons (up = toward God for a card above centre, down = back for one below).
         e.preventDefault();
-        goToIndex(reel, index);
+        const direction = stepCentre < centre ? -1 : 1;
+        scrollByStep(reel, direction);
     };
     // Capture phase so we can intercept before the anchor's default navigation.
     reel.addEventListener('click', onClick, true);
