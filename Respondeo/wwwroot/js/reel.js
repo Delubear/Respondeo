@@ -209,8 +209,12 @@ export function init(reel) {
         }
         const direction = e.deltaY < 0 ? -1 : 1;
         const target = entry.centered + direction;
-        // At an end and still pushing outward: let the page scroll normally.
+        // At an end and still pushing outward: forward the gesture to the page so it scrolls on.
+        // The reel keeps a little internal slack from its top/bottom padding, so we scroll the
+        // window ourselves rather than passing through (which would be consumed inside the reel).
         if (target < 0 || target > steps.length - 1) {
+            e.preventDefault();
+            window.scrollBy({ top: e.deltaY, behavior: 'auto' });
             return;
         }
         e.preventDefault();

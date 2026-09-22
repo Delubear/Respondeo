@@ -110,6 +110,12 @@
     transform: translateX(0.35rem);
 }
 
+/* The "Begin ->" call-to-action line is mobile-only; hidden on desktop where the
+   label already carries an inline arrow. */
+.stage-card__cta {
+    display: none;
+}
+
 @media (max-width: 30rem) {
     .stage-card {
         flex-direction: column;
@@ -119,6 +125,36 @@
 
     .stage-card__label {
         justify-content: center;
+    }
+
+    /* Drop the inline label arrow and use a dedicated centred "Begin ->" line instead,
+       so a long stage name never shares a line with (and off-centres) the arrow. */
+    .stage-card__label .stage-card__arrow {
+        display: none;
+    }
+
+    .stage-card__cta {
+        display: inline-flex;
+        position: relative;
+        align-self: center;
+        width: fit-content;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--display);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--accent);
+    }
+
+    /* Position the arrow just past the end of "Begin" so the word stays optically centred;
+       the arrow no longer contributes to the group's width/centring. */
+    .stage-card__cta .stage-card__arrow {
+        position: absolute;
+        left: 100%;
+        margin-left: 0.4rem;
+        font-size: 1rem;
     }
 }
 
