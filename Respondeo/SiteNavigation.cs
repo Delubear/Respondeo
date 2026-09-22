@@ -17,6 +17,7 @@ public static class SiteNavigation
     [
         new("", "Home"),
         new("why-god", "Why God?"),
+        new("which-god", "Which God?"),
         new("why-jesus", "Why Jesus?"),
         new("why-the-church", "Why the Church?"),
         new("coming-home", "Coming Home"),

@@ -6,9 +6,9 @@ topics:
   - Existence of God
   - St. Thomas Aquinas
 nextStage:
-  href: /why-jesus
-  label: "Why Jesus?"
-  prompt: Reason has brought us to the God of classical theism. The next road asks whether He has spoken.
+  href: which-god
+  label: "Which God?"
+  prompt: Reason has brought us to the God of classical theism. The next road asks which God this is — whether He is personal, and whether He has spoken.
 ---
 
 The Five Ways each conclude to a first term — an Unmoved Mover, a First Cause, a Necessary Being, a source of all perfection, an ordering Intellect.
@@ -62,4 +62,4 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 **The God of the philosophers — and beyond.**
 Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.
 
-What reason cannot tell us is whether this God has *spoken* — whether He has revealed Himself, entered history, and drawn near. That is a further question, and the beginning of a different road.
+But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, yet it has not told us *which* God this is among the ones people actually worship — whether He is a distant abstraction or a personal God who knows and loves, and whether He has ever *spoken*, entered history, and drawn near. That is a further question, and the beginning of a different road.
