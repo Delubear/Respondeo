@@ -9,36 +9,70 @@ jobs:
   unit-tests:
     name: Unit and Component Tests
     runs-on: ubuntu-latest
+    outputs:
+      code-changed: ${{ steps.filter.outputs.code-changed }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # Detect whether any non-docs file changed. Docs-only changes (READMEs,
+      # TODO.md, AI instruction files) leave code-changed=false so the heavy
+      # steps below are skipped while the job itself still reports success —
+      # keeping required status checks green without doing needless work.
+      - name: Detect code changes
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "code-changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          CHANGED=$(git diff --name-only "$BASE" "$HEAD")
+          echo "Changed files:"; echo "$CHANGED"
+          # Ignore ONLY project docs: TODO.md, any README.md, and AI instruction files.
+          # Content markdown under wwwroot is website content and must still deploy.
+          CODE=$(echo "$CHANGED" | grep -vE '(^TODO\.md$|(^|/)README\.md$|^\.github/copilot-instructions\.md$|^\.github/instructions/)' || true)
+          if [ -n "$CODE" ]; then
+            echo "code-changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code-changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Setup .NET
+        if: steps.filter.outputs.code-changed == 'true'
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
 
       - name: Build tests
+        if: steps.filter.outputs.code-changed == 'true'
         run: dotnet build Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
 
       - name: Test
+        if: steps.filter.outputs.code-changed == 'true'
         run: dotnet test Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build --logger "trx;LogFileName=unit-tests.trx" --results-directory TestResults
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.filter.outputs.code-changed == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: unit-test-results
           path: TestResults/*.trx
 
       - name: Publish
+        if: steps.filter.outputs.code-changed == 'true'
         run: dotnet publish Respondeo/Respondeo.csproj -c Release -o release
 
       - name: Rewrite base href
+        if: steps.filter.outputs.code-changed == 'true'
         run: |
           sed -i "s|<base href=\"/\" />|<base href=\"/Respondeo/\" />|" release/wwwroot/index.html
 
       - name: Upload site for E2E
+        if: steps.filter.outputs.code-changed == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: site
@@ -47,6 +81,7 @@ jobs:
   e2e:
     name: Acceptance Tests (Playwright)
     needs: unit-tests
+    if: needs.unit-tests.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
