@@ -104,74 +104,6 @@
     transform: scale(1);
 }
 
-.reel__card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1.5rem 1.75rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.6rem;
-    background: var(--parchment);
-    box-shadow: 0 1px 2px var(--shadow);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.reel__card:hover {
-    text-decoration: none;
-    border-color: var(--gold);
-    box-shadow: 0 6px 18px var(--shadow);
-}
-
-/* A single section emblem crowning each card, matching the Next Stage cards. */
-.reel__emblem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.25rem;
-}
-
-.reel__emblem svg {
-    width: 2.2rem;
-    height: 2.2rem;
-    fill: var(--accent);
-}
-
-.reel__eyebrow {
-    font-family: var(--display);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 0.72rem;
-    color: var(--gold);
-}
-
-.reel__title {
-    font-family: var(--display);
-    font-size: 1.6rem;
-    color: var(--ink);
-    line-height: 1.2;
-}
-
-.reel__summary {
-    color: var(--ink-soft);
-    line-height: 1.55;
-    max-width: 26rem;
-}
-
-.reel__cta {
-    font-family: var(--display);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.8rem;
-    color: var(--accent);
-    margin-top: 0.35rem;
-}
-
 /* ---------- Scroll affordance ----------
    Chevrons at the top and bottom of the reel signal there is more to scroll. */
 .reel__hint {
@@ -182,19 +114,22 @@
     flex-direction: column;
     align-items: center;
     gap: 0.15rem;
-    color: var(--ink-soft);
-    background: none;
-    border: 0;
-    padding: 0.35rem 0.6rem;
+    color: var(--ink);
+    background: var(--parchment);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    box-shadow: 0 4px 14px var(--shadow);
     cursor: pointer;
     font: inherit;
     opacity: 1;
-    transition: opacity 0.3s ease, transform 0.2s ease;
+    transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .reel__hint:hover,
 .reel__hint:focus-visible {
     color: var(--accent);
+    box-shadow: 0 6px 18px var(--shadow);
 }
 
 .reel__hint:focus-visible {
@@ -274,13 +209,5 @@
     .reel {
         height: 24rem;
         padding: 8rem 0;
-    }
-
-    .reel__card {
-        padding: 1.75rem 1.25rem;
-    }
-
-    .reel__title {
-        font-size: 1.35rem;
     }
 }

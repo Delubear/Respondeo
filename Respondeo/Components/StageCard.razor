@@ -1,0 +1,59 @@
+@* A gilded "enter a stage" call-to-action card: an emblem plate on the left and a
+   text column (optional eyebrow, label with arrow, optional prompt) on the right.
+   Shared by the in-article "Next Stage" transition and the Home reel so both present
+   identical styling. *@
+
+<a class="stage-card" href="@ResolvedHref">
+    <span class="stage-card__emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+            <path d="@Emblems.Path(Icon)" />
+        </svg>
+    </span>
+    <span class="stage-card__body">
+        @if (!string.IsNullOrWhiteSpace(Eyebrow))
+        {
+            <span class="stage-card__eyebrow">@Eyebrow</span>
+        }
+        <span class="stage-card__label">
+            @Label
+            <span class="stage-card__arrow" aria-hidden="true">&rarr;</span>
+        </span>
+        @if (!string.IsNullOrWhiteSpace(Prompt))
+        {
+            <span class="stage-card__prompt">
+                @foreach (var sentence in SplitSentences(Prompt))
+                {
+                    <span class="stage-card__prompt-line">@sentence</span>
+                }
+            </span>
+        }
+    </span>
+</a>
+
+@code {
+    /// <summary>The destination route. Any leading slash is trimmed so it resolves relative to base.</summary>
+    [Parameter, EditorRequired] public string Href { get; set; } = default!;
+
+    /// <summary>The emblem name resolved via <see cref="Emblems.Path"/>.</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>The card's headline (e.g. the stage name).</summary>
+    [Parameter, EditorRequired] public string Label { get; set; } = default!;
+
+    /// <summary>Optional supporting text, rendered one sentence per line.</summary>
+    [Parameter] public string? Prompt { get; set; }
+
+    /// <summary>Optional small uppercase text above the label (e.g. "Stage 2 of 5").</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    // Authored hrefs may include a leading slash (e.g. "/why-jesus"). A root-absolute href
+    // ignores <base href> and would escape the app's sub-path when hosted under one (e.g.
+    // GitHub Pages at /Respondeo/). Trim the leading slash so the link resolves relative to base.
+    private string ResolvedHref => Href.TrimStart('/');
+
+    // Splits the prompt into its sentences so each renders on its own line, keeping the
+    // terminating punctuation attached to each sentence.
+    private static IEnumerable<string> SplitSentences(string prompt) => System.Text.RegularExpressions.Regex
+            .Split(prompt.Trim(), @"(?<=[.!?])\s+")
+            .Where(s => !string.IsNullOrWhiteSpace(s));
+}

@@ -28,17 +28,11 @@ else
             {
                 var stage = _stages[i];
                 <div class="reel__step" role="listitem">
-                    <a class="reel__card" href="@stage.Slug">
-                        <span class="reel__emblem" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" role="presentation" focusable="false">
-                                <path d="@Emblems.Path(Emblems.ForStage(stage.Slug))" />
-                            </svg>
-                        </span>
-                        <span class="reel__eyebrow">Stage @(i + 1) of @_stages.Count</span>
-                        <span class="reel__title">@stage.Node.Title</span>
-                        <span class="reel__summary">@stage.Node.Summary</span>
-                        <span class="reel__cta">Begin &rarr;</span>
-                    </a>
+                    <StageCard Href="@stage.Slug"
+                               Icon="@Emblems.ForStage(stage.Slug)"
+                               Label="@stage.Node.Title"
+                               Eyebrow="@($"Stage {i + 1} of {_stages.Count}")"
+                               Prompt="@stage.Node.Summary" />
                 </div>
             }
         </div>
