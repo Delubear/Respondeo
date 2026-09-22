@@ -1,7 +1,7 @@
 ---
 id: why-jesus
 title: "Why Jesus?"
-summary: From the God of the philosophers to the God who speaks in history.
+summary: From the God of Abraham to the God who speaks in history — has He shown His face in Jesus of Nazareth?
 topics:
   - Divine Revelation
   - Jesus Christ
