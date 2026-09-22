@@ -17,12 +17,11 @@ branches:
     prompt: If the arguments succeed, what must this first being actually be?
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Good arguments deserve to be tested against the hardest objections, not the weakest.
 A faith that cannot look its strongest challengers in the eye is not worth much &mdash; so here each objection is stated in its most forceful form *before* any reply is given.
 
+Chief among them is the problem of evil. It is taken seriously and addressed first, on its own terms, rather than passed over on the way to easier questions.
+
 The aim is not to "win," but to show that belief in God is reasonable *with the difficulties in full view*.
-The deepest of these &mdash; the problem of evil &mdash; is placed first, because it is felt before it is argued.
 
 Expand a section below to sit with each objection and its response.

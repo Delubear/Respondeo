@@ -4,8 +4,6 @@ title: "The Burden of Proof"
 summary: Isn't the believer the one who has to prove God, like a teapot orbiting the sun?
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 **The objection, at its strongest:**
 
 1. Whoever asserts a claim carries the burden of proving it.

@@ -4,8 +4,6 @@ title: "Science Explains Everything"
 summary: As science advances, doesn't it leave less and less for God to do?
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 **The objection, at its strongest:**
 
 1. Things once attributed to God &mdash; storms, disease, the origin of species &mdash; now have natural explanations.
@@ -24,11 +22,14 @@ This is essentially Aquinas's second objection &mdash; that natural and human ca
 
 - **This attacks a "God of the gaps" no serious theist defends.** Classical theism does not put God *inside* the causal chain as one force among others, filling holes in our knowledge. 
   It asks why there is a lawful, intelligible chain to investigate at all. Better science does not shrink that question; it sharpens it.
-- **Science and God answer different questions.** Physics describes *how* the world behaves; it presupposes but cannot supply the *why is there anything, and why is it ordered* that grounds the whole enterprise. 
+- **Science and God answer different questions.** Physics describes *how* the world behaves; it presupposes but cannot supply the *why is there anything, 
+  and why is it ordered* that grounds the whole enterprise. 
   Explaining the mechanism of a kettle does not remove the person who wanted tea.
-- **Science rests on assumptions it cannot prove.** That the universe is rational, that its order is stable and discoverable, that our minds track truth &mdash; these are not results of science but conditions for it. 
+- **Science rests on assumptions it cannot prove.** That the universe is rational, that its order is stable and discoverable, 
+  that our minds track truth &mdash; these are not results of science but conditions for it. 
   A created, intelligible cosmos makes better sense of *why science works* than brute, unexplained regularity does.
-- **The history cuts both ways.** Many founders of modern science pursued it *because* they expected a law-giver's ordered world. The success of science is comfortable company for theism, not its refutation.
+- **The history cuts both ways.** Many founders of modern science pursued it *because* they expected a law-giver's ordered world. 
+  The success of science is comfortable company for theism, not its refutation.
 
 Aquinas answers that nature and reason are not self-explaining first principles at all, but themselves *changeable and caused* &mdash; and so point beyond themselves:
 
@@ -38,3 +39,12 @@ Aquinas answers that nature and reason are not self-explaining first principles 
 > human reason or will, since these can change or fail." &mdash; *Summa Theologiae* I, q. 2, a. 3, reply to obj. 2
 
 *That nature is directed to an end rather than self-explaining is developed in [the Fifth Way &mdash; Governance](node/aquinas-five-ways?section=five-ways-governance).*
+
+::: youtube VPZfmpEkal4
+:::
+
+::: youtube JAkj5P6IHUQ
+:::
+
+::: youtube tNJbhQVVz8I
+:::

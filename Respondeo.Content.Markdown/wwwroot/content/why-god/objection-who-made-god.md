@@ -4,8 +4,6 @@ title: "\"Who Made God?\""
 summary: If everything needs a cause, doesn't God need one too?
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 **The objection, at its strongest:**
 
 1. The argument for God says everything that exists needs a cause.
@@ -15,9 +13,12 @@ summary: If everything needs a cause, doesn't God need one too?
 
 **In response:**
 
-- **It misstates the premise.** The classical arguments never say *everything* needs a cause. They say everything *that begins to exist*, or everything *whose existence is dependent/contingent*, needs a cause. 
-  God is not proposed as one more contingent item, but as the one necessary being whose essence *is* to exist. Asking "who made the uncaused cause?" is like asking "what is north of the North Pole?"
-- **This is not special pleading.** Special pleading would be exempting God for no reason. But there *is* a reason: a chain of dependent causes cannot be dependent all the way down, or it never gets started. 
+- **It misstates the premise.** The classical arguments never say *everything* needs a cause. 
+  They say everything *that begins to exist*, or everything *whose existence is dependent/contingent*, needs a cause. 
+  God is not proposed as one more contingent item, but as the one necessary being whose essence *is* to exist. 
+  Asking "who made the uncaused cause?" is like asking "what is north of the North Pole?"
+- **This is not special pleading.** Special pleading would be exempting God for no reason. 
+  But there *is* a reason: a chain of dependent causes cannot be dependent all the way down, or it never gets started. 
   The regress terminates in something non-dependent by definition &mdash; that is the whole point of the argument, not a cheat added at the end.
 
   St. Thomas makes exactly this move in the Second Way, and gives the uncaused cause its name:
