@@ -1,8 +1,7 @@
 # Respondeo — Content TODO & Topic Backlog
 
-A running list of topics we are missing, considering, or want to deepen. Stubs
-exist in the content pipeline but are marked as unvetted; this file tracks the
-editorial intent behind them and the gaps still to fill.
+A running list of topics we are missing, considering, or want to deepen. 
+Stubs exist in the content pipeline but are marked as unvetted; this file tracks the editorial intent behind them and the gaps still to fill.
 
 ## Legend
 
@@ -15,11 +14,10 @@ editorial intent behind them and the gaps still to fill.
 ## Stage: Why God?
 
 - [x] Landing page
-- [x] Can we even know the truth? (epistemology / relativism) — real content
+- [x] Can we even know the truth? (epistemology / relativism)
 - [x] The Five Ways (overview + five arguments)
 - [x] Foundations: act & potency, essence & existence
-- [x] Objections: problem of evil, divine hiddenness, who made God,
-      science explains it, burden of proof
+- [x] Objections: problem of evil, divine hiddenness, who made God, science explains it, burden of proof
 - [x] What is God like? (divine attributes)
 - [ ] Consider: Is the universe eternal? (does it change the argument?)
 - [ ] Consider: Fine-tuning / contemporary design arguments
@@ -27,8 +25,7 @@ editorial intent behind them and the gaps still to fill.
 
 ## Stage: Which God? (NEW)
 
-Bridges the gap from "a God" (natural theology) to "the personal, covenant God
-of Israel." All child nodes are currently stubs.
+Bridges the gap from "a God" (natural theology) to "the personal, covenant God of Israel." All child nodes are currently stubs.
 
 - [x] Landing page
 - [ ] Is the first cause personal? (mind & will vs. blind principle)
