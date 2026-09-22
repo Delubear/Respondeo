@@ -29,6 +29,8 @@ public sealed class NavigationSteps(PlaywrightContext context)
         // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-centre the card
         // past the interception threshold and turn the click into a one-stage nudge instead of navigation. The centred anchor navigates deterministically.
         await stageOne.Locator(".stage-card").DispatchEventAsync("click");
+        // Confirm we left Home and the destination stage page rendered: `.card` are the branch cards on a stage/node
+        // page (NOT the Home reel's `.stage-card`). Waiting here syncs before the next step clicks a branch card.
         await Page.WaitForSelectorAsync(".card");
     }
 
