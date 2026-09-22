@@ -5,6 +5,10 @@ summary: Whether Jesus claimed divine authority, and how that claim was understo
 topics:
   - Jesus Christ
   - Divine Revelation
+branches:
+  - to: jesus-resurrection
+    label: "The Resurrection"
+    prompt: If Jesus claimed a divine authority, the next question is whether He vindicated it by rising from the dead.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

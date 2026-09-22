@@ -5,10 +5,11 @@ summary: Whether Jesus established a visible Church and entrusted it with His te
 topics:
   - Jesus Christ
   - The Catholic Church
-branches:
-  - to: why-the-church
-    label: "Which Church did He found?"
-    prompt: If Jesus founded a Church, the next question is where to find it today.
+nextStage:
+  href: why-the-church
+  label: "Why the Church?"
+  icon: church
+  prompt: If the risen Christ founded a visible Church and gave it authority to teach, the next question is where that Church is to be found today.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
