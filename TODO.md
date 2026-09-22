@@ -40,14 +40,17 @@ monotheism → personal → can reveal → (other faiths, optional) → God of I
 ## Stage: Why Jesus?
 
 Structured as an ordered path (flow wired; nodes still stubs):
-claimed to be God → the Resurrection → founded a Church → *Why the Church?*
+trust the Gospels → claimed to be God → (OT prophecy, optional) → the Resurrection → (objections, optional) → founded a Church → *Why the Church?*
 
 - [~] Landing page (reads as an ordered path, not a menu)
-- [ ] Jesus' divine claims — path start
+- [ ] Can we trust the Gospels? (dating, eyewitness roots, manuscripts) — path start
+- [ ] Jesus' divine claims
+- [ ] Did Jesus fulfill prophecy? (messianic expectation) — optional detour
 - [ ] The Resurrection (historical case)
+- [ ] Objections to Jesus (accordion: legend theory, resurrection alternatives, gospel contradictions) — optional detour
 - [ ] Jesus founded a Church — hands off to *Why the Church?*
-- [ ] Consider: Reliability of the Gospels / New Testament
-- [ ] Consider: Old Testament messianic prophecy fulfilled
+- [ ] Consider: The "Liar, Lunatic, Lord, or Legend" trilemma in full
+- [ ] Consider: Resurrection minimal-facts sub-pages (empty tomb, appearances, origin of belief)
 
 ## Stage: Why the Church?
 

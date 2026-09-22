@@ -6,9 +6,9 @@ topics:
   - Divine Revelation
   - Jesus Christ
 branches:
-  - to: jesus-divine-claims
-    label: "Did Jesus claim to be God?"
-    prompt: Begin the path — did Jesus claim a divine authority beyond that of any prophet or teacher?
+  - to: jesus-gospel-reliability
+    label: "Can we trust the Gospels?"
+    prompt: Begin the path — the whole case is historical, so first ask whether the Gospels are sources we can reason from.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -20,9 +20,10 @@ That is a question of **history**, not only philosophy.
 The Christian claim is that God entered history in Jesus of Nazareth — whose life, death, and Resurrection are attested by witnesses who died rather than recant. 
 This stage walks that claim as an ordered path, one question leading to the next:
 
+- Can the Gospels be trusted as historical sources at all?
 - Did Jesus claim divine authority — a claim no mere prophet would make?
 - Was that claim vindicated by His rising from the dead?
-- Did the risen Christ found a visible Church and entrust it with His teaching?
+- Does it survive its hardest objections, and did the risen Christ found a visible Church?
 
 Begin below, and follow the path from step to step.
 

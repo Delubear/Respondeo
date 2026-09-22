@@ -6,6 +6,9 @@ topics:
   - Jesus Christ
   - Divine Revelation
 branches:
+  - to: jesus-objections
+    label: "Objections to Jesus"
+    prompt: "An optional step — sit with the hardest objections: the legend theory, natural explanations of the Resurrection, and the Gospels themselves."
   - to: jesus-founded-church
     label: "Did Jesus found a Church?"
     prompt: If the Resurrection vindicates His authority, the next question is whether He established a visible Church to carry it on.

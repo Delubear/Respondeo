@@ -6,6 +6,9 @@ topics:
   - Jesus Christ
   - Divine Revelation
 branches:
+  - to: jesus-ot-prophecy
+    label: "Did Jesus fulfill prophecy?"
+    prompt: Before the Resurrection, an optional step — do the Hebrew Scriptures' messianic expectations converge on Jesus?
   - to: jesus-resurrection
     label: "The Resurrection"
     prompt: If Jesus claimed a divine authority, the next question is whether He vindicated it by rising from the dead.
