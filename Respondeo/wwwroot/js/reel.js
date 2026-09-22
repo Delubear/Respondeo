@@ -217,6 +217,9 @@ export function init(reel) {
     reel.addEventListener('wheel', onWheel, { passive: false });
 
     // --- Click a peeking neighbour to centre it (instead of following its link). ---
+    // Only a card that is NOT the centred one is intercepted; clicking the centred card
+    // (the one squarely in the middle) always follows its link. We derive "centred" from
+    // live geometry so the decision is correct regardless of scroll timing.
     const onClick = (e) => {
         const step = e.target.closest('.reel__step');
         if (!step || !reel.contains(step)) {
@@ -227,14 +230,14 @@ export function init(reel) {
         if (index === -1) {
             return;
         }
-        // Compute the centred step from live geometry rather than the cached value: on
-        // first load the cache lags behind the initial scroll-to-bottom.
-        const centered = nearestStepIndex(reel, steps);
-        // Only intercept the immediately adjacent peeking neighbours (±1). The centred
-        // card and any further card navigate normally, so a click always either advances
-        // one step or follows the link — never gets silently swallowed.
-        if (Math.abs(index - centered) !== 1) {
-            return;
+        // If the clicked card is (near enough) centred, let the link navigate. We allow a
+        // small tolerance so a card the user has snapped to always counts as centred even
+        // if the scroll settled a pixel or two off.
+        const centre = reel.scrollTop + (reel.clientHeight / 2);
+        const stepCentre = step.offsetTop + (step.offsetHeight / 2);
+        const tolerance = step.offsetHeight / 2;
+        if (Math.abs(stepCentre - centre) <= tolerance) {
+            return; // Centred (or close): follow the card's link.
         }
         // A peeking neighbour was clicked: centre it rather than navigating away.
         e.preventDefault();
@@ -267,9 +270,9 @@ export function init(reel) {
     entry.onScroll = onScroll;
     entry.onKeyDown = onKeyDown;
     entry.onWheel = onWheel;
-    entry.onClick = onClick;
     entry.observers = observers;
     entry.disposeDots = disposeDots;
+    entry.onClick = onClick;
 }
 
 // Scroll by one card. direction: -1 scrolls up (toward God), +1 scrolls down.

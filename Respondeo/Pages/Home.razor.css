@@ -101,7 +101,7 @@
     cursor: pointer;
 }
 
-/* Peeking neighbours read as tappable; the centred card behaves as a normal link. */
+/* The centred card behaves as a normal link; only peeking neighbours are "tap to centre". */
 .reel__step.is-centered {
     cursor: default;
 }
