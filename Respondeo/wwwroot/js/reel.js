@@ -224,14 +224,19 @@ export function init(reel) {
         }
         const steps = stepsOf(reel);
         const index = steps.indexOf(step);
-        // Compute the centred step from live geometry rather than the cached value: on
-        // first load the cache lags behind the initial scroll-to-bottom, and we must let
-        // a click on the already-centred card navigate normally.
-        const centered = nearestStepIndex(reel, steps);
-        if (index === -1 || index === centered) {
-            return; // Already centred: let the card's link handle the click.
+        if (index === -1) {
+            return;
         }
-        // A neighbour was clicked: centre it rather than navigating away.
+        // Compute the centred step from live geometry rather than the cached value: on
+        // first load the cache lags behind the initial scroll-to-bottom.
+        const centered = nearestStepIndex(reel, steps);
+        // Only intercept the immediately adjacent peeking neighbours (±1). The centred
+        // card and any further card navigate normally, so a click always either advances
+        // one step or follows the link — never gets silently swallowed.
+        if (Math.abs(index - centered) !== 1) {
+            return;
+        }
+        // A peeking neighbour was clicked: centre it rather than navigating away.
         e.preventDefault();
         goToIndex(reel, index);
     };
