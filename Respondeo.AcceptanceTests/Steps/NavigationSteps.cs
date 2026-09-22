@@ -21,12 +21,14 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstStageCard()
     {
         // The home reel renders the journey with Stage 1 at the BOTTOM (climbing upward) and
-        // loads with that first stage centred. Clicking a NON-centred card only re-centres it,
-        // so we must click the centred card, whose link navigates to its stage page. The centred
-        // card is already fully in view, so Playwright performs no auto-scroll before clicking.
-        var centered = Page.Locator(".reel__step.is-centered");
-        await centered.WaitForAsync();
-        await centered.Locator(".stage-card").ClickAsync();
+        // scrolls to it on init. Until that scroll settles, the initially-rendered TOP card can
+        // briefly carry `is-centered`, so waiting for any centred card races the reel's settle
+        // and could click the wrong stage. Stage 1 is the LAST `.reel__step`, so we wait for the
+        // bottom card specifically to become centred, then click it (a centred card's link
+        // navigates; a non-centred one would only re-centre).
+        var stageOne = Page.Locator(".reel__step:last-child.is-centered");
+        await stageOne.WaitForAsync();
+        await stageOne.Locator(".stage-card").ClickAsync();
         await Page.WaitForSelectorAsync(".card");
     }
 
