@@ -26,21 +26,26 @@ Stubs exist in the content pipeline but are marked as unvetted; this file tracks
 ## Stage: Which God?
 
 Bridges the gap from "a God" (natural theology) to "the personal, covenant God of Israel."
+Structured as an ordered path (flow wired; nodes still stubs), with one optional detour:
+monotheism → personal → can reveal → (other faiths, optional) → God of Israel → *Why Jesus?*
 
-- [~] Landing page
+- [~] Landing page (reads as an ordered path, not a menu)
+- [ ] Why one God, not many? (monotheism vs. polytheism/dualism) — path start
 - [ ] Is the first cause personal? (mind & will vs. blind principle)
 - [ ] Could God speak to us? (possibility of revelation, motives of credibility)
-- [ ] Why one God, not many? (monotheism vs. polytheism/dualism)
-- [ ] Why the God of Israel? (covenant, prophets, ethical monotheism)
-- [ ] What about other faiths? (Islam, deism, Eastern conceptions)
+- [ ] What about other faiths? (Islam, deism, Eastern conceptions) — optional detour
+- [ ] Why the God of Israel? (covenant, prophets, ethical monotheism) — hands off to *Why Jesus?*
 - [ ] Consider: The Trinity as a later revealed refinement (forward pointer)
 
 ## Stage: Why Jesus?
 
-- [~] Landing page
-- [ ] Jesus' divine claims
+Structured as an ordered path (flow wired; nodes still stubs):
+claimed to be God → the Resurrection → founded a Church → *Why the Church?*
+
+- [~] Landing page (reads as an ordered path, not a menu)
+- [ ] Jesus' divine claims — path start
 - [ ] The Resurrection (historical case)
-- [ ] Jesus founded a Church
+- [ ] Jesus founded a Church — hands off to *Why the Church?*
 - [ ] Consider: Reliability of the Gospels / New Testament
 - [ ] Consider: Old Testament messianic prophecy fulfilled
 
