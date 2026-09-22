@@ -48,13 +48,21 @@ function centreOf(reel, step) {
 }
 
 // Smoothly (or instantly under reduced motion) centre the step at the given index.
-function goToIndex(reel, index) {
+// When moveFocus is true (keyboard navigation), move DOM focus onto the newly
+// centred card so its highlight follows the active card instead of lingering on
+// the previously focused one.
+function goToIndex(reel, index, moveFocus = false) {
     const steps = stepsOf(reel);
     if (steps.length === 0) {
         return;
     }
     const clamped = Math.min(steps.length - 1, Math.max(0, index));
     reel.scrollTo({ top: centreOf(reel, steps[clamped]), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    if (moveFocus) {
+        const link = steps[clamped].querySelector('a');
+        // preventScroll: we already control the scroll position above.
+        (link || steps[clamped]).focus({ preventScroll: true });
+    }
 }
 
 // The single source of truth for "which card is centred": updates hints, the
@@ -188,7 +196,7 @@ export function init(reel) {
                 return;
         }
         e.preventDefault();
-        goToIndex(reel, target);
+        goToIndex(reel, target, true);
     };
     reel.addEventListener('keydown', onKeyDown);
 
@@ -217,27 +225,21 @@ export function init(reel) {
     reel.addEventListener('wheel', onWheel, { passive: false });
 
     // --- Click a peeking neighbour to centre it (instead of following its link). ---
-    // Only a card that is NOT the centred one is intercepted; clicking the centred card
-    // (the one squarely in the middle) always follows its link. We derive "centred" from
-    // live geometry so the decision is correct regardless of scroll timing.
+    // The centred card (the one carrying `is-centered`, kept in sync by notify()) always
+    // follows its link; only a NON-centred peeking neighbour is intercepted and centred.
+    // Keying off the class — the same signal the UI and tests observe — avoids geometry
+    // races when the browser auto-scrolls a card into view just before the click.
     const onClick = (e) => {
         const step = e.target.closest('.reel__step');
         if (!step || !reel.contains(step)) {
             return;
         }
-        const steps = stepsOf(reel);
-        const index = steps.indexOf(step);
+        const index = stepsOf(reel).indexOf(step);
         if (index === -1) {
             return;
         }
-        // If the clicked card is (near enough) centred, let the link navigate. We allow a
-        // small tolerance so a card the user has snapped to always counts as centred even
-        // if the scroll settled a pixel or two off.
-        const centre = reel.scrollTop + (reel.clientHeight / 2);
-        const stepCentre = step.offsetTop + (step.offsetHeight / 2);
-        const tolerance = step.offsetHeight / 2;
-        if (Math.abs(stepCentre - centre) <= tolerance) {
-            return; // Centred (or close): follow the card's link.
+        if (step.classList.contains('is-centered')) {
+            return; // Centred card: follow its link.
         }
         // A peeking neighbour was clicked: centre it rather than navigating away.
         e.preventDefault();
