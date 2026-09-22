@@ -23,11 +23,11 @@ Stubs exist in the content pipeline but are marked as unvetted; this file tracks
 - [ ] Consider: Fine-tuning / contemporary design arguments
 - [ ] Consider: Free will and determinism as a preamble
 
-## Stage: Which God? (NEW)
+## Stage: Which God?
 
-Bridges the gap from "a God" (natural theology) to "the personal, covenant God of Israel." All child nodes are currently stubs.
+Bridges the gap from "a God" (natural theology) to "the personal, covenant God of Israel."
 
-- [x] Landing page
+- [~] Landing page
 - [ ] Is the first cause personal? (mind & will vs. blind principle)
 - [ ] Could God speak to us? (possibility of revelation, motives of credibility)
 - [ ] Why one God, not many? (monotheism vs. polytheism/dualism)
@@ -37,7 +37,7 @@ Bridges the gap from "a God" (natural theology) to "the personal, covenant God o
 
 ## Stage: Why Jesus?
 
-- [ ] Landing page (real content)
+- [~] Landing page
 - [ ] Jesus' divine claims
 - [ ] The Resurrection (historical case)
 - [ ] Jesus founded a Church
@@ -46,7 +46,7 @@ Bridges the gap from "a God" (natural theology) to "the personal, covenant God o
 
 ## Stage: Why the Church?
 
-- [ ] Landing page (real content)
+- [~] Landing page (real content)
 - [ ] The Church founded by Christ
 - [ ] Recognizing the true Church
 - [ ] The four marks (one, holy, catholic, apostolic)
@@ -56,7 +56,7 @@ Bridges the gap from "a God" (natural theology) to "the personal, covenant God o
 
 ## Stage: Coming Home
 
-- [ ] Landing page (real content)
+- [~] Landing page (real content)
 - [ ] What the Church offers
 - [ ] How to begin
 - [ ] Obstacles (hurt, doubt, past distance)
@@ -72,6 +72,7 @@ Bridges the gap from "a God" (natural theology) to "the personal, covenant God o
 - [ ] Science & faith (history, Galileo, evolution) as a standalone thread
 - [ ] Glossary of key terms (act/potency, contingency, hypostatic union, etc.)
 - [ ] Reading list / primary-source references per stage
+- [ ] Miracles (historical, theological, and philosophical treatment)
 
 ## Housekeeping
 
