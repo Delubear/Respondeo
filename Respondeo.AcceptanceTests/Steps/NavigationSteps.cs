@@ -26,8 +26,9 @@ public sealed class NavigationSteps(PlaywrightContext context)
         await stageOne.WaitForAsync();
 
         // Clicking a card at (or near) centre always follows its link — the reel only intercepts clicks on cards that are far off-centre.
-        // Stage 1 is centred here, so a single click navigates deterministically with no retry needed.
-        await stageOne.Locator(".stage-card").ClickAsync();
+        // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-centre the card
+        // past the interception threshold and turn the click into a one-stage nudge instead of navigation. The centred anchor navigates deterministically.
+        await stageOne.Locator(".stage-card").DispatchEventAsync("click");
         await Page.WaitForSelectorAsync(".card");
     }
 
@@ -46,6 +47,7 @@ public sealed class NavigationSteps(PlaywrightContext context)
     }
 
     [Given("I open the \"(.*)\" stage directly")]
+    [When("I open the \"(.*)\" stage directly")]
     public async Task GivenIOpenTheStageDirectly(string slug)
     {
         await Page.GotoAsync($"{context.BaseUrl}/{slug}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
