@@ -56,8 +56,8 @@
     left: calc(50% - 0.875rem);
     width: 2px;
     transform: translateX(-50%);
-    background: linear-gradient(to bottom, transparent, var(--gold) 18%, var(--gold) 82%, transparent);
-    opacity: 0.35;
+    background: linear-gradient(to bottom, transparent, var(--rule) 18%, var(--rule) 82%, transparent);
+    opacity: 0.9;
     pointer-events: none;
     z-index: 0;
 }
@@ -159,7 +159,7 @@
 /* Emblem glow: the centred stage's gilded plate warms up to draw the eye. Works in
    both native and fallback modes since `is-centered` is always kept in sync by JS. */
 .reel__step.is-centered ::deep .stage-card__emblem {
-    box-shadow: 0 0 0 1px var(--gold), 0 0 1.4rem var(--gold-glow, rgba(198, 160, 74, 0.55));
+    box-shadow: 0 6px 18px var(--shadow);
     transition: box-shadow 0.35s ease;
 }
 
@@ -189,11 +189,11 @@
     padding: 0;
     line-height: 0;
     aspect-ratio: 1;
-    border: 1px solid var(--gold);
+    border: 1px solid var(--rule);
     border-radius: 50%;
     background: transparent;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
 }
 
@@ -227,7 +227,7 @@
     gap: 0.15rem;
     color: var(--ink);
     background: var(--parchment);
-    border: 1px solid var(--gold);
+    border: 1px solid var(--rule);
     border-radius: 999px;
     padding: 0.4rem 0.9rem;
     box-shadow: 0 4px 14px var(--shadow);
