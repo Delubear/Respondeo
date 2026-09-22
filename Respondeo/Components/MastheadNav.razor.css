@@ -13,11 +13,11 @@
     list-style: none;
     margin: 0 auto;
     padding: 0;
-    max-width: var(--maxw);
+    max-width: 60rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0 1.5rem;
+    gap: 0 1.1rem;
 }
 
 .mastnav__item {
@@ -32,6 +32,7 @@
     font-size: 0.9rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    white-space: nowrap;
     border-bottom: 2px solid transparent;
     transition: color 0.15s ease, border-color 0.15s ease;
 }
@@ -46,20 +47,21 @@
     border-bottom-color: var(--accent);
 }
 
-/* Tablet: tighten spacing before collapsing. */
-@media (max-width: 720px) {
+/* Narrow desktop / tablet: tighten spacing so all stage tabs stay on one line
+   right down to the collapse breakpoint below. */
+@media (max-width: 900px) {
     .mastnav__list {
-        gap: 0 1rem;
+        gap: 0 0.85rem;
     }
 
     .mastnav ::deep .mastnav__link {
         font-size: 0.82rem;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.03em;
     }
 }
 
-/* Phone: collapse behind a toggle button. */
-@media (max-width: 560px) {
+/* Collapse behind a toggle button before the tabs are forced to wrap. */
+@media (max-width: 800px) {
     .mastnav {
         padding: 0;
     }
