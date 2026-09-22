@@ -37,8 +37,7 @@ public class BreadcrumbTests : TestContext
     [Fact]
     public void Renders_current_title_as_the_final_crumb()
     {
-        var cut = RenderComponent<Breadcrumb>(p => p
-            .Add(c => c.CurrentTitle, "Does God exist?"));
+        var cut = RenderComponent<Breadcrumb>(p => p.Add(c => c.CurrentTitle, "Does God exist?"));
 
         var current = cut.Find(".breadcrumb__current");
         Assert.Equal("Does God exist?", current.TextContent);
@@ -48,8 +47,7 @@ public class BreadcrumbTests : TestContext
     [Fact]
     public void Marks_the_current_crumb_with_aria_current()
     {
-        var cut = RenderComponent<Breadcrumb>(p => p
-            .Add(c => c.CurrentTitle, "Does God exist?"));
+        var cut = RenderComponent<Breadcrumb>(p => p.Add(c => c.CurrentTitle, "Does God exist?"));
 
         Assert.Equal("page", cut.Find(".breadcrumb__current").GetAttribute("aria-current"));
     }

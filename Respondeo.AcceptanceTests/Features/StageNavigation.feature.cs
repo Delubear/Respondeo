@@ -203,15 +203,12 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 15
- await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync("I open the \"why-god\" stage directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 16
- await testRunner.WhenAsync("I choose the first stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 17
- await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 18
  await testRunner.ThenAsync("the breadcrumb root should not be \"Home\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -226,7 +223,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Using the masthead nav resets the trail", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+#line 19
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -236,22 +233,22 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 21
+#line 20
  await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 22
+#line 21
  await testRunner.WhenAsync("I choose the first stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 23
+#line 22
  await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 23
  await testRunner.AndAsync("I choose the first masthead stage", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 24
  await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 25
  await testRunner.ThenAsync("the breadcrumb should contain 1 step", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

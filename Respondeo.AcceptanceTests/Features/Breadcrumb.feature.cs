@@ -184,24 +184,21 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 14
- await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync("I open the \"why-god\" stage directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 15
- await testRunner.WhenAsync("I choose the first stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 16
- await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 17
  await testRunner.AndAsync("I navigate back to the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 18
- await testRunner.AndAsync("I choose the first stage card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 17
+ await testRunner.AndAsync("I open the \"why-god\" stage directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 19
+#line 18
  await testRunner.AndAsync("I choose the first branch card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 19
  await testRunner.ThenAsync("the breadcrumb should contain 1 step", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

@@ -15,8 +15,7 @@ public class StageReelTests : TestContext
         reelModule.SetupVoid("scrollByStep", _ => true);
     }
 
-    private static ContentNode Node(string id, string title, string summary = "") =>
-        new() { Id = id, Title = title, Summary = summary, BodyHtml = string.Empty };
+    private static ContentNode Node(string id, string title, string summary = "") => new() { Id = id, Title = title, Summary = summary, BodyHtml = string.Empty };
 
     private static IReadOnlyList<StageReel.ReelStage> ThreeStages() =>
     [
@@ -25,8 +24,7 @@ public class StageReelTests : TestContext
         new("why-the-church", Node("why-the-church", "Why the Church?", "Which church?")),
     ];
 
-    private IRenderedComponent<StageReel> Render(IReadOnlyList<StageReel.ReelStage> stages) =>
-        RenderComponent<StageReel>(p => p.Add(c => c.Stages, stages));
+    private IRenderedComponent<StageReel> Render(IReadOnlyList<StageReel.ReelStage> stages) => RenderComponent<StageReel>(p => p.Add(c => c.Stages, stages));
 
     [Fact]
     public void Renders_a_card_for_each_stage()

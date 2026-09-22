@@ -12,9 +12,8 @@ Feature: Stage navigation
 	Then I should see the not found page
 
   Scenario: The breadcrumb is rooted at the stage, not Home
-	Given I open the start page
-	When I choose the first stage card
-	And I choose the first branch card
+	Given I open the "why-god" stage directly
+	When I choose the first branch card
 	Then the breadcrumb root should not be "Home"
 
   Scenario: Using the masthead nav resets the trail

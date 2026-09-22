@@ -20,15 +20,13 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [When("I choose the first stage card")]
     public async Task WhenIChooseTheFirstStageCard()
     {
-        // The home reel renders the journey with Stage 1 at the BOTTOM (climbing upward) and
-        // scrolls to it on init. Stage 1 is the LAST `.reel__step`, so we wait for the bottom
-        // card specifically to become centred before interacting.
+        // The home reel renders the journey with Stage 1 at the BOTTOM (climbing upward) and scrolls to it on init.
+        // Stage 1 is the LAST `.reel__step`, so we wait for the bottom card specifically to become centred (and thus unmasked) before clicking.
         var stageOne = Page.Locator(".reel__step:last-child.is-centered");
         await stageOne.WaitForAsync();
 
-        // Clicking a card at (or near) centre always follows its link — the reel only intercepts
-        // clicks on cards that are far off-centre. Stage 1 is centred here, so a single click
-        // navigates deterministically with no retry needed.
+        // Clicking a card at (or near) centre always follows its link — the reel only intercepts clicks on cards that are far off-centre.
+        // Stage 1 is centred here, so a single click navigates deterministically with no retry needed.
         await stageOne.Locator(".stage-card").ClickAsync();
         await Page.WaitForSelectorAsync(".card");
     }
@@ -64,9 +62,9 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstMastheadStage()
     {
         // The first masthead link is Home; the first stage link is the next one.
-        // We may be on a node page whose branch cards are still in the DOM, so wait for the
-        // client-side navigation to actually land on the stage page (which has no breadcrumb)
-        // before proceeding, otherwise a later step could click a stale card mid-transition.
+        // We may be on a node page whose branch cards are still in the DOM,
+        // so wait for the client-side navigation to actually land on the stage page (which has no breadcrumb) before proceeding,
+        // otherwise a later step could click a stale card mid-transition.
         await Page.Locator(".mastnav__link").Nth(1).ClickAsync();
         await Page.WaitForSelectorAsync(".breadcrumb", new PageWaitForSelectorOptions { State = WaitForSelectorState.Detached });
         await Page.WaitForSelectorAsync(".card");
