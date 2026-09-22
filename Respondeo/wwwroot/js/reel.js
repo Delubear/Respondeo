@@ -228,6 +228,31 @@ export function init(reel) {
     };
     reel.addEventListener('wheel', onWheel, { passive: false });
 
+    // --- Touch: at an end and still dragging outward, forward the drag to the page. ---
+    // Touch devices fire no wheel events, so mirror the wheel end-of-list behaviour here: while
+    // the reel is at its first/last card and the finger keeps pulling further out, scroll the
+    // window by the drag delta instead of letting it be trapped in the reel's padding slack.
+    let touchY = null;
+    const onTouchStart = (e) => { touchY = e.touches.length ? e.touches[0].clientY : null; };
+    const onTouchMove = (e) => {
+        if (touchY === null || !e.touches.length) {
+            return;
+        }
+        const steps = stepsOf(reel);
+        const currentY = e.touches[0].clientY;
+        // deltaY > 0 means content should move up (scrolling down), matching wheel deltaY sign.
+        const deltaY = touchY - currentY;
+        touchY = currentY;
+        const direction = deltaY < 0 ? -1 : 1;
+        const target = entry.centered + direction;
+        if (steps.length === 0 || target < 0 || target > steps.length - 1) {
+            e.preventDefault();
+            window.scrollBy({ top: deltaY, behavior: 'auto' });
+        }
+    };
+    reel.addEventListener('touchstart', onTouchStart, { passive: true });
+    reel.addEventListener('touchmove', onTouchMove, { passive: false });
+
     // --- Click a far-off-centre peeking neighbour to nudge the reel one stage toward it. ---
     // Navigation is the DEFAULT: a click on the card the user is looking at always follows its
     // link. Only a card that is genuinely near the reel's edge — more than FAR_THRESHOLD of the
@@ -281,6 +306,8 @@ export function init(reel) {
     entry.onScroll = onScroll;
     entry.onKeyDown = onKeyDown;
     entry.onWheel = onWheel;
+    entry.onTouchStart = onTouchStart;
+    entry.onTouchMove = onTouchMove;
     entry.observers = observers;
     entry.disposeDots = disposeDots;
     entry.onClick = onClick;
@@ -304,6 +331,8 @@ export function dispose(reel) {
     reel.removeEventListener('scroll', entry.onScroll);
     reel.removeEventListener('keydown', entry.onKeyDown);
     reel.removeEventListener('wheel', entry.onWheel);
+    reel.removeEventListener('touchstart', entry.onTouchStart);
+    reel.removeEventListener('touchmove', entry.onTouchMove);
     reel.removeEventListener('click', entry.onClick, true);
     for (const observer of entry.observers || []) {
         observer.disconnect();
