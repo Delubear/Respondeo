@@ -190,6 +190,68 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="The reel starts at the beginning of the journey")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "The reel starts at the beginning of the journey")]
+        public async global::System.Threading.Tasks.Task TheReelStartsAtTheBeginningOfTheJourney()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The reel starts at the beginning of the journey", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 16
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 17
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 18
+ await testRunner.ThenAsync("the \"earlier steps\" control should be hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 19
+ await testRunner.AndAsync("the \"keep climbing\" control should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Climbing the reel reveals later stages")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "Climbing the reel reveals later stages")]
+        public async global::System.Threading.Tasks.Task ClimbingTheReelRevealsLaterStages()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Climbing the reel reveals later stages", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 21
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 22
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 23
+ await testRunner.WhenAsync("I press the \"keep climbing\" control", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 24
+ await testRunner.ThenAsync("the \"earlier steps\" control should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime

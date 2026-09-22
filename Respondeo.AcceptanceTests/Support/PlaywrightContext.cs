@@ -22,7 +22,9 @@ public sealed class PlaywrightContext : IAsyncDisposable
 
         var headless = Environment.GetEnvironmentVariable("RESPONDEO_HEADED") != "1";
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless });
-        Page = await _browser.NewPageAsync();
+        // Local dev servers use a self-signed HTTPS certificate; ignore cert errors so tests
+        // can run against https://localhost without a trusted dev cert in the test environment.
+        Page = await _browser.NewPageAsync(new BrowserNewPageOptions { IgnoreHTTPSErrors = true });
     }
 
     public async ValueTask DisposeAsync()

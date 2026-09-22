@@ -12,3 +12,13 @@ Feature: Home page
 	When I choose the first stage card
 	And I choose the first branch card
 	Then the page should show a breadcrumb
+
+  Scenario: The reel starts at the beginning of the journey
+	Given I open the start page
+	Then the "earlier steps" control should be hidden
+	And the "keep climbing" control should be visible
+
+  Scenario: Climbing the reel reveals later stages
+	Given I open the start page
+	When I press the "keep climbing" control
+	Then the "earlier steps" control should be visible

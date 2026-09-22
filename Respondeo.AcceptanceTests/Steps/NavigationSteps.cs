@@ -14,14 +14,16 @@ public sealed class NavigationSteps(PlaywrightContext context)
     {
         // Blazor WebAssembly downloads its runtime after the load event, so wait for the network to settle before asserting the app has rendered its entry-point cards.
         await Page.GotoAsync(context.BaseUrl + "/", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
-        await Page.WaitForSelectorAsync(".card");
+        await Page.WaitForSelectorAsync(".stage-card");
     }
 
     [When("I choose the first stage card")]
     public async Task WhenIChooseTheFirstStageCard()
     {
-        // Landing on a stage page, which renders its branch cards (but no breadcrumb yet).
-        await Page.Locator(".card").First.ClickAsync();
+        // The home reel renders the journey with Stage 1 at the BOTTOM (climbing upward), so
+        // the journey's first stage is the LAST .stage-card in DOM order. Clicking it lands on
+        // a stage page, which renders its branch cards as .card (but no breadcrumb yet).
+        await Page.Locator(".stage-card").Last.ClickAsync();
         await Page.WaitForSelectorAsync(".card");
     }
 
@@ -36,7 +38,7 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenINavigateBackToTheStartPage()
     {
         await Page.GotoAsync(context.BaseUrl + "/");
-        await Page.WaitForSelectorAsync(".card");
+        await Page.WaitForSelectorAsync(".stage-card");
     }
 
     [Given("I open the \"(.*)\" stage directly")]
@@ -67,7 +69,9 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [Then("I should see at least one stage card")]
     public async Task ThenIShouldSeeAtLeastOneStageCard()
     {
-        var count = await Page.Locator(".card").CountAsync();
+        // The home reel renders .stage-card; stage pages render their branch .card list.
+        // Either satisfies "at least one card to move forward from here".
+        var count = await Page.Locator(".stage-card, .card").CountAsync();
         Assert.True(count >= 1, $"Expected at least one card, found {count}.");
     }
 
@@ -92,6 +96,34 @@ public sealed class NavigationSteps(PlaywrightContext context)
     {
         Assert.True(await Page.Locator(".breadcrumb").IsVisibleAsync());
     }
+
+    [When("I press the \"keep climbing\" control")]
+    public async Task WhenIPressTheKeepClimbingControl()
+    {
+        await ReelHint("keep climbing").ClickAsync();
+        // The reel scrolls smoothly; wait for the "earlier steps" control to become active.
+        await Page.WaitForSelectorAsync(".reel__hint--down:not(.is-hidden)");
+    }
+
+    [Then("the \"(.*)\" control should be visible")]
+    public async Task ThenTheControlShouldBeVisible(string control)
+    {
+        await Assertions.Expect(ReelHint(control)).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-hidden\b"));
+    }
+
+    [Then("the \"(.*)\" control should be hidden")]
+    public async Task ThenTheControlShouldBeHidden(string control)
+    {
+        await Assertions.Expect(ReelHint(control)).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-hidden\b"));
+    }
+
+    // Maps the human-readable control name to its reel hint element.
+    private ILocator ReelHint(string control) => control.Trim().ToLowerInvariant() switch
+    {
+        "keep climbing" => Page.Locator(".reel__hint--up"),
+        "earlier steps" => Page.Locator(".reel__hint--down"),
+        _ => throw new ArgumentOutOfRangeException(nameof(control), control, "Unknown reel control."),
+    };
 
     [Then("the breadcrumb should contain at least (.*) steps")]
     public async Task ThenTheBreadcrumbShouldContainAtLeastSteps(int minimum)
