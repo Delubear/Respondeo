@@ -224,7 +224,11 @@ export function init(reel) {
         }
         const steps = stepsOf(reel);
         const index = steps.indexOf(step);
-        if (index === -1 || index === entry.centered) {
+        // Compute the centred step from live geometry rather than the cached value: on
+        // first load the cache lags behind the initial scroll-to-bottom, and we must let
+        // a click on the already-centred card navigate normally.
+        const centered = nearestStepIndex(reel, steps);
+        if (index === -1 || index === centered) {
             return; // Already centred: let the card's link handle the click.
         }
         // A neighbour was clicked: centre it rather than navigating away.
