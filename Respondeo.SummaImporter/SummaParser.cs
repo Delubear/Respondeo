@@ -51,6 +51,23 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^    (?<start>\S.*)$", RegexOptions.Compiled)]
     private static partial Regex TitleStartRegex();
 
+    // CCEL hyperlink-index cruft like "[6]" that directly precedes a reference token (e.g. "[6]Q[2]"
+    // or "[991]FP"). These are leftover anchor numbers from the source's link table and carry no
+    // reading meaning, so they are removed. The lookahead keeps meaningful "Q[2]"/"A[2]" brackets
+    // (which are followed by punctuation or whitespace, never a letter) intact.
+    [GeneratedRegex(@"\[\d+\](?=[A-Za-z])", RegexOptions.Compiled)]
+    private static partial Regex CrossRefCruftRegex();
+
+    // A cross-reference to another question, e.g. "Q[2], A[2]" (same part) or "FP, Q[22], A[2]"
+    // (explicit part). Captures the optional part token, the question number, and the first article
+    // number when present. Run after the hyperlink cruft has been stripped.
+    [GeneratedRegex(@"(?:(?<part>FP|FS|SS|TP|XP),\s*)?Q\[(?<q>\d+)\](?:\s*,\s*A{1,2}\[(?<a>\d+)\](?:\s*,\s*\d+)*)?", RegexOptions.Compiled)]
+    private static partial Regex QuestionRefRegex();
+
+    // A same-question article reference that stands alone (no preceding "Q[...]"), e.g. "AA[1],3".
+    [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?:\s*,\s*\d+)*", RegexOptions.Compiled)]
+    private static partial Regex ArticleRefRegex();
+
     public static IReadOnlyList<ParsedPart> Parse(string[] lines)
     {
         var partStarts = FindPartStarts(lines);
@@ -261,7 +278,7 @@ internal static partial class SummaParser
         // question body as a single article so the text is not lost.
         if (articleStarts.Count == 0 && ContainsArticleProse(lines, contentStart, end))
         {
-            var body = ExtractText(lines, contentStart, end);
+            var body = Linkify(ExtractText(lines, contentStart, end), partId, number);
             return new ParsedQuestion(
                 $"{partId}-q{number:D3}",
                 partId,
@@ -272,14 +289,14 @@ internal static partial class SummaParser
         }
 
         var prologueEnd = articleStarts.Count > 0 ? articleStarts[0].RuleLine : end;
-        var prologue = TrimInquiryList(ExtractText(lines, contentStart, prologueEnd));
+        var prologue = Linkify(TrimInquiryList(ExtractText(lines, contentStart, prologueEnd)), partId, number);
 
         var articles = new List<ParsedArticle>();
         for (var a = 0; a < articleStarts.Count; a++)
         {
             var bodyStart = articleStarts[a].BodyLine;
             var bodyEnd = a + 1 < articleStarts.Count ? articleStarts[a + 1].RuleLine : end;
-            var body = ExtractText(lines, bodyStart, bodyEnd);
+            var body = Linkify(ExtractText(lines, bodyStart, bodyEnd), partId, number);
             articles.Add(new ParsedArticle(a + 1, articleStarts[a].Title, body));
         }
 
@@ -496,6 +513,48 @@ internal static partial class SummaParser
         {
             return $"**{objection.Value}**{text[objection.Length..]}";
         }
+
+        return text;
+    }
+
+    // Maps a CCEL part token (FP/FS/SS/TP/XP) to our internal part id (fp/fs/ss/tp/xp).
+    private static string PartTokenToId(string token) => token.ToLowerInvariant();
+
+    // Turns CCEL cross-references in body/prologue text into clickable links into our own routes.
+    // First the leftover hyperlink-index cruft (e.g. "[6]") is removed, then references of the form
+    // "Q[2], A[2]", "FP, Q[22], A[2]", or a lone "AA[1],3" are rewritten as inline HTML anchors that
+    // point at "/summa/{part}-q{NNN}#article-N". Inline HTML passes through Markdig untouched.
+    private static string Linkify(string text, string currentPartId, int currentNumber)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return text;
+        }
+
+        text = CrossRefCruftRegex().Replace(text, string.Empty);
+
+        text = QuestionRefRegex().Replace(text, match =>
+        {
+            var partId = match.Groups["part"].Success ? PartTokenToId(match.Groups["part"].Value) : currentPartId;
+            var questionNumber = int.Parse(match.Groups["q"].Value);
+            var href = $"/summa/{partId}-q{questionNumber:D3}";
+
+            var display = match.Groups["part"].Success ? $"{match.Groups["part"].Value}, Q. {questionNumber}" : $"Q. {questionNumber}";
+            if (match.Groups["a"].Success)
+            {
+                href += $"#article-{match.Groups["a"].Value}";
+                display += $", A. {match.Groups["a"].Value}";
+            }
+
+            return $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
+        });
+
+        text = ArticleRefRegex().Replace(text, match =>
+        {
+            var articleNumber = match.Groups["a"].Value;
+            var href = $"/summa/{currentPartId}-q{currentNumber:D3}#article-{articleNumber}";
+            return $"<a class=\"summa-ref\" href=\"{href}\">A. {articleNumber}</a>";
+        });
 
         return text;
     }

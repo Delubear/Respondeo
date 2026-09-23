@@ -108,6 +108,28 @@
     color: var(--accent);
 }
 
+/* ---------- Cross-reference links (injected via MarkupString, so target with ::deep) ---------- */
+.summa-question__body ::deep .summa-ref,
+.summa-article__body ::deep .summa-ref,
+.summa-question__prologue ::deep .summa-ref {
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.summa-question__prologue ::deep .summa-ref {
+    font-style: normal;
+}
+
+.summa-article__body ::deep .summa-ref:hover,
+.summa-article__body ::deep .summa-ref:focus-visible,
+.summa-question__prologue ::deep .summa-ref:hover,
+.summa-question__prologue ::deep .summa-ref:focus-visible {
+    border-bottom-color: var(--accent);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
     .summa-question__title {
