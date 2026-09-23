@@ -4,11 +4,11 @@
 @inject NavigationManager Nav
 @inject IJSRuntime JS
 
-<PageTitle>@(_question is null ? "Summa Theologica" : $"{_question.Title} — Summa Theologica")</PageTitle>
+<PageTitle>@(_question is null ? "Summa Theologiae" : $"{_question.Title} — Summa Theologiae")</PageTitle>
 
 <Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")"
             StageHref="summa"
-            StageLabel="Summa Theologica" />
+            StageLabel="Summa Theologiae" />
 
 @if (_loading)
 {
