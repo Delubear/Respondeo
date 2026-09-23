@@ -1,0 +1,234 @@
+@page "/summa"
+@inject ISummaService SummaService
+@inject IBreadcrumbTrail Trail
+@implements IDisposable
+
+<PageTitle>Summa Theologica &mdash; Respondeo</PageTitle>
+
+<section class="summa">
+    <header class="summa__header">
+        <p class="summa__eyebrow">St. Thomas Aquinas</p>
+        <h1 class="summa__title">Summa Theologica</h1>
+        <p class="summa__lede">
+            The complete public-domain English translation (Benziger Bros. edition, 1947), by the
+            Fathers of the English Dominican Province. Browse by part and question, or search the
+            questions and articles by title.
+        </p>
+    </header>
+
+    @if (_index is null)
+    {
+        <Loading>Opening the Summa&hellip;</Loading>
+    }
+    else
+    {
+        <div class="summa__search">
+            <label class="summa__search-label" for="summa-search">Search questions &amp; articles</label>
+            <input id="summa-search"
+                   class="summa__search-input"
+                   type="search"
+                   placeholder="e.g. existence of God, virtue, grace&hellip;"
+                   @oninput="OnSearchInput" />
+        </div>
+
+        @if (IsSearching)
+        {
+            <div class="summa__results">
+                @if (_matches.Count == 0)
+                {
+                    <p class="summa__empty">No questions or articles match &ldquo;@_query&rdquo;.</p>
+                }
+                else
+                {
+                    <p class="summa__results-count">
+                        @if (_truncated)
+                        {
+                            @($"Showing first {_matches.Count} results — refine your search to narrow them down")
+                        }
+                        else
+                        {
+                            @($"{_matches.Count} result(s)")
+                        }
+                    </p>
+                    <ul class="summa__match-list">
+                        @foreach (var match in _matches)
+                        {
+                            <li class="summa__match">
+                                <a class="summa__match-link" href="@MatchHref(match)">
+                                    <span class="summa__match-ref">@match.PartTitle &middot; Q@(match.QuestionNumber)</span>
+                                    <span class="summa__match-title">@match.Title</span>
+                                    @if (match.ArticleNumber is int articleNumber)
+                                    {
+                                        <span class="summa__match-kind">Article @articleNumber</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="summa__match-kind">Question</span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="summa__browse">
+                @foreach (var part in _index.Parts)
+                {
+                    <details class="summa__part" open="@(part == _index.Parts.FirstOrDefault())">
+                        <summary class="summa__part-summary">
+                            <span class="summa__part-title">@part.Title</span>
+                            <span class="summa__part-count">@part.Questions.Count questions</span>
+                        </summary>
+                        <ol class="summa__question-list">
+                            @foreach (var question in part.Questions)
+                            {
+                                <li class="summa__question">
+                                    <a class="summa__question-link" href="@($"summa/{question.Id}")">
+                                        <span class="summa__question-number">Q@(question.Number)</span>
+                                        <span class="summa__question-title">@question.Title</span>
+                                        <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                    </a>
+                                </li>
+                            }
+                        </ol>
+                    </details>
+                }
+            </div>
+        }
+    }
+</section>
+
+@code {
+    private SummaIndex? _index;
+    private string _query = string.Empty;
+    private List<SearchMatch> _matches = new();
+
+    // Flattened, pre-computed view of every searchable entry (questions + articles) built once when
+    // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
+    private SearchEntry[] _entries = Array.Empty<SearchEntry>();
+
+    // A short debounce coalesces bursts of keystrokes into a single search + render pass.
+    private CancellationTokenSource? _debounceCts;
+    private const int DebounceMs = 150;
+
+    // Cap on rendered results so a broad query stays responsive; when hit, a hint asks the user to
+    // refine the search.
+    private const int MaxResults = 50;
+    private bool _truncated;
+
+    private bool IsSearching => _query.Trim().Length > 0;
+
+    // Article matches deep-link to the specific article section; question matches go to the top.
+    private static string MatchHref(SearchMatch match) => match.ArticleNumber is int articleNumber
+        ? $"summa/{match.QuestionId}#article-{articleNumber}"
+        : $"summa/{match.QuestionId}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        _index = await SummaService.GetIndexAsync();
+        _entries = BuildEntries(_index);
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _query = e.Value?.ToString() ?? string.Empty;
+        DebounceSearch();
+    }
+
+    private void DebounceSearch()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        var cts = new CancellationTokenSource();
+        _debounceCts = cts;
+
+        _ = Task.Delay(DebounceMs, cts.Token).ContinueWith(t =>
+        {
+            if (t.IsCanceled)
+            {
+                return;
+            }
+
+            InvokeAsync(() =>
+            {
+                RunSearch();
+                StateHasChanged();
+            });
+        }, TaskScheduler.Default);
+    }
+
+    // Flattens the nested index into a single array of entries with their pre-resolved link metadata.
+    private static SearchEntry[] BuildEntries(SummaIndex index)
+    {
+        var entries = new List<SearchEntry>();
+        foreach (var part in index.Parts)
+        {
+            foreach (var question in part.Questions)
+            {
+                entries.Add(new SearchEntry(part.Title, question.Id, question.Number, question.Title, null));
+
+                foreach (var article in question.Articles)
+                {
+                    entries.Add(new SearchEntry(part.Title, question.Id, question.Number, article.Title, article.Number));
+                }
+            }
+        }
+
+        return entries.ToArray();
+    }
+
+    // Title/question-text search over the pre-flattened entries: matches question titles and article
+    // ("Whether ...?") titles. Cheap enough to run synchronously over the in-memory list. Results are
+    // capped so a broad query (e.g. a couple of letters) doesn't render thousands of DOM nodes and
+    // stall the first keystroke; scanning stops as soon as the cap is reached.
+    private void RunSearch()
+    {
+        _matches = new();
+        _truncated = false;
+        var term = _query.Trim();
+        if (term.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var entry in _entries)
+        {
+            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (_matches.Count >= MaxResults)
+            {
+                _truncated = true;
+                break;
+            }
+
+            _matches.Add(new SearchMatch(entry.PartTitle, entry.QuestionId, entry.QuestionNumber, entry.Title, entry.ArticleNumber));
+        }
+    }
+
+    public void Dispose()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+    }
+
+    private sealed record SearchEntry(
+        string PartTitle,
+        string QuestionId,
+        int QuestionNumber,
+        string Title,
+        int? ArticleNumber);
+
+    private sealed record SearchMatch(
+        string PartTitle,
+        string QuestionId,
+        int QuestionNumber,
+        string Title,
+        int? ArticleNumber);
+}

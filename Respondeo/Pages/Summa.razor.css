@@ -1,0 +1,212 @@
+/* ---------- Summa index & search ---------- */
+.summa {
+    width: min(60rem, 100vw - 2.5rem);
+    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
+}
+
+.summa__header {
+    text-align: center;
+    padding: 1rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+}
+
+.summa__eyebrow {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin: 0 0 0.35rem;
+}
+
+.summa__title {
+    font-size: 2.3rem;
+    margin: 0 0 1rem;
+}
+
+.summa__lede {
+    max-width: 38rem;
+    margin: 0 auto;
+    color: var(--ink-soft);
+}
+
+/* ---------- Search ---------- */
+.summa__search {
+    margin: 0 auto 2rem;
+    max-width: 34rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.summa__search-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+}
+
+.summa__search-input {
+    font: inherit;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.summa__search-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+/* ---------- Search results ---------- */
+.summa__results-count {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+}
+
+.summa__empty {
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+.summa__match-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.summa__match-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--parchment);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.summa__match-link:hover,
+.summa__match-link:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.summa__match-ref {
+    grid-column: 1;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+}
+
+.summa__match-title {
+    grid-column: 1;
+}
+
+.summa__match-kind {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+/* ---------- Browse (parts & questions) ---------- */
+.summa__browse {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.summa__part {
+    border: 1px solid var(--rule);
+    border-radius: 0.6rem;
+    background: var(--parchment);
+    overflow: hidden;
+}
+
+.summa__part-summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    cursor: pointer;
+    font-family: var(--display);
+    list-style: none;
+}
+
+.summa__part-summary::-webkit-details-marker {
+    display: none;
+}
+
+.summa__part-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.summa__part-count {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.summa__question-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.5rem;
+}
+
+.summa__question-link {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.55rem 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--rule);
+}
+
+.summa__question-link:hover,
+.summa__question-link:focus-visible {
+    background: var(--paper);
+    color: var(--accent);
+}
+
+.summa__question-number {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+}
+
+.summa__question-articles {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .summa__title {
+        font-size: 1.8rem;
+    }
+
+    .summa__question-link {
+        grid-template-columns: 2.5rem 1fr;
+    }
+
+    .summa__question-articles {
+        display: none;
+    }
+}

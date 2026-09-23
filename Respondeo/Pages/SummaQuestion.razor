@@ -1,0 +1,121 @@
+@page "/summa/{Id}"
+@inject ISummaService Summa
+@inject IBreadcrumbTrail Trail
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<PageTitle>@(_question is null ? "Summa Theologica" : $"{_question.Title} — Summa Theologica")</PageTitle>
+
+<Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")"
+            StageHref="summa"
+            StageLabel="Summa Theologica" />
+
+@if (_loading)
+{
+    <Loading>Turning to the question&hellip;</Loading>
+}
+else if (_question is null)
+{
+    <section class="summa-question">
+        <h1 class="summa-question__title">Question not found</h1>
+        <p class="summa-question__missing">
+            That question is not part of the Summa. <a href="summa">Return to the Summa</a>.
+        </p>
+    </section>
+}
+else
+{
+    <article class="summa-question">
+        <header class="summa-question__header">
+            <p class="summa-question__eyebrow">@PartTitle &middot; Question @_question.Number</p>
+            <h1 class="summa-question__title">@_question.Title</h1>
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(_question.PrologueHtml))
+        {
+            <div class="summa-question__prologue">
+                @((MarkupString)_question.PrologueHtml)
+            </div>
+        }
+
+        <nav class="summa-question__toc" aria-label="Articles in this question">
+            <ol class="summa-question__toc-list">
+                @foreach (var article in _question.Articles)
+                {
+                    <li class="summa-question__toc-item">
+                        <a href="@($"summa/{Id}#article-{article.Number}")">
+                            Article @article.Number. @article.Title
+                        </a>
+                    </li>
+                }
+            </ol>
+        </nav>
+
+        @foreach (var article in _question.Articles)
+        {
+            <section class="summa-article" id="@($"article-{article.Number}")">
+                <h2 class="summa-article__title">
+                    <span class="summa-article__number">Article @article.Number</span>
+                    @article.Title
+                </h2>
+                <div class="summa-article__body">
+                    @((MarkupString)article.BodyHtml)
+                </div>
+            </section>
+        }
+
+        <nav class="summa-question__pager" aria-label="Question navigation">
+            <a class="summa-question__back" href="summa">&larr; All questions</a>
+        </nav>
+    </article>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private SummaQuestionContent? _question;
+    private string PartTitle = string.Empty;
+    private bool _loading = true;
+    private bool _scrolledToFragment;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _scrolledToFragment = false;
+        _question = await Summa.GetQuestionAsync(Id);
+        PartTitle = await ResolvePartTitleAsync();
+        _loading = false;
+    }
+
+    // The articles render only after the question content loads, so a "#article-N" fragment in the
+    // URL has nothing to scroll to at initial navigation. Once the content is on the page, scroll to
+    // the target section ourselves once (offset for the sticky breadcrumb).
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_loading || _question is null || _scrolledToFragment)
+        {
+            return;
+        }
+
+        var fragment = new Uri(Nav.Uri).Fragment.TrimStart('#');
+        if (!string.IsNullOrEmpty(fragment))
+        {
+            _scrolledToFragment = true;
+            await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+        }
+    }
+
+    // The question content stores only the part id; look up the display title from the index.
+    private async Task<string> ResolvePartTitleAsync()
+    {
+        if (_question is null)
+        {
+            return string.Empty;
+        }
+
+        var index = await Summa.GetIndexAsync();
+        var part = index.Parts.FirstOrDefault(p =>
+            string.Equals(p.Id, _question.PartId, StringComparison.OrdinalIgnoreCase));
+        return part?.Title ?? string.Empty;
+    }
+}

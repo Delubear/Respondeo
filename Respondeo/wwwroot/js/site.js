@@ -22,11 +22,23 @@ window.respondeoScroll = {
         if (!el) {
             return;
         }
-        var breadcrumb = document.querySelector('.breadcrumb');
-        var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
-        var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+        // Defer until after layout has settled. On long pages the target section may not have its
+        // final height/position on the first frame (its body is injected as raw HTML), so measuring
+        // immediately can scroll short of the anchor. A double rAF waits for the browser to finish
+        // laying out the content before we measure and scroll.
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                var target = document.getElementById(id);
+                if (!target) {
+                    return;
+                }
+                var breadcrumb = document.querySelector('.breadcrumb');
+                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+            });
+        });
     }
 };
 

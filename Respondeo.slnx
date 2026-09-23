@@ -12,6 +12,7 @@
   <Project Path="Respondeo/Respondeo.csproj" />
   <Project Path="Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
   <Project Path="Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
+  <Project Path="Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
   <Folder Name="/Tests/">
     <Project Path="Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
     <Project Path="Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />

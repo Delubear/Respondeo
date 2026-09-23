@@ -19,6 +19,7 @@
   <ItemGroup>
 	<ProjectReference Include="..\Respondeo\Respondeo.csproj" />
 	<ProjectReference Include="..\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
+	<ProjectReference Include="..\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
   </ItemGroup>
 
 </Project>
