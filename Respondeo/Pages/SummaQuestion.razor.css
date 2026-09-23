@@ -44,7 +44,8 @@
 
 .summa-question__toc-list {
     margin: 0;
-    padding-left: 1.25rem;
+    padding-left: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
