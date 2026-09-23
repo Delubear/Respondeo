@@ -42,6 +42,43 @@ window.respondeoScroll = {
     }
 };
 
+// Opens/closes a native <dialog> by element reference. Native dialogs give us focus trapping,
+// Esc-to-close and the ::backdrop for free; Blazor just needs to call the methods via interop.
+window.respondeoDialog = {
+    show: function (el) {
+        if (el && typeof el.showModal === 'function' && !el.open) {
+            el.showModal();
+        }
+    },
+    close: function (el) {
+        if (el && typeof el.close === 'function' && el.open) {
+            el.close();
+        }
+    }
+};
+
+// Reports scroll position to a .NET component so a floating control can mirror the back-to-top
+// button's reveal threshold (kept in sync with js/scroll.js: shows once scrolled past 400px).
+window.respondeoScrollWatch = {
+    register: function (ref) {
+        const handler = () => {
+            const top = document.documentElement.scrollTop || document.body.scrollTop || 0;
+            ref.invokeMethodAsync('OnScrolled', top > 400);
+        };
+        this._handler = handler;
+        this._ref = ref;
+        window.addEventListener('scroll', handler, { passive: true });
+        handler();
+    },
+    unregister: function () {
+        if (this._handler) {
+            window.removeEventListener('scroll', this._handler);
+            this._handler = null;
+        }
+        this._ref = null;
+    }
+};
+
 // Records where a Summa cross-reference jump started from, so the destination question page can
 // offer a breadcrumb back to the exact article the reader was in. The reference links are raw
 // injected anchors (no Blazor handlers), so a single delegated listener captures the click before

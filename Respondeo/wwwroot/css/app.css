@@ -17,6 +17,11 @@
     --gold-bright: #e8c874;
     --shadow: rgba(17, 17, 17, 0.08);
     --code-bg: #f0eee9;
+    /* Floating controls (back-to-top, Summa guide): mirror the primary .btn so they stay consistent. */
+    --float-btn-bg: var(--ink);
+    --float-btn-fg: var(--parchment);
+    --float-btn-bg-hover: var(--parchment);
+    --float-btn-fg-hover: var(--ink);
     /* Masthead and colophon stay dark in both themes, so they use dedicated tokens. */
     --masthead-bg: #111111;
     --masthead-fg: #ffffff;
@@ -42,6 +47,11 @@
     --gold-bright: #f0d488;
     --shadow: rgba(0, 0, 0, 0.5);
     --code-bg: #26241d;
+    /* Floating controls: mirror the primary .btn so they stay consistent across themes. */
+    --float-btn-bg: var(--ink);
+    --float-btn-fg: var(--parchment);
+    --float-btn-bg-hover: var(--parchment);
+    --float-btn-fg-hover: var(--ink);
     --masthead-bg: #0e0d0a;
     --masthead-fg: #ece9e1;
     --masthead-fg-soft: #b8b4a9;

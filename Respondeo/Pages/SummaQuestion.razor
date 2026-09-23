@@ -33,6 +33,8 @@ else
             <h1 class="summa-question__title">@_question.Title</h1>
         </header>
 
+        <SummaGuide />
+
         @if (!string.IsNullOrWhiteSpace(_question.PrologueHtml))
         {
             <div class="summa-question__prologue">

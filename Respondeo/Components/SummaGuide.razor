@@ -1,0 +1,126 @@
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@* A self-contained "How to read the Summa" helper. Renders a floating circular button that stacks
+   above the back-to-top control, plus a native <dialog>, so it is reachable on the Summa home and on
+   every question page (covering shared links). It explains the classic article structure and the
+   meaning of the project name. *@
+
+<button type="button"
+        class="summa-guide__trigger @(_stacked ? "is-stacked" : string.Empty)"
+        @onclick="OpenAsync"
+        aria-label="How to read the Summa"
+        title="How to read the Summa">
+    <span class="summa-guide__trigger-mark" aria-hidden="true">?</span>
+</button>
+
+<dialog @ref="_dialog" class="summa-guide" aria-labelledby="summa-guide-title">
+    <div class="summa-guide__panel">
+        <header class="summa-guide__head">
+            <p class="summa-guide__eyebrow">A short orientation</p>
+            <h2 id="summa-guide-title" class="summa-guide__title">How to read the Summa</h2>
+            <button type="button" class="summa-guide__close" aria-label="Close" @onclick="CloseAsync">&times;</button>
+        </header>
+
+        <div class="summa-guide__body">
+            <p>
+                The <em>Summa Theologiae</em> is built from thousands of small debates. Everything nests
+                in the same order, so once you can read one article you can read them all.
+            </p>
+
+            <h3 class="summa-guide__subhead">The shape of the whole work</h3>
+            <ul class="summa-guide__structure">
+                <li><strong>Parts</strong> &mdash; the five great divisions of the work.</li>
+                <li><strong>Questions</strong> &mdash; a topic (&ldquo;The existence of God&rdquo;).</li>
+                <li><strong>Articles</strong> &mdash; a single yes/no dispute (&ldquo;Whether God exists?&rdquo;).</li>
+            </ul>
+
+            <h3 class="summa-guide__subhead">The shape of a single article</h3>
+            <p>Each article always moves through the same four steps:</p>
+            <ol class="summa-guide__steps">
+                <li>
+                    <span class="summa-guide__cue">Objections <span class="summa-guide__latin">Videtur quod</span></span>
+                    The strongest arguments <em>against</em> the position St. Thomas will take. He states
+                    the opposing case first, and as fairly as he can.
+                </li>
+                <li>
+                    <span class="summa-guide__cue">On the contrary <span class="summa-guide__latin">Sed Contra</span></span>
+                    A single authority (Scripture, a Council, a Father) pointing the other way &mdash; the
+                    hinge that turns the article.
+                </li>
+                <li>
+                    <span class="summa-guide__cue">I answer that <span class="summa-guide__latin">Respondeo dicendum quod</span></span>
+                    St. Thomas&rsquo;s own reasoned answer. This is the heart of the article; if you read
+                    only one part, read this.
+                </li>
+                <li>
+                    <span class="summa-guide__cue">Replies to the Objections <span class="summa-guide__latin">Ad Obiecta</span></span>
+                    He returns to each opening objection and shows precisely where it went wrong.
+                </li>
+            </ol>
+
+            <h3 class="summa-guide__subhead">Why &ldquo;Respondeo&rdquo;?</h3>
+            <p>
+                Every article&rsquo;s answer opens in Latin with <em>Respondeo dicendum quod</em> &mdash;
+                &ldquo;<strong>I answer that</strong>&hellip;.&rdquo; That word, <em>respondeo</em>, is the
+                turn from hearing the objections to giving a reasoned reply. This project takes its name
+                from that moment: real questions met with a reasoned answer.
+            </p>
+
+            <h3 class="summa-guide__subhead">A few tips</h3>
+            <ul class="summa-guide__tips">
+                <li>Articles start collapsed &mdash; open the ones you want and leave several open to compare.</li>
+                <li>Blue references like <span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> are links; follow them, then use the breadcrumb to return.</li>
+                <li>Search matches both questions and articles, and jumps straight to the article.</li>
+            </ul>
+        </div>
+
+        <footer class="summa-guide__foot">
+            <button type="button" class="btn" @onclick="CloseAsync">Begin reading</button>
+        </footer>
+    </div>
+</dialog>
+
+@code {
+    private ElementReference _dialog;
+    private bool _stacked;
+    private DotNetObjectReference<SummaGuide>? _ref;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _ref = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("respondeoScrollWatch.register", _ref);
+        }
+    }
+
+    [JSInvokable]
+    public void OnScrolled(bool backToTopVisible)
+    {
+        if (_stacked != backToTopVisible)
+        {
+            _stacked = backToTopVisible;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenAsync() => await JS.InvokeVoidAsync("respondeoDialog.show", _dialog);
+
+    private async Task CloseAsync() => await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoScrollWatch.unregister");
+            await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit already gone during teardown; nothing to close.
+        }
+
+        _ref?.Dispose();
+    }
+}

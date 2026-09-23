@@ -1,0 +1,205 @@
+/* ---------- Trigger button ---------- */
+/* A circular control matching .back-to-top. When the back-to-top arrow is hidden (near the top of
+   the page) this occupies the bottom-right slot; once the arrow appears it slides up to stack above
+   it, keeping the two as a tidy vertical pair. */
+.summa-guide__trigger {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--float-btn-bg);
+    color: var(--float-btn-fg);
+    cursor: pointer;
+    box-shadow: 0 0.35rem 0.9rem var(--shadow);
+    transition: bottom 0.15s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.summa-guide__trigger.is-stacked {
+    bottom: 4.75rem;
+}
+
+.summa-guide__trigger:hover {
+    background: var(--float-btn-bg-hover);
+    color: var(--float-btn-fg-hover);
+}
+
+.summa-guide__trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.summa-guide__trigger-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .summa-guide__trigger {
+        transition: background 0.12s ease, color 0.12s ease;
+    }
+}
+
+/* ---------- Dialog ---------- */
+.summa-guide {
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    background: var(--paper);
+    color: var(--ink);
+    max-width: min(52rem, 100vw - 2rem);
+    width: 100%;
+    box-shadow: 0 1.5rem 3rem var(--shadow);
+}
+
+.summa-guide::backdrop {
+    background: rgba(17, 17, 17, 0.55);
+}
+
+.summa-guide__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(85vh, 48rem);
+}
+
+.summa-guide__head {
+    position: relative;
+    padding: 1.5rem 1.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.summa-guide__eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin: 0 0 0.3rem;
+}
+
+.summa-guide__title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+.summa-guide__close {
+    position: absolute;
+    top: 0.85rem;
+    right: 1rem;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.4rem;
+}
+
+.summa-guide__close:hover {
+    color: var(--accent);
+}
+
+.summa-guide__close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.summa-guide__body {
+    padding: 1.25rem 1.75rem;
+    overflow-y: auto;
+    line-height: 1.6;
+}
+
+.summa-guide__body p {
+    margin: 0 0 1rem;
+}
+
+.summa-guide__subhead {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+    color: var(--accent);
+}
+
+.summa-guide__structure,
+.summa-guide__tips {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+}
+
+.summa-guide__structure li,
+.summa-guide__tips li {
+    margin-bottom: 0.35rem;
+}
+
+.summa-guide__steps {
+    list-style: none;
+    counter-reset: guide-step;
+    margin: 0;
+    padding: 0;
+}
+
+.summa-guide__steps > li {
+    counter-increment: guide-step;
+    position: relative;
+    padding: 0 0 1rem 2.2rem;
+}
+
+.summa-guide__steps > li::before {
+    content: counter(guide-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.summa-guide__cue {
+    display: block;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+}
+
+.summa-guide__latin {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-left: 0.4rem;
+}
+
+.summa-guide__latin::before {
+    content: "\00b7";
+    margin-right: 0.4rem;
+}
+
+.summa-guide__ref {
+    color: var(--accent);
+    white-space: nowrap;
+    font-variant: small-caps;
+}
+
+.summa-guide__foot {
+    padding: 1rem 1.75rem 1.5rem;
+    border-top: 1px solid var(--rule);
+    text-align: right;
+}

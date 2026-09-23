@@ -16,9 +16,9 @@
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 50%;
-    border: 1px solid var(--ink);
-    background: var(--ink);
-    color: var(--parchment);
+    border: 1px solid var(--rule);
+    background: var(--float-btn-bg);
+    color: var(--float-btn-fg);
     font-size: 1.1rem;
     line-height: 1;
     cursor: pointer;
@@ -36,8 +36,8 @@
 }
 
 .back-to-top:hover {
-    background: var(--parchment);
-    color: var(--ink);
+    background: var(--float-btn-bg-hover);
+    color: var(--float-btn-fg-hover);
 }
 
 .back-to-top:focus-visible {
