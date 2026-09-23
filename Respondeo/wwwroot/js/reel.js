@@ -200,23 +200,20 @@ export function init(reel) {
     };
     reel.addEventListener('keydown', onKeyDown);
 
-    // --- Wheel: advance one card per horizontal gesture; leave vertical scrolling to the page. ---
-    // The reel is horizontal, so a vertical wheel (the common mouse gesture) should scroll the page
-    // as usual — we only claim clearly horizontal gestures (e.g. a trackpad side-swipe) to step the
-    // path. Vertical-dominant events fall through untouched, so no manual page passthrough is needed.
+    // --- Wheel: advance exactly one card per gesture while over the reel. ---
+    // Most mice only emit deltaY, so use whichever of deltaX/deltaY dominates: scrolling down/right
+    // moves forward along the path, up/left moves back. When already at an end and still scrolling
+    // outward, we DON'T intercept — the event falls through so the page scrolls on naturally.
     let wheelLock = false;
     const onWheel = (e) => {
         const steps = stepsOf(reel);
         if (steps.length === 0) {
             return;
         }
-        // Not a horizontal gesture: let the browser scroll the page normally.
-        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) {
-            return;
-        }
-        const direction = e.deltaX < 0 ? -1 : 1;
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        const direction = delta < 0 ? -1 : 1;
         const target = entry.centered + direction;
-        // At an end and still pushing outward: nothing to do — stay put.
+        // At an end and still pushing outward: let the page take the scroll.
         if (target < 0 || target > steps.length - 1) {
             return;
         }
