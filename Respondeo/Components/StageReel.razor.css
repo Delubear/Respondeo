@@ -74,7 +74,7 @@
     scroll-snap-align: center;
     scroll-snap-stop: always;
     flex: 0 0 auto;
-    width: 22rem;
+    width: 30rem;
     max-width: 80vw;
     display: flex;
     justify-content: center;
@@ -315,15 +315,25 @@
     }
 
     .reel {
-        padding: 0.5rem 20%;
+        /* Centre the fixed-width card exactly: half the viewport minus half the card.
+           A percentage here drifts out of sync with the fixed card width and lets it
+           touch the edge in the 481-640px range. */
+        padding: 0.5rem max(1rem, calc(50% - 9rem));
     }
 
     .reel__step {
         width: 18rem;
     }
 
-    /* On a narrow viewport the labelled pills crowd the card, so collapse each hint
-       to a compact circular chevron-only button. The aria-label keeps them accessible. */
+    .reel-dots {
+        gap: 0.45rem;
+    }
+}
+
+/* Collapse the hint pills to compact chevron-only buttons while the masthead is in its
+   "MENU" state (<= 800px). Above 640px the cards are wide enough that the full labelled
+   pills would otherwise overlap the card text. The aria-label keeps them accessible. */
+@media (max-width: 800px) {
     .reel__hint {
         padding: 0;
         width: 2.5rem;
@@ -334,9 +344,5 @@
 
     .reel__hint-label {
         display: none;
-    }
-
-    .reel-dots {
-        gap: 0.45rem;
     }
 }
