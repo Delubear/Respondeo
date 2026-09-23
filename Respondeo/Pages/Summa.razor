@@ -77,7 +77,7 @@
             <div class="summa__browse">
                 @foreach (var part in _index.Parts)
                 {
-                    <details class="summa__part" open="@(part == _index.Parts.FirstOrDefault())">
+                    <details class="summa__part">
                         <summary class="summa__part-summary">
                             <span class="summa__part-title">@part.Title</span>
                             <span class="summa__part-count">@part.Questions.Count questions</span>
