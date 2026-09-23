@@ -249,20 +249,26 @@
     pointer-events: none;
 }
 
-/* Centre each hint on the midpoint of its side gutter. The card is 30rem and centred, so each
-   gutter spans (100% - 30rem)/2 and its midpoint is (100% - 30rem)/4 from the reel edge. Because
-   the anchor is a fraction of the wrap (never a fixed outward push), the pill can't extend past
-   the wrap and trigger a horizontal scrollbar. translate(-50%) seats the pill on that midpoint. */
+/* Anchor each hint's INNER edge a fixed gap outside the centred card and grow it OUTWARD toward
+   the reel edge. This guarantees the pill never touches the focal card and fills the gap toward its
+   neighbour. The card is 30rem and centred, so its edge sits (100% - 30rem)/2 from the reel edge;
+   we place the pill's near edge 0.75rem before that. Overflow past the reel edge is prevented by
+   only showing the labelled pills at wide viewports (see the collapse rule below). */
+.reel__hint {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
 .reel__hint--prev {
-    left: calc((100% - 30rem) / 4);
+    left: calc((100% - 30rem) / 2 - 0.75rem);
     right: auto;
-    transform: translate(-50%, -50%);
+    transform: translate(-100%, -50%);
 }
 
 .reel__hint--next {
     left: auto;
-    right: calc((100% - 30rem) / 4);
-    transform: translate(50%, -50%);
+    right: calc((100% - 30rem) / 2 - 0.75rem);
+    transform: translate(100%, -50%);
 }
 
 .reel__hint-label {
@@ -345,16 +351,15 @@
         width: 18rem;
     }
 
-    /* The card shrinks to 18rem here, so re-seat the chevron pills on the narrower gutter's
-       midpoint: (100% - 18rem)/4 from each edge. */
+    /* Icon circles at ≤640px: pin to the reel edges, well clear of the 18rem card. */
     .reel__hint--prev {
-        left: calc((100% - 18rem) / 4);
-        transform: translate(-50%, -50%);
+        left: 0.5rem;
+        transform: translateY(-50%);
     }
 
     .reel__hint--next {
-        right: calc((100% - 18rem) / 4);
-        transform: translate(50%, -50%);
+        right: 0.5rem;
+        transform: translateY(-50%);
     }
 
     .reel-dots {
@@ -362,17 +367,32 @@
     }
 }
 
-/* Collapse the hint pills to compact chevron-only buttons whenever the reel-wrap is below its
-   52rem max width. Above that the side gutters are wide enough to seat the full labelled pill;
-   below it the gutter narrows faster than the pill, so a labelled pill would spill past the reel
-   edge and add a horizontal page scrollbar. The aria-label keeps the icon buttons accessible. */
-@media (max-width: 52rem) {
+/* Collapse the hint pills to compact chevron-only buttons until the viewport is wide enough that a
+   full labelled pill (grown outward from the card edge) still stops short of the reel edge. The
+   labelled pill needs roughly a 9.75rem gutter, i.e. a wrap of ~49.5rem; since the wrap is the
+   viewport minus page padding, we collapse below 58rem to keep a safe margin and avoid both card
+   overlap and a horizontal scrollbar. The aria-label keeps the icon buttons accessible. */
+@media (max-width: 58rem) {
     .reel__hint {
         padding: 0;
         width: 2.5rem;
         height: 2.5rem;
         justify-content: center;
         border-radius: 50%;
+    }
+
+    /* Pin the collapsed circles to the reel edges. They are small enough to never overflow, which
+       avoids the horizontal scrollbar in the tight gutter just above the 640px card breakpoint. */
+    .reel__hint--prev {
+        left: 0.5rem;
+        right: auto;
+        transform: translateY(-50%);
+    }
+
+    .reel__hint--next {
+        left: auto;
+        right: 0.5rem;
+        transform: translateY(-50%);
     }
 
     .reel__hint-label {
