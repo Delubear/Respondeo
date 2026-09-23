@@ -40,4 +40,15 @@
     .hero__title {
         font-size: 1.7rem;
     }
+
+    /* Stack the browse buttons and give them a consistent width so the differing
+       label lengths ("Browse all articles" vs "Summa Theologiae") line up. */
+    .home__browse {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home__browse .btn {
+        text-align: center;
+    }
 }
