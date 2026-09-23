@@ -43,7 +43,9 @@ else
                 @foreach (var article in _question.Articles)
                 {
                     <li class="summa-question__toc-item">
-                        <a href="@($"summa/{Id}#article-{article.Number}")">
+                        <a href="@($"summa/{Id}#article-{article.Number}")"
+                           @onclick="() => ScrollToArticleAsync(article.Number)"
+                           @onclick:preventDefault="true">
                             Article @article.Number. @article.Title
                         </a>
                     </li>
@@ -85,6 +87,15 @@ else
         _question = await Summa.GetQuestionAsync(Id);
         PartTitle = await ResolvePartTitleAsync();
         _loading = false;
+    }
+
+    // Smoothly scrolls to the chosen article instead of the browser's instant anchor jump, and
+    // updates the address bar so the location stays shareable.
+    private async Task ScrollToArticleAsync(int articleNumber)
+    {
+        var fragment = $"article-{articleNumber}";
+        await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
+        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
     }
 
     // The articles render only after the question content loads, so a "#article-N" fragment in the
