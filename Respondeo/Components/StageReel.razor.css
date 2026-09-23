@@ -228,7 +228,7 @@
     cursor: pointer;
     font: inherit;
     opacity: 1;
-    transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: opacity 0.3s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .reel__hint:hover,
@@ -249,12 +249,20 @@
     pointer-events: none;
 }
 
+/* Centre each hint on the midpoint of its side gutter. The card is 30rem and centred, so each
+   gutter spans (100% - 30rem)/2 and its midpoint is (100% - 30rem)/4 from the reel edge. Because
+   the anchor is a fraction of the wrap (never a fixed outward push), the pill can't extend past
+   the wrap and trigger a horizontal scrollbar. translate(-50%) seats the pill on that midpoint. */
 .reel__hint--prev {
-    left: -0.25rem;
+    left: calc((100% - 30rem) / 4);
+    right: auto;
+    transform: translate(-50%, -50%);
 }
 
 .reel__hint--next {
-    right: -0.25rem;
+    left: auto;
+    right: calc((100% - 30rem) / 4);
+    transform: translate(50%, -50%);
 }
 
 .reel__hint-label {
@@ -337,15 +345,28 @@
         width: 18rem;
     }
 
+    /* The card shrinks to 18rem here, so re-seat the chevron pills on the narrower gutter's
+       midpoint: (100% - 18rem)/4 from each edge. */
+    .reel__hint--prev {
+        left: calc((100% - 18rem) / 4);
+        transform: translate(-50%, -50%);
+    }
+
+    .reel__hint--next {
+        right: calc((100% - 18rem) / 4);
+        transform: translate(50%, -50%);
+    }
+
     .reel-dots {
         gap: 0.45rem;
     }
 }
 
-/* Collapse the hint pills to compact chevron-only buttons while the masthead is in its
-   "MENU" state (<= 800px). Above 640px the cards are wide enough that the full labelled
-   pills would otherwise overlap the card text. The aria-label keeps them accessible. */
-@media (max-width: 800px) {
+/* Collapse the hint pills to compact chevron-only buttons whenever the reel-wrap is below its
+   52rem max width. Above that the side gutters are wide enough to seat the full labelled pill;
+   below it the gutter narrows faster than the pill, so a labelled pill would spill past the reel
+   edge and add a horizontal page scrollbar. The aria-label keeps the icon buttons accessible. */
+@media (max-width: 52rem) {
     .reel__hint {
         padding: 0;
         width: 2.5rem;
