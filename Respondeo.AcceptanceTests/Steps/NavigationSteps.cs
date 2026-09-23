@@ -133,6 +133,37 @@ public sealed class NavigationSteps(PlaywrightContext context)
         _ => throw new ArgumentOutOfRangeException(nameof(control), control, "Unknown reel control."),
     };
 
+    [When(@"I scroll the wheel forward over the reel")]
+    public async Task WhenIScrollTheWheelForwardOverTheReel()
+    {
+        var reel = Page.Locator(".reel");
+        await reel.HoverAsync();
+        // A single forward wheel notch over the reel should advance exactly one card.
+        await Page.Mouse.WheelAsync(0, 240);
+    }
+
+    [Then(@"the second stage card should be centred")]
+    public async Task ThenTheSecondStageCardShouldBeCentred()
+    {
+        // Stage 2 is the second `.reel__step`; wait for it to gain the centred marker.
+        await Page.WaitForSelectorAsync(".reel__step:nth-child(2).is-centered");
+    }
+
+    [Given(@"I am viewing on a (.*) pixel wide screen")]
+    public async Task GivenIAmViewingOnAPixelWideScreen(int width)
+    {
+        // Set the viewport before navigating so the responsive rules apply on first paint.
+        await Page.SetViewportSizeAsync(width, 900);
+    }
+
+    [Then(@"the ""(.*)"" control label should be hidden")]
+    public async Task ThenTheControlLabelShouldBeHidden(string control)
+    {
+        // Below 800px the pill collapses to an icon-only button: the label is display:none.
+        var label = ReelHint(control).Locator(".reel__hint-label");
+        Assert.False(await label.IsVisibleAsync());
+    }
+
     [Then("the breadcrumb should contain at least (.*) steps")]
     public async Task ThenTheBreadcrumbShouldContainAtLeastSteps(int minimum)
     {

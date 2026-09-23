@@ -22,3 +22,13 @@ Feature: Home page
 	Given I open the start page
 	When I press the "walk onward" control
 	Then the "earlier steps" control should be visible
+
+  Scenario: Scrolling the wheel over the reel advances one stage
+	Given I open the start page
+	When I scroll the wheel forward over the reel
+	Then the second stage card should be centred
+
+  Scenario: The hint controls collapse to icon-only on a narrow viewport
+	Given I am viewing on a 700 pixel wide screen
+	And I open the start page
+	Then the "walk onward" control label should be hidden

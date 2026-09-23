@@ -107,4 +107,26 @@ public class StageReelTests : TestContext
 
         Assert.Contains(JSInterop.Invocations, i => i.Identifier == "dispose");
     }
+
+    [Fact]
+    public void Previous_hint_steps_one_stage_back()
+    {
+        var cut = Render(ThreeStages());
+
+        cut.Find(".reel__hint--prev").Click();
+
+        var step = Assert.Single(JSInterop.Invocations, i => i.Identifier == "scrollByStep");
+        Assert.Equal(-1, step.Arguments[1]);
+    }
+
+    [Fact]
+    public void Next_hint_steps_one_stage_forward()
+    {
+        var cut = Render(ThreeStages());
+
+        cut.Find(".reel__hint--next").Click();
+
+        var step = Assert.Single(JSInterop.Invocations, i => i.Identifier == "scrollByStep");
+        Assert.Equal(1, step.Arguments[1]);
+    }
 }
