@@ -505,6 +505,10 @@ internal static partial class SummaParser
         var cleaned = Regex.Replace(title, @"\s+", " ").Trim();
         // Strip stray CCEL cross-reference brackets like "[76]" that can appear in headers.
         cleaned = Regex.Replace(cleaned, @"\[\d+\]", string.Empty).Trim();
+        // Remove orphan footnote asterisks (e.g. "Of Fear*", "Irony*"). These point to an editorial
+        // note that lived beside the dropped "(N ARTICLES)" marker, so the bare "*" is left unexplained.
+        // Keep asterisks that open an inline gloss like "[*Scientia]" (i.e. those immediately after "[").
+        cleaned = Regex.Replace(cleaned, @"(?<!\[)\*", string.Empty).Trim();
         return cleaned;
     }
 
