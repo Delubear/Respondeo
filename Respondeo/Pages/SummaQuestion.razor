@@ -44,7 +44,7 @@ else
                 {
                     <li class="summa-question__toc-item">
                         <a href="@($"summa/{Id}#article-{article.Number}")"
-                           @onclick="() => ScrollToArticleAsync(article.Number)"
+                           @onclick="() => OpenArticleAsync(article.Number)"
                            @onclick:preventDefault="true">
                             Article @article.Number. @article.Title
                         </a>
@@ -55,15 +55,22 @@ else
 
         @foreach (var article in _question.Articles)
         {
-            <section class="summa-article" id="@($"article-{article.Number}")">
-                <h2 class="summa-article__title">
-                    <span class="summa-article__number">Article @article.Number</span>
-                    @article.Title
-                </h2>
+            <details class="summa-article"
+                     id="@($"article-{article.Number}")"
+                     open="@_openArticles.Contains(article.Number)">
+                <summary class="summa-article__summary"
+                         @onclick="() => ToggleArticle(article.Number)"
+                         @onclick:preventDefault="true">
+                    <span class="summa-article__label">
+                        <span class="summa-article__number">Article @article.Number</span>
+                        <span class="summa-article__title">@article.Title</span>
+                    </span>
+                    <span class="summa-article__marker" aria-hidden="true">@(_openArticles.Contains(article.Number) ? "\u2212" : "+")</span>
+                </summary>
                 <div class="summa-article__body">
                     @((MarkupString)SummaReferenceRenderer.Expand(article.BodyHtml))
                 </div>
-            </section>
+            </details>
         }
 
         <nav class="summa-question__pager" aria-label="Question navigation">
@@ -80,27 +87,46 @@ else
     private bool _loading = true;
     private bool _scrolledToFragment;
 
+    // Articles render as collapsible panels, all closed on load; multiple may be open at once. Only
+    // this ephemeral open-set drives expansion. The shareable state stays the "#article-N" fragment,
+    // written by the TOC and consumed on deep-link arrival, so links keep working without encoding
+    // the full open-set in the URL.
+    private readonly HashSet<int> _openArticles = new();
+
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
         _scrolledToFragment = false;
+        _openArticles.Clear();
         _question = await Summa.GetQuestionAsync(Id);
         PartTitle = await ResolvePartTitleAsync();
         _loading = false;
     }
 
-    // Smoothly scrolls to the chosen article instead of the browser's instant anchor jump, and
-    // updates the address bar so the location stays shareable.
-    private async Task ScrollToArticleAsync(int articleNumber)
+    // Toggles a panel open/closed from its own summary. Prevents the native <details> toggle so our
+    // set stays the single source of truth for the open/closed marker.
+    private void ToggleArticle(int articleNumber)
     {
+        if (!_openArticles.Remove(articleNumber))
+        {
+            _openArticles.Add(articleNumber);
+        }
+    }
+
+    // Opens the chosen article (leaving any others as they are), updates the shareable URL fragment,
+    // and smoothly scrolls it into view. Used by the table of contents.
+    private async Task OpenArticleAsync(int articleNumber)
+    {
+        _openArticles.Add(articleNumber);
         var fragment = $"article-{articleNumber}";
         await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
+        StateHasChanged();
         await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
     }
 
     // The articles render only after the question content loads, so a "#article-N" fragment in the
-    // URL has nothing to scroll to at initial navigation. Once the content is on the page, scroll to
-    // the target section ourselves once (offset for the sticky breadcrumb).
+    // URL has nothing to open/scroll to at initial navigation. Once the content is on the page, open
+    // the target article and scroll to it once.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_loading || _question is null || _scrolledToFragment)
@@ -112,6 +138,14 @@ else
         if (!string.IsNullOrEmpty(fragment))
         {
             _scrolledToFragment = true;
+
+            if (fragment.StartsWith("article-", StringComparison.Ordinal)
+                && int.TryParse(fragment["article-".Length..], out var articleNumber)
+                && _openArticles.Add(articleNumber))
+            {
+                StateHasChanged();
+            }
+
             await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
         }
     }

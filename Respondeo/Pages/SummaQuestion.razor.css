@@ -62,16 +62,42 @@
     text-decoration: underline;
 }
 
-/* ---------- Article ---------- */
+/* ---------- Article (collapsible panel) ---------- */
 .summa-article {
-    padding: 1.5rem 0;
     border-top: 1px solid var(--rule);
     scroll-margin-top: 5rem;
 }
 
+/* Hide the native disclosure triangle; we render our own +/- marker. */
+.summa-article > summary {
+    list-style: none;
+}
+
+.summa-article > summary::-webkit-details-marker {
+    display: none;
+}
+
+.summa-article__summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    cursor: pointer;
+}
+
+.summa-article__summary:hover .summa-article__title,
+.summa-article__summary:focus-visible .summa-article__title {
+    color: var(--accent);
+}
+
+.summa-article__label {
+    display: block;
+}
+
 .summa-article__title {
+    display: block;
     font-size: 1.3rem;
-    margin: 0 0 1rem;
 }
 
 .summa-article__number {
@@ -83,8 +109,16 @@
     margin-bottom: 0.2rem;
 }
 
+.summa-article__marker {
+    flex: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--ink-soft);
+}
+
 .summa-article__body {
     line-height: 1.7;
+    padding-bottom: 1.5rem;
 }
 
 .summa-article__body p {
