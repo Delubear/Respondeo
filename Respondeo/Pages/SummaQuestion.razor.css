@@ -130,6 +130,12 @@
     border-bottom-color: var(--accent);
 }
 
+/* ---------- Section cues (Objection / Reply / On the contrary / I answer that) ---------- */
+/* Rendered from neutral tokens at read time, so restyling never needs a corpus regen. */
+.summa-article__body ::deep .summa-cue {
+    font-weight: 700;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
     .summa-question__title {

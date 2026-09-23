@@ -34,7 +34,7 @@ else
         @if (!string.IsNullOrWhiteSpace(_question.PrologueHtml))
         {
             <div class="summa-question__prologue">
-                @((MarkupString)_question.PrologueHtml)
+                @((MarkupString)SummaReferenceRenderer.Expand(_question.PrologueHtml))
             </div>
         }
 
@@ -61,7 +61,7 @@ else
                     @article.Title
                 </h2>
                 <div class="summa-article__body">
-                    @((MarkupString)article.BodyHtml)
+                    @((MarkupString)SummaReferenceRenderer.Expand(article.BodyHtml))
                 </div>
             </section>
         }

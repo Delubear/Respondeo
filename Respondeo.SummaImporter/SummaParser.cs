@@ -499,19 +499,30 @@ internal static partial class SummaParser
 
     private static string FormatParagraph(string text)
     {
-        // Emphasise the structural cues that open the classic article sections.
-        foreach (var cue in new[] { "On the contrary,", "I answer that," })
+        // Emit neutral tokens for the classic Summa section cues instead of baking presentation
+        // (e.g. bold) into the corpus. The render stage decides the markup and styling, so these
+        // structural markers can be restyled without regenerating the JSON. Tokens take the form
+        // {{scue|<kind>|<number?>}}: "objection"/"reply" carry the number, "contra"/"respondeo" do not.
+        if (text.StartsWith("On the contrary,", StringComparison.Ordinal))
         {
-            if (text.StartsWith(cue, StringComparison.Ordinal))
-            {
-                return $"**{cue}**{text[cue.Length..]}";
-            }
+            return $"{{{{scue|contra}}}}{text["On the contrary,".Length..]}";
         }
 
-        var objection = Regex.Match(text, @"^(Objection \d+:|Reply to Objection \d+:)");
+        if (text.StartsWith("I answer that,", StringComparison.Ordinal))
+        {
+            return $"{{{{scue|respondeo}}}}{text["I answer that,".Length..]}";
+        }
+
+        var reply = Regex.Match(text, @"^Reply to Objection (?<n>\d+):");
+        if (reply.Success)
+        {
+            return $"{{{{scue|reply|{reply.Groups["n"].Value}}}}}{text[reply.Length..]}";
+        }
+
+        var objection = Regex.Match(text, @"^Objection (?<n>\d+):");
         if (objection.Success)
         {
-            return $"**{objection.Value}**{text[objection.Length..]}";
+            return $"{{{{scue|objection|{objection.Groups["n"].Value}}}}}{text[objection.Length..]}";
         }
 
         return text;
@@ -520,10 +531,14 @@ internal static partial class SummaParser
     // Maps a CCEL part token (FP/FS/SS/TP/XP) to our internal part id (fp/fs/ss/tp/xp).
     private static string PartTokenToId(string token) => token.ToLowerInvariant();
 
-    // Turns CCEL cross-references in body/prologue text into clickable links into our own routes.
-    // First the leftover hyperlink-index cruft (e.g. "[6]") is removed, then references of the form
-    // "Q[2], A[2]", "FP, Q[22], A[2]", or a lone "AA[1],3" are rewritten as inline HTML anchors that
-    // point at "/summa/{part}-q{NNN}#article-N". Inline HTML passes through Markdig untouched.
+    // Turns CCEL cross-references in body/prologue text into neutral, render-agnostic placeholder
+    // tokens rather than baking final HTML anchors into the corpus. This keeps link format, routing
+    // and styling decisions in the app's render stage, so changing them never requires regenerating
+    // the JSON. First the leftover hyperlink-index cruft (e.g. "[6]") is removed, then references of
+    // the form "Q[2], A[2]", "FP, Q[22], A[2]", or a lone "AA[1],3" become tokens:
+    //   {{sref|<kind>|<partId>|<q>|<a>}}
+    // where <kind> is "qp" (question, show part), "q" (question, same part) or "a" (article only),
+    // and <a> may be empty. The tokens survive Markdig untouched and are expanded on the page.
     private static string Linkify(string text, string currentPartId, int currentNumber)
     {
         if (string.IsNullOrEmpty(text))
@@ -535,25 +550,18 @@ internal static partial class SummaParser
 
         text = QuestionRefRegex().Replace(text, match =>
         {
-            var partId = match.Groups["part"].Success ? PartTokenToId(match.Groups["part"].Value) : currentPartId;
+            var hasPart = match.Groups["part"].Success;
+            var partId = hasPart ? PartTokenToId(match.Groups["part"].Value) : currentPartId;
             var questionNumber = int.Parse(match.Groups["q"].Value);
-            var href = $"/summa/{partId}-q{questionNumber:D3}";
-
-            var display = match.Groups["part"].Success ? $"{match.Groups["part"].Value}, Q. {questionNumber}" : $"Q. {questionNumber}";
-            if (match.Groups["a"].Success)
-            {
-                href += $"#article-{match.Groups["a"].Value}";
-                display += $", A. {match.Groups["a"].Value}";
-            }
-
-            return $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
+            var article = match.Groups["a"].Success ? match.Groups["a"].Value : string.Empty;
+            var kind = hasPart ? "qp" : "q";
+            return $"{{{{sref|{kind}|{partId}|{questionNumber}|{article}}}}}";
         });
 
         text = ArticleRefRegex().Replace(text, match =>
         {
             var articleNumber = match.Groups["a"].Value;
-            var href = $"/summa/{currentPartId}-q{currentNumber:D3}#article-{articleNumber}";
-            return $"<a class=\"summa-ref\" href=\"{href}\">A. {articleNumber}</a>";
+            return $"{{{{sref|a|{currentPartId}|{currentNumber}|{articleNumber}}}}}";
         });
 
         return text;
