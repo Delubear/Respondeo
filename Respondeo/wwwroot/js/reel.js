@@ -261,6 +261,42 @@ export function init(reel) {
     // Capture phase so we can intercept before the anchor's default navigation.
     reel.addEventListener('click', onClick, true);
 
+    // --- Touch: a horizontal drag advances the reel one card. ---
+    // The reel uses `touch-action: pan-y`, so the browser never pans it horizontally (vertical
+    // swipes still scroll the page). We detect a horizontal swipe ourselves: swipe left = forward
+    // along the path, swipe right = back. A distance/dominance threshold keeps taps and vertical
+    // scrolls from triggering a step.
+    const SWIPE_THRESHOLD = 40; // px of horizontal travel needed to count as a swipe.
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchTracking = false;
+    const onTouchStart = (e) => {
+        if (e.touches.length !== 1) {
+            touchTracking = false;
+            return;
+        }
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchTracking = true;
+    };
+    const onTouchEnd = (e) => {
+        if (!touchTracking) {
+            return;
+        }
+        touchTracking = false;
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        // Only act on a clearly horizontal swipe; let vertical gestures scroll the page.
+        if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) <= Math.abs(dy)) {
+            return;
+        }
+        // Swipe left (dx < 0) moves forward; swipe right moves back.
+        scrollByStep(reel, dx < 0 ? 1 : -1);
+    };
+    reel.addEventListener('touchstart', onTouchStart, { passive: true });
+    reel.addEventListener('touchend', onTouchEnd, { passive: true });
+
     // --- Turn effect: native scroll-timeline where supported, else IO fallback. ---
     const observers = [];
     if (supportsScrollTimeline()) {
@@ -288,9 +324,11 @@ export function init(reel) {
     entry.observers = observers;
     entry.disposeDots = disposeDots;
     entry.onClick = onClick;
+    entry.onTouchStart = onTouchStart;
+    entry.onTouchEnd = onTouchEnd;
 }
 
-// Scroll by one card. direction: -1 scrolls up (toward God), +1 scrolls down.
+// Scroll by one card. direction: -1 steps back toward the start (left), +1 steps forward (right).
 export function scrollByStep(reel, direction) {
     if (!reel) {
         return;
@@ -309,6 +347,8 @@ export function dispose(reel) {
     reel.removeEventListener('keydown', entry.onKeyDown);
     reel.removeEventListener('wheel', entry.onWheel);
     reel.removeEventListener('click', entry.onClick, true);
+    reel.removeEventListener('touchstart', entry.onTouchStart);
+    reel.removeEventListener('touchend', entry.onTouchEnd);
     for (const observer of entry.observers || []) {
         observer.disconnect();
     }
