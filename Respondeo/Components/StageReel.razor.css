@@ -38,12 +38,24 @@
     scroll-snap-type: x mandatory;
     /* Room left/right so the first and last cards can still centre. */
     padding: 0.5rem 40%;
-    /* Vignette: fade the left and right edges so peeking neighbours dissolve away. */
-    -webkit-mask: linear-gradient(to right, transparent, #000 24%, #000 76%, transparent);
-    mask: linear-gradient(to right, transparent, #000 24%, #000 76%, transparent);
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */
     touch-action: pan-y;
+}
+
+/* Edge vignette: fade peeking neighbours by painting the page background over the left and
+   right edges. This replaces a mask on the reel itself, which would make the cards translucent
+   and let the thread behind them bleed through. Cards stay fully opaque; only the empty gutters
+   and off-centre neighbours dissolve toward the page colour. */
+.reel-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 1.75rem 0;
+    pointer-events: none;
+    z-index: 2;
+    background:
+        linear-gradient(to right, var(--paper), transparent 22%),
+        linear-gradient(to left, var(--paper), transparent 22%);
 }
 
 .reel:focus-visible {
