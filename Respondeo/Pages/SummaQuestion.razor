@@ -8,7 +8,9 @@
 
 <Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")"
             StageHref="summa"
-            StageLabel="Summa Theologiae" />
+            StageLabel="Summa Theologiae"
+            BackHref="@_backHref"
+            BackLabel="@_backLabel" />
 
 @if (_loading)
 {
@@ -93,6 +95,11 @@ else
     // the full open-set in the URL.
     private readonly HashSet<int> _openArticles = new();
 
+    // When the reader arrived here by clicking a cross-reference, a "back" breadcrumb links to the
+    // exact article they jumped from (recorded client-side at click time in site.js).
+    private string? _backHref;
+    private string? _backLabel;
+
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
@@ -100,8 +107,40 @@ else
         _openArticles.Clear();
         _question = await Summa.GetQuestionAsync(Id);
         PartTitle = await ResolvePartTitleAsync();
+        await ResolveReferenceOriginAsync();
         _loading = false;
     }
+
+    // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked. If
+    // present and it points at a different question than the one now shown, it becomes a back crumb
+    // deep-linking to the origin article so the reader returns to where they were.
+    private async Task ResolveReferenceOriginAsync()
+    {
+        _backHref = null;
+        _backLabel = null;
+
+        var origin = await JS.InvokeAsync<ReferenceOrigin?>("respondeoSummaRef.read");
+        if (origin is null || string.IsNullOrEmpty(origin.QuestionId))
+        {
+            return;
+        }
+
+        // Consume it so a later refresh or normal browse doesn't keep showing the back crumb.
+        await JS.InvokeVoidAsync("respondeoSummaRef.clear");
+
+        // A self-reference (shouldn't happen since site.js filters it) offers nothing to go back to.
+        if (string.Equals(origin.QuestionId, Id, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        _backHref = origin.ArticleNumber is int articleNumber
+            ? $"summa/{origin.QuestionId}#article-{articleNumber}"
+            : $"summa/{origin.QuestionId}";
+        _backLabel = $"\u2190 {origin.Label}";
+    }
+
+    private sealed record ReferenceOrigin(string QuestionId, int? ArticleNumber, string Label);
 
     // Toggles a panel open/closed from its own summary. Prevents the native <details> toggle so our
     // set stays the single source of truth for the open/closed marker.

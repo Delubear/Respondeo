@@ -130,4 +130,24 @@ public class BreadcrumbTests : TestContext
         Assert.Equal("Why God?", root.TextContent);
         Assert.Equal("why-god", root.GetAttribute("href"));
     }
+
+    [Fact]
+    public void Renders_a_back_crumb_when_back_href_is_set()
+    {
+        var cut = RenderComponent<Breadcrumb>(p => p
+            .Add(c => c.BackHref, "summa/fp-q002#article-3")
+            .Add(c => c.BackLabel, "\u2190 Q. 2, A. 3"));
+
+        var back = cut.Find("a.breadcrumb__back");
+        Assert.Equal("summa/fp-q002#article-3", back.GetAttribute("href"));
+        Assert.Contains("Q. 2, A. 3", back.TextContent);
+    }
+
+    [Fact]
+    public void Omits_the_back_crumb_by_default()
+    {
+        var cut = RenderComponent<Breadcrumb>();
+
+        Assert.Empty(cut.FindAll("a.breadcrumb__back"));
+    }
 }

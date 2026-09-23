@@ -42,6 +42,69 @@ window.respondeoScroll = {
     }
 };
 
+// Records where a Summa cross-reference jump started from, so the destination question page can
+// offer a breadcrumb back to the exact article the reader was in. The reference links are raw
+// injected anchors (no Blazor handlers), so a single delegated listener captures the click before
+// navigation. We store the origin question id, the article the reader was reading (the nearest
+// open <details class="summa-article"> above the click, falling back to the clicked ref's own
+// article container), and a display label built from the page's breadcrumb current title.
+window.respondeoSummaRef = {
+    read: function () {
+        try {
+            var raw = sessionStorage.getItem('respondeo.summaRefOrigin');
+            return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+            return null;
+        }
+    },
+    clear: function () {
+        sessionStorage.removeItem('respondeo.summaRefOrigin');
+    }
+};
+
+document.addEventListener('click', function (e) {
+    var ref = e.target.closest ? e.target.closest('a.summa-ref') : null;
+    if (!ref) {
+        return;
+    }
+
+    // The current question id comes from the /summa/{id} path.
+    var match = window.location.pathname.match(/\/summa\/([^\/#?]+)/);
+    if (!match) {
+        return;
+    }
+    var questionId = match[1];
+
+    // Only record an origin when the jump actually leaves this question. A lone article reference
+    // within the same question navigates in-page (no page change), so there is nothing to come
+    // "back" to and no destination load to consume/clear the stored origin.
+    var href = ref.getAttribute('href') || '';
+    var targetMatch = href.match(/summa\/([^\/#?]+)/);
+    if (!targetMatch || targetMatch[1] === questionId) {
+        return;
+    }
+
+    // Which article was the reader in? Prefer the article section containing the clicked link.
+    var articleEl = ref.closest ? ref.closest('.summa-article') : null;
+    var articleNumber = null;
+    if (articleEl && articleEl.id) {
+        var idMatch = articleEl.id.match(/^article-(\d+)$/);
+        if (idMatch) {
+            articleNumber = parseInt(idMatch[1], 10);
+        }
+    }
+
+    var current = document.querySelector('.breadcrumb__current');
+    var label = current ? current.textContent.trim() : 'the previous question';
+
+    var origin = {
+        questionId: questionId,
+        articleNumber: articleNumber,
+        label: label
+    };
+    sessionStorage.setItem('respondeo.summaRefOrigin', JSON.stringify(origin));
+});
+
 // Click-to-load for YouTube embeds. Author content renders a lightweight "façade" (thumbnail + play button);
 // the heavy YouTube player is only injected when the visitor actually clicks play, so opening an article makes no YouTube requests.
 // A single delegated listener covers all current and future façades (content is injected as raw HTML, so per-element Blazor handlers wouldn't bind).

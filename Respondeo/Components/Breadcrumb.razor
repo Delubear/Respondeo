@@ -21,6 +21,13 @@
                 <a class="breadcrumb__articles" href="articles">Articles</a>
             </li>
         }
+        @if (BackHref is not null)
+        {
+            <li class="breadcrumb__item">
+                <span class="breadcrumb__sep" aria-hidden="true">/</span>
+                <a class="breadcrumb__link breadcrumb__back" href="@BackHref" title="@BackLabel">@BackLabel</a>
+            </li>
+        }
         @foreach (var crumb in Crumbs)
         {
             <li class="breadcrumb__item">
@@ -50,6 +57,15 @@
 
     /// <summary>Label for the stage root crumb (e.g. "Why God?").</summary>
     [Parameter] public string? StageLabel { get; set; }
+
+    /// <summary>
+    /// Optional raw href for a "back" crumb inserted after the stage root. Used by Summa question
+    /// pages to link back to the article a cross-reference jump started from.
+    /// </summary>
+    [Parameter] public string? BackHref { get; set; }
+
+    /// <summary>Label for the back crumb (e.g. "Q. 2, A. 3").</summary>
+    [Parameter] public string? BackLabel { get; set; }
 
     /// <summary>A single ancestor step in the breadcrumb trail.</summary>
     public sealed record Crumb(string Id, string Title, string? Stage = null);
