@@ -35,27 +35,27 @@ public class StageReelTests : TestContext
     }
 
     [Fact]
-    public void Renders_stages_in_reverse_dom_order_so_stage_one_sits_at_the_bottom()
+    public void Renders_stages_in_forward_dom_order_so_stage_one_sits_at_the_start()
     {
         var cut = Render(ThreeStages());
 
-        // The reel climbs upward: Stage 1 is the LAST card in the DOM, the final stage sits FIRST.
+        // The reel walks left-to-right: Stage 1 is the FIRST card in the DOM, the final stage sits LAST.
         var labels = cut.FindAll(".stage-card__label").Select(l => l.TextContent).ToList();
-        Assert.Contains("Why the Church?", labels[0]);
+        Assert.Contains("Why God?", labels[0]);
         Assert.Contains("Why Jesus?", labels[1]);
-        Assert.Contains("Why God?", labels[2]);
+        Assert.Contains("Why the Church?", labels[2]);
     }
 
     [Fact]
-    public void Numbers_the_eyebrows_in_natural_order_despite_reversed_dom()
+    public void Numbers_the_eyebrows_in_natural_order()
     {
         var cut = Render(ThreeStages());
 
         var eyebrows = cut.FindAll(".stage-card__eyebrow").Select(e => e.TextContent.Trim()).ToList();
-        // DOM is top-to-bottom reversed, so the numbering counts down as you read the markup.
-        Assert.Equal("Stage 3 of 3", eyebrows[0]);
+        // DOM is left-to-right in forward order, so the numbering counts up as you read the markup.
+        Assert.Equal("Stage 1 of 3", eyebrows[0]);
         Assert.Equal("Stage 2 of 3", eyebrows[1]);
-        Assert.Equal("Stage 1 of 3", eyebrows[2]);
+        Assert.Equal("Stage 3 of 3", eyebrows[2]);
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class StageReelTests : TestContext
     {
         var cut = Render(ThreeStages());
 
-        Assert.NotNull(cut.Find(".reel__hint--up"));
-        Assert.NotNull(cut.Find(".reel__hint--down"));
+        Assert.NotNull(cut.Find(".reel__hint--prev"));
+        Assert.NotNull(cut.Find(".reel__hint--next"));
         Assert.NotNull(cut.Find(".reel-dots"));
     }
 

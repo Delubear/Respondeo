@@ -16,9 +16,9 @@ Feature: Home page
   Scenario: The reel starts at the beginning of the journey
 	Given I open the start page
 	Then the "earlier steps" control should be hidden
-	And the "keep climbing" control should be visible
+	And the "walk onward" control should be visible
 
-  Scenario: Climbing the reel reveals later stages
+  Scenario: Walking the reel reveals later stages
 	Given I open the start page
-	When I press the "keep climbing" control
+	When I press the "walk onward" control
 	Then the "earlier steps" control should be visible

@@ -20,9 +20,9 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [When("I choose the first stage card")]
     public async Task WhenIChooseTheFirstStageCard()
     {
-        // The home reel renders the journey with Stage 1 at the BOTTOM (climbing upward) and scrolls to it on init.
-        // Stage 1 is the LAST `.reel__step`, so we wait for the bottom card specifically to become centred (and thus unmasked) before clicking.
-        var stageOne = Page.Locator(".reel__step:last-child.is-centered");
+        // The home reel renders the journey with Stage 1 at the LEFT (walking rightward) and scrolls to it on init.
+        // Stage 1 is the FIRST `.reel__step`, so we wait for the left-most card specifically to become centred (and thus unmasked) before clicking.
+        var stageOne = Page.Locator(".reel__step:first-child.is-centered");
         await stageOne.WaitForAsync();
 
         // Clicking a card at (or near) centre always follows its link — the reel only intercepts clicks on cards that are far off-centre.
@@ -105,12 +105,12 @@ public sealed class NavigationSteps(PlaywrightContext context)
         Assert.True(await Page.Locator(".breadcrumb").IsVisibleAsync());
     }
 
-    [When("I press the \"keep climbing\" control")]
-    public async Task WhenIPressTheKeepClimbingControl()
+    [When("I press the \"walk onward\" control")]
+    public async Task WhenIPressTheWalkOnwardControl()
     {
-        await ReelHint("keep climbing").ClickAsync();
+        await ReelHint("walk onward").ClickAsync();
         // The reel scrolls smoothly; wait for the "earlier steps" control to become active.
-        await Page.WaitForSelectorAsync(".reel__hint--down:not(.is-hidden)");
+        await Page.WaitForSelectorAsync(".reel__hint--prev:not(.is-hidden)");
     }
 
     [Then("the \"(.*)\" control should be visible")]
@@ -128,8 +128,8 @@ public sealed class NavigationSteps(PlaywrightContext context)
     // Maps the human-readable control name to its reel hint element.
     private ILocator ReelHint(string control) => control.Trim().ToLowerInvariant() switch
     {
-        "keep climbing" => Page.Locator(".reel__hint--up"),
-        "earlier steps" => Page.Locator(".reel__hint--down"),
+        "walk onward" => Page.Locator(".reel__hint--next"),
+        "earlier steps" => Page.Locator(".reel__hint--prev"),
         _ => throw new ArgumentOutOfRangeException(nameof(control), control, "Unknown reel control."),
     };
 

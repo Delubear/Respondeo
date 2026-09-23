@@ -2,14 +2,14 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-@* The Home "journey reel": a vertical scroll-snap list of stage cards. Stage 1 sits
-   at the BOTTOM and the journey climbs upward. Owns its JS interop lifecycle
-   (import / init / dispose) and the scroll-affordance controls. Callers pass in the
-   ordered list of stages; data loading stays with the page. *@
+@* The Home "journey reel": a horizontal scroll-snap list of stage cards. Stage 1 sits
+   at the LEFT and the journey walks rightward along the path. Owns its JS interop
+   lifecycle (import / init / dispose) and the scroll-affordance controls. Callers pass
+   in the ordered list of stages; data loading stays with the page. *@
 
 <div class="reel-wrap">
     <div class="reel" role="listbox" tabindex="0" aria-label="The journey, stage by stage. Use the arrow keys to move between stages." @ref="_reel">
-        @for (var i = Stages.Count - 1; i >= 0; i--)
+        @for (var i = 0; i < Stages.Count; i++)
         {
             var stage = Stages[i];
             <div class="reel__step" role="option">
@@ -22,12 +22,12 @@
         }
     </div>
 
-    <button type="button" class="reel__hint reel__hint--up" @onclick="ScrollUpAsync" aria-label="Show the next stage">
+    <button type="button" class="reel__hint reel__hint--prev" @onclick="ScrollPrevAsync" aria-label="Show the previous stage">
         <span class="reel__chevron"></span>
-        <span class="reel__hint-label">Keep climbing</span>
-    </button>
-    <button type="button" class="reel__hint reel__hint--down" @onclick="ScrollDownAsync" aria-label="Show the previous stage">
         <span class="reel__hint-label">Earlier steps</span>
+    </button>
+    <button type="button" class="reel__hint reel__hint--next" @onclick="ScrollNextAsync" aria-label="Show the next stage">
+        <span class="reel__hint-label">Keep walking</span>
         <span class="reel__chevron"></span>
     </button>
 
@@ -44,8 +44,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // The reel renders Stage 1 (the starting point) at the BOTTOM so the journey climbs
-        // upward toward God. Start the reader there, and let the module apply an
+        // The reel renders Stage 1 (the starting point) at the LEFT so the journey walks
+        // rightward along the path. Start the reader there, and let the module apply an
         // IntersectionObserver fallback for the turning effect where scroll-driven CSS
         // animations aren't supported.
         if (Stages.Count > 0 && _module is null)
@@ -71,8 +71,8 @@
         }
     }
 
-    // Scroll upward (toward God / later stages).
-    private async Task ScrollUpAsync()
+    // Step back toward the starting point (earlier stages, to the left).
+    private async Task ScrollPrevAsync()
     {
         if (_module is not null)
         {
@@ -80,8 +80,8 @@
         }
     }
 
-    // Scroll downward (back toward the starting point / earlier stages).
-    private async Task ScrollDownAsync()
+    // Step forward along the path (later stages, to the right).
+    private async Task ScrollNextAsync()
     {
         if (_module is not null)
         {
