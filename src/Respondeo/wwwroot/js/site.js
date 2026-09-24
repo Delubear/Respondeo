@@ -44,16 +44,33 @@ window.respondeoScroll = {
 
 // Opens/closes a native <dialog> by element reference. Native dialogs give us focus trapping,
 // Esc-to-close and the ::backdrop for free; Blazor just needs to call the methods via interop.
+// showModal() does not lock the page behind it, so we also freeze <body> scrolling while open
+// (restoring the previous value on close, including when the user dismisses with Esc).
 window.respondeoDialog = {
     show: function (el) {
         if (el && typeof el.showModal === 'function' && !el.open) {
             el.showModal();
+            this._lockScroll();
+            if (!el._respondeoScrollLock) {
+                el._respondeoScrollLock = true;
+                el.addEventListener('close', () => this._unlockScroll());
+            }
         }
     },
     close: function (el) {
         if (el && typeof el.close === 'function' && el.open) {
             el.close();
         }
+    },
+    _lockScroll: function () {
+        if (this._prevOverflow === undefined) {
+            this._prevOverflow = document.body.style.overflow;
+        }
+        document.body.style.overflow = 'hidden';
+    },
+    _unlockScroll: function () {
+        document.body.style.overflow = this._prevOverflow || '';
+        this._prevOverflow = undefined;
     }
 };
 
