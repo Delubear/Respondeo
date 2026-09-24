@@ -150,4 +150,53 @@ public class SummaCorpusShapeTests
 
         return false;
     }
+
+    // The canonical structure of the Summa Theologica as published in the Benziger Bros. 1947 edition
+    // (Fathers of the English Dominican Province translation), which docs/summa.txt reproduces. The four
+    // main parts match the universally-cited question counts exactly. The Supplement proper is 99 questions;
+    // we additionally surface its three appended sections (the two Appendix headings) as questions 100-102 so
+    // that content is browsable, giving 102. Article totals are the sum of every question's declared
+    // "(N ARTICLES)" header, reconciled question-by-question against the source. See docs/summa-counts.md.
+    private static readonly IReadOnlyDictionary<string, (int Questions, int Articles)> CanonicalCounts =
+        new Dictionary<string, (int, int)>
+        {
+            ["p1"] = (119, 584),   // Prima Pars
+            ["p2a"] = (114, 619),  // Prima Secundae
+            ["p2b"] = (189, 917),  // Secunda Secundae
+            ["p3"] = (90, 549),    // Tertia Pars
+            ["sup"] = (102, 456),  // Supplement (99 proper + 3 appendix questions)
+        };
+
+    [Fact]
+    public void Per_part_question_and_article_counts_match_the_Benziger_1947_edition()
+    {
+        var actual = new Dictionary<string, (int Questions, int Articles)>();
+
+        foreach (var (_, question) in AllQuestions())
+        {
+            actual.TryGetValue(question.PartId, out var running);
+            actual[question.PartId] = (running.Questions + 1, running.Articles + question.Articles.Count);
+        }
+
+        var mismatches = new List<string>();
+        foreach (var (partId, expected) in CanonicalCounts)
+        {
+            actual.TryGetValue(partId, out var got);
+            if (got != expected)
+            {
+                mismatches.Add($"{partId}: expected {expected.Questions}q/{expected.Articles}a but got {got.Questions}q/{got.Articles}a");
+            }
+        }
+
+        // Also flag any part that appeared in the corpus but is not in the canonical map.
+        foreach (var partId in actual.Keys)
+        {
+            if (!CanonicalCounts.ContainsKey(partId))
+            {
+                mismatches.Add($"{partId}: unexpected part not present in the canonical map");
+            }
+        }
+
+        Assert.True(mismatches.Count == 0, $"Summa count drift vs. Benziger 1947: {string.Join("; ", mismatches)}");
+    }
 }
