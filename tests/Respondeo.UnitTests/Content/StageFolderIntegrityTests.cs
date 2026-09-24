@@ -13,9 +13,9 @@ public class StageFolderIntegrityTests
 {
     private static string ContentDirectory([CallerFilePath] string thisFile = "")
     {
-        // This file lives at <repo>/Respondeo.UnitTests/Content/StageFolderIntegrityTests.cs.
-        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "Respondeo.Content.Markdown", "wwwroot", "content");
+        // This file lives at <repo>/tests/Respondeo.UnitTests/Content/StageFolderIntegrityTests.cs.
+        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
+        return Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
     }
 
     private static IReadOnlyList<string> ReadManifestFiles(string contentDir)

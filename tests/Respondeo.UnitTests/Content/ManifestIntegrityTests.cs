@@ -12,10 +12,10 @@ public class ManifestIntegrityTests
 {
     private static string ContentDirectory([CallerFilePath] string thisFile = "")
     {
-        // This file lives at <repo>/Respondeo.UnitTests/Content/ManifestIntegrityTests.cs.
-        // Walk up to the repo root, then into the content library's wwwroot/content folder.
-        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "Respondeo.Content.Markdown", "wwwroot", "content");
+        // This file lives at <repo>/tests/Respondeo.UnitTests/Content/ManifestIntegrityTests.cs.
+        // Walk up to the repo root, then into the content library's src/.../wwwroot/content folder.
+        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
+        return Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
     }
 
     private static IReadOnlyList<string> ReadManifestFiles(string contentDir)
