@@ -104,6 +104,17 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
+        // Keep URLs canonical: a hand-typed id like "prima-q1" (or "Prima-Q1") should resolve to the
+        // padded, lower-cased "prima-q001". Redirect once to the canonical form, preserving any
+        // "#article-N" fragment so deep links survive, before loading the question.
+        var canonical = SummaParts.Canonicalize(Id);
+        if (canonical is not null)
+        {
+            var fragment = new Uri(Nav.Uri).Fragment;
+            Nav.NavigateTo($"summa/{canonical}{fragment}", replace: true);
+            return;
+        }
+
         _loading = true;
         _scrolledToFragment = false;
         _openArticles.Clear();

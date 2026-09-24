@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Respondeo.Content.Summa;
 
 /// <summary>
@@ -25,7 +27,7 @@ public sealed record SummaPart(string Key, string Slug, string Label, string Tit
 ///   <item><c>url id</c>      - <c>{slug}-q{n:D3}</c>, e.g. <c>prima-q002</c> (used in routes/links).</item>
 /// </list>
 /// </summary>
-public static class SummaParts
+public static partial class SummaParts
 {
     // Reading order. Key = permanent storage id; Slug = URL form; Label = cross-reference display.
     public static IReadOnlyList<SummaPart> All { get; } =
@@ -74,6 +76,37 @@ public static class SummaParts
     /// Returns the input unchanged when the slug prefix is not recognised.
     /// </summary>
     public static string ToStorageId(string urlId) => MapId(urlId, BySlug, p => p.Key);
+
+    // A URL question id: "<slug>-q<number>", where the number is normally zero-padded to three
+    // digits. The number group is captured loosely so hand-typed forms like "prima-q1" can be
+    // normalised back to the canonical "prima-q001".
+    [GeneratedRegex(@"^(?<slug>[a-z0-9]+)-q(?<number>\d+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex UrlIdRegex();
+
+    /// <summary>
+    /// Returns the canonical form of a public URL id, or <c>null</c> when it is already canonical or
+    /// cannot be canonicalised. Canonicalisation lower-cases a known slug and zero-pads the question
+    /// number to three digits, so a hand-typed <c>Prima-q1</c> maps to <c>prima-q001</c>. Returns
+    /// <c>null</c> when the slug is unknown or the id is already in canonical form, so callers can
+    /// cheaply decide whether a redirect is needed.
+    /// </summary>
+    public static string? Canonicalize(string? urlId)
+    {
+        if (string.IsNullOrEmpty(urlId))
+        {
+            return null;
+        }
+
+        var match = UrlIdRegex().Match(urlId);
+        if (!match.Success || !BySlug.TryGetValue(match.Groups["slug"].Value, out var part))
+        {
+            return null;
+        }
+
+        var number = int.Parse(match.Groups["number"].Value);
+        var canonical = $"{part.Slug}-q{number:D3}";
+        return string.Equals(canonical, urlId, StringComparison.Ordinal) ? null : canonical;
+    }
 
     private static string MapId(
         string id,
