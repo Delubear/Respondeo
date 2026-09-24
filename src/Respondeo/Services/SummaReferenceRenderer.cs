@@ -41,8 +41,8 @@ public static partial class SummaReferenceRenderer
     /// <summary>
     /// Replaces every reference and section-cue placeholder in the given HTML. Returns the input
     /// unchanged when it contains no tokens. When <paramref name="articleNumber"/> is supplied, the
-    /// objection and reply cues emit stable in-page anchor ids (e.g. "article-3-objection-2") so
-    /// objection cross-references can deep-link to them.
+    /// section cues emit stable in-page anchor ids (e.g. "article-3-objection-2", "article-3-contra")
+    /// so cross-references can deep-link to them.
     /// </summary>
     public static string Expand(string? html, int? articleNumber = null)
     {
@@ -152,10 +152,16 @@ public static partial class SummaReferenceRenderer
                 _ => ("", string.Empty),
             };
 
-            // Objection and reply cues get a stable anchor id so objection cross-references can
-            // deep-link straight to them, but only when we know which article they belong to.
-            var id = articleNumber is int a && number.Length > 0 && (kind == "objection" || kind == "reply")
-                ? $" id=\"article-{a}-{kind}-{number}\""
+            // Section cues get a stable anchor id so cross-references can deep-link straight to
+            // them, but only when we know which article they belong to. Objection/reply ids carry
+            // the objection number; contra/respondeo are unique within an article so need no number.
+            var id = articleNumber is int a
+                ? kind switch
+                {
+                    "objection" or "reply" when number.Length > 0 => $" id=\"article-{a}-{kind}-{number}\"",
+                    "contra" or "respondeo" => $" id=\"article-{a}-{kind}\"",
+                    _ => string.Empty,
+                }
                 : string.Empty;
 
             return $"<strong{id} class=\"summa-cue summa-cue--{cssModifier}\">{label}</strong>";

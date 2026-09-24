@@ -155,4 +155,28 @@ public class SummaReferenceRendererTests
 
         Assert.DoesNotContain("id=\"article-", result);
     }
+
+    [Fact]
+    public void Expand_contra_cue_emits_numberless_anchor_id_when_article_known()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|contra}}the Philosopher", 5);
+
+        Assert.Contains("id=\"article-5-contra\"", result);
+    }
+
+    [Fact]
+    public void Expand_respondeo_cue_emits_numberless_anchor_id_when_article_known()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|respondeo}}it must be said", 3);
+
+        Assert.Contains("id=\"article-3-respondeo\"", result);
+    }
+
+    [Fact]
+    public void Expand_contra_cue_omits_id_without_article_context()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|contra}}the Philosopher");
+
+        Assert.DoesNotContain("id=\"article-", result);
+    }
 }

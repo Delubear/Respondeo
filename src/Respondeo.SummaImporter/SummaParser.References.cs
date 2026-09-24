@@ -94,16 +94,23 @@ internal static partial class SummaParser
     }
 
     // Builds the companion objection token for a reference that carries a trailing "OBJ[n]" (or "Reply to OBJ[n]") citation.
-    // The objection is scoped to the article named in the same reference; when no article is present there is nothing to anchor to, so the token is omitted.
+    // The objection is scoped to the article named in the same reference. When no article is present there is no anchor to
+    // link to, so the citation is preserved as readable text rather than being silently dropped from the sentence.
     private static string Objection(Match match, string partId, int questionNumber, Group article)
     {
-        if (!match.Groups["obj"].Success || !article.Success)
+        if (!match.Groups["obj"].Success)
         {
             return string.Empty;
         }
 
         var kind = match.Groups["reply"].Success ? "reply" : "objection";
         var objectionNumber = match.Groups["obj"].Value;
+
+        if (!article.Success)
+        {
+            return kind == "reply" ? $", Reply to Obj. {objectionNumber}" : $", Obj. {objectionNumber}";
+        }
+
         return $"{{{{sobj|{partId}|{questionNumber}|{article.Value}|{kind}|{objectionNumber}}}}}";
     }
 
