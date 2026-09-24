@@ -151,14 +151,90 @@
     display: none;
 }
 
+.summa__part-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
 .summa__part-title {
     font-size: 1.15rem;
     font-weight: 700;
 }
 
+.summa__part-latin {
+    font-size: 0.85rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
 .summa__part-count {
     font-size: 0.8rem;
     color: var(--ink-soft);
+}
+
+.summa__part-description {
+    margin: 0;
+    padding: 0 1.1rem 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+}
+
+/* ---------- Treatise sub-accordion ---------- */
+.summa__treatise {
+    border-top: 1px solid var(--rule);
+}
+
+.summa__treatise-summary {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    padding: 0.65rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+    text-align: left;
+    font-family: var(--display);
+    background: var(--paper);
+    transition: background 0.15s ease;
+}
+
+.summa__treatise-summary:hover {
+    background: var(--parchment);
+}
+
+.summa__treatise-summary::-webkit-details-marker {
+    display: none;
+}
+
+.summa__treatise-marker {
+    flex: none;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-right: 2px solid var(--ink-soft);
+    border-bottom: 2px solid var(--ink-soft);
+    transform: rotate(-45deg);
+    transition: transform 0.15s ease;
+}
+
+.summa__treatise[open] > .summa__treatise-summary .summa__treatise-marker {
+    transform: rotate(45deg);
+}
+
+.summa__treatise-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.summa__treatise-count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
 }
 
 .summa__question-list {

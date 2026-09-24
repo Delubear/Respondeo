@@ -90,6 +90,7 @@ foreach (var part in parts)
             id = question.Id,
             number = question.Number,
             title = question.Title,
+            treatise = question.Treatise,
             articles = question.Articles.Select(a => new { number = a.Number, title = a.Title }).ToList(),
         });
     }

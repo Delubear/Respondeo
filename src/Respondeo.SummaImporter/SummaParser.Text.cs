@@ -90,8 +90,28 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^Objection (?<n>\d+):", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
 
-    // A treatise heading between questions, e.g. "TREATISE ON HABITS (QQ[49]-54)" or
-    // "TREATISE ON HABITS IN PARTICULAR (QQ[55]-89) ...". These are not part of any article body.
-    [GeneratedRegex(@"^\s*TREATISE\b.*\(QQ\[\d+\]", RegexOptions.Compiled)]
+    // A treatise heading between questions. The source uses several formats, e.g.
+    // "TREATISE ON HABITS (QQ[49]-54)", "TREATISE ON THE CREATION (QQ 44-46)",
+    // "TREATISE ON THE DISTINCTION OF THINGS IN GENERAL (Q[47])" and
+    // "TREATISE ON SACRED DOCTRINE [1](Q[1])". These are not part of any article body. The match is
+    // case-sensitive, so the all-caps heading is caught while ordinary prose ("the treatise on
+    // charity") is left untouched.
+    [GeneratedRegex(@"^\s*TREATISE\b", RegexOptions.Compiled)]
     private static partial Regex TreatiseHeadingRegex();
+
+    // Turns a raw treatise heading line into a clean display title. The descriptive name always
+    // precedes the first "[" or "(", which introduce the CCEL question-range/footnote (e.g.
+    // "(QQ[22]-48)", "[1](Q[1])") and any trailing tail like "GOOD HABITS, i.e. VIRTUES"; everything
+    // from that bracket onward is dropped and the remainder is title-cased for display.
+    internal static string CleanTreatiseTitle(string line)
+    {
+        var text = line.Trim();
+        var cut = text.IndexOfAny(['[', '(']);
+        if (cut >= 0)
+        {
+            text = text[..cut];
+        }
+
+        return TitleCase(text.Trim());
+    }
 }

@@ -36,6 +36,12 @@ public sealed class SummaQuestionEntry
     /// <summary>Display title of the question (e.g. "The nature and extent of sacred doctrine").</summary>
     public required string Title { get; init; }
 
+    /// <summary>
+    /// The treatise this question belongs to (e.g. "Treatise on the Passions"), used to group
+    /// questions within a part. Null for the few questions that precede any treatise heading.
+    /// </summary>
+    public string? Treatise { get; init; }
+
     /// <summary>The article titles ("Whether ...?") in order, used for search and preview.</summary>
     public IReadOnlyList<SummaArticleEntry> Articles { get; init; } = [];
 }

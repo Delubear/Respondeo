@@ -79,23 +79,62 @@
             <div class="summa__browse">
                 @foreach (var part in _index.Parts)
                 {
+                    var partInfo = SummaParts.ByStorageKey(part.Id);
                     <details class="summa__part">
                         <summary class="summa__part-summary">
-                            <span class="summa__part-title">@part.Title</span>
+                            <span class="summa__part-heading">
+                                <span class="summa__part-title">@part.Title</span>
+                                @if (partInfo is not null)
+                                {
+                                    <span class="summa__part-latin">@partInfo.LatinName</span>
+                                }
+                            </span>
                             <span class="summa__part-count">@part.Questions.Count questions</span>
                         </summary>
-                        <ol class="summa__question-list">
-                            @foreach (var question in part.Questions)
+                        @if (partInfo is not null)
+                        {
+                            <p class="summa__part-description">@partInfo.Description</p>
+                        }
+                        @foreach (var group in GroupByTreatise(part.Questions))
+                        {
+                            @if (group.Treatise is null)
                             {
-                                <li class="summa__question">
-                                    <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
-                                        <span class="summa__question-number">Q@(question.Number)</span>
-                                        <span class="summa__question-title">@question.Title</span>
-                                        <span class="summa__question-articles">@question.Articles.Count articles</span>
-                                    </a>
-                                </li>
+                                <ol class="summa__question-list">
+                                    @foreach (var question in group.Questions)
+                                    {
+                                        <li class="summa__question">
+                                            <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                <span class="summa__question-number">Q@(question.Number)</span>
+                                                <span class="summa__question-title">@question.Title</span>
+                                                <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ol>
                             }
-                        </ol>
+                            else
+                            {
+                                <details class="summa__treatise">
+                                    <summary class="summa__treatise-summary">
+                                        <span class="summa__treatise-marker" aria-hidden="true"></span>
+                                        <span class="summa__treatise-title">@group.Treatise</span>
+                                        <span class="summa__treatise-count">@FormatTreatiseRange(group.Questions)</span>
+                                    </summary>
+                                    <ol class="summa__question-list">
+                                        @foreach (var question in group.Questions)
+                                        {
+                                            <li class="summa__question">
+                                                <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                    <span class="summa__question-number">Q@(question.Number)</span>
+                                                    <span class="summa__question-title">@question.Title</span>
+                                                    <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    </ol>
+                                </details>
+                            }
+                        }
                     </details>
                 }
             </div>
@@ -174,6 +213,36 @@
         }, TaskScheduler.Default);
     }
 
+    // Groups a part's questions into consecutive runs sharing the same treatise heading, preserving
+    // reading order. Questions before the first treatise heading form a leading group with a null
+    // treatise so they render as a plain list rather than a sub-accordion.
+    private static List<TreatiseGroup> GroupByTreatise(IReadOnlyList<SummaQuestionEntry> questions)
+    {
+        var groups = new List<TreatiseGroup>();
+        foreach (var question in questions)
+        {
+            if (groups.Count == 0 || groups[^1].Treatise != question.Treatise)
+            {
+                groups.Add(new TreatiseGroup(question.Treatise, new List<SummaQuestionEntry>()));
+            }
+
+            groups[^1].Questions.Add(question);
+        }
+
+        return groups;
+    }
+
+    // Builds the treatise summary label: a question-number range (or a single number when the treatise
+    // has one question) followed by a singular/plural question count.
+    private static string FormatTreatiseRange(IReadOnlyList<SummaQuestionEntry> questions)
+    {
+        var first = questions[0].Number;
+        var last = questions[^1].Number;
+        var range = first == last ? $"Q{first}" : $"Q{first}\u2013Q{last}";
+        var count = questions.Count == 1 ? "1 question" : $"{questions.Count} questions";
+        return $"{range} \u00b7 {count}";
+    }
+
     // Flattens the nested index into a single array of entries with their pre-resolved link metadata.
     private static SearchEntry[] BuildEntries(SummaIndex index)
     {
@@ -244,4 +313,6 @@
         int QuestionNumber,
         string Title,
         int? ArticleNumber);
+
+    private sealed record TreatiseGroup(string? Treatise, List<SummaQuestionEntry> Questions);
 }

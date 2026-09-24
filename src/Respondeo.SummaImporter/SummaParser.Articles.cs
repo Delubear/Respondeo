@@ -14,7 +14,7 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^    (?<start>\S.*)$", RegexOptions.Compiled)]
     private static partial Regex TitleStartRegex();
 
-    private static ParsedQuestion ParseQuestion(string partId, int number, string title, string[] lines, int start, int end)
+    private static ParsedQuestion ParseQuestion(string partId, int number, string title, string? treatise, string[] lines, int start, int end)
     {
         // Skip any leftover header lines (the title continuation lines and the wrapped/split "(N ARTICLES)" marker)
         // so they do not leak into the prologue or article body.
@@ -62,6 +62,7 @@ internal static partial class SummaParser
                 partId,
                 number,
                 title,
+                treatise,
                 string.Empty,
                 [new ParsedArticle(1, title, body)]);
         }
@@ -78,7 +79,7 @@ internal static partial class SummaParser
             articles.Add(new ParsedArticle(a + 1, articleStarts[a].Title, body));
         }
 
-        return new ParsedQuestion($"{partId}-q{number:D3}", partId, number, title, prologue, articles);
+        return new ParsedQuestion($"{partId}-q{number:D3}", partId, number, title, treatise, prologue, articles);
     }
 
     // Detects whether a span of text contains the tell-tale markers of an article body (Objections and "I answer that").

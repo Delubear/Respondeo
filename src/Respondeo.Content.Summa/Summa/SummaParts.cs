@@ -14,7 +14,16 @@ namespace Respondeo.Content.Summa;
 /// <param name="Label">The short display label used in cross-references (e.g. <c>II-II</c>).</param>
 /// <param name="Title">The human-readable part title (e.g. <c>First Part</c>).</param>
 /// <param name="Folder">The on-disk corpus subfolder holding this part's question files.</param>
-public sealed record SummaPart(string Key, string Slug, string Label, string Title, string Folder);
+/// <param name="LatinName">The traditional Latin name of the part (e.g. <c>Prima Pars</c>).</param>
+/// <param name="Description">A short plain-language summary of what the part covers.</param>
+public sealed record SummaPart(
+    string Key,
+    string Slug,
+    string Label,
+    string Title,
+    string Folder,
+    string LatinName,
+    string Description);
 
 /// <summary>
 /// The single source of truth mapping a Summa part between its stable storage key, its URL slug,
@@ -32,11 +41,16 @@ public static partial class SummaParts
     // Reading order. Key = permanent storage id; Slug = URL form; Label = cross-reference display.
     public static IReadOnlyList<SummaPart> All { get; } =
     [
-        new("p1", "prima", "I", "First Part", "first-part"),
-        new("p2a", "primsec", "I-II", "First Part of the Second Part", "first-part-of-the-second-part"),
-        new("p2b", "secsec", "II-II", "Second Part of the Second Part", "second-part-of-the-second-part"),
-        new("p3", "tertia", "III", "Third Part", "third-part"),
-        new("sup", "suppl", "Suppl.", "Supplement", "supplement"),
+        new("p1", "prima", "I", "First Part", "first-part", "Prima Pars",
+            "God, the Trinity, creation, the angels, and the nature of man."),
+        new("p2a", "primsec", "I-II", "First Part of the Second Part", "first-part-of-the-second-part", "Prima Secundae",
+            "Human happiness and the general principles of morality: acts, passions, habits, virtues, sin, law, and grace."),
+        new("p2b", "secsec", "II-II", "Second Part of the Second Part", "second-part-of-the-second-part", "Secunda Secundae",
+            "Morality in particular: the theological and cardinal virtues with their opposing vices, and states of life."),
+        new("p3", "tertia", "III", "Third Part", "third-part", "Tertia Pars",
+            "Christ the Saviour, his Incarnation and life, and the sacraments through which grace reaches us."),
+        new("sup", "suppl", "Suppl.", "Supplement", "supplement", "Supplementum",
+            "Compiled after Aquinas's death, completing the sacraments (penance, orders, matrimony) and the last things."),
     ];
 
     private static readonly Dictionary<string, SummaPart> ByKey = All.ToDictionary(p => p.Key, StringComparer.OrdinalIgnoreCase);

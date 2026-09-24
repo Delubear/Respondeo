@@ -69,16 +69,59 @@ internal static partial class SummaParser
         var questions = new List<ParsedQuestion>();
         var number = 0;
 
+        var treatises = FindTreatiseHeadings(lines, start, end);
         var headerLines = FindQuestionHeaders(lines, start, end);
         for (var q = 0; q < headerLines.Count; q++)
         {
             var qStart = headerLines[q].Line;
             var qEnd = q + 1 < headerLines.Count ? headerLines[q + 1].Line : end;
             number++;
-            questions.Add(ParseQuestion(id, number, TitleCase(headerLines[q].Title), lines, qStart, qEnd));
+            var treatise = TreatiseForLine(treatises, qStart);
+            questions.Add(ParseQuestion(id, number, TitleCase(headerLines[q].Title), treatise, lines, qStart, qEnd));
         }
 
         return new ParsedPart(id, title, questions);
+    }
+
+    // Collects the treatise headings within a part, each paired with the source line where it begins.
+    // Treatise headings introduce the block of questions that follows them, so a question belongs to
+    // the last heading appearing before its own header line.
+    private static List<(string Title, int Line)> FindTreatiseHeadings(string[] lines, int start, int end)
+    {
+        var treatises = new List<(string Title, int Line)>();
+        for (var i = start; i < end && i < lines.Length; i++)
+        {
+            if (TreatiseHeadingRegex().IsMatch(lines[i]))
+            {
+                var cleaned = CleanTreatiseTitle(lines[i]);
+                if (cleaned.Length > 0)
+                {
+                    treatises.Add((cleaned, i));
+                }
+            }
+        }
+
+        return treatises;
+    }
+
+    // The treatise a question belongs to: the last heading whose line precedes the question header.
+    // Returns null for questions that appear before the first treatise heading in a part.
+    private static string? TreatiseForLine(List<(string Title, int Line)> treatises, int questionLine)
+    {
+        string? current = null;
+        foreach (var (treatiseTitle, line) in treatises)
+        {
+            if (line <= questionLine)
+            {
+                current = treatiseTitle;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return current;
     }
 }
 
@@ -89,6 +132,7 @@ internal sealed record ParsedQuestion(
     string PartId,
     int Number,
     string Title,
+    string? Treatise,
     string PrologueMarkdown,
     IReadOnlyList<ParsedArticle> Articles);
 
