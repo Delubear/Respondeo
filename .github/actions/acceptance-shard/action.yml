@@ -1,0 +1,78 @@
+name: Run acceptance shard
+description: >-
+  Runs one shard of the Playwright acceptance suite against the published site.
+  Downloads the site and the once-built acceptance binaries, installs the static
+  server and Playwright browsers, serves the site, and runs the filtered tests.
+
+inputs:
+  shard-filter:
+    description: dotnet test --filter expression selecting this shard's features.
+    required: true
+  site-artifact:
+    description: Name of the uploaded site artifact to download and serve.
+    required: false
+    default: site
+
+runs:
+  using: composite
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: global.json
+
+    # Cache the Playwright browser download so each shard reuses the same binaries.
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Download published site
+      uses: actions/download-artifact@v5
+      with:
+        name: ${{ inputs.site-artifact }}
+        # Served under the Pages sub-path so the rewritten <base href="/Respondeo/"> resolves like production.
+        path: site/Respondeo
+
+    # Reuse the acceptance binaries built once in the build job; no rebuild here.
+    - name: Download acceptance test binaries
+      uses: actions/download-artifact@v5
+      with:
+        name: acceptance-tests
+        path: Respondeo.AcceptanceTests/bin/Release/net10.0
+
+    - name: Install static file server
+      shell: bash
+      run: dotnet tool install --global dotnet-serve
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: pwsh Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+
+    - name: Serve site and run acceptance tests
+      shell: bash
+      env:
+        RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
+        SHARD_FILTER: ${{ inputs.shard-filter }}
+      run: |
+        # Start the static server in the background within the SAME step so it
+        # stays alive while the tests run. Backgrounded processes from a prior
+        # step can be terminated when that step's shell exits.
+        # --quiet suppresses dotnet-serve's per-request info logging, which otherwise
+        # floods the acceptance-test logs with a line for every static file served.
+        dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html --quiet &
+        SERVER_PID=$!
+        trap "kill $SERVER_PID" EXIT
+
+        for i in {1..30}; do
+          if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
+            echo "App is up"; break
+          fi
+          if [ "$i" -eq 30 ]; then echo "App did not start in time"; exit 1; fi
+          sleep 1
+        done
+
+        dotnet test Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter "$SHARD_FILTER"
