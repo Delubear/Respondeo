@@ -87,7 +87,7 @@ public class SummaReferenceRendererTests
         Assert.Contains(">II-II, Q. 6, A. 1</a>", result);
         Assert.Contains(">A. 4</a>", result);
         // The part label should appear only on the first link.
-        Assert.Equal(1, System.Text.RegularExpressions.Regex.Matches(result, "II-II, Q\\.").Count);
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(result, "II-II, Q\\."));
     }
 
     [Theory]
