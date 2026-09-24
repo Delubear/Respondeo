@@ -18,8 +18,9 @@ public class StageNavigationConsistencyTests
 {
     private static string ContentDirectory([CallerFilePath] string thisFile = "")
     {
-        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "Respondeo.Content.Markdown", "wwwroot", "content");
+        // This file lives at <repo>/tests/Respondeo.UnitTests/Content/StageNavigationConsistencyTests.cs.
+        var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
+        return Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
     }
 
     private static IReadOnlyList<string> ReadManifestFiles(string contentDir)
