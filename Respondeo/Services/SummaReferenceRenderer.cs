@@ -30,8 +30,19 @@ public static partial class SummaReferenceRenderer
     [GeneratedRegex(@"\{\{sobj\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
 
-    // CCEL part tokens for display when a reference points at another part.
-    private static string PartLabel(string partId) => partId.ToUpperInvariant();
+    // Display labels for a reference that points at another part. Plain numerals (I, I-II, II-II,
+    // III, Suppl.) are used instead of the scholarly Latin ordinal forms (Ia, Ia-IIae, ...) since the
+    // Latin endings read as academic clutter for a general audience. The Second Part is split into two
+    // halves, so it keeps the compound "I-II"/"II-II" form.
+    private static string PartLabel(string partId) => partId switch
+    {
+        "fp" => "I",
+        "fs" => "I-II",
+        "ss" => "II-II",
+        "tp" => "III",
+        "xp" => "Suppl.",
+        _ => partId.ToUpperInvariant(),
+    };
 
     /// <summary>
     /// Replaces every reference and section-cue placeholder in the given HTML. Returns the input

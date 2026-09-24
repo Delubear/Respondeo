@@ -34,7 +34,7 @@ public class SummaReferenceRendererTests
         var result = SummaReferenceRenderer.Expand("{{sref|qp|fp|88|2}}");
 
         Assert.Contains("href=\"summa/fp-q088#article-2\"", result);
-        Assert.Contains(">FP, Q. 88, A. 2</a>", result);
+        Assert.Contains(">I, Q. 88, A. 2</a>", result);
     }
 
     [Fact]
@@ -84,10 +84,10 @@ public class SummaReferenceRendererTests
     {
         var result = SummaReferenceRenderer.Expand("{{sref|qp|ss|6|1,4}}");
 
-        Assert.Contains(">SS, Q. 6, A. 1</a>", result);
+        Assert.Contains(">II-II, Q. 6, A. 1</a>", result);
         Assert.Contains(">A. 4</a>", result);
         // The part label should appear only on the first link.
-        Assert.Equal(1, System.Text.RegularExpressions.Regex.Matches(result, "SS, Q\\.").Count);
+        Assert.Equal(1, System.Text.RegularExpressions.Regex.Matches(result, "II-II, Q\\.").Count);
     }
 
     [Theory]
