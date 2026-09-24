@@ -5,6 +5,12 @@ on:
     branches: [master]
   workflow_dispatch:
 
+# Cancel superseded runs for the same PR: a new push makes the previous run's
+# result irrelevant, so free the runner immediately instead of finishing it.
+concurrency:
+  group: pr-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   unit-tests:
     name: Unit and Component Tests
@@ -48,8 +54,18 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
-          dotnet-quality: 'preview'
+          global-json-file: global.json
+
+      # Cache restored NuGet packages keyed on the project files. Any dependency
+      # change edits a .csproj, busting the key; otherwise restore is near-instant.
+      - name: Cache NuGet packages
+        if: steps.filter.outputs.code-changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Build tests
         if: steps.filter.outputs.code-changed == 'true'
@@ -82,11 +98,35 @@ jobs:
           name: site
           path: release/wwwroot
 
+      # Build the acceptance tests once here so the parallel e2e shards can reuse
+      # the compiled output via --no-build instead of each rebuilding it.
+      - name: Build acceptance tests
+        if: steps.filter.outputs.code-changed == 'true'
+        run: dotnet build Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
+
+      - name: Upload acceptance test binaries
+        if: steps.filter.outputs.code-changed == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: acceptance-tests
+          path: Respondeo.AcceptanceTests/bin/Release/net10.0
+
   e2e:
     name: Acceptance Tests (Playwright)
     needs: unit-tests
     if: needs.unit-tests.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      # Shard the acceptance suite by feature so scenarios run on parallel runners.
+      # Each shard runs a disjoint set of FeatureTitle traits; together they cover
+      # every feature exactly once. Keep the union in sync with the .feature files.
+      fail-fast: false
+      matrix:
+        shard:
+          - name: '1'
+            filter: 'FeatureTitle=Home page|FeatureTitle=Stage navigation|FeatureTitle=Breadcrumb trail'
+          - name: '2'
+            filter: 'FeatureTitle=Theme toggle|FeatureTitle=Collapsible sections'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -96,8 +136,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
-          dotnet-quality: 'preview'
+          global-json-file: global.json
+
+      # Cache the Playwright browser download so each shard reuses the same binaries.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Download published site
         uses: actions/download-artifact@v5
@@ -106,11 +154,15 @@ jobs:
           # Served under the Pages sub-path so the rewritten <base href="/Respondeo/"> resolves like production.
           path: site/Respondeo
 
+      # Reuse the acceptance binaries built once in the unit-tests job; no rebuild here.
+      - name: Download acceptance test binaries
+        uses: actions/download-artifact@v5
+        with:
+          name: acceptance-tests
+          path: Respondeo.AcceptanceTests/bin/Release/net10.0
+
       - name: Install static file server
         run: dotnet tool install --global dotnet-serve
-
-      - name: Build acceptance tests
-        run: dotnet build Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
 
       - name: Install Playwright browsers
         run: pwsh Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
@@ -118,6 +170,7 @@ jobs:
       - name: Serve site and run acceptance tests
         env:
           RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
+          SHARD_FILTER: ${{ matrix.shard.filter }}
         run: |
           # Start the static server in the background within the SAME step so it
           # stays alive while the tests run. Backgrounded processes from a prior
@@ -136,4 +189,4 @@ jobs:
             sleep 1
           done
 
-          dotnet test Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release --no-build
+          dotnet test Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter "$SHARD_FILTER"
