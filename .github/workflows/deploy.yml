@@ -26,7 +26,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
+          # Full history is needed by the docs-detection diff below. With the Summa
+          # corpus in LFS, that history is now just tiny pointers, so this stays cheap.
           fetch-depth: 0
+          # Fetch the actual corpus blobs: the Publish step embeds them into the site.
+          lfs: true
 
       # Detect whether any non-docs file changed. Docs-only pushes (READMEs,
       # TODO.md, AI instruction files) leave code-changed=false so the build,
@@ -118,6 +122,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        # No lfs: the corpus isn't needed here; the built site arrives via the
+        # downloaded artifact, so skip fetching LFS blobs to save bandwidth.
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
