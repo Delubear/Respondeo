@@ -15,4 +15,9 @@
 	<PackageReference Include="Markdig" Version="1.3.2" />
   </ItemGroup>
 
+  <ItemGroup>
+	<!-- Expose the internal parser helpers (e.g. SplitArticleSections) to the unit test project. -->
+	<InternalsVisibleTo Include="Respondeo.UnitTests" />
+  </ItemGroup>
+
 </Project>

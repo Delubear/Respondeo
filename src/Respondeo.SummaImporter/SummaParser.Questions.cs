@@ -25,6 +25,11 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^\s*ARTICLES?\)(?:\s*\[\*.*)?\s*$", RegexOptions.Compiled)]
     private static partial Regex SplitCountContinuationRegex();
 
+    // The Appendix uses a count-first heading with no parenthesised marker, e.g. "TWO ARTICLES ON PURGATORY".
+    // Capture the topic after "ON" so it can stand as a question header (title "On Purgatory").
+    [GeneratedRegex(@"^\s{2,}(?:ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN|EIGHT|NINE|TEN)\s+ARTICLES?\s+ON\s+(?<title>[A-Z].*?)\s*$", RegexOptions.Compiled)]
+    private static partial Regex CountFirstHeaderRegex();
+
     private static List<(string Title, int Line)> FindQuestionHeaders(string[] lines, int start, int end)
     {
         var headers = new List<(string Title, int Line)>();
@@ -107,6 +112,18 @@ internal static partial class SummaParser
                     {
                         headers.Add((title, k + 1));
                     }
+                }
+            }
+
+            // Handle the Appendix's count-first heading form (e.g. "TWO ARTICLES ON PURGATORY"), which has
+            // no parenthesised "(N ARTICLES)" marker and would otherwise fold into the preceding question.
+            var countFirst = CountFirstHeaderRegex().Match(lines[i]);
+            if (countFirst.Success)
+            {
+                var title = NormalizeTitle("On " + TitleCase(countFirst.Groups["title"].Value));
+                if (title.Length > 0)
+                {
+                    headers.Add((title, i));
                 }
             }
         }

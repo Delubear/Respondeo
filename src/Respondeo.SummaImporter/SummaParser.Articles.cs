@@ -64,23 +64,116 @@ internal static partial class SummaParser
                 title,
                 treatise,
                 string.Empty,
-                [new ParsedArticle(1, title, body)]);
+                [new ParsedArticle(1, title, SplitArticleSections(body))]);
         }
 
         var prologueEnd = articleStarts.Count > 0 ? articleStarts[0].RuleLine : end;
         var prologue = Linkify(TrimInquiryList(ExtractText(lines, contentStart, prologueEnd)), partId, number);
+
+        // A handful of questions have two consecutive articles run together in the source with no rule
+        // divider and no second title, which would otherwise merge them into one over-long article. Split
+        // those undivided boundaries and recover the missing titles from the question's inquiry list.
+        var inquiryTitles = ExtractInquiryTitles(lines, contentStart, prologueEnd);
 
         var articles = new List<ParsedArticle>();
         for (var a = 0; a < articleStarts.Count; a++)
         {
             var bodyStart = articleStarts[a].BodyLine;
             var bodyEnd = a + 1 < articleStarts.Count ? articleStarts[a + 1].RuleLine : end;
-            var body = Linkify(ExtractText(lines, bodyStart, bodyEnd), partId, number, a + 1);
-            articles.Add(new ParsedArticle(a + 1, articleStarts[a].Title, body));
+
+            var segments = SplitUndividedArticles(lines, bodyStart, bodyEnd);
+            for (var s = 0; s < segments.Count; s++)
+            {
+                var articleNumber = articles.Count + 1;
+                // The first segment keeps the parsed title; any split-off segments had no title in the
+                // source, so recover it from the inquiry list by the article's position.
+                var articleTitle = s == 0
+                    ? articleStarts[a].Title
+                    : InquiryTitleAt(inquiryTitles, articleNumber) ?? articleStarts[a].Title;
+
+                var body = Linkify(ExtractText(lines, segments[s].Start, segments[s].End), partId, number, articleNumber);
+                articles.Add(new ParsedArticle(articleNumber, articleTitle, SplitArticleSections(body)));
+            }
         }
 
         return new ParsedQuestion($"{partId}-q{number:D3}", partId, number, title, treatise, prologue, articles);
     }
+
+    // Splits a single article's body line range at "undivided" article boundaries: places where a fresh
+    // "Objection 1" cue appears after the article has already emitted a "Reply to Objection" (i.e. the
+    // article is finished). The source occasionally omits the rule divider and title between two articles,
+    // which would otherwise merge them. Returns one segment per detected article, in order.
+    private static List<(int Start, int End)> SplitUndividedArticles(string[] lines, int start, int end)
+    {
+        var segments = new List<(int Start, int End)>();
+        var segmentStart = start;
+        var sawReply = false;
+
+        for (var i = start; i < end && i < lines.Length; i++)
+        {
+            var text = lines[i].Trim();
+            var isObjectionOne = text.StartsWith("Objection 1:", StringComparison.Ordinal) || text.StartsWith("Objection 1.", StringComparison.Ordinal);
+
+            if (isObjectionOne && sawReply)
+            {
+                segments.Add((segmentStart, i));
+                segmentStart = i;
+                sawReply = false;
+            }
+            else if (text.StartsWith("Reply to Objection ", StringComparison.Ordinal))
+            {
+                sawReply = true;
+            }
+        }
+
+        segments.Add((segmentStart, end));
+        return segments;
+    }
+
+    // The ordered "Whether ...?" titles enumerated in a question's inquiry list, e.g. "(1) Whether God is a
+    // body?". Used to recover titles for articles whose source header (rule divider + title) is missing.
+    private static List<string> ExtractInquiryTitles(string[] lines, int start, int end)
+    {
+        var titles = new List<string>();
+        var buffer = new StringBuilder();
+
+        void Flush()
+        {
+            if (buffer.Length > 0)
+            {
+                foreach (Match m in InquiryItemRegex().Matches(buffer.ToString()))
+                {
+                    titles.Add(NormalizeTitle(m.Groups["title"].Value));
+                }
+
+                buffer.Clear();
+            }
+        }
+
+        for (var i = start; i < end && i < lines.Length; i++)
+        {
+            var text = lines[i].Trim();
+            if (text.Length == 0)
+            {
+                Flush();
+                continue;
+            }
+
+            buffer.Append(buffer.Length == 0 ? "" : " ").Append(text);
+        }
+
+        Flush();
+        return titles;
+    }
+
+    // Returns the inquiry-list title for the given 1-based article number, or null when unavailable.
+    private static string? InquiryTitleAt(List<string> inquiryTitles, int articleNumber)
+        => articleNumber >= 1 && articleNumber <= inquiryTitles.Count ? inquiryTitles[articleNumber - 1] : null;
+
+    // A single "(N) <title>?" item inside an inquiry list. Several items may share a paragraph
+    // (e.g. "(1) ...?(2) ...?"), so the title is captured non-greedily up to its terminating '?'.
+    [GeneratedRegex(@"\(\d+\)\s*(?<title>[^?]*\?)", RegexOptions.Compiled)]
+    private static partial Regex InquiryItemRegex();
 
     // Detects whether a span of text contains the tell-tale markers of an article body (Objections and "I answer that").
     // Used to rescue single-article questions that lack a rule/title header.
@@ -91,7 +184,7 @@ internal static partial class SummaParser
         for (var i = start; i < end && i < lines.Length; i++)
         {
             var text = lines[i].Trim();
-            if (text.StartsWith("Objection 1:", StringComparison.Ordinal))
+            if (text.StartsWith("Objection 1:", StringComparison.Ordinal) || text.StartsWith("Objection 1.", StringComparison.Ordinal))
             {
                 sawObjection = true;
             }
@@ -140,7 +233,9 @@ internal static partial class SummaParser
                 continue;
             }
 
-            // Accumulate the (possibly wrapped) title until a line ending in '?'.
+            // Accumulate the (possibly wrapped) title until a line containing '?'. The '?' may sit mid-line
+            // when a footnote or cross-reference annotation trails it (e.g. "... pleasant? [*"Bonum honestum" ...]"),
+            // so we cut the title at the first '?' and discard the trailing annotation.
             var sb = new StringBuilder();
             var k = j;
             while (k < end)
@@ -151,26 +246,60 @@ internal static partial class SummaParser
                     break;
                 }
 
-                sb.Append(sb.Length == 0 ? "" : " ").Append(text);
-                if (text.EndsWith('?'))
+                var mark = text.IndexOf('?');
+                if (mark >= 0)
                 {
+                    sb.Append(sb.Length == 0 ? "" : " ").Append(text[..(mark + 1)]);
                     k++;
                     break;
                 }
 
+                sb.Append(sb.Length == 0 ? "" : " ").Append(text);
                 k++;
             }
 
             var title = NormalizeTitle(sb.ToString());
             if (!title.EndsWith('?'))
             {
-                // Not a real article title (no question). Treat the rule as a section divider.
-                continue;
+                // Most article titles are "Whether ...?" questions, but a few are declarative statements
+                // (e.g. "The difference of aeviternity and time") that open straight into "Objection 1".
+                // Accept those; otherwise treat the rule as a section divider.
+                if (!StartsArticleBody(lines, k, end))
+                {
+                    continue;
+                }
+            }
+
+            // A footnote/cross-reference annotation can wrap onto lines after the title's '?'. These use the
+            // 4-space title indentation (article body prose is 3-space indented), so skip any such trailing
+            // annotation lines to keep them out of the article body.
+            while (k < end && TitleStartRegex().IsMatch(lines[k]))
+            {
+                k++;
             }
 
             starts.Add((i, title, k));
         }
 
         return starts;
+    }
+
+    // Whether the first non-blank line at or after 'from' opens an article body ("Objection 1"). Used to
+    // recognise the handful of articles whose title is a declarative statement rather than a "Whether ...?"
+    // question.
+    private static bool StartsArticleBody(string[] lines, int from, int end)
+    {
+        for (var i = from; i < end; i++)
+        {
+            var text = lines[i].Trim();
+            if (text.Length == 0)
+            {
+                continue;
+            }
+
+            return text.StartsWith("Objection 1:", StringComparison.Ordinal) || text.StartsWith("Objection 1.", StringComparison.Ordinal);
+        }
+
+        return false;
     }
 }

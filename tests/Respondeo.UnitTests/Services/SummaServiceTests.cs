@@ -36,7 +36,7 @@ public class SummaServiceTests
           "title": "The Existence of God",
           "prologueHtml": "<p>Prologue.</p>",
           "articles": [
-            { "number": 1, "title": "Whether the existence of God is self-evident?", "bodyHtml": "<p>Answer one.</p>" }
+            { "number": 1, "title": "Whether the existence of God is self-evident?", "respondeoHtml": "<p>Answer one.</p>" }
           ]
         }
         """;
@@ -82,7 +82,7 @@ public class SummaServiceTests
         Assert.Equal("p1", question!.PartId);
         Assert.Contains("<p>Prologue.</p>", question.PrologueHtml);
         var article = Assert.Single(question.Articles);
-        Assert.Contains("Answer one.", article.BodyHtml);
+        Assert.Contains("Answer one.", article.RespondeoHtml);
     }
 
     [Fact]

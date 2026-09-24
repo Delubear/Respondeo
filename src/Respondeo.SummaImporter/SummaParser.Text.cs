@@ -84,11 +84,83 @@ internal static partial class SummaParser
         return text;
     }
 
-    [GeneratedRegex(@"^Reply to Objection (?<n>\d+):", RegexOptions.Compiled)]
+    // The section header is normally colon-delimited ("Objection 1:") but the source occasionally uses a
+    // period ("Objection 1."); accept either so the objection/reply is tokenised rather than leaking into
+    // the preamble.
+    [GeneratedRegex(@"^Reply to Objection (?<n>\d+)[:.]", RegexOptions.Compiled)]
     private static partial Regex ReplyRegex();
 
-    [GeneratedRegex(@"^Objection (?<n>\d+):", RegexOptions.Compiled)]
+    [GeneratedRegex(@"^Objection (?<n>\d+)[:.]", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
+
+    // Matches the leading section-cue token that ExtractText/FormatParagraph puts at the start of each
+    // classic Summa section paragraph, e.g. "{{scue|objection|2}}" or "{{scue|respondeo}}".
+    [GeneratedRegex(@"^\{\{scue\|(?<kind>objection|reply|contra|respondeo)(?:\|(?<n>\d+))?\}\}", RegexOptions.Compiled)]
+    private static partial Regex SectionCueRegex();
+
+    // Splits an already-linkified article body (Markdown paragraphs joined by blank lines, each classic
+    // section paragraph carrying a leading {{scue|...}} token) into the structural pieces of a Summa
+    // article. The {{scue|...}} tokens are preserved inside each bucket so the render stage still emits
+    // the same labels and deep-link anchor ids. Paragraphs before the first cue become the preamble;
+    // paragraphs without their own cue attach to the currently open section (e.g. a multi-paragraph
+    // "I answer that").
+    internal static ArticleSections SplitArticleSections(string bodyMarkdown)
+    {
+        var preamble = new List<string>();
+        var objections = new List<(int Number, List<string> Paragraphs)>();
+        var replies = new List<(int Number, List<string> Paragraphs)>();
+        var sedContra = new List<string>();
+        var respondeo = new List<string>();
+
+        // The bucket that trailing (cue-less) paragraphs get appended to.
+        List<string> current = preamble;
+
+        if (!string.IsNullOrEmpty(bodyMarkdown))
+        {
+            foreach (var paragraph in bodyMarkdown.Split("\n\n", StringSplitOptions.None))
+            {
+                if (paragraph.Length == 0)
+                {
+                    continue;
+                }
+
+                var cue = SectionCueRegex().Match(paragraph);
+                if (!cue.Success)
+                {
+                    current.Add(paragraph);
+                    continue;
+                }
+
+                var kind = cue.Groups["kind"].Value;
+                switch (kind)
+                {
+                    case "objection":
+                        objections.Add((int.Parse(cue.Groups["n"].Value), current = [paragraph]));
+                        break;
+                    case "reply":
+                        replies.Add((int.Parse(cue.Groups["n"].Value), current = [paragraph]));
+                        break;
+                    case "contra":
+                        current = sedContra;
+                        current.Add(paragraph);
+                        break;
+                    case "respondeo":
+                        current = respondeo;
+                        current.Add(paragraph);
+                        break;
+                }
+            }
+        }
+
+        static string Join(List<string> paragraphs) => string.Join("\n\n", paragraphs);
+
+        return new ArticleSections(
+            Join(preamble),
+            objections.Select(o => new NumberedSection(o.Number, Join(o.Paragraphs))).ToList(),
+            sedContra.Count > 0 ? Join(sedContra) : null,
+            respondeo.Count > 0 ? Join(respondeo) : null,
+            replies.Select(r => new NumberedSection(r.Number, Join(r.Paragraphs))).ToList());
+    }
 
     // A treatise heading between questions. The source uses several formats, e.g.
     // "TREATISE ON HABITS (QQ[49]-54)", "TREATISE ON THE CREATION (QQ 44-46)",

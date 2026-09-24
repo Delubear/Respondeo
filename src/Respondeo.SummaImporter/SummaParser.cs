@@ -136,4 +136,17 @@ internal sealed record ParsedQuestion(
     string PrologueMarkdown,
     IReadOnlyList<ParsedArticle> Articles);
 
-internal sealed record ParsedArticle(int Number, string Title, string BodyMarkdown);
+internal sealed record ParsedArticle(int Number, string Title, ArticleSections Sections);
+
+// The structural pieces of a Summa article, each as linkified Markdown (still carrying {{scue|...}}
+// tokens). PreambleMarkdown holds any text before the first Objection; SedContra/Respondeo are null
+// when absent.
+internal sealed record ArticleSections(
+    string PreambleMarkdown,
+    IReadOnlyList<NumberedSection> Objections,
+    string? SedContraMarkdown,
+    string? RespondeoMarkdown,
+    IReadOnlyList<NumberedSection> Replies);
+
+// A numbered article section (an objection or a reply) as linkified Markdown.
+internal sealed record NumberedSection(int Number, string Markdown);

@@ -66,7 +66,11 @@ foreach (var part in parts)
         {
             number = a.Number,
             title = a.Title,
-            bodyHtml = ToHtml(a.BodyMarkdown),
+            preambleHtml = ToHtml(a.Sections.PreambleMarkdown),
+            objections = a.Sections.Objections.Select(o => new { number = o.Number, html = ToHtml(o.Markdown) }).ToList(),
+            sedContraHtml = ToHtml(a.Sections.SedContraMarkdown ?? string.Empty),
+            respondeoHtml = ToHtml(a.Sections.RespondeoMarkdown ?? string.Empty),
+            replies = a.Sections.Replies.Select(r => new { number = r.Number, html = ToHtml(r.Markdown) }).ToList(),
         }).ToList();
         totalArticles += contentArticles.Count;
 

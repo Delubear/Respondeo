@@ -73,7 +73,26 @@ else
                     <span class="summa-article__marker" aria-hidden="true">@(_openArticles.Contains(article.Number) ? "\u2212" : "+")</span>
                 </summary>
                 <div class="summa-article__body">
-                    @((MarkupString)SummaReferenceRenderer.Expand(article.BodyHtml, article.Number))
+                    @if (!string.IsNullOrEmpty(article.PreambleHtml))
+                    {
+                        @((MarkupString)SummaReferenceRenderer.Expand(article.PreambleHtml, article.Number))
+                    }
+                    @foreach (var objection in article.Objections)
+                    {
+                        @((MarkupString)SummaReferenceRenderer.Expand(objection.Html, article.Number))
+                    }
+                    @if (!string.IsNullOrEmpty(article.SedContraHtml))
+                    {
+                        @((MarkupString)SummaReferenceRenderer.Expand(article.SedContraHtml, article.Number))
+                    }
+                    @if (!string.IsNullOrEmpty(article.RespondeoHtml))
+                    {
+                        @((MarkupString)SummaReferenceRenderer.Expand(article.RespondeoHtml, article.Number))
+                    }
+                    @foreach (var reply in article.Replies)
+                    {
+                        @((MarkupString)SummaReferenceRenderer.Expand(reply.Html, article.Number))
+                    }
                 </div>
             </details>
         }

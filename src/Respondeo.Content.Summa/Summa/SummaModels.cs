@@ -81,7 +81,7 @@ public sealed class SummaQuestionContent
     public IReadOnlyList<SummaArticleContent> Articles { get; init; } = [];
 }
 
-/// <summary>The full content of a single article.</summary>
+/// <summary>The full content of a single article, split into its classic structural sections.</summary>
 public sealed class SummaArticleContent
 {
     /// <summary>The article number within its question.</summary>
@@ -90,6 +90,31 @@ public sealed class SummaArticleContent
     /// <summary>The article title ("Whether ...?").</summary>
     public required string Title { get; init; }
 
-    /// <summary>Rendered HTML of the full article body (objections, sed contra, respondeo, replies).</summary>
-    public required string BodyHtml { get; init; }
+    /// <summary>
+    /// Optional rendered HTML that precedes the first objection (rare lead-in text). Empty when the
+    /// article opens directly with "Objection 1".
+    /// </summary>
+    public string PreambleHtml { get; init; } = string.Empty;
+
+    /// <summary>The objections ("Objection N"), in order.</summary>
+    public IReadOnlyList<SummaArticleSection> Objections { get; init; } = [];
+
+    /// <summary>The "On the contrary" (sed contra) rendered HTML. Empty when the article has none.</summary>
+    public string SedContraHtml { get; init; } = string.Empty;
+
+    /// <summary>The "I answer that" (respondeo) rendered HTML. Empty when the article has none.</summary>
+    public string RespondeoHtml { get; init; } = string.Empty;
+
+    /// <summary>The replies to objections ("Reply to Objection N"), in order.</summary>
+    public IReadOnlyList<SummaArticleSection> Replies { get; init; } = [];
+}
+
+/// <summary>A numbered article section (an objection or a reply to an objection).</summary>
+public sealed class SummaArticleSection
+{
+    /// <summary>The objection/reply number (1-based).</summary>
+    public required int Number { get; init; }
+
+    /// <summary>The rendered HTML of the section.</summary>
+    public required string Html { get; init; }
 }
