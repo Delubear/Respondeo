@@ -44,6 +44,13 @@ runs:
         name: acceptance-tests
         path: Respondeo.AcceptanceTests/bin/Release/net10.0
 
+    # upload-artifact does not preserve the Unix executable bit, so Playwright's
+    # bundled node driver arrives non-executable and fails with "Permission denied".
+    # Restore +x before anything invokes it.
+    - name: Restore Playwright driver permissions
+      shell: bash
+      run: chmod +x Respondeo.AcceptanceTests/bin/Release/net10.0/.playwright/node/linux-x64/node
+
     - name: Install static file server
       shell: bash
       run: dotnet tool install --global dotnet-serve
