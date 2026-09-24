@@ -135,11 +135,11 @@ public class BreadcrumbTests : TestContext
     public void Renders_a_back_crumb_when_back_href_is_set()
     {
         var cut = RenderComponent<Breadcrumb>(p => p
-            .Add(c => c.BackHref, "summa/fp-q002#article-3")
+            .Add(c => c.BackHref, "summa/prima-q002#article-3")
             .Add(c => c.BackLabel, "\u2190 Q. 2, A. 3"));
 
         var back = cut.Find("a.breadcrumb__back");
-        Assert.Equal("summa/fp-q002#article-3", back.GetAttribute("href"));
+        Assert.Equal("summa/prima-q002#article-3", back.GetAttribute("href"));
         Assert.Contains("Q. 2, A. 3", back.TextContent);
     }
 

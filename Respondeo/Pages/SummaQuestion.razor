@@ -107,7 +107,7 @@ else
         _loading = true;
         _scrolledToFragment = false;
         _openArticles.Clear();
-        _question = await Summa.GetQuestionAsync(Id);
+        _question = await Summa.GetQuestionAsync(SummaParts.ToStorageId(Id));
         PartTitle = await ResolvePartTitleAsync();
         await ResolveReferenceOriginAsync();
         _loading = false;

@@ -40,11 +40,11 @@ Directory.CreateDirectory(summaDir);
 // derives the same folder from a question's part id when fetching on demand.
 static string PartFolder(string partId) => partId switch
 {
-    "fp" => "first-part",
-    "fs" => "first-part-of-the-second-part",
-    "ss" => "second-part-of-the-second-part",
-    "tp" => "third-part",
-    "xp" => "supplement",
+    "p1" => "first-part",
+    "p2a" => "first-part-of-the-second-part",
+    "p2b" => "second-part-of-the-second-part",
+    "p3" => "third-part",
+    "sup" => "supplement",
     _ => partId,
 };
 

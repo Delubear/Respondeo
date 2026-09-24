@@ -30,7 +30,7 @@ what is most knowable in itself can be least evident to minds like ours, so it m
 > say that this proposition, 'God exists,' of itself is self-evident, for the predicate is
 > the same as the subject... Now because we do not know the essence of God, the proposition
 > is not self-evident to us; but needs to be demonstrated by things that are more known to
-> us, though less known in their nature &mdash; namely, by His effects." &mdash; [*Summa Theologiae* I, q. 2, a. 1](summa/fp-q002#article-1)
+> us, though less known in their nature &mdash; namely, by His effects." &mdash; [*Summa Theologiae* I, q. 2, a. 1](summa/prima-q002#article-1)
 
 In plainer terms: that one line &mdash; *"the predicate is the same as the subject"* &mdash; is the key. 
 Aquinas is saying that for God, *to be* and *to exist* aren't two separate things: existence isn't something God has, it's what God *is*. 

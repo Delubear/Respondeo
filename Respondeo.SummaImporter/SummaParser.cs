@@ -18,14 +18,16 @@ namespace Respondeo.SummaImporter;
 /// </summary>
 internal static partial class SummaParser
 {
-    // The five parts in reading order, each keyed by the marker that appears in the text.
+    // The five parts in reading order, each keyed by the marker that appears in the text. The Id is
+    // the stable, neutral storage key baked into question ids, filenames, and cross-reference tokens
+    // (p1/p2a/p2b/p3/sup); the app maps it to a URL slug and display label at render time.
     private static readonly (string Id, string Title, string Marker)[] Parts =
     [
-        ("fp", "First Part", "FIRST PART (FP"),
-        ("fs", "First Part of the Second Part", "FIRST PART OF THE SECOND PART"),
-        ("ss", "Second Part of the Second Part", "SECOND PART OF THE SECOND PART"),
-        ("tp", "Third Part", "THIRD PART (TP"),
-        ("xp", "Supplement", "SUPPLEMENT (XP"),
+        ("p1", "First Part", "FIRST PART (FP"),
+        ("p2a", "First Part of the Second Part", "FIRST PART OF THE SECOND PART"),
+        ("p2b", "Second Part of the Second Part", "SECOND PART OF THE SECOND PART"),
+        ("p3", "Third Part", "THIRD PART (TP"),
+        ("sup", "Supplement", "SUPPLEMENT (XP"),
     ];
 
     public static IReadOnlyList<ParsedPart> Parse(string[] lines)

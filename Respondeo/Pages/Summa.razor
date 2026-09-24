@@ -88,7 +88,7 @@
                             @foreach (var question in part.Questions)
                             {
                                 <li class="summa__question">
-                                    <a class="summa__question-link" href="@($"summa/{question.Id}")">
+                                    <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
                                         <span class="summa__question-number">Q@(question.Number)</span>
                                         <span class="summa__question-title">@question.Title</span>
                                         <span class="summa__question-articles">@question.Articles.Count articles</span>
@@ -136,8 +136,8 @@
 
     // Article matches deep-link to the specific article section; question matches go to the top.
     private static string MatchHref(SearchMatch match) => match.ArticleNumber is int articleNumber
-        ? $"summa/{match.QuestionId}#article-{articleNumber}"
-        : $"summa/{match.QuestionId}";
+        ? $"summa/{SummaParts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
+        : $"summa/{SummaParts.ToUrlId(match.QuestionId)}";
 
     protected override async Task OnInitializedAsync()
     {

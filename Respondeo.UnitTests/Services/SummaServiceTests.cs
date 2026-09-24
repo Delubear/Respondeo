@@ -10,11 +10,11 @@ public class SummaServiceTests
         {
           "parts": [
             {
-              "id": "fp",
+              "id": "p1",
               "title": "First Part",
               "questions": [
                 {
-                  "id": "fp-q001",
+                  "id": "p1-q001",
                   "number": 1,
                   "title": "The Existence of God",
                   "articles": [
@@ -30,8 +30,8 @@ public class SummaServiceTests
 
     private const string QuestionJson = """
         {
-          "id": "fp-q001",
-          "partId": "fp",
+          "id": "p1-q001",
+          "partId": "p1",
           "number": 1,
           "title": "The Existence of God",
           "prologueHtml": "<p>Prologue.</p>",
@@ -42,7 +42,7 @@ public class SummaServiceTests
         """;
 
     private const string IndexPath = "_content/Respondeo.Content.Summa/summa/summa-index.json";
-    private const string QuestionPath = "_content/Respondeo.Content.Summa/summa/first-part/fp-q001.json";
+    private const string QuestionPath = "_content/Respondeo.Content.Summa/summa/first-part/p1-q001.json";
 
     private static SummaService CreateService()
     {
@@ -76,10 +76,10 @@ public class SummaServiceTests
     {
         var service = CreateService();
 
-        var question = await service.GetQuestionAsync("fp-q001");
+        var question = await service.GetQuestionAsync("p1-q001");
 
         Assert.NotNull(question);
-        Assert.Equal("fp", question!.PartId);
+        Assert.Equal("p1", question!.PartId);
         Assert.Contains("<p>Prologue.</p>", question.PrologueHtml);
         var article = Assert.Single(question.Articles);
         Assert.Contains("Answer one.", article.BodyHtml);
@@ -90,7 +90,7 @@ public class SummaServiceTests
     {
         var service = CreateService();
 
-        var question = await service.GetQuestionAsync("fp-q999");
+        var question = await service.GetQuestionAsync("p1-q999");
 
         Assert.Null(question);
     }

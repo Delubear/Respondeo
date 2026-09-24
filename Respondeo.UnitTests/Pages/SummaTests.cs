@@ -16,11 +16,11 @@ public class SummaTests : TestContext
         {
           "parts": [
             {
-              "id": "fp",
+              "id": "p1",
               "title": "First Part",
               "questions": [
                 {
-                  "id": "fp-q001",
+                  "id": "p1-q001",
                   "number": 1,
                   "title": "The Existence of God",
                   "articles": [
@@ -28,7 +28,7 @@ public class SummaTests : TestContext
                   ]
                 },
                 {
-                  "id": "fp-q002",
+                  "id": "p1-q002",
                   "number": 2,
                   "title": "The Simplicity of God",
                   "articles": [
@@ -60,8 +60,8 @@ public class SummaTests : TestContext
         var cut = RenderComponent<SummaPage>();
 
         var hrefs = cut.FindAll("a.summa__question-link").Select(a => a.GetAttribute("href")).ToList();
-        Assert.Contains("summa/fp-q001", hrefs);
-        Assert.Contains("summa/fp-q002", hrefs);
+        Assert.Contains("summa/prima-q001", hrefs);
+        Assert.Contains("summa/prima-q002", hrefs);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class SummaTests : TestContext
         {
             var matches = cut.FindAll("a.summa__match-link").Select(a => a.GetAttribute("href")).ToList();
             Assert.Single(matches);
-            Assert.Equal("summa/fp-q002", matches[0]);
+            Assert.Equal("summa/prima-q002", matches[0]);
         });
     }
 

@@ -39,7 +39,16 @@ internal static partial class SummaParser
     private static partial Regex StandaloneObjectionRegex();
 
     // Maps a CCEL part token (FP/FS/SS/TP/XP) to our internal part id (fp/fs/ss/tp/xp).
-    private static string PartTokenToId(string token) => token.ToLowerInvariant();
+    // Maps a CCEL part token (FP/FS/SS/TP/XP) to our internal stable storage key (p1/p2a/p2b/p3/sup).
+    private static string PartTokenToId(string token) => token.ToUpperInvariant() switch
+    {
+        "FP" => "p1",
+        "FS" => "p2a",
+        "SS" => "p2b",
+        "TP" => "p3",
+        "XP" => "sup",
+        _ => token.ToLowerInvariant(),
+    };
 
     // Turns CCEL cross-references in body/prologue text into neutral, render-agnostic placeholder
     // tokens rather than baking final HTML anchors into the corpus. This keeps link format, routing

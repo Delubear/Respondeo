@@ -11,10 +11,10 @@ public sealed class SummaIndex
     public IReadOnlyList<SummaPartEntry> Parts { get; init; } = [];
 }
 
-/// <summary>A part of the Summa (e.g. "FP") in the browse index.</summary>
+/// <summary>A part of the Summa (e.g. "First Part") in the browse index.</summary>
 public sealed class SummaPartEntry
 {
-    /// <summary>Stable id / URL slug for the part (e.g. "fp", "fs", "ss", "tp", "xp").</summary>
+    /// <summary>Stable storage key for the part (e.g. "p1", "p2a", "p2b", "p3", "sup").</summary>
     public required string Id { get; init; }
 
     /// <summary>Display title (e.g. "First Part").</summary>
@@ -27,7 +27,7 @@ public sealed class SummaPartEntry
 /// <summary>A question within a part in the browse index.</summary>
 public sealed class SummaQuestionEntry
 {
-    /// <summary>Stable id / URL slug for the question (e.g. "fp-q1").</summary>
+    /// <summary>Stable storage id for the question (e.g. "p1-q001").</summary>
     public required string Id { get; init; }
 
     /// <summary>The question number within its part (1-based).</summary>

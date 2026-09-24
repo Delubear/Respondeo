@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Respondeo.Content.Summa;
 
 namespace Respondeo.Services;
 
@@ -16,7 +17,7 @@ public static partial class SummaReferenceRenderer
 {
     // Matches a single reference placeholder: {{sref|<kind>|<partId>|<q>|<a>}} where <a> may be
     // empty (question-only) or a comma-separated list of article numbers (multi-article citation).
-    [GeneratedRegex(@"\{\{sref\|(?<kind>qp|q|a)\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>[\d,]*)\}\}", RegexOptions.Compiled)]
+    [GeneratedRegex(@"\{\{sref\|(?<kind>qp|q|a)\|(?<part>[a-z0-9]+)\|(?<q>\d+)\|(?<a>[\d,]*)\}\}", RegexOptions.Compiled)]
     private static partial Regex TokenRegex();
 
     // Matches a section-cue placeholder: {{scue|<kind>|<number?>}} where number is only present for
@@ -27,22 +28,15 @@ public static partial class SummaReferenceRenderer
     // Matches an objection cross-reference placeholder: {{sobj|<partId>|<q>|<a>|<kind>|<n>}} where
     // kind is "objection" or "reply". Emitted by the importer alongside the reference an "OBJ[n]"
     // citation trails, and rendered as a link to that objection/reply within the cited article.
-    [GeneratedRegex(@"\{\{sobj\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
+    [GeneratedRegex(@"\{\{sobj\|(?<part>[a-z0-9]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
 
-    // Display labels for a reference that points at another part. Plain numerals (I, I-II, II-II,
-    // III, Suppl.) are used instead of the scholarly Latin ordinal forms (Ia, Ia-IIae, ...) since the
-    // Latin endings read as academic clutter for a general audience. The Second Part is split into two
-    // halves, so it keeps the compound "I-II"/"II-II" form.
-    private static string PartLabel(string partId) => partId switch
-    {
-        "fp" => "I",
-        "fs" => "I-II",
-        "ss" => "II-II",
-        "tp" => "III",
-        "xp" => "Suppl.",
-        _ => partId.ToUpperInvariant(),
-    };
+    // Display label for a reference that points at another part (e.g. p2b -> "II-II"). Sourced from
+    // the shared SummaParts registry so labels can be re-styled without regenerating the corpus.
+    private static string PartLabel(string partId) => SummaParts.LabelForKey(partId);
+
+    // Public URL slug for a stable part key (e.g. p1 -> "prima"), used to build hrefs.
+    private static string PartSlug(string partId) => SummaParts.SlugForKey(partId);
 
     /// <summary>
     /// Replaces every reference and section-cue placeholder in the given HTML. Returns the input
@@ -78,7 +72,7 @@ public static partial class SummaReferenceRenderer
             var articles = match.Groups["a"].Value
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-            var questionHref = $"summa/{partId}-q{questionNumber:D3}";
+            var questionHref = $"summa/{PartSlug(partId)}-q{questionNumber:D3}";
 
             if (kind == "a")
             {
@@ -131,7 +125,7 @@ public static partial class SummaReferenceRenderer
             var number = match.Groups["n"].Value;
 
             var fragment = $"article-{article}-{kind}-{number}";
-            var href = $"summa/{partId}-q{questionNumber:D3}#{fragment}";
+            var href = $"summa/{PartSlug(partId)}-q{questionNumber:D3}#{fragment}";
             var label = kind == "reply" ? $"reply&nbsp;{number}" : $"obj.&nbsp;{number}";
             return ", " + Anchor(href, label);
         });

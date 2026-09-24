@@ -105,21 +105,13 @@ internal sealed class SummaService(HttpClient http) : ISummaService
         return await response.Content.ReadFromJsonAsync<T>();
     }
 
-    // Question content is split into one subfolder per part. The importer names those folders after
-    // the human-readable part title in kebab-case; a question id is "<partId>-q<number>", so the part
-    // id is the prefix before the first '-'.
+    // Question content is split into one subfolder per part. The folder is derived from the question's
+    // stable part key (the prefix before the first '-'), via the shared SummaParts registry, so file
+    // layout stays independent of the URL slug and display label.
     private static string PartFolder(string questionId)
     {
         var separator = questionId.IndexOf('-');
-        var partId = separator > 0 ? questionId[..separator] : questionId;
-        return partId switch
-        {
-            "fp" => "first-part",
-            "fs" => "first-part-of-the-second-part",
-            "ss" => "second-part-of-the-second-part",
-            "tp" => "third-part",
-            "xp" => "supplement",
-            _ => partId,
-        };
+        var partKey = separator > 0 ? questionId[..separator] : questionId;
+        return SummaParts.FolderForKey(partKey);
     }
 }
