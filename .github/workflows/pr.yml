@@ -12,6 +12,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Guard against a new .feature file being forgotten in the e2e shard filters
+  # below. Skipped on docs-only changes (mirrors the e2e gate) and otherwise
+  # fails if any feature isn't assigned to a shard.
+  shard-coverage:
+    name: Verify shard coverage
+    needs: unit-tests
+    if: needs.unit-tests.outputs.code-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check every feature is assigned to a shard
+        run: bash scripts/check-shard-coverage.sh .github/workflows/pr.yml
+
   unit-tests:
     name: Unit and Component Tests
     runs-on: ubuntu-latest
@@ -113,7 +126,7 @@ jobs:
 
   e2e:
     name: Acceptance Tests (Playwright)
-    needs: unit-tests
+    needs: [shard-coverage, unit-tests]
     if: needs.unit-tests.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
     strategy:
