@@ -125,6 +125,11 @@
     margin: 0 0 1rem;
 }
 
+.summa-guide__note {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
 .summa-guide__subhead {
     font-family: var(--display);
     font-size: 1.05rem;
@@ -135,13 +140,15 @@
 .summa-guide__structure,
 .summa-guide__tips,
 .summa-guide__refkey,
-.summa-guide__who {
+.summa-guide__who,
+.summa-guide__books {
     margin: 0 0 1rem;
     padding-left: 1.2rem;
 }
 
 .summa-guide__refkey li,
-.summa-guide__who li {
+.summa-guide__who li,
+.summa-guide__books li {
     margin-bottom: 0.35rem;
 }
 
