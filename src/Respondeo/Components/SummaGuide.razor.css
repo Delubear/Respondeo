@@ -202,7 +202,6 @@
 .summa-guide__ref {
     color: var(--accent);
     white-space: nowrap;
-    font-variant: small-caps;
 }
 
 .summa-guide__foot {

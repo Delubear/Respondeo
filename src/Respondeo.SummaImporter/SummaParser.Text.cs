@@ -32,6 +32,14 @@ internal static partial class SummaParser
                 continue;
             }
 
+            // A treatise heading (e.g. "TREATISE ON HABITS (QQ[49]-54)") sits between questions but falls inside
+            // the previous question's range, so it would otherwise leak into the last article's body. Once seen,
+            // nothing after it belongs to the current article, so stop extracting here.
+            if (TreatiseHeadingRegex().IsMatch(line))
+            {
+                break;
+            }
+
             var text = line.Trim();
             if (text.Length == 0)
             {
@@ -81,4 +89,9 @@ internal static partial class SummaParser
 
     [GeneratedRegex(@"^Objection (?<n>\d+):", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
+
+    // A treatise heading between questions, e.g. "TREATISE ON HABITS (QQ[49]-54)" or
+    // "TREATISE ON HABITS IN PARTICULAR (QQ[55]-89) ...". These are not part of any article body.
+    [GeneratedRegex(@"^\s*TREATISE\b.*\(QQ\[\d+\]", RegexOptions.Compiled)]
+    private static partial Regex TreatiseHeadingRegex();
 }

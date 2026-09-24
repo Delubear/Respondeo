@@ -1,4 +1,5 @@
 @page "/summa/{Id}"
+@implements IDisposable
 @inject ISummaService Summa
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
@@ -102,6 +103,83 @@ else
     private string? _backHref;
     private string? _backLabel;
 
+    private DotNetObjectReference<SummaQuestion>? _selfRef;
+
+    protected override void OnInitialized()
+    {
+        // Same-question reference links only change the "#article-N" fragment, which doesn't retrigger
+        // OnParametersSetAsync or a full render. Listen for location changes so an in-page deep link
+        // still opens (and scrolls to) its target article.
+        Nav.LocationChanged += OnLocationChanged;
+    }
+
+    // Invoked from the delegated summa-ref click listener in site.js for a reference that stays within
+    // this question. Fragment-only clicks on the raw injected anchors don't reliably fire a Blazor
+    // navigation, so JS calls straight into the component to open and reveal the target fragment. The
+    // fragment may be a bare article ("article-3") or a sub-anchor within it ("article-3-reply-2").
+    [JSInvokable]
+    public async Task OpenArticleFromReference(string fragment)
+    {
+        await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
+
+        if (TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
+        {
+            StateHasChanged();
+        }
+
+        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_loading || _question is null)
+        {
+            return;
+        }
+
+        _ = OpenFragmentTargetAsync();
+    }
+
+    // Extracts the owning article number from a fragment, whether bare ("article-3") or a sub-anchor
+    // such as "article-3-reply-2" / "article-3-objection-1" / "article-3-contra".
+    private static bool TryGetArticleNumber(string fragment, out int articleNumber)
+    {
+        articleNumber = 0;
+        if (!fragment.StartsWith("article-", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var rest = fragment["article-".Length..];
+        var end = rest.IndexOf('-');
+        var digits = end < 0 ? rest : rest[..end];
+        return int.TryParse(digits, out articleNumber);
+    }
+
+    // Opens the article named by the current fragment (if any) and scrolls it into view.
+    // Safe to call repeatedly: it only rerenders when the article wasn't already open.
+    private async Task OpenFragmentTargetAsync()
+    {
+        var fragment = new Uri(Nav.Uri).Fragment.TrimStart('#');
+        if (string.IsNullOrEmpty(fragment))
+        {
+            return;
+        }
+
+        if (TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
+        {
+            StateHasChanged();
+        }
+
+        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+        _selfRef?.Dispose();
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         // Keep URLs canonical: a hand-typed id like "prima-q1" (or "Prima-Q1") should resolve to the
@@ -181,25 +259,19 @@ else
     // the target article and scroll to it once.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+            _selfRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("respondeoSummaRef.registerPage", _selfRef);
+        }
+
         if (_loading || _question is null || _scrolledToFragment)
         {
             return;
         }
 
-        var fragment = new Uri(Nav.Uri).Fragment.TrimStart('#');
-        if (!string.IsNullOrEmpty(fragment))
-        {
-            _scrolledToFragment = true;
-
-            if (fragment.StartsWith("article-", StringComparison.Ordinal)
-                && int.TryParse(fragment["article-".Length..], out var articleNumber)
-                && _openArticles.Add(articleNumber))
-            {
-                StateHasChanged();
-            }
-
-            await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
-        }
+        _scrolledToFragment = true;
+        await OpenFragmentTargetAsync();
     }
 
     // The question content stores only the part id; look up the display title from the index.

@@ -129,7 +129,45 @@ public class SummaReferenceRendererTests
         var result = SummaReferenceRenderer.Expand("{{sref|qp|p3|31|6}}{{sobj|p3|31|6|reply|1}}");
 
         Assert.Contains("href=\"summa/tertia-q031#article-6-reply-1\"", result);
-        Assert.Contains(">reply&nbsp;1</a>", result);
+        Assert.Contains(">ad&nbsp;1</a>", result);
+    }
+
+    [Fact]
+    public void Expand_combined_same_part_citation_renders_single_reply_link()
+    {
+        var result = SummaReferenceRenderer.Expand("see {{scite|q|p2a|13|1|reply|2}} above");
+
+        Assert.Contains("href=\"summa/primsec-q013#article-1-reply-2\"", result);
+        Assert.Contains(">Q.&nbsp;13, A.&nbsp;1, ad&nbsp;2</a>", result);
+        Assert.DoesNotContain("{{", result);
+    }
+
+    [Fact]
+    public void Expand_combined_cross_part_citation_shows_part_label()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scite|qp|p2b|80|1|objection|4}}");
+
+        Assert.Contains("href=\"summa/secsec-q080#article-1-objection-4\"", result);
+        Assert.Contains(">II-II, Q.&nbsp;80, A.&nbsp;1, obj.&nbsp;4</a>", result);
+    }
+
+    [Fact]
+    public void Expand_combined_article_only_citation_omits_question_label()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scite|a|p1|29|3|reply|2}}");
+
+        Assert.Contains("href=\"summa/prima-q029#article-3-reply-2\"", result);
+        Assert.Contains(">A.&nbsp;3, ad&nbsp;2</a>", result);
+    }
+
+    [Fact]
+    public void Expand_self_citation_renders_bare_reply_link()
+    {
+        var result = SummaReferenceRenderer.Expand("({{scite|self|p2a|48|3|reply|1}})");
+
+        Assert.Contains("href=\"summa/primsec-q048#article-3-reply-1\"", result);
+        Assert.Contains(">ad&nbsp;1</a>", result);
+        Assert.DoesNotContain("Q.&nbsp;", result);
     }
 
     [Fact]

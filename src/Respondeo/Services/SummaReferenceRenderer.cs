@@ -31,6 +31,13 @@ public static partial class SummaReferenceRenderer
     [GeneratedRegex(@"\{\{sobj\|(?<part>[a-z0-9]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
 
+    // Matches a combined citation placeholder: {{scite|<labelKind>|<partId>|<q>|<a>|<kind>|<n>}} where
+    // labelKind is "qp" (show part), "q" (same part), "a" (article only) or "self" (bare reply in the
+    // current article), and kind is "objection" or "reply". Rendered as a single deep link straight to
+    // the cited objection/reply, so "Q. 13, A. 1, ad 2" becomes one link instead of two.
+    [GeneratedRegex(@"\{\{scite\|(?<label>qp|q|a|self)\|(?<part>[a-z0-9]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
+    private static partial Regex CiteRegex();
+
     // Display label for a reference that points at another part (e.g. p2b -> "II-II"). Sourced from
     // the shared SummaParts registry so labels can be re-styled without regenerating the corpus.
     private static string PartLabel(string partId) => SummaParts.LabelForKey(partId);
@@ -52,6 +59,7 @@ public static partial class SummaReferenceRenderer
         }
 
         html = ExpandReferences(html);
+        html = ExpandCitations(html);
         html = ExpandObjections(html);
         html = ExpandCues(html, articleNumber);
         return html;
@@ -109,6 +117,38 @@ public static partial class SummaReferenceRenderer
     private static string Anchor(string href, string display) =>
         $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
 
+    private static string ExpandCitations(string html)
+    {
+        if (!html.Contains("{{scite|", StringComparison.Ordinal))
+        {
+            return html;
+        }
+
+        return CiteRegex().Replace(html, match =>
+        {
+            var label = match.Groups["label"].Value;
+            var partId = match.Groups["part"].Value;
+            var questionNumber = int.Parse(match.Groups["q"].Value);
+            var article = match.Groups["a"].Value;
+            var kind = match.Groups["kind"].Value;
+            var number = match.Groups["n"].Value;
+
+            var fragment = $"article-{article}-{kind}-{number}";
+            var href = $"summa/{PartSlug(partId)}-q{questionNumber:D3}#{fragment}";
+
+            var cite = kind == "reply" ? $"ad&nbsp;{number}" : $"obj.&nbsp;{number}";
+            var display = label switch
+            {
+                "self" => cite,
+                "a" => $"A.&nbsp;{article}, {cite}",
+                "qp" => $"{PartLabel(partId)}, Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
+                _ => $"Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
+            };
+
+            return Anchor(href, display);
+        });
+    }
+
     private static string ExpandObjections(string html)
     {
         if (!html.Contains("{{sobj|", StringComparison.Ordinal))
@@ -126,7 +166,7 @@ public static partial class SummaReferenceRenderer
 
             var fragment = $"article-{article}-{kind}-{number}";
             var href = $"summa/{PartSlug(partId)}-q{questionNumber:D3}#{fragment}";
-            var label = kind == "reply" ? $"reply&nbsp;{number}" : $"obj.&nbsp;{number}";
+            var label = kind == "reply" ? $"ad&nbsp;{number}" : $"obj.&nbsp;{number}";
             return ", " + Anchor(href, label);
         });
     }

@@ -96,6 +96,12 @@ window.respondeoSummaRef = {
     },
     clear: function () {
         sessionStorage.removeItem('respondeo.summaRefOrigin');
+    },
+    // The active /summa/{id} page registers itself so same-question reference clicks can be handled
+    // directly in the component (open + scroll), rather than relying on a native fragment jump that
+    // wouldn't expand the collapsed target article.
+    registerPage: function (ref) {
+        this._page = ref;
     }
 };
 
@@ -112,12 +118,28 @@ document.addEventListener('click', function (e) {
     }
     var questionId = match[1];
 
-    // Only record an origin when the jump actually leaves this question. A lone article reference
-    // within the same question navigates in-page (no page change), so there is nothing to come
-    // "back" to and no destination load to consume/clear the stored origin.
     var href = ref.getAttribute('href') || '';
     var targetMatch = href.match(/summa\/([^\/#?]+)/);
-    if (!targetMatch || targetMatch[1] === questionId) {
+
+    // A reference that stays within this question navigates in-page. Fragment-only clicks on these raw
+    // injected anchors don't reliably expand the (collapsed) target article, so hand the click to the
+    // registered component instead of letting the browser do a bare hash jump.
+    if (targetMatch && targetMatch[1] === questionId) {
+        // The fragment may be a bare article ("#article-3") or a sub-anchor within it
+        // ("#article-3-reply-2"); pass the whole fragment so the component opens the article and
+        // scrolls to the exact objection/reply.
+        var fragmentMatch = href.match(/#(article-\d+[^\s?]*)/);
+        if (fragmentMatch && window.respondeoSummaRef._page) {
+            e.preventDefault();
+            window.respondeoSummaRef._page.invokeMethodAsync('OpenArticleFromReference', fragmentMatch[1]);
+        }
+        return;
+    }
+
+    // Only record an origin when the jump actually leaves this question. A lone article reference
+    // within the same question navigates in-page (handled above), so there is nothing to come
+    // "back" to and no destination load to consume/clear the stored origin.
+    if (!targetMatch) {
         return;
     }
 
