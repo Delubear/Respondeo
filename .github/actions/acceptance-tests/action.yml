@@ -1,13 +1,10 @@
-name: Run acceptance shard
+name: Run acceptance tests
 description: >-
-  Runs one shard of the Playwright acceptance suite against the published site.
-  Downloads the site and the once-built acceptance binaries, installs the static
-  server and Playwright browsers, serves the site, and runs the filtered tests.
+  Runs the Playwright acceptance suite against the published site. Downloads the
+  site and the once-built acceptance binaries, installs the static server and
+  Playwright browsers, serves the site, and runs the tests.
 
 inputs:
-  shard-filter:
-    description: dotnet test --filter expression selecting this shard's features.
-    required: true
   site-artifact:
     description: Name of the uploaded site artifact to download and serve.
     required: false
@@ -21,7 +18,7 @@ runs:
       with:
         global-json-file: global.json
 
-    # Cache the Playwright browser download so each shard reuses the same binaries.
+    # Cache the Playwright browser download so reruns reuse the same binaries.
     - name: Cache Playwright browsers
       uses: actions/cache@v4
       with:
@@ -63,7 +60,6 @@ runs:
       shell: bash
       env:
         RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
-        SHARD_FILTER: ${{ inputs.shard-filter }}
       run: |
         # Start the static server in the background within the SAME step so it
         # stays alive while the tests run. Backgrounded processes from a prior
@@ -82,4 +78,4 @@ runs:
           sleep 1
         done
 
-        dotnet test tests/Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter "$SHARD_FILTER"
+        dotnet test tests/Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build

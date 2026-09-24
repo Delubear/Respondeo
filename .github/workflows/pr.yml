@@ -12,19 +12,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Guard against a new .feature file being forgotten in the e2e shard filters
-  # below. Skipped on docs-only changes (mirrors the e2e gate) and otherwise
-  # fails if any feature isn't assigned to a shard.
-  shard-coverage:
-    name: Verify shard coverage
-    needs: unit-tests
-    if: needs.unit-tests.outputs.code-changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Check every feature is assigned to a shard
-        run: bash scripts/check-shard-coverage.sh .github/workflows/pr.yml
-
   unit-tests:
     name: Unit and Component Tests
     runs-on: ubuntu-latest
@@ -33,9 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          # Full history is needed by the docs-detection diff below. With the Summa
-          # corpus in LFS, that history is now just tiny pointers, so this stays cheap.
-          fetch-depth: 0
           # Fetch the actual corpus blobs: the Publish step embeds them into the site.
           lfs: true
 
@@ -43,21 +27,25 @@ jobs:
       # TODO.md, AI instruction files) leave code-changed=false so the heavy
       # steps below are skipped while the job itself still reports success —
       # keeping required status checks green without doing needless work.
-      - name: Detect code changes
+      - name: Detect changed paths
+        id: paths
+        uses: dorny/paths-filter@v3
+        with:
+          # code=true when anything OTHER than project docs changed. Patterns are
+          # applied in order (last match wins): match everything, then un-match docs.
+          # Content markdown under wwwroot is website content and must still deploy.
+          filters: |
+            code:
+              - '**'
+              - '!**/README.md'
+              - '!**/TODO.md'
+              - '!.github/copilot-instructions.md'
+              - '!.github/instructions/**'
+
+      - name: Decide whether to run
         id: filter
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "code-changed=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          BASE="${{ github.event.pull_request.base.sha }}"
-          HEAD="${{ github.event.pull_request.head.sha }}"
-          CHANGED=$(git diff --name-only "$BASE" "$HEAD")
-          echo "Changed files:"; echo "$CHANGED"
-          # Ignore ONLY project docs: TODO.md, any README.md, and AI instruction files.
-          # Content markdown under wwwroot is website content and must still deploy.
-          CODE=$(echo "$CHANGED" | grep -vE '((^|/)TODO\.md$|(^|/)README\.md$|^\.github/copilot-instructions\.md$|^\.github/instructions/)' || true)
-          if [ -n "$CODE" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ steps.paths.outputs.code }}" = "true" ]; then
             echo "code-changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "code-changed=false" >> "$GITHUB_OUTPUT"
@@ -111,8 +99,8 @@ jobs:
           name: site
           path: release/wwwroot
 
-      # Build the acceptance tests once here so the parallel e2e shards can reuse
-      # the compiled output via --no-build instead of each rebuilding it.
+      # Build the acceptance tests once here so the e2e job can reuse the
+      # compiled output via --no-build instead of rebuilding it.
       - name: Build acceptance tests
         if: steps.filter.outputs.code-changed == 'true'
         run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
@@ -123,35 +111,23 @@ jobs:
         with:
           name: acceptance-tests
           # Playwright's driver lives in a hidden .playwright folder; without this
-          # it is dropped from the artifact and the e2e shards fail with
+          # it is dropped from the artifact and the e2e job fails with
           # "missing required assets".
           include-hidden-files: true
           path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
 
   e2e:
     name: Acceptance Tests (Playwright)
-    needs: [shard-coverage, unit-tests]
+    needs: unit-tests
     if: needs.unit-tests.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
-    strategy:
-      # Shard the acceptance suite by feature so scenarios run on parallel runners.
-      # Each shard runs a disjoint set of FeatureTitle traits; together they cover
-      # every feature exactly once. Keep the union in sync with the .feature files.
-      fail-fast: false
-      matrix:
-        shard:
-          - name: '1'
-            filter: 'FeatureTitle=Home page|FeatureTitle=Stage navigation|FeatureTitle=Breadcrumb trail'
-          - name: '2'
-            filter: 'FeatureTitle=Theme toggle|FeatureTitle=Collapsible sections'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
         # No lfs: the corpus isn't needed here; the published site arrives via the
         # downloaded artifact, so skip fetching LFS blobs to save bandwidth.
 
-      - name: Run acceptance shard
-        uses: ./.github/actions/acceptance-shard
+      - name: Run acceptance tests
+        uses: ./.github/actions/acceptance-tests
         with:
-          shard-filter: ${{ matrix.shard.filter }}
           site-artifact: site
