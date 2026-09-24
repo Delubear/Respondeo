@@ -59,7 +59,7 @@ jobs:
           echo "Changed files:"; echo "$CHANGED"
           # Ignore ONLY project docs: TODO.md, any README.md, and AI instruction files.
           # Content markdown under wwwroot is website content and must still deploy.
-          CODE=$(echo "$CHANGED" | grep -vE '(^TODO\.md$|(^|/)README\.md$|^\.github/copilot-instructions\.md$|^\.github/instructions/)' || true)
+          CODE=$(echo "$CHANGED" | grep -vE '((^|/)TODO\.md$|(^|/)README\.md$|^\.github/copilot-instructions\.md$|^\.github/instructions/)' || true)
           if [ -n "$CODE" ]; then
             echo "code-changed=true" >> "$GITHUB_OUTPUT"
           else

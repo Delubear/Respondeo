@@ -66,7 +66,7 @@ by the `Respondeo.SummaImporter` tool:
 
 ```powershell
 # Regenerate the corpus (clears and rewrites the summa output tree)
-dotnet run --project src/Respondeo.SummaImporter -- summa.txt src/Respondeo.Content.Summa\wwwroot
+dotnet run --project src/Respondeo.SummaImporter -- docs/summa.txt src/Respondeo.Content.Summa\wwwroot
 ```
 
 Both the generated JSON and `summa.txt` are tracked in Git LFS (see **Prerequisites** above), so
