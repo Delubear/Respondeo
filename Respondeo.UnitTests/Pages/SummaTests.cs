@@ -45,6 +45,8 @@ public class SummaTests : TestContext
 
     public SummaTests()
     {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+
         var handler = new StubHandler(new Dictionary<string, string> { [IndexPath] = IndexJson });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
