@@ -59,14 +59,20 @@ internal static partial class SummaParser
     private static partial Regex CrossRefCruftRegex();
 
     // A cross-reference to another question, e.g. "Q[2], A[2]" (same part) or "FP, Q[22], A[2]"
-    // (explicit part). Captures the optional part token, the question number, and the first article
-    // number when present. Run after the hyperlink cruft has been stripped.
-    [GeneratedRegex(@"(?:(?<part>FP|FS|SS|TP|XP),\s*)?Q\[(?<q>\d+)\](?:\s*,\s*A{1,2}\[(?<a>\d+)\](?:\s*,\s*\d+)*)?", RegexOptions.Compiled)]
+    // (explicit part). Captures the optional part token, the question number, the first article
+    // number, and any additional article numbers from a multi-article citation like "AA[1],3"
+    // (which cites articles 1 and 3). Run after the hyperlink cruft has been stripped.
+    [GeneratedRegex(@"(?:(?<part>FP|FS|SS|TP|XP),\s*)?Q\[(?<q>\d+)\](?:\s*,\s*A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*))?", RegexOptions.Compiled)]
     private static partial Regex QuestionRefRegex();
 
     // A same-question article reference that stands alone (no preceding "Q[...]"), e.g. "AA[1],3".
-    [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?:\s*,\s*\d+)*", RegexOptions.Compiled)]
+    // Captures the first article number plus any additional article numbers.
+    [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*)", RegexOptions.Compiled)]
     private static partial Regex ArticleRefRegex();
+
+    // Pulls each additional article number out of a multi-article tail like ",3" or ", 11, 12".
+    [GeneratedRegex(@",\s*(?<n>\d+)", RegexOptions.Compiled)]
+    private static partial Regex ExtraArticleRegex();
 
     public static IReadOnlyList<ParsedPart> Parse(string[] lines)
     {
@@ -553,18 +559,40 @@ internal static partial class SummaParser
             var hasPart = match.Groups["part"].Success;
             var partId = hasPart ? PartTokenToId(match.Groups["part"].Value) : currentPartId;
             var questionNumber = int.Parse(match.Groups["q"].Value);
-            var article = match.Groups["a"].Success ? match.Groups["a"].Value : string.Empty;
+            var articles = JoinArticles(match.Groups["a"], match.Groups["am"]);
             var kind = hasPart ? "qp" : "q";
-            return $"{{{{sref|{kind}|{partId}|{questionNumber}|{article}}}}}";
+            return $"{{{{sref|{kind}|{partId}|{questionNumber}|{articles}}}}}";
         });
 
         text = ArticleRefRegex().Replace(text, match =>
         {
-            var articleNumber = match.Groups["a"].Value;
-            return $"{{{{sref|a|{currentPartId}|{currentNumber}|{articleNumber}}}}}";
+            var articles = JoinArticles(match.Groups["a"], match.Groups["am"]);
+            return $"{{{{sref|a|{currentPartId}|{currentNumber}|{articles}}}}}";
         });
 
         return text;
+    }
+
+    // Builds a comma-separated article list from the first article number plus any additional
+    // numbers captured from a multi-article citation (e.g. "AA[1],3" -> "1,3"). Returns an empty
+    // string when there is no article at all.
+    private static string JoinArticles(Group first, Group additional)
+    {
+        if (!first.Success)
+        {
+            return string.Empty;
+        }
+
+        var numbers = new List<string> { first.Value };
+        if (additional.Success && additional.Value.Length > 0)
+        {
+            foreach (Match extra in ExtraArticleRegex().Matches(additional.Value))
+            {
+                numbers.Add(extra.Groups["n"].Value);
+            }
+        }
+
+        return string.Join(',', numbers);
     }
 
     private static string NormalizeTitle(string title)

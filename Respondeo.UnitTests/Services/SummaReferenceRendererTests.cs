@@ -56,6 +56,40 @@ public class SummaReferenceRendererTests
         Assert.Contains(">A. 3</a>", result);
     }
 
+    [Fact]
+    public void Expand_multi_article_reference_renders_a_link_per_article()
+    {
+        var result = SummaReferenceRenderer.Expand("{{sref|a|fp|14|1,3}}");
+
+        Assert.Contains("href=\"summa/fp-q014#article-1\"", result);
+        Assert.Contains(">A. 1</a>", result);
+        Assert.Contains("href=\"summa/fp-q014#article-3\"", result);
+        Assert.Contains(">A. 3</a>", result);
+        Assert.DoesNotContain("{{", result);
+    }
+
+    [Fact]
+    public void Expand_question_with_multiple_articles_links_each_article()
+    {
+        var result = SummaReferenceRenderer.Expand("{{sref|q|fp|12|11,12}}");
+
+        Assert.Contains("href=\"summa/fp-q012#article-11\"", result);
+        Assert.Contains(">Q. 12, A. 11</a>", result);
+        Assert.Contains("href=\"summa/fp-q012#article-12\"", result);
+        Assert.Contains(">A. 12</a>", result);
+    }
+
+    [Fact]
+    public void Expand_cross_part_reference_with_multiple_articles_labels_part_once()
+    {
+        var result = SummaReferenceRenderer.Expand("{{sref|qp|ss|6|1,4}}");
+
+        Assert.Contains(">SS, Q. 6, A. 1</a>", result);
+        Assert.Contains(">A. 4</a>", result);
+        // The part label should appear only on the first link.
+        Assert.Equal(1, System.Text.RegularExpressions.Regex.Matches(result, "SS, Q\\.").Count);
+    }
+
     [Theory]
     [InlineData("{{scue|objection|1}}", "summa-cue--objection", "Objection 1:")]
     [InlineData("{{scue|reply|2}}", "summa-cue--reply", "Reply to Objection 2:")]

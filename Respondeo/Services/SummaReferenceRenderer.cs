@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Respondeo.Services;
@@ -15,8 +14,9 @@ namespace Respondeo.Services;
 /// </summary>
 public static partial class SummaReferenceRenderer
 {
-    // Matches a single reference placeholder: {{sref|<kind>|<partId>|<q>|<a>}} where <a> may be empty.
-    [GeneratedRegex(@"\{\{sref\|(?<kind>qp|q|a)\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>\d*)\}\}", RegexOptions.Compiled)]
+    // Matches a single reference placeholder: {{sref|<kind>|<partId>|<q>|<a>}} where <a> may be
+    // empty (question-only) or a comma-separated list of article numbers (multi-article citation).
+    [GeneratedRegex(@"\{\{sref\|(?<kind>qp|q|a)\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>[\d,]*)\}\}", RegexOptions.Compiled)]
     private static partial Regex TokenRegex();
 
     // Matches a section-cue placeholder: {{scue|<kind>|<number?>}} where number is only present for
@@ -55,34 +55,45 @@ public static partial class SummaReferenceRenderer
             var kind = match.Groups["kind"].Value;
             var partId = match.Groups["part"].Value;
             var questionNumber = int.Parse(match.Groups["q"].Value);
-            var article = match.Groups["a"].Value;
+            var articles = match.Groups["a"].Value
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-            var href = new StringBuilder($"summa/{partId}-q{questionNumber:D3}");
-            var display = new StringBuilder();
+            var questionHref = $"summa/{partId}-q{questionNumber:D3}";
 
             if (kind == "a")
             {
-                href.Append($"#article-{article}");
-                display.Append($"A. {article}");
+                // Same-question article reference: render each cited article as its own link,
+                // e.g. "AA[1],3" -> "A. 1, A. 3" with both numbers clickable.
+                return string.Join(", ", articles.Select(a =>
+                    Anchor($"{questionHref}#article-{a}", $"A. {a}")));
             }
-            else
+
+            var prefix = kind == "qp" ? $"{PartLabel(partId)}, " : string.Empty;
+
+            if (articles.Length == 0)
             {
-                if (kind == "qp")
-                {
-                    display.Append($"{PartLabel(partId)}, ");
-                }
-
-                display.Append($"Q. {questionNumber}");
-                if (article.Length > 0)
-                {
-                    href.Append($"#article-{article}");
-                    display.Append($", A. {article}");
-                }
+                // Question-only reference.
+                return Anchor(questionHref, $"{prefix}Q. {questionNumber}");
             }
 
-            return $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
+            // Question + one or more articles: the first link carries the question label, and each
+            // additional cited article is rendered as its own trailing link.
+            var links = new List<string>
+            {
+                Anchor($"{questionHref}#article-{articles[0]}", $"{prefix}Q. {questionNumber}, A. {articles[0]}"),
+            };
+
+            for (var i = 1; i < articles.Length; i++)
+            {
+                links.Add(Anchor($"{questionHref}#article-{articles[i]}", $"A. {articles[i]}"));
+            }
+
+            return string.Join(", ", links);
         });
     }
+
+    private static string Anchor(string href, string display) =>
+        $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
 
     private static string ExpandCues(string html)
     {

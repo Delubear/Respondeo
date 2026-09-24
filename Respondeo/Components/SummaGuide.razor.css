@@ -133,9 +133,16 @@
 }
 
 .summa-guide__structure,
-.summa-guide__tips {
+.summa-guide__tips,
+.summa-guide__refkey,
+.summa-guide__who {
     margin: 0 0 1rem;
     padding-left: 1.2rem;
+}
+
+.summa-guide__refkey li,
+.summa-guide__who li {
+    margin-bottom: 0.35rem;
 }
 
 .summa-guide__structure li,
