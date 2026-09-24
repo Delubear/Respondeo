@@ -69,7 +69,7 @@ internal static partial class SummaParser
         var questions = new List<ParsedQuestion>();
         var number = 0;
 
-        var treatises = FindTreatiseHeadings(lines, start, end);
+        var treatises = FindTreatiseHeadings(id, lines, start, end);
         var headerLines = FindQuestionHeaders(lines, start, end);
         for (var q = 0; q < headerLines.Count; q++)
         {
@@ -86,18 +86,36 @@ internal static partial class SummaParser
     // Collects the treatise headings within a part, each paired with the source line where it begins.
     // Treatise headings introduce the block of questions that follows them, so a question belongs to
     // the last heading appearing before its own header line.
-    private static List<(string Title, int Line)> FindTreatiseHeadings(string[] lines, int start, int end)
+    //
+    // The Supplement is organised under the sacraments rather than "TREATISE ..." headings for its
+    // first four sections: Penance (QQ 1-28), Extreme Unction (QQ 29-33), Holy Orders (QQ 34-40) and
+    // Matrimony (QQ 41-67). Its later sections (Resurrection, Last Things) do use "TREATISE ..."
+    // headings, which the loop below still catches. Penance has no heading line of its own in the
+    // source, so it is seeded at the part start so questions 1-28 are grouped rather than orphaned.
+    private static List<(string Title, int Line)> FindTreatiseHeadings(string partId, string[] lines, int start, int end)
     {
         var treatises = new List<(string Title, int Line)>();
+
+        if (partId == "sup")
+        {
+            treatises.Add(("Penance", start));
+        }
+
         for (var i = start; i < end && i < lines.Length; i++)
         {
+            string? cleaned = null;
             if (TreatiseHeadingRegex().IsMatch(lines[i]))
             {
-                var cleaned = CleanTreatiseTitle(lines[i]);
-                if (cleaned.Length > 0)
-                {
-                    treatises.Add((cleaned, i));
-                }
+                cleaned = CleanTreatiseTitle(lines[i]);
+            }
+            else if (partId == "sup" && SupplementSectionRegex().IsMatch(lines[i]))
+            {
+                cleaned = CleanTreatiseTitle(lines[i]);
+            }
+
+            if (cleaned is { Length: > 0 })
+            {
+                treatises.Add((cleaned, i));
             }
         }
 

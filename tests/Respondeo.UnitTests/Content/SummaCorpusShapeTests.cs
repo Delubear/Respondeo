@@ -199,4 +199,30 @@ public class SummaCorpusShapeTests
 
         Assert.True(mismatches.Count == 0, $"Summa count drift vs. Benziger 1947: {string.Join("; ", mismatches)}");
     }
+
+    [Fact]
+    public void Every_question_in_the_index_belongs_to_a_treatise()
+    {
+        var indexPath = Path.Combine(SummaDirectory(), "summa-index.json");
+        var index = JsonSerializer.Deserialize<SummaIndex>(File.ReadAllText(indexPath), JsonOptions);
+        Assert.NotNull(index);
+
+        // Every question must be grouped under a treatise so none are orphaned on the browse page. The
+        // Supplement's first four sections use sacrament headings rather than "TREATISE ..." lines (Penance,
+        // Extreme Unction, Holy Orders, Matrimony), which the importer recognises specially. See
+        // docs/summa-counts.md.
+        var orphans = new List<string>();
+        foreach (var part in index!.Parts)
+        {
+            foreach (var question in part.Questions)
+            {
+                if (string.IsNullOrWhiteSpace(question.Treatise))
+                {
+                    orphans.Add(question.Id);
+                }
+            }
+        }
+
+        Assert.True(orphans.Count == 0, $"Questions with no treatise: {string.Join(", ", orphans)}");
+    }
 }

@@ -171,6 +171,14 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^\s*TREATISE\b", RegexOptions.Compiled)]
     private static partial Regex TreatiseHeadingRegex();
 
+    // A Supplement sacrament section heading, which does not use the "TREATISE ..." form, e.g.
+    // "EXTREME UNCTION (QQ[29]-33)", "HOLY ORDERS (QQ[34]-40)", "MATRIMONY (QQ[41]-67)". The line is
+    // wholly upper-case words followed by a CCEL question-range in parentheses and nothing else, which
+    // distinguishes it from the Supplement's descriptive banner ("... SENTENCES (QQ[1] -99)", note the
+    // space) and from ordinary prose cross-references like "above (Q[50], A[7]).".
+    [GeneratedRegex(@"^\s*[A-Z][A-Z ]+\((?:QQ|Q)\[?\d+\]?(?:-\d+)?\)\s*$", RegexOptions.Compiled)]
+    private static partial Regex SupplementSectionRegex();
+
     // Turns a raw treatise heading line into a clean display title. The descriptive name always
     // precedes the first "[" or "(", which introduce the CCEL question-range/footnote (e.g.
     // "(QQ[22]-48)", "[1](Q[1])") and any trailing tail like "GOOD HABITS, i.e. VIRTUES"; everything

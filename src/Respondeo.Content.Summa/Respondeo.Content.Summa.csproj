@@ -12,4 +12,6 @@
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4summa_4summa-index_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

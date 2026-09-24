@@ -71,3 +71,25 @@ Three classes of source irregularity are handled by the importer so that the cou
   is recovered from the question's inquiry list.
 - **Count-first appendix headings** — e.g. `TWO ARTICLES ON PURGATORY`, recognised as a question header so
   the appendix content is not folded into the preceding question.
+
+## Treatise grouping
+
+Each question is grouped under a treatise for browsing. The four main parts use `TREATISE ...` heading lines
+in the source (e.g. `TREATISE ON THE ONE GOD (QQ[2]-26)`), which the importer detects case-sensitively.
+
+The Supplement is organised under the **sacraments** rather than `TREATISE ...` headings for its first four
+sections, so those headings are recognised by a dedicated pattern (all-caps words followed by a CCEL
+question-range, e.g. `MATRIMONY (QQ[41]-67)`). Penance has no heading line of its own in the source, so it is
+seeded at the part start. The Supplement's later sections revert to `TREATISE ...` headings. The resulting
+grouping is:
+
+| Treatise | Questions |
+|----------|-----------|
+| Penance | sup-q1 – sup-q28 |
+| Extreme Unction | sup-q29 – sup-q33 |
+| Holy Orders | sup-q34 – sup-q40 |
+| Matrimony | sup-q41 – sup-q68 |
+| Treatise on the Resurrection | sup-q69 – sup-q86 |
+| Treatise on the Last Things | sup-q87 – sup-q102 |
+
+This ensures no Supplement question is left without a treatise.
