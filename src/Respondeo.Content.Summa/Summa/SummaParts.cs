@@ -6,9 +6,9 @@ namespace Respondeo.Content.Summa;
 /// One part of the Summa and the several identifiers we attach to it.
 /// </summary>
 /// <param name="Key">
-/// The stable, neutral storage key baked into the corpus: question ids, JSON filenames, and the
-/// <c>sref</c>/<c>sobj</c> cross-reference tokens all use this (e.g. <c>p1</c>, <c>p2a</c>). It never
-/// changes, so the slug and label below can be re-styled freely without regenerating the corpus.
+/// The stable, neutral storage key baked into the corpus:
+/// question ids, JSON filenames, and the <c>sref</c>/<c>sobj</c> cross-reference tokens all use this (e.g. <c>p1</c>, <c>p2a</c>).
+/// It never changes, so the slug and label below can be re-styled freely without regenerating the corpus.
 /// </param>
 /// <param name="Slug">The URL segment shown to readers (e.g. <c>prima</c>): <c>/summa/prima-q002</c>.</param>
 /// <param name="Label">The short display label used in cross-references (e.g. <c>II-II</c>).</param>
@@ -17,9 +17,9 @@ namespace Respondeo.Content.Summa;
 public sealed record SummaPart(string Key, string Slug, string Label, string Title, string Folder);
 
 /// <summary>
-/// The single source of truth mapping a Summa part between its stable storage key, its URL slug, its
-/// display label, its title, and its on-disk folder. Storage keys are permanent; the slug and label
-/// are presentation concerns that can change without touching the generated corpus.
+/// The single source of truth mapping a Summa part between its stable storage key, its URL slug,
+/// its display label, its title, and its on-disk folder.
+/// Storage keys are permanent; the slug and label are presentation concerns that can change without touching the generated corpus.
 ///
 /// Question ids come in two forms that this type translates between:
 /// <list type="bullet">
@@ -39,31 +39,24 @@ public static partial class SummaParts
         new("sup", "suppl", "Suppl.", "Supplement", "supplement"),
     ];
 
-    private static readonly Dictionary<string, SummaPart> ByKey =
-        All.ToDictionary(p => p.Key, StringComparer.OrdinalIgnoreCase);
+    private static readonly Dictionary<string, SummaPart> ByKey = All.ToDictionary(p => p.Key, StringComparer.OrdinalIgnoreCase);
 
-    private static readonly Dictionary<string, SummaPart> BySlug =
-        All.ToDictionary(p => p.Slug, StringComparer.OrdinalIgnoreCase);
+    private static readonly Dictionary<string, SummaPart> BySlug = All.ToDictionary(p => p.Slug, StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Finds a part by its stable storage key, or null if unknown.</summary>
-    public static SummaPart? ByStorageKey(string key) =>
-        ByKey.GetValueOrDefault(key);
+    public static SummaPart? ByStorageKey(string key) => ByKey.GetValueOrDefault(key);
 
     /// <summary>Finds a part by its URL slug, or null if unknown.</summary>
-    public static SummaPart? ByUrlSlug(string slug) =>
-        BySlug.GetValueOrDefault(slug);
+    public static SummaPart? ByUrlSlug(string slug) => BySlug.GetValueOrDefault(slug);
 
     /// <summary>The on-disk folder that holds a storage part key's question files.</summary>
-    public static string FolderForKey(string key) =>
-        ByKey.TryGetValue(key, out var part) ? part.Folder : key;
+    public static string FolderForKey(string key) => ByKey.TryGetValue(key, out var part) ? part.Folder : key;
 
     /// <summary>The display label for a storage part key (e.g. <c>p2b</c> -&gt; <c>II-II</c>).</summary>
-    public static string LabelForKey(string key) =>
-        ByKey.TryGetValue(key, out var part) ? part.Label : key.ToUpperInvariant();
+    public static string LabelForKey(string key) => ByKey.TryGetValue(key, out var part) ? part.Label : key.ToUpperInvariant();
 
     /// <summary>The URL slug for a storage part key (e.g. <c>p1</c> -&gt; <c>prima</c>).</summary>
-    public static string SlugForKey(string key) =>
-        ByKey.TryGetValue(key, out var part) ? part.Slug : key;
+    public static string SlugForKey(string key) => ByKey.TryGetValue(key, out var part) ? part.Slug : key;
 
     /// <summary>
     /// Translates a storage question id (<c>p1-q002</c>) into its public URL id (<c>prima-q002</c>).
@@ -77,18 +70,15 @@ public static partial class SummaParts
     /// </summary>
     public static string ToStorageId(string urlId) => MapId(urlId, BySlug, p => p.Key);
 
-    // A URL question id: "<slug>-q<number>", where the number is normally zero-padded to three
-    // digits. The number group is captured loosely so hand-typed forms like "prima-q1" can be
-    // normalised back to the canonical "prima-q001".
+    // A URL question id: "<slug>-q<number>", where the number is normally zero-padded to three digits.
+    // The number group is captured loosely so hand-typed forms like "prima-q1" can be normalised back to the canonical "prima-q001".
     [GeneratedRegex(@"^(?<slug>[a-z0-9]+)-q(?<number>\d+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
     private static partial Regex UrlIdRegex();
 
     /// <summary>
-    /// Returns the canonical form of a public URL id, or <c>null</c> when it is already canonical or
-    /// cannot be canonicalised. Canonicalisation lower-cases a known slug and zero-pads the question
-    /// number to three digits, so a hand-typed <c>Prima-q1</c> maps to <c>prima-q001</c>. Returns
-    /// <c>null</c> when the slug is unknown or the id is already in canonical form, so callers can
-    /// cheaply decide whether a redirect is needed.
+    /// Returns the canonical form of a public URL id, or <c>null</c> when it is already canonical or cannot be canonicalised.
+    /// Canonicalisation lower-cases a known slug and zero-pads the question number to three digits, so a hand-typed <c>Prima-q1</c> maps to <c>prima-q001</c>.
+    /// Returns <c>null</c> when the slug is unknown or the id is already in canonical form, so callers can cheaply decide whether a redirect is needed.
     /// </summary>
     public static string? Canonicalize(string? urlId)
     {

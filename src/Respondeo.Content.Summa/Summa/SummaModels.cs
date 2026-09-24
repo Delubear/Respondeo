@@ -1,9 +1,9 @@
 namespace Respondeo.Content.Summa;
 
 /// <summary>
-/// The lightweight browse/search index for the whole Summa Theologica: every part, question, and article
-/// title with its stable id, but without the heavy article bodies. Loaded once so the hierarchy can be
-/// browsed and titles/question text can be searched with a single fetch.
+/// The lightweight browse/search index for the whole Summa Theologica:
+/// every part, question, and article title with its stable id, but without the heavy article bodies.
+/// Loaded once so the hierarchy can be browsed and titles/question text can be searched with a single fetch.
 /// </summary>
 public sealed class SummaIndex
 {
@@ -51,8 +51,8 @@ public sealed class SummaArticleEntry
 }
 
 /// <summary>
-/// The full content of a single question, including every article's rendered HTML. Fetched on demand
-/// when a reader opens a question so the initial index stays small.
+/// The full content of a single question, including every article's rendered HTML.
+/// Fetched on demand when a reader opens a question so the initial index stays small.
 /// </summary>
 public sealed class SummaQuestionContent
 {

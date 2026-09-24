@@ -4,10 +4,9 @@ using System.Net.Http.Json;
 namespace Respondeo.Content.Summa.Services;
 
 /// <summary>
-/// Loads the bundled Summa Theologica from static JSON files shipped by the Respondeo.Content.Summa
-/// library (produced by the SummaImporter tool). The lightweight browse/search index is fetched once
-/// and cached; each question's full content is fetched on demand and cached individually so the
-/// initial load stays small even though the whole corpus is bundled.
+/// Loads the bundled Summa Theologica from static JSON files shipped by the Respondeo.Content.Summa library (produced by the SummaImporter tool).
+/// The lightweight browse/search index is fetched once and cached;
+/// each question's full content is fetched on demand and cached individually so the initial load stays small even though the whole corpus is bundled.
 /// </summary>
 internal sealed class SummaService(HttpClient http) : ISummaService
 {
@@ -81,11 +80,10 @@ internal sealed class SummaService(HttpClient http) : ISummaService
         }
     }
 
-    // The bundled Summa corpus is large but immutable for the lifetime of a deploy, so it is cached
-    // aggressively: each fetched item is held in-memory for the session (above), and the HTTP request
-    // opts into the browser cache so repeat visits and reloads reuse the stored JSON instead of
-    // re-downloading it. The static assets are fingerprinted per deploy, so a new build produces new
-    // URLs and there is no risk of serving stale content.
+    // The bundled Summa corpus is large but immutable for the lifetime of a deploy, so it is cached aggressively:
+    // each fetched item is held in-memory for the session (above),
+    // and the HTTP request opts into the browser cache so repeat visits and reloads reuse the stored JSON instead of re-downloading it.
+    // The static assets are fingerprinted per deploy, so a new build produces new URLs and there is no risk of serving stale content.
     private async Task<T?> GetFromJsonCachedAsync<T>(string url)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url)
@@ -105,9 +103,9 @@ internal sealed class SummaService(HttpClient http) : ISummaService
         return await response.Content.ReadFromJsonAsync<T>();
     }
 
-    // Question content is split into one subfolder per part. The folder is derived from the question's
-    // stable part key (the prefix before the first '-'), via the shared SummaParts registry, so file
-    // layout stays independent of the URL slug and display label.
+    // Question content is split into one subfolder per part.
+    // The folder is derived from the question's stable part key (the prefix before the first '-'),
+    // via the shared SummaParts registry, so file layout stays independent of the URL slug and display label.
     private static string PartFolder(string questionId)
     {
         var separator = questionId.IndexOf('-');
