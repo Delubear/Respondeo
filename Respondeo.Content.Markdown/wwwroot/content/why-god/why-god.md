@@ -33,5 +33,3 @@ The Thomistic approach we'll take respects your caution:
 - If they succeed, atheism and agnosticism are no longer the honest position.
 
 The only thing asked of you is a willingness to follow the evidence.
-
-If you already know God exists, you may want to start with [Protestant](node/protestant) or [Non-Practicing Catholic](node/non-practicing-catholic) instead.
