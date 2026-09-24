@@ -18,7 +18,7 @@ A natural question follows: *are these five different things, or one?* And once 
 Aquinas argues that the terminus of each way is one and the same being, and that its nature can be unfolded by reasoning carefully from what the arguments already established. 
 We do not first assume "God" and then list His traits; we read the attributes off the conclusions themselves.
 
-> "When the existence of a thing has been ascertained, there remains the further question of the manner of its existence, in order that we may know its essence." &mdash; *Summa Theologiae* I, q. 3, prologue
+> "When the existence of a thing has been ascertained, there remains the further question of the manner of its existence, in order that we may know its essence." &mdash; [*Summa Theologiae* I, q. 3, prologue](summa/fp-q003)
 
 **They all point to one being.**
 Each way ends in something that is first, uncaused, and not dependent on anything else. 
@@ -32,9 +32,9 @@ The First Way ends in something that is actual through and through. From this si
 - **Eternal.** Time measures change. What cannot change is not measured by time — it simply *is*, without before or after.
 - **Immaterial.** Matter is a principle of potentiality; Pure Act has no matter and so is not a body.
 
-> "Since therefore God is the first mover, and is Himself unmoved, it is impossible for God to be in any way changeable." &mdash; *Summa Theologiae* I, q. 9, a. 1
+> "Hence it is evident that it is impossible for God to be in any way changeable." &mdash; [*Summa Theologiae* I, q. 9, a. 1](summa/fp-q009#article-1)
 
-> "As God is supremely immutable, it supremely belongs to Him to be eternal." &mdash; *Summa Theologiae* I, q. 10, a. 2
+> "As God is supremely immutable, it supremely belongs to Him to be eternal." &mdash; [*Summa Theologiae* I, q. 10, a. 2](summa/fp-q010#article-2)
 
 **Being Itself — existence without limit.**
 The Third Way ends in something whose very essence is to exist. Because its existence is not received into any limiting essence, it is unlimited — **infinite** and **perfect**, lacking no perfection of being.
@@ -42,9 +42,9 @@ The Third Way ends in something whose very essence is to exist. Because its exis
 - **Simple.** It has no parts to be composed — no body, no distinction between what it is and that it is. It does not *have* existence or goodness; it *is* them.
 - **One.** As argued above, there cannot be two unlimited beings, so this being is unique.
 
-> "There is neither composition of quantitative parts in God, since He is not a body; nor composition of matter and form; nor does His nature differ from His supposite; nor His essence from His existence... It is clear therefore that God is nowise composite, but is altogether simple." &mdash; *Summa Theologiae* I, q. 3, a. 7
+> "There is neither composition of quantitative parts in God, since He is not a body; nor composition of matter and form; nor does His nature differ from His 'suppositum'; nor His essence from His existence... Therefore, it is clear that God is nowise composite, but is altogether simple." &mdash; [*Summa Theologiae* I, q. 3, a. 7](summa/fp-q003#article-7)
 
-> "God is one in the highest degree... Therefore it is manifest that God is one." &mdash; *Summa Theologiae* I, q. 11, a. 4
+> "Hence it is manifest that God is 'one' in the supreme degree." &mdash; [*Summa Theologiae* I, q. 11, a. 4](summa/fp-q011#article-4)
 
 **Source of all perfection — goodness, intellect, will.**
 The Fourth and Fifth Ways end in the source of every perfection and the intelligence ordering things to their ends.
@@ -53,9 +53,9 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 - **Knowing.** The one who orders all things to their ends does so as an intellect; a being that is Pure Act possesses understanding without limit — **omniscient**.
 - **Powerful.** As the first cause on which all being depends, nothing lies outside its causal reach — **omnipotent**.
 
-> "To be good belongs pre-eminently to God. For a thing is good according to its desirableness... therefore it belongs to the first cause of all to be good in the most perfect degree." &mdash; *Summa Theologiae* I, q. 6, a. 1
+> "To be good belongs pre-eminently to God. For a thing is good according to its desirableness." &mdash; [*Summa Theologiae* I, q. 6, a. 1](summa/fp-q006#article-1)
 
-> "In God there exists the most perfect knowledge... since immateriality is the reason of knowledge, and God is in the highest degree immaterial." &mdash; *Summa Theologiae* I, q. 14, a. 1
+> "In God there exists the most perfect knowledge." &mdash; [*Summa Theologiae* I, q. 14, a. 1](summa/fp-q014#article-1)
 
 ::: youtube 3j79qY0RqRw
 :::

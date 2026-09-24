@@ -28,7 +28,7 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
   > demonstrated, so long as its effects are better known to us; because since every effect
   > depends upon its cause, if the effect exists, the cause must pre-exist. Hence the
   > existence of God... can be demonstrated from those of His effects which are known to us."
-  > &mdash; *Summa Theologiae* I, q. 2, a. 2
+  > &mdash; [*Summa Theologiae* I, q. 2, a. 2](summa/fp-q002#article-2)
 
 - **Everyone reasons past strict proof.** We accept other minds, the reliability of memory, and the external world without deductive proof. 
   Demanding a standard for God that we apply to nothing else we actually believe is special pleading in the other direction.

@@ -4,7 +4,7 @@ title: "The Fifth Way — Governance of the World"
 summary: From the purposeful order of nature to an intelligent designer.
 ---
 
-> "We see that things which lack knowledge, such as natural bodies, act for an end." &mdash; *Summa Theologiae* I, q. 2, a. 3
+> "We see that things which lack intelligence, such as natural bodies, act for an end." &mdash; [*Summa Theologiae* I, q. 2, a. 3](summa/fp-q002#article-3)
 
 The earlier ways traced *change* and *causal dependence*. The Fifth Way notices something different: **directedness**. 
 Things that have no minds of their own nevertheless behave *as if aimed* &mdash; consistently, and toward outcomes that benefit them.

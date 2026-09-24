@@ -28,7 +28,7 @@ summary: If everything needs a cause, doesn't God need one too?
   > to infinity in efficient causes, there will be no first efficient cause, neither will
   > there be an ultimate effect, nor any intermediate efficient causes; all of which is
   > plainly false. Therefore it is necessary to admit a first efficient cause, to which
-  > everyone gives the name of God." &mdash; *Summa Theologiae* I, q. 2, a. 3
+  > everyone gives the name of God." &mdash; [*Summa Theologiae* I, q. 2, a. 3](summa/fp-q002#article-3)
 
 - **"Why not the universe?" is a fair question with an answer.** The universe is the very thing whose contingency we observe &mdash; it changes, it is composite, it could have been otherwise. 
   Those are exactly the marks of something that *does* need explaining, not the marks of a necessary ground.
