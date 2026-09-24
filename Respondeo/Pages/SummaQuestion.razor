@@ -72,7 +72,7 @@ else
                     <span class="summa-article__marker" aria-hidden="true">@(_openArticles.Contains(article.Number) ? "\u2212" : "+")</span>
                 </summary>
                 <div class="summa-article__body">
-                    @((MarkupString)SummaReferenceRenderer.Expand(article.BodyHtml))
+                    @((MarkupString)SummaReferenceRenderer.Expand(article.BodyHtml, article.Number))
                 </div>
             </details>
         }

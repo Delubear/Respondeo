@@ -112,4 +112,47 @@ public class SummaReferenceRendererTests
         Assert.Contains("summa-ref", result);
         Assert.DoesNotContain("{{", result);
     }
+
+    [Fact]
+    public void Expand_objection_reference_links_to_objection_fragment()
+    {
+        var result = SummaReferenceRenderer.Expand("{{sref|a|fs|8|1}}{{sobj|fs|8|1|objection|3}}");
+
+        Assert.Contains("href=\"summa/fs-q008#article-1-objection-3\"", result);
+        Assert.Contains(">obj.&nbsp;3</a>", result);
+        Assert.DoesNotContain("{{", result);
+    }
+
+    [Fact]
+    public void Expand_reply_objection_reference_links_to_reply_fragment()
+    {
+        var result = SummaReferenceRenderer.Expand("{{sref|qp|tp|31|6}}{{sobj|tp|31|6|reply|1}}");
+
+        Assert.Contains("href=\"summa/tp-q031#article-6-reply-1\"", result);
+        Assert.Contains(">reply&nbsp;1</a>", result);
+    }
+
+    [Fact]
+    public void Expand_objection_cue_emits_anchor_id_when_article_known()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|objection|2}}It seems", 5);
+
+        Assert.Contains("id=\"article-5-objection-2\"", result);
+    }
+
+    [Fact]
+    public void Expand_reply_cue_emits_anchor_id_when_article_known()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|reply|1}}On the contrary", 4);
+
+        Assert.Contains("id=\"article-4-reply-1\"", result);
+    }
+
+    [Fact]
+    public void Expand_objection_cue_omits_id_without_article_context()
+    {
+        var result = SummaReferenceRenderer.Expand("{{scue|objection|2}}It seems");
+
+        Assert.DoesNotContain("id=\"article-", result);
+    }
 }

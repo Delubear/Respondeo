@@ -51,28 +51,36 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^    (?<start>\S.*)$", RegexOptions.Compiled)]
     private static partial Regex TitleStartRegex();
 
-    // CCEL hyperlink-index cruft like "[6]" that directly precedes a reference token (e.g. "[6]Q[2]"
-    // or "[991]FP"). These are leftover anchor numbers from the source's link table and carry no
-    // reading meaning, so they are removed. The lookahead keeps meaningful "Q[2]"/"A[2]" brackets
-    // (which are followed by punctuation or whitespace, never a letter) intact.
-    [GeneratedRegex(@"\[\d+\](?=[A-Za-z])", RegexOptions.Compiled)]
+    // CCEL hyperlink-index cruft like "[6]" that directly precedes a reference token (e.g. "[6]Q[2]",
+    // "[991]FP" or the grouped link-table form "[476](Q[51], A[1])"). These are leftover anchor
+    // numbers from the source's link table and carry no reading meaning, so they are removed. The
+    // lookahead keeps meaningful "Q[2]"/"A[2]" brackets (which are followed by punctuation or
+    // whitespace, never a letter or "(") intact.
+    [GeneratedRegex(@"\[\d+\](?=[A-Za-z(])", RegexOptions.Compiled)]
     private static partial Regex CrossRefCruftRegex();
 
     // A cross-reference to another question, e.g. "Q[2], A[2]" (same part) or "FP, Q[22], A[2]"
     // (explicit part). Captures the optional part token, the question number, the first article
     // number, and any additional article numbers from a multi-article citation like "AA[1],3"
-    // (which cites articles 1 and 3). Run after the hyperlink cruft has been stripped.
-    [GeneratedRegex(@"(?:(?<part>FP|FS|SS|TP|XP),\s*)?Q\[(?<q>\d+)\](?:\s*,\s*A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*))?", RegexOptions.Compiled)]
+    // (which cites articles 1 and 3). An optional trailing objection citation like ", OBJ[3]" or
+    // ", Reply to OBJ[1]" is captured too. Run after the hyperlink cruft has been stripped.
+    [GeneratedRegex(@"(?:(?<part>FP|FS|SS|TP|XP),\s*)?Q\[(?<q>\d+)\](?:\s*,\s*A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*))?(?:\s*,\s*(?<reply>Reply(?:\s+to)?\s+)?OBJ\[(?<obj>\d+)\])?", RegexOptions.Compiled)]
     private static partial Regex QuestionRefRegex();
 
     // A same-question article reference that stands alone (no preceding "Q[...]"), e.g. "AA[1],3".
-    // Captures the first article number plus any additional article numbers.
-    [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*)", RegexOptions.Compiled)]
+    // Captures the first article number, any additional article numbers, and an optional trailing
+    // objection citation like ", OBJ[3]" or ", Reply to OBJ[1]".
+    [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*)(?:\s*,\s*(?<reply>Reply(?:\s+to)?\s+)?OBJ\[(?<obj>\d+)\])?", RegexOptions.Compiled)]
     private static partial Regex ArticleRefRegex();
 
     // Pulls each additional article number out of a multi-article tail like ",3" or ", 11, 12".
     [GeneratedRegex(@",\s*(?<n>\d+)", RegexOptions.Compiled)]
     private static partial Regex ExtraArticleRegex();
+
+    // A standalone objection self-reference that survives the question/article passes, e.g.
+    // "(cf. OBJ[3])" or "(Reply OBJ[1])". These point at an objection within the current article.
+    [GeneratedRegex(@"(?<reply>Reply(?:\s+to)?\s+)?OBJ\[(?<obj>\d+)\]", RegexOptions.Compiled)]
+    private static partial Regex StandaloneObjectionRegex();
 
     public static IReadOnlyList<ParsedPart> Parse(string[] lines)
     {
@@ -284,7 +292,7 @@ internal static partial class SummaParser
         // question body as a single article so the text is not lost.
         if (articleStarts.Count == 0 && ContainsArticleProse(lines, contentStart, end))
         {
-            var body = Linkify(ExtractText(lines, contentStart, end), partId, number);
+            var body = Linkify(ExtractText(lines, contentStart, end), partId, number, 1);
             return new ParsedQuestion(
                 $"{partId}-q{number:D3}",
                 partId,
@@ -302,7 +310,7 @@ internal static partial class SummaParser
         {
             var bodyStart = articleStarts[a].BodyLine;
             var bodyEnd = a + 1 < articleStarts.Count ? articleStarts[a + 1].RuleLine : end;
-            var body = Linkify(ExtractText(lines, bodyStart, bodyEnd), partId, number);
+            var body = Linkify(ExtractText(lines, bodyStart, bodyEnd), partId, number, a + 1);
             articles.Add(new ParsedArticle(a + 1, articleStarts[a].Title, body));
         }
 
@@ -545,7 +553,7 @@ internal static partial class SummaParser
     //   {{sref|<kind>|<partId>|<q>|<a>}}
     // where <kind> is "qp" (question, show part), "q" (question, same part) or "a" (article only),
     // and <a> may be empty. The tokens survive Markdig untouched and are expanded on the page.
-    private static string Linkify(string text, string currentPartId, int currentNumber)
+    private static string Linkify(string text, string currentPartId, int currentNumber, int currentArticle = 0)
     {
         if (string.IsNullOrEmpty(text))
         {
@@ -561,16 +569,46 @@ internal static partial class SummaParser
             var questionNumber = int.Parse(match.Groups["q"].Value);
             var articles = JoinArticles(match.Groups["a"], match.Groups["am"]);
             var kind = hasPart ? "qp" : "q";
-            return $"{{{{sref|{kind}|{partId}|{questionNumber}|{articles}}}}}";
+            var reference = $"{{{{sref|{kind}|{partId}|{questionNumber}|{articles}}}}}";
+            return reference + Objection(match, partId, questionNumber, match.Groups["a"]);
         });
 
         text = ArticleRefRegex().Replace(text, match =>
         {
             var articles = JoinArticles(match.Groups["a"], match.Groups["am"]);
-            return $"{{{{sref|a|{currentPartId}|{currentNumber}|{articles}}}}}";
+            var reference = $"{{{{sref|a|{currentPartId}|{currentNumber}|{articles}}}}}";
+            return reference + Objection(match, currentPartId, currentNumber, match.Groups["a"]);
         });
 
+        // Any remaining "OBJ[n]"/"Reply OBJ[n]" is a self-reference to an objection within the
+        // current article (e.g. "as stated above (cf. OBJ[3])"). It can only be anchored when the
+        // article number is known, so this pass is skipped for prologues (currentArticle == 0).
+        if (currentArticle > 0)
+        {
+            text = StandaloneObjectionRegex().Replace(text, match =>
+            {
+                var kind = match.Groups["reply"].Success ? "reply" : "objection";
+                var objectionNumber = match.Groups["obj"].Value;
+                return $"{{{{sobj|{currentPartId}|{currentNumber}|{currentArticle}|{kind}|{objectionNumber}}}}}";
+            });
+        }
+
         return text;
+    }
+
+    // Builds the companion objection token for a reference that carries a trailing "OBJ[n]" (or
+    // "Reply to OBJ[n]") citation. The objection is scoped to the article named in the same
+    // reference; when no article is present there is nothing to anchor to, so the token is omitted.
+    private static string Objection(Match match, string partId, int questionNumber, Group article)
+    {
+        if (!match.Groups["obj"].Success || !article.Success)
+        {
+            return string.Empty;
+        }
+
+        var kind = match.Groups["reply"].Success ? "reply" : "objection";
+        var objectionNumber = match.Groups["obj"].Value;
+        return $"{{{{sobj|{partId}|{questionNumber}|{article.Value}|{kind}|{objectionNumber}}}}}";
     }
 
     // Builds a comma-separated article list from the first article number plus any additional

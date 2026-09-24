@@ -24,14 +24,22 @@ public static partial class SummaReferenceRenderer
     [GeneratedRegex(@"\{\{scue\|(?<kind>objection|reply|contra|respondeo)(?:\|(?<n>\d+))?\}\}", RegexOptions.Compiled)]
     private static partial Regex CueRegex();
 
+    // Matches an objection cross-reference placeholder: {{sobj|<partId>|<q>|<a>|<kind>|<n>}} where
+    // kind is "objection" or "reply". Emitted by the importer alongside the reference an "OBJ[n]"
+    // citation trails, and rendered as a link to that objection/reply within the cited article.
+    [GeneratedRegex(@"\{\{sobj\|(?<part>[a-z]+)\|(?<q>\d+)\|(?<a>\d+)\|(?<kind>objection|reply)\|(?<n>\d+)\}\}", RegexOptions.Compiled)]
+    private static partial Regex ObjectionRegex();
+
     // CCEL part tokens for display when a reference points at another part.
     private static string PartLabel(string partId) => partId.ToUpperInvariant();
 
     /// <summary>
     /// Replaces every reference and section-cue placeholder in the given HTML. Returns the input
-    /// unchanged when it contains no tokens.
+    /// unchanged when it contains no tokens. When <paramref name="articleNumber"/> is supplied, the
+    /// objection and reply cues emit stable in-page anchor ids (e.g. "article-3-objection-2") so
+    /// objection cross-references can deep-link to them.
     /// </summary>
-    public static string Expand(string? html)
+    public static string Expand(string? html, int? articleNumber = null)
     {
         if (string.IsNullOrEmpty(html) || !html.Contains("{{", StringComparison.Ordinal))
         {
@@ -39,7 +47,8 @@ public static partial class SummaReferenceRenderer
         }
 
         html = ExpandReferences(html);
-        html = ExpandCues(html);
+        html = ExpandObjections(html);
+        html = ExpandCues(html, articleNumber);
         return html;
     }
 
@@ -95,7 +104,29 @@ public static partial class SummaReferenceRenderer
     private static string Anchor(string href, string display) =>
         $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
 
-    private static string ExpandCues(string html)
+    private static string ExpandObjections(string html)
+    {
+        if (!html.Contains("{{sobj|", StringComparison.Ordinal))
+        {
+            return html;
+        }
+
+        return ObjectionRegex().Replace(html, match =>
+        {
+            var partId = match.Groups["part"].Value;
+            var questionNumber = int.Parse(match.Groups["q"].Value);
+            var article = match.Groups["a"].Value;
+            var kind = match.Groups["kind"].Value;
+            var number = match.Groups["n"].Value;
+
+            var fragment = $"article-{article}-{kind}-{number}";
+            var href = $"summa/{partId}-q{questionNumber:D3}#{fragment}";
+            var label = kind == "reply" ? $"reply&nbsp;{number}" : $"obj.&nbsp;{number}";
+            return ", " + Anchor(href, label);
+        });
+    }
+
+    private static string ExpandCues(string html, int? articleNumber)
     {
         if (!html.Contains("{{scue|", StringComparison.Ordinal))
         {
@@ -116,7 +147,13 @@ public static partial class SummaReferenceRenderer
                 _ => ("", string.Empty),
             };
 
-            return $"<strong class=\"summa-cue summa-cue--{cssModifier}\">{label}</strong>";
+            // Objection and reply cues get a stable anchor id so objection cross-references can
+            // deep-link straight to them, but only when we know which article they belong to.
+            var id = articleNumber is int a && number.Length > 0 && (kind == "objection" || kind == "reply")
+                ? $" id=\"article-{a}-{kind}-{number}\""
+                : string.Empty;
+
+            return $"<strong{id} class=\"summa-cue summa-cue--{cssModifier}\">{label}</strong>";
         });
     }
 }
