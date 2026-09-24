@@ -87,15 +87,15 @@ jobs:
       # Building the test project also builds the app it references.
       - name: Build
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet build Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
+        run: dotnet build tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release
 
       - name: Run unit and component tests
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet test Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
+        run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet publish Respondeo/Respondeo.csproj -c Release -o release
+        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
 
       - name: Compute base href
         id: base
@@ -141,7 +141,7 @@ jobs:
       # the compiled output via --no-build instead of each rebuilding it.
       - name: Build acceptance tests
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet build Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
+        run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
 
       - name: Upload acceptance test binaries
         if: steps.filter.outputs.code-changed == 'true'
@@ -152,7 +152,7 @@ jobs:
           # it is dropped from the artifact and the e2e shards fail with
           # "missing required assets".
           include-hidden-files: true
-          path: Respondeo.AcceptanceTests/bin/Release/net10.0
+          path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
 
   e2e:
     name: Acceptance Tests (Playwright)

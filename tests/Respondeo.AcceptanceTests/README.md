@@ -19,10 +19,10 @@ These are intentionally few and focused on the core journey. Unit and component 
 
    ```powershell
    # Option A: dev server
-   dotnet run --project ..\Respondeo\Respondeo.csproj
+   dotnet run --project ..\..\src\Respondeo\Respondeo.csproj
 
    # Option B: serve a publish output (matches CI)
-   dotnet publish ..\Respondeo\Respondeo.csproj -c Release -o publish
+   dotnet publish ..\..\src\Respondeo\Respondeo.csproj -c Release -o publish
    dotnet tool install --global dotnet-serve
    dotnet serve -d publish\wwwroot -p 5000 --fallback-file index.html
    ```

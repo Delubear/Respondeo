@@ -11,13 +11,13 @@
     <File Path="summa.txt" />
     <File Path="TODO.md" />
   </Folder>
-  <Project Path="Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
-  <Project Path="Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />
-  <Project Path="Respondeo/Respondeo.csproj" />
-  <Project Path="Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
-  <Project Path="Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
+  <Project Path="src/Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
+  <Project Path="src/Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />
+  <Project Path="src/Respondeo/Respondeo.csproj" />
+  <Project Path="src/Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
+  <Project Path="src/Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
   <Folder Name="/Tests/">
-    <Project Path="Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
-    <Project Path="Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
+    <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
+    <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
   </Folder>
 </Solution>

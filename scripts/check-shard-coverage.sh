@@ -11,7 +11,7 @@
 set -euo pipefail
 
 WORKFLOW="${1:?usage: check-shard-coverage.sh <workflow-file>}"
-FEATURES_DIR="Respondeo.AcceptanceTests/Features"
+FEATURES_DIR="tests/Respondeo.AcceptanceTests/Features"
 
 # Titles declared by the .feature files (text after "Feature:").
 declared=$(grep -rhoP '^\s*Feature:\s*\K.+' "$FEATURES_DIR"/*.feature | sed 's/[[:space:]]*$//' | sort -u)

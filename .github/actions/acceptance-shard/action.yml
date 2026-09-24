@@ -42,14 +42,14 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: acceptance-tests
-        path: Respondeo.AcceptanceTests/bin/Release/net10.0
+        path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
 
     # upload-artifact does not preserve the Unix executable bit, so Playwright's
     # bundled node driver arrives non-executable and fails with "Permission denied".
     # Restore +x before anything invokes it.
     - name: Restore Playwright driver permissions
       shell: bash
-      run: chmod +x Respondeo.AcceptanceTests/bin/Release/net10.0/.playwright/node/linux-x64/node
+      run: chmod +x tests/Respondeo.AcceptanceTests/bin/Release/net10.0/.playwright/node/linux-x64/node
 
     - name: Install static file server
       shell: bash
@@ -57,7 +57,7 @@ runs:
 
     - name: Install Playwright browsers
       shell: bash
-      run: pwsh Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+      run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
 
     - name: Serve site and run acceptance tests
       shell: bash
@@ -82,4 +82,4 @@ runs:
           sleep 1
         done
 
-        dotnet test Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter "$SHARD_FILTER"
+        dotnet test tests/Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter "$SHARD_FILTER"

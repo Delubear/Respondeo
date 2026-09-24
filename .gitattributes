@@ -47,5 +47,5 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-Respondeo.Content.Summa/wwwroot/summa/** filter=lfs diff=lfs merge=lfs -text
+src/Respondeo.Content.Summa/wwwroot/summa/** filter=lfs diff=lfs merge=lfs -text
 summa.txt filter=lfs diff=lfs merge=lfs -text
