@@ -2,10 +2,9 @@ namespace Respondeo.SummaImporter;
 
 /// <summary>
 /// Parses the CCEL public-domain plain-text dump of the Summa Theologica into a structured model.
-/// The parser is content-driven (not line-number driven): it recognises the five Part headers, the
-/// ALL-CAPS question headers that end in "(N ARTICLES)", and the rule-line + 4-space "Whether ...?"
-/// article titles. Inner sections (Objections, On the contrary, I answer that, Reply to Objection)
-/// are preserved verbatim inside each article body.
+/// The parser is content-driven (not line-number driven): it recognises the five Part headers, the ALL-CAPS question headers that end in "(N ARTICLES)",
+/// and the rule-line + 4-space "Whether ...?" article titles.
+/// Inner sections (Objections, On the contrary, I answer that, Reply to Objection) are preserved verbatim inside each article body.
 ///
 /// The implementation is split across several partial files by responsibility:
 ///   - SummaParser.cs              : top-level orchestration and the part table.
@@ -18,9 +17,9 @@ namespace Respondeo.SummaImporter;
 /// </summary>
 internal static partial class SummaParser
 {
-    // The five parts in reading order, each keyed by the marker that appears in the text. The Id is
-    // the stable, neutral storage key baked into question ids, filenames, and cross-reference tokens
-    // (p1/p2a/p2b/p3/sup); the app maps it to a URL slug and display label at render time.
+    // The five parts in reading order, each keyed by the marker that appears in the text.
+    // The Id is the stable, neutral storage key baked into question ids, filenames, and cross-reference tokens (p1/p2a/p2b/p3/sup);
+    // the app maps it to a URL slug and display label at render time.
     private static readonly (string Id, string Title, string Marker)[] Parts =
     [
         ("p1", "First Part", "FIRST PART (FP"),

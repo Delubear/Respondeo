@@ -35,9 +35,8 @@ string ToHtml(string markdown) => string.IsNullOrWhiteSpace(markdown)
 var summaDir = Path.Combine(outputRoot, "summa");
 Directory.CreateDirectory(summaDir);
 
-// Question content is split into one subfolder per part so a single directory does not hold the
-// entire corpus. The folder name mirrors the human-readable part title in kebab-case; the service
-// derives the same folder from a question's part id when fetching on demand.
+// Question content is split into one subfolder per part so a single directory does not hold the entire corpus.
+// The folder name mirrors the human-readable part title in kebab-case; the service derives the same folder from a question's part id when fetching on demand.
 static string PartFolder(string partId) => partId switch
 {
     "p1" => "first-part",

@@ -10,15 +10,14 @@ internal static partial class SummaParser
     [GeneratedRegex(@"^\s*_{20,}\s*$", RegexOptions.Compiled)]
     private static partial Regex RuleRegex();
 
-    // A 4-space-indented line that begins an article title. Titles may wrap over several lines and
-    // end with a question mark.
+    // A 4-space-indented line that begins an article title. Titles may wrap over several lines and end with a question mark.
     [GeneratedRegex(@"^    (?<start>\S.*)$", RegexOptions.Compiled)]
     private static partial Regex TitleStartRegex();
 
     private static ParsedQuestion ParseQuestion(string partId, int number, string title, string[] lines, int start, int end)
     {
-        // Skip any leftover header lines (the title continuation lines and the wrapped/split
-        // "(N ARTICLES)" marker) so they do not leak into the prologue or article body.
+        // Skip any leftover header lines (the title continuation lines and the wrapped/split "(N ARTICLES)" marker)
+        // so they do not leak into the prologue or article body.
         var contentStart = start + 1;
         for (var s = start + 1; s < end && s < start + 6; s++)
         {
@@ -51,10 +50,10 @@ internal static partial class SummaParser
         // The prologue is the text between the question header and the first article rule/title.
         var articleStarts = FindArticleStarts(lines, contentStart, end);
 
-        // Some single-article questions (e.g. "On the Work of the Fifth Day") open the article body
-        // directly after the header, with no rule line and no "Whether ...?" title. When no article
-        // structure is detected but the content clearly contains article prose, treat the whole
-        // question body as a single article so the text is not lost.
+        // Some single-article questions (e.g. "On the Work of the Fifth Day") open the article body directly after the header,
+        // with no rule line and no "Whether ...?" title.
+        // When no article structure is detected but the content clearly contains article prose,
+        // treat the whole question body as a single article so the text is not lost.
         if (articleStarts.Count == 0 && ContainsArticleProse(lines, contentStart, end))
         {
             var body = Linkify(ExtractText(lines, contentStart, end), partId, number, 1);
@@ -82,8 +81,8 @@ internal static partial class SummaParser
         return new ParsedQuestion($"{partId}-q{number:D3}", partId, number, title, prologue, articles);
     }
 
-    // Detects whether a span of text contains the tell-tale markers of an article body (Objections
-    // and "I answer that"). Used to rescue single-article questions that lack a rule/title header.
+    // Detects whether a span of text contains the tell-tale markers of an article body (Objections and "I answer that").
+    // Used to rescue single-article questions that lack a rule/title header.
     private static bool ContainsArticleProse(string[] lines, int start, int end)
     {
         var sawObjection = false;
@@ -109,9 +108,8 @@ internal static partial class SummaParser
         return false;
     }
 
-    // An article begins at a rule line, followed (after blanks) by a 4-space-indented "Whether ...?"
-    // title that may wrap across lines and ends with '?'. Returns the rule line (boundary), the title,
-    // and the body start line (just after the title).
+    // An article begins at a rule line, followed (after blanks) by a 4-space-indented "Whether ...?" title that may wrap across lines and ends with '?'.
+    // Returns the rule line (boundary), the title, and the body start line (just after the title).
     private static List<(int RuleLine, string Title, int BodyLine)> FindArticleStarts(string[] lines, int start, int end)
     {
         var starts = new List<(int RuleLine, string Title, int BodyLine)>();
@@ -134,8 +132,7 @@ internal static partial class SummaParser
                 break;
             }
 
-            // A title must be a 4-space-indented line. If the next content is another rule or a
-            // question header, this rule was a section divider, not an article start.
+            // A title must be a 4-space-indented line. If the next content is another rule or a question header, this rule was a section divider, not an article start.
             var titleMatch = TitleStartRegex().Match(lines[j]);
             if (!titleMatch.Success || QuestionHeaderRegex().IsMatch(lines[j]))
             {

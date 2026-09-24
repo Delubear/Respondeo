@@ -7,18 +7,17 @@ internal static partial class SummaParser
 {
     private static string NormalizeTitle(string title)
     {
-        var cleaned = Regex.Replace(title, @"\s+", " ").Trim();
+        var cleaned = WhitespaceRegex().Replace(title, " ").Trim();
         // Strip stray CCEL cross-reference brackets like "[76]" that can appear in headers.
-        cleaned = Regex.Replace(cleaned, @"\[\d+\]", string.Empty).Trim();
-        // Remove orphan footnote asterisks (e.g. "Of Fear*", "Irony*"). These point to an editorial
-        // note that lived beside the dropped "(N ARTICLES)" marker, so the bare "*" is left unexplained.
+        cleaned = BracketReferenceRegex().Replace(cleaned, string.Empty).Trim();
+        // Remove orphan footnote asterisks (e.g. "Of Fear*", "Irony*").
+        // These point to an editorial note that lived beside the dropped "(N ARTICLES)" marker, so the bare "*" is left unexplained.
         // Keep asterisks that open an inline gloss like "[*Scientia]" (i.e. those immediately after "[").
-        cleaned = Regex.Replace(cleaned, @"(?<!\[)\*", string.Empty).Trim();
+        cleaned = OrphanAsteriskRegex().Replace(cleaned, string.Empty).Trim();
         return cleaned;
     }
 
-    // Question titles arrive in ALL CAPS (e.g. "THE EXISTENCE OF GOD"). Convert to sentence-ish title
-    // case for display while keeping short function words lowercase.
+    // Question titles arrive in ALL CAPS (e.g. "THE EXISTENCE OF GOD"). Convert to sentence-ish title case for display while keeping short function words lowercase.
     private static string TitleCase(string upper)
     {
         var words = upper.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -44,4 +43,13 @@ internal static partial class SummaParser
 
         return string.Join(' ', result);
     }
+
+    [GeneratedRegex(@"\s+", RegexOptions.Compiled)]
+    private static partial Regex WhitespaceRegex();
+
+    [GeneratedRegex(@"\[\d+\]", RegexOptions.Compiled)]
+    private static partial Regex BracketReferenceRegex();
+
+    [GeneratedRegex(@"(?<!\[)\*", RegexOptions.Compiled)]
+    private static partial Regex OrphanAsteriskRegex();
 }

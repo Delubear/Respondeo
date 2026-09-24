@@ -3,12 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace Respondeo.SummaImporter;
 
-// Paragraph extraction from the hard-wrapped source lines and tokenisation of the classic Summa
-// section cues (Objection, On the contrary, I answer that, Reply to Objection).
+// Paragraph extraction from the hard-wrapped source lines and tokenisation of the classic Summa section cues
+// (Objection, On the contrary, I answer that, Reply to Objection).
 internal static partial class SummaParser
 {
-    // Turns the indented, hard-wrapped source lines into Markdown paragraphs. Blank lines separate
-    // paragraphs; the recognised inner markers (Objection, On the contrary, I answer that, Reply)
+    // Turns the indented, hard-wrapped source lines into Markdown paragraphs.
+    // Blank lines separate paragraphs; the recognised inner markers (Objection, On the contrary, I answer that, Reply)
     // are emphasised so the article structure survives into the rendered HTML.
     private static string ExtractText(string[] lines, int start, int end)
     {
@@ -48,10 +48,9 @@ internal static partial class SummaParser
 
     private static string FormatParagraph(string text)
     {
-        // Emit neutral tokens for the classic Summa section cues instead of baking presentation
-        // (e.g. bold) into the corpus. The render stage decides the markup and styling, so these
-        // structural markers can be restyled without regenerating the JSON. Tokens take the form
-        // {{scue|<kind>|<number?>}}: "objection"/"reply" carry the number, "contra"/"respondeo" do not.
+        // Emit neutral tokens for the classic Summa section cues instead of baking presentation (e.g. bold) into the corpus.
+        // The render stage decides the markup and styling, so these structural markers can be restyled without regenerating the JSON.
+        // Tokens take the form {{scue|<kind>|<number?>}}: "objection"/"reply" carry the number, "contra"/"respondeo" do not.
         if (text.StartsWith("On the contrary,", StringComparison.Ordinal))
         {
             return $"{{{{scue|contra}}}}{text["On the contrary,".Length..]}";
@@ -62,13 +61,13 @@ internal static partial class SummaParser
             return $"{{{{scue|respondeo}}}}{text["I answer that,".Length..]}";
         }
 
-        var reply = Regex.Match(text, @"^Reply to Objection (?<n>\d+):");
+        var reply = ReplyRegex().Match(text);
         if (reply.Success)
         {
             return $"{{{{scue|reply|{reply.Groups["n"].Value}}}}}{text[reply.Length..]}";
         }
 
-        var objection = Regex.Match(text, @"^Objection (?<n>\d+):");
+        var objection = ObjectionRegex().Match(text);
         if (objection.Success)
         {
             return $"{{{{scue|objection|{objection.Groups["n"].Value}}}}}{text[objection.Length..]}";
@@ -76,4 +75,10 @@ internal static partial class SummaParser
 
         return text;
     }
+
+    [GeneratedRegex(@"^Reply to Objection (?<n>\d+):", RegexOptions.Compiled)]
+    private static partial Regex ReplyRegex();
+
+    [GeneratedRegex(@"^Objection (?<n>\d+):", RegexOptions.Compiled)]
+    private static partial Regex ObjectionRegex();
 }
