@@ -137,6 +137,16 @@ h1, h2, h3 {
     color: var(--ink);
 }
 
+/* On small screens the virtual keyboard shrinks the viewport, which pins any position:fixed
+   control (the Summa guide button and back-to-top arrow) to a strip just above the keyboard where
+   it reads as a stray colored block. Hide those floating controls while a text field is focused. */
+@media (max-width: 640px) {
+    body:has(input:focus, textarea:focus) .back-to-top,
+    body:has(input:focus, textarea:focus) .summa-guide__trigger {
+        display: none;
+    }
+}
+
 /* ---------- Blazor error UI (retained from template) ---------- */
 #blazor-error-ui {
     background: #ffe9e9;
