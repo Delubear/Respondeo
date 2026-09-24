@@ -4,7 +4,7 @@ title: "The Second Way — Efficient Causation"
 summary: From ordered efficient causes to a first cause.
 ---
 
-> "In the world of sense we find there is an order of efficient causes." &mdash; [*Summa Theologiae* I, q. 2, a. 3](summa/prima-q002#article-3)
+> "In the world of sense we find there is an order of efficient causes." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The First Way looked at *change*; the Second Way looks at *existence* — at the causes that make things be and act.
 An **efficient cause** is that which brings something about: the sculptor of the statue, the fire that heats, the hand that moves the stick that moves the stone.
@@ -41,7 +41,7 @@ An efficient cause gives being or actuality to its effect.
 But nothing can give what it does not have.
 So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own — a cause that is not switched on by anything else, but is the unsourced source of the whole chain.
 
-> Therefore it is necessary to admit a first efficient cause, to which everyone gives the name of God. &mdash; [*Summa Theologiae* I, q. 2, a. 3](summa/prima-q002#article-3)
+> Therefore it is necessary to admit a first efficient cause, to which everyone gives the name of God. &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The First Way and the Second Way arrive at the same terminus from different starting points: whether we trace *change* or *causal dependence*, we cannot rest in an endless series of borrowers. 
 We must reach a first that gives without receiving.

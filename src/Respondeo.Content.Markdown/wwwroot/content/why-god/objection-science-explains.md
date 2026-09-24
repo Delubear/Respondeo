@@ -16,7 +16,7 @@ This is essentially Aquinas's second objection &mdash; that natural and human ca
 > produced by many. But it seems that everything we see in the world can be accounted for by
 > other principles, supposing God did not exist. For all natural things can be reduced to one
 > principle which is nature; and all voluntary things... to human reason or will. Therefore
-> there is no need to suppose God's existence." &mdash; [*Summa Theologiae* I, q. 2, a. 3, obj. 2](summa/prima-q002#article-3-objection-2)
+> there is no need to suppose God's existence." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, obj. 2](summa/prima-q002#article-3-objection-2)
 
 **In response:**
 
@@ -36,7 +36,7 @@ Aquinas answers that nature and human reason are not the bottom of the explanati
 > "Since nature works for a determinate end under the direction of a higher agent, whatever
 > is done by nature must needs be traced back to God, as to its first cause. So also
 > whatever is done voluntarily must also be traced back to some higher cause other than
-> human reason or will, since these can change or fail." &mdash; [*Summa Theologiae* I, q. 2, a. 3, reply to obj. 2](summa/prima-q002#article-3-reply-2)
+> human reason or will, since these can change or fail." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 2](summa/prima-q002#article-3-reply-2)
 
 *That nature is directed to an end rather than self-explaining is developed in [the Fifth Way &mdash; Governance](node/aquinas-five-ways?section=five-ways-governance).*
 

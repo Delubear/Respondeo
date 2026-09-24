@@ -19,7 +19,7 @@ St. Thomas takes it seriously enough to make it the *first* objection against Go
 > "It seems that God does not exist; because if one of two contraries be infinite, the
 > other would be altogether destroyed. But the word 'God' means that He is infinite
 > goodness. If, therefore, God existed, there would be no evil discoverable; but there is
-> evil in the world. Therefore God does not exist." &mdash; [*Summa Theologiae* I, q. 2, a. 3, obj. 1](summa/prima-q002#article-3-objection-1)
+> evil in the world. Therefore God does not exist." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, obj. 1](summa/prima-q002#article-3-objection-1)
 
 **In response:**
 
@@ -38,7 +38,7 @@ Aquinas's own reply turns the objection on its head: evil does not disprove God,
 > "As Augustine says (Enchiridion xi): 'Since God is the highest good, He would not allow
 > any evil to exist in His works, unless His omnipotence and goodness were such as to bring
 > good even out of evil.' This is part of the infinite goodness of God, that He should allow
-> evil to exist, and out of it produce good." &mdash; [*Summa Theologiae* I, q. 2, a. 3, reply to obj. 1](summa/prima-q002#article-3-reply-1)
+> evil to exist, and out of it produce good." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
 
 ::: youtube Oo4hF3IYGp4
 :::

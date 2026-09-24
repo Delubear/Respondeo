@@ -34,6 +34,17 @@ public partial class ContentLinkIntegrityTests
     [GeneratedRegex(@"^article-(?<article>\d+)(?:-(?<kind>objection|reply|contra)(?:-(?<number>\d+))?)?$")]
     private static partial Regex SummaFragmentPattern();
 
+    // Matches a hand-written Summa citation in raw Markdown: [*Summa Theologiae* <label>](summa/<id>...).
+    // The captured label is the human-visible citation text whose style must match the Summa's own
+    // generated cross-references (Q./A./ad/obj.), so both places read identically to the reader.
+    [GeneratedRegex(@"\[\*Summa Theologiae\*(?<label>[^\]]*)\]\(summa/[^)]+\)")]
+    private static partial Regex SummaCitationLabelPattern();
+
+    // Lower-case abbreviations the renderer never emits: it uses "Q." for question, "A." for article,
+    // and "ad" for replies. A citation label containing any of these is visually inconsistent.
+    [GeneratedRegex(@"\bq\.\s*\d|\ba\.\s*\d|reply to obj\.")]
+    private static partial Regex NonCanonicalCitationStylePattern();
+
     private static string ContentDirectory([CallerFilePath] string thisFile = "")
     {
         // This file lives at <repo>/tests/Respondeo.UnitTests/Content/ContentLinkIntegrityTests.cs.
@@ -161,6 +172,32 @@ public partial class ContentLinkIntegrityTests
         }
 
         Assert.True(problems.Count == 0, $"Broken Summa links found:{Environment.NewLine}{string.Join(Environment.NewLine, problems)}");
+    }
+
+    [Fact]
+    public void Every_summa_citation_in_content_uses_the_canonical_visual_style()
+    {
+        // The Summa's own cross-references are rendered by SummaReferenceRenderer using "Q.", "A.", "ad"
+        // and "obj." conventions. Hand-written citations in the Markdown must read identically, so this
+        // test scans the raw Markdown (the citation label is stripped before it becomes body HTML) and
+        // fails on any lower-case "q. N"/"a. N" or "reply to obj." phrasing that drifts from that style.
+        var contentDir = ContentDirectory();
+        var problems = new List<string>();
+
+        foreach (var file in ReadManifestFiles(contentDir))
+        {
+            var raw = File.ReadAllText(Path.Combine(contentDir, file));
+            foreach (Match citation in SummaCitationLabelPattern().Matches(raw))
+            {
+                var label = citation.Groups["label"].Value;
+                if (NonCanonicalCitationStylePattern().IsMatch(label))
+                {
+                    problems.Add($"{file}: '*Summa Theologiae*{label}' does not use the canonical Q./A./ad style");
+                }
+            }
+        }
+
+        Assert.True(problems.Count == 0, $"Non-canonical Summa citation styles found:{Environment.NewLine}{string.Join(Environment.NewLine, problems)}");
     }
 
     // Loads the generated corpus as a map of storage question id -> article count, so a content link's

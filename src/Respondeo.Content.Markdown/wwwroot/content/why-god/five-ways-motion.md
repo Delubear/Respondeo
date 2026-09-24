@@ -4,7 +4,7 @@ title: "The First Way — Motion"
 summary: From the fact of change to an unmoved mover.
 ---
 
-> "It is certain, and evident to our senses, that in the world some things are in motion." — [*Summa Theologiae* I, q.2, a.3](summa/prima-q002#article-3)
+> "It is certain, and evident to our senses, that in the world some things are in motion." — [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **The argument, step by step:**
 
@@ -17,4 +17,4 @@ The point is not a "first" domino in time, but a **first** in the order of expla
 Change happening here and now needs a source of actuality that is not itself waiting to be actualized.
 
 > "It is necessary to arrive at a first mover, put in motion by no other; and this everyone
-> understands to be God." &mdash; [*Summa Theologiae* I, q. 2, a. 3](summa/prima-q002#article-3)
+> understands to be God." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
