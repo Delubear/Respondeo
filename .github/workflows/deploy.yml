@@ -148,6 +148,10 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: acceptance-tests
+          # Playwright's driver lives in a hidden .playwright folder; without this
+          # it is dropped from the artifact and the e2e shards fail with
+          # "missing required assets".
+          include-hidden-files: true
           path: Respondeo.AcceptanceTests/bin/Release/net10.0
 
   e2e:
