@@ -8,7 +8,7 @@ topics:
 branches:
   - to: jesus-gospel-reliability
     label: "Can we trust the Gospels?"
-    prompt: Begin the path — the whole case is historical, so first ask whether the Gospels are sources we can reason from.
+    prompt: The whole case is historical, so first ask whether the Gospels are sources we can reason from.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

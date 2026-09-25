@@ -7,8 +7,8 @@ topics:
   - The Catholic Church
 branches:
   - to: church-founded-by-christ
-    label: "Begin: did Christ found a Church?"
-    prompt: Start the path — did Christ establish a visible Church and give it a teaching office?
+    label: "Did Christ found a Church?"
+    prompt: Did Christ establish a visible Church and give it a teaching office?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

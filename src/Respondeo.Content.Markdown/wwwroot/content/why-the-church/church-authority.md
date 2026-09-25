@@ -6,12 +6,12 @@ topics:
   - The Catholic Church
   - Divine Revelation
 branches:
+  - to: church-objections
+    label: "Objections to the Church"
+    prompt: Before drawing things together, it is fair to test the claim against its hardest objections.
   - to: where-the-path-has-led
     label: "Where the path has led"
     prompt: With the Catholic claim set out in full, the path draws together toward a decision.
-  - to: church-objections
-    label: "Objections to the Church (optional)"
-    prompt: Before drawing things together, it is fair to test the claim against its hardest objections.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
