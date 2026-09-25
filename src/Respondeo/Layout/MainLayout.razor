@@ -1,4 +1,7 @@
 @inherits LayoutComponentBase
+@implements IDisposable
+@inject NavigationManager Nav
+@inject IJSRuntime JS
 
 <div class="page">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -30,4 +33,36 @@
         </p>
     </footer>
 </div>
+
+@code {
+    // Central pageview tracking for the whole SPA. GoatCounter's auto on-load count is disabled
+    // (no_onload), so we record the first view after the initial render and every in-app Blazor
+    // navigation here — otherwise only the very first URL would ever be counted.
+    protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CountAsync();
+        }
+    }
+
+    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e) => await CountAsync();
+
+    private async Task CountAsync()
+    {
+        var path = "/" + Nav.ToBaseRelativePath(Nav.Uri);
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoAnalytics.count", path);
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit/runtime is going away (e.g. during teardown); nothing to count.
+        }
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}
 

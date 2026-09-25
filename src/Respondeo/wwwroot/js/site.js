@@ -12,6 +12,18 @@ window.respondeoUrl = {
     }
 };
 
+// Sends a GoatCounter pageview. GoatCounter's automatic on-load count is disabled (no_onload in
+// index.html) because Blazor is a SPA: a full page load happens only once, so we count the first
+// load and every subsequent in-app navigation from MainLayout instead. Safe to call before
+// count.js has finished loading — it simply no-ops until window.goatcounter.count exists.
+window.respondeoAnalytics = {
+    count: function (path) {
+        if (window.goatcounter && typeof window.goatcounter.count === 'function') {
+            window.goatcounter.count({ path: path || (location.pathname + location.search) });
+        }
+    }
+};
+
 // Smoothly brings an element into view by its id.
 // Used to reveal a freshly opened accordion section (or a deep-linked one on load) when it sits below the fold.
 // We offset by the sticky breadcrumb's height so the section header isn't left hidden underneath it (scrollIntoView block:'start' would tuck it behind the bar).

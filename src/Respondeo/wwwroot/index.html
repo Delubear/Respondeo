@@ -60,6 +60,13 @@
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <!-- GoatCounter analytics. no_onload is set because Respondeo is a SPA: the initial
+         load and every in-app Blazor navigation are counted from MainLayout via
+         window.respondeoAnalytics.count (in site.js), so the automatic on-load pageview
+         is disabled to avoid double-counting the first view. -->
+    <script data-goatcounter="https://delubear.goatcounter.com/count"
+            data-goatcounter-settings='{"no_onload": true}'
+            async src="//gc.zgo.at/count.js"></script>
 </body>
 
 </html>
