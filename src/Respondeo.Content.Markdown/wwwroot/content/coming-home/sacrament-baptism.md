@@ -19,3 +19,6 @@ In Baptism a person is made a new creation and a child of God — not by metapho
 The stain of original sin and all personal sin is washed away, and the very life of God is planted in the soul.
 This is why the Church rejoices over a baptism the way a family rejoices over a birth: a new life has begun that death cannot end.
 For the one entering the faith from outside, this is the threshold the whole path has been leading toward.
+
+::: youtube Euxu36jVJpU
+:::

@@ -61,3 +61,12 @@ Which forces the question He clearly meant to force: who do you say that He is?
 **Where this leads.** A staggering claim is not yet a vindicated one; anyone can claim authority.
 The question is whether Jesus offered anything to back it.
 Here the path can pause to weigh an optional line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test: whether He rose from the dead.
+
+::: youtube zKAAvgNKe60
+:::
+
+::: youtube xphsJLRF9v8
+:::
+
+::: youtube -dwJ22MwnaE
+:::

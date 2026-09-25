@@ -19,3 +19,9 @@ In the Eucharist, Christ gives not merely His help, His teaching, or His example
 To receive Holy Communion is to be united to God in the most intimate way possible this side of heaven, and to be joined to every other member of His body.
 The Church calls it "the source and summit of the Christian life" because everything flows from it and everything returns to it.
 For the one coming home, this is the reunion the whole return has been for.
+
+::: youtube sCuP50dVfIs
+:::
+
+::: youtube 2taZcgcQ4JA
+:::

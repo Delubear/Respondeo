@@ -45,3 +45,6 @@ Expand a section below to see what each sacrament is and why it is worth receivi
 
 **Where to go from here.** The sacraments are what every path in this stage has been leading toward.
 When you are ready to receive them — for the first time or after long absence — there is a clear and welcoming first step.
+
+::: youtube uJCTHCMHPYg
+:::
