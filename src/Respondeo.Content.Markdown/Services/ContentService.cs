@@ -48,10 +48,15 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
 
             var manifest = await GetFromJsonNoCacheAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
+            // Fetch every node concurrently rather than sequentially: on a cold load the content set
+            // is dozens of small files, and awaiting them one at a time serialises the network round
+            // trips into a noticeable first-load delay. Task.WhenAll lets them overlap; results are
+            // then assembled in manifest order so iteration stays deterministic.
+            var nodes = await Task.WhenAll(manifest.Files.Select(LoadNodeAsync));
+
             var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
-            foreach (var file in manifest.Files)
+            foreach (var node in nodes)
             {
-                var node = await LoadNodeAsync(file);
                 if (node is not null)
                 {
                     loaded[node.Id] = node;
