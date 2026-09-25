@@ -1,0 +1,13 @@
+/* ---------- Summa source credit (shared) ---------- */
+.summa__source {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule, rgba(0, 0, 0, 0.12));
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.summa__source a {
+    color: inherit;
+    text-decoration: underline;
+}

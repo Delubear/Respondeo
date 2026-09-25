@@ -272,20 +272,6 @@
     white-space: nowrap;
 }
 
-/* ---------- Source credit ---------- */
-.summa__source {
-    margin-top: 2.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--rule, rgba(0, 0, 0, 0.12));
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-}
-
-.summa__source a {
-    color: inherit;
-    text-decoration: underline;
-}
-
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
     .summa__title {
