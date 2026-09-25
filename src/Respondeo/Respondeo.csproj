@@ -60,6 +60,21 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
   </ItemGroup>
 
+  <!--
+    Progressive Web App support. The SDK generates service-worker-assets.js (the integrity
+    manifest of every published static asset) from the ServiceWorkerAssetsManifest hint, and
+    swaps service-worker.js for service-worker.published.js at publish time via the ServiceWorker
+    item. The published worker precaches that manifest so the app - including the bundled Summa
+    corpus and Markdown content - runs fully offline once installed.
+  -->
+  <PropertyGroup>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
     <ProjectReference Include="..\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />

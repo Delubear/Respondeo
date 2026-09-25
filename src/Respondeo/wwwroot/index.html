@@ -7,9 +7,10 @@
     <title>Respondeo &mdash; Real questions. Reasoned answers.</title>
     <base href="/" />
     <link rel="preload" id="webassembly" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Self-hosted webfonts (@font-face rules live in css/app.css). Served as first-party assets
+         so they are precached by the service worker and render identically offline. Preload the
+         primary body font (EB Garamond regular, latin subset) to avoid a flash of fallback text. -->
+    <link rel="preload" href="fonts/ebgaramond-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- css/app.css is fingerprinted automatically at publish time by the
          FingerprintStylesheets target in Respondeo.csproj, which rewrites this href to the
          content-hashed file name. That lets browsers cache it forever yet always pick up a new
@@ -17,6 +18,10 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link href="Respondeo.styles.css" rel="stylesheet" />
+    <!-- PWA: installability metadata and the iOS home-screen icon + theme colour. -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <meta name="theme-color" content="#7b1113" />
     <script type="importmap"></script>
     <script>
         // Defines the theme helper and applies the persisted (or OS) theme before Blazor boots, so there is no flash of the wrong theme on first paint.
@@ -67,6 +72,12 @@
     <script data-goatcounter="https://delubear.goatcounter.com/count"
             data-goatcounter-settings='{"no_onload": true}'
             async src="//gc.zgo.at/count.js"></script>
+    <!-- Register the PWA service worker. In development this is the no-op service-worker.js;
+         at publish time the SDK swaps in service-worker.published.js, which precaches the app
+         and bundled content for full offline use. -->
+    <script>
+        navigator.serviceWorker?.register('service-worker.js');
+    </script>
 </body>
 
 </html>

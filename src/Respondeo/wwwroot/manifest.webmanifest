@@ -1,0 +1,25 @@
+{
+  "name": "Respondeo — Real questions. Reasoned answers.",
+  "short_name": "Respondeo",
+  "description": "The complete Summa Theologiae of St. Thomas Aquinas, plus curated answers to real questions — browsable and searchable, fully offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#7b1113",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
+}

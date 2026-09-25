@@ -107,4 +107,28 @@ The custom domain and **Enforce HTTPS** are set under the repo's **Settings -> P
 domain is ever changed, update both the DNS records above and the `Add custom domain (CNAME)` step
 in the deploy workflow.
 
+## Progressive Web App (offline)
+
+Respondeo is an installable PWA and works **fully offline** once installed. Because the whole app -
+including the Summa corpus and Markdown content - ships as static files, the service worker can
+precache everything, so there is nothing left to fetch at runtime.
+
+- **Dev vs published worker.** [`wwwroot/service-worker.js`](src/Respondeo/wwwroot/service-worker.js)
+  is a no-op used during development (so changes are never cached). At publish time the SDK swaps in
+  [`wwwroot/service-worker.published.js`](src/Respondeo/wwwroot/service-worker.published.js), which
+  precaches the SDK-generated `service-worker-assets.js` manifest and serves `index.html` for
+  navigation requests (so deep links work offline). This wiring lives in the PWA section of
+  [`Respondeo.csproj`](src/Respondeo/Respondeo.csproj).
+- **Install.** Visit the site and use the browser's *Install app* / *Add to Home Screen* option.
+  Installability metadata (name, icons, colours) is in
+  [`wwwroot/manifest.webmanifest`](src/Respondeo/wwwroot/manifest.webmanifest).
+- **Online-only extras.** GoatCounter analytics is cross-origin and not precached; offline it
+  simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under `wwwroot/fonts/`, so
+  they are precached and render identically offline.
+- **Updates.** A new deploy changes the asset hashes, so the service worker updates its cache; users
+  pick up the new version after the worker updates (typically one reload).
+- **Note.** The offline install includes the full Summa corpus, so the first install downloads a
+  larger payload in exchange for complete offline access.
+
+
 
