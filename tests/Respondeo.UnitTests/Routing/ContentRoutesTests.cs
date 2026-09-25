@@ -18,7 +18,7 @@ public class ContentRoutesTests
     [Fact]
     public void Node_without_a_stage_uses_the_flat_route()
     {
-        Assert.Equal("node/protestant", ContentRoutes.NodeHref("protestant", null));
+        Assert.Equal("node/glossary", ContentRoutes.NodeHref("glossary", null));
     }
 
     [Fact]
