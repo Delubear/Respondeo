@@ -6,6 +6,7 @@ using NSubstitute;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Services;
 using Respondeo.Services;
+using Respondeo.UnitTests.TestSupport;
 using SummaQuestionPage = Respondeo.Pages.SummaQuestion;
 
 namespace Respondeo.UnitTests.Pages;
@@ -155,22 +156,5 @@ public class SummaQuestionTests : TestContext
         var cut = RenderComponent<SummaQuestionPage>(p => p.Add(c => c.Id, "prima-q999"));
 
         cut.WaitForAssertion(() => Assert.Contains("Question not found", cut.Markup));
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

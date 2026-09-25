@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Miracles.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -120,24 +121,5 @@ public class MiracleServiceTests
         var record = await service.GetByIdAsync("does-not-exist");
 
         Assert.Null(record);
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-
-            if (responses.TryGetValue(path, out var body))
-            {
-                var contentType = path.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ? "application/json" : "text/markdown";
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, contentType),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Respondeo.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -101,19 +102,6 @@ public class SummaBrowseStateTests
 
         Assert.Equal("prudence", state.Query);
         Assert.DoesNotContain("respondeoSummaBrowse.clear", js.Calls);
-    }
-
-    /// <summary>Minimal NavigationManager that lets tests drive LocationChanged via NavigateTo.</summary>
-    private sealed class TestNavigationManager : NavigationManager
-    {
-        public TestNavigationManager(string uri) => Initialize(Root, uri);
-
-        protected override void NavigateToCore(string uri, bool forceLoad)
-        {
-            var absolute = ToAbsoluteUri(uri).ToString();
-            Uri = absolute;
-            NotifyLocationChanged(isInterceptedLink: false);
-        }
     }
 
     /// <summary>Minimal IJSRuntime that records the identifiers it is asked to invoke.</summary>

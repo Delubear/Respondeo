@@ -29,7 +29,7 @@ internal sealed class ContentParser
     /// </summary>
     public ContentNode? Parse(string raw, string? stage = null)
     {
-        var (frontMatter, body) = SplitFrontMatter(raw);
+        var (frontMatter, body) = FrontMatter.Split(raw);
         if (frontMatter is null)
         {
             return null;
@@ -62,23 +62,5 @@ internal sealed class ContentParser
     /// Splits a "---" delimited YAML front-matter block from the Markdown body.
     /// Returns (null, raw) when no front-matter block is present.
     /// </summary>
-    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw)
-    {
-        var text = raw.Replace("\r\n", "\n").TrimStart('\uFEFF', ' ', '\n');
-        if (!text.StartsWith("---\n"))
-        {
-            return (null, raw);
-        }
-
-        var end = text.IndexOf("\n---", 4, StringComparison.Ordinal);
-        if (end < 0)
-        {
-            return (null, raw);
-        }
-
-        var frontMatter = text.Substring(4, end - 4);
-        var bodyStart = text.IndexOf('\n', end + 1);
-        var body = bodyStart < 0 ? string.Empty : text[(bodyStart + 1)..];
-        return (frontMatter, body);
-    }
+    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw) => FrontMatter.Split(raw);
 }

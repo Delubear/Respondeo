@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Respondeo.Content.Miracles;
 using Respondeo.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -47,17 +48,5 @@ public class MiracleBrowseStateTests
 
         state.ToggleRegion(MiracleRegion.Europe);
         Assert.DoesNotContain(MiracleRegion.Europe, state.Regions);
-    }
-
-    private sealed class TestNavigationManager : NavigationManager
-    {
-        public TestNavigationManager(string uri) => Initialize(Root, uri);
-
-        protected override void NavigateToCore(string uri, bool forceLoad)
-        {
-            var absolute = ToAbsoluteUri(uri).ToString();
-            Uri = absolute;
-            NotifyLocationChanged(isInterceptedLink: false);
-        }
     }
 }

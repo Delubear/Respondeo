@@ -14,4 +14,8 @@
 	<PackageReference Include="YamlDotNet" />
   </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\Respondeo.Content.Abstractions\Respondeo.Content.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

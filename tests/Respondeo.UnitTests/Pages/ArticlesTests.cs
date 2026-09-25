@@ -4,6 +4,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Abstractions;
+using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.Pages;
 using Respondeo.Services;
@@ -117,22 +118,5 @@ public class ArticlesTests : TestContext
         RenderComponent<Articles>();
 
         trail.Received().SetArticlesOriginAsync(true);
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "text/plain"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

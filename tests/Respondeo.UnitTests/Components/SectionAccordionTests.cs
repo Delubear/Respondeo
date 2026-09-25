@@ -4,6 +4,7 @@ using Bunit;
 using Bunit.TestDoubles;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
+using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Services;
 
@@ -127,22 +128,5 @@ public class SectionAccordionTests : TestContext
         var cut = Render();
 
         Assert.Empty(cut.FindAll(".accordion__panel"));
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "text/plain"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

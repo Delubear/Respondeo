@@ -1,4 +1,5 @@
 using Markdig;
+using Respondeo.Content.Abstractions;
 using Respondeo.Content.Miracles.Internal;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -28,7 +29,7 @@ internal sealed class MiracleParser
     /// </summary>
     public MiracleRecord? Parse(string raw)
     {
-        var (frontMatter, body) = SplitFrontMatter(raw);
+        var (frontMatter, body) = FrontMatter.Split(raw);
         if (frontMatter is null)
         {
             return null;
@@ -116,29 +117,5 @@ internal sealed class MiracleParser
 
         Flush();
         return sections;
-    }
-
-    /// <summary>
-    /// Splits a "---" delimited YAML front-matter block from the Markdown body.
-    /// Returns (null, raw) when no front-matter block is present.
-    /// </summary>
-    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw)
-    {
-        var text = raw.Replace("\r\n", "\n").TrimStart('\uFEFF', ' ', '\n');
-        if (!text.StartsWith("---\n", StringComparison.Ordinal))
-        {
-            return (null, raw);
-        }
-
-        var end = text.IndexOf("\n---", 4, StringComparison.Ordinal);
-        if (end < 0)
-        {
-            return (null, raw);
-        }
-
-        var frontMatter = text.Substring(4, end - 4);
-        var bodyStart = text.IndexOf('\n', end + 1);
-        var body = bodyStart < 0 ? string.Empty : text[(bodyStart + 1)..];
-        return (frontMatter, body);
     }
 }

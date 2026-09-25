@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using Respondeo.Content.Markdown.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -90,22 +91,5 @@ public class ContentServiceLoadingTests
         Assert.Equal(2, all.Count);
         Assert.NotNull(await service.GetByIdAsync("home"));
         Assert.NotNull(await service.GetByIdAsync("branch"));
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "text/plain"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

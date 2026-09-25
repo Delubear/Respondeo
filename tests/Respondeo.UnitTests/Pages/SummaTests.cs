@@ -6,6 +6,7 @@ using NSubstitute;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Services;
 using Respondeo.Services;
+using Respondeo.UnitTests.TestSupport;
 using SummaPage = Respondeo.Pages.Summa;
 
 namespace Respondeo.UnitTests.Pages;
@@ -102,22 +103,5 @@ public class SummaTests : TestContext
         cut.Find("#summa-search").Input("zzznomatch");
 
         cut.WaitForAssertion(() => Assert.Contains("No questions or articles match", cut.Markup));
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }

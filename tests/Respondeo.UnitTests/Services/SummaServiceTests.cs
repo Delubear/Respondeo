@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using Respondeo.Content.Summa.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -114,28 +115,5 @@ public class SummaServiceTests
         await service.GetIndexAsync();
 
         Assert.Equal(1, handler.RequestCount(IndexPath));
-    }
-
-    private sealed class StubHandler(IReadOnlyDictionary<string, string> responses) : HttpMessageHandler
-    {
-        private readonly Dictionary<string, int> _counts = new();
-
-        public int RequestCount(string path) => _counts.TryGetValue(path, out var count) ? count : 0;
-
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var path = request.RequestUri!.AbsolutePath.TrimStart('/');
-            _counts[path] = RequestCount(path) + 1;
-
-            if (responses.TryGetValue(path, out var body))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                });
-            }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
-        }
     }
 }
