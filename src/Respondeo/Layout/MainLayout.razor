@@ -2,6 +2,7 @@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject IJSRuntime JS
+@inject Respondeo.Services.FeatureFlags Features
 
 <div class="page">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -10,12 +11,15 @@
 
     <header class="masthead">
         <ThemeToggle />
-        <img class="masthead__portrait"
-             src="images/aquinas.jpg"
-             alt="St. Thomas Aquinas, after Sandro Botticelli"
-             width="144"
-             height="144"
-             loading="lazy" />
+        @if (Features.AquinasPortrait)
+        {
+            <img class="masthead__portrait"
+                 src="images/aquinas.jpg"
+                 alt="St. Thomas Aquinas, after Sandro Botticelli"
+                 width="144"
+                 height="144"
+                 loading="lazy" />
+        }
         <a class="masthead__brand" href="">
             <span class="masthead__mark" aria-hidden="true">&#10013;</span>
             <span class="masthead__name">Respondeo</span>

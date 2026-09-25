@@ -5,10 +5,11 @@
 @inject NavigationManager Nav
 @inject Respondeo.Services.NavigationIntent NavIntent
 @inject Respondeo.Services.IBreadcrumbTrail Trail
+@inject Respondeo.Services.FeatureFlags Features
 
 <nav class="pillarnav" aria-label="Site areas">
     <ul class="pillarnav__list">
-        @foreach (var pillar in SitePillars.Items)
+        @foreach (var pillar in SitePillars.Items.Where(IsEnabled))
         {
             var isActive = pillar.Id == _activeId;
             <li class="pillarnav__item">
@@ -25,6 +26,15 @@
 
 @code {
     private string _activeId = SitePillars.JourneyId;
+
+    // The Journey pillar is the site's spine and always shown; the Summa and Miracles pills are
+    // each gated behind a deploy-time feature flag so they can be hidden without a code change.
+    private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
+    {
+        SitePillars.SummaId => Features.SummaPillar,
+        SitePillars.MiraclesId => Features.MiraclesPillar,
+        _ => true,
+    };
 
     protected override void OnInitialized()
     {
