@@ -24,6 +24,32 @@ window.respondeoAnalytics = {
     }
 };
 
+// Announces in-app route changes to assistive technology. Blazor's FocusOnNavigate moves focus to
+// the main content on navigation, but a SPA route change is silent to screen readers unless we also
+// post the new page name to a live region. We own a single visually-hidden polite live region and
+// write the new document.title into it after navigation. The short delay lets the routed page's
+// <PageTitle> update document.title first so we announce the destination, not the previous page.
+window.respondeoA11y = {
+    announce: function () {
+        var region = document.getElementById('route-announcer');
+        if (!region) {
+            region = document.createElement('div');
+            region.id = 'route-announcer';
+            region.setAttribute('role', 'status');
+            region.setAttribute('aria-live', 'polite');
+            region.setAttribute('aria-atomic', 'true');
+            // Visually hidden but available to assistive technology.
+            region.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;'
+                + 'overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;';
+            document.body.appendChild(region);
+        }
+        // Let the routed page set its <PageTitle> before we read it, then announce the destination.
+        setTimeout(function () {
+            region.textContent = document.title;
+        }, 100);
+    }
+};
+
 // Smoothly brings an element into view by its id.
 // Used to reveal a freshly opened accordion section (or a deep-linked one on load) when it sits below the fold.
 // We offset by the sticky breadcrumb's height so the section header isn't left hidden underneath it (scrollIntoView block:'start' would tuck it behind the bar).

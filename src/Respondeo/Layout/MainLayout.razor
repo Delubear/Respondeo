@@ -48,7 +48,11 @@
         }
     }
 
-    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e) => await CountAsync();
+    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        await CountAsync();
+        await AnnounceAsync();
+    }
 
     private async Task CountAsync()
     {
@@ -60,6 +64,21 @@
         catch (JSDisconnectedException)
         {
             // The circuit/runtime is going away (e.g. during teardown); nothing to count.
+        }
+    }
+
+    // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is
+    // otherwise silent to screen readers. Post the new page title to a polite live region so
+    // assistive technology announces the destination page.
+    private async Task AnnounceAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoA11y.announce");
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit/runtime is going away (e.g. during teardown); nothing to announce.
         }
     }
 
