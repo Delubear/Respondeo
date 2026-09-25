@@ -113,6 +113,28 @@ this mode: it is a client-side beacon (`beacon.min.js` in
 [`index.html`](src/Respondeo/wwwroot/index.html)) and does not require proxied traffic. Set its site
 token in `index.html` from **Cloudflare -> Web Analytics**.
 
+## Feature flags
+
+Optional site features are gated behind deploy-time flags so they can be turned off without a code
+change. The flags live in the **`FeatureFlags`** section of
+[`wwwroot/appsettings.json`](src/Respondeo/wwwroot/appsettings.json), are bound to
+[`Services/FeatureFlags.cs`](src/Respondeo/Services/FeatureFlags.cs) in
+[`Program.cs`](src/Respondeo/Program.cs), and default to `true` (feature on) when absent.
+
+| Flag | Effect when `false` |
+| --- | --- |
+| `AquinasPortrait` | Hides the St. Thomas Aquinas portrait in the masthead. |
+| `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
+| `MiraclesPillar` | Hides the Miracles pill in the pillar switcher. |
+
+To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a
+per-environment override at `wwwroot/appsettings.{Environment}.json` (it merges over the base file).
+
+> **This is a WebAssembly app, so `appsettings.json` is published as a static asset and is publicly
+> downloadable in the browser.** It is safe for UI toggles like these but must never contain secrets,
+> API keys, or connection strings. Note also that hiding a pillar only removes its nav pill — the
+> underlying route (e.g. `/summa`) remains reachable by direct URL.
+
 ## Progressive Web App (offline)
 
 Respondeo is an installable PWA and works **fully offline** once installed. Because the whole app -
