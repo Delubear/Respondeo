@@ -6,9 +6,9 @@ topics:
   - Divine Revelation
   - Jesus Christ
 branches:
-  - to: jesus-gospel-reliability
-    label: "Can we trust the Gospels?"
-    prompt: The whole case is historical, so first ask whether the Gospels are sources we can reason from.
+  - to: jesus-who-was-he
+    label: "Who was Jesus?"
+    prompt: Before weighing the evidence, be clear about the man of history and the claim Christianity makes about him.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -20,6 +20,7 @@ That is a question of **history**, not only philosophy.
 The Christian claim is that God entered history in Jesus of Nazareth — whose life, death, and Resurrection are attested by witnesses who died rather than recant. 
 This stage walks that claim as an ordered path, one question leading to the next:
 
+- Who was Jesus — the man of history, and what exactly is being claimed about him?
 - Can the Gospels be trusted as historical sources at all?
 - Did Jesus claim divine authority — a claim no mere prophet would make?
 - Was that claim vindicated by His rising from the dead?
