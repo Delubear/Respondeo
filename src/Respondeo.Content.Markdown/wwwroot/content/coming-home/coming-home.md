@@ -14,21 +14,9 @@ branches:
   - to: home-returning-catholic
     label: "I was Catholic and drifted away"
     prompt: You were baptized Catholic and have been away — and you are being waited for.
-  - to: home-what-church-offers
-    label: "What the Church offers"
-    prompt: Whatever your starting point, see what is actually being held out to you.
-  - to: home-why-practice
-    label: "Why practice, and why believe it for real"
-    prompt: Why the faith must be lived, not merely admired from a distance.
   - to: home-sacraments
     label: "The sacraments"
     prompt: An overview of the seven sacraments and why each is worth celebrating.
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: The concrete first steps — confession, a parish, the sacraments.
-  - to: home-obstacles
-    label: "What holds people back"
-    prompt: The common obstacles to coming, and how each is met.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -44,6 +32,7 @@ Wherever you are starting from, there is a way in:
 - **If you are Christian but not Catholic** — already in Christ, and now drawn toward full communion.
 - **If you were Catholic and drifted away** — baptized long ago, and always welcome home.
 
-And whatever your starting point, the same questions follow: what the Church offers, why it must be *lived* and not merely admired, what the sacraments are, how to begin, and what tends to hold people back.
+And whatever your starting point, the same questions follow — what the Church offers, why the faith must be *lived* and not merely admired, what the sacraments are, how to begin, and what tends to hold people back.
+You will meet each of them as you follow the path from where you stand.
 
 Choose where you are below to begin.
