@@ -9,9 +9,9 @@ namespace Respondeo.UnitTests.TestSupport;
 /// </summary>
 internal sealed class TestNavigationManager : NavigationManager
 {
-    private const string BaseUri = "https://localhost/";
+    private const string TestBaseUri = "https://localhost/";
 
-    public TestNavigationManager(string uri) => Initialize(BaseUri, uri);
+    public TestNavigationManager(string uri) => Initialize(TestBaseUri, uri);
 
     protected override void NavigateToCore(string uri, bool forceLoad)
     {
