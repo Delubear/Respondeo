@@ -6,15 +6,12 @@ topics:
   - Getting Started
   - The Catholic Church
 branches:
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: Practice is not abstract — it is made concrete in the sacraments. See how.
   - to: home-how-to-begin
     label: "How to begin"
     prompt: If belief is meant to be lived, here is where the living starts.
-  - to: home-obstacles
-    label: "What holds people back"
-    prompt: The honest resistances to taking it seriously, met plainly.
+  - to: home-sacraments
+    label: "The sacraments"
+    prompt: Practice is not abstract — it is made concrete in the sacraments. See how.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -61,6 +58,5 @@ Genuine trust picks up the prescription.
 The faith is like that.
 Belief that stays in the head and never reaches the hands was never quite belief in the first place.
 
-**Where to go from here.** If you want to see what practice concretely looks like, the sacraments are where it becomes real.
-If you are ready to start living it, there is a plain first step.
-And if something in you resists taking it this seriously, that resistance is worth naming honestly rather than ignoring.
+**Where to go from here.** If you are ready to start living it, there is a plain first step.
+And if you want to see what practice concretely looks like, the sacraments are where it becomes real.

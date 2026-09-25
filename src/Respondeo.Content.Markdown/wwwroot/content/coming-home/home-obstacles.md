@@ -9,15 +9,15 @@ branches:
   - to: home-how-to-begin
     label: "How to begin"
     prompt: When the obstacle loses its grip, here is the first concrete step.
-  - to: home-why-practice
-    label: "Why practice, and why believe it for real"
-    prompt: Sometimes the obstacle is really about whether it is worth taking seriously at all.
+  - to: home-what-church-offers
+    label: "What the Church offers"
+    prompt: The obstacles are only half the picture — weigh them against what is actually held out to you.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
-Most people who stay away are not held back by an argument.
-The reasons are rarely intellectual and almost always human — a wound, a shame, a habit, a fear of what it would cost.
+Most people who keep their distance — whether they have never come, or once belonged and drifted away — are not held back by an argument.
+The reasons are rarely intellectual and almost always human — a wound, a shame, a habit, a fear of what it would cost, or simply the strangeness of a step never taken.
 These deserve to be taken seriously, not brushed aside, because pretending they are not there is exactly what keeps them powerful.
 Named plainly, most of them lose their grip.
 
@@ -56,4 +56,4 @@ It was held shut only by the assumption that it was.
 The father in the parable is not waiting to be convinced; he is already watching the road.
 
 **Where to go from here.** When the obstacle loses its grip — or even before it fully does — there is a small, concrete first step you can take.
-And if the deepest hesitation is really about whether the whole thing is worth taking seriously, that is the question worth meeting head-on.
+And if the hesitation needs an answer rather than only naming, it helps to weigh it against what the Church actually offers.

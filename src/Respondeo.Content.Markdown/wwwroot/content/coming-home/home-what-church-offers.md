@@ -9,9 +9,9 @@ branches:
   - to: home-sacraments
     label: "The sacraments"
     prompt: The sacraments are the concrete channels of everything named here — look closer.
-  - to: home-why-practice
-    label: "Why believe and practice?"
-    prompt: If this is what is offered, why it must be lived and not merely admired.
+  - to: home-obstacles
+    label: "What holds people back"
+    prompt: If this is what is offered, what keeps people from it — and how each hesitation is met.
   - to: home-how-to-begin
     label: "How to begin"
     prompt: The practical first step toward receiving what is described here.
@@ -51,5 +51,5 @@ The Church is often mistaken for the manual: a set of teachings to accept.
 But her deepest offer is the *meal* — grace really given, Christ really received.
 
 **Where to go from here.** If you want to see how this grace actually reaches you, look at the sacraments, which are its concrete channels.
-If you are wondering why all this must be *lived* rather than merely admired from a distance, that question is worth meeting directly.
+If something in you hesitates in front of all this, it is worth naming what tends to hold people back.
 And when you are ready to receive what is described here, there is a clear first step.
