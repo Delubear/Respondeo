@@ -4,6 +4,7 @@ title: "Baptism"
 summary: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

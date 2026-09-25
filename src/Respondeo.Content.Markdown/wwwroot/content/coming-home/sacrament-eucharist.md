@@ -4,6 +4,7 @@ title: "The Eucharist"
 summary: The sacrament of Christ's true presence — the source and summit of the Christian life.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

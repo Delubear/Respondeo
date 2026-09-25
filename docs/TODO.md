@@ -85,7 +85,7 @@ Audience-based hub (not linear); entry paths converge on how-to-begin and the sa
 - [~] Why practice, and why believe it for real
 - [~] How to begin (sections: returning Catholic, entering from outside, Eastern Orthodox)
 - [~] What holds people back (obstacles: shame, wounds, habit, doubt, cost)
-- [~] The sacraments: overview (accordion of the seven)
+- [~] The sacraments: overview (hub branching to seven standalone sacrament articles)
   - [~] Baptism
   - [~] Confirmation
   - [~] The Eucharist

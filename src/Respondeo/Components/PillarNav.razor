@@ -1,0 +1,59 @@
+@* Top-tier "pillar switcher": the site's three areas (Journey, Summa, Miracles).
+   Sits above the per-pillar navigation (e.g. the journey stages). The active pillar is derived
+   from the current route so it stays highlighted while browsing within a pillar. *@
+@implements IDisposable
+@inject NavigationManager Nav
+@inject Respondeo.Services.NavigationIntent NavIntent
+@inject Respondeo.Services.IBreadcrumbTrail Trail
+
+<nav class="pillarnav" aria-label="Site areas">
+    <ul class="pillarnav__list">
+        @foreach (var pillar in SitePillars.Items)
+        {
+            var isActive = pillar.Id == _activeId;
+            <li class="pillarnav__item">
+                <a class="pillarnav__link @(isActive ? "pillarnav__link--active" : "")"
+                   href="@pillar.Href"
+                   aria-current="@(isActive ? "page" : null)"
+                   @onclick="MarkTopLevel">
+                    @pillar.Label
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    private string _activeId = SitePillars.JourneyId;
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+        UpdateActive();
+    }
+
+    // Switching pillars is top-level navigation, so reset to the top and start a fresh breadcrumb trail.
+    private async Task MarkTopLevel()
+    {
+        NavIntent.ResetToTop = true;
+        await Trail.ClearAsync();
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        var previous = _activeId;
+        UpdateActive();
+        if (_activeId != previous)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void UpdateActive()
+    {
+        var relative = Nav.ToBaseRelativePath(Nav.Uri);
+        _activeId = SitePillars.ResolveActiveId(relative);
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}

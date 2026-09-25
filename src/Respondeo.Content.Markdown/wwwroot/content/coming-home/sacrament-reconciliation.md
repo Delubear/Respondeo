@@ -4,6 +4,7 @@ title: "Reconciliation (Confession)"
 summary: The sacrament of mercy — Christ's forgiveness given personally to the repentant.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

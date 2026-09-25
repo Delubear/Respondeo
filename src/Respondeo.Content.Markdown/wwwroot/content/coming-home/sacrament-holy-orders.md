@@ -4,6 +4,7 @@ title: "Holy Orders"
 summary: The sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

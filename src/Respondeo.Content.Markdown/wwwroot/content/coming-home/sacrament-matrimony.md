@@ -4,6 +4,7 @@ title: "Matrimony"
 summary: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

@@ -5,18 +5,15 @@ summary: What the sacraments are, why there are seven, and why each is worth cel
 topics:
   - Getting Started
   - The Catholic Church
-sections:
-  - sacrament-baptism
-  - sacrament-confirmation
-  - sacrament-eucharist
-  - sacrament-reconciliation
-  - sacrament-anointing
-  - sacrament-holy-orders
-  - sacrament-matrimony
+  - Sacraments
 branches:
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: These are what the first step leads toward — here is how to take it.
+  - to: sacrament-baptism
+  - to: sacrament-confirmation
+  - to: sacrament-eucharist
+  - to: sacrament-reconciliation
+  - to: sacrament-anointing
+  - to: sacrament-holy-orders
+  - to: sacrament-matrimony
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -41,10 +38,7 @@ Together they accompany a Christian from birth to death: born in the font, stren
 ## Why celebrate each one
 
 The sacraments are not obligations to be endured but gifts to be *celebrated*, because in each one it is Christ Himself who acts.
-Expand a section below to see what each sacrament is and why it is worth receiving with joy.
-
-**Where to go from here.** The sacraments are what every path in this stage has been leading toward.
-When you are ready to receive them — for the first time or after long absence — there is a clear and welcoming first step.
+Choose a sacrament below to see what it is and why it is worth receiving with joy.
 
 ::: youtube uJCTHCMHPYg
 :::

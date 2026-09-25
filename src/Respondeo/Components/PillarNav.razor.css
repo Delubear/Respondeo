@@ -1,0 +1,77 @@
+/* Top-tier pillar switcher. Reads as higher-level than the journey stage tabs below it:
+   larger, centered, with a stronger active treatment (filled pill) to signal "which area am I in". */
+.pillarnav {
+    background: var(--masthead-bg);
+    padding: 0.35rem 0.5rem 0;
+}
+
+.pillarnav__list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 60rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 0.6rem;
+}
+
+.pillarnav__item {
+    display: flex;
+}
+
+.pillarnav__link {
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    color: var(--masthead-fg-soft);
+    font-family: var(--display);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.pillarnav__link:hover {
+    color: var(--masthead-fg);
+    border-color: var(--masthead-rule);
+    text-decoration: none;
+}
+
+.pillarnav__link--active {
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.pillarnav__link--active:hover {
+    color: var(--accent-ink);
+    border-color: var(--accent);
+}
+
+@media (max-width: 800px) {
+    .pillarnav {
+        padding: 0.5rem 0.4rem;
+        border-bottom: 1px solid var(--masthead-rule);
+    }
+
+    /* Keep the three pillars on a single line rather than wrapping. */
+    .pillarnav__list {
+        flex-wrap: nowrap;
+        gap: 0.3rem;
+    }
+
+    .pillarnav__link {
+        font-size: 0.9rem;
+        padding: 0.45rem 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pillarnav__link {
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+        padding: 0.4rem 0.6rem;
+    }
+}

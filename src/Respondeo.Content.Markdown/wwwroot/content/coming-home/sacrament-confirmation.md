@@ -4,6 +4,7 @@ title: "Confirmation"
 summary: The sacrament of the Holy Spirit — sealing and strengthening the baptized for a mature Christian life.
 topics:
   - The Catholic Church
+  - Sacraments
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
