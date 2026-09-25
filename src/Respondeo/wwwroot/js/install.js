@@ -20,10 +20,18 @@ window.respondeoInstall = (function () {
         try { return localStorage.getItem(dismissedKey) === 'true'; } catch (e) { return false; }
     }
 
+    // A prompt is only "available" to show if the browser has one captured AND the user is not
+    // already running the installed app AND they have not previously dismissed the banner. Both the
+    // initial register() call and the beforeinstallprompt notification must honour this, otherwise a
+    // fresh beforeinstallprompt (fired on every refresh in Chromium) would re-show a dismissed banner.
+    function isAvailable() {
+        return deferredPrompt !== null && !isStandalone() && !isDismissed();
+    }
+
     function notify() {
         if (dotnetRef) {
             // Fire-and-forget: tell the component whether an install prompt is currently available.
-            dotnetRef.invokeMethodAsync('OnInstallAvailabilityChanged', deferredPrompt !== null);
+            dotnetRef.invokeMethodAsync('OnInstallAvailabilityChanged', isAvailable());
         }
     }
 
@@ -45,7 +53,7 @@ window.respondeoInstall = (function () {
         // persistent dismissal (or running as an installed app) keeps the banner hidden.
         register: function (ref) {
             dotnetRef = ref;
-            return deferredPrompt !== null && !isStandalone() && !isDismissed();
+            return isAvailable();
         },
         unregister: function () {
             dotnetRef = null;
