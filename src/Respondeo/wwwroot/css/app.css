@@ -224,6 +224,17 @@ h1, h2, h3 {
     }
 }
 
+/* On phones the install prompt is a near full-width bar pinned to the bottom, so the floating
+   circle controls (back-to-top arrow and Summa guide button) overlap and block its action
+   buttons. While the prompt is visible, hide those controls so the prompt is fully tappable;
+   they reappear once the prompt is installed or dismissed. */
+@media (max-width: 640px) {
+    body:has(.install-prompt) .back-to-top,
+    body:has(.install-prompt) .summa-guide__trigger {
+        display: none;
+    }
+}
+
 /* ---------- Blazor error UI (retained from template) ---------- */
 #blazor-error-ui {
     background: #ffe9e9;

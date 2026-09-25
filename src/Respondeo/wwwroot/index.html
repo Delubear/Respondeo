@@ -74,9 +74,20 @@
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "66d628449e2449d397eec7c257c9e65e"}'></script>
     <!-- Register the PWA service worker. In development this is the no-op service-worker.js;
          at publish time the SDK swaps in service-worker.published.js, which precaches the app
-         and bundled content for full offline use. -->
+         and bundled content for full offline use.
+
+         On localhost we deliberately do NOT register and actively unregister any existing worker:
+         a live service worker slows the WASM debug startup (long white screen) and makes Visual
+         Studio hang when stopping the debugger, and a stale published worker can serve cached
+         assets that mask code/content changes. -->
     <script>
-        navigator.serviceWorker?.register('service-worker.js');
+        if (['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
+            navigator.serviceWorker?.getRegistrations().then(function (regs) {
+                regs.forEach(function (reg) { reg.unregister(); });
+            });
+        } else {
+            navigator.serviceWorker?.register('service-worker.js');
+        }
     </script>
 </body>
 
