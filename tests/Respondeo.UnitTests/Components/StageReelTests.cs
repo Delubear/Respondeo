@@ -80,14 +80,14 @@ public class StageReelTests : TestContext
     }
 
     [Fact]
-    public void Marks_the_reel_as_a_focusable_listbox_of_options()
+    public void Marks_the_reel_as_a_focusable_list_of_items()
     {
         var cut = Render(ThreeStages());
 
         var reel = cut.Find(".reel");
-        Assert.Equal("listbox", reel.GetAttribute("role"));
+        Assert.Equal("list", reel.GetAttribute("role"));
         Assert.Equal("0", reel.GetAttribute("tabindex"));
-        Assert.Equal(3, cut.FindAll(".reel__step[role=option]").Count);
+        Assert.Equal(3, cut.FindAll(".reel__step[role=listitem]").Count);
     }
 
     [Fact]

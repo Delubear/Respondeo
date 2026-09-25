@@ -79,3 +79,32 @@ corpus regeneration.
 When citing the Summa from Markdown content, follow the citation-style guidance in the content
 authoring guide: **[`src/Respondeo.Content.Markdown/README.md`](src/Respondeo.Content.Markdown/README.md)**.
 
+## Deployment
+
+The site is published to **GitHub Pages** by the `Deploy to GitHub Pages` workflow
+([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) on every push to `master` that
+changes non-docs files.
+
+It is served from the custom apex domain **`respondeo.faith`**, so the app lives at the domain root
+and the authored `<base href="/" />` is used as-is (no base-href rewrite). The deploy writes a
+`CNAME` file into the published output on every run to keep the custom-domain binding. GitHub
+automatically redirects the old project URL (`delubear.github.io/Respondeo/`) to the custom domain.
+
+### DNS
+
+DNS for `respondeo.faith` is managed in **Cloudflare** (DNS-only / grey cloud) and points at GitHub
+Pages:
+
+| Type  | Name  | Value                                            |
+| ----- | ----- | ------------------------------------------------ |
+| A     | `@`   | `185.199.108.153`                                |
+| A     | `@`   | `185.199.109.153`                                |
+| A     | `@`   | `185.199.110.153`                                |
+| A     | `@`   | `185.199.111.153`                                |
+| CNAME | `www` | `delubear.github.io`                             |
+
+The custom domain and **Enforce HTTPS** are set under the repo's **Settings -> Pages**. If the
+domain is ever changed, update both the DNS records above and the `Add custom domain (CNAME)` step
+in the deploy workflow.
+
+

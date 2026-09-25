@@ -31,8 +31,8 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: ${{ inputs.site-artifact }}
-        # Served under the Pages sub-path so the rewritten <base href="/Respondeo/"> resolves like production.
-        path: site/Respondeo
+        # Served from the root to match production on the custom apex domain (<base href="/">).
+        path: site
 
     # Reuse the acceptance binaries built once in the build job; no rebuild here.
     - name: Download acceptance test binaries
@@ -59,19 +59,19 @@ runs:
     - name: Serve site and run acceptance tests
       shell: bash
       env:
-        RESPONDEO_BASE_URL: http://localhost:5000/Respondeo
+        RESPONDEO_BASE_URL: http://localhost:5000
       run: |
         # Start the static server in the background within the SAME step so it
         # stays alive while the tests run. Backgrounded processes from a prior
         # step can be terminated when that step's shell exits.
         # --quiet suppresses dotnet-serve's per-request info logging, which otherwise
         # floods the acceptance-test logs with a line for every static file served.
-        dotnet serve -d site -p 5000 --fallback-file Respondeo/index.html --quiet &
+        dotnet serve -d site -p 5000 --fallback-file index.html --quiet &
         SERVER_PID=$!
         trap "kill $SERVER_PID" EXIT
 
         for i in {1..30}; do
-          if curl -sSf http://localhost:5000/Respondeo/ > /dev/null; then
+          if curl -sSf http://localhost:5000/ > /dev/null; then
             echo "App is up"; break
           fi
           if [ "$i" -eq 30 ]; then echo "App did not start in time"; exit 1; fi

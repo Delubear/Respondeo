@@ -87,24 +87,16 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
 
-      - name: Compute base href
-        id: base
-        if: steps.filter.outputs.code-changed == 'true'
-        run: |
-          repo="${GITHUB_REPOSITORY#*/}"
-          owner="${GITHUB_REPOSITORY%%/*}"
-          # A user/org site repo (<name>.github.io) is served from the domain root.
-          # Any other repo is served from a project sub-path (/<repo>/).
-          if [[ "$repo" == "${owner}.github.io" ]]; then
-            echo "href=/" >> "$GITHUB_OUTPUT"
-          else
-            echo "href=/${repo}/" >> "$GITHUB_OUTPUT"
-          fi
+      # The site is served from the custom apex domain (respondeo.faith), so it
+      # lives at the domain root and <base href="/"> (as authored) is correct.
+      # No base-href rewrite is needed; GitHub redirects the old project URL
+      # (delubear.github.io/Respondeo/) to the custom domain.
 
-      - name: Rewrite base href
+      # Bind the custom domain. GitHub Pages reads a CNAME file at the site root
+      # on every deploy; without it, the custom domain setting is cleared.
+      - name: Add custom domain (CNAME)
         if: steps.filter.outputs.code-changed == 'true'
-        run: |
-          sed -i "s|<base href=\"/\" />|<base href=\"${{ steps.base.outputs.href }}\" />|" release/wwwroot/index.html
+        run: echo "respondeo.faith" > release/wwwroot/CNAME
 
       - name: Add SPA 404 fallback
         if: steps.filter.outputs.code-changed == 'true'

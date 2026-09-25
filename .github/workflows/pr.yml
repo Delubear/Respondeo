@@ -87,10 +87,9 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
 
-      - name: Rewrite base href
-        if: steps.filter.outputs.code-changed == 'true'
-        run: |
-          sed -i "s|<base href=\"/\" />|<base href=\"/Respondeo/\" />|" release/wwwroot/index.html
+      # No base-href rewrite: production serves from the custom apex domain root,
+      # so the authored <base href="/"> is correct and the E2E server also serves
+      # from the root.
 
       - name: Upload site for E2E
         if: steps.filter.outputs.code-changed == 'true'
