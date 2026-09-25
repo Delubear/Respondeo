@@ -7,6 +7,7 @@
 /* ---------- Masthead ---------- */
 .masthead {
     position: relative;
+    z-index: 1;
     background: var(--masthead-bg);
     color: var(--masthead-fg);
     text-align: center;
@@ -41,6 +42,26 @@
     letter-spacing: 0.05em;
 }
 
+/* A quiet nod to St. Thomas Aquinas, pinned to the left to balance the theme toggle on the
+   right. Rather than a hard-edged medallion, the portrait dissolves into the masthead via a
+   radial mask so it reads as a faint fresco bleeding through the background. It extends past
+   the masthead so its base sits along the bottom edge of the pillar nav (both share the same
+   background, so the overlap is seamless). Hidden on narrow screens where there's no room. */
+.masthead__portrait {
+    position: absolute;
+    bottom: -2.6rem;
+    left: calc(50% - 26rem);
+    z-index: 1;
+    width: 8.5rem;
+    height: 8.5rem;
+    object-fit: cover;
+    object-position: top center;
+    opacity: 0.85;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(circle at 46% 55%, #000 38%, transparent 68%);
+    mask-image: radial-gradient(circle at 46% 55%, #000 38%, transparent 68%);
+}
+
 /* ---------- Main content ---------- */
 .content {
     flex: 1 1 auto;
@@ -69,9 +90,24 @@
 }
 
 /* ---------- Responsive ---------- */
+/* On narrower viewports the centered pillar nav creeps toward the portrait; shrink it so its
+   right edge stays clear of "The Journey" tab before it's hidden entirely on phones. */
+@media (max-width: 935px) {
+    .masthead__portrait {
+        width: 5.75rem;
+        height: 5.75rem;
+        bottom: -1.75rem;
+        left: 1rem;
+    }
+}
+
 @media (max-width: 640px) {
     .masthead__brand {
         font-size: 1.5rem;
+    }
+
+    .masthead__portrait {
+        display: none;
     }
 
     .content__inner {
