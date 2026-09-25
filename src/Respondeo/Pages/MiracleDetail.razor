@@ -1,0 +1,129 @@
+@page "/miracles/{Id}"
+@inject IMiracleService Miracles
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>@(_miracle is null ? "Miracle" : $"{_miracle.Title} \u2014 Respondeo")</PageTitle>
+
+<Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")"
+            StageHref="miracles"
+            StageLabel="Miracles" />
+
+@if (_loading)
+{
+    <Loading>Opening the account&hellip;</Loading>
+}
+else if (_miracle is null)
+{
+    <section class="miracle">
+        <h1 class="miracle__title">Miracle not found</h1>
+        <p class="miracle__missing">
+            There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;. <a href="miracles">Return to the catalog</a>.
+        </p>
+    </section>
+}
+else
+{
+    <article class="miracle">
+        <header class="miracle__header">
+            <p class="miracle__eyebrow">@MiracleFacets.Label(_miracle.Type)</p>
+            <h1 class="miracle__title">@_miracle.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(_miracle.Summary))
+            {
+                <p class="miracle__summary">@_miracle.Summary</p>
+            }
+        </header>
+
+        <dl class="miracle__facts">
+            <div class="miracle__fact">
+                <dt>Church&rsquo;s judgment</dt>
+                <dd>@MiracleFacets.Label(_miracle.Approval)</dd>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(_miracle.Country))
+            {
+                <div class="miracle__fact">
+                    <dt>Place</dt>
+                    <dd>@_miracle.Country</dd>
+                </div>
+            }
+            @if (_century is not null)
+            {
+                <div class="miracle__fact">
+                    <dt>When</dt>
+                    <dd>@_century</dd>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(_miracle.FeastDay))
+            {
+                <div class="miracle__fact">
+                    <dt>Feast day</dt>
+                    <dd>@_miracle.FeastDay</dd>
+                </div>
+            }
+        </dl>
+
+        @foreach (var section in _miracle.Sections)
+        {
+            <section class="miracle__section">
+                @if (!string.IsNullOrWhiteSpace(section.Heading))
+                {
+                    <h2 class="miracle__section-title">@section.Heading</h2>
+                }
+                <div class="miracle__body">
+                    @((MarkupString)section.Html)
+                </div>
+            </section>
+        }
+
+        @if (_miracle.Tags.Count > 0)
+        {
+            <ul class="miracle__tags">
+                @foreach (var tag in _miracle.Tags)
+                {
+                    <li class="miracle__tag">@tag</li>
+                }
+            </ul>
+        }
+
+        @if (_miracle.Sources.Count > 0)
+        {
+            <section class="miracle__sources">
+                <h2 class="miracle__section-title">Sources &amp; further reading</h2>
+                <ul>
+                    @foreach (var source in _miracle.Sources)
+                    {
+                        <li>
+                            @if (!string.IsNullOrWhiteSpace(source.Url))
+                            {
+                                <a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Label</a>
+                            }
+                            else
+                            {
+                                @source.Label
+                            }
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+
+        <p class="miracle__back">
+            <a href="miracles">&larr; Back to all miracles</a>
+        </p>
+    </article>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private MiracleRecord? _miracle;
+    private bool _loading = true;
+    private string? _century;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _miracle = await Miracles.GetByIdAsync(Id);
+        _century = MiracleFacets.CenturyLabel(_miracle?.Year);
+        _loading = false;
+    }
+}

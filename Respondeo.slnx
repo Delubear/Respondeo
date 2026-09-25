@@ -15,6 +15,7 @@
     <File Path="docs/TODO.md" />
   </Folder>
   <Project Path="src/Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
+  <Project Path="src/Respondeo.Content.Miracles/Respondeo.Content.Miracles.csproj" />
   <Project Path="src/Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />
   <Project Path="src/Respondeo/Respondeo.csproj" />
   <Project Path="src/Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
@@ -24,3 +25,4 @@
     <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />
   </Folder>
 </Solution>
+

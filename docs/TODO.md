@@ -104,7 +104,26 @@ Audience-based hub (not linear); entry paths converge on how-to-begin and the sa
 - [ ] Science & faith (history, Galileo, evolution) as a standalone thread
 - [ ] Glossary of key terms (act/potency, contingency, hypostatic union, etc.)
 - [ ] Reading list / primary-source references per stage
-- [ ] Miracles (historical, theological, and philosophical treatment)
+
+## Pillar: Miracles
+
+A separate, searchable pillar (like the Summa), outside the journey tabs and reached from the masthead.
+Each miracle is a hand-authored Markdown file with typed facet front-matter (type, approval, region,
+country, year, tags), parsed into a typed model and browsable by facet + free-text search.
+
+- [~] Miracles pillar scaffolding (project, models, service, browse state, pages, masthead link)
+- [~] Browse page: facet filters (kind / judgment / region) + search + sort by title/year
+- [~] Detail page: facts panel, prose sections, tags, sources
+- [~] The Eucharistic Miracle of Lanciano
+- [~] The Eucharistic Miracle of Buenos Aires
+- [~] Our Lady of Guadalupe
+- [~] The Cures of Lourdes
+- [~] The Incorrupt Body of St. Bernadette
+- [ ] Consider: theological/philosophical treatment of what a miracle is (Aquinas, Hume)
+- [ ] Consider: more Eucharistic miracles (Orvieto-Bolsena, Santarém, Sokółka)
+- [ ] Consider: more approved apparitions (Lourdes 1858, Fatima, Knock, Akita)
+- [ ] Consider: canonization miracles / more incorruptibles
+- [ ] Consider: link the pillar from relevant journey articles (e.g. the Eucharist, the Resurrection)
 
 ## Housekeeping
 

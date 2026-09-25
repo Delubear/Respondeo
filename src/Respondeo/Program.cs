@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
 using Respondeo.Content.Markdown;
 using Respondeo.Content.Summa;
+using Respondeo.Content.Miracles;
 using Respondeo.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -19,6 +20,10 @@ builder.Services.AddRespondeoContent();
 // the app depends only on ISummaService.
 builder.Services.AddRespondeoSumma();
 
+// The hand-authored catalog of Catholic miracles is shipped as static Markdown by
+// Respondeo.Content.Miracles; the app depends only on IMiracleService.
+builder.Services.AddRespondeoMiracles();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
@@ -31,5 +36,9 @@ builder.Services.AddScoped<NavigationIntent>();
 // Remembers the Summa browse/search view (search text + expanded parts/treatises) across page
 // remounts, resetting itself when the visitor leaves the Summa area.
 builder.Services.AddScoped<SummaBrowseState>();
+
+// Remembers the miracles browse view (search text + selected facet filters) across page remounts,
+// resetting itself when the visitor leaves the miracles area.
+builder.Services.AddScoped<MiracleBrowseState>();
 
 await builder.Build().RunAsync();

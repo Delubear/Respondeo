@@ -1,0 +1,216 @@
+@page "/miracles"
+@inject IMiracleService MiracleService
+@inject IBreadcrumbTrail Trail
+@inject MiracleBrowseState Browse
+
+<PageTitle>Catholic Miracles &mdash; Respondeo</PageTitle>
+
+<section class="miracles">
+    <header class="miracles__header">
+        <p class="miracles__eyebrow">Signs and wonders</p>
+        <h1 class="miracles__title">Catholic Miracles</h1>
+        <p class="miracles__lede">
+            A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian
+            apparitions, healings, and more. Filter by kind, by the Church&rsquo;s judgment, or by place,
+            and search by name. Each entry explains what is claimed and how the Church regards it.
+        </p>
+    </header>
+
+    @if (_all is null)
+    {
+        <Loading>Gathering the miracles&hellip;</Loading>
+    }
+    else
+    {
+        <div class="miracles__search">
+            <label class="miracles__search-label" for="miracles-search">Search miracles</label>
+            <input id="miracles-search"
+                   class="miracles__search-input"
+                   type="search"
+                   placeholder="e.g. Lanciano, healing, Italy..."
+                   value="@Browse.Query"
+                   @oninput="OnSearchInput" />
+        </div>
+
+        <div class="miracles__layout">
+            <aside class="miracles__sidebar">
+                <div class="miracles__facet">
+                    <h2 class="miracles__facet-title">Kind</h2>
+                    @foreach (var type in _types)
+                    {
+                        <label class="miracles__facet-option">
+                            <input type="checkbox"
+                                   checked="@Browse.Types.Contains(type)"
+                                   @onchange="() => ToggleType(type)" />
+                            <span>@MiracleFacets.Label(type)</span>
+                        </label>
+                    }
+                </div>
+
+                <div class="miracles__facet">
+                    <h2 class="miracles__facet-title">Church&rsquo;s judgment</h2>
+                    @foreach (var approval in _approvals)
+                    {
+                        <label class="miracles__facet-option">
+                            <input type="checkbox"
+                                   checked="@Browse.Approvals.Contains(approval)"
+                                   @onchange="() => ToggleApproval(approval)" />
+                            <span>@MiracleFacets.Label(approval)</span>
+                        </label>
+                    }
+                </div>
+
+                <div class="miracles__facet">
+                    <h2 class="miracles__facet-title">Region</h2>
+                    @foreach (var region in _regions)
+                    {
+                        <label class="miracles__facet-option">
+                            <input type="checkbox"
+                                   checked="@Browse.Regions.Contains(region)"
+                                   @onchange="() => ToggleRegion(region)" />
+                            <span>@MiracleFacets.Label(region)</span>
+                        </label>
+                    }
+                </div>
+
+                @if (Browse.HasActiveFilters)
+                {
+                    <button type="button" class="miracles__clear" @onclick="ClearFilters">Clear all filters</button>
+                }
+            </aside>
+
+            <div class="miracles__results">
+                <div class="miracles__toolbar">
+                    <p class="miracles__count">@Filtered.Count of @_all.Count miracles</p>
+                    <label class="miracles__sort">
+                        <span>Sort</span>
+                        <select value="@_sort" @onchange="OnSortChanged">
+                            <option value="@nameof(MiracleSort.TitleAsc)">Title (A&ndash;Z)</option>
+                            <option value="@nameof(MiracleSort.YearAsc)">Year (oldest first)</option>
+                            <option value="@nameof(MiracleSort.YearDesc)">Year (newest first)</option>
+                        </select>
+                    </label>
+                </div>
+
+                @if (Filtered.Count == 0)
+                {
+                    <p class="miracles__empty">No miracles match the current filters.</p>
+                }
+                else
+                {
+                    <CardGrid>
+                        @foreach (var m in Filtered)
+                        {
+                            <Card Href="@($"miracles/{m.Id}")"
+                                  Title="@m.Title"
+                                  Summary="@CardSummary(m)"
+                                  Cta="Read &rarr;"
+                                  Level="2" />
+                        }
+                    </CardGrid>
+                }
+            </div>
+        </div>
+    }
+</section>
+
+@code {
+    private IReadOnlyList<MiracleIndexEntry>? _all;
+    private IReadOnlyList<MiracleType> _types = [];
+    private IReadOnlyList<ApprovalStatus> _approvals = [];
+    private IReadOnlyList<MiracleRegion> _regions = [];
+    private MiracleSort _sort = MiracleSort.TitleAsc;
+
+    private enum MiracleSort { TitleAsc, YearAsc, YearDesc }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+
+        var index = await MiracleService.GetIndexAsync();
+        _all = index.Entries;
+
+        // Only surface facet options that actually occur in the catalog, in a stable display order.
+        _types = _all.Select(m => m.Type).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _approvals = _all.Select(m => m.Approval).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _regions = _all.Select(m => m.Region).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
+    }
+
+    private void OnSearchInput(ChangeEventArgs e) => Browse.Query = e.Value?.ToString() ?? string.Empty;
+
+    private void OnSortChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<MiracleSort>(e.Value?.ToString(), out var sort))
+        {
+            _sort = sort;
+        }
+    }
+
+    private void ToggleType(MiracleType type) => Browse.ToggleType(type);
+
+    private void ToggleApproval(ApprovalStatus approval) => Browse.ToggleApproval(approval);
+
+    private void ToggleRegion(MiracleRegion region) => Browse.ToggleRegion(region);
+
+    private void ClearFilters() => Browse.Clear();
+
+    // A miracle matches when it satisfies every active facet group (intersection across groups, union
+    // within a group) and its title/summary/country/tags contain the search query.
+    private IReadOnlyList<MiracleIndexEntry> Filtered
+    {
+        get
+        {
+            if (_all is null)
+            {
+                return Array.Empty<MiracleIndexEntry>();
+            }
+
+            var query = Browse.Query?.Trim() ?? string.Empty;
+
+            var results = _all.Where(m =>
+                (Browse.Types.Count == 0 || Browse.Types.Contains(m.Type))
+                && (Browse.Approvals.Count == 0 || Browse.Approvals.Contains(m.Approval))
+                && (Browse.Regions.Count == 0 || Browse.Regions.Contains(m.Region))
+                && Matches(m, query));
+
+            results = _sort switch
+            {
+                MiracleSort.YearAsc => results.OrderBy(m => m.Year ?? int.MaxValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
+                MiracleSort.YearDesc => results.OrderByDescending(m => m.Year ?? int.MinValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
+                _ => results.OrderBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
+            };
+
+            return results.ToList();
+        }
+    }
+
+    private static bool Matches(MiracleIndexEntry m, string query)
+    {
+        if (query.Length == 0)
+        {
+            return true;
+        }
+
+        return m.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || m.Summary.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || (m.Country?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
+            || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static string CardSummary(MiracleIndexEntry m)
+    {
+        var facets = new List<string> { MiracleFacets.Label(m.Type), MiracleFacets.Label(m.Approval) };
+        var century = MiracleFacets.CenturyLabel(m.Year);
+        if (century is not null)
+        {
+            facets.Add(century);
+        }
+
+        if (!string.IsNullOrWhiteSpace(m.Country))
+        {
+            facets.Add(m.Country!);
+        }
+
+        return $"{m.Summary}  \u2014  {string.Join(" \u00b7 ", facets)}";
+    }
+}
