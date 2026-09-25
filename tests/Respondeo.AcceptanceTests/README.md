@@ -8,6 +8,7 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
 - **Breadcrumb.feature** — the breadcrumb grows as you go deeper and resets when you return to Start.
 - **Sections.feature** — collapsible sections open/close and deep-link via the URL.
+- **StageNavigation.feature** — stage URLs load directly, unknown paths show the not-found page, and the breadcrumb is rooted at the stage.
 - **Theme.feature** — the light/dark theme toggle switches and persists.
 
 These are intentionally few and focused on the core journey. Unit and component tests

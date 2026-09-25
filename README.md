@@ -10,14 +10,14 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | `Respondeo.Content.Abstractions` | Shared content contracts (`ContentNode` and related types). |
 | `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
-| `Respondeo.SummaImporter` | Console tool that parses `summa.txt` into the generated corpus. |
+| `Respondeo.SummaImporter` | Console tool that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
 | `Respondeo.AcceptanceTests` | Reqnroll + Playwright end-to-end tests. |
 
 ## Prerequisites
 
 This repository stores the large Summa corpus (`src/Respondeo.Content.Summa/wwwroot/summa/**`)
-and its source text (`summa.txt`) in **[Git LFS](https://git-lfs.com/)**. Install and enable
+and its source text (`docs/summa.txt`) in **[Git LFS](https://git-lfs.com/)**. Install and enable
 LFS **before cloning** so you get the real files instead of small pointer stubs:
 
 ```powershell
@@ -61,18 +61,21 @@ ready-to-copy templates sit alongside the content to start from:
 ## Summa corpus
 
 The Summa Theologiae browser is backed by a generated corpus under
-`src/Respondeo.Content.Summa/wwwroot/summa/`, produced from the public-domain source text `summa.txt`
-by the `Respondeo.SummaImporter` tool:
+`src/Respondeo.Content.Summa/wwwroot/summa/`, produced from the public-domain source text
+`docs/summa.txt` by the `Respondeo.SummaImporter` tool:
 
 ```powershell
 # Regenerate the corpus (clears and rewrites the summa output tree)
 dotnet run --project src/Respondeo.SummaImporter -- docs/summa.txt src/Respondeo.Content.Summa\wwwroot
 ```
 
-Both the generated JSON and `summa.txt` are tracked in Git LFS (see **Prerequisites** above), so
+Both the generated JSON and `docs/summa.txt` are tracked in Git LFS (see **Prerequisites** above), so
 regenerating and committing them keeps history lean — only LFS pointers change in the main pack.
 Part identity is decoupled from presentation: files and tokens use stable neutral keys
 (`p1`, `p2a`, `p2b`, `p3`, `sup`), while URL slugs and display labels are mapped at render time in
 [`SummaParts`](src/Respondeo.Content.Summa/Summa/SummaParts.cs), so changing a slug or label needs no
 corpus regeneration.
+
+When citing the Summa from Markdown content, follow the citation-style guidance in the content
+authoring guide: **[`src/Respondeo.Content.Markdown/README.md`](src/Respondeo.Content.Markdown/README.md)**.
 

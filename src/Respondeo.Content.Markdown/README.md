@@ -72,6 +72,23 @@ External: visit the [Vatican website](https://www.vatican.va){target="_blank" re
 - **External** links should carry `{target="_blank" rel="noopener noreferrer"}` (generic-attribute
   syntax) so they open safely in a new tab.
 
+### Summa citations
+
+Link into the Summa Theologiae corpus with `summa/<url-id>` and an optional article anchor
+(`#article-N`, `#article-N-objection-M`, or `#article-N-reply-M`). The visible citation text must
+match the style the app's `SummaReferenceRenderer` produces for the Summa's own cross-references, so
+hand-written references read identically: use `Q.` for a question, `A.` for an article, `ad` for a
+reply, and `obj.` for an objection — never the lower-case `q.`/`a.` forms or the phrasing
+`reply to obj.`
+
+```markdown
+[*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+[*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
+```
+
+Both the target and the citation style are checked at build time by `ContentLinkIntegrityTests`, so a
+broken link or an off-style citation fails the tests.
+
 ### Headings, quotes, code, lists, images
 
 Use normal Markdown (`##`, `>`, `` `code` ``, `-`, `![alt](src)`). These are styled by the scoped
