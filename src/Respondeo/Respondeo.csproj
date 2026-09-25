@@ -8,92 +8,22 @@
     <InternalsVisibleTo Include="Respondeo.UnitTests" />
   </ItemGroup>
 
+  <!--
+    Emit content-hashed asset file names (css/app.<hash>.css, js/*.<hash>.js) at publish time.
+    Combined with OverrideHtmlAssetPlaceholders, the SDK rewrites the #[.{fingerprint}]
+    placeholders in index.html to the hashed names, so assets can be cached forever yet always
+    refresh after a deploy (needed on GitHub Pages, where we cannot set cache headers).
+  -->
   <ItemGroup>
     <StaticWebAssetFingerprintPattern Include="Css" Pattern="*.css" Expression="#[.{fingerprint}]!" />
     <StaticWebAssetFingerprintPattern Include="Js" Pattern="*.js" Expression="#[.{fingerprint}]!" />
   </ItemGroup>
 
   <!--
-    Fingerprint the app stylesheet link in the published index.html.
-
-    The Blazor WASM SDK rewrites <script src> fingerprint placeholders but does NOT rewrite
-    <link rel="stylesheet"> hrefs in a standalone WASM app, so we do it here. The
-    StaticWebAssetFingerprintPattern items above make the SDK emit a content-hashed
-    css/app.<hash>.css file; this task rewrites index.html to point at it. Because that edit
-    happens after the SDK built service-worker-assets.js (which records index.html's integrity
-    hash), the task also re-syncs that manifest entry - otherwise the PWA service worker blocks
-    index.html on install with "SRI's integrity checks failed".
+    Publish-time stylesheet fingerprinting + PWA SRI re-sync. Extracted to its own file to keep
+    this project file readable; see build/FingerprintAppStylesheet.targets for the rationale.
   -->
-  <Target Name="FingerprintAppStylesheet" AfterTargets="Publish">
-    <FingerprintAppStylesheet
-      WwwrootPath="$(PublishDir)wwwroot" />
-  </Target>
-
-  <UsingTask TaskName="FingerprintAppStylesheet" TaskFactory="RoslynCodeTaskFactory"
-             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <WwwrootPath ParameterType="System.String" Required="true" />
-    </ParameterGroup>
-    <Task>
-      <Code Type="Fragment" Language="cs"><![CDATA[
-        var indexHtmlPath = System.IO.Path.Combine(WwwrootPath, "index.html");
-        var cssDir = System.IO.Path.Combine(WwwrootPath, "css");
-        if (!System.IO.File.Exists(indexHtmlPath) || !System.IO.Directory.Exists(cssDir))
-        {
-            Log.LogWarning("FingerprintAppStylesheet: index.html or css/ not found; skipping.");
-            return true;
-        }
-
-        // Find the SDK-emitted content-hashed stylesheet (css/app.<hash>.css).
-        var hashedCss = System.IO.Directory.GetFiles(cssDir, "app.*.css");
-        if (hashedCss.Length != 1)
-        {
-            Log.LogWarning("FingerprintAppStylesheet: expected exactly one css/app.<hash>.css but found " + hashedCss.Length + "; index.html left unchanged.");
-            return true;
-        }
-        var hashedName = System.IO.Path.GetFileName(hashedCss[0]);
-
-        // Rewrite the stylesheet link to the hashed name.
-        var html = System.IO.File.ReadAllText(indexHtmlPath);
-        var updatedHtml = html.Replace("href=\"css/app.css\"", "href=\"css/" + hashedName + "\"");
-        if (updatedHtml == html)
-        {
-            Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: css/app.css link not found in index.html; nothing to do.");
-            return true;
-        }
-        System.IO.File.WriteAllText(indexHtmlPath, updatedHtml);
-        Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: rewrote app stylesheet link to css/" + hashedName + ".");
-
-        // Re-sync index.html's integrity in the PWA service-worker manifest, if present.
-        var manifestPath = System.IO.Path.Combine(WwwrootPath, "service-worker-assets.js");
-        if (!System.IO.File.Exists(manifestPath))
-        {
-            return true;
-        }
-
-        string newHash;
-        using (var sha = System.Security.Cryptography.SHA256.Create())
-        {
-            newHash = "sha256-" + System.Convert.ToBase64String(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(updatedHtml)));
-        }
-
-        var manifest = System.IO.File.ReadAllText(manifestPath);
-        var match = System.Text.RegularExpressions.Regex.Match(manifest, "\"hash\":\\s*\"(sha256-[^\"]+)\",\\s*\"url\":\\s*\"index\\.html\"");
-        if (!match.Success)
-        {
-            Log.LogWarning("FingerprintAppStylesheet: index.html entry not found in service-worker-assets.js; the PWA may fail SRI checks on install.");
-            return true;
-        }
-
-        var oldHash = match.Groups[1].Value;
-        if (oldHash != newHash)
-        {
-            System.IO.File.WriteAllText(manifestPath, manifest.Replace(oldHash, newHash));
-            Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: updated index.html integrity in service-worker-assets.js to " + newHash + ".");
-        }
-      ]]></Code>
-    </Task>
-  </UsingTask>
+  <Import Project="build\FingerprintAppStylesheet.targets" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
