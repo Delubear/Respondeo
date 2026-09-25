@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.Content.Summa;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Content;
 
@@ -99,7 +100,7 @@ public partial class ContentLinkIntegrityTests
     public void Every_internal_link_points_at_an_existing_node()
     {
         var contentDir = ContentDirectory();
-        var parser = new ContentParser();
+        var parser = new ContentParser(ContentRendering.Renderer);
 
         // Parse only the shipped (manifest-listed) files: those are the nodes the app can actually serve.
         var nodes = ReadManifestFiles(contentDir)
@@ -117,7 +118,7 @@ public partial class ContentLinkIntegrityTests
     public void Every_summa_link_in_content_resolves_to_a_real_question_and_article()
     {
         var contentDir = ContentDirectory();
-        var parser = new ContentParser();
+        var parser = new ContentParser(ContentRendering.Renderer);
 
         var nodes = ReadManifestFiles(contentDir)
             .Select(file => parser.Parse(File.ReadAllText(Path.Combine(contentDir, file))))
@@ -279,7 +280,7 @@ public partial class ContentLinkIntegrityTests
         Assert.Empty(broken);
     }
 
-    private static ContentNode Parse(string raw) => new ContentParser().Parse(raw)!;
+    private static ContentNode Parse(string raw) => new ContentParser(ContentRendering.Renderer).Parse(raw)!;
 
     private sealed class ContentManifest
     {

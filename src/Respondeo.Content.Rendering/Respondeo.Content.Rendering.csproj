@@ -1,8 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
-
-  <ItemGroup>
-	<Content Include="README.md" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
 	<SupportedPlatform Include="browser" />
@@ -13,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	<PackageReference Include="Markdig" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-	<PackageReference Include="YamlDotNet" />
   </ItemGroup>
 
   <ItemGroup>

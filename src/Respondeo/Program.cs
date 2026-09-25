@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
 using Respondeo.Content.Markdown;
+using Respondeo.Content.Rendering;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Miracles;
 using Respondeo.Services;
@@ -11,6 +12,10 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+// Shared Markdown-to-HTML rendering (Markdig lives here, behind IContentHtmlRenderer) used by
+// every content pillar so the embed directive vocabulary stays identical across the site.
+builder.Services.AddRespondeoContentRendering();
 
 // Content is author-curated Markdown loaded once and cached for the app lifetime.
 // The parser and loader implementations are internal to Respondeo.Content.Markdown; the app depends only on IContentService.

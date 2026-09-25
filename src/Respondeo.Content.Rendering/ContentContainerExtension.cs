@@ -3,11 +3,12 @@ using Markdig.Extensions.CustomContainers;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
 
-namespace Respondeo.Content.Markdown.Services;
+namespace Respondeo.Content.Rendering;
 
 /// <summary>
 /// Renders a small vocabulary of authoring directives so content authors can embed media without hand-writing HTML.
 /// Each directive expands to the canonical markup (and CSS classes) in one place, keeping embeds consistent as content grows.
+/// Shared across content pillars (main content and miracles) so the directive vocabulary stays identical.
 ///
 /// Usage in Markdown (custom-container syntax, enabled by UseAdvancedExtensions):
 ///   ::: youtube aqz-KE-bpKQ
@@ -21,7 +22,7 @@ namespace Respondeo.Content.Markdown.Services;
 ///
 /// Any other container name falls back to Markdig's default &lt;div&gt; rendering.
 /// </summary>
-internal sealed class ContentContainerExtension : IMarkdownExtension
+public sealed class ContentContainerExtension : IMarkdownExtension
 {
     public void Setup(MarkdownPipelineBuilder pipeline)
     {

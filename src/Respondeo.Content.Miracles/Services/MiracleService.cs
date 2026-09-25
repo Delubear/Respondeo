@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Respondeo.Content.Abstractions;
 
 namespace Respondeo.Content.Miracles.Services;
 
@@ -11,12 +12,12 @@ namespace Respondeo.Content.Miracles.Services;
 /// <see cref="MiracleParser"/>, and caches the parsed records and derived index in memory for the
 /// app's lifetime. The whole (hand-authored) catalog is small, so it is loaded once up front.
 /// </summary>
-internal sealed class MiracleService(HttpClient http) : IMiracleService
+internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) : IMiracleService
 {
     private const string MiraclesRoot = "_content/Respondeo.Content.Miracles/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
 
-    private readonly MiracleParser _parser = new();
+    private readonly MiracleParser _parser = new(html);
     private readonly SemaphoreSlim _gate = new(1, 1);
     private Dictionary<string, MiracleRecord>? _records;
     private MiracleIndex? _index;

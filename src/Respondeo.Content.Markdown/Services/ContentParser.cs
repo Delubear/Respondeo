@@ -1,4 +1,3 @@
-using Markdig;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Internal;
 using YamlDotNet.Serialization;
@@ -8,18 +7,18 @@ namespace Respondeo.Content.Markdown.Services;
 
 /// <summary>
 /// Turns a raw Markdown file (with a "---" delimited YAML front-matter block) into a <see cref="ContentNode"/>.
-/// Owns the YAML deserializer and the Markdig pipeline configuration; performs no I/O so it can be tested in isolation.
+/// Owns the YAML deserializer; HTML rendering is delegated to the injected <see cref="IContentHtmlRenderer"/> so the
+/// Markdown engine stays behind an abstraction. Performs no I/O so it can be tested in isolation.
 /// </summary>
 internal sealed class ContentParser
 {
+    private readonly IContentHtmlRenderer _html;
+
+    public ContentParser(IContentHtmlRenderer html) => _html = html;
+
     private readonly IDeserializer _yaml = new DeserializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .IgnoreUnmatchedProperties()
-        .Build();
-
-    private readonly MarkdownPipeline _markdown = new MarkdownPipelineBuilder()
-        .UseAdvancedExtensions()
-        .Use<ContentContainerExtension>()
         .Build();
 
     /// <summary>
@@ -41,7 +40,7 @@ internal sealed class ContentParser
             return null;
         }
 
-        var html = Markdig.Markdown.ToHtml(body, _markdown);
+        var html = _html.ToHtml(body);
         return new ContentNode
         {
             Id = meta.Id,

@@ -28,7 +28,7 @@ public class StageTests : TestContext
         }
 
         var http = new HttpClient(new StubHandler(responses)) { BaseAddress = new Uri("https://localhost/") };
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
+        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class StageTests : TestContext
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = "{\"files\":[]}",
         }))
         { BaseAddress = new Uri("https://localhost/") };
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
+        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
 
         var cut = RenderComponent<Stage>(p => p.Add(c => c.Slug, "coming-home"));
 

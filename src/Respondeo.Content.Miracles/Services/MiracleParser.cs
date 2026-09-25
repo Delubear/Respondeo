@@ -1,4 +1,3 @@
-using Markdig;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Miracles.Internal;
 using YamlDotNet.Serialization;
@@ -9,18 +8,19 @@ namespace Respondeo.Content.Miracles.Services;
 /// <summary>
 /// Turns a raw miracle Markdown file (with a "---" delimited YAML front-matter block) into the typed
 /// <see cref="MiracleRecord"/> and its lightweight <see cref="MiracleIndexEntry"/> projection.
-/// Owns the YAML deserializer and Markdig pipeline; performs no I/O so it can be tested in isolation.
+/// Owns the YAML deserializer; HTML rendering is delegated to the injected <see cref="IContentHtmlRenderer"/>
+/// so the Markdown engine stays behind an abstraction. Performs no I/O so it can be tested in isolation.
 /// The body is split into titled sections on top-level "## " headings.
 /// </summary>
 internal sealed class MiracleParser
 {
+    private readonly IContentHtmlRenderer _html;
+
+    public MiracleParser(IContentHtmlRenderer html) => _html = html;
+
     private readonly IDeserializer _yaml = new DeserializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .IgnoreUnmatchedProperties()
-        .Build();
-
-    private readonly MarkdownPipeline _markdown = new MarkdownPipelineBuilder()
-        .UseAdvancedExtensions()
         .Build();
 
     /// <summary>
@@ -99,7 +99,7 @@ internal sealed class MiracleParser
             sections.Add(new MiracleSection
             {
                 Heading = currentHeading,
-                Html = Markdig.Markdown.ToHtml(markdown, _markdown),
+                Html = _html.ToHtml(markdown),
             });
         }
 

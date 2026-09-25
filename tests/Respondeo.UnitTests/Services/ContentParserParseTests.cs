@@ -1,4 +1,5 @@
 using Respondeo.Content.Markdown.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
@@ -9,7 +10,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: parent\ntitle: Parent\nsections:\n  - one\n  - two\n  - three\n---\nBody";
 
-        var node = new ContentParser().Parse(raw);
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
         Assert.Equal(["one", "two", "three"], node!.Sections);
@@ -20,7 +21,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: parent\ntitle: Parent\n---\nBody";
 
-        var node = new ContentParser().Parse(raw);
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
         Assert.Empty(node!.Sections);
@@ -31,7 +32,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: parent\ntitle: Parent\ntopics:\n  - Existence of God\n  - St. Thomas Aquinas\n---\nBody";
 
-        var node = new ContentParser().Parse(raw);
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
         Assert.Equal(["Existence of God", "St. Thomas Aquinas"], node!.Topics);
@@ -42,7 +43,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: parent\ntitle: Parent\n---\nBody";
 
-        var node = new ContentParser().Parse(raw);
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
         Assert.Empty(node!.Topics);
@@ -53,7 +54,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: aquinas\ntitle: Aquinas\n---\nBody";
 
-        var node = new ContentParser().Parse(raw, "why-god");
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw, "why-god");
 
         Assert.NotNull(node);
         Assert.Equal("why-god", node!.Stage);
@@ -64,7 +65,7 @@ public class ContentParserParseTests
     {
         var raw = "---\nid: parent\ntitle: Parent\n---\nBody";
 
-        var node = new ContentParser().Parse(raw);
+        var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
         Assert.Null(node!.Stage);

@@ -3,6 +3,7 @@ using System.Text.Json;
 using Respondeo;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Content;
 
@@ -41,7 +42,7 @@ public class StageNavigationConsistencyTests
 
     private static IReadOnlyList<ContentNode> LoadNodes(string contentDir)
     {
-        var parser = new ContentParser();
+        var parser = new ContentParser(ContentRendering.Renderer);
         return ReadManifestFiles(contentDir)
             .Select(file => parser.Parse(File.ReadAllText(Path.Combine(contentDir, file)), StageFromFile(file)))
             .Where(node => node is not null)

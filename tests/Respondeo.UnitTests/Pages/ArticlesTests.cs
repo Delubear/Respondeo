@@ -33,7 +33,7 @@ public class ArticlesTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
+        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
     }
 

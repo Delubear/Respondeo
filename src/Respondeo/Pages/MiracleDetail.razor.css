@@ -98,3 +98,75 @@
 .miracle__back {
     margin: 0;
 }
+
+/* Embedded media directives (youtube / pdf / button) are rendered into the body HTML, so they are reached via ::deep. */
+.miracle__body ::deep .video-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 1.5rem 0;
+    border: 1px solid var(--rule);
+    background: #000;
+}
+
+.miracle__body ::deep .video-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Click-to-load façade: full-bleed thumbnail button with a centered play glyph. */
+.miracle__body ::deep .video-facade__play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000;
+}
+
+.miracle__body ::deep .video-facade__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+}
+
+.miracle__body ::deep .video-facade__play:hover .video-facade__thumb,
+.miracle__body ::deep .video-facade__play:focus-visible .video-facade__thumb {
+    opacity: 1;
+}
+
+.miracle__body ::deep .video-facade__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4rem;
+    height: 2.8rem;
+    border-radius: 0.6rem;
+    background: var(--accent);
+    opacity: 0.92;
+}
+
+.miracle__body ::deep .video-facade__icon::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    border-style: solid;
+    border-width: 0.7rem 0 0.7rem 1.1rem;
+    border-color: transparent transparent transparent #fff;
+}
+
+.miracle__body ::deep .video-facade__play:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

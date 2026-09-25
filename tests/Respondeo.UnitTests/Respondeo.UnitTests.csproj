@@ -18,6 +18,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\..\src\Respondeo\Respondeo.csproj" />
+	<ProjectReference Include="..\..\src\Respondeo.Content.Rendering\Respondeo.Content.Rendering.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Miracles\Respondeo.Content.Miracles.csproj" />

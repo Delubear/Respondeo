@@ -28,7 +28,7 @@ public class SectionAccordionTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
+        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
         _nav = Services.GetRequiredService<FakeNavigationManager>();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }

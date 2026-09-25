@@ -23,7 +23,7 @@ public class ContentServiceLoadingTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new ContentService(http, new ContentParser());
+        return new ContentService(http, new ContentParser(ContentRendering.Renderer));
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ContentServiceLoadingTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        var service = new ContentService(http, new ContentParser());
+        var service = new ContentService(http, new ContentParser(ContentRendering.Renderer));
 
         var all = await service.GetAllAsync();
 

@@ -35,7 +35,7 @@ public class NodeTests : TestContext
         // Default: the trail contains just the current node (no ancestors).
         _trail.VisitAsync(Arg.Any<string>()).Returns(call => Task.FromResult<IReadOnlyList<string>>(new[] { (string)call[0] }));
 
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser()));
+        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
         Services.AddSingleton(_trail);
     }
 
