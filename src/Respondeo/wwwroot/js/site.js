@@ -12,18 +12,6 @@ window.respondeoUrl = {
     }
 };
 
-// Sends a GoatCounter pageview. GoatCounter's automatic on-load count is disabled (no_onload in
-// index.html) because Blazor is a SPA: a full page load happens only once, so we count the first
-// load and every subsequent in-app navigation from MainLayout instead. Safe to call before
-// count.js has finished loading — it simply no-ops until window.goatcounter.count exists.
-window.respondeoAnalytics = {
-    count: function (path) {
-        if (window.goatcounter && typeof window.goatcounter.count === 'function') {
-            window.goatcounter.count({ path: path || (location.pathname + location.search) });
-        }
-    }
-};
-
 // Announces in-app route changes to assistive technology. Blazor's FocusOnNavigate moves focus to
 // the main content on navigation, but a SPA route change is silent to screen readers unless we also
 // post the new page name to a live region. We own a single visually-hidden polite live region and

@@ -107,6 +107,12 @@ The custom domain and **Enforce HTTPS** are set under the repo's **Settings -> P
 domain is ever changed, update both the DNS records above and the `Add custom domain (CNAME)` step
 in the deploy workflow.
 
+Cloudflare records stay on **DNS-only (grey cloud)** because proxying (orange cloud) interferes with
+GitHub Pages' automatic certificate provisioning/renewal. **Cloudflare Web Analytics** still works in
+this mode: it is a client-side beacon (`beacon.min.js` in
+[`index.html`](src/Respondeo/wwwroot/index.html)) and does not require proxied traffic. Set its site
+token in `index.html` from **Cloudflare -> Web Analytics**.
+
 ## Progressive Web App (offline)
 
 Respondeo is an installable PWA and works **fully offline** once installed. Because the whole app -
@@ -122,9 +128,9 @@ precache everything, so there is nothing left to fetch at runtime.
 - **Install.** Visit the site and use the browser's *Install app* / *Add to Home Screen* option.
   Installability metadata (name, icons, colours) is in
   [`wwwroot/manifest.webmanifest`](src/Respondeo/wwwroot/manifest.webmanifest).
-- **Online-only extras.** GoatCounter analytics is cross-origin and not precached; offline it
-  simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under `wwwroot/fonts/`, so
-  they are precached and render identically offline.
+- **Online-only extras.** Analytics (Cloudflare Web Analytics) is cross-origin and not precached;
+  offline it simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under
+  `wwwroot/fonts/`, so they are precached and render identically offline.
 - **Updates.** A new deploy changes the asset hashes, so the service worker updates its cache; users
   pick up the new version after the worker updates (typically one reload).
 - **Note.** The offline install includes the full Summa corpus, so the first install downloads a

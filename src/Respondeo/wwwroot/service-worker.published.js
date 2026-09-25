@@ -15,8 +15,8 @@ const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 
 // Precache the app shell and all bundled content. The display fonts are self-hosted (@font-face
-// rules in css/app.css) so they are precached here too and render offline. Analytics (GoatCounter)
-// is cross-origin and online-only, so it is excluded and simply no-ops offline.
+// rules in css/app.css) so they are precached here too and render offline. Analytics (Cloudflare
+// Web Analytics) is cross-origin and online-only, so it is excluded and simply no-ops offline.
 const offlineAssetsInclude = [/\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/, /\.svg$/, /\.md$/, /\.txt$/, /\.webmanifest$/];
 const offlineAssetsExclude = [/^service-worker\.js$/];
 

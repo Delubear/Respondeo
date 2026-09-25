@@ -35,36 +35,14 @@
 </div>
 
 @code {
-    // Central pageview tracking for the whole SPA. GoatCounter's auto on-load count is disabled
-    // (no_onload), so we record the first view after the initial render and every in-app Blazor
-    // navigation here — otherwise only the very first URL would ever be counted.
+    // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History
+    // API, so no manual pageview call is needed here. We still hook LocationChanged to announce the
+    // new page to assistive technology on every in-app navigation.
     protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await CountAsync();
-        }
-    }
 
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        await CountAsync();
         await AnnounceAsync();
-    }
-
-    private async Task CountAsync()
-    {
-        var path = "/" + Nav.ToBaseRelativePath(Nav.Uri);
-        try
-        {
-            await JS.InvokeVoidAsync("respondeoAnalytics.count", path);
-        }
-        catch (JSDisconnectedException)
-        {
-            // The circuit/runtime is going away (e.g. during teardown); nothing to count.
-        }
     }
 
     // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is

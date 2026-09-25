@@ -65,13 +65,10 @@
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
-    <!-- GoatCounter analytics. no_onload is set because Respondeo is a SPA: the initial
-         load and every in-app Blazor navigation are counted from MainLayout via
-         window.respondeoAnalytics.count (in site.js), so the automatic on-load pageview
-         is disabled to avoid double-counting the first view. -->
-    <script data-goatcounter="https://delubear.goatcounter.com/count"
-            data-goatcounter-settings='{"no_onload": true}'
-            async src="//gc.zgo.at/count.js"></script>
+    <!-- Cloudflare Web Analytics (cookieless, privacy-friendly). The beacon auto-tracks SPA route
+         changes via the History API, so no manual per-navigation call is needed. The site token
+         comes from Cloudflare -> Web Analytics. It is cross-origin/online-only and no-ops offline. -->
+    <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "66d628449e2449d397eec7c257c9e65e"}'></script>
     <!-- Register the PWA service worker. In development this is the no-op service-worker.js;
          at publish time the SDK swaps in service-worker.published.js, which precaches the app
          and bundled content for full offline use. -->
