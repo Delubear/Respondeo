@@ -41,6 +41,31 @@
     letter-spacing: 0.05em;
 }
 
+.masthead__aside {
+    margin: 0.55rem 0 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--masthead-fg-soft);
+}
+
+.masthead__summa-link {
+    color: var(--masthead-fg);
+    border-bottom: 1px solid var(--masthead-rule);
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.masthead__summa-link:hover {
+    text-decoration: none;
+    color: var(--masthead-fg);
+    border-color: var(--masthead-fg);
+}
+
+.masthead__summa-link:focus-visible {
+    outline: 2px solid var(--masthead-fg);
+    outline-offset: 2px;
+}
+
 /* ---------- Main content ---------- */
 .content {
     flex: 1 1 auto;
