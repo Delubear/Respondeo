@@ -16,17 +16,51 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
 {
     private const string MiraclesRoot = "_content/Respondeo.Content.Miracles/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
+    private const string FacetsPath = MiraclesRoot + "/facets.json";
 
     private readonly MiracleParser _parser = new(html);
     private readonly SemaphoreSlim _gate = new(1, 1);
     private Dictionary<string, MiracleRecord>? _records;
     private MiracleIndex? _index;
+    private MiracleFacetCatalog? _facets;
 
     /// <summary>Returns the browse/search index, loading the catalog once and caching it.</summary>
     public async Task<MiracleIndex> GetIndexAsync()
     {
         await EnsureLoadedAsync();
         return _index!;
+    }
+
+    /// <summary>Returns the slug&#8594;label facet catalog, loading and caching it once.</summary>
+    public async Task<MiracleFacetCatalog> GetFacetsAsync()
+    {
+        if (_facets is not null)
+        {
+            return _facets;
+        }
+
+        await _gate.WaitAsync();
+        try
+        {
+            if (_facets is not null)
+            {
+                return _facets;
+            }
+
+            var dto = await GetFromJsonCachedAsync<FacetsDto>(FacetsPath);
+            _facets = dto?.ToCatalog() ?? MiracleFacetCatalog.Empty;
+            return _facets;
+        }
+        catch (HttpRequestException)
+        {
+            // Missing facets file must not break browsing; labels fall back to humanized slugs.
+            _facets = MiracleFacetCatalog.Empty;
+            return _facets;
+        }
+        finally
+        {
+            _gate.Release();
+        }
     }
 
     /// <summary>Returns the full content of a single miracle by id, or null if it does not exist.</summary>
@@ -128,5 +162,20 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
     private sealed class MiracleManifest
     {
         public List<string> Files { get; set; } = [];
+    }
+
+    // Serialization shape for facets.json: three slug->label maps.
+    private sealed class FacetsDto
+    {
+        public Dictionary<string, string> Categories { get; set; } = [];
+        public Dictionary<string, string> Approvals { get; set; } = [];
+        public Dictionary<string, string> Regions { get; set; } = [];
+
+        public MiracleFacetCatalog ToCatalog() => new()
+        {
+            Categories = new Dictionary<string, string>(Categories, StringComparer.OrdinalIgnoreCase),
+            Approvals = new Dictionary<string, string>(Approvals, StringComparer.OrdinalIgnoreCase),
+            Regions = new Dictionary<string, string>(Regions, StringComparer.OrdinalIgnoreCase),
+        };
     }
 }

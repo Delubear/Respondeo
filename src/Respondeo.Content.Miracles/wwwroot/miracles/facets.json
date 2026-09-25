@@ -1,0 +1,27 @@
+{
+  "categories": {
+    "eucharistic": "Eucharistic",
+    "marian": "Marian apparition",
+    "healing": "Healing",
+    "incorruptible": "Incorruptible",
+    "stigmata": "Stigmata",
+    "image": "Miraculous image / icon",
+    "other": "Other"
+  },
+  "approvals": {
+    "approved": "Church-approved",
+    "under-investigation": "Under investigation",
+    "not-approved": "Not approved",
+    "historical": "Historical / traditional"
+  },
+  "regions": {
+    "europe": "Europe",
+    "north-america": "North America",
+    "latin-america": "Latin America",
+    "africa": "Africa",
+    "asia": "Asia",
+    "middle-east": "Middle East",
+    "oceania": "Oceania",
+    "unknown": "Unknown"
+  }
+}

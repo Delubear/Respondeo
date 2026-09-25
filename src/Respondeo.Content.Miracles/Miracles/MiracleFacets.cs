@@ -1,149 +1,70 @@
 namespace Respondeo.Content.Miracles;
 
 /// <summary>
-/// The kind of miracle, used as the primary categorization facet.
-/// Stored as a stable slug in front-matter (e.g. "eucharistic") and mapped to this enum.
+/// The slug&#8594;label maps for the three miracle browse facets (category, approval, region), loaded
+/// from the bundled <c>miracles/facets.json</c> content file. Because the vocabulary lives in content
+/// rather than in code, authors can introduce a new category/approval/region by editing content only.
+/// Any slug missing from a map still renders via <see cref="MiracleFacets.Humanize"/>, so the UI never
+/// breaks; a content-integrity test flags unmapped slugs so they can be given a proper label.
 /// </summary>
-public enum MiracleType
+public sealed class MiracleFacetCatalog
 {
-    /// <summary>A Eucharistic miracle (host/wine becoming visible flesh and blood, bleeding hosts, etc.).</summary>
-    Eucharistic,
+    /// <summary>Category slug &#8594; display label (e.g. "marian" &#8594; "Marian apparition").</summary>
+    public IReadOnlyDictionary<string, string> Categories { get; init; } =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>An approved or reported Marian apparition.</summary>
-    Marian,
+    /// <summary>Approval slug &#8594; display label (e.g. "approved" &#8594; "Church-approved").</summary>
+    public IReadOnlyDictionary<string, string> Approvals { get; init; } =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>A physical healing attributed to God's intervention (e.g. Lourdes cures).</summary>
-    Healing,
+    /// <summary>Region slug &#8594; display label (e.g. "middle-east" &#8594; "Middle East").</summary>
+    public IReadOnlyDictionary<string, string> Regions { get; init; } =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>An incorrupt body of a saint or blessed.</summary>
-    Incorruptible,
+    /// <summary>An empty catalog used before content has loaded (every slug falls back to humanized text).</summary>
+    public static MiracleFacetCatalog Empty { get; } = new();
 
-    /// <summary>The stigmata (the wounds of Christ) borne by a saint.</summary>
-    Stigmata,
+    /// <summary>Resolves a category slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string Category(string slug) => Lookup(Categories, slug);
 
-    /// <summary>A weeping, bleeding, or otherwise miraculous image or statue.</summary>
-    Image,
+    /// <summary>Resolves an approval slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string Approval(string slug) => Lookup(Approvals, slug);
 
-    /// <summary>Any well-attested miracle that does not fit the other categories.</summary>
-    Other,
+    /// <summary>Resolves a region slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string Region(string slug) => Lookup(Regions, slug);
+
+    private static string Lookup(IReadOnlyDictionary<string, string> map, string slug) =>
+        !string.IsNullOrWhiteSpace(slug) && map.TryGetValue(slug.Trim(), out var label)
+            ? label
+            : MiracleFacets.Humanize(slug);
 }
 
 /// <summary>
-/// The Church's stance on a reported miracle, used as a credibility facet.
-/// </summary>
-public enum ApprovalStatus
-{
-    /// <summary>Formally approved or recognized by competent Church authority.</summary>
-    Approved,
-
-    /// <summary>Currently under formal investigation; no verdict yet.</summary>
-    UnderInvestigation,
-
-    /// <summary>Examined and not approved (a negative or "nothing supernatural" judgment).</summary>
-    NotApproved,
-
-    /// <summary>A historical case venerated by long tradition that predates modern formal processes.</summary>
-    Historical,
-}
-
-/// <summary>
-/// Broad geographic grouping used as a coarse browse facet, independent of the free-text country.
-/// </summary>
-public enum MiracleRegion
-{
-    Europe,
-    NorthAmerica,
-    LatinAmerica,
-    Africa,
-    Asia,
-    MiddleEast,
-    Oceania,
-    Unknown,
-}
-
-/// <summary>
-/// Maps the typed facet enums to their stable front-matter slugs and human-readable display labels,
-/// keeping the authored file vocabulary and the UI labels decoupled from the enum member names.
-/// Mirrors the intent of the Summa's SummaParts registry.
+/// Small presentation helpers for miracle facets that do not depend on the loaded catalog: turning a
+/// raw slug into readable text and deriving a century label from a year.
 /// </summary>
 public static class MiracleFacets
 {
-    private static readonly IReadOnlyDictionary<string, MiracleType> TypeBySlug = new Dictionary<string, MiracleType>(StringComparer.OrdinalIgnoreCase)
+    /// <summary>
+    /// Turns a slug (e.g. "middle-east") into a readable label ("Middle east") as a safe fallback for any
+    /// slug that is not present in <see cref="MiracleFacetCatalog"/>. Returns "Other" for empty input.
+    /// </summary>
+    public static string Humanize(string? slug)
     {
-        ["eucharistic"] = MiracleType.Eucharistic,
-        ["marian"] = MiracleType.Marian,
-        ["healing"] = MiracleType.Healing,
-        ["incorruptible"] = MiracleType.Incorruptible,
-        ["stigmata"] = MiracleType.Stigmata,
-        ["image"] = MiracleType.Image,
-        ["other"] = MiracleType.Other,
-    };
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return "Other";
+        }
 
-    private static readonly IReadOnlyDictionary<string, ApprovalStatus> ApprovalBySlug = new Dictionary<string, ApprovalStatus>(StringComparer.OrdinalIgnoreCase)
-    {
-        ["approved"] = ApprovalStatus.Approved,
-        ["under-investigation"] = ApprovalStatus.UnderInvestigation,
-        ["investigating"] = ApprovalStatus.UnderInvestigation,
-        ["not-approved"] = ApprovalStatus.NotApproved,
-        ["historical"] = ApprovalStatus.Historical,
-    };
+        var words = slug.Trim().Replace('_', '-').Split('-', StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length == 0)
+        {
+            return "Other";
+        }
 
-    private static readonly IReadOnlyDictionary<string, MiracleRegion> RegionBySlug = new Dictionary<string, MiracleRegion>(StringComparer.OrdinalIgnoreCase)
-    {
-        ["europe"] = MiracleRegion.Europe,
-        ["north-america"] = MiracleRegion.NorthAmerica,
-        ["latin-america"] = MiracleRegion.LatinAmerica,
-        ["africa"] = MiracleRegion.Africa,
-        ["asia"] = MiracleRegion.Asia,
-        ["middle-east"] = MiracleRegion.MiddleEast,
-        ["oceania"] = MiracleRegion.Oceania,
-    };
-
-    /// <summary>Parses a type slug, falling back to <see cref="MiracleType.Other"/> when unknown.</summary>
-    public static MiracleType ParseType(string? slug) =>
-        slug is not null && TypeBySlug.TryGetValue(slug.Trim(), out var value) ? value : MiracleType.Other;
-
-    /// <summary>Parses an approval slug, falling back to <see cref="ApprovalStatus.Historical"/> when unknown.</summary>
-    public static ApprovalStatus ParseApproval(string? slug) =>
-        slug is not null && ApprovalBySlug.TryGetValue(slug.Trim(), out var value) ? value : ApprovalStatus.Historical;
-
-    /// <summary>Parses a region slug, falling back to <see cref="MiracleRegion.Unknown"/> when unknown.</summary>
-    public static MiracleRegion ParseRegion(string? slug) =>
-        slug is not null && RegionBySlug.TryGetValue(slug.Trim(), out var value) ? value : MiracleRegion.Unknown;
-
-    /// <summary>The human-readable label for a miracle type.</summary>
-    public static string Label(MiracleType type) => type switch
-    {
-        MiracleType.Eucharistic => "Eucharistic",
-        MiracleType.Marian => "Marian apparition",
-        MiracleType.Healing => "Healing",
-        MiracleType.Incorruptible => "Incorruptible",
-        MiracleType.Stigmata => "Stigmata",
-        MiracleType.Image => "Miraculous image",
-        _ => "Other",
-    };
-
-    /// <summary>The human-readable label for an approval status.</summary>
-    public static string Label(ApprovalStatus status) => status switch
-    {
-        ApprovalStatus.Approved => "Church-approved",
-        ApprovalStatus.UnderInvestigation => "Under investigation",
-        ApprovalStatus.NotApproved => "Not approved",
-        _ => "Historical / traditional",
-    };
-
-    /// <summary>The human-readable label for a region.</summary>
-    public static string Label(MiracleRegion region) => region switch
-    {
-        MiracleRegion.Europe => "Europe",
-        MiracleRegion.NorthAmerica => "North America",
-        MiracleRegion.LatinAmerica => "Latin America",
-        MiracleRegion.Africa => "Africa",
-        MiracleRegion.Asia => "Asia",
-        MiracleRegion.MiddleEast => "Middle East",
-        MiracleRegion.Oceania => "Oceania",
-        _ => "Unknown",
-    };
+        words[0] = char.ToUpperInvariant(words[0][0]) + words[0][1..];
+        return string.Join(' ', words);
+    }
 
     /// <summary>Derives the century label (e.g. "8th century", "20th century") from a year, or null when unknown.</summary>
     public static string? CenturyLabel(int? year)

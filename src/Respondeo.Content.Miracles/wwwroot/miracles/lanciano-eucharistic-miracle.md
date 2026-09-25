@@ -1,8 +1,8 @@
 ---
-id: lanciano
+id: lanciano-eucharistic-miracle
 title: "The Eucharistic Miracle of Lanciano"
 summary: An 8th-century host and wine reported to have become human flesh and blood, examined scientifically in 1971.
-type: eucharistic
+types: [eucharistic]
 approval: historical
 region: europe
 country: Italy

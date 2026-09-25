@@ -26,14 +26,14 @@ public sealed class MiracleIndexEntry
     /// <summary>Short one-line description for cards and previews.</summary>
     public string Summary { get; init; } = string.Empty;
 
-    /// <summary>The kind of miracle (primary facet).</summary>
-    public required MiracleType Type { get; init; }
+    /// <summary>The category slugs the miracle belongs to (primary facet). Ordered; the first is the primary kind.</summary>
+    public required IReadOnlyList<string> Types { get; init; }
 
-    /// <summary>The Church's stance on the miracle (credibility facet).</summary>
-    public required ApprovalStatus Approval { get; init; }
+    /// <summary>The Church's stance on the miracle (credibility facet), as a slug.</summary>
+    public required string Approval { get; init; }
 
-    /// <summary>Broad geographic grouping (coarse facet).</summary>
-    public MiracleRegion Region { get; init; } = MiracleRegion.Unknown;
+    /// <summary>Broad geographic grouping (coarse facet), as a slug.</summary>
+    public string Region { get; init; } = "unknown";
 
     /// <summary>Free-text country of origin (e.g. "Italy"), for display.</summary>
     public string? Country { get; init; }
@@ -60,14 +60,14 @@ public sealed class MiracleRecord
     /// <summary>Short one-line description.</summary>
     public string Summary { get; init; } = string.Empty;
 
-    /// <summary>The kind of miracle.</summary>
-    public required MiracleType Type { get; init; }
+    /// <summary>The category slugs the miracle belongs to. Ordered; the first is the primary kind.</summary>
+    public required IReadOnlyList<string> Types { get; init; }
 
-    /// <summary>The Church's stance on the miracle.</summary>
-    public required ApprovalStatus Approval { get; init; }
+    /// <summary>The Church's stance on the miracle, as a slug.</summary>
+    public required string Approval { get; init; }
 
-    /// <summary>Broad geographic grouping.</summary>
-    public MiracleRegion Region { get; init; } = MiracleRegion.Unknown;
+    /// <summary>Broad geographic grouping, as a slug.</summary>
+    public string Region { get; init; } = "unknown";
 
     /// <summary>Free-text country of origin.</summary>
     public string? Country { get; init; }

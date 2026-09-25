@@ -14,13 +14,13 @@ public class MiracleBrowseStateTests
     {
         var nav = new TestNavigationManager(Root + "miracles");
         using var state = new MiracleBrowseState(nav) { Query = "lanciano" };
-        state.ToggleType(MiracleType.Eucharistic);
+        state.ToggleType("eucharistic");
 
         // Drilling into a miracle detail page stays within /miracles.
-        nav.NavigateTo("miracles/lanciano");
+        nav.NavigateTo("miracles/lanciano-eucharistic-miracle");
 
         Assert.Equal("lanciano", state.Query);
-        Assert.Contains(MiracleType.Eucharistic, state.Types);
+        Assert.Contains("eucharistic", state.Types);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class MiracleBrowseStateTests
     {
         var nav = new TestNavigationManager(Root + "miracles");
         using var state = new MiracleBrowseState(nav) { Query = "healing" };
-        state.ToggleApproval(ApprovalStatus.Approved);
+        state.ToggleApproval("approved");
 
         nav.NavigateTo("why-god");
 
@@ -43,10 +43,10 @@ public class MiracleBrowseStateTests
         var nav = new TestNavigationManager(Root + "miracles");
         using var state = new MiracleBrowseState(nav);
 
-        state.ToggleRegion(MiracleRegion.Europe);
-        Assert.Contains(MiracleRegion.Europe, state.Regions);
+        state.ToggleRegion("europe");
+        Assert.Contains("europe", state.Regions);
 
-        state.ToggleRegion(MiracleRegion.Europe);
-        Assert.DoesNotContain(MiracleRegion.Europe, state.Regions);
+        state.ToggleRegion("europe");
+        Assert.DoesNotContain("europe", state.Regions);
     }
 }

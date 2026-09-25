@@ -42,7 +42,7 @@
                             <input type="checkbox"
                                    checked="@Browse.Types.Contains(type)"
                                    @onchange="() => ToggleType(type)" />
-                            <span>@MiracleFacets.Label(type)</span>
+                            <span>@_facets.Category(type)</span>
                         </label>
                     }
                 </div>
@@ -55,7 +55,7 @@
                             <input type="checkbox"
                                    checked="@Browse.Approvals.Contains(approval)"
                                    @onchange="() => ToggleApproval(approval)" />
-                            <span>@MiracleFacets.Label(approval)</span>
+                            <span>@_facets.Approval(approval)</span>
                         </label>
                     }
                 </div>
@@ -68,7 +68,7 @@
                             <input type="checkbox"
                                    checked="@Browse.Regions.Contains(region)"
                                    @onchange="() => ToggleRegion(region)" />
-                            <span>@MiracleFacets.Label(region)</span>
+                            <span>@_facets.Region(region)</span>
                         </label>
                     }
                 </div>
@@ -116,9 +116,10 @@
 
 @code {
     private IReadOnlyList<MiracleIndexEntry>? _all;
-    private IReadOnlyList<MiracleType> _types = [];
-    private IReadOnlyList<ApprovalStatus> _approvals = [];
-    private IReadOnlyList<MiracleRegion> _regions = [];
+    private IReadOnlyList<string> _types = [];
+    private IReadOnlyList<string> _approvals = [];
+    private IReadOnlyList<string> _regions = [];
+    private MiracleFacetCatalog _facets = MiracleFacetCatalog.Empty;
     private MiracleSort _sort = MiracleSort.TitleAsc;
 
     private enum MiracleSort { TitleAsc, YearAsc, YearDesc }
@@ -127,13 +128,14 @@
     {
         await Trail.ClearAsync();
 
+        _facets = await MiracleService.GetFacetsAsync();
         var index = await MiracleService.GetIndexAsync();
         _all = index.Entries;
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.
-        _types = _all.Select(m => m.Type).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
-        _approvals = _all.Select(m => m.Approval).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
-        _regions = _all.Select(m => m.Region).Distinct().OrderBy(MiracleFacets.Label, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _types = _all.SelectMany(m => m.Types).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Category, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _approvals = _all.Select(m => m.Approval).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Approval, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _regions = _all.Select(m => m.Region).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Region, StringComparer.CurrentCultureIgnoreCase).ToList();
     }
 
     private void OnSearchInput(ChangeEventArgs e) => Browse.Query = e.Value?.ToString() ?? string.Empty;
@@ -146,11 +148,11 @@
         }
     }
 
-    private void ToggleType(MiracleType type) => Browse.ToggleType(type);
+    private void ToggleType(string type) => Browse.ToggleType(type);
 
-    private void ToggleApproval(ApprovalStatus approval) => Browse.ToggleApproval(approval);
+    private void ToggleApproval(string approval) => Browse.ToggleApproval(approval);
 
-    private void ToggleRegion(MiracleRegion region) => Browse.ToggleRegion(region);
+    private void ToggleRegion(string region) => Browse.ToggleRegion(region);
 
     private void ClearFilters() => Browse.Clear();
 
@@ -168,7 +170,7 @@
             var query = Browse.Query?.Trim() ?? string.Empty;
 
             var results = _all.Where(m =>
-                (Browse.Types.Count == 0 || Browse.Types.Contains(m.Type))
+                (Browse.Types.Count == 0 || m.Types.Any(Browse.Types.Contains))
                 && (Browse.Approvals.Count == 0 || Browse.Approvals.Contains(m.Approval))
                 && (Browse.Regions.Count == 0 || Browse.Regions.Contains(m.Region))
                 && Matches(m, query));
@@ -197,9 +199,9 @@
             || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static string CardSummary(MiracleIndexEntry m)
+    private string CardSummary(MiracleIndexEntry m)
     {
-        var facets = new List<string> { MiracleFacets.Label(m.Type), MiracleFacets.Label(m.Approval) };
+        var facets = new List<string> { string.Join(", ", m.Types.Select(_facets.Category)), _facets.Approval(m.Approval) };
         var century = MiracleFacets.CenturyLabel(m.Year);
         if (century is not null)
         {

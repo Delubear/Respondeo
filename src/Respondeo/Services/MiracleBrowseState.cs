@@ -28,27 +28,27 @@ public sealed class MiracleBrowseState : IDisposable
     /// <summary>The active free-text search query, or an empty string when browsing the full list.</summary>
     public string Query { get; set; } = string.Empty;
 
-    /// <summary>The selected miracle types to include; empty means "all types".</summary>
-    public HashSet<MiracleType> Types { get; } = [];
+    /// <summary>The selected miracle category slugs to include; empty means "all types".</summary>
+    public HashSet<string> Types { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>The selected approval statuses to include; empty means "all statuses".</summary>
-    public HashSet<ApprovalStatus> Approvals { get; } = [];
+    /// <summary>The selected approval status slugs to include; empty means "all statuses".</summary>
+    public HashSet<string> Approvals { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>The selected regions to include; empty means "all regions".</summary>
-    public HashSet<MiracleRegion> Regions { get; } = [];
+    /// <summary>The selected region slugs to include; empty means "all regions".</summary>
+    public HashSet<string> Regions { get; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>True when any query or facet filter is active.</summary>
     public bool HasActiveFilters =>
         !string.IsNullOrWhiteSpace(Query) || Types.Count > 0 || Approvals.Count > 0 || Regions.Count > 0;
 
     /// <summary>Toggles a type facet on or off.</summary>
-    public void ToggleType(MiracleType type) => Toggle(Types, type);
+    public void ToggleType(string type) => Toggle(Types, type);
 
     /// <summary>Toggles an approval facet on or off.</summary>
-    public void ToggleApproval(ApprovalStatus approval) => Toggle(Approvals, approval);
+    public void ToggleApproval(string approval) => Toggle(Approvals, approval);
 
     /// <summary>Toggles a region facet on or off.</summary>
-    public void ToggleRegion(MiracleRegion region) => Toggle(Regions, region);
+    public void ToggleRegion(string region) => Toggle(Regions, region);
 
     /// <summary>Clears the query and every selected facet.</summary>
     public void Clear()

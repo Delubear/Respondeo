@@ -1,8 +1,8 @@
 ---
-id: bernadette-soubirous
+id: bernadette-soubirous-incorrupt-body
 title: "The Incorrupt Body of St. Bernadette"
 summary: The body of the Lourdes visionary, exhumed three times and found intact, now venerated at Nevers.
-type: incorruptible
+types: [incorruptible]
 approval: historical
 region: europe
 country: France

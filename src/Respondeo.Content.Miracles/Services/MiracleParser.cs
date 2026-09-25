@@ -46,9 +46,9 @@ internal sealed class MiracleParser
             Id = meta.Id,
             Title = meta.Title,
             Summary = meta.Summary,
-            Type = MiracleFacets.ParseType(meta.Type),
-            Approval = MiracleFacets.ParseApproval(meta.Approval),
-            Region = MiracleFacets.ParseRegion(meta.Region),
+            Types = NormalizeTypes(meta.Types),
+            Approval = NormalizeSlug(meta.Approval, "historical"),
+            Region = NormalizeSlug(meta.Region, "unknown"),
             Country = meta.Country,
             Year = meta.Year,
             FeastDay = meta.FeastDay,
@@ -64,13 +64,45 @@ internal sealed class MiracleParser
         Id = record.Id,
         Title = record.Title,
         Summary = record.Summary,
-        Type = record.Type,
+        Types = record.Types,
         Approval = record.Approval,
         Region = record.Region,
         Country = record.Country,
         Year = record.Year,
         Tags = record.Tags,
     };
+
+    // Normalizes a single facet slug: trims, lowercases, and falls back to the supplied default when blank.
+    private static string NormalizeSlug(string? slug, string fallback) =>
+        string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
+
+    // Normalizes the category slugs: trims/lowercases, drops blanks and duplicates (order-preserving),
+    // and falls back to a single "other" when none are supplied.
+    private static IReadOnlyList<string> NormalizeTypes(IEnumerable<string>? slugs)
+    {
+        if (slugs is null)
+        {
+            return ["other"];
+        }
+
+        var result = new List<string>();
+        foreach (var raw in slugs)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                continue;
+            }
+
+            var slug = raw.Trim().ToLowerInvariant();
+            if (!result.Contains(slug))
+            {
+                result.Add(slug);
+            }
+        }
+
+        return result.Count > 0 ? result : ["other"];
+    }
+
 
     // Split the Markdown body into sections on each top-level "## " heading. Content before the first
     // heading (if any) is rendered as an untitled lead-in section with an empty heading.

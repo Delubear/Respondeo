@@ -1,8 +1,8 @@
 ---
-id: lourdes-medical-cures
+id: lourdes-healing-miracles
 title: "The Cures of Lourdes"
 summary: The healings reported at the Lourdes shrine, of which the Church has recognized dozens as medically unexplained.
-type: healing
+types: [healing]
 approval: approved
 region: europe
 country: France

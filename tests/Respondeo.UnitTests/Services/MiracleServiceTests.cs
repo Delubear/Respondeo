@@ -9,15 +9,15 @@ namespace Respondeo.UnitTests.Services;
 public class MiracleServiceTests
 {
     private const string ManifestJson = """
-        { "files": [ "eucharistic/lanciano.md", "marian/guadalupe.md" ] }
+        { "files": [ "lanciano-eucharistic-miracle.md", "our-lady-of-guadalupe.md" ] }
         """;
 
     private const string LancianoMd = """
         ---
-        id: lanciano
+        id: lanciano-eucharistic-miracle
         title: "The Eucharistic Miracle of Lanciano"
         summary: An 8th-century host that became flesh and blood.
-        type: eucharistic
+        types: [eucharistic]
         approval: historical
         region: europe
         country: Italy
@@ -42,10 +42,10 @@ public class MiracleServiceTests
 
     private const string GuadalupeMd = """
         ---
-        id: guadalupe
+        id: our-lady-of-guadalupe
         title: "Our Lady of Guadalupe"
         summary: The 1531 apparitions and the tilma.
-        type: marian
+        types: [marian, image]
         approval: approved
         region: latin-america
         country: Mexico
@@ -58,8 +58,8 @@ public class MiracleServiceTests
         """;
 
     private const string ManifestPath = "_content/Respondeo.Content.Miracles/miracles/miracles-manifest.json";
-    private const string LancianoPath = "_content/Respondeo.Content.Miracles/miracles/eucharistic/lanciano.md";
-    private const string GuadalupePath = "_content/Respondeo.Content.Miracles/miracles/marian/guadalupe.md";
+    private const string LancianoPath = "_content/Respondeo.Content.Miracles/miracles/lanciano-eucharistic-miracle.md";
+    private const string GuadalupePath = "_content/Respondeo.Content.Miracles/miracles/our-lady-of-guadalupe.md";
 
     private static MiracleService CreateService()
     {
@@ -82,10 +82,10 @@ public class MiracleServiceTests
         var index = await service.GetIndexAsync();
 
         Assert.Equal(2, index.Entries.Count);
-        var lanciano = Assert.Single(index.Entries, e => e.Id == "lanciano");
-        Assert.Equal(MiracleType.Eucharistic, lanciano.Type);
-        Assert.Equal(ApprovalStatus.Historical, lanciano.Approval);
-        Assert.Equal(MiracleRegion.Europe, lanciano.Region);
+        var lanciano = Assert.Single(index.Entries, e => e.Id == "lanciano-eucharistic-miracle");
+        Assert.Equal(["eucharistic"], lanciano.Types);
+        Assert.Equal("historical", lanciano.Approval);
+        Assert.Equal("europe", lanciano.Region);
         Assert.Equal("Italy", lanciano.Country);
         Assert.Equal(750, lanciano.Year);
         Assert.Contains("bleeding host", lanciano.Tags);
@@ -96,7 +96,7 @@ public class MiracleServiceTests
     {
         var service = CreateService();
 
-        var record = await service.GetByIdAsync("lanciano");
+        var record = await service.GetByIdAsync("lanciano-eucharistic-miracle");
 
         Assert.NotNull(record);
         Assert.Equal("The Eucharistic Miracle of Lanciano", record!.Title);

@@ -21,9 +21,9 @@ internal sealed class MiracleFrontMatter
     [YamlMember(Alias = "summary")]
     public string Summary { get; set; } = string.Empty;
 
-    /// <summary>The miracle type slug (e.g. "eucharistic").</summary>
-    [YamlMember(Alias = "type")]
-    public string Type { get; set; } = string.Empty;
+    /// <summary>The miracle category slugs (e.g. ["marian", "image", "stigmata"]).</summary>
+    [YamlMember(Alias = "types")]
+    public List<string> Types { get; set; } = [];
 
     /// <summary>The approval status slug (e.g. "approved").</summary>
     [YamlMember(Alias = "approval")]
