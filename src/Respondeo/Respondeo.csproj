@@ -16,103 +16,81 @@
   <!--
     Fingerprint the app stylesheet link in the published index.html.
 
-    Background: the Blazor WASM SDK rewrites <script src> fingerprint placeholders (so
-    js/site.js is fingerprinted automatically) but does NOT rewrite <link rel="stylesheet">
-    hrefs in a standalone WASM app. The StaticWebAssetFingerprintPattern items above still make
-    the SDK emit a content-hashed css/app.<hash>.css file and a matching endpoint whose "label"
-    is the original "css/app.css". This target reads that generated endpoints manifest, finds the
-    hashed route for css/app.css, and rewrites the published index.html to point at it. The result
-    is fully automatic cache-busting: the URL changes only when the file's contents change.
+    The Blazor WASM SDK rewrites <script src> fingerprint placeholders but does NOT rewrite
+    <link rel="stylesheet"> hrefs in a standalone WASM app, so we do it here. The
+    StaticWebAssetFingerprintPattern items above make the SDK emit a content-hashed
+    css/app.<hash>.css file; this task rewrites index.html to point at it. Because that edit
+    happens after the SDK built service-worker-assets.js (which records index.html's integrity
+    hash), the task also re-syncs that manifest entry - otherwise the PWA service worker blocks
+    index.html on install with "SRI's integrity checks failed".
   -->
-  <Target Name="FingerprintStylesheets" AfterTargets="Publish">
-    <PropertyGroup>
-      <_PublishedIndexHtml>$(PublishDir)wwwroot\index.html</_PublishedIndexHtml>
-      <_EndpointsManifest>$(IntermediateOutputPath)staticwebassets.publish.endpoints.json</_EndpointsManifest>
-    </PropertyGroup>
-
-    <!-- Extract the fingerprinted route for css/app.css from the endpoints manifest.
-         Matches "Route":"css/app.<hash>.css" entries and captures the file name. -->
-    <ReadLinesFromFile File="$(_EndpointsManifest)">
-      <Output TaskParameter="Lines" ItemName="_EndpointsLines" />
-    </ReadLinesFromFile>
-
-    <PropertyGroup>
-      <_EndpointsText>@(_EndpointsLines, '')</_EndpointsText>
-      <_HashedCssRoute>$([System.Text.RegularExpressions.Regex]::Match($(_EndpointsText), 'css/app\.[0-9a-z]+\.css').Value)</_HashedCssRoute>
-    </PropertyGroup>
-
-    <Warning Text="FingerprintStylesheets: could not find a fingerprinted css/app.css route; index.html left unchanged."
-             Condition="'$(_HashedCssRoute)' == ''" />
-
-    <WriteLinesToFile
-      Condition="'$(_HashedCssRoute)' != '' and Exists('$(_PublishedIndexHtml)')"
-      File="$(_PublishedIndexHtml)"
-      Lines="$([System.IO.File]::ReadAllText($(_PublishedIndexHtml)).Replace('href=&quot;css/app.css&quot;', 'href=&quot;$(_HashedCssRoute)&quot;'))"
-      Overwrite="true" />
-
-    <Message Importance="high"
-             Condition="'$(_HashedCssRoute)' != ''"
-             Text="FingerprintStylesheets: rewrote app stylesheet link to $(_HashedCssRoute)." />
-
-    <!--
-      Rewriting index.html above changes its bytes AFTER the SDK generated
-      service-worker-assets.js, whose integrity manifest still records the pre-rewrite hash of
-      index.html. On install the published service worker fetches index.html with that recorded
-      integrity, so the stale hash makes the browser block the response ("SRI's integrity checks
-      failed"). Recompute the hash of the rewritten index.html and patch its entry in the manifest
-      so the two stay consistent. SHA256 is not callable from an MSBuild property function, so this
-      is done in the inline PatchServiceWorkerIndexHtmlHash task below.
-    -->
-    <PatchServiceWorkerIndexHtmlHash
-      Condition="'$(_HashedCssRoute)' != '' and Exists('$(_PublishedIndexHtml)')"
-      IndexHtmlPath="$(_PublishedIndexHtml)"
-      ServiceWorkerAssetsPath="$(PublishDir)wwwroot\service-worker-assets.js" />
+  <Target Name="FingerprintAppStylesheet" AfterTargets="Publish">
+    <FingerprintAppStylesheet
+      WwwrootPath="$(PublishDir)wwwroot" />
   </Target>
 
-  <!--
-    Inline task: recompute the SHA-256 integrity of the (rewritten) published index.html and update
-    its entry in service-worker-assets.js so the PWA service worker's SRI check passes on install.
-  -->
-  <UsingTask TaskName="PatchServiceWorkerIndexHtmlHash" TaskFactory="RoslynCodeTaskFactory"
+  <UsingTask TaskName="FingerprintAppStylesheet" TaskFactory="RoslynCodeTaskFactory"
              AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
-      <IndexHtmlPath ParameterType="System.String" Required="true" />
-      <ServiceWorkerAssetsPath ParameterType="System.String" Required="true" />
+      <WwwrootPath ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Code Type="Fragment" Language="cs"><![CDATA[
-        if (!System.IO.File.Exists(ServiceWorkerAssetsPath))
+        var indexHtmlPath = System.IO.Path.Combine(WwwrootPath, "index.html");
+        var cssDir = System.IO.Path.Combine(WwwrootPath, "css");
+        if (!System.IO.File.Exists(indexHtmlPath) || !System.IO.Directory.Exists(cssDir))
         {
-            Log.LogWarning("PatchServiceWorkerIndexHtmlHash: service-worker-assets.js not found; the PWA may fail SRI checks on install.");
+            Log.LogWarning("FingerprintAppStylesheet: index.html or css/ not found; skipping.");
+            return true;
+        }
+
+        // Find the SDK-emitted content-hashed stylesheet (css/app.<hash>.css).
+        var hashedCss = System.IO.Directory.GetFiles(cssDir, "app.*.css");
+        if (hashedCss.Length != 1)
+        {
+            Log.LogWarning("FingerprintAppStylesheet: expected exactly one css/app.<hash>.css but found " + hashedCss.Length + "; index.html left unchanged.");
+            return true;
+        }
+        var hashedName = System.IO.Path.GetFileName(hashedCss[0]);
+
+        // Rewrite the stylesheet link to the hashed name.
+        var html = System.IO.File.ReadAllText(indexHtmlPath);
+        var updatedHtml = html.Replace("href=\"css/app.css\"", "href=\"css/" + hashedName + "\"");
+        if (updatedHtml == html)
+        {
+            Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: css/app.css link not found in index.html; nothing to do.");
+            return true;
+        }
+        System.IO.File.WriteAllText(indexHtmlPath, updatedHtml);
+        Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: rewrote app stylesheet link to css/" + hashedName + ".");
+
+        // Re-sync index.html's integrity in the PWA service-worker manifest, if present.
+        var manifestPath = System.IO.Path.Combine(WwwrootPath, "service-worker-assets.js");
+        if (!System.IO.File.Exists(manifestPath))
+        {
             return true;
         }
 
         string newHash;
         using (var sha = System.Security.Cryptography.SHA256.Create())
         {
-            newHash = "sha256-" + System.Convert.ToBase64String(sha.ComputeHash(System.IO.File.ReadAllBytes(IndexHtmlPath)));
+            newHash = "sha256-" + System.Convert.ToBase64String(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(updatedHtml)));
         }
 
-        var manifest = System.IO.File.ReadAllText(ServiceWorkerAssetsPath);
-        var match = System.Text.RegularExpressions.Regex.Match(
-            manifest,
-            "\"hash\":\\s*\"(sha256-[^\"]+)\",\\s*\"url\":\\s*\"index\\.html\"");
-
+        var manifest = System.IO.File.ReadAllText(manifestPath);
+        var match = System.Text.RegularExpressions.Regex.Match(manifest, "\"hash\":\\s*\"(sha256-[^\"]+)\",\\s*\"url\":\\s*\"index\\.html\"");
         if (!match.Success)
         {
-            Log.LogWarning("PatchServiceWorkerIndexHtmlHash: could not find the index.html entry in service-worker-assets.js; the PWA may fail SRI checks on install.");
+            Log.LogWarning("FingerprintAppStylesheet: index.html entry not found in service-worker-assets.js; the PWA may fail SRI checks on install.");
             return true;
         }
 
         var oldHash = match.Groups[1].Value;
-        if (oldHash == newHash)
+        if (oldHash != newHash)
         {
-            return true;
+            System.IO.File.WriteAllText(manifestPath, manifest.Replace(oldHash, newHash));
+            Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: updated index.html integrity in service-worker-assets.js to " + newHash + ".");
         }
-
-        System.IO.File.WriteAllText(ServiceWorkerAssetsPath, manifest.Replace(oldHash, newHash));
-        Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High,
-            "PatchServiceWorkerIndexHtmlHash: updated index.html integrity in service-worker-assets.js to " + newHash + ".");
       ]]></Code>
     </Task>
   </UsingTask>

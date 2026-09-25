@@ -11,10 +11,11 @@
          so they are precached by the service worker and render identically offline. Preload the
          primary body font (EB Garamond regular, latin subset) to avoid a flash of fallback text. -->
     <link rel="preload" href="fonts/ebgaramond-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- css/app.css is fingerprinted automatically at publish time by the
-         FingerprintStylesheets target in Respondeo.csproj, which rewrites this href to the
-         content-hashed file name. That lets browsers cache it forever yet always pick up a new
-         version after a deploy (needed on GitHub Pages, where we cannot set cache headers). -->
+    <!-- css/app.css is fingerprinted at publish time by the FingerprintAppStylesheet task in
+         Respondeo.csproj: it rewrites this href to the content-hashed file name and keeps the PWA
+         service-worker manifest in sync. Browsers can cache it forever yet always pick up a new
+         version after a deploy (needed on GitHub Pages, where we cannot set cache headers). The
+         Blazor SDK does not rewrite <link> hrefs itself (only <script src>), hence the task. -->
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link href="Respondeo.styles.css" rel="stylesheet" />

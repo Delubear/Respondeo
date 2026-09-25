@@ -133,6 +133,12 @@ precache everything, so there is nothing left to fetch at runtime.
   `wwwroot/fonts/`, so they are precached and render identically offline.
 - **Updates.** A new deploy changes the asset hashes, so the service worker updates its cache; users
   pick up the new version after the worker updates (typically one reload).
+- **Expected console warnings.** Once installed, DevTools may log preload messages for the framework
+  files, e.g. *"a preload ... is found, but is not used because it is a cross-world service worker
+  resource mismatch"* and *"preloaded ... but not used within a few seconds"*. These are benign:
+  Blazor emits `<link rel="preload">` hints for the cold-network load, but the service worker serves
+  those files from cache instead, so the preloads go unused. They are informational only and do not
+  affect users or offline behaviour.
 - **Note.** The offline install includes the full Summa corpus, so the first install downloads a
   larger payload in exchange for complete offline access.
 
