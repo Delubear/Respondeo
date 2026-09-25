@@ -126,6 +126,12 @@ precache everything, so there is nothing left to fetch at runtime.
   navigation requests (so deep links work offline). This wiring lives in the PWA section of
   [`Respondeo.csproj`](src/Respondeo/Respondeo.csproj).
 - **Install.** Visit the site and use the browser's *Install app* / *Add to Home Screen* option.
+  On supported browsers a dismissible in-app banner
+  ([`Components/InstallPrompt.razor`](src/Respondeo/Components/InstallPrompt.razor)) also appears when
+  the app is installable: it captures the browser's `beforeinstallprompt` event (via
+  `respondeoInstall` in [`js/site.js`](src/Respondeo/wwwroot/js/site.js)) and triggers the native
+  install prompt on click. Dismissing it ("Not now") is remembered in `localStorage`, so it does not
+  reappear on future visits. iOS Safari has no such API, so users there install via the Share sheet.
   Installability metadata (name, icons, colours) is in
   [`wwwroot/manifest.webmanifest`](src/Respondeo/wwwroot/manifest.webmanifest).
 - **Online-only extras.** Analytics (Cloudflare Web Analytics) is cross-origin and not precached;

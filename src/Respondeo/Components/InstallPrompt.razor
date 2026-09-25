@@ -1,0 +1,82 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@if (_visible)
+{
+    <div class="install-prompt" role="region" aria-label="Install Respondeo">
+        <span class="install-prompt__mark" aria-hidden="true">&#10013;</span>
+        <p class="install-prompt__text">
+            Install Respondeo for a full-screen, offline-ready app on your device.
+        </p>
+        <div class="install-prompt__actions">
+            <button type="button" class="install-prompt__install" @onclick="InstallAsync">
+                Install
+            </button>
+            <button type="button"
+                    class="install-prompt__dismiss"
+                    @onclick="Dismiss"
+                    aria-label="Dismiss install prompt">
+                Not now
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _available;
+    private bool _dismissed;
+    private DotNetObjectReference<InstallPrompt>? _ref;
+
+    private bool _visible => _available && !_dismissed;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _ref = DotNetObjectReference.Create(this);
+            _available = await JS.InvokeAsync<bool>("respondeoInstall.register", _ref);
+            if (_available)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    // Called from site.js when the browser's install availability changes (prompt captured,
+    // or the app was installed elsewhere).
+    [JSInvokable]
+    public void OnInstallAvailabilityChanged(bool available)
+    {
+        _available = available;
+        StateHasChanged();
+    }
+
+    private async Task InstallAsync()
+    {
+        var accepted = await JS.InvokeAsync<bool>("respondeoInstall.prompt");
+        if (accepted)
+        {
+            _available = false;
+        }
+    }
+
+    // Hide the banner and remember the choice so it does not reappear on future visits.
+    private async Task Dismiss()
+    {
+        _dismissed = true;
+        await JS.InvokeVoidAsync("respondeoInstall.dismiss");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoInstall.unregister");
+        }
+        catch (JSDisconnectedException)
+        {
+            // The runtime is going away during teardown; nothing to unregister.
+        }
+        _ref?.Dispose();
+    }
+}
