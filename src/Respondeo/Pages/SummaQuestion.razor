@@ -10,6 +10,7 @@
 <Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")"
             StageHref="summa"
             StageLabel="Summa Theologiae"
+            Crumbs="_crumbs"
             BackHref="@_backHref"
             BackLabel="@_backLabel" />
 
@@ -112,6 +113,11 @@ else
     private string PartTitle = string.Empty;
     private bool _loading = true;
     private bool _scrolledToFragment;
+
+    // The ancestor crumbs shown between the Summa root and this question. Currently a single Part
+    // crumb (e.g. "First Part") linking to that part's landing page, so the Summa breadcrumb mirrors
+    // the part -> question hierarchy the way node breadcrumbs mirror their trail.
+    private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
 
     // Articles render as collapsible panels, all closed on load; multiple may be open at once. Only
     // this ephemeral open-set drives expansion. The shareable state stays the "#article-N" fragment,
@@ -219,8 +225,27 @@ else
         _openArticles.Clear();
         _question = await Summa.GetQuestionAsync(SummaParts.ToStorageId(Id));
         PartTitle = await ResolvePartTitleAsync();
+        _crumbs = BuildPartCrumbs(_question);
         await ResolveReferenceOriginAsync();
         _loading = false;
+    }
+
+    // Builds the Part ancestor crumb from the question's part id, linking to that part's landing page.
+    // Falls back to no crumb when the question or its part is unknown.
+    private static IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaQuestionContent? question)
+    {
+        if (question is null)
+        {
+            return Array.Empty<Breadcrumb.Crumb>();
+        }
+
+        var part = SummaParts.ByStorageKey(question.PartId);
+        if (part is null)
+        {
+            return Array.Empty<Breadcrumb.Crumb>();
+        }
+
+        return [new Breadcrumb.Crumb(part.Key, part.Title, Href: ContentRoutes.SummaPartHref(part.Slug))];
     }
 
     // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked. If

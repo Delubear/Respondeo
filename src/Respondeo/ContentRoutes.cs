@@ -17,4 +17,11 @@ public static class ContentRoutes
     /// <summary>Builds the href for a node id and optional stage.</summary>
     public static string NodeHref(string id, string? stage) =>
         string.IsNullOrEmpty(stage) ? $"node/{id}" : $"{stage}/node/{id}";
+
+    /// <summary>
+    /// Builds the href for a Summa part landing page (the browse list filtered to one part),
+    /// e.g. <c>summa/part/prima</c>. Kept here so the Summa index page and breadcrumbs share one
+    /// source of truth for the part route, mirroring how nodes share <see cref="NodeHref(string, string?)"/>.
+    /// </summary>
+    public static string SummaPartHref(string partSlug) => $"summa/part/{partSlug}";
 }

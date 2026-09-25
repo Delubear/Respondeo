@@ -1,18 +1,35 @@
 @page "/summa"
+@page "/summa/part/{PartSlug}"
 @inject ISummaService SummaService
 @inject IBreadcrumbTrail Trail
 @implements IDisposable
 
-<PageTitle>Summa Theologiae &mdash; Respondeo</PageTitle>
+<PageTitle>@(_activePart is null ? "Summa Theologiae — Respondeo" : $"{_activePart.Title} — Summa Theologiae")</PageTitle>
+
+@if (_activePart is not null)
+{
+    <Breadcrumb CurrentTitle="@_activePart.Title"
+                StageHref="summa"
+                StageLabel="Summa Theologiae" />
+}
 
 <section class="summa">
     <header class="summa__header">
         <p class="summa__eyebrow">St. Thomas Aquinas</p>
-        <h1 class="summa__title">Summa Theologiae</h1>
-        <p class="summa__lede">
-            The complete <i>Summa Theologiae</i>, St. Thomas Aquinas&rsquo; masterwork of Catholic theology.
-            Browse by part and question, or search the questions and articles by title.
-        </p>
+        @if (_activePart is null)
+        {
+            <h1 class="summa__title">Summa Theologiae</h1>
+            <p class="summa__lede">
+                The complete <i>Summa Theologiae</i>, St. Thomas Aquinas&rsquo; masterwork of Catholic theology.
+                Browse by part and question, or search the questions and articles by title.
+            </p>
+        }
+        else
+        {
+            <h1 class="summa__title">@_activePart.Title</h1>
+            <p class="summa__part-latin">@_activePart.LatinName</p>
+            <p class="summa__lede">@_activePart.Description</p>
+        }
     </header>
 
     <SummaGuide />
@@ -76,10 +93,10 @@
         else
         {
             <div class="summa__browse">
-                @foreach (var part in _index.Parts)
+                @foreach (var part in BrowseParts())
                 {
                     var partInfo = SummaParts.ByStorageKey(part.Id);
-                    <details class="summa__part">
+                    <details class="summa__part" open="@(_activePart is not null)">
                         <summary class="summa__part-summary">
                             <span class="summa__part-heading">
                                 <span class="summa__part-title">@part.Title</span>
@@ -144,7 +161,10 @@
 </section>
 
 @code {
+    [Parameter] public string? PartSlug { get; set; }
+
     private SummaIndex? _index;
+    private SummaPart? _activePart;
     private string _query = string.Empty;
     private List<SearchMatch> _matches = new();
 
@@ -173,6 +193,30 @@
         await Trail.ClearAsync();
         _index = await SummaService.GetIndexAsync();
         _entries = BuildEntries(_index);
+    }
+
+    // Resolves the optional part slug (e.g. "prima") to its part descriptor so the page can render a
+    // single-part view; a null or unknown slug falls back to the full browse list.
+    protected override void OnParametersSet()
+    {
+        _activePart = string.IsNullOrEmpty(PartSlug) ? null : SummaParts.ByUrlSlug(PartSlug);
+    }
+
+    // The parts shown in the browse list: just the active part when the page is scoped to one,
+    // otherwise every part in reading order.
+    private IEnumerable<SummaPartEntry> BrowseParts()
+    {
+        if (_index is null)
+        {
+            return Array.Empty<SummaPartEntry>();
+        }
+
+        if (_activePart is null)
+        {
+            return _index.Parts;
+        }
+
+        return _index.Parts.Where(part => string.Equals(part.Id, _activePart.Key, StringComparison.OrdinalIgnoreCase));
     }
 
     private void OnSearchInput(ChangeEventArgs e)

@@ -9,7 +9,7 @@
     <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
 }
 
-<Breadcrumb Crumbs="_crumbs" CurrentTitle="@_node?.Title" ShowArticles="_fromArticles" StageHref="@_stageHref" StageLabel="@_stageLabel" />
+<Breadcrumb Crumbs="_breadcrumb.Ancestors" CurrentTitle="@_breadcrumb.CurrentTitle" ShowArticles="_fromArticles" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
 
 @if (_loading)
 {
@@ -38,9 +38,7 @@ else
     private ContentNode? _node;
     private bool _loading = true;
     private bool _fromArticles;
-    private string? _stageHref;
-    private string? _stageLabel;
-    private IReadOnlyList<Breadcrumb.Crumb> _crumbs = Array.Empty<Breadcrumb.Crumb>();
+    private BreadcrumbContext _breadcrumb = BreadcrumbContext.ForCurrent(null);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -73,18 +71,15 @@ else
 
         // When the node belongs to a stage (and the visitor didn't arrive via Articles), root the
         // breadcrumb at that stage's landing page instead of Home so it reflects the section.
+        string? stageHref = null;
+        string? stageLabel = null;
         if (!_fromArticles && node?.Stage is { Length: > 0 } stage)
         {
-            _stageHref = stage;
-            _stageLabel = SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label ?? node.Stage;
-        }
-        else
-        {
-            _stageHref = null;
-            _stageLabel = null;
+            stageHref = stage;
+            stageLabel = SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label ?? node.Stage;
         }
 
-        _crumbs = crumbs;
+        _breadcrumb = new BreadcrumbContext(node?.Title, crumbs, stageHref, stageLabel);
         _loading = false;
     }
 

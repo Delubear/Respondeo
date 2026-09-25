@@ -32,7 +32,7 @@
         {
             <li class="breadcrumb__item">
                 <span class="breadcrumb__sep" aria-hidden="true">/</span>
-                <a class="breadcrumb__link" href="@ContentRoutes.NodeHref(crumb.Id, crumb.Stage)" title="@crumb.Title">@crumb.Title</a>
+                <a class="breadcrumb__link" href="@CrumbHref(crumb)" title="@crumb.Title">@crumb.Title</a>
             </li>
         }
         <li class="breadcrumb__item">
@@ -67,6 +67,12 @@
     /// <summary>Label for the back crumb (e.g. "Q. 2, A. 3").</summary>
     [Parameter] public string? BackLabel { get; set; }
 
-    /// <summary>A single ancestor step in the breadcrumb trail.</summary>
-    public sealed record Crumb(string Id, string Title, string? Stage = null);
+    /// <summary>
+    /// A single ancestor step in the breadcrumb trail. When <see cref="Href"/> is null the crumb
+    /// links to a Markdown node route built from <see cref="Id"/>/<see cref="Stage"/>; when set it
+    /// links directly to that explicit href (e.g. a Summa part landing page).
+    /// </summary>
+    public sealed record Crumb(string Id, string Title, string? Stage = null, string? Href = null);
+
+    private static string CrumbHref(Crumb crumb) => crumb.Href ?? ContentRoutes.NodeHref(crumb.Id, crumb.Stage);
 }
