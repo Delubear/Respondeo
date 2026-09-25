@@ -2,6 +2,8 @@
 @page "/summa/part/{PartSlug}"
 @inject ISummaService SummaService
 @inject IBreadcrumbTrail Trail
+@inject SummaBrowseState Browse
+@inject IJSRuntime JS
 @implements IDisposable
 
 <PageTitle>@(_activePart is null ? "Summa Theologiae — Respondeo" : $"{_activePart.Title} — Summa Theologiae")</PageTitle>
@@ -46,6 +48,7 @@
                    class="summa__search-input"
                    type="search"
                    placeholder="e.g. existence of God, virtue, grace..."
+                   value="@_query"
                    @oninput="OnSearchInput" />
         </div>
 
@@ -96,7 +99,7 @@
                 @foreach (var part in BrowseParts())
                 {
                     var partInfo = SummaParts.ByStorageKey(part.Id);
-                    <details class="summa__part" open="@(_activePart is not null)">
+                    <details class="summa__part" data-summa-section="@part.Id" open="@IsPartOpen(part)">
                         <summary class="summa__part-summary">
                             <span class="summa__part-heading">
                                 <span class="summa__part-title">@part.Title</span>
@@ -130,7 +133,7 @@
                             }
                             else
                             {
-                                <details class="summa__treatise">
+                                <details class="summa__treatise" data-summa-section="@TreatiseKey(part, group.Treatise)" open="@IsTreatiseOpen(part, group.Treatise)">
                                     <summary class="summa__treatise-summary">
                                         <span class="summa__treatise-marker" aria-hidden="true"></span>
                                         <span class="summa__treatise-title">@group.Treatise</span>
@@ -165,8 +168,15 @@
 
     private SummaIndex? _index;
     private SummaPart? _activePart;
-    private string _query = string.Empty;
     private List<SearchMatch> _matches = new();
+
+    // The search text lives in the scoped browse state so it survives leaving the page and pressing
+    // Back; this property is just a convenient proxy.
+    private string _query
+    {
+        get => Browse.Query;
+        set => Browse.Query = value;
+    }
 
     // Flattened, pre-computed view of every searchable entry (questions + articles) built once when
     // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
@@ -193,13 +203,49 @@
         await Trail.ClearAsync();
         _index = await SummaService.GetIndexAsync();
         _entries = BuildEntries(_index);
+
+        // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open`
+        // attributes. Blazor never writes `open` again after this render and never handles `toggle`
+        // (the browser and summa-browse.js own that entirely), so there is no re-render/re-apply
+        // feedback loop - the cause of the earlier "endless jump" on Back.
+        var open = await JS.InvokeAsync<string[]>("respondeoSummaBrowse.getOpen");
+        foreach (var id in open ?? Array.Empty<string>())
+        {
+            _openOnMount.Add(id);
+        }
+
+        // A part-scoped view (/summa/part/...) should show that part expanded by default; seed it in
+        // both the JS store and this mount's snapshot so it renders open immediately.
+        if (_activePart is not null && _openOnMount.Add(_activePart.Key))
+        {
+            await JS.InvokeVoidAsync("respondeoSummaBrowse.setOpen", _activePart.Key, true);
+        }
+
+        // Restore any remembered search (e.g. after drilling into a question and pressing Back) so
+        // the visitor returns to the results they left rather than a reset page.
+        if (_query.Trim().Length > 0)
+        {
+            RunSearch();
+        }
     }
 
     // Resolves the optional part slug (e.g. "prima") to its part descriptor so the page can render a
-    // single-part view; a null or unknown slug falls back to the full browse list.
+    // single-part view; a null or unknown slug falls back to the full browse list. The part-scoped
+    // view is seeded open in OnInitializedAsync (once the JS snapshot is available).
     protected override void OnParametersSet()
     {
         _activePart = string.IsNullOrEmpty(PartSlug) ? null : SummaParts.ByUrlSlug(PartSlug);
+    }
+
+    // After the browse markup first renders, ask JS to restore the remembered scroll position. The
+    // helper polls across animation frames until the async content is tall enough to honour the
+    // target, so it works despite the index loading (and the accordion expanding) after remount.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("respondeoSummaBrowse.restoreScroll");
+        }
     }
 
     // The parts shown in the browse list: just the active part when the page is scoped to one,
@@ -224,6 +270,20 @@
         _query = e.Value?.ToString() ?? string.Empty;
         DebounceSearch();
     }
+
+    // A part is expanded when the mount-time snapshot (read from the JS store) says so. This value
+    // must stay constant for the component's lifetime: the browser owns the element's visual state
+    // after mount, and summa-browse.js records subsequent toggles for the NEXT restore. Blazor never
+    // re-renders on a toggle, so `open` is never re-applied mid-session (the "endless jump" fix).
+    private bool IsPartOpen(SummaPartEntry part) => _openOnMount.Contains(part.Id);
+
+    private static string TreatiseKey(SummaPartEntry part, string treatise) => $"{part.Id}::{treatise}";
+
+    private bool IsTreatiseOpen(SummaPartEntry part, string treatise) => _openOnMount.Contains(TreatiseKey(part, treatise));
+
+    // Snapshot of which sections were open when this page mounted; drives the initial `open`
+    // attributes and never changes afterward (see IsPartOpen).
+    private readonly HashSet<string> _openOnMount = new(StringComparer.Ordinal);
 
     private void DebounceSearch()
     {

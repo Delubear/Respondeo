@@ -28,4 +28,8 @@ builder.Services.AddScoped<IThemeService, ThemeService>();
 // Signals whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
 builder.Services.AddScoped<NavigationIntent>();
 
+// Remembers the Summa browse/search view (search text + expanded parts/treatises) across page
+// remounts, resetting itself when the visitor leaves the Summa area.
+builder.Services.AddScoped<SummaBrowseState>();
+
 await builder.Build().RunAsync();

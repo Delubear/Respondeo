@@ -52,6 +52,7 @@ public class SummaTests : TestContext
 
         Services.AddSingleton<ISummaService>(new SummaService(http));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddScoped<SummaBrowseState>();
     }
 
     [Fact]
