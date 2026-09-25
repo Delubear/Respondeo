@@ -53,7 +53,69 @@
     <Message Importance="high"
              Condition="'$(_HashedCssRoute)' != ''"
              Text="FingerprintStylesheets: rewrote app stylesheet link to $(_HashedCssRoute)." />
+
+    <!--
+      Rewriting index.html above changes its bytes AFTER the SDK generated
+      service-worker-assets.js, whose integrity manifest still records the pre-rewrite hash of
+      index.html. On install the published service worker fetches index.html with that recorded
+      integrity, so the stale hash makes the browser block the response ("SRI's integrity checks
+      failed"). Recompute the hash of the rewritten index.html and patch its entry in the manifest
+      so the two stay consistent. SHA256 is not callable from an MSBuild property function, so this
+      is done in the inline PatchServiceWorkerIndexHtmlHash task below.
+    -->
+    <PatchServiceWorkerIndexHtmlHash
+      Condition="'$(_HashedCssRoute)' != '' and Exists('$(_PublishedIndexHtml)')"
+      IndexHtmlPath="$(_PublishedIndexHtml)"
+      ServiceWorkerAssetsPath="$(PublishDir)wwwroot\service-worker-assets.js" />
   </Target>
+
+  <!--
+    Inline task: recompute the SHA-256 integrity of the (rewritten) published index.html and update
+    its entry in service-worker-assets.js so the PWA service worker's SRI check passes on install.
+  -->
+  <UsingTask TaskName="PatchServiceWorkerIndexHtmlHash" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <IndexHtmlPath ParameterType="System.String" Required="true" />
+      <ServiceWorkerAssetsPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        if (!System.IO.File.Exists(ServiceWorkerAssetsPath))
+        {
+            Log.LogWarning("PatchServiceWorkerIndexHtmlHash: service-worker-assets.js not found; the PWA may fail SRI checks on install.");
+            return true;
+        }
+
+        string newHash;
+        using (var sha = System.Security.Cryptography.SHA256.Create())
+        {
+            newHash = "sha256-" + System.Convert.ToBase64String(sha.ComputeHash(System.IO.File.ReadAllBytes(IndexHtmlPath)));
+        }
+
+        var manifest = System.IO.File.ReadAllText(ServiceWorkerAssetsPath);
+        var match = System.Text.RegularExpressions.Regex.Match(
+            manifest,
+            "\"hash\":\\s*\"(sha256-[^\"]+)\",\\s*\"url\":\\s*\"index\\.html\"");
+
+        if (!match.Success)
+        {
+            Log.LogWarning("PatchServiceWorkerIndexHtmlHash: could not find the index.html entry in service-worker-assets.js; the PWA may fail SRI checks on install.");
+            return true;
+        }
+
+        var oldHash = match.Groups[1].Value;
+        if (oldHash == newHash)
+        {
+            return true;
+        }
+
+        System.IO.File.WriteAllText(ServiceWorkerAssetsPath, manifest.Replace(oldHash, newHash));
+        Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High,
+            "PatchServiceWorkerIndexHtmlHash: updated index.html integrity in service-worker-assets.js to " + newHash + ".");
+      ]]></Code>
+    </Task>
+  </UsingTask>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
