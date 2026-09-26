@@ -8,12 +8,19 @@ topics:
   - Sacraments
 branches:
   - to: sacrament-baptism
+    prompt: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.
   - to: sacrament-confirmation
+    prompt: The sacrament of the Holy Spirit — sealing and strengthening the baptized for a mature Christian life.
   - to: sacrament-eucharist
+    prompt: The sacrament of Christ's true presence — the source and summit of the Christian life.
   - to: sacrament-reconciliation
+    prompt: The sacrament of mercy — Christ's forgiveness given personally to the repentant.
   - to: sacrament-anointing
+    prompt: The sacrament of healing and strength for those facing serious illness, suffering, or death.
   - to: sacrament-holy-orders
+    prompt: The sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
   - to: sacrament-matrimony
+    prompt: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
