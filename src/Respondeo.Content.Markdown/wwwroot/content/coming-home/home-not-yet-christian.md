@@ -3,7 +3,6 @@ id: home-not-yet-christian
 title: "If You're Not Yet Christian"
 summary: For the seeker who finds the case compelling but has not yet believed or been baptized.
 topics:
-  - Getting Started
   - The Catholic Church
 branches:
   - to: home-why-practice

@@ -3,8 +3,8 @@ id: which-god-personal
 title: "Is the First Cause Personal?"
 summary: Whether the God reason reaches has mind and will, or is a blind principle.
 topics:
-  - Divine Revelation
   - Existence of God
+  - Divine Revelation
 branches:
   - to: which-god-can-reveal
     label: "Could God speak to us?"

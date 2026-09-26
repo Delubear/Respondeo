@@ -5,6 +5,10 @@ summary: The sacrament of rebirth — dying and rising with Christ, washed and m
 topics:
   - The Catholic Church
   - Sacraments
+branches:
+  - to: home-sacraments
+    label: "The sacraments: an overview"
+    prompt: Back to the list of all seven sacraments.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

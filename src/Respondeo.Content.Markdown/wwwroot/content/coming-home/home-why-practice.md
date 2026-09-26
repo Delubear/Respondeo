@@ -3,7 +3,6 @@ id: home-why-practice
 title: "Why Practice, and Why Believe It for Real"
 summary: Why the faith must be lived, not merely admired — and why to take it seriously and actually believe.
 topics:
-  - Getting Started
   - The Catholic Church
 branches:
   - to: home-how-to-begin
