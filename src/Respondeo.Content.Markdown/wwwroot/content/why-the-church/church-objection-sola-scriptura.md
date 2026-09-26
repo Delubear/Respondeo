@@ -5,6 +5,7 @@ summary: Why appeal to a Church and Tradition when the Bible is the sufficient r
 topics:
   - The Catholic Church
   - Divine Revelation
+  - Scripture & Tradition
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

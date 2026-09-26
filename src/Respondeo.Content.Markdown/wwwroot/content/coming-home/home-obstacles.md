@@ -4,6 +4,7 @@ title: "What Holds People Back"
 summary: The common obstacles to returning or entering — shame, wounds, habit, doubt, cost — each met honestly.
 topics:
   - The Catholic Church
+  - Conversion
 branches:
   - to: home-how-to-begin
     label: "How to begin"

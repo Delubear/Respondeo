@@ -5,6 +5,7 @@ summary: How Christ's revelation is preserved and interpreted — and who has au
 topics:
   - The Catholic Church
   - Divine Revelation
+  - Scripture & Tradition
 branches:
   - to: church-objections
     label: "Objections to the Church"

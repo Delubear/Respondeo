@@ -5,6 +5,7 @@ summary: Whether the Gospels are early, eyewitness-rooted sources we can reason 
 topics:
   - Jesus Christ
   - Divine Revelation
+  - Scripture & Tradition
 branches:
   - to: jesus-divine-claims
     label: "Did Jesus claim to be God?"

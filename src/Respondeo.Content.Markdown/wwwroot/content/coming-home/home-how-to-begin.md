@@ -5,6 +5,7 @@ summary: The concrete first steps — for the returning Catholic, the enquirer, 
 topics:
   - Getting Started
   - The Catholic Church
+  - Conversion
 branches:
   - to: home-sacraments
     label: "The sacraments"

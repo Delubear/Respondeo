@@ -4,6 +4,7 @@ title: "If You're Not Yet Christian"
 summary: For the seeker who finds the case compelling but has not yet believed or been baptized.
 topics:
   - The Catholic Church
+  - Conversion
 branches:
   - to: home-why-practice
     label: "Why believe and practice?"

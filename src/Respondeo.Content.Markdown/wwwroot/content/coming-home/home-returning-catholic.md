@@ -4,6 +4,7 @@ title: "Returning to the Faith"
 summary: For the baptized Catholic who drifted away — why and how to come back.
 topics:
   - The Catholic Church
+  - Conversion
 branches:
   - to: home-obstacles
     label: "What holds people back"
