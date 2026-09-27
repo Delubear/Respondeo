@@ -361,7 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 
-# Generated at deploy time by build/Respondeo.SitemapGenerator (see GenerateSitemap.targets).
+# Generated at deploy time by tools/Respondeo.SitemapGenerator (see GenerateSitemap.targets).
 # It is derived entirely from the content manifests + route mapping, so it is a CI artifact, not
 # source. Tracking it only leaves a stale copy that drifts between deploys.
 src/Respondeo/wwwroot/sitemap.xml

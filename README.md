@@ -12,7 +12,8 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
 | `Respondeo.Content.Miracles` | The Miracles corpus and its models/service. |
-| `Respondeo.SummaImporter` | Console tool that parses `docs/summa.txt` into the generated corpus. |
+| `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
+| `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
 | `Respondeo.AcceptanceTests` | Reqnroll + Playwright end-to-end tests. |
 
@@ -68,7 +69,7 @@ The Summa Theologiae browser is backed by a generated corpus under
 
 ```powershell
 # Regenerate the corpus (clears and rewrites the summa output tree)
-dotnet run --project src/Respondeo.SummaImporter -- docs/summa.txt src/Respondeo.Content.Summa\wwwroot
+dotnet run --project tools/Respondeo.SummaImporter -- docs/summa.txt src/Respondeo.Content.Summa\wwwroot
 ```
 
 Both the generated JSON and `docs/summa.txt` are tracked in Git LFS (see **Prerequisites** above), so
@@ -220,7 +221,7 @@ sitemap agree on the canonical origin, name, and default description.
   points them at the sitemap.
 - **Sitemap.** `wwwroot/sitemap.xml` is a **generated CI artifact, not source** — it is not tracked
   in git (see [`.gitignore`](.gitignore)). It is produced by
-  [`build/Respondeo.SitemapGenerator`](build/Respondeo.SitemapGenerator), which enumerates every
+  [`tools/Respondeo.SitemapGenerator`](tools/Respondeo.SitemapGenerator), which enumerates every
   route from the content manifests and the shared `SummaParts` slug mapping (currently ~701 URLs).
   The generation is wired into the app build by
   [`build/GenerateSitemap.targets`](src/Respondeo/build/GenerateSitemap.targets) (imported from

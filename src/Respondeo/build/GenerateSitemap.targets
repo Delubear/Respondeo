@@ -5,7 +5,7 @@
 
 	The sitemap must list the app's real, crawlable routes, and those routes derive from the Summa
 	part slug mapping (SummaParts) plus the shipped content manifests. Rather than duplicate that
-	logic in MSBuild, we invoke the build/Respondeo.SitemapGenerator tool, which references
+	logic in MSBuild, we invoke the tools/Respondeo.SitemapGenerator tool, which references
 	Respondeo.Content.Summa and parses the manifests to emit an accurate sitemap.
 
 	Build ordering: we use the <MSBuild> task (an in-process build, NOT `dotnet run`) to build the
@@ -26,8 +26,8 @@
   <PropertyGroup>
 	<!-- Off by default; the deploy workflow passes -p:GenerateSitemapOnBuild=true on publish. -->
 	<GenerateSitemapOnBuild Condition="'$(GenerateSitemapOnBuild)' == ''">false</GenerateSitemapOnBuild>
-	<SitemapGeneratorProject>$(MSBuildThisFileDirectory)..\..\..\build\Respondeo.SitemapGenerator\Respondeo.SitemapGenerator.csproj</SitemapGeneratorProject>
-	<SitemapGeneratorDll>$(MSBuildThisFileDirectory)..\..\..\build\Respondeo.SitemapGenerator\bin\$(Configuration)\net10.0\Respondeo.SitemapGenerator.dll</SitemapGeneratorDll>
+	<SitemapGeneratorProject>$(MSBuildThisFileDirectory)..\..\..\tools\Respondeo.SitemapGenerator\Respondeo.SitemapGenerator.csproj</SitemapGeneratorProject>
+	<SitemapGeneratorDll>$(MSBuildThisFileDirectory)..\..\..\tools\Respondeo.SitemapGenerator\bin\$(Configuration)\net10.0\Respondeo.SitemapGenerator.dll</SitemapGeneratorDll>
 	<SitemapOutputPath>$(MSBuildProjectDirectory)\wwwroot\sitemap.xml</SitemapOutputPath>
 	<!-- No trailing slash: a trailing '\' immediately before the closing quote in the Exec command
 		 would escape the quote and merge the arguments. -->
