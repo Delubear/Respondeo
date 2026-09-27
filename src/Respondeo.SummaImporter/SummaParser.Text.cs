@@ -54,7 +54,7 @@ internal static partial class SummaParser
         return string.Join("\n\n", paragraphs);
     }
 
-    private static string FormatParagraph(string text)
+    internal static string FormatParagraph(string text)
     {
         // Emit neutral tokens for the classic Summa section cues instead of baking presentation (e.g. bold) into the corpus.
         // The render stage decides the markup and styling, so these structural markers can be restyled without regenerating the JSON.
@@ -64,9 +64,10 @@ internal static partial class SummaParser
             return $"{{{{scue|contra}}}}{text["On the contrary,".Length..]}";
         }
 
-        if (text.StartsWith("I answer that,", StringComparison.Ordinal))
+        var respondeo = RespondeoRegex().Match(text);
+        if (respondeo.Success)
         {
-            return $"{{{{scue|respondeo}}}}{text["I answer that,".Length..]}";
+            return $"{{{{scue|respondeo}}}}{text[respondeo.Length..]}";
         }
 
         var reply = ReplyRegex().Match(text);
@@ -92,6 +93,12 @@ internal static partial class SummaParser
 
     [GeneratedRegex(@"^Objection (?<n>\d+)[:.]", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
+
+    // The respondeo cue is normally comma-delimited ("I answer that,") but the source occasionally omits
+    // the comma ("I answer that As stated above ..."); accept either so the respondeo is tokenised rather
+    // than leaking into the preceding section (e.g. the sed contra).
+    [GeneratedRegex(@"^I answer that,?", RegexOptions.Compiled)]
+    private static partial Regex RespondeoRegex();
 
     // Matches the leading section-cue token that ExtractText/FormatParagraph puts at the start of each
     // classic Summa section paragraph, e.g. "{{scue|objection|2}}" or "{{scue|respondeo}}".

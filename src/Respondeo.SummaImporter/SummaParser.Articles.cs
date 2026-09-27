@@ -188,7 +188,7 @@ internal static partial class SummaParser
             {
                 sawObjection = true;
             }
-            else if (text.StartsWith("I answer that,", StringComparison.Ordinal))
+            else if (text.StartsWith("I answer that", StringComparison.Ordinal))
             {
                 sawAnswer = true;
             }
