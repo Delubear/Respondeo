@@ -91,7 +91,7 @@
 
 /* ---------- Responsive ---------- */
 /* On narrower viewports the centered pillar nav creeps toward the portrait; shrink it so its
-   right edge stays clear of "The Journey" tab before it's hidden entirely on phones. */
+   right edge stays clear of the "Inquiry" tab before it's hidden entirely on phones. */
 @media (max-width: 935px) {
     .masthead__portrait {
         width: 5.75rem;

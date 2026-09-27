@@ -6,26 +6,10 @@
    timeline), with an IntersectionObserver fallback where that isn't supported. */
 .reel-wrap {
     position: relative;
-    margin: 1.5rem auto 0;
+    margin: 0.25rem auto 0;
     max-width: 52rem;
     /* Room below for the progress-dot rail. */
     padding-bottom: 1.75rem;
-}
-
-/* A faint horizontal "thread" the stages are strung along, hinting at one continuous
-   path walking forward. It sits behind the cards and fades at both ends. */
-.reel-wrap::before {
-    content: "";
-    position: absolute;
-    left: 1.5rem;
-    right: 1.5rem;
-    top: calc(50% - 0.875rem);
-    height: 2px;
-    transform: translateY(-50%);
-    background: linear-gradient(to right, transparent, var(--rule) 18%, var(--rule) 82%, transparent);
-    opacity: 0.9;
-    pointer-events: none;
-    z-index: 0;
 }
 
 .reel {
@@ -44,9 +28,9 @@
 }
 
 /* Edge vignette: fade peeking neighbours by painting the page background over the left and
-   right edges. This replaces a mask on the reel itself, which would make the cards translucent
-   and let the thread behind them bleed through. Cards stay fully opaque; only the empty gutters
-   and off-centre neighbours dissolve toward the page colour. */
+   right edges. This replaces a mask on the reel itself, which would make the questions
+   translucent. They stay fully opaque; only the empty gutters and off-centre neighbours
+   dissolve toward the page colour. */
 .reel-wrap::after {
     content: "";
     position: absolute;
@@ -62,19 +46,20 @@
     outline: none;
 }
 
-/* Highlight the centred card whenever keyboard focus is anywhere in the reel:
-   on the reel container itself (initial Tab), or on a card's inner link (after
-   arrow-key navigation moves focus to the centred card). The outline sits on the
-   card (not the full-width step) so its edges aren't clipped by the reel's overflow. */
-.reel:focus-visible .reel__step.is-centered ::deep .stage-card,
-.reel:has(:focus-visible) .reel__step.is-centered ::deep .stage-card {
+/* Highlight the centred question whenever keyboard focus is anywhere in the reel:
+   on the reel container itself (initial Tab), or on a question link (after arrow-key
+   navigation moves focus to the centred step). The outline sits on the link (not the
+   full-width step) so its edges aren't clipped by the reel's overflow. */
+.reel:focus-visible .reel__step.is-centered .reel__q,
+.reel:has(:focus-visible) .reel__step.is-centered .reel__q {
     outline: 2px solid var(--accent);
     outline-offset: 6px;
+    border-radius: 0.5rem;
 }
 
-/* Suppress the browser's default ring on the focused card link so only the
-   single centred-card outline above shows (no double ring). */
-.reel__step ::deep .stage-card:focus-visible {
+/* Suppress the browser's default ring on the focused question link so only the
+   single centred outline above shows (no double ring). */
+.reel__q:focus-visible {
     outline: none;
 }
 
@@ -98,6 +83,107 @@
 /* The centred card behaves as a normal link; only peeking neighbours are "tap to centre". */
 .reel__step.is-centered {
     cursor: default;
+}
+
+/* ---------- Floating question ----------
+   Each stage is presented not as a card but as an inquisitive, self-locating question:
+   a headline the reader can answer "yes, that's me" to, with optional supporting subtext.
+   No plate, border, or button — just framed text inviting them to step in where they stand. */
+.reel__q {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    /* Peeking neighbours read as quieter until they reach centre (reinforced by the turn/JS rules). */
+    transition: color 0.3s ease;
+}
+
+.reel__q-text {
+    font-family: var(--display);
+    font-size: clamp(1.35rem, 1.1rem + 1.4vw, 1.9rem);
+    line-height: 1.25;
+    font-weight: 600;
+    color: var(--ink);
+    text-wrap: balance;
+}
+
+.reel__q-sub {
+    max-width: 26rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+}
+
+/* The centred question warms to the accent and lifts slightly, drawing the eye to the
+   step the reader is being invited to answer. */
+.reel__step.is-centered .reel__q-text,
+.reel__q:hover .reel__q-text,
+.reel__q:focus-visible .reel__q-text {
+    color: var(--accent);
+}
+
+/* Click affordance: a small "Step in →" cue that makes the pointer explicit. It stays
+   quiet (dimmed, tucked up) until the question reaches centre or the reader hovers/focuses,
+   then it settles into view and the arrow nudges forward on hover to signal it's actionable. */
+.reel__q-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.15rem;
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(-0.35rem);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reel__q-cue-arrow {
+    width: 1.1rem;
+    height: 1px;
+    position: relative;
+    background: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.reel__q-cue-arrow::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: translate(1px, -50%) rotate(45deg);
+}
+
+.reel__step.is-centered .reel__q-cue,
+.reel__q:hover .reel__q-cue,
+.reel__q:focus-visible .reel__q-cue {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reel__q:hover .reel__q-cue-arrow,
+.reel__q:focus-visible .reel__q-cue-arrow {
+    transform: translateX(0.25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reel__q-cue,
+    .reel__q-cue-arrow {
+        transition: none;
+    }
 }
 
 /* Entrance: cards drift gently into place once the reel is positioned on load. */
@@ -148,13 +234,6 @@
 .reel--js .reel__step.is-in-view {
     opacity: 1;
     transform: scale(1);
-}
-
-/* Emblem glow: the centred stage's gilded plate warms up to draw the eye. Works in
-   both native and fallback modes since `is-centered` is always kept in sync by JS. */
-.reel__step.is-centered ::deep .stage-card__emblem {
-    box-shadow: 0 6px 18px var(--shadow);
-    transition: box-shadow 0.35s ease;
 }
 
 /* ---------- Progress dots ----------
@@ -318,10 +397,6 @@
 
     .reel.is-ready .reel__step {
         animation: none;
-    }
-
-    .reel__step.is-centered ::deep .stage-card__emblem {
-        transition: none;
     }
 
     .reel-dots ::deep .reel-dots__dot {

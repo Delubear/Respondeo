@@ -26,7 +26,7 @@ public static class SitePillars
     /// <summary>The pillars, in display order. The Journey is first because it is the site's spine.</summary>
     public static readonly IReadOnlyList<Pillar> Items =
     [
-        new(JourneyId, "", "The Journey"),
+        new(JourneyId, "", "Inquiry"),
         new(SummaId, "summa", "Summa Theologiae"),
         new(MiraclesId, "miracles", "Miracles"),
     ];

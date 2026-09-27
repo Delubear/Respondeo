@@ -82,7 +82,7 @@ public sealed class SummaSteps(PlaywrightContext context)
     public async Task WhenINavigateToTheHomePage()
     {
         await Page.GotoAsync($"{context.BaseUrl}/", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
-        await Page.WaitForSelectorAsync(".stage-card");
+        await Page.WaitForSelectorAsync(".reel__q");
     }
 
     [When("I press the browser back button")]

@@ -12,25 +12,25 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [Given("I open the start page")]
     public async Task GivenIOpenTheStartPage()
     {
-        // Blazor WebAssembly downloads its runtime after the load event, so wait for the network to settle before asserting the app has rendered its entry-point cards.
+        // Blazor WebAssembly downloads its runtime after the load event, so wait for the network to settle before asserting the app has rendered its entry-point questions.
         await Page.GotoAsync(context.BaseUrl + "/", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
-        await Page.WaitForSelectorAsync(".stage-card");
+        await Page.WaitForSelectorAsync(".reel__q");
     }
 
     [When("I choose the first stage card")]
     public async Task WhenIChooseTheFirstStageCard()
     {
         // The home reel renders the journey with Stage 1 at the LEFT (walking rightward) and scrolls to it on init.
-        // Stage 1 is the FIRST `.reel__step`, so we wait for the left-most card specifically to become centred (and thus unmasked) before clicking.
+        // Stage 1 is the FIRST `.reel__step`, so we wait for the left-most question specifically to become centred (and thus unmasked) before clicking.
         var stageOne = Page.Locator(".reel__step:first-child.is-centered");
         await stageOne.WaitForAsync();
 
-        // Clicking a card at (or near) centre always follows its link — the reel only intercepts clicks on cards that are far off-centre.
-        // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-centre the card
+        // Clicking a question at (or near) centre always follows its link — the reel only intercepts clicks on steps that are far off-centre.
+        // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-centre the question
         // past the interception threshold and turn the click into a one-stage nudge instead of navigation. The centred anchor navigates deterministically.
-        await stageOne.Locator(".stage-card").DispatchEventAsync("click");
+        await stageOne.Locator(".reel__q").DispatchEventAsync("click");
         // Confirm we left Home and the destination stage page rendered: `.card` are the branch cards on a stage/node
-        // page (NOT the Home reel's `.stage-card`). Waiting here syncs before the next step clicks a branch card.
+        // page (NOT the Home reel's `.reel__q`). Waiting here syncs before the next step clicks a branch card.
         await Page.WaitForSelectorAsync(".card");
     }
 
@@ -45,7 +45,7 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenINavigateBackToTheStartPage()
     {
         await Page.GotoAsync(context.BaseUrl + "/");
-        await Page.WaitForSelectorAsync(".stage-card");
+        await Page.WaitForSelectorAsync(".reel__q");
     }
 
     [Given("I open the \"(.*)\" stage directly")]
@@ -77,10 +77,10 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [Then("I should see at least one stage card")]
     public async Task ThenIShouldSeeAtLeastOneStageCard()
     {
-        // The home reel renders .stage-card; stage pages render their branch .card list.
-        // Either satisfies "at least one card to move forward from here".
-        var count = await Page.Locator(".stage-card, .card").CountAsync();
-        Assert.True(count >= 1, $"Expected at least one card, found {count}.");
+        // The home reel renders .reel__q; stage pages render their branch .card list.
+        // Either satisfies "at least one entry to move forward from here".
+        var count = await Page.Locator(".reel__q, .card").CountAsync();
+        Assert.True(count >= 1, $"Expected at least one entry, found {count}.");
     }
 
     [Then("I should see the not found page")]

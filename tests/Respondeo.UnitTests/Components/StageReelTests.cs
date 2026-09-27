@@ -27,11 +27,11 @@ public class StageReelTests : TestContext
     private IRenderedComponent<StageReel> Render(IReadOnlyList<StageReel.ReelStage> stages) => RenderComponent<StageReel>(p => p.Add(c => c.Stages, stages));
 
     [Fact]
-    public void Renders_a_card_for_each_stage()
+    public void Renders_a_question_for_each_stage()
     {
         var cut = Render(ThreeStages());
 
-        Assert.Equal(3, cut.FindAll("a.stage-card").Count);
+        Assert.Equal(3, cut.FindAll("a.reel__q").Count);
     }
 
     [Fact]
@@ -39,31 +39,19 @@ public class StageReelTests : TestContext
     {
         var cut = Render(ThreeStages());
 
-        // The reel walks left-to-right: Stage 1 is the FIRST card in the DOM, the final stage sits LAST.
-        var labels = cut.FindAll(".stage-card__label").Select(l => l.TextContent).ToList();
-        Assert.Contains("Why God?", labels[0]);
-        Assert.Contains("Why Jesus?", labels[1]);
-        Assert.Contains("Why the Church?", labels[2]);
+        // The reel walks left-to-right: Stage 1 is the FIRST question in the DOM, the final stage sits LAST.
+        var questions = cut.FindAll(".reel__q-text").Select(l => l.TextContent).ToList();
+        Assert.Contains("God exists", questions[0]);
+        Assert.Contains("Jesus", questions[1]);
+        Assert.Contains("Church", questions[2]);
     }
 
     [Fact]
-    public void Numbers_the_eyebrows_in_natural_order()
+    public void Links_each_question_to_its_stage_slug()
     {
         var cut = Render(ThreeStages());
 
-        var eyebrows = cut.FindAll(".stage-card__eyebrow").Select(e => e.TextContent.Trim()).ToList();
-        // DOM is left-to-right in forward order, so the numbering counts up as you read the markup.
-        Assert.Equal("Stage 1 of 3", eyebrows[0]);
-        Assert.Equal("Stage 2 of 3", eyebrows[1]);
-        Assert.Equal("Stage 3 of 3", eyebrows[2]);
-    }
-
-    [Fact]
-    public void Links_each_card_to_its_stage_slug()
-    {
-        var cut = Render(ThreeStages());
-
-        var hrefs = cut.FindAll("a.stage-card").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.reel__q").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("why-god", hrefs);
         Assert.Contains("why-jesus", hrefs);
         Assert.Contains("why-the-church", hrefs);

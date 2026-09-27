@@ -71,6 +71,14 @@
 }
 
 @media (max-width: 480px) {
+    /* Below this the three nowrap pills ("The Journey", "Summa Theologiae", "Miracles") no
+       longer fit on one line; allow them to wrap again rather than forcing a min-content
+       floor that pushes the whole page wider than the viewport (background bleed on the
+       right/bottom edges on very narrow screens). */
+    .pillarnav__list {
+        flex-wrap: wrap;
+    }
+
     .pillarnav__link {
         font-size: 0.78rem;
         letter-spacing: 0.02em;

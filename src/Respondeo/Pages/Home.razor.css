@@ -26,6 +26,19 @@
     color: var(--ink-soft);
 }
 
+/* ---------- Reel prompt ----------
+   A quiet cue above the journey reel that tells the reader what to do with it:
+   scan the questions and pick the one that fits where they honestly stand. */
+.reel__prompt {
+    text-align: center;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    /* Pull up under the hero; the reel below carries the spacing to the questions. */
+    margin: -0.75rem 0 0;
+}
+
 /* ---------- Browse all ---------- */
 .home__browse {
     display: flex;

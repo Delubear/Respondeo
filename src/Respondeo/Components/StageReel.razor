@@ -9,25 +9,31 @@
 
 <div class="reel-wrap">
     <div class="reel" role="list" tabindex="0" aria-label="The journey, stage by stage. Use the arrow keys to move between stages." @ref="_reel">
-        @for (var i = 0; i < Stages.Count; i++)
+        @foreach (var stage in Stages)
         {
-            var stage = Stages[i];
+            var prompt = PromptFor(stage.Slug);
             <div class="reel__step" role="listitem">
-                <StageCard Href="@stage.Slug"
-                           Icon="@Emblems.ForStage(stage.Slug)"
-                           Label="@stage.Node.Title"
-                           Eyebrow="@($"Stage {i + 1} of {Stages.Count}")"
-                           Prompt="@stage.Node.Summary" />
+                <a class="reel__q" href="@ResolveHref(stage.Slug)">
+                    <span class="reel__q-text">@prompt.Question</span>
+                    @if (!string.IsNullOrWhiteSpace(prompt.Subtext))
+                    {
+                        <span class="reel__q-sub">@prompt.Subtext</span>
+                    }
+                    <span class="reel__q-cue" aria-hidden="true">
+                        <span class="reel__q-cue-label">Begin the inquiry</span>
+                        <span class="reel__q-cue-arrow"></span>
+                    </span>
+                </a>
             </div>
         }
     </div>
 
     <button type="button" class="reel__hint reel__hint--prev" @onclick="ScrollPrevAsync" aria-label="Show the previous stage">
         <span class="reel__chevron"></span>
-        <span class="reel__hint-label">Earlier steps</span>
+        <span class="reel__hint-label">Back</span>
     </button>
     <button type="button" class="reel__hint reel__hint--next" @onclick="ScrollNextAsync" aria-label="Show the next stage">
-        <span class="reel__hint-label">Keep walking</span>
+        <span class="reel__hint-label">Next</span>
         <span class="reel__chevron"></span>
     </button>
 
@@ -91,4 +97,40 @@
 
     /// <summary>A single stage in the reel: its slug (route) and its landing node.</summary>
     public sealed record ReelStage(string Slug, ContentNode Node);
+
+    /// <summary>An inquisitive, self-locating prompt for a stage: a headline question and optional subtext.</summary>
+    private sealed record StagePrompt(string Question, string? Subtext);
+
+    // Authored hrefs may carry a leading slash; a root-absolute href ignores <base href> and would
+    // escape the app's sub-path when hosted under one. Trim it so the link resolves relative to base.
+    private static string ResolveHref(string slug) => slug.TrimStart('/');
+
+    // The reel is a self-locating guide: instead of naming each stage, we ask a second-person
+    // question so a reader can recognise where they honestly stand and step in there. These are
+    // intentionally hand-authored here (not drawn from content front matter) so the invitation can
+    // be tuned independently of the stage articles' own titles and summaries.
+    private static readonly IReadOnlyDictionary<string, StagePrompt> Prompts =
+        new Dictionary<string, StagePrompt>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["why-god"] = new(
+                "Do you wonder whether God exists at all?",
+                "Maybe the material world seems like all there is — or you simply haven't decided."),
+            ["which-god"] = new(
+                "Convinced there's a God, but unsure which one?",
+                "You sense something is there, but not yet a face, a name, or a voice."),
+            ["why-jesus"] = new(
+                "Open to God, but is Jesus really who He claimed?",
+                "A teacher, a prophet — or God stepping into history?"),
+            ["why-the-church"] = new(
+                "You follow Christ — but why His Church?",
+                "You believe in Jesus, yet the Catholic Church still gives you pause."),
+            ["coming-home"] = new(
+                "Ready to take a step toward home?",
+                "Whether arriving, returning, or crossing over — here is how to begin."),
+        };
+
+    private static StagePrompt PromptFor(string slug) =>
+        Prompts.TryGetValue(ResolveHref(slug), out var prompt)
+            ? prompt
+            : new StagePrompt(ResolveHref(slug), null);
 }

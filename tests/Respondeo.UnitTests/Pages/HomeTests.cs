@@ -40,20 +40,20 @@ public class HomeTests : TestContext
     }
 
     [Fact]
-    public void Renders_a_card_for_each_stage()
+    public void Renders_a_question_for_each_stage()
     {
         var cut = RenderComponent<Home>();
 
-        var cards = cut.FindAll("a.stage-card");
-        Assert.Equal(2, cards.Count);
+        var questions = cut.FindAll("a.reel__q");
+        Assert.Equal(2, questions.Count);
     }
 
     [Fact]
-    public void Stage_cards_link_to_their_stage_page()
+    public void Stage_questions_link_to_their_stage_page()
     {
         var cut = RenderComponent<Home>();
 
-        var hrefs = cut.FindAll("a.stage-card").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.reel__q").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("why-god", hrefs);
         Assert.Contains("why-jesus", hrefs);
     }
