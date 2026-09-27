@@ -177,6 +177,3 @@ precache everything, so there is nothing left to fetch at runtime.
   affect users or offline behaviour.
 - **Note.** The offline install includes the full Summa corpus, so the first install downloads a
   larger payload in exchange for complete offline access.
-
-
-
