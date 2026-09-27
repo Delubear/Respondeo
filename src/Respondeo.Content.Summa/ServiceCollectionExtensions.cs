@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Respondeo.Content.Abstractions;
 using Respondeo.Content.Summa.Services;
 
 namespace Respondeo.Content.Summa;
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddRespondeoSumma(this IServiceCollection services)
     {
         services.AddScoped<ISummaService, SummaService>();
+        services.AddSingleton<ISummaPartMap, SummaPartMap>();
         return services;
     }
 }

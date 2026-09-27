@@ -12,6 +12,10 @@
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\Respondeo.Content.Abstractions\Respondeo.Content.Abstractions.csproj" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4summa_4summa-index_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

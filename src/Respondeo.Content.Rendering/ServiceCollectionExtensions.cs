@@ -12,10 +12,13 @@ public static class ServiceCollectionExtensions
 {
     /// <summary>
     /// Registers the <see cref="IContentHtmlRenderer"/> implementation as a singleton (it is stateless).
+    /// Also registers the <see cref="ISummaReferenceRenderer"/> implementation, which resolves part
+    /// labels/slugs through <see cref="ISummaPartMap"/> (registered by the Summa feature).
     /// </summary>
     public static IServiceCollection AddRespondeoContentRendering(this IServiceCollection services)
     {
         services.AddSingleton<IContentHtmlRenderer, MarkdigContentHtmlRenderer>();
+        services.AddSingleton<ISummaReferenceRenderer, SummaReferenceRenderer>();
         return services;
     }
 }

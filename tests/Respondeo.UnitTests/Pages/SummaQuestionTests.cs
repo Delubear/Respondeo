@@ -3,6 +3,8 @@ using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Respondeo.Content.Abstractions;
+using Respondeo.Content.Rendering;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Services;
 using Respondeo.Services;
@@ -58,6 +60,7 @@ public class SummaQuestionTests : TestContext
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
         Services.AddSingleton<ISummaService>(new SummaService(http));
+        Services.AddSingleton<ISummaReferenceRenderer>(new SummaReferenceRenderer(new SummaPartMap()));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
     }
 

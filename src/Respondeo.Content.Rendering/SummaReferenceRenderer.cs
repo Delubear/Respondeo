@@ -1,20 +1,25 @@
 using System.Text.RegularExpressions;
-using Respondeo.Content.Summa;
+using Respondeo.Content.Abstractions;
 
-namespace Respondeo.Services;
+namespace Respondeo.Content.Rendering;
 
 /// <summary>
 /// Expands the neutral placeholders emitted by the Summa importer into HTML at render time. The
 /// importer writes tokens instead of baking final markup, so link routing, wording and the styling
-/// of the classic article section cues live here in the app and can change without regenerating the
-/// corpus. Two token families are handled:
+/// of the classic article section cues live here and can change without regenerating the corpus.
+/// Part labels/slugs are resolved through <see cref="ISummaPartMap"/> so this renderer stays free of
+/// any dependency on the Summa corpus project. Two token families are handled:
 /// <list type="bullet">
 /// <item><c>{{sref|kind|partId|q|a}}</c> — a cross-reference, rendered as an anchor.</item>
 /// <item><c>{{scue|kind|number?}}</c> — an Objection/Reply/On the contrary/I answer that cue.</item>
 /// </list>
 /// </summary>
-public static partial class SummaReferenceRenderer
+internal sealed partial class SummaReferenceRenderer : ISummaReferenceRenderer
 {
+    private readonly ISummaPartMap _parts;
+
+    public SummaReferenceRenderer(ISummaPartMap parts) => _parts = parts;
+
     // Matches a single reference placeholder: {{sref|<kind>|<partId>|<q>|<a>}} where <a> may be
     // empty (question-only) or a comma-separated list of article numbers (multi-article citation).
     [GeneratedRegex(@"\{\{sref\|(?<kind>qp|q|a)\|(?<part>[a-z0-9]+)\|(?<q>\d+)\|(?<a>[\d,]*)\}\}", RegexOptions.Compiled)]
@@ -39,19 +44,14 @@ public static partial class SummaReferenceRenderer
     private static partial Regex CiteRegex();
 
     // Display label for a reference that points at another part (e.g. p2b -> "II-II"). Sourced from
-    // the shared SummaParts registry so labels can be re-styled without regenerating the corpus.
-    private static string PartLabel(string partId) => SummaParts.LabelForKey(partId);
+    // the injected part map so labels can be re-styled without regenerating the corpus.
+    private string PartLabel(string partId) => _parts.LabelForKey(partId);
 
     // Public URL slug for a stable part key (e.g. p1 -> "prima"), used to build hrefs.
-    private static string PartSlug(string partId) => SummaParts.SlugForKey(partId);
+    private string PartSlug(string partId) => _parts.SlugForKey(partId);
 
-    /// <summary>
-    /// Replaces every reference and section-cue placeholder in the given HTML. Returns the input
-    /// unchanged when it contains no tokens. When <paramref name="articleNumber"/> is supplied, the
-    /// section cues emit stable in-page anchor ids (e.g. "article-3-objection-2", "article-3-contra")
-    /// so cross-references can deep-link to them.
-    /// </summary>
-    public static string Expand(string? html, int? articleNumber = null)
+    /// <inheritdoc />
+    public string Expand(string? html, int? articleNumber = null)
     {
         if (string.IsNullOrEmpty(html) || !html.Contains("{{", StringComparison.Ordinal))
         {
@@ -65,7 +65,7 @@ public static partial class SummaReferenceRenderer
         return html;
     }
 
-    private static string ExpandReferences(string html)
+    private string ExpandReferences(string html)
     {
         if (!html.Contains("{{sref|", StringComparison.Ordinal))
         {
@@ -117,7 +117,7 @@ public static partial class SummaReferenceRenderer
     private static string Anchor(string href, string display) =>
         $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
 
-    private static string ExpandCitations(string html)
+    private string ExpandCitations(string html)
     {
         if (!html.Contains("{{scite|", StringComparison.Ordinal))
         {
@@ -149,7 +149,7 @@ public static partial class SummaReferenceRenderer
         });
     }
 
-    private static string ExpandObjections(string html)
+    private string ExpandObjections(string html)
     {
         if (!html.Contains("{{sobj|", StringComparison.Ordinal))
         {
