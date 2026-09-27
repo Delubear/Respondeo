@@ -1,7 +1,7 @@
 <Project>
 
   <!--
-	Regenerate wwwroot/sitemap.xml from the content manifests before every build.
+	Regenerate wwwroot/sitemap.xml from the content manifests.
 
 	The sitemap must list the app's real, crawlable routes, and those routes derive from the Summa
 	part slug mapping (SummaParts) plus the shipped content manifests. Rather than duplicate that
@@ -14,13 +14,18 @@
 	in-process <MSBuild> task avoids that entirely and does not pollute the WASM app with a
 	ProjectReference to an Exe.
 
+	Opt-in only: this runs ONLY when GenerateSitemapOnBuild=true, which the deploy pipeline sets on
+	its `dotnet publish` step. Regular local/dev builds do not regenerate the sitemap. The file is a
+	generated CI artifact (NOT tracked in git — see .gitignore); it is written fresh into the
+	published output at deploy time.
+
 	It runs BeforeTargets="BeforeBuild" so the freshly written wwwroot/sitemap.xml is picked up as a
 	static web asset and published to the site root. The generator no-ops (leaves the file untouched)
-	when nothing changed, so it does not defeat incremental-build up-to-date checks in practice.
-
-	Skipped during design-time / IntelliSense builds so it does not run on every editor pass.
+	when nothing changed.
   -->
   <PropertyGroup>
+	<!-- Off by default; the deploy workflow passes -p:GenerateSitemapOnBuild=true on publish. -->
+	<GenerateSitemapOnBuild Condition="'$(GenerateSitemapOnBuild)' == ''">false</GenerateSitemapOnBuild>
 	<SitemapGeneratorProject>$(MSBuildThisFileDirectory)..\..\..\build\Respondeo.SitemapGenerator\Respondeo.SitemapGenerator.csproj</SitemapGeneratorProject>
 	<SitemapGeneratorDll>$(MSBuildThisFileDirectory)..\..\..\build\Respondeo.SitemapGenerator\bin\$(Configuration)\net10.0\Respondeo.SitemapGenerator.dll</SitemapGeneratorDll>
 	<SitemapOutputPath>$(MSBuildProjectDirectory)\wwwroot\sitemap.xml</SitemapOutputPath>
@@ -31,7 +36,7 @@
 
   <Target Name="GenerateSitemap"
 		  BeforeTargets="BeforeBuild"
-		  Condition="'$(DesignTimeBuild)' != 'true' And '$(BuildingForLiveUnitTesting)' != 'true'">
+		  Condition="'$(GenerateSitemapOnBuild)' == 'true' And '$(DesignTimeBuild)' != 'true' And '$(BuildingForLiveUnitTesting)' != 'true'">
 	<Message Importance="high" Text="Generating sitemap.xml from content manifests..." />
 
 	<!-- In-process build of the generator (NOT `dotnet run`, which fails nested inside this build). -->

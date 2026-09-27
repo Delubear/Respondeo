@@ -90,7 +90,7 @@ jobs:
 
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
+        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release -p:GenerateSitemapOnBuild=true
 
       # The site is served from the custom apex domain (respondeo.faith), so it
       # lives at the domain root and <base href="/"> (as authored) is correct.

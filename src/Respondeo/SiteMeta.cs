@@ -22,7 +22,7 @@ public static class SiteMeta
     /// supply their own. Kept under ~160 characters so search engines do not truncate it.
     /// </summary>
     public const string DefaultDescription =
-        "The complete Summa Theologiae of St. Thomas Aquinas, plus reasoned answers to real questions about God, Christ, and the Church — browsable, searchable, and fully offline.";
+        "Real questions about God, Christ, and the Catholic Church, met with the reasoned answers of St. Thomas Aquinas. Browsable, searchable, and yours offline.";
 
     /// <summary>The site-relative path to the social preview image used for Open Graph / Twitter Cards.</summary>
     public const string SocialImagePath = "icon-512.png";

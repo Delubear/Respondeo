@@ -218,13 +218,17 @@ sitemap agree on the canonical origin, name, and default description.
   `SiteMeta.WebSiteJsonLd()` / `SiteMeta.ArticleJsonLd(...)`.
 - **robots.txt.** [`wwwroot/robots.txt`](src/Respondeo/wwwroot/robots.txt) allows all crawlers and
   points them at the sitemap.
-- **Sitemap.** [`wwwroot/sitemap.xml`](src/Respondeo/wwwroot/sitemap.xml) is generated at build time
-  by [`build/Respondeo.SitemapGenerator`](build/Respondeo.SitemapGenerator), which enumerates every
+- **Sitemap.** `wwwroot/sitemap.xml` is a **generated CI artifact, not source** — it is not tracked
+  in git (see [`.gitignore`](.gitignore)). It is produced by
+  [`build/Respondeo.SitemapGenerator`](build/Respondeo.SitemapGenerator), which enumerates every
   route from the content manifests and the shared `SummaParts` slug mapping (currently ~701 URLs).
   The generation is wired into the app build by
   [`build/GenerateSitemap.targets`](src/Respondeo/build/GenerateSitemap.targets) (imported from
   [`Respondeo.csproj`](src/Respondeo/Respondeo.csproj)): it builds the generator in-process with the
-  `<MSBuild>` task and runs the compiled DLL via `dotnet exec` before build/publish, so the sitemap
-  stays current without a nested `dotnet run`. The file is regenerated only when the content changes,
-  so unchanged builds produce no file churn. Do not hand-edit `sitemap.xml` — it is generated output.
+  `<MSBuild>` task and runs the compiled DLL via `dotnet exec`, so the sitemap stays current without
+  a nested `dotnet run`. The target is **opt-in**: it runs only when `GenerateSitemapOnBuild=true`,
+  which the deploy pipeline passes on its `dotnet publish` step (`-p:GenerateSitemapOnBuild=true`), so
+  the file is written fresh into the published output at deploy time. Regular local/dev builds skip it
+  entirely. To produce it locally (e.g. to inspect the output), run the generator directly or build
+  with `-p:GenerateSitemapOnBuild=true`.
 
