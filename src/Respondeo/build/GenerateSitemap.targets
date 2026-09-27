@@ -39,7 +39,14 @@
 		  Condition="'$(GenerateSitemapOnBuild)' == 'true' And '$(DesignTimeBuild)' != 'true' And '$(BuildingForLiveUnitTesting)' != 'true'">
 	<Message Importance="high" Text="Generating sitemap.xml from content manifests..." />
 
-	<!-- In-process build of the generator (NOT `dotnet run`, which fails nested inside this build). -->
+	<!-- The generator is NOT referenced by the app (it is invoked, not linked), so it is outside the
+		 app's restore graph. On a clean CI checkout its obj/project.assets.json does not exist yet,
+		 and a bare Build fails with NETSDK1004. Restore it in-process first, then build it. Both use
+		 the <MSBuild> task (NOT `dotnet run`/`dotnet restore`, which fail nested inside this build). -->
+	<MSBuild Projects="$(SitemapGeneratorProject)"
+			 Targets="Restore"
+			 Properties="Configuration=$(Configuration)" />
+
 	<MSBuild Projects="$(SitemapGeneratorProject)"
 			 Targets="Build"
 			 Properties="Configuration=$(Configuration)" />
