@@ -7,6 +7,7 @@
 @if (_node is not null)
 {
     <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
+    <SeoHead Title="@_node.Title" Description="@_node.Summary" Article="true" />
 }
 
 <Breadcrumb Crumbs="_breadcrumb.Ancestors" CurrentTitle="@_breadcrumb.CurrentTitle" ShowArticles="_fromArticles" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />

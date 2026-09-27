@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Components.Web
+@inject NavigationManager Nav
+
+@*
+    Emits per-page SEO / social metadata into <head> via HeadContent. This overrides the STATIC
+    baseline tags in wwwroot/index.html for JS-capable crawlers (e.g. Googlebot), giving each route
+    its own description, canonical URL, Open Graph, and Twitter Card values. Non-JS scrapers still
+    only see the static index.html baseline; that trade-off is accepted (no prerendering).
+
+    Usage:
+        <SeoHead Description="@node.Summary" />
+        <SeoHead Title="The Five Ways" Description="@node.Summary" JsonLd="@_articleJsonLd" />
+*@
+
+<HeadContent>
+    <meta name="description" content="@Meta" />
+    <link rel="canonical" href="@CanonicalUrl" />
+
+    <meta property="og:type" content="@OgType" />
+    <meta property="og:site_name" content="@SiteMeta.SiteName" />
+    <meta property="og:title" content="@FullTitle" />
+    <meta property="og:description" content="@Meta" />
+    <meta property="og:url" content="@CanonicalUrl" />
+    <meta property="og:image" content="@SiteMeta.SocialImageUrl" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="@FullTitle" />
+    <meta name="twitter:description" content="@Meta" />
+    <meta name="twitter:image" content="@SiteMeta.SocialImageUrl" />
+
+    @if (!string.IsNullOrWhiteSpace(JsonLd))
+    {
+        <script type="application/ld+json">@((MarkupString)JsonLd!)</script>
+    }
+    else if (Article)
+    {
+        <script type="application/ld+json">@((MarkupString)SiteMeta.ArticleJsonLd(FullTitle, Meta, CanonicalUrl))</script>
+    }
+</HeadContent>
+
+@code {
+    /// <summary>The page title (without the site suffix). Falls back to the site default.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>The meta description for this page. Falls back to the site default description.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>The Open Graph type, e.g. "website" or "article". Defaults to "article".</summary>
+    [Parameter] public string OgType { get; set; } = "article";
+
+    /// <summary>Optional pre-serialized JSON-LD to embed as a structured-data script.</summary>
+    [Parameter] public string? JsonLd { get; set; }
+
+    /// <summary>When true (and no explicit JsonLd is supplied), emits an Article structured-data node.</summary>
+    [Parameter] public bool Article { get; set; }
+
+    private string Meta =>
+        string.IsNullOrWhiteSpace(Description) ? SiteMeta.DefaultDescription : Description!.Trim();
+
+    private string FullTitle =>
+        string.IsNullOrWhiteSpace(Title) ? SiteMeta.DefaultTitle : $"{Title} — {SiteMeta.SiteName}";
+
+    // The canonical URL is the current route resolved against the production origin, so it stays
+    // correct regardless of the host the app is actually served from (localhost, preview, etc.).
+    private string CanonicalUrl
+    {
+        get
+        {
+            var relative = Nav.ToBaseRelativePath(Nav.Uri);
+            var withoutQuery = relative.Split('?', '#')[0];
+            return SiteMeta.AbsoluteUrl(withoutQuery);
+        }
+    }
+}

@@ -1,0 +1,7 @@
+# Respondeo — crawler directives.
+# The whole site is public and crawlable; the sitemap (regenerated at build time from the
+# content manifests) lists every canonical route to help search engines discover them.
+User-agent: *
+Allow: /
+
+Sitemap: https://respondeo.faith/sitemap.xml

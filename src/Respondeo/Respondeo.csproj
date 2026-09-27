@@ -25,6 +25,12 @@
   -->
   <Import Project="build\FingerprintAppStylesheet.targets" />
 
+  <!--
+    Regenerate wwwroot/sitemap.xml from the content manifests before build. Extracted to its own
+    file for readability; see build/GenerateSitemap.targets for the rationale.
+  -->
+  <Import Project="build\GenerateSitemap.targets" />
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />

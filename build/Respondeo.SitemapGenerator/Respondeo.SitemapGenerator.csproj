@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<OutputType>Exe</OutputType>
+	<TargetFramework>net10.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<!-- Developer/build-only tool: not shipped as part of the app, kept out of the solution's
+		 normal output. It is invoked by Respondeo.csproj to regenerate wwwroot/sitemap.xml. -->
+	<IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<!-- Reuse SummaParts so the storage-key -> URL-slug mapping (p1 -> prima) stays in one place
+		 and the sitemap URLs always match the app's real routes. -->
+	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
+  </ItemGroup>
+
+</Project>

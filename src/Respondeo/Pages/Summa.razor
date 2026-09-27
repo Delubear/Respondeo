@@ -8,6 +8,11 @@
 
 <PageTitle>@(_activePart is null ? "Summa Theologiae — Respondeo" : $"{_activePart.Title} — Summa Theologiae")</PageTitle>
 
+<SeoHead Title="@(_activePart?.Title ?? "Summa Theologiae")"
+         Description="@(_activePart is null
+             ? "Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance."
+             : $"Browse {_activePart.Title} of St. Thomas Aquinas's Summa Theologiae, question by question, with cross-references and guidance.")" />
+
 @if (_activePart is not null)
 {
     <Breadcrumb CurrentTitle="@_activePart.Title"

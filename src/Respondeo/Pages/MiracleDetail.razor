@@ -4,6 +4,11 @@
 
 <PageTitle>@(_miracle is null ? "Miracle" : $"{_miracle.Title} \u2014 Respondeo")</PageTitle>
 
+@if (_miracle is not null)
+{
+    <SeoHead Title="@_miracle.Title" Description="@_miracle.Summary" Article="true" />
+}
+
 <Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")"
             StageHref="miracles"
             StageLabel="Miracles" />
