@@ -42,6 +42,7 @@ jobs:
           filters: |
             code:
               - '**'
+              - '!README.md'
               - '!**/README.md'
               - '!**/TODO.md'
               - '!.github/copilot-instructions.md'
