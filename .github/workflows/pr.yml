@@ -31,9 +31,13 @@ jobs:
         id: paths
         uses: dorny/paths-filter@v3
         with:
-          # code=true when anything OTHER than project docs changed. Patterns are
-          # applied in order (last match wins): match everything, then un-match docs.
+          # code=true when anything OTHER than project docs changed. With
+          # predicate-quantifier=every, a file counts only if it matches EVERY
+          # pattern: it must match '**' AND not match any of the docs negations.
+          # Without this, the default 'some' quantifier makes the '!' patterns
+          # useless (every file matches '**'), so docs-only changes still ran.
           # Content markdown under wwwroot is website content and must still deploy.
+          predicate-quantifier: 'every'
           filters: |
             code:
               - '**'
