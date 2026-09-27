@@ -8,8 +8,10 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | --- | --- |
 | `Respondeo` | The Blazor WebAssembly front end (pages, components, styling). |
 | `Respondeo.Content.Abstractions` | Shared content contracts (`ContentNode` and related types). |
+| `Respondeo.Content.Rendering` | Shared rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
 | `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
+| `Respondeo.Content.Miracles` | The Miracles corpus and its models/service. |
 | `Respondeo.SummaImporter` | Console tool that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
 | `Respondeo.AcceptanceTests` | Reqnroll + Playwright end-to-end tests. |
@@ -78,6 +80,12 @@ corpus regeneration.
 
 When citing the Summa from Markdown content, follow the citation-style guidance in the content
 authoring guide: **[`src/Respondeo.Content.Markdown/README.md`](src/Respondeo.Content.Markdown/README.md)**.
+
+> **Future pillar idea — the Catechism of the Catholic Church.** Its numbered, cross-referenced
+> structure would map onto the Summa-style browsing layout very well and would make a great addition
+> as its own pillar. It is **not included today because the current English translation is still
+> under copyright**, so it cannot be shipped in this repository. If a public-domain or suitably
+> licensed text becomes available, it could be modelled after `Respondeo.Content.Summa`.
 
 ## Deployment
 

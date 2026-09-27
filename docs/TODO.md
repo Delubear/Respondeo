@@ -125,6 +125,21 @@ country, year, tags), parsed into a typed model and browsable by facet + free-te
 - [ ] Consider: canonization miracles / more incorruptibles
 - [ ] Consider: link the pillar from relevant journey articles (e.g. the Eucharist, the Resurrection)
 
+## Future / possible pillars
+
+Additional standalone, searchable pillars (like Miracles and the Summa) that would fit the same
+browse-by-facet + Summa-style reading layout. Not started; captured here as editorial intent.
+
+- [ ] **The Bible** — a browsable Scripture pillar (books → chapters → verses) with cross-references,
+  mapping naturally onto the Summa-style navigation. Would need a public-domain translation
+  (e.g. Douay–Rheims / Vulgate) to ship freely.
+- [ ] **The Catechism of the Catholic Church** — its numbered, cross-referenced paragraphs would map
+  onto the Summa-style layout very well. *Not now:* the current English translation is still under
+  copyright and cannot be shipped in this repository; revisit if a suitably licensed or public-domain
+  text becomes available.
+- [ ] **The Saints** — a searchable pillar of saints with typed facets (era, region, feast day,
+  patronage, state of life) and hand-authored profiles, close in shape to the Miracles pillar.
+
 ## Housekeeping
 
 - [ ] Remove or replace `test.md` placeholder in the manifest
