@@ -11,6 +11,16 @@ self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
+// A freshly installed worker parks in the "waiting" state until every tab using the old worker
+// is gone - which on an installed PWA can be a long time. When the page detects this waiting
+// worker it shows an "update available" prompt; clicking it posts { type: 'skip-waiting' } here so
+// the new worker activates immediately, then the page reloads on the resulting controllerchange.
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'skip-waiting') {
+        self.skipWaiting();
+    }
+});
+
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 

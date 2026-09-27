@@ -80,14 +80,60 @@
          On localhost we deliberately do NOT register and actively unregister any existing worker:
          a live service worker slows the WASM debug startup (long white screen) and makes Visual
          Studio hang when stopping the debugger, and a stale published worker can serve cached
-         assets that mask code/content changes. -->
+         assets that mask code/content changes. --><div id="pwa-update" class="pwa-update" role="status" aria-live="polite" hidden>
+        <span class="pwa-update__text">A new version is available.</span>
+        <button type="button" id="pwa-update-reload" class="pwa-update__reload">Reload</button>
+    </div>
     <script>
         if (['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
             navigator.serviceWorker?.getRegistrations().then(function (regs) {
                 regs.forEach(function (reg) { reg.unregister(); });
             });
-        } else {
-            navigator.serviceWorker?.register('service-worker.js');
+        } else if (navigator.serviceWorker) {
+            // A new published build produces a new service-worker-assets.js hash, so the browser
+            // installs a fresh worker that then parks in the "waiting" state. Rather than relying on
+            // the user closing every tab (unreliable on an installed PWA), we surface a small prompt
+            // as soon as a waiting worker exists and let the reader update on their own terms.
+            var reloading = false;
+            navigator.serviceWorker.addEventListener('controllerchange', function () {
+                // The new worker has taken control after skip-waiting; reload once to pick it up.
+                if (reloading) return;
+                reloading = true;
+                location.reload();
+            });
+
+            navigator.serviceWorker.register('service-worker.js').then(function (reg) {
+                function showPrompt(worker) {
+                    var banner = document.getElementById('pwa-update');
+                    var button = document.getElementById('pwa-update-reload');
+                    if (!banner || !button) return;
+                    banner.hidden = false;
+                    // Defer the class toggle so the transition runs after the element is shown.
+                    requestAnimationFrame(function () { banner.classList.add('is-visible'); });
+                    button.onclick = function () {
+                        button.disabled = true;
+                        worker.postMessage({ type: 'skip-waiting' });
+                    };
+                }
+
+                // A worker already waiting when the page loads (e.g. installed on a previous visit).
+                if (reg.waiting && navigator.serviceWorker.controller) {
+                    showPrompt(reg.waiting);
+                }
+
+                // A worker that finishes installing while the page is open.
+                reg.addEventListener('updatefound', function () {
+                    var installing = reg.installing;
+                    if (!installing) return;
+                    installing.addEventListener('statechange', function () {
+                        // Only prompt when there is an existing controller: a first-ever install has
+                        // no old version to replace, so there is nothing to update to.
+                        if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                            showPrompt(installing);
+                        }
+                    });
+                });
+            });
         }
     </script>
 </body>

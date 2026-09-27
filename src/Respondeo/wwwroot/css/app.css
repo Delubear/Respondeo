@@ -379,3 +379,57 @@ h1, h2, h3 {
     font-style: italic;
     color: var(--ink-soft);
 }
+
+/* ---------- PWA update prompt ---------- */
+/* Shown by index.html when a new service worker is waiting. Fixed to the bottom so it never
+   disrupts the reading column; hidden until the .is-visible class is added by the update script. */
+.pwa-update {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.75rem 1rem;
+    transform: translate(-50%, 150%);
+    background: var(--parchment);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1.5rem var(--shadow);
+    font-family: var(--serif);
+    font-size: 1rem;
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.pwa-update.is-visible {
+    transform: translate(-50%, 0);
+    opacity: 1;
+}
+
+.pwa-update__text {
+    color: var(--ink-soft);
+}
+
+.pwa-update__reload {
+    padding: 0.35rem 0.85rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 0.35rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pwa-update__reload:hover {
+    filter: brightness(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pwa-update {
+        transition: opacity 0.25s ease;
+    }
+}

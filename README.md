@@ -167,8 +167,19 @@ precache everything, so there is nothing left to fetch at runtime.
 - **Online-only extras.** Analytics (Cloudflare Web Analytics) is cross-origin and not precached;
   offline it simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under
   `wwwroot/fonts/`, so they are precached and render identically offline.
-- **Updates.** A new deploy changes the asset hashes, so the service worker updates its cache; users
-  pick up the new version after the worker updates (typically one reload).
+- **Updates.** A new deploy changes the asset hashes, so the browser installs a fresh service
+  worker that precaches the new build and then parks in the *waiting* state. Relying on the reader
+  to close every tab is unreliable (an installed PWA often keeps the old worker alive in the
+  background), so the app surfaces a small **"A new version is available. [Reload]"** prompt instead.
+  The detection and prompt wiring live inline in
+  [`wwwroot/index.html`](src/Respondeo/wwwroot/index.html): it watches for a waiting worker (and for
+  one that finishes installing while the page is open), and only prompts when an existing worker is
+  already in control, so a first-ever install shows no false prompt. Clicking **Reload** posts a
+  `skip-waiting` message that
+  [`service-worker.published.js`](src/Respondeo/wwwroot/service-worker.published.js) handles by
+  calling `self.skipWaiting()`; the resulting `controllerchange` triggers a single reload into the
+  new build. The banner styles (`.pwa-update`) are in
+  [`wwwroot/css/app.css`](src/Respondeo/wwwroot/css/app.css).
 - **Expected console warnings.** Once installed, DevTools may log preload messages for the framework
   files, e.g. *"a preload ... is found, but is not used because it is a cross-world service worker
   resource mismatch"* and *"preloaded ... but not used within a few seconds"*. These are benign:
