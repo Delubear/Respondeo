@@ -453,6 +453,10 @@ h1, h2, h3 {
     max-width: none;
     width: min(60rem, 100vw - 2.5rem);
     margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
+    /* The .discover__header already supplies the 1rem top padding (matching the Home hero). The
+       shared .discover/.prayer/.devotion rule adds another 1rem on top, which pushed the browse
+       header 1rem lower than the Inquiry hero. Zero it here so both pillars start at the same height. */
+    padding-top: 0;
 }
 
 .discover__header,
