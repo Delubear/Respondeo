@@ -446,10 +446,30 @@ h1, h2, h3 {
     padding: 1rem 0 3rem;
 }
 
+/* Browse listings (articles, prayers, devotions index) break out of the global narrow content
+   column so the filter sidebar and results can breathe, matching the Miracles/Summa pillar width.
+   The .prayer/.devotion detail pages above keep the narrower reading measure. */
+.credo {
+    max-width: none;
+    width: min(60rem, 100vw - 2.5rem);
+    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
+}
+
 .credo__header,
 .prayer__header,
 .devotion__header {
     margin-bottom: 1.5rem;
+}
+
+/* Center the Credo browse header and search to match the Miracles/Summa pillars. */
+.credo__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
 }
 
 .credo__eyebrow,
@@ -480,8 +500,14 @@ h1, h2, h3 {
     max-width: 42rem;
 }
 
+/* The Credo lede sits inside the centered header, so center it within its measure. */
+.credo__lede {
+    margin-inline: auto;
+}
+
 .credo__search {
     margin: 1.5rem 0;
+    text-align: center;
 }
 
 .credo__search-label {
@@ -492,8 +518,10 @@ h1, h2, h3 {
 }
 
 .credo__search-input {
+    display: block;
     width: 100%;
     max-width: 28rem;
+    margin-inline: auto;
     padding: 0.6rem 0.85rem;
     border: 1px solid var(--rule);
     border-radius: 0.4rem;
@@ -564,7 +592,7 @@ h1, h2, h3 {
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    padding: 1.25rem 1.5rem;
+    padding: 1.35rem 1.5rem;
     color: inherit;
     text-decoration: none;
     transition: background 0.15s ease;
@@ -575,6 +603,11 @@ h1, h2, h3 {
     background: var(--parchment);
     outline: none;
     text-decoration: none;
+}
+
+/* Subtle accent for rows that come from a different source (e.g. Inquiry articles among Credo ones). */
+.credo-row__link--accent {
+    box-shadow: inset 0.2rem 0 0 0 var(--accent);
 }
 
 .credo-row__emblem {
@@ -612,30 +645,33 @@ h1, h2, h3 {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.7rem;
 }
 
 .credo-row__title {
     font-family: var(--display);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    line-height: 1.25;
     color: var(--ink);
 }
 
 .credo-row__meta {
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--accent);
     border: 1px solid var(--rule);
     border-radius: 999px;
-    padding: 0.1rem 0.6rem;
+    padding: 0.12rem 0.65rem;
+    white-space: nowrap;
 }
 
 .credo-row__summary {
     display: block;
-    margin-top: 0.35rem;
+    margin-top: 0.4rem;
     color: var(--ink-soft);
-    line-height: 1.55;
+    line-height: 1.6;
+    max-width: 60ch;
 }
 
 .credo-row__cta {

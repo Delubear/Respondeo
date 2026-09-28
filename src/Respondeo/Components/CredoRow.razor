@@ -2,7 +2,7 @@
    summary, optional meta tag), and a trailing arrow. The whole row is one link. *@
 
 <li class="credo-row">
-    <a class="credo-row__link" href="@Href">
+    <a class="credo-row__link @(Accent ? "credo-row__link--accent" : null)" href="@Href">
         @if (!string.IsNullOrWhiteSpace(Icon))
         {
             <span class="credo-row__emblem" aria-hidden="true">
@@ -52,4 +52,7 @@
 
     /// <summary>The emblem name resolved via <see cref="Emblems.Path"/>.</summary>
     [Parameter] public string? Icon { get; set; }
+
+    /// <summary>When true, gives the row a subtle left accent border to set it apart (e.g. Inquiry articles among Credo ones).</summary>
+    [Parameter] public bool Accent { get; set; }
 }
