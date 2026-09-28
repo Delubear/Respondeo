@@ -3,11 +3,9 @@ using Respondeo.Content.Shared;
 namespace Respondeo;
 
 /// <summary>
-/// Builds the relative URLs for content nodes in one place, so every link site (cards,
-/// breadcrumbs, branch links) stays consistent. Nodes that belong to a stage are nested under
-/// the stage slug (e.g. <c>why-god/node/aquinas-five-ways</c>) so the URL reflects the section
-/// and the masthead tab lights up via its prefix match; nodes at the content root fall back to
-/// the flat <c>node/{id}</c> route.
+/// Builds the relative URLs for content nodes in one place, so every link site (cards, breadcrumbs, branch links) stays consistent.
+/// Nodes that belong to a stage are nested under the stage slug (e.g. <c>why-god/node/aquinas-five-ways</c>)
+/// so the URL reflects the section and the masthead tab lights up via its prefix match; nodes at the content root fall back to the flat <c>node/{id}</c> route.
 /// </summary>
 public static class ContentRoutes
 {
@@ -15,13 +13,11 @@ public static class ContentRoutes
     public static string NodeHref(ContentNode node) => NodeHref(node.Id, node.Stage);
 
     /// <summary>Builds the href for a node id and optional stage.</summary>
-    public static string NodeHref(string id, string? stage) =>
-        string.IsNullOrEmpty(stage) ? $"node/{id}" : $"{stage}/node/{id}";
+    public static string NodeHref(string id, string? stage) => string.IsNullOrEmpty(stage) ? $"node/{id}" : $"{stage}/node/{id}";
 
     /// <summary>
-    /// Builds the href for a Summa part landing page (the browse list filtered to one part),
-    /// e.g. <c>summa/part/prima</c>. Kept here so the Summa index page and breadcrumbs share one
-    /// source of truth for the part route, mirroring how nodes share <see cref="NodeHref(string, string?)"/>.
+    /// Builds the href for a Summa part landing page (the browse list filtered to one part), e.g. <c>summa/part/prima</c>.
+    /// Kept here so the Summa index page and breadcrumbs share one source of truth for the part route, mirroring how nodes share <see cref="NodeHref(string, string?)"/>.
     /// </summary>
     public static string SummaPartHref(string partSlug) => $"summa/part/{partSlug}";
 }

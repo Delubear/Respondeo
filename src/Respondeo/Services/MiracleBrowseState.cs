@@ -3,23 +3,17 @@ using Microsoft.AspNetCore.Components;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Remembers the miracles browse view — the search query and the selected facet filters (type,
-/// approval, region) — across page remounts, so leaving a miracle's detail page and pressing Back
-/// returns to the same filtered list. Resets itself when the visitor leaves the miracles area. The
-/// shared navigation lifecycle lives in <see cref="AreaBrowseState"/>.
+/// Remembers the miracles browse view — the search query and the selected facet filters (type, approval, region) — across page remounts,
+/// so leaving a miracle's detail page and pressing Back returns to the same filtered list.
+/// Resets itself when the visitor leaves the miracles area. The shared navigation lifecycle lives in <see cref="AreaBrowseState"/>.
 /// </summary>
 /// <remarks>
-/// The state is kept in memory rather than the URL: it is transient view state. It resets itself
-/// whenever the visitor navigates out of the miracles area (any route that is not <c>/miracles</c> or
-/// <c>/miracles/...</c>) so returning later starts fresh, while moving between the list and an
-/// individual miracle preserves it. This mirrors <see cref="SummaBrowseState"/>.
+/// The state is kept in memory rather than the URL: it is transient view state.
+/// It resets itself whenever the visitor navigates out of the miracles area (any route that is not <c>/miracles</c> or
+/// <c>/miracles/...</c>) so returning later starts fresh, while moving between the list and an individual miracle preserves it. This mirrors <see cref="SummaBrowseState"/>.
 /// </remarks>
-public sealed class MiracleBrowseState : AreaBrowseState
+public sealed class MiracleBrowseState(NavigationManager nav) : AreaBrowseState(nav, "miracles")
 {
-    public MiracleBrowseState(NavigationManager nav)
-        : base(nav, "miracles")
-    {
-    }
 
     /// <summary>The active free-text search query, or an empty string when browsing the full list.</summary>
     public string Query { get; set; } = string.Empty;
@@ -34,8 +28,7 @@ public sealed class MiracleBrowseState : AreaBrowseState
     public HashSet<string> Regions { get; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>True when any query or facet filter is active.</summary>
-    public bool HasActiveFilters =>
-        !string.IsNullOrWhiteSpace(Query) || Types.Count > 0 || Approvals.Count > 0 || Regions.Count > 0;
+    public bool HasActiveFilters => !string.IsNullOrWhiteSpace(Query) || Types.Count > 0 || Approvals.Count > 0 || Regions.Count > 0;
 
     /// <summary>Toggles a type facet on or off.</summary>
     public void ToggleType(string type) => Toggle(Types, type);

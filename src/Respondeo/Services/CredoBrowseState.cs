@@ -4,25 +4,17 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Remembers the transient browse state (search text and facet filters) for the Credo list pages so
-/// that returning to a list via the browser's Back button restores the visitor's search rather than
-/// a reset page. The scroll position is owned by JavaScript (<c>window.respondeoCredoBrowse</c>,
-/// backed by <c>sessionStorage</c>); this service coordinates the search text and clears both stores
-/// when the visitor leaves the Credo area. The shared navigation lifecycle lives in
+/// Remembers the transient browse state (search text and facet filters)
+/// for the Credo list pages so that returning to a list via the browser's Back button restores the visitor's search rather than a reset page.
+/// The scroll position is owned by JavaScript (<c>window.respondeoCredoBrowse</c>, backed by <c>sessionStorage</c>);
+/// this service coordinates the search text and clears both stores when the visitor leaves the Credo area. The shared navigation lifecycle lives in
 /// <see cref="AreaBrowseState"/>.
 /// </summary>
-public sealed class CredoBrowseState : AreaBrowseState
+public sealed class CredoBrowseState(NavigationManager nav, IJSRuntime js) : AreaBrowseState(nav, "credo")
 {
-    private readonly IJSRuntime _js;
     private readonly Dictionary<string, string> _queries = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HashSet<string>> _filters = new(StringComparer.Ordinal);
     private readonly HashSet<string> _keys = new(StringComparer.Ordinal);
-
-    public CredoBrowseState(NavigationManager nav, IJSRuntime js)
-        : base(nav, "credo")
-    {
-        _js = js;
-    }
 
     /// <summary>The remembered search query for <paramref name="key"/>, or empty if none.</summary>
     public string GetQuery(string key) => _queries.TryGetValue(key, out var q) ? q : string.Empty;
@@ -35,12 +27,10 @@ public sealed class CredoBrowseState : AreaBrowseState
     }
 
     /// <summary>
-    /// The remembered set of selected filter values for <paramref name="key"/> (e.g. the chosen
-    /// prayer categories), or an empty set if none. A composite key such as "prayers.category" lets a
-    /// single list page keep several independent facet selections.
+    /// The remembered set of selected filter values for <paramref name="key"/> (e.g. the chosen prayer categories), or an empty set if none.
+    /// A composite key such as "prayers.category" lets a single list page keep several independent facet selections.
     /// </summary>
-    public IReadOnlySet<string> GetFilter(string key) =>
-        _filters.TryGetValue(key, out var set) ? set : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    public IReadOnlySet<string> GetFilter(string key) => _filters.TryGetValue(key, out var set) ? set : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Records the current filter selection for <paramref name="key"/>.</summary>
     public void SetFilter(string key, IReadOnlySet<string> selected)
@@ -58,7 +48,7 @@ public sealed class CredoBrowseState : AreaBrowseState
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.
         foreach (var key in _keys)
         {
-            _ = _js.InvokeVoidAsync("respondeoCredoBrowse.clear", key);
+            _ = js.InvokeVoidAsync("respondeoCredoBrowse.clear", key);
         }
 
         _keys.Clear();

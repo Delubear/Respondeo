@@ -18,8 +18,8 @@ public interface IBreadcrumbTrail
     Task ClearAsync();
 
     /// <summary>
-    /// Records whether the visitor's current journey began from the /articles index, so the
-    /// breadcrumb can surface an Articles link only when that page was actually part of the route.
+    /// Records whether the visitor's current journey began from the /articles index,
+    /// so the breadcrumb can surface an Articles link only when that page was actually part of the route.
     /// </summary>
     Task SetArticlesOriginAsync(bool fromArticles);
 

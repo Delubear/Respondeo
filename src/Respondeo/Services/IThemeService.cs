@@ -10,8 +10,7 @@ public enum Theme
 }
 
 /// <summary>
-/// Reads and applies the visitor's preferred color <see cref="Theme"/>,
-/// persisting the choice across sessions.
+/// Reads and applies the visitor's preferred color <see cref="Theme"/>, persisting the choice across sessions.
 /// </summary>
 public interface IThemeService
 {

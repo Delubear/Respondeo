@@ -19,24 +19,22 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 var featureFlags = builder.Configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags();
 builder.Services.AddSingleton(featureFlags);
 
-// Shared Markdown-to-HTML rendering (Markdig lives here, behind IContentHtmlRenderer) used by
-// every content pillar so the embed directive vocabulary stays identical across the site.
+// Shared Markdown-to-HTML rendering (Markdig lives here,
+// behind IContentHtmlRenderer) used by every content pillar so the embed directive vocabulary stays identical across the site.
 builder.Services.AddRespondeoContentRendering();
 
 // Content is author-curated Markdown loaded once and cached for the app lifetime.
 // The parser and loader implementations are internal to Respondeo.Content.Markdown; the app depends only on IContentService.
 builder.Services.AddRespondeoContent();
 
-// The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa;
-// the app depends only on ISummaService.
+// The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa; the app depends only on ISummaService.
 builder.Services.AddRespondeoSumma();
 
-// The hand-authored catalog of Catholic miracles is shipped as static Markdown by
-// Respondeo.Content.Miracles; the app depends only on IMiracleService.
+// The hand-authored catalog of Catholic miracles is shipped as static Markdown by Respondeo.Content.Miracles; the app depends only on IMiracleService.
 builder.Services.AddRespondeoMiracles();
 
-// The hand-authored prayers, data-driven devotions, and deeper-dive articles for living the faith are
-// shipped as static content by Respondeo.Content.Credo; the app depends only on ICredoService.
+// The hand-authored prayers, data-driven devotions, and deeper-dive articles for living the faith are shipped as static content by Respondeo.Content.Credo;
+// the app depends only on ICredoService.
 builder.Services.AddRespondeoCredo();
 
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
@@ -51,12 +49,10 @@ builder.Services.AddScoped<NavigationIntent>();
 // Remembers search text and scroll position for the Credo browse lists across Back navigation.
 builder.Services.AddScoped<CredoBrowseState>();
 
-// Remembers the Summa browse/search view (search text + expanded parts/treatises) across page
-// remounts, resetting itself when the visitor leaves the Summa area.
+// Remembers the Summa browse/search view (search text + expanded parts/treatises) across page remounts, resetting itself when the visitor leaves the Summa area.
 builder.Services.AddScoped<SummaBrowseState>();
 
-// Remembers the miracles browse view (search text + selected facet filters) across page remounts,
-// resetting itself when the visitor leaves the miracles area.
+// Remembers the miracles browse view (search text + selected facet filters) across page remounts, resetting itself when the visitor leaves the miracles area.
 builder.Services.AddScoped<MiracleBrowseState>();
 
 await builder.Build().RunAsync();

@@ -1,10 +1,9 @@
 namespace Respondeo;
 
 /// <summary>
-/// Shared site-wide metadata used for SEO and social sharing (Open Graph / Twitter Cards) and by the
-/// build-time sitemap generator. This is the single source of truth for the site's public identity so
-/// the static tags in <c>index.html</c>, the per-page <see cref="Components.SeoHead"/> overrides, and
-/// the generated <c>sitemap.xml</c> all agree on the canonical origin, name, and default description.
+/// Shared site-wide metadata used for SEO and social sharing (Open Graph / Twitter Cards) and by the build-time sitemap generator.
+/// This is the single source of truth for the site's public identity so the static tags in <c>index.html</c>, the per-page <see cref="Components.SeoHead"/> overrides,
+/// and the generated <c>sitemap.xml</c> all agree on the canonical origin, name, and default description.
 /// </summary>
 public static class SiteMeta
 {
@@ -52,8 +51,7 @@ public static class SiteMeta
         });
 
     /// <summary>
-    /// Serializes a JSON-LD <c>Article</c> node for a content page, using the canonical URL, title,
-    /// and description so rich results can attribute the piece to the site.
+    /// Serializes a JSON-LD <c>Article</c> node for a content page, using the canonical URL, title, and description so rich results can attribute the piece to the site.
     /// </summary>
     public static string ArticleJsonLd(string title, string description, string canonicalUrl) =>
         System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object?>

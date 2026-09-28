@@ -1,16 +1,14 @@
 namespace Respondeo;
 
 /// <summary>
-/// Central source of truth for the small section emblems (SVG path data) used across the
-/// site. Both the Home reel cards and the "Next Stage" cards resolve icons from here so a
-/// section always shows the same symbol wherever it appears.
+/// Central source of truth for the small section emblems (SVG path data) used across the site.
+/// Both the Home reel cards and the "Next Stage" cards resolve icons from here so a section always shows the same symbol wherever it appears.
 /// </summary>
 public static class Emblems
 {
     /// <summary>
-    /// Maps an emblem name (e.g. from a next-stage <c>icon:</c> front-matter value) to its
-    /// SVG path data. The question mark is the default so an unspecified transition reads as
-    /// an open question rather than a fixed symbol.
+    /// Maps an emblem name (e.g. from a next-stage <c>icon:</c> front-matter value) to its SVG path data.
+    /// The question mark is the default so an unspecified transition reads as an open question rather than a fixed symbol.
     /// </summary>
     public static string Path(string? icon) => (icon?.Trim().ToLowerInvariant()) switch
     {

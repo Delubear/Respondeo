@@ -1,11 +1,10 @@
 namespace Respondeo.Services;
 
 /// <summary>
-/// Deploy-time toggles for optional site features. Bound from the "FeatureFlags" section of
-/// <c>wwwroot/appsettings.json</c> and registered as a singleton, so flipping a flag there (or in an
-/// environment-specific <c>appsettings.{Environment}.json</c>) turns the feature off for a deploy
-/// without a code change. Every flag defaults to <see langword="true"/> so features are on unless
-/// explicitly disabled.
+/// Deploy-time toggles for optional site features.
+/// Bound from the "FeatureFlags" section of <c>wwwroot/appsettings.json</c> and registered as a singleton,
+/// so flipping a flag there (or in an environment-specific <c>appsettings.{Environment}.json</c>) turns the feature off for a deploy without a code change.
+/// Every flag defaults to <see langword="true"/> so features are on unless explicitly disabled.
 /// </summary>
 public sealed class FeatureFlags
 {
