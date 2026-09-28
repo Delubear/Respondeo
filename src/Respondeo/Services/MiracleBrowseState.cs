@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Components;
-using Respondeo.Content.Miracles;
 
 namespace Respondeo.Services;
 
 /// <summary>
 /// Remembers the miracles browse view — the search query and the selected facet filters (type,
 /// approval, region) — across page remounts, so leaving a miracle's detail page and pressing Back
-/// returns to the same filtered list. Registered as a scoped service, which in Blazor WebAssembly
-/// lives for the whole app session, so the state outlives the repeated remounts of the browse page.
+/// returns to the same filtered list. Resets itself when the visitor leaves the miracles area. The
+/// shared navigation lifecycle lives in <see cref="AreaBrowseState"/>.
 /// </summary>
 /// <remarks>
 /// The state is kept in memory rather than the URL: it is transient view state. It resets itself
@@ -15,14 +14,11 @@ namespace Respondeo.Services;
 /// <c>/miracles/...</c>) so returning later starts fresh, while moving between the list and an
 /// individual miracle preserves it. This mirrors <see cref="SummaBrowseState"/>.
 /// </remarks>
-public sealed class MiracleBrowseState : IDisposable
+public sealed class MiracleBrowseState : AreaBrowseState
 {
-    private readonly NavigationManager _nav;
-
     public MiracleBrowseState(NavigationManager nav)
+        : base(nav, "miracles")
     {
-        _nav = nav;
-        _nav.LocationChanged += OnLocationChanged;
     }
 
     /// <summary>The active free-text search query, or an empty string when browsing the full list.</summary>
@@ -67,17 +63,5 @@ public sealed class MiracleBrowseState : IDisposable
         }
     }
 
-    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
-    {
-        var path = new Uri(e.Location).AbsolutePath.Trim('/');
-        var inMiracles = path.Equals("miracles", StringComparison.OrdinalIgnoreCase)
-            || path.StartsWith("miracles/", StringComparison.OrdinalIgnoreCase);
-
-        if (!inMiracles)
-        {
-            Clear();
-        }
-    }
-
-    public void Dispose() => _nav.LocationChanged -= OnLocationChanged;
+    protected override void OnExitArea() => Clear();
 }

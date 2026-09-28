@@ -5,8 +5,8 @@ namespace Respondeo.Services;
 
 /// <summary>
 /// Remembers the Summa search text across page remounts so it survives leaving the page and pressing
-/// Back. Registered as a scoped service, which in Blazor WebAssembly lives for the whole app session,
-/// so the state outlives the repeated remounts of <c>Summa.razor</c> that happen on navigation.
+/// Back. Resets itself when the visitor leaves the Summa area. The shared navigation lifecycle lives
+/// in <see cref="AreaBrowseState"/>.
 /// </summary>
 /// <remarks>
 /// Which parts and treatises are expanded is deliberately NOT tracked here. A <c>&lt;details&gt;</c>
@@ -23,37 +23,20 @@ namespace Respondeo.Services;
 /// question preserves it.
 /// </para>
 /// </remarks>
-public sealed class SummaBrowseState : IDisposable
+public sealed class SummaBrowseState : AreaBrowseState
 {
-    private readonly NavigationManager _nav;
     private readonly IJSRuntime _js;
 
     public SummaBrowseState(NavigationManager nav, IJSRuntime js)
+        : base(nav, "summa")
     {
-        _nav = nav;
         _js = js;
-        _nav.LocationChanged += OnLocationChanged;
     }
 
     /// <summary>The active search query, or an empty string when browsing the full list.</summary>
     public string Query { get; set; } = string.Empty;
 
-    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
-    {
-        var path = new Uri(e.Location).AbsolutePath.Trim('/');
-        var inSumma = path.Equals("summa", StringComparison.OrdinalIgnoreCase)
-            || path.StartsWith("summa/", StringComparison.OrdinalIgnoreCase);
-
-        // Individual question pages live at summa/{id}; those still count as "in Summa" so the browse
-        // state is kept while drilling into a question and coming back. Only a route outside the
-        // Summa area clears it.
-        if (!inSumma)
-        {
-            Reset();
-        }
-    }
-
-    private void Reset()
+    protected override void OnExitArea()
     {
         Query = string.Empty;
 
@@ -61,6 +44,4 @@ public sealed class SummaBrowseState : IDisposable
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.
         _ = _js.InvokeVoidAsync("respondeoSummaBrowse.clear");
     }
-
-    public void Dispose() => _nav.LocationChanged -= OnLocationChanged;
 }

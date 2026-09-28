@@ -11,15 +11,6 @@ window.respondeoSummaBrowse = (function () {
     var KEY = 'respondeo.summaBrowseOpen';
     var SCROLL_KEY = 'respondeo.summaBrowseScroll';
 
-    // Take manual control of scroll restoration. By default the browser restores scroll on Back/
-    // Forward itself, but because the Summa content renders asynchronously after remount there is no
-    // page height at that moment, so the browser "restores" to 0 - and it does so AFTER our own
-    // restore poll runs, stomping the correct position. Owning it manually lets restoreScroll() be
-    // the single source of truth.
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
     function readSet() {
         try {
             var raw = sessionStorage.getItem(KEY);
@@ -64,68 +55,11 @@ window.respondeoSummaBrowse = (function () {
                 writeSet(ids);
             }
         },
-        // Restores the remembered scroll position. Two things fight us here, so this does more than
-        // a single scrollTo:
-        //  1. The Summa content renders asynchronously after remount, so the page has no height yet
-        //     when Blazor first calls this - an early scrollTo would clamp to 0.
-        //  2. Blazor's <FocusOnNavigate> focuses #content just after navigation (including Back), and
-        //     focusing that container scrolls it into view, snapping us back to the top a frame or
-        //     two AFTER we've restored (the visible "flicker then reset").
-        // So we keep re-applying the target for a short settle window, overriding that focus reset,
-        // then stop. If the visitor starts scrolling themselves we bail immediately so we never fight
-        // their input.
+        // Restores the remembered scroll position by delegating to the shared restore helper
+        // (window.respondeoScrollRestore), which polls across a settle window to survive both the
+        // async content height and Blazor's <FocusOnNavigate> reset. See scroll-store.js.
         restoreScroll: function () {
-            var target = readScroll();
-            if (target <= 0) {
-                return;
-            }
-
-            var settleFrames = 20;      // ~330ms: long enough to outlast FocusOnNavigate's reset.
-            var maxFrames = 90;         // ~1.5s hard cap while waiting for async height.
-            var frame = 0;
-            var reached = 0;
-            var userScrolled = false;
-
-            function onUserScroll() {
-                // A real user gesture (wheel/touch/key) means hands off - stop enforcing.
-                userScrolled = true;
-            }
-            window.addEventListener('wheel', onUserScroll, { passive: true, once: true });
-            window.addEventListener('touchmove', onUserScroll, { passive: true, once: true });
-            window.addEventListener('keydown', onUserScroll, { once: true });
-
-            function cleanup() {
-                window.removeEventListener('wheel', onUserScroll);
-                window.removeEventListener('touchmove', onUserScroll);
-                window.removeEventListener('keydown', onUserScroll);
-            }
-
-            (function tick() {
-                if (userScrolled) {
-                    cleanup();
-                    return;
-                }
-
-                var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                var clamped = Math.min(target, Math.max(maxScroll, 0));
-                window.scrollTo(0, clamped);
-                frame++;
-
-                // Once the page is tall enough to honour the target, keep enforcing for a settle
-                // window to override the post-navigation focus reset, then stop.
-                if (maxScroll >= target) {
-                    reached++;
-                    if (reached >= settleFrames) {
-                        cleanup();
-                        return;
-                    }
-                } else if (frame >= maxFrames) {
-                    cleanup();
-                    return;
-                }
-
-                requestAnimationFrame(tick);
-            })();
+            window.respondeoScrollRestore(readScroll());
         },
         clear: function () {
             sessionStorage.removeItem(KEY);

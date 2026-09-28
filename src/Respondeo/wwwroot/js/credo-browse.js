@@ -10,12 +10,6 @@
 window.respondeoCredoBrowse = (function () {
     var SCROLL_PREFIX = 'respondeo.credoBrowseScroll.';
 
-    // Own scroll restoration ourselves; the default browser restore fires after our poll and, because
-    // the list renders asynchronously after remount, would "restore" to 0.
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
     function readScroll(key) {
         try {
             var raw = sessionStorage.getItem(SCROLL_PREFIX + key);
@@ -34,58 +28,11 @@ window.respondeoCredoBrowse = (function () {
                 sessionStorage.setItem(SCROLL_PREFIX + key, String(Math.round(window.scrollY)));
             } catch (e) { }
         },
-        // Restores the remembered scroll position for a list. Polls across animation frames until the
-        // async content is tall enough to honour the target, then keeps enforcing for a short settle
-        // window to override the post-navigation focus reset. Bails immediately on real user input.
+        // Restores the remembered scroll position for a list by delegating to the shared restore
+        // helper (window.respondeoScrollRestore), which polls across a settle window to survive both
+        // the async content height and Blazor's <FocusOnNavigate> reset. See scroll-store.js.
         restoreScroll: function (key) {
-            var target = readScroll(key);
-            if (target <= 0) {
-                return;
-            }
-
-            var settleFrames = 20;      // ~330ms: long enough to outlast FocusOnNavigate's reset.
-            var maxFrames = 90;         // ~1.5s hard cap while waiting for async height.
-            var frame = 0;
-            var reached = 0;
-            var userScrolled = false;
-
-            function onUserScroll() {
-                userScrolled = true;
-            }
-            window.addEventListener('wheel', onUserScroll, { passive: true, once: true });
-            window.addEventListener('touchmove', onUserScroll, { passive: true, once: true });
-            window.addEventListener('keydown', onUserScroll, { once: true });
-
-            function cleanup() {
-                window.removeEventListener('wheel', onUserScroll);
-                window.removeEventListener('touchmove', onUserScroll);
-                window.removeEventListener('keydown', onUserScroll);
-            }
-
-            (function tick() {
-                if (userScrolled) {
-                    cleanup();
-                    return;
-                }
-
-                var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                var clamped = Math.min(target, Math.max(maxScroll, 0));
-                window.scrollTo(0, clamped);
-                frame++;
-
-                if (maxScroll >= target) {
-                    reached++;
-                    if (reached >= settleFrames) {
-                        cleanup();
-                        return;
-                    }
-                } else if (frame >= maxFrames) {
-                    cleanup();
-                    return;
-                }
-
-                requestAnimationFrame(tick);
-            })();
+            window.respondeoScrollRestore(readScroll(key));
         },
         // Forgets the remembered scroll for a list (used when the visitor leaves the Credo area).
         clear: function (key) {

@@ -1,30 +1,27 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
 
 namespace Respondeo.Services;
 
 /// <summary>
-/// Remembers the transient browse state (search text) for the Credo list pages so that returning to
-/// a list via the browser's Back button restores the visitor's search rather than a reset page. The
-/// scroll position is owned by JavaScript (<c>window.respondeoCredoBrowse</c>, backed by
-/// <c>sessionStorage</c>); this service coordinates the search text and clears both stores when the
-/// visitor leaves the Credo area. Registered as a scoped service, which in Blazor WebAssembly lives
-/// for the whole app session, so it outlives the repeated remounts of the browse pages.
+/// Remembers the transient browse state (search text and facet filters) for the Credo list pages so
+/// that returning to a list via the browser's Back button restores the visitor's search rather than
+/// a reset page. The scroll position is owned by JavaScript (<c>window.respondeoCredoBrowse</c>,
+/// backed by <c>sessionStorage</c>); this service coordinates the search text and clears both stores
+/// when the visitor leaves the Credo area. The shared navigation lifecycle lives in
+/// <see cref="AreaBrowseState"/>.
 /// </summary>
-public sealed class CredoBrowseState : IDisposable
+public sealed class CredoBrowseState : AreaBrowseState
 {
-    private readonly NavigationManager _nav;
     private readonly IJSRuntime _js;
     private readonly Dictionary<string, string> _queries = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HashSet<string>> _filters = new(StringComparer.Ordinal);
     private readonly HashSet<string> _keys = new(StringComparer.Ordinal);
 
     public CredoBrowseState(NavigationManager nav, IJSRuntime js)
+        : base(nav, "credo")
     {
-        _nav = nav;
         _js = js;
-        _nav.LocationChanged += OnLocationChanged;
     }
 
     /// <summary>The remembered search query for <paramref name="key"/>, or empty if none.</summary>
@@ -52,21 +49,7 @@ public sealed class CredoBrowseState : IDisposable
         _filters[key] = new HashSet<string>(selected, StringComparer.OrdinalIgnoreCase);
     }
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        var path = new Uri(e.Location).AbsolutePath.Trim('/');
-        var inCredo = path.Equals("credo", StringComparison.OrdinalIgnoreCase)
-            || path.StartsWith("credo/", StringComparison.OrdinalIgnoreCase);
-
-        // Item detail pages live under credo/...; those still count as "in Credo" so the browse state
-        // is kept while drilling into an item and coming back. Only a route outside Credo clears it.
-        if (!inCredo)
-        {
-            Reset();
-        }
-    }
-
-    private void Reset()
+    protected override void OnExitArea()
     {
         _queries.Clear();
         _filters.Clear();
@@ -80,6 +63,4 @@ public sealed class CredoBrowseState : IDisposable
 
         _keys.Clear();
     }
-
-    public void Dispose() => _nav.LocationChanged -= OnLocationChanged;
 }
