@@ -12,10 +12,11 @@
 }
 
 .summa__eyebrow {
+    font-family: var(--display);
     font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink-soft);
+    letter-spacing: 0.12em;
+    color: var(--accent);
     margin: 0 0 0.35rem;
 }
 

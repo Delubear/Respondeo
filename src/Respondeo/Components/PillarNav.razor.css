@@ -70,6 +70,22 @@
     }
 }
 
+/* In the nowrap band the full labels ("Summa Theologiae", "Discover Catholicism") are wide enough
+   to overflow the viewport and force a horizontal scrollbar (notably ~481px-544px). Swap in each
+   pillar's short label from here down: hide the real (full) text but keep it in the DOM for screen
+   readers and tests, and render the short label via a pseudo-element. Applying it to every width at
+   or below the breakpoint avoids the jarring short->full flip when shrinking past 480px. */
+@media (max-width: 600px) {
+    .pillarnav__link[data-short] {
+        font-size: 0;
+    }
+
+    .pillarnav__link[data-short]::before {
+        content: attr(data-short);
+        font-size: 0.9rem;
+    }
+}
+
 @media (max-width: 480px) {
     /* Below this the three nowrap pills ("The Journey", "Summa Theologiae", "Miracles") no
        longer fit on one line; allow them to wrap again rather than forcing a min-content
@@ -83,5 +99,9 @@
         font-size: 0.78rem;
         letter-spacing: 0.02em;
         padding: 0.4rem 0.6rem;
+    }
+
+    .pillarnav__link[data-short]::before {
+        font-size: 0.78rem;
     }
 }

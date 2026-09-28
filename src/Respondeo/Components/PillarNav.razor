@@ -16,6 +16,7 @@
                 <a class="pillarnav__link @(isActive ? "pillarnav__link--active" : "")"
                    href="@pillar.Href"
                    aria-current="@(isActive ? "page" : null)"
+                   data-short="@pillar.ShortLabelOrFull"
                    @onclick="MarkTopLevel">
                     @pillar.Label
                 </a>

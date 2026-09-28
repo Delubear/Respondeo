@@ -12,7 +12,15 @@ public static class SitePillars
     /// <param name="Id">A stable identifier used to detect the active pillar.</param>
     /// <param name="Href">The relative route the pillar entry links to (empty string is Home/Journey).</param>
     /// <param name="Label">The visible switcher text.</param>
-    public sealed record Pillar(string Id, string Href, string Label);
+    /// <param name="ShortLabel">
+    /// A shorter switcher text used only at the narrow viewport band where the full labels would otherwise overflow onto a horizontal scrollbar.
+    /// Defaults to <paramref name="Label"/>.
+    /// </param>
+    public sealed record Pillar(string Id, string Href, string Label, string? ShortLabel = null)
+    {
+        /// <summary>The short label to show when space is tight, falling back to the full label.</summary>
+        public string ShortLabelOrFull => ShortLabel ?? Label;
+    }
 
     /// <summary>The Faith Journey pillar id (the default / home pillar).</summary>
     public const string JourneyId = "journey";
@@ -31,8 +39,8 @@ public static class SitePillars
     public static readonly IReadOnlyList<Pillar> Items =
     [
         new(JourneyId, "", "Inquiry"),
-        new(SummaId, "summa", "Summa Theologiae"),
-        new(DiscoverId, "discover", "Discover Catholicism"),
+        new(SummaId, "summa", "Summa Theologiae", "Summa"),
+        new(DiscoverId, "discover", "Discover Catholicism", "Discover"),
     ];
 
     /// <summary>

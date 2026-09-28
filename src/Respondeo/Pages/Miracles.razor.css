@@ -17,15 +17,15 @@
     text-align: center;
     padding: 1rem 0 2rem;
     border-bottom: 1px solid var(--rule);
-    margin-bottom: 2rem;
 }
 
 .miracles__eyebrow {
     margin: 0 0 0.35rem;
+    font-family: var(--display);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     font-size: 0.8rem;
-    color: var(--ink-soft);
+    color: var(--accent);
 }
 
 .miracles__title {
