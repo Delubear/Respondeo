@@ -1,4 +1,4 @@
-// Shared scroll-restoration helper for the browse pages (Summa, Credo). The Summa and Credo browse
+// Shared scroll-restoration helper for the browse pages (Summa, Discover). The Summa and Discover browse
 // scripts each remember a scroll position in sessionStorage and re-apply it on Back; the actual
 // re-apply logic is identical between them and lives here so there is a single source of truth.
 //

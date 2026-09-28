@@ -29,12 +29,12 @@
 
     // The Journey pillar is the site's spine and always shown; the Summa pill and the merged
     // Discover Catholicism pill are each gated behind deploy-time feature flags. Discover shows when
-    // either of its sub-areas (Miracles or the Credo trio) is enabled, so the whole pillar hides only
+    // either of its sub-areas (Miracles or the prayers/devotions/articles trio) is enabled, so the whole pillar hides only
     // when both are turned off.
     private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
     {
         SitePillars.SummaId => Features.SummaPillar,
-        SitePillars.DiscoverId => Features.MiraclesPillar || Features.CredoPillar,
+        SitePillars.DiscoverId => Features.MiraclesPillar || Features.LivingFaithPillar,
         _ => true,
     };
 

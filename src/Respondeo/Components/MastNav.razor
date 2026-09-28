@@ -1,0 +1,70 @@
+@* Presentational pillar sub-navigation shell: the .mastnav bar with a mobile toggle, a
+   collapsing list, and the "top-level navigation" behavior (reset to top + fresh breadcrumb
+   trail on click, collapse after navigating). It owns no opinion about *which* items to show
+   or *when* to render \u2014 callers pass an item list and decide their own visibility, so both the
+   journey stages (MastheadNav) and the Discover sub-areas (DiscoverNav) reuse this one shell. *@
+@implements IDisposable
+@inject NavigationManager Nav
+@inject Respondeo.Services.NavigationIntent NavIntent
+@inject Respondeo.Services.IBreadcrumbTrail Trail
+
+<nav class="mastnav" aria-label="@AriaLabel">
+    <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="@ListId"
+            @onclick="Toggle">
+        <span class="mastnav__toggle-icon" aria-hidden="true"></span>
+        <span class="mastnav__toggle-label">Menu</span>
+    </button>
+    <ul id="@ListId" class="mastnav__list @(_open ? "mastnav__list--open" : "")">
+        @foreach (var item in Items)
+        {
+            <li class="mastnav__item">
+                <NavLink class="mastnav__link" href="@item.Href" Match="@item.Match"
+                         @onclick="MarkTopLevel">
+                    @item.Label
+                </NavLink>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    /// <summary>A single tab within the sub-navigation.</summary>
+    /// <param name="Href">The relative route the tab links to.</param>
+    /// <param name="Label">The visible tab text.</param>
+    /// <param name="Match">How the active state is matched (All for exact/landing links, Prefix otherwise).</param>
+    public sealed record Item(string Href, string Label, NavLinkMatch Match);
+
+    /// <summary>Accessible label for the nav landmark (e.g. "Primary" or "Discover Catholicism").</summary>
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = string.Empty;
+
+    /// <summary>Unique id for the list element, wired to the toggle's aria-controls.</summary>
+    [Parameter, EditorRequired] public string ListId { get; set; } = string.Empty;
+
+    /// <summary>The tabs to render, in display order.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<Item> Items { get; set; } = [];
+
+    private bool _open;
+
+    protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
+
+    private void Toggle() => _open = !_open;
+
+    // Choosing a tab is top-level navigation, so reset to the top and start a fresh breadcrumb trail.
+    private async Task MarkTopLevel()
+    {
+        NavIntent.ResetToTop = true;
+        await Trail.ClearAsync();
+    }
+
+    // Collapse the menu after navigating so it never stays open over the new page.
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_open)
+        {
+            _open = false;
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}

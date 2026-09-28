@@ -1,35 +1,35 @@
-@* A single row within a <CredoList>: an emblem plate, a text column (title, optional
+@* A single row within a <DiscoverList>: an emblem plate, a text column (title, optional
    summary, optional meta tag), and a trailing arrow. The whole row is one link. *@
 
-<li class="credo-row">
-    <a class="credo-row__link" href="@Href">
+<li class="discover-row">
+    <a class="discover-row__link" href="@Href">
         @if (!string.IsNullOrWhiteSpace(Icon))
         {
-            <span class="credo-row__emblem" aria-hidden="true">
+            <span class="discover-row__emblem" aria-hidden="true">
                 <svg viewBox="0 0 24 24" role="presentation" focusable="false">
                     <path d="@Emblems.Path(Icon)" />
                 </svg>
             </span>
         }
-        <span class="credo-row__body">
-            <span class="credo-row__title-line">
-                <span class="credo-row__title">@Title</span>
+        <span class="discover-row__body">
+            <span class="discover-row__title-line">
+                <span class="discover-row__title">@Title</span>
                 @if (!string.IsNullOrWhiteSpace(Meta))
                 {
-                    <span class="credo-row__meta">@Meta</span>
+                    <span class="discover-row__meta">@Meta</span>
                 }
             </span>
             @if (!string.IsNullOrWhiteSpace(Summary))
             {
-                <span class="credo-row__summary">@Summary</span>
+                <span class="discover-row__summary">@Summary</span>
             }
         </span>
-        <span class="credo-row__cta">
+        <span class="discover-row__cta">
             @if (!string.IsNullOrWhiteSpace(Cta))
             {
-                <span class="credo-row__cta-label">@Cta</span>
+                <span class="discover-row__cta-label">@Cta</span>
             }
-            <span class="credo-row__arrow" aria-hidden="true">&rarr;</span>
+            <span class="discover-row__arrow" aria-hidden="true">&rarr;</span>
         </span>
     </a>
 </li>

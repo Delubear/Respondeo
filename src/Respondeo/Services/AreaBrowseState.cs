@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Routing;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Shared lifecycle for the per-area "browse view state" services (Summa, Credo, Miracles).
+/// Shared lifecycle for the per-area "browse view state" services (Summa, Discover, Miracles).
 /// Each of those remembers transient view state (search text, facet filters, scroll position)
 /// across the repeated remounts of a browse page so that pressing Back returns the visitor to the same view,
 /// and each resets itself once the visitor navigates out of its area.

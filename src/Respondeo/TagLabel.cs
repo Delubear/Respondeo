@@ -1,7 +1,7 @@
 namespace Respondeo;
 
 /// <summary>
-/// Formats content tag slugs into their display form so every tag filter (Credo articles, prayers, and any future area) capitalizes tags the same way.
+/// Formats content tag slugs into their display form so every tag filter (Discover articles, prayers, and any future area) capitalizes tags the same way.
 /// Tags are stored lowercase in front-matter; this is the single place that decides how they read.
 /// </summary>
 public static class TagLabel

@@ -20,32 +20,32 @@
 }
 else if (_article is null)
 {
-    <section class="credo-article">
-        <h1 class="credo__title">Article not found</h1>
-        <p class="credo__empty">
+    <section class="discover-article">
+        <h1 class="discover__title">Article not found</h1>
+        <p class="discover__empty">
             There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/articles">Return to all articles</a>.
         </p>
     </section>
 }
 else
 {
-    <article class="credo-article">
-        <header class="credo__header">
-            <h1 class="credo__title">@_article.Title</h1>
+    <article class="discover-article">
+        <header class="discover__header">
+            <h1 class="discover__title">@_article.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_article.Summary))
             {
-                <p class="credo-article__summary">@_article.Summary</p>
+                <p class="discover-article__summary">@_article.Summary</p>
             }
         </header>
 
         @foreach (var section in _article.Sections)
         {
-            <section class="credo-article__section">
+            <section class="discover-article__section">
                 @if (!string.IsNullOrWhiteSpace(section.Heading))
                 {
-                    <h2 class="credo-article__section-title">@section.Heading</h2>
+                    <h2 class="discover-article__section-title">@section.Heading</h2>
                 }
-                <div class="credo-article__body">
+                <div class="discover-article__body">
                     @((MarkupString)section.Html)
                 </div>
             </section>
@@ -53,8 +53,8 @@ else
 
         @if (_article.Sources.Count > 0)
         {
-            <section class="credo-article__sources">
-                <h2 class="credo-article__section-title">Sources &amp; further reading</h2>
+            <section class="discover-article__sources">
+                <h2 class="discover-article__section-title">Sources &amp; further reading</h2>
                 <ul>
                     @foreach (var source in _article.Sources)
                     {

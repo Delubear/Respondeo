@@ -1,36 +1,22 @@
-@* Persistent primary navigation, rendered from the central SiteNavigation.Items list.
-   Collapses behind a toggle button on small screens. *@
+@* Journey-stage sub-navigation: renders the primary stage tabs from SiteNavigation, but only
+   while the Journey pillar is active. Delegates all shell/markup/behavior to <MastNav>. *@
 @implements IDisposable
 @inject NavigationManager Nav
-@inject Respondeo.Services.NavigationIntent NavIntent
-@inject Respondeo.Services.IBreadcrumbTrail Trail
 
 @if (_isJourney)
 {
-    <nav class="mastnav" aria-label="Primary">
-        <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="mastnav-list"
-                @onclick="Toggle">
-            <span class="mastnav__toggle-icon" aria-hidden="true"></span>
-            <span class="mastnav__toggle-label">Menu</span>
-        </button>
-        <ul id="mastnav-list" class="mastnav__list @(_open ? "mastnav__list--open" : "")">
-            @foreach (var item in SiteNavigation.Items)
-            {
-                <li class="mastnav__item">
-                    <NavLink class="mastnav__link" href="@item.Href"
-                             Match="@(item.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)"
-                             @onclick="MarkTopLevel">
-                        @item.Label
-                    </NavLink>
-                </li>
-            }
-        </ul>
-    </nav>
+    <MastNav AriaLabel="Primary" ListId="mastnav-list" Items="_items" />
 }
 
 @code {
-    private bool _open;
     private bool _isJourney = true;
+
+    // The journey stages, mapped to MastNav items. The Home link matches exactly so it only
+    // highlights on the home route; the rest match by prefix.
+    private static readonly IReadOnlyList<MastNav.Item> _items =
+        SiteNavigation.Items
+            .Select(i => new MastNav.Item(i.Href, i.Label, i.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix))
+            .ToList();
 
     protected override void OnInitialized()
     {
@@ -38,33 +24,19 @@
         UpdateActive();
     }
 
-    private void Toggle() => _open = !_open;
-
-    // Masthead nav is top-level navigation, so the following route change should reset to the top
-    // and start a fresh breadcrumb trail.
-    private async Task MarkTopLevel()
-    {
-        NavIntent.ResetToTop = true;
-        await Trail.ClearAsync();
-    }
-
-    // Collapse the menu after navigating so it never stays open over the new page.
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var wasJourney = _isJourney;
-        var wasOpen = _open;
-
         UpdateActive();
-        _open = false;
 
-        if (wasOpen || _isJourney != wasJourney)
+        if (_isJourney != wasJourney)
         {
             StateHasChanged();
         }
     }
 
     // The journey stage tabs only belong to the Journey pillar; other pillars hide this sub-nav
-    // (their own sub-navigation, when they have one, would render here instead).
+    // (their own sub-navigation, when they have one, renders instead).
     private void UpdateActive()
     {
         var relative = Nav.ToBaseRelativePath(Nav.Uri);

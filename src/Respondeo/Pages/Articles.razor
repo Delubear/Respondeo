@@ -5,7 +5,7 @@
 @inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
 
-<PageTitle>Articles &mdash; Credo &mdash; Respondeo</PageTitle>
+<PageTitle>Articles &mdash; Discover &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Living the Faith — Articles"
          Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
@@ -14,11 +14,11 @@
             StageHref="discover"
             StageLabel="Discover" />
 
-<section class="credo" data-discover-browse="articles">
-    <header class="credo__header">
-        <p class="credo__eyebrow">Credo</p>
-        <h1 class="credo__title">Articles</h1>
-        <p class="credo__lede">
+<section class="discover" data-discover-browse="articles">
+    <header class="discover__header">
+        <p class="discover__eyebrow">Discover</p>
+        <h1 class="discover__title">Articles</h1>
+        <p class="discover__lede">
             Once you are living the faith, questions deepen rather than disappear. These articles dig
             into the practices and teachings of the Church &mdash; the reasons beneath the rhythm.
         </p>
@@ -30,23 +30,23 @@
     }
     else if (_articles.Count == 0)
     {
-        <p class="credo__empty">No articles are available yet.</p>
+        <p class="discover__empty">No articles are available yet.</p>
     }
     else
     {
-        <div class="credo__search">
-            <label class="credo__search-label" for="article-search">Search articles</label>
+        <div class="discover__search">
+            <label class="discover__search-label" for="article-search">Search articles</label>
             <input id="article-search"
-                   class="credo__search-input"
+                   class="discover__search-input"
                    type="search"
                    placeholder="e.g. Confession, Eucharist, prayer..."
                    value="@_query"
                    @oninput="OnSearchInput" />
         </div>
 
-        <div class="credo__layout">
-            <aside class="credo__sidebar">
-                <h2 class="credo__sidebar-title">Source</h2>
+        <div class="discover__layout">
+            <aside class="discover__sidebar">
+                <h2 class="discover__sidebar-title">Source</h2>
                 <div class="source-filter" role="radiogroup" aria-label="Article source">
                     @foreach (var option in SourceOptions)
                     {
@@ -61,16 +61,16 @@
                 </div>
                 @if (_tags.Count > 0)
                 {
-                    <h2 class="credo__sidebar-title">Tags</h2>
+                    <h2 class="discover__sidebar-title">Tags</h2>
                     <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="credo__results">
-                <div class="credo__toolbar">
-                    <p class="credo__count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
-                    <label class="credo__sort">
+            <div class="discover__results">
+                <div class="discover__toolbar">
+                    <p class="discover__count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
+                    <label class="discover__sort">
                         <span>Sort</span>
                         <select value="@_sort" @onchange="OnSortChanged">
                             <option value="@nameof(ArticleSort.TitleAsc)">Title (A&ndash;Z)</option>
@@ -81,7 +81,7 @@
 
                 @if (Filtered.Count == 0)
                 {
-                    <p class="credo__empty">No articles match your search.</p>
+                    <p class="discover__empty">No articles match your search.</p>
                 }
                 else
                 {
@@ -103,20 +103,20 @@
 </section>
 
 @code {
-    // A unified row shape so Credo articles and Inquiry nodes can share one searchable, filterable list.
-    // Pill is a precomputed display-only kicker (the article's topic for Credo rows, the stage name for
+    // A unified row shape so Discover articles and Inquiry nodes can share one searchable, filterable list.
+    // Pill is a precomputed display-only kicker (the article's topic for Discover rows, the stage name for
     // Inquiry rows); IsInquiry drives both the Source filter and the subtle row accent.
     private sealed record ArticleRow(string Id, string Title, string Summary, bool IsInquiry, string? Pill, IReadOnlyList<string> Tags, string Href);
 
     // The Source facet values persisted in browse state.
     private const string SourceAll = "all";
-    private const string SourceCredo = "credo";
+    private const string SourceDiscover = "discover";
     private const string SourceInquiry = "inquiry";
 
     private static readonly (string Value, string Label)[] SourceOptions =
     [
         (SourceAll, "All"),
-        (SourceCredo, "From Credo"),
+        (SourceDiscover, "From Discover"),
         (SourceInquiry, "From Inquiry"),
     ];
 
@@ -131,7 +131,7 @@
 
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    // Tags on offer follow the chosen Source, so selecting "Inquiry" never lists Credo-only tags
+    // Tags on offer follow the chosen Source, so selecting "Inquiry" never lists Discover-only tags
     // (and vice versa) that could never match anything in view.
     private IReadOnlyList<string> _tags =>
         SourceScoped(_articles ?? [])
@@ -149,7 +149,7 @@
         _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
 
         var articles = await ArticleService.GetIndexAsync();
-        var credoRows = articles.Select(a =>
+        var discoverRows = articles.Select(a =>
             new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"));
 
         // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).
@@ -167,7 +167,7 @@
                 return new ArticleRow(n.Id, n.Title, n.Summary, true, stage, tags, ContentRoutes.NodeHref(n));
             });
 
-        _articles = credoRows.Concat(inquiryRows)
+        _articles = discoverRows.Concat(inquiryRows)
             .OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
     }
@@ -208,10 +208,10 @@
         }
     }
 
-    // Narrows the article set to the chosen Source axis (all / credo-only / inquiry-only).
+    // Narrows the article set to the chosen Source axis (all / discover-only / inquiry-only).
     private IEnumerable<ArticleRow> SourceScoped(IEnumerable<ArticleRow> rows) => _source switch
     {
-        SourceCredo => rows.Where(a => !a.IsInquiry),
+        SourceDiscover => rows.Where(a => !a.IsInquiry),
         SourceInquiry => rows.Where(a => a.IsInquiry),
         _ => rows,
     };
@@ -232,7 +232,7 @@
         BrowseState.SetFilter("articles.tag", _selectedTags);
     }
 
-    // Display-only pill for a Credo article: capitalizes the topic slug, or shows nothing for the
+    // Display-only pill for a Discover article: capitalizes the topic slug, or shows nothing for the
     // neutral "general"/blank bucket so unlabelled articles simply carry no pill.
     private static string? FormatPill(string topic) =>
         string.IsNullOrWhiteSpace(topic) || topic == "general"

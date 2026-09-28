@@ -211,7 +211,7 @@
         return $"{m.Summary}  \u2014  {string.Join(" \u00b7 ", facets)}";
     }
 
-    // One pill per kind, mirroring the category/kind pill on the Credo lists.
+    // One pill per kind, mirroring the category/kind pill on the Discover lists.
     private IReadOnlyList<string> MiraclePills(MiracleIndexEntry m) =>
         [.. m.Types.Select(_facets.Category).Where(k => !string.IsNullOrWhiteSpace(k))];
 }

@@ -4,7 +4,7 @@
 @inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
 
-<PageTitle>Devotions &mdash; Credo &mdash; Respondeo</PageTitle>
+<PageTitle>Devotions &mdash; Discover &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Catholic Devotions"
          Description="Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery." />
@@ -13,11 +13,11 @@
             StageHref="discover"
             StageLabel="Discover" />
 
-<section class="credo" data-discover-browse="devotions">
-    <header class="credo__header">
-        <p class="credo__eyebrow">Credo</p>
-        <h1 class="credo__title">Devotions</h1>
-        <p class="credo__lede">
+<section class="discover" data-discover-browse="devotions">
+    <header class="discover__header">
+        <p class="discover__eyebrow">Discover</p>
+        <h1 class="discover__title">Devotions</h1>
+        <p class="discover__lede">
             Choose a devotion and pray it bead by bead. The guide keeps your place, announces each
             mystery, and counts the prayers so you can simply pray.
         </p>
@@ -29,34 +29,34 @@
     }
     else if (_devotions.Count == 0)
     {
-        <p class="credo__empty">No devotions are available yet.</p>
+        <p class="discover__empty">No devotions are available yet.</p>
     }
     else
     {
-        <div class="credo__search">
-            <label class="credo__search-label" for="devotion-search">Search devotions</label>
+        <div class="discover__search">
+            <label class="discover__search-label" for="devotion-search">Search devotions</label>
             <input id="devotion-search"
-                   class="credo__search-input"
+                   class="discover__search-input"
                    type="search"
                    placeholder="e.g. Rosary, chaplet, mercy..."
                    value="@_query"
                    @oninput="OnSearchInput" />
         </div>
 
-        <div class="credo__layout">
-            <aside class="credo__sidebar">
+        <div class="discover__layout">
+            <aside class="discover__sidebar">
                 @if (_kinds.Count > 0)
                 {
-                    <h2 class="credo__sidebar-title">Kind</h2>
+                    <h2 class="discover__sidebar-title">Kind</h2>
                     <TopicFilter Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
                 }
                 <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
             </aside>
 
-            <div class="credo__results">
-                <div class="credo__toolbar">
-                    <p class="credo__count">@Filtered.Count of @(_devotions?.Count ?? 0) devotions</p>
-                    <label class="credo__sort">
+            <div class="discover__results">
+                <div class="discover__toolbar">
+                    <p class="discover__count">@Filtered.Count of @(_devotions?.Count ?? 0) devotions</p>
+                    <label class="discover__sort">
                         <span>Sort</span>
                         <select value="@_sort" @onchange="OnSortChanged">
                             <option value="@nameof(DevotionSort.TitleAsc)">Title (A&ndash;Z)</option>
@@ -67,7 +67,7 @@
 
                 @if (Filtered.Count == 0)
                 {
-                    <p class="credo__empty">No devotions match your search.</p>
+                    <p class="discover__empty">No devotions match your search.</p>
                 }
                 else
                 {
