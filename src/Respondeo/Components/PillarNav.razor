@@ -1,6 +1,6 @@
-@* Top-tier "pillar switcher": the site's three areas (Journey, Summa, Miracles).
-   Sits above the per-pillar navigation (e.g. the journey stages). The active pillar is derived
-   from the current route so it stays highlighted while browsing within a pillar. *@
+@* Top-tier "pillar switcher": the site's areas (Journey, Summa, Discover Catholicism).
+   Sits above the per-pillar navigation (e.g. the journey stages, or the Discover sub-tabs). The active
+   pillar is derived from the current route so it stays highlighted while browsing within a pillar. *@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject Respondeo.Services.NavigationIntent NavIntent
@@ -27,13 +27,14 @@
 @code {
     private string _activeId = SitePillars.JourneyId;
 
-    // The Journey pillar is the site's spine and always shown; the Summa and Miracles pills are
-    // each gated behind a deploy-time feature flag so they can be hidden without a code change.
+    // The Journey pillar is the site's spine and always shown; the Summa pill and the merged
+    // Discover Catholicism pill are each gated behind deploy-time feature flags. Discover shows when
+    // either of its sub-areas (Miracles or the Credo trio) is enabled, so the whole pillar hides only
+    // when both are turned off.
     private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
     {
         SitePillars.SummaId => Features.SummaPillar,
-        SitePillars.MiraclesId => Features.MiraclesPillar,
-        SitePillars.CredoId => Features.CredoPillar,
+        SitePillars.DiscoverId => Features.MiraclesPillar || Features.CredoPillar,
         _ => true,
     };
 

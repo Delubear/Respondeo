@@ -1,4 +1,4 @@
-@page "/miracles"
+@page "/discover/miracles"
 @inject IMiracleService MiracleService
 @inject IBreadcrumbTrail Trail
 @inject MiracleBrowseState Browse
@@ -86,7 +86,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var m in Filtered)
                         {
-                            <Card Href="@($"miracles/{m.Id}")"
+                            <Card Href="@($"discover/miracles/{m.Id}")"
                                   Title="@m.Title"
                                   Pills="@MiraclePills(m)"
                                   Summary="@CardSummary(m)"

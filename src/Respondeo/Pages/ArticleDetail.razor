@@ -1,4 +1,4 @@
-@page "/credo/articles/{Id}"
+@page "/discover/articles/{Id}"
 @inject ICredoService Credo
 @inject IBreadcrumbTrail Trail
 
@@ -10,8 +10,8 @@
 }
 
 <Breadcrumb CurrentTitle="@(_article?.Title ?? "Article")"
-            StageHref="credo"
-            StageLabel="Credo"
+            StageHref="discover"
+            StageLabel="Discover"
             Crumbs="_crumbs" />
 
 @if (_loading)
@@ -23,7 +23,7 @@ else if (_article is null)
     <section class="credo-article">
         <h1 class="credo__title">Article not found</h1>
         <p class="credo__empty">
-            There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="credo/articles">Return to all articles</a>.
+            There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/articles">Return to all articles</a>.
         </p>
     </section>
 }
@@ -74,7 +74,7 @@ else
         }
 
         <p class="prayer__back">
-            <a href="credo/articles">&larr; Back to all articles</a>
+            <a href="discover/articles">&larr; Back to all articles</a>
         </p>
     </article>
 }
@@ -83,7 +83,7 @@ else
     [Parameter] public string Id { get; set; } = string.Empty;
 
     private static readonly Breadcrumb.Crumb[] _crumbs =
-        [new("articles", "Articles", Href: "credo/articles")];
+        [new("articles", "Articles", Href: "discover/articles")];
 
     private Article? _article;
     private bool _loading = true;

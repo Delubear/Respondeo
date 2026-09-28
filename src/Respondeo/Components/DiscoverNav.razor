@@ -1,0 +1,89 @@
+@* Per-pillar sub-navigation for the Discover Catholicism pillar: peer tabs for its sub-areas
+   (Miracles, Prayers, Devotions, Articles). Mirrors the Journey's MastheadNav, and only renders
+   while browsing within the Discover pillar. Each tab is gated by the same granular feature flags
+   that gate the sub-areas, so a disabled area hides its tab. *@
+@implements IDisposable
+@inject NavigationManager Nav
+@inject Respondeo.Services.NavigationIntent NavIntent
+@inject Respondeo.Services.IBreadcrumbTrail Trail
+@inject Respondeo.Services.FeatureFlags Features
+
+@if (_isDiscover)
+{
+    <nav class="mastnav" aria-label="Discover Catholicism">
+        <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="discovernav-list"
+                @onclick="Toggle">
+            <span class="mastnav__toggle-icon" aria-hidden="true"></span>
+            <span class="mastnav__toggle-label">Menu</span>
+        </button>
+        <ul id="discovernav-list" class="mastnav__list @(_open ? "mastnav__list--open" : "")">
+            @foreach (var item in Items.Where(i => i.IsEnabled(Features)))
+            {
+                <li class="mastnav__item">
+                    <NavLink class="mastnav__link" href="@item.Href"
+                             Match="@(item.Exact ? NavLinkMatch.All : NavLinkMatch.Prefix)"
+                             @onclick="MarkTopLevel">
+                        @item.Label
+                    </NavLink>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@code {
+    private bool _open;
+    private bool _isDiscover;
+
+    private sealed record Tab(string Href, string Label, bool Exact, Func<Respondeo.Services.FeatureFlags, bool> IsEnabled);
+
+    // The Discover landing plus one tab per sub-area, in display order. Miracles sits alongside the
+    // Credo trio as a peer. The landing link is exact so it only highlights on /discover itself.
+    private static readonly IReadOnlyList<Tab> Items =
+    [
+        new("discover", "Overview", true, _ => true),
+        new("discover/miracles", "Miracles", false, f => f.MiraclesPillar),
+        new("discover/prayers", "Prayers", false, f => f.CredoPillar),
+        new("discover/devotions", "Devotions", false, f => f.CredoPillar),
+        new("discover/articles", "Articles", false, f => f.CredoPillar),
+    ];
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+        UpdateActive();
+    }
+
+    private void Toggle() => _open = !_open;
+
+    // Choosing a sub-area is top-level navigation within the pillar, so reset to the top and
+    // start a fresh breadcrumb trail.
+    private async Task MarkTopLevel()
+    {
+        NavIntent.ResetToTop = true;
+        await Trail.ClearAsync();
+    }
+
+    // Collapse the menu after navigating so it never stays open over the new page.
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        var wasDiscover = _isDiscover;
+        var wasOpen = _open;
+
+        UpdateActive();
+        _open = false;
+
+        if (wasOpen || _isDiscover != wasDiscover)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void UpdateActive()
+    {
+        var relative = Nav.ToBaseRelativePath(Nav.Uri);
+        _isDiscover = SitePillars.ResolveActiveId(relative) == SitePillars.DiscoverId;
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}

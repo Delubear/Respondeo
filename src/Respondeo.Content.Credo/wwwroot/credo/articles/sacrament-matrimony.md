@@ -22,4 +22,4 @@ The couple's love becomes a living image of the faithful, self-giving, fruitful 
 The sacrament gives them the grace to love each other as Christ loves — through joy and hardship alike — and orders their life toward the good of one another, their children, and the wider communion.
 To celebrate a wedding is to celebrate a love made stronger than the couple could make it on their own, because God has joined it to His own.
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

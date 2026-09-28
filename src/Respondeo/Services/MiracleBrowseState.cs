@@ -9,10 +9,10 @@ namespace Respondeo.Services;
 /// </summary>
 /// <remarks>
 /// The state is kept in memory rather than the URL: it is transient view state.
-/// It resets itself whenever the visitor navigates out of the miracles area (any route that is not <c>/miracles</c> or
-/// <c>/miracles/...</c>) so returning later starts fresh, while moving between the list and an individual miracle preserves it. This mirrors <see cref="SummaBrowseState"/>.
+/// It resets itself whenever the visitor navigates out of the Discover area (any route that is not <c>/discover</c> or
+/// <c>/discover/...</c>) so returning later starts fresh, while moving between the list and an individual miracle preserves it. This mirrors <see cref="SummaBrowseState"/>.
 /// </remarks>
-public sealed class MiracleBrowseState(NavigationManager nav) : AreaBrowseState(nav, "miracles")
+public sealed class MiracleBrowseState(NavigationManager nav) : AreaBrowseState(nav, "discover")
 {
 
     /// <summary>The active free-text search query, or an empty string when browsing the full list.</summary>

@@ -439,6 +439,7 @@ h1, h2, h3 {
    --------------------------------------------------------------------------- */
 
 .credo,
+.discover,
 .prayer,
 .devotion {
     max-width: 60rem;
@@ -449,20 +450,23 @@ h1, h2, h3 {
 /* Browse listings (articles, prayers, devotions index) break out of the global narrow content
    column so the filter sidebar and results can breathe, matching the Miracles/Summa pillar width.
    The .prayer/.devotion detail pages above keep the narrower reading measure. */
-.credo {
+.credo,
+.discover {
     max-width: none;
     width: min(60rem, 100vw - 2.5rem);
     margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
 }
 
 .credo__header,
+.discover__header,
 .prayer__header,
 .devotion__header {
     margin-bottom: 1.5rem;
 }
 
-/* Center the Credo browse header and search to match the Miracles/Summa pillars. */
-.credo__header {
+/* Center the Credo/Discover browse header and search to match the Miracles/Summa pillars. */
+.credo__header,
+.discover__header {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -473,6 +477,7 @@ h1, h2, h3 {
 }
 
 .credo__eyebrow,
+.discover__eyebrow,
 .devotion__eyebrow {
     font-family: var(--display);
     letter-spacing: 0.12em;
@@ -483,6 +488,7 @@ h1, h2, h3 {
 }
 
 .credo__title,
+.discover__title,
 .prayer__title,
 .devotion__title {
     font-family: var(--display);
@@ -493,6 +499,7 @@ h1, h2, h3 {
 }
 
 .credo__lede,
+.discover__lede,
 .prayer__summary,
 .devotion__summary {
     color: var(--ink-soft);
@@ -500,8 +507,9 @@ h1, h2, h3 {
     max-width: 42rem;
 }
 
-/* The Credo lede sits inside the centered header, so center it within its measure. */
-.credo__lede {
+/* The Credo/Discover lede sits inside the centered header, so center it within its measure. */
+.credo__lede,
+.discover__lede {
     margin-inline: auto;
 }
 

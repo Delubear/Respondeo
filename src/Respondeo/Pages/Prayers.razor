@@ -1,7 +1,7 @@
-@page "/credo/prayers"
+@page "/discover/prayers"
 @inject ICredoService Credo
 @inject IBreadcrumbTrail Trail
-@inject CredoBrowseState BrowseState
+@inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
 
 <PageTitle>Prayers &mdash; Credo &mdash; Respondeo</PageTitle>
@@ -10,10 +10,10 @@
          Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
 
 <Breadcrumb CurrentTitle="Prayers"
-            StageHref="credo"
-            StageLabel="Credo" />
+            StageHref="discover"
+            StageLabel="Discover" />
 
-<section class="credo" data-credo-browse="prayers">
+<section class="credo" data-discover-browse="prayers">
     <header class="credo__header">
         <p class="credo__eyebrow">Credo</p>
         <h1 class="credo__title">Prayers</h1>
@@ -75,7 +75,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var p in Filtered)
                         {
-                            <Card Href="@($"credo/prayers/{p.Id}")"
+                            <Card Href="@($"discover/prayers/{p.Id}")"
                                   Title="@p.Title"
                                   Pill="@FormatCategory(p.Category)"
                                   Summary="@p.Summary"
@@ -134,7 +134,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoCredoBrowse.restoreScroll", "prayers");
+            await JS.InvokeVoidAsync("respondeoDiscoverBrowse.restoreScroll", "prayers");
         }
     }
 

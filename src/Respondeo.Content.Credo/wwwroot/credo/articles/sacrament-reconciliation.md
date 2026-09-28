@@ -46,4 +46,4 @@ The priest is not the source of forgiveness; God is. The priest acts *in persona
 
 If it has been a long time, the priest expects that and will help. A simple form: begin with the Sign of the Cross and *Bless me, Father, for I have sinned; it has been [time] since my last confession.* Then confess your sins plainly, listen to any counsel, pray an Act of Contrition, and receive absolution. That is the whole of it — and on the far side is the relief the sacrament exists to give.
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

@@ -10,7 +10,7 @@ using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Pages;
 
-public class CredoPrayersTests : TestContext
+public class PrayersTests : TestContext
 {
     private const string CredoManifest = """
         {
@@ -47,7 +47,7 @@ public class CredoPrayersTests : TestContext
         Our Father, who art in heaven.
         """;
 
-    public CredoPrayersTests()
+    public PrayersTests()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
 
@@ -61,13 +61,13 @@ public class CredoPrayersTests : TestContext
 
         Services.AddSingleton<ICredoService>(new CredoService(http, ContentRendering.Renderer));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(sp => new CredoBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));
+        Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));
     }
 
     [Fact]
     public void Surfaces_tags_as_title_cased_filter_options()
     {
-        var cut = RenderComponent<CredoPrayers>();
+        var cut = RenderComponent<Prayers>();
 
         var tagsHeading = cut.FindAll("h2.credo__sidebar-title").Any(h => h.TextContent.Trim() == "Tags");
         Assert.True(tagsHeading);
@@ -81,7 +81,7 @@ public class CredoPrayersTests : TestContext
     [Fact]
     public void Selecting_a_tag_narrows_the_list_to_matching_prayers()
     {
-        var cut = RenderComponent<CredoPrayers>();
+        var cut = RenderComponent<Prayers>();
 
         // The "Rosary" tag belongs only to the Hail Mary, not to the Our Father.
         var checkbox = cut.FindAll("label.topic-filter__option")
@@ -90,7 +90,7 @@ public class CredoPrayersTests : TestContext
         checkbox.Change(true);
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("credo/prayers/hail-mary", hrefs);
-        Assert.DoesNotContain("credo/prayers/our-father", hrefs);
+        Assert.Contains("discover/prayers/hail-mary", hrefs);
+        Assert.DoesNotContain("discover/prayers/our-father", hrefs);
     }
 }

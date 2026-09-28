@@ -33,13 +33,13 @@ Together they accompany a Christian from birth to death: born in the font, stren
 The sacraments are not obligations to be endured but gifts to be *celebrated*, because in each one it is Christ Himself who acts.
 Choose a sacrament below to see what it is and why it is worth receiving with joy.
 
-- [Baptism](credo/articles/sacrament-baptism) — the sacrament of rebirth, dying and rising with Christ, washed and made a new creation.
-- [Confirmation](credo/articles/sacrament-confirmation) — the sacrament of the Holy Spirit, sealing and strengthening the baptized for a mature Christian life.
-- [The Eucharist](credo/articles/sacrament-eucharist) — the sacrament of Christ's true presence, the source and summit of the Christian life.
-- [Reconciliation (Confession)](credo/articles/sacrament-reconciliation) — the sacrament of mercy, Christ's forgiveness given personally to the repentant.
-- [Anointing of the Sick](credo/articles/sacrament-anointing) — the sacrament of healing and strength for those facing serious illness, suffering, or death.
-- [Holy Orders](credo/articles/sacrament-holy-orders) — the sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
-- [Matrimony](credo/articles/sacrament-matrimony) — the sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
+- [Baptism](discover/articles/sacrament-baptism) — the sacrament of rebirth, dying and rising with Christ, washed and made a new creation.
+- [Confirmation](discover/articles/sacrament-confirmation) — the sacrament of the Holy Spirit, sealing and strengthening the baptized for a mature Christian life.
+- [The Eucharist](discover/articles/sacrament-eucharist) — the sacrament of Christ's true presence, the source and summit of the Christian life.
+- [Reconciliation (Confession)](discover/articles/sacrament-reconciliation) — the sacrament of mercy, Christ's forgiveness given personally to the repentant.
+- [Anointing of the Sick](discover/articles/sacrament-anointing) — the sacrament of healing and strength for those facing serious illness, suffering, or death.
+- [Holy Orders](discover/articles/sacrament-holy-orders) — the sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
+- [Matrimony](discover/articles/sacrament-matrimony) — the sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
 
 ::: youtube uJCTHCMHPYg
 :::

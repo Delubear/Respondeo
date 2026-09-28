@@ -1,8 +1,8 @@
-@page "/credo/articles"
+@page "/discover/articles"
 @inject ICredoService Credo
 @inject IContentService Content
 @inject IBreadcrumbTrail Trail
-@inject CredoBrowseState BrowseState
+@inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
 
 <PageTitle>Articles &mdash; Credo &mdash; Respondeo</PageTitle>
@@ -11,10 +11,10 @@
          Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
 <Breadcrumb CurrentTitle="Articles"
-            StageHref="credo"
-            StageLabel="Credo" />
+            StageHref="discover"
+            StageLabel="Discover" />
 
-<section class="credo" data-credo-browse="articles">
+<section class="credo" data-discover-browse="articles">
     <header class="credo__header">
         <p class="credo__eyebrow">Credo</p>
         <h1 class="credo__title">Articles</h1>
@@ -150,7 +150,7 @@
 
         var index = await Credo.GetIndexAsync();
         var credoRows = index.Articles.Select(a =>
-            new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"credo/articles/{a.Id}"));
+            new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"));
 
         // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).
         var nodes = await Content.GetAllAsync();
@@ -177,7 +177,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoCredoBrowse.restoreScroll", "articles");
+            await JS.InvokeVoidAsync("respondeoDiscoverBrowse.restoreScroll", "articles");
         }
     }
 

@@ -20,24 +20,24 @@ public static class SitePillars
     /// <summary>The Summa pillar id.</summary>
     public const string SummaId = "summa";
 
-    /// <summary>The Miracles pillar id.</summary>
-    public const string MiraclesId = "miracles";
-
-    /// <summary>The Credo pillar id (prayers, devotions, and articles for living the faith).</summary>
-    public const string CredoId = "credo";
+    /// <summary>
+    /// The Discover Catholicism pillar id. This single pillar groups several sub-areas
+    /// (Miracles, Prayers, Devotions, Articles) under the <c>/discover/</c> route,
+    /// so the catalog can grow (e.g. a future Saints section) without adding new top-level pillars.
+    /// </summary>
+    public const string DiscoverId = "discover";
 
     /// <summary>The pillars, in display order. The Journey is first because it is the site's spine.</summary>
     public static readonly IReadOnlyList<Pillar> Items =
     [
         new(JourneyId, "", "Inquiry"),
         new(SummaId, "summa", "Summa Theologiae"),
-        new(MiraclesId, "miracles", "Miracles"),
-        new(CredoId, "credo", "Credo"),
+        new(DiscoverId, "discover", "Discover Catholicism"),
     ];
 
     /// <summary>
     /// Resolves which pillar the given relative path belongs to.
-    /// Summa and Miracles are matched by route prefix; everything else (Home, the journey stages, the article browser) is the Journey.
+    /// Summa and Discover are matched by route prefix; everything else (Home, the journey stages, the article browser) is the Journey.
     /// </summary>
     /// <param name="relativePath">The current path relative to the app base, without a leading slash.</param>
     public static string ResolveActiveId(string relativePath)
@@ -49,14 +49,9 @@ public static class SitePillars
             return SummaId;
         }
 
-        if (StartsWithSegment(path, "miracles"))
+        if (StartsWithSegment(path, "discover"))
         {
-            return MiraclesId;
-        }
-
-        if (StartsWithSegment(path, "credo"))
-        {
-            return CredoId;
+            return DiscoverId;
         }
 
         return JourneyId;

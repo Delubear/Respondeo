@@ -1,0 +1,56 @@
+@page "/discover"
+@inject ICredoService CredoService
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>Discover Catholicism &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Discover Catholicism"
+         Description="Explore the riches of the Catholic faith: recognized miracles, a treasury of prayers, interactive devotions, and articles on the Church's teaching and practice." />
+
+<section class="discover">
+    <header class="discover__header">
+        <p class="discover__eyebrow">Discover Catholicism</p>
+        <h1 class="discover__title">Explore the Faith</h1>
+        <p class="discover__lede">
+            The inquiry has an end, but the faith has none. Explore the riches of the Catholic life
+            &mdash; the miracles God has worked, the prayers of the Church, interactive devotions,
+            and articles that dig beneath the practice. Choose where to begin.
+        </p>
+    </header>
+
+    <CardGrid SingleColumn="true">
+        <Card Href="discover/miracles"
+              Title="Miracles"
+              Pill="Signs and wonders"
+              Summary="A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian apparitions, and healings, with the Church's judgment on each."
+              Cta="Explore &rarr;"
+              Level="2" />
+        <Card Href="discover/prayers"
+              Title="Prayers"
+              Pill="Treasury"
+              Summary="A treasury of the Church's prayers &mdash; the Our Father, the Hail Mary, the Creed, and more, with the Latin alongside."
+              Cta="Pray &rarr;"
+              Level="2" />
+        <Card Href="discover/devotions"
+              Title="Devotions"
+              Pill="Interactive"
+              Summary="Pray the Rosary and the chaplets step by step with an interactive guide that carries you bead by bead."
+              Cta="Begin &rarr;"
+              Level="2" />
+        <Card Href="discover/articles"
+              Title="Articles"
+              Pill="Teaching"
+              Summary="Dig deeper into Confession, the Eucharist, the sacraments, and the Church's teaching &mdash; the why beneath the practice."
+              Cta="Read &rarr;"
+              Level="2" />
+    </CardGrid>
+</section>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        // Warm the index so the section pages load instantly once chosen.
+        await CredoService.GetIndexAsync();
+    }
+}

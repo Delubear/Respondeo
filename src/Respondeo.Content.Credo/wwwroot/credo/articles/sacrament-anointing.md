@@ -20,4 +20,4 @@ This sacrament meets a person at their most vulnerable with grace rather than ab
 It gives strength, peace, and courage to bear illness or the approach of death; it unites the sufferer to the passion of Christ, giving redemptive meaning to what would otherwise be only loss; it forgives sins if the person cannot confess; and at times it restores bodily health.
 It is a profound comfort to know that even here — especially here — Christ does not leave His own alone.
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

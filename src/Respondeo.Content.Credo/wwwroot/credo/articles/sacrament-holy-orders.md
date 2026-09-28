@@ -22,4 +22,4 @@ It is not a promotion but a self-gift: through the ordained, Christ continues to
 Without this sacrament there would be no Mass, no absolution, no continuity with the apostles.
 To celebrate an ordination is to celebrate that Christ has not left His Church without shepherds, but keeps His promise to remain with her until the end of the age.
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

@@ -82,8 +82,8 @@ public class MiraclesTests : TestContext
         var cut = RenderComponent<Miracles>();
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("miracles/lanciano-eucharistic-miracle", hrefs);
-        Assert.Contains("miracles/our-lady-of-guadalupe", hrefs);
+        Assert.Contains("discover/miracles/lanciano-eucharistic-miracle", hrefs);
+        Assert.Contains("discover/miracles/our-lady-of-guadalupe", hrefs);
     }
 
     [Fact]

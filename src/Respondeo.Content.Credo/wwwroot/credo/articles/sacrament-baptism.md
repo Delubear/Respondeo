@@ -26,4 +26,4 @@ For the one entering the faith from outside, this is the threshold the whole pat
 ::: youtube Euxu36jVJpU
 :::
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

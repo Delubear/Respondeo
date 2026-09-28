@@ -1,4 +1,4 @@
-@page "/credo/devotions/{Id}"
+@page "/discover/devotions/{Id}"
 @inject ICredoService Credo
 @inject IBreadcrumbTrail Trail
 
@@ -10,8 +10,8 @@
 }
 
 <Breadcrumb CurrentTitle="@(_devotion?.Title ?? "Devotion")"
-            StageHref="credo"
-            StageLabel="Credo"
+            StageHref="discover"
+            StageLabel="Discover"
             Crumbs="_crumbs" />
 
 @if (_loading)
@@ -23,7 +23,7 @@ else if (_devotion is null)
     <section class="devotion">
         <h1 class="devotion__title">Devotion not found</h1>
         <p class="devotion__missing">
-            There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="credo/devotions">Return to all devotions</a>.
+            There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/devotions">Return to all devotions</a>.
         </p>
     </section>
 }
@@ -125,7 +125,7 @@ else
         </div>
 
         <p class="devotion__exit">
-            <a href="credo/devotions">Leave the devotion</a>
+            <a href="discover/devotions">Leave the devotion</a>
         </p>
     </section>
 }
@@ -134,7 +134,7 @@ else
     [Parameter] public string Id { get; set; } = string.Empty;
 
     private static readonly Breadcrumb.Crumb[] _crumbs =
-        [new("devotions", "Devotions", Href: "credo/devotions")];
+        [new("devotions", "Devotions", Href: "discover/devotions")];
 
     private Devotion? _devotion;
     private bool _loading = true;

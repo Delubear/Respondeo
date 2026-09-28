@@ -29,4 +29,4 @@ For the one coming home, this is the reunion the whole return has been for.
 ::: youtube 2taZcgcQ4JA
 :::
 
-[Back to the overview of all seven sacraments](credo/articles/the-sacraments)
+[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

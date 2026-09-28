@@ -5,12 +5,12 @@ namespace Respondeo.Services;
 
 /// <summary>
 /// Remembers the transient browse state (search text and facet filters)
-/// for the Credo list pages so that returning to a list via the browser's Back button restores the visitor's search rather than a reset page.
-/// The scroll position is owned by JavaScript (<c>window.respondeoCredoBrowse</c>, backed by <c>sessionStorage</c>);
-/// this service coordinates the search text and clears both stores when the visitor leaves the Credo area. The shared navigation lifecycle lives in
+/// for the Discover list pages so that returning to a list via the browser's Back button restores the visitor's search rather than a reset page.
+/// The scroll position is owned by JavaScript (<c>window.respondeoDiscoverBrowse</c>, backed by <c>sessionStorage</c>);
+/// this service coordinates the search text and clears both stores when the visitor leaves the Discover area. The shared navigation lifecycle lives in
 /// <see cref="AreaBrowseState"/>.
 /// </summary>
-public sealed class CredoBrowseState(NavigationManager nav, IJSRuntime js) : AreaBrowseState(nav, "credo")
+public sealed class DiscoverBrowseState(NavigationManager nav, IJSRuntime js) : AreaBrowseState(nav, "discover")
 {
     private readonly Dictionary<string, string> _queries = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HashSet<string>> _filters = new(StringComparer.Ordinal);
@@ -44,12 +44,12 @@ public sealed class CredoBrowseState(NavigationManager nav, IJSRuntime js) : Are
         _queries.Clear();
         _filters.Clear();
 
-        // Forget the JS-owned scroll snapshots too so a later return to Credo starts at the top.
+        // Forget the JS-owned scroll snapshots too so a later return to Discover starts at the top.
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.
         // AsTask() consumes the ValueTask exactly once, which is required before discarding it.
         foreach (var key in _keys)
         {
-            _ = js.InvokeVoidAsync("respondeoCredoBrowse.clear", key).AsTask();
+            _ = js.InvokeVoidAsync("respondeoDiscoverBrowse.clear", key).AsTask();
         }
 
         _keys.Clear();

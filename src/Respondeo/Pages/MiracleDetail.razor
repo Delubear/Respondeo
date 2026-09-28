@@ -1,4 +1,4 @@
-@page "/miracles/{Id}"
+@page "/discover/miracles/{Id}"
 @inject IMiracleService Miracles
 @inject IBreadcrumbTrail Trail
 
@@ -10,7 +10,7 @@
 }
 
 <Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")"
-            StageHref="miracles"
+            StageHref="discover/miracles"
             StageLabel="Miracles" />
 
 @if (_loading)
@@ -22,7 +22,7 @@ else if (_miracle is null)
     <section class="miracle">
         <h1 class="miracle__title">Miracle not found</h1>
         <p class="miracle__missing">
-            There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;. <a href="miracles">Return to the catalog</a>.
+            There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/miracles">Return to the catalog</a>.
         </p>
     </section>
 }
@@ -112,7 +112,7 @@ else
         }
 
         <p class="miracle__back">
-            <a href="miracles">&larr; Back to all miracles</a>
+            <a href="discover/miracles">&larr; Back to all miracles</a>
         </p>
     </article>
 }

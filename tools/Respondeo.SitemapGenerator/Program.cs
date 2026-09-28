@@ -46,11 +46,11 @@ internal static class SitemapGenerator
     {
         routes.Add("");            // Home
         routes.Add("summa");
-        routes.Add("miracles");
-        routes.Add("credo");
-        routes.Add("credo/prayers");
-        routes.Add("credo/devotions");
-        routes.Add("credo/articles");
+        routes.Add("discover");
+        routes.Add("discover/miracles");
+        routes.Add("discover/prayers");
+        routes.Add("discover/devotions");
+        routes.Add("discover/articles");
     }
 
     // 2. Summa part landing pages + every question, mapping storage keys (p1) to URL slugs (prima).
@@ -100,7 +100,7 @@ internal static class SitemapGenerator
 
         foreach (var file in ReadManifestFiles(miraclesManifestPath))
         {
-            routes.Add($"miracles/{Path.GetFileNameWithoutExtension(file)}");
+            routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}");
         }
     }
 
@@ -181,7 +181,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"credo/prayers/{id}");
+                routes.Add($"discover/prayers/{id}");
             }
         }
 
@@ -196,7 +196,7 @@ internal static class SitemapGenerator
             var id = ReadJsonId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"credo/devotions/{id}");
+                routes.Add($"discover/devotions/{id}");
             }
         }
 
@@ -211,7 +211,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"credo/articles/{id}");
+                routes.Add($"discover/articles/{id}");
             }
         }
     }

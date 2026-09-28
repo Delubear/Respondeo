@@ -47,7 +47,7 @@ builder.Services.AddScoped<IThemeService, ThemeService>();
 builder.Services.AddScoped<NavigationIntent>();
 
 // Remembers search text and scroll position for the Credo browse lists across Back navigation.
-builder.Services.AddScoped<CredoBrowseState>();
+builder.Services.AddScoped<DiscoverBrowseState>();
 
 // Remembers the Summa browse/search view (search text + expanded parts/treatises) across page remounts, resetting itself when the visitor leaves the Summa area.
 builder.Services.AddScoped<SummaBrowseState>();
