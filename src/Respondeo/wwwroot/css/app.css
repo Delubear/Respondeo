@@ -535,6 +535,36 @@ h1, h2, h3 {
     font-style: italic;
 }
 
+/* Credo results toolbar \u2014 result count and a sort control, mirroring the Miracles list */
+.credo__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.credo__count {
+    margin: 0;
+    color: var(--ink-soft);
+}
+
+.credo__sort {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.credo__sort select {
+    font: inherit;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.4rem;
+    background: var(--parchment);
+    color: var(--ink);
+}
+
 /* Credo browse layout — a filter sidebar beside the results column, mirroring the Articles index */
 .credo__layout {
     display: grid;
@@ -558,6 +588,43 @@ h1, h2, h3 {
 
 .credo__sidebar-title:first-child {
     margin-top: 0;
+}
+
+/* Source facet \u2014 a small segmented control (All / Credo / Inquiry) for the articles browse. */
+.source-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.source-filter__option {
+    appearance: none;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--paper);
+    color: var(--ink);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.source-filter__option:hover:not(.source-filter__option--active),
+.source-filter__option:focus-visible:not(.source-filter__option--active) {
+    background: var(--parchment);
+    outline: none;
+}
+
+.source-filter__option--active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+}
+
+.source-filter__option--active:hover,
+.source-filter__option--active:focus-visible {
+    outline: none;
 }
 
 @media (max-width: 640px) {
@@ -603,11 +670,6 @@ h1, h2, h3 {
     background: var(--parchment);
     outline: none;
     text-decoration: none;
-}
-
-/* Subtle accent for rows that come from a different source (e.g. Inquiry articles among Credo ones). */
-.credo-row__link--accent {
-    box-shadow: inset 0.2rem 0 0 0 var(--accent);
 }
 
 .credo-row__emblem {

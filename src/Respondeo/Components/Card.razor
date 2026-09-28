@@ -3,11 +3,11 @@
 <a class="card" href="@Href">
     @if (Level <= 2)
     {
-        <h2 class="card__title">@Title</h2>
+        <h2 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>
     }
     else
     {
-        <h3 class="card__title">@Title</h3>
+        <h3 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
     }
     @if (!string.IsNullOrWhiteSpace(Summary))
     {
@@ -23,9 +23,21 @@
 
     [Parameter] public string? Summary { get; set; }
 
+    /// <summary>Optional short meta tag (e.g. a category or kind) shown beside the title.</summary>
+    [Parameter] public string? Pill { get; set; }
+
+    /// <summary>Optional set of short meta tags, each rendered as its own pill.</summary>
+    [Parameter] public IReadOnlyList<string>? Pills { get; set; }
+
     /// <summary>Call-to-action text shown at the foot of the card.</summary>
     [Parameter] public string Cta { get; set; } = "Continue \u2192";
 
     /// <summary>Heading level for the title (2 or 3) so cards nest correctly under their section.</summary>
     [Parameter] public int Level { get; set; } = 2;
+
+    private IReadOnlyList<string> AllPills =>
+        (Pills ?? [])
+            .Concat(string.IsNullOrWhiteSpace(Pill) ? [] : new[] { Pill! })
+            .Where(p => !string.IsNullOrWhiteSpace(p))
+            .ToList();
 }

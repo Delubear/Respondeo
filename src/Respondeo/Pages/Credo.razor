@@ -17,23 +17,26 @@
         </p>
     </header>
 
-    <CredoList>
-        <CredoRow Href="credo/prayers"
-                  Title="Prayers"
-                  Meta="Treasury"
-                  Summary="A treasury of the Church's prayers &mdash; the Our Father, the Hail Mary, the Creed, and more, with the Latin alongside."
-                  Cta="Pray" />
-        <CredoRow Href="credo/devotions"
-                  Title="Devotions"
-                  Meta="Interactive"
-                  Summary="Pray the Rosary and the chaplets step by step with an interactive guide that carries you bead by bead."
-                  Cta="Begin" />
-        <CredoRow Href="credo/articles"
-                  Title="Articles"
-                  Meta="Deeper"
-                  Summary="Dig deeper into Confession, the Eucharist, and the Church's teaching &mdash; the why beneath the practice."
-                  Cta="Explore" />
-    </CredoList>
+    <CardGrid SingleColumn="true">
+        <Card Href="credo/prayers"
+              Title="Prayers"
+              Pill="Treasury"
+              Summary="A treasury of the Church's prayers &mdash; the Our Father, the Hail Mary, the Creed, and more, with the Latin alongside."
+              Cta="Pray &rarr;"
+              Level="2" />
+        <Card Href="credo/devotions"
+              Title="Devotions"
+              Pill="Interactive"
+              Summary="Pray the Rosary and the chaplets step by step with an interactive guide that carries you bead by bead."
+              Cta="Begin &rarr;"
+              Level="2" />
+        <Card Href="credo/articles"
+              Title="Articles"
+              Pill="Teaching"
+              Summary="Dig deeper into Confession, the Eucharist, and the Church's teaching &mdash; the why beneath the practice."
+              Cta="Explore &rarr;"
+              Level="2" />
+    </CardGrid>
 </section>
 
 @code {

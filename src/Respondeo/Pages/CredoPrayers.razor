@@ -54,22 +54,34 @@
             </aside>
 
             <div class="credo__results">
+                <div class="credo__toolbar">
+                    <p class="credo__count">@Filtered.Count of @(_prayers?.Count ?? 0) prayers</p>
+                    <label class="credo__sort">
+                        <span>Sort</span>
+                        <select value="@_sort" @onchange="OnSortChanged">
+                            <option value="@nameof(PrayerSort.TitleAsc)">Title (A&ndash;Z)</option>
+                            <option value="@nameof(PrayerSort.TitleDesc)">Title (Z&ndash;A)</option>
+                        </select>
+                    </label>
+                </div>
+
                 @if (Filtered.Count == 0)
                 {
                     <p class="credo__empty">No prayers match your search.</p>
                 }
                 else
                 {
-                    <CredoList>
+                    <CardGrid SingleColumn="true">
                         @foreach (var p in Filtered)
                         {
-                            <CredoRow Href="@($"credo/prayers/{p.Id}")"
-                                      Title="@p.Title"
-                                      Meta="@FormatCategory(p.Category)"
-                                      Summary="@p.Summary"
-                                      Cta="Pray" />
+                            <Card Href="@($"credo/prayers/{p.Id}")"
+                                  Title="@p.Title"
+                                  Pill="@FormatCategory(p.Category)"
+                                  Summary="@p.Summary"
+                                  Cta="Pray &rarr;"
+                                  Level="2" />
                         }
-                    </CredoList>
+                    </CardGrid>
                 }
             </div>
         </div>
@@ -79,6 +91,10 @@
 @code {
     private IReadOnlyList<PrayerSummary>? _prayers;
     private string _query = string.Empty;
+
+    private PrayerSort _sort = PrayerSort.TitleAsc;
+
+    private enum PrayerSort { TitleAsc, TitleDesc }
 
     // Facet option lists derived from the loaded index (only values that actually occur).
     private IReadOnlyList<string> _categories = [];
@@ -127,6 +143,14 @@
         BrowseState.SetQuery("prayers", _query);
     }
 
+    private void OnSortChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<PrayerSort>(e.Value?.ToString(), out var sort))
+        {
+            _sort = sort;
+        }
+    }
+
     private void OnCategoriesChanged(IReadOnlySet<string> selected)
     {
         _selectedCategories = selected;
@@ -167,10 +191,10 @@
                 results = results.Where(p => _selectedCategories.Contains(FormatCategory(p.Category) ?? p.Category));
             }
 
-            // A prayer must carry every selected tag (intersection).
+            // Tags: OR within the facet (match any selected tag), consistent with the articles browse.
             if (_selectedTags.Count > 0)
             {
-                results = results.Where(p => _selectedTags.All(t => p.Tags.Contains(t, StringComparer.OrdinalIgnoreCase)));
+                results = results.Where(p => p.Tags.Any(t => _selectedTags.Contains(t)));
             }
 
             if (!string.IsNullOrWhiteSpace(_query))
@@ -181,6 +205,10 @@
                     || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
                     || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
             }
+
+            results = _sort == PrayerSort.TitleDesc
+                ? results.OrderByDescending(p => p.Title, StringComparer.CurrentCultureIgnoreCase)
+                : results.OrderBy(p => p.Title, StringComparer.CurrentCultureIgnoreCase);
 
             return [.. results];
         }

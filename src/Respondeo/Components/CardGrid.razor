@@ -1,9 +1,12 @@
 @* Responsive grid wrapper for a set of cards. *@
 
-<div class="card-grid">
+<div class="card-grid @(SingleColumn ? "card-grid--single" : null)">
     @ChildContent
 </div>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>When true, cards stack in one full-width column instead of a responsive grid.</summary>
+    [Parameter] public bool SingleColumn { get; set; }
 }

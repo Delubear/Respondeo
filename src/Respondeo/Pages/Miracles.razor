@@ -86,11 +86,12 @@
                 }
                 else
                 {
-                    <CardGrid>
+                    <CardGrid SingleColumn="true">
                         @foreach (var m in Filtered)
                         {
                             <Card Href="@($"miracles/{m.Id}")"
                                   Title="@m.Title"
+                                  Pills="@MiraclePills(m)"
                                   Summary="@CardSummary(m)"
                                   Cta="Read &rarr;"
                                   Level="2" />
@@ -198,7 +199,7 @@
 
     private string CardSummary(MiracleIndexEntry m)
     {
-        var facets = new List<string> { string.Join(", ", m.Types.Select(_facets.Category)), _facets.Approval(m.Approval) };
+        var facets = new List<string> { _facets.Approval(m.Approval) };
         var century = MiracleFacets.CenturyLabel(m.Year);
         if (century is not null)
         {
@@ -212,4 +213,8 @@
 
         return $"{m.Summary}  \u2014  {string.Join(" \u00b7 ", facets)}";
     }
+
+    // One pill per kind, mirroring the category/kind pill on the Credo lists.
+    private IReadOnlyList<string> MiraclePills(MiracleIndexEntry m) =>
+        [.. m.Types.Select(_facets.Category).Where(k => !string.IsNullOrWhiteSpace(k))];
 }

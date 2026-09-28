@@ -46,11 +46,19 @@
 
         <div class="credo__layout">
             <aside class="credo__sidebar">
-                @if (_topics.Count > 0)
-                {
-                    <h2 class="credo__sidebar-title">Topic</h2>
-                    <TopicFilter Topics="_topicLabels" Selected="_selectedTopics" SelectedChanged="OnTopicsChanged" />
-                }
+                <h2 class="credo__sidebar-title">Source</h2>
+                <div class="source-filter" role="radiogroup" aria-label="Article source">
+                    @foreach (var option in SourceOptions)
+                    {
+                        <button type="button"
+                                class="source-filter__option @(option.Value == _source ? "source-filter__option--active" : null)"
+                                role="radio"
+                                aria-checked="@(option.Value == _source)"
+                                @onclick="() => OnSourceChanged(option.Value)">
+                            @option.Label
+                        </button>
+                    }
+                </div>
                 @if (_tags.Count > 0)
                 {
                     <h2 class="credo__sidebar-title">Tags</h2>
@@ -59,23 +67,34 @@
             </aside>
 
             <div class="credo__results">
+                <div class="credo__toolbar">
+                    <p class="credo__count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
+                    <label class="credo__sort">
+                        <span>Sort</span>
+                        <select value="@_sort" @onchange="OnSortChanged">
+                            <option value="@nameof(ArticleSort.TitleAsc)">Title (A&ndash;Z)</option>
+                            <option value="@nameof(ArticleSort.TitleDesc)">Title (Z&ndash;A)</option>
+                        </select>
+                    </label>
+                </div>
+
                 @if (Filtered.Count == 0)
                 {
                     <p class="credo__empty">No articles match your search.</p>
                 }
                 else
                 {
-                    <CredoList>
+                    <CardGrid SingleColumn="true">
                         @foreach (var a in Filtered)
                         {
-                            <CredoRow Href="@a.Href"
-                                      Title="@a.Title"
-                                      Meta="@FormatTopic(a.Topic)"
-                                      Summary="@a.Summary"
-                                      Accent="@(a.Topic == InquiryTopic)"
-                                      Cta="Read" />
+                            <Card Href="@a.Href"
+                                  Title="@a.Title"
+                                  Pill="@a.Pill"
+                                  Summary="@a.Summary"
+                                  Cta="Read &rarr;"
+                                  Level="2" />
                         }
-                    </CredoList>
+                    </CardGrid>
                 }
             </div>
         </div>
@@ -84,53 +103,71 @@
 
 @code {
     // A unified row shape so Credo articles and Inquiry nodes can share one searchable, filterable list.
-    private sealed record ArticleRow(string Id, string Title, string Summary, string Topic, IReadOnlyList<string> Tags, string Href);
+    // Pill is a precomputed display-only kicker (the article's topic for Credo rows, the stage name for
+    // Inquiry rows); IsInquiry drives both the Source filter and the subtle row accent.
+    private sealed record ArticleRow(string Id, string Title, string Summary, bool IsInquiry, string? Pill, IReadOnlyList<string> Tags, string Href);
 
-    private const string InquiryTopic = "inquiry";
+    // The Source facet values persisted in browse state.
+    private const string SourceAll = "all";
+    private const string SourceCredo = "credo";
+    private const string SourceInquiry = "inquiry";
+
+    private static readonly (string Value, string Label)[] SourceOptions =
+    [
+        (SourceAll, "All"),
+        (SourceCredo, "From Credo"),
+        (SourceInquiry, "From Inquiry"),
+    ];
 
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
 
-    private IReadOnlyList<string> _topics = [];
-    private IReadOnlyList<string> _topicLabels = [];
-    private IReadOnlySet<string> _selectedTopics = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private string _source = SourceAll;
 
-    private IReadOnlyList<string> _tags = [];
+    private ArticleSort _sort = ArticleSort.TitleAsc;
+
+    private enum ArticleSort { TitleAsc, TitleDesc }
+
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    // Tags on offer follow the chosen Source, so selecting "Inquiry" never lists Credo-only tags
+    // (and vice versa) that could never match anything in view.
+    private IReadOnlyList<string> _tags =>
+        SourceScoped(_articles ?? [])
+            .SelectMany(a => a.Tags)
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
         _query = BrowseState.GetQuery("articles");
-        _selectedTopics = new HashSet<string>(BrowseState.GetFilter("articles.topic"), StringComparer.OrdinalIgnoreCase);
+        _source = BrowseState.GetFilter("articles.source").FirstOrDefault() ?? SourceAll;
         _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
 
         var index = await Credo.GetIndexAsync();
         var credoRows = index.Articles.Select(a =>
-            new ArticleRow(a.Id, a.Title, a.Summary, a.Topic, a.Tags, $"credo/articles/{a.Id}"));
+            new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"credo/articles/{a.Id}"));
 
         // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).
         var nodes = await Content.GetAllAsync();
         var sectionIds = nodes.SelectMany(n => n.Sections).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var inquiryRows = nodes
             .Where(n => !sectionIds.Contains(n.Id))
-            .Select(n => new ArticleRow(n.Id, n.Title, n.Summary, InquiryTopic, n.Tags, ContentRoutes.NodeHref(n)));
+            .Select(n =>
+            {
+                var stage = StageLabel(n.Stage);
+                // Surface the Inquiry stage as a selectable tag (in addition to the node's own tags).
+                var tags = string.IsNullOrWhiteSpace(stage)
+                    ? n.Tags
+                    : new[] { stage! }.Concat(n.Tags).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+                return new ArticleRow(n.Id, n.Title, n.Summary, true, stage, tags, ContentRoutes.NodeHref(n));
+            });
 
         _articles = credoRows.Concat(inquiryRows)
             .OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
-
-        _topics = _articles.Select(a => a.Topic)
-            .Where(t => !string.IsNullOrWhiteSpace(t) && t != "general")
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
-        _topicLabels = [.. _topics.Select(t => FormatTopic(t) ?? t)];
-
-        _tags = _articles.SelectMany(a => a.Tags)
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
     }
 
@@ -149,11 +186,34 @@
         BrowseState.SetQuery("articles", _query);
     }
 
-    private void OnTopicsChanged(IReadOnlySet<string> selected)
+    private void OnSortChanged(ChangeEventArgs e)
     {
-        _selectedTopics = selected;
-        BrowseState.SetFilter("articles.topic", selected);
+        if (Enum.TryParse<ArticleSort>(e.Value?.ToString(), out var sort))
+        {
+            _sort = sort;
+        }
     }
+
+    private void OnSourceChanged(string source)
+    {
+        _source = source;
+        BrowseState.SetFilter("articles.source", source == SourceAll ? [] : new HashSet<string> { source });
+
+        // Drop any selected tags that the new source no longer offers so the filter can't hide the whole list.
+        var available = _tags.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (_selectedTags.Any(t => !available.Contains(t)))
+        {
+            OnTagsChanged(new HashSet<string>(_selectedTags.Where(available.Contains), StringComparer.OrdinalIgnoreCase));
+        }
+    }
+
+    // Narrows the article set to the chosen Source axis (all / credo-only / inquiry-only).
+    private IEnumerable<ArticleRow> SourceScoped(IEnumerable<ArticleRow> rows) => _source switch
+    {
+        SourceCredo => rows.Where(a => !a.IsInquiry),
+        SourceInquiry => rows.Where(a => a.IsInquiry),
+        _ => rows,
+    };
 
     private void OnTagsChanged(IReadOnlySet<string> selected)
     {
@@ -161,21 +221,19 @@
         BrowseState.SetFilter("articles.tag", selected);
     }
 
-    // Turns a topic slug (e.g. "sacraments") into a display tag (e.g. "Sacraments").
-    private static string? FormatTopic(string topic)
-    {
-        if (string.IsNullOrWhiteSpace(topic) || topic == "general")
-        {
-            return null;
-        }
+    // Display-only pill for a Credo article: capitalizes the topic slug, or shows nothing for the
+    // neutral "general"/blank bucket so unlabelled articles simply carry no pill.
+    private static string? FormatPill(string topic) =>
+        string.IsNullOrWhiteSpace(topic) || topic == "general"
+            ? null
+            : char.ToUpperInvariant(topic[0]) + topic[1..];
 
-        if (topic == InquiryTopic)
-        {
-            return "From Inquiry";
-        }
-
-        return char.ToUpperInvariant(topic[0]) + topic[1..];
-    }
+    // Display-only pill for an Inquiry article: the stage's friendly name (e.g. "Why God?"), or nothing
+    // when the node has no known stage.
+    private static string? StageLabel(string? stage) =>
+        string.IsNullOrEmpty(stage)
+            ? null
+            : SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label;
 
     private IReadOnlyList<ArticleRow> Filtered
     {
@@ -186,13 +244,9 @@
                 return [];
             }
 
-            IEnumerable<ArticleRow> results = _articles;
+            IEnumerable<ArticleRow> results = SourceScoped(_articles);
 
-            if (_selectedTopics.Count > 0)
-            {
-                results = results.Where(a => _selectedTopics.Contains(FormatTopic(a.Topic) ?? a.Topic));
-            }
-
+            // Tags: OR within the facet (match any selected tag), AND with the other facets.
             if (_selectedTags.Count > 0)
             {
                 results = results.Where(a => a.Tags.Any(t => _selectedTags.Contains(t)));
@@ -206,6 +260,10 @@
                     || a.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
                     || a.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
             }
+
+            results = _sort == ArticleSort.TitleDesc
+                ? results.OrderByDescending(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
+                : results.OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase);
 
             return [.. results];
         }

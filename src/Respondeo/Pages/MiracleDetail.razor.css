@@ -37,7 +37,7 @@
     padding: 1rem 1.25rem;
     border: 1px solid var(--rule);
     border-radius: 0.6rem;
-    background: var(--paper);
+    background: var(--parchment);
 }
 
 .miracle__fact {

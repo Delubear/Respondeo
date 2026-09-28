@@ -89,7 +89,7 @@ public class CredoPrayersTests : TestContext
             .QuerySelector("input[type=checkbox]")!;
         checkbox.Change(true);
 
-        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("credo/prayers/hail-mary", hrefs);
         Assert.DoesNotContain("credo/prayers/our-father", hrefs);
     }

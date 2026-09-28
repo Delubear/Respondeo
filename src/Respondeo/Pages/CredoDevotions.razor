@@ -53,22 +53,34 @@
             </aside>
 
             <div class="credo__results">
+                <div class="credo__toolbar">
+                    <p class="credo__count">@Filtered.Count of @(_devotions?.Count ?? 0) devotions</p>
+                    <label class="credo__sort">
+                        <span>Sort</span>
+                        <select value="@_sort" @onchange="OnSortChanged">
+                            <option value="@nameof(DevotionSort.TitleAsc)">Title (A&ndash;Z)</option>
+                            <option value="@nameof(DevotionSort.TitleDesc)">Title (Z&ndash;A)</option>
+                        </select>
+                    </label>
+                </div>
+
                 @if (Filtered.Count == 0)
                 {
                     <p class="credo__empty">No devotions match your search.</p>
                 }
                 else
                 {
-                    <CredoList>
+                    <CardGrid SingleColumn="true">
                         @foreach (var d in Filtered)
                         {
-                            <CredoRow Href="@($"credo/devotions/{d.Id}")"
-                                      Title="@d.Title"
-                                      Meta="@FormatKind(d.Kind)"
-                                      Summary="@d.Summary"
-                                      Cta="Begin" />
+                            <Card Href="@($"credo/devotions/{d.Id}")"
+                                  Title="@d.Title"
+                                  Pill="@FormatKind(d.Kind)"
+                                  Summary="@d.Summary"
+                                  Cta="Begin &rarr;"
+                                  Level="2" />
                         }
-                    </CredoList>
+                    </CardGrid>
                 }
             </div>
         </div>
@@ -78,6 +90,10 @@
 @code {
     private IReadOnlyList<DevotionSummary>? _devotions;
     private string _query = string.Empty;
+
+    private DevotionSort _sort = DevotionSort.TitleAsc;
+
+    private enum DevotionSort { TitleAsc, TitleDesc }
 
     private IReadOnlyList<string> _kinds = [];
     private IReadOnlyList<string> _kindLabels = [];
@@ -113,6 +129,14 @@
     {
         _query = e.Value?.ToString() ?? string.Empty;
         BrowseState.SetQuery("devotions", _query);
+    }
+
+    private void OnSortChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<DevotionSort>(e.Value?.ToString(), out var sort))
+        {
+            _sort = sort;
+        }
     }
 
     private void OnKindsChanged(IReadOnlySet<string> selected)
@@ -155,6 +179,10 @@
                     d.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
                     || d.Summary.Contains(q, StringComparison.OrdinalIgnoreCase));
             }
+
+            results = _sort == DevotionSort.TitleDesc
+                ? results.OrderByDescending(d => d.Title, StringComparer.CurrentCultureIgnoreCase)
+                : results.OrderBy(d => d.Title, StringComparer.CurrentCultureIgnoreCase);
 
             return [.. results];
         }
