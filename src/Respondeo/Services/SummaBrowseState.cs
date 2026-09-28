@@ -31,6 +31,7 @@ public sealed class SummaBrowseState(NavigationManager nav, IJSRuntime js) : Are
 
         // Clear the JS-owned accordion snapshot too so a later return to the Summa starts collapsed.
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.
-        _ = js.InvokeVoidAsync("respondeoSummaBrowse.clear");
+        // AsTask() consumes the ValueTask exactly once, which is required before discarding it.
+        _ = js.InvokeVoidAsync("respondeoSummaBrowse.clear").AsTask();
     }
 }

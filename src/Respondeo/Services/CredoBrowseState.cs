@@ -46,9 +46,10 @@ public sealed class CredoBrowseState(NavigationManager nav, IJSRuntime js) : Are
 
         // Forget the JS-owned scroll snapshots too so a later return to Credo starts at the top.
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.
+        // AsTask() consumes the ValueTask exactly once, which is required before discarding it.
         foreach (var key in _keys)
         {
-            _ = js.InvokeVoidAsync("respondeoCredoBrowse.clear", key);
+            _ = js.InvokeVoidAsync("respondeoCredoBrowse.clear", key).AsTask();
         }
 
         _keys.Clear();

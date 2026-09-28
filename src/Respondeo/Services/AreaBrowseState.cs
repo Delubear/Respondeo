@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 
@@ -52,5 +53,8 @@ public abstract class AreaBrowseState : IDisposable
         }
     }
 
+    // Only unhooks a managed event; there are no unmanaged resources and no finalizer,
+    // so GC.SuppressFinalize would be a no-op. Suppressed rather than adding meaningless noise.
+    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "No finalizer to suppress; type holds only managed state.")]
     public void Dispose() => _nav.LocationChanged -= OnLocationChanged;
 }
