@@ -53,7 +53,7 @@ public class MiracleDetailTests : TestContext
 
         var cut = RenderComponent<MiracleDetail>(p => p.Add(c => c.Id, "lanciano"));
 
-        Assert.Equal("The Eucharistic Miracle of Lanciano", cut.Find("h1.miracle__title").TextContent.Trim());
+        Assert.Equal("The Eucharistic Miracle of Lanciano", cut.Find("h1.pillar__title").TextContent.Trim());
         Assert.Contains("A monk doubted.", cut.Find(".miracle__body").TextContent);
     }
 
@@ -65,7 +65,7 @@ public class MiracleDetailTests : TestContext
 
         var cut = RenderComponent<MiracleDetail>(p => p.Add(c => c.Id, "lanciano"));
 
-        Assert.Contains("Eucharistic", cut.Find(".miracle__eyebrow").TextContent);
+        Assert.Contains("Eucharistic", cut.Find(".pillar__eyebrow").TextContent);
         Assert.Contains("Historical / traditional", cut.Find(".miracle__facts").TextContent);
     }
 

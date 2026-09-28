@@ -435,6 +435,54 @@ h1, h2, h3 {
 }
 
 /* ---------------------------------------------------------------------------
+   Shared pillar header: one source of truth for every pillar's page header
+   (Inquiry/Home, Summa, Discover browse, Miracles, and the detail pages). Each
+   pillar wraps its intro in `.pillar` > `.pillar__header` with an optional
+   `.pillar__eyebrow`, a `.pillar__title`, and a `.pillar__lede`, so spacing and
+   type stay identical across pillars and only need to change in one place.
+   --------------------------------------------------------------------------- */
+.pillar {
+    width: min(60rem, 100vw - 2.5rem);
+    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
+}
+
+.pillar__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* 1rem top matches the content column's own rhythm; the shared value keeps every
+       pillar's first line at the same height below the sub-nav. */
+    padding: 1rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+}
+
+.pillar__eyebrow {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin: 0 0 0.35rem;
+}
+
+.pillar__title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    color: var(--ink);
+}
+
+.pillar__lede {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    max-width: 42rem;
+    margin-inline: auto;
+}
+
+/* ---------------------------------------------------------------------------
    Discover pillar: prayers, devotions, and articles for living the faith.
    --------------------------------------------------------------------------- */
 
@@ -459,24 +507,6 @@ h1, h2, h3 {
     padding-top: 0;
 }
 
-.discover__header,
-.prayer__header,
-.devotion__header {
-    margin-bottom: 1.5rem;
-}
-
-/* Center the Discover browse header and search to match the Miracles/Summa pillars. */
-.discover__header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1rem 0 2rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 2rem;
-}
-
-.discover__eyebrow,
 .devotion__eyebrow {
     font-family: var(--display);
     letter-spacing: 0.12em;
@@ -484,29 +514,6 @@ h1, h2, h3 {
     font-size: 0.8rem;
     color: var(--accent);
     margin: 0 0 0.35rem;
-}
-
-.discover__title,
-.prayer__title,
-.devotion__title {
-    font-family: var(--display);
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    line-height: 1.1;
-    margin: 0 0 0.5rem;
-    color: var(--ink);
-}
-
-.discover__lede,
-.prayer__summary,
-.devotion__summary {
-    color: var(--ink-soft);
-    font-size: 1.1rem;
-    max-width: 42rem;
-}
-
-/* The Discover lede sits inside the centered header, so center it within its measure. */
-.discover__lede {
-    margin-inline: auto;
 }
 
 .discover__search {

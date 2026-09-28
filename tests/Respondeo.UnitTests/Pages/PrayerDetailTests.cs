@@ -35,7 +35,7 @@ public class PrayerDetailTests : TestContext
 
         var cut = RenderComponent<PrayerDetail>(p => p.Add(c => c.Id, "hail-mary"));
 
-        Assert.Equal("Hail Mary", cut.Find("h1.prayer__title").TextContent.Trim());
+        Assert.Equal("Hail Mary", cut.Find("h1.pillar__title").TextContent.Trim());
         Assert.Contains("Hail Mary, full of grace.", cut.Find(".prayer__text").TextContent);
     }
 

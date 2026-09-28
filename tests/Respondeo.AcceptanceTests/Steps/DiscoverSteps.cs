@@ -13,7 +13,7 @@ public sealed class DiscoverSteps(PlaywrightContext context)
     public async Task GivenIOpenTheDiscoverLandingPage()
     {
         await Page.GotoAsync($"{context.BaseUrl}/discover", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
-        await Page.WaitForSelectorAsync(".discover__title");
+        await Page.WaitForSelectorAsync(".pillar__title");
     }
 
     [Given("I open the prayers browser")]

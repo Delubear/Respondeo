@@ -21,7 +21,7 @@
 else if (_article is null)
 {
     <section class="discover-article">
-        <h1 class="discover__title">Article not found</h1>
+        <h1 class="pillar__title">Article not found</h1>
         <p class="discover__empty">
             There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/articles">Return to all articles</a>.
         </p>
@@ -30,11 +30,11 @@ else if (_article is null)
 else
 {
     <article class="discover-article">
-        <header class="discover__header">
-            <h1 class="discover__title">@_article.Title</h1>
+        <header class="pillar__header">
+            <h1 class="pillar__title">@_article.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_article.Summary))
             {
-                <p class="discover-article__summary">@_article.Summary</p>
+                <p class="pillar__lede">@_article.Summary</p>
             }
         </header>
 

@@ -4,33 +4,6 @@
     margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
 }
 
-.summa__header {
-    text-align: center;
-    padding: 1rem 0 2rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 2rem;
-}
-
-.summa__eyebrow {
-    font-family: var(--display);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    margin: 0 0 0.35rem;
-}
-
-.summa__title {
-    font-size: 2.3rem;
-    margin: 0 0 1rem;
-}
-
-.summa__lede {
-    max-width: 38rem;
-    margin: 0 auto;
-    color: var(--ink-soft);
-}
-
 /* ---------- Search ---------- */
 .summa__search {
     margin: 0 auto 2rem;
@@ -275,10 +248,6 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
-    .summa__title {
-        font-size: 1.8rem;
-    }
-
     .summa__question-link {
         grid-template-columns: 2.5rem 1fr;
     }

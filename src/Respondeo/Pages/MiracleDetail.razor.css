@@ -5,30 +5,6 @@
     max-width: 72ch;
 }
 
-.miracle__header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-.miracle__eyebrow {
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-}
-
-.miracle__title {
-    margin: 0;
-}
-
-.miracle__summary {
-    margin: 0;
-    font-size: 1.1rem;
-    color: var(--ink-soft);
-}
-
 .miracle__facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));

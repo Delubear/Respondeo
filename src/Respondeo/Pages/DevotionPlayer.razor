@@ -22,7 +22,7 @@
 else if (_devotion is null)
 {
     <section class="devotion">
-        <h1 class="devotion__title">Devotion not found</h1>
+        <h1 class="pillar__title">Devotion not found</h1>
         <p class="devotion__missing">
             There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/devotions">Return to all devotions</a>.
         </p>
@@ -32,11 +32,11 @@ else if (_beads is null)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
     <section class="devotion devotion--intro">
-        <header class="devotion__header">
-            <h1 class="devotion__title">@_devotion.Title</h1>
+        <header class="pillar__header">
+            <h1 class="pillar__title">@_devotion.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_devotion.Summary))
             {
-                <p class="devotion__summary">@_devotion.Summary</p>
+                <p class="pillar__lede">@_devotion.Summary</p>
             }
         </header>
 

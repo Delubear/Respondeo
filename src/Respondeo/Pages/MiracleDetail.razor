@@ -20,7 +20,7 @@
 else if (_miracle is null)
 {
     <section class="miracle">
-        <h1 class="miracle__title">Miracle not found</h1>
+        <h1 class="pillar__title">Miracle not found</h1>
         <p class="miracle__missing">
             There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/miracles">Return to the catalog</a>.
         </p>
@@ -29,12 +29,12 @@ else if (_miracle is null)
 else
 {
     <article class="miracle">
-        <header class="miracle__header">
-            <p class="miracle__eyebrow">@string.Join(" · ", _miracle.Types.Select(_facets.Category))</p>
-            <h1 class="miracle__title">@_miracle.Title</h1>
+        <header class="pillar__header">
+            <p class="pillar__eyebrow">@string.Join(" · ", _miracle.Types.Select(_facets.Category))</p>
+            <h1 class="pillar__title">@_miracle.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_miracle.Summary))
             {
-                <p class="miracle__summary">@_miracle.Summary</p>
+                <p class="pillar__lede">@_miracle.Summary</p>
             }
         </header>
 

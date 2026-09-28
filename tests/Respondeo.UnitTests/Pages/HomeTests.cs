@@ -73,6 +73,6 @@ public class HomeTests : TestContext
     {
         var cut = RenderComponent<Home>();
 
-        Assert.Equal("One question leads to the next", cut.Find("h1.hero__title").TextContent);
+        Assert.Equal("One question leads to the next", cut.Find("h1.pillar__title").TextContent);
     }
 }

@@ -40,7 +40,7 @@ public class ArticleDetailTests : TestContext
 
         var cut = RenderComponent<ArticleDetail>(p => p.Add(c => c.Id, "the-sacraments"));
 
-        Assert.Equal("The Sacraments", cut.Find("h1.discover__title").TextContent.Trim());
+        Assert.Equal("The Sacraments", cut.Find("h1.pillar__title").TextContent.Trim());
         Assert.Contains("Grace made visible.", cut.Find(".discover-article__body").TextContent);
     }
 

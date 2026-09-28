@@ -21,7 +21,7 @@
 else if (_prayer is null)
 {
     <section class="prayer">
-        <h1 class="prayer__title">Prayer not found</h1>
+        <h1 class="pillar__title">Prayer not found</h1>
         <p class="prayer__missing">
             There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/prayers">Return to all prayers</a>.
         </p>
@@ -30,11 +30,11 @@ else if (_prayer is null)
 else
 {
     <article class="prayer">
-        <header class="prayer__header">
-            <h1 class="prayer__title">@_prayer.Title</h1>
+        <header class="pillar__header">
+            <h1 class="pillar__title">@_prayer.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_prayer.Summary))
             {
-                <p class="prayer__summary">@_prayer.Summary</p>
+                <p class="pillar__lede">@_prayer.Summary</p>
             }
         </header>
 
