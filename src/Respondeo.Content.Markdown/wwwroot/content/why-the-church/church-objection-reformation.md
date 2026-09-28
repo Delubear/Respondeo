@@ -2,7 +2,7 @@
 id: church-objection-reformation
 title: "Didn't the Church Fall Away and Need Reforming?"
 summary: Whether the medieval Church corrupted the gospel so that the Reformation had to recover it.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 ---

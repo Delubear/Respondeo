@@ -2,7 +2,7 @@
 id: which-god-other-faiths
 title: "What About Other Faiths?"
 summary: How the God of Abraham relates to Islam, deism, and Eastern conceptions of the ultimate.
-topics:
+tags:
   - Divine Revelation
 branches:
   - to: which-god-of-israel

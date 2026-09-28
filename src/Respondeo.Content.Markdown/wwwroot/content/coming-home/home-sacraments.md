@@ -2,7 +2,7 @@
 id: home-sacraments
 title: "The Sacraments: An Overview"
 summary: What the sacraments are, why there are seven, and why each is worth celebrating.
-topics:
+tags:
   - The Catholic Church
   - Sacraments
 branches:

@@ -2,7 +2,7 @@
 id: which-god-monotheism
 title: "Why One God, Not Many?"
 summary: From one necessary, unlimited being to monotheism — ruling out polytheism and dualism.
-topics:
+tags:
   - Existence of God
   - Divine Revelation
 branches:

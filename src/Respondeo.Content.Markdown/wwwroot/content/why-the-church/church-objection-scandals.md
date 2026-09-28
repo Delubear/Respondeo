@@ -2,7 +2,7 @@
 id: church-objection-scandals
 title: "How Can a Church So Sinful Be Holy?"
 summary: Corruption, scandal, and cruelty in the Church's history versus the mark of holiness.
-topics:
+tags:
   - The Catholic Church
 ---
 

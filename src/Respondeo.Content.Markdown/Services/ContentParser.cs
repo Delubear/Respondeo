@@ -47,7 +47,7 @@ internal sealed class ContentParser
             Title = meta.Title,
             Summary = meta.Summary,
             BodyHtml = html,
-            Topics = meta.Topics,
+            Tags = meta.Tags,
             Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
             Sections = meta.Sections,
             NextStage = meta.NextStage is null

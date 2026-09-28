@@ -2,7 +2,7 @@
 id: where-the-path-has-led
 title: "Where the Path Has Led"
 summary: Drawing the whole case together — from Christ's Church to the threshold of coming home.
-topics:
+tags:
   - The Catholic Church
 nextStage:
   href: coming-home

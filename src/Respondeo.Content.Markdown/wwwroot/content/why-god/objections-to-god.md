@@ -2,7 +2,7 @@
 id: objections-to-god
 title: "Objections to God"
 summary: What are the strongest objections to the existence of God, and how do we respond?
-topics:
+tags:
   - Existence of God
   - St. Thomas Aquinas
 sections:

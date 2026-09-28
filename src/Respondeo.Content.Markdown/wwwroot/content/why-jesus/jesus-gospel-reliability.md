@@ -2,7 +2,7 @@
 id: jesus-gospel-reliability
 title: "Can We Trust the Gospels?"
 summary: Whether the Gospels are early, eyewitness-rooted sources we can reason from historically.
-topics:
+tags:
   - Jesus Christ
   - Divine Revelation
   - Scripture & Tradition

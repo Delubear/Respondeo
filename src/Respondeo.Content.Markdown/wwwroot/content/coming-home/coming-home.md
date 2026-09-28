@@ -2,7 +2,7 @@
 id: coming-home
 title: "Coming Home"
 summary: For those who know the Church is true, but have kept their distance — an invitation to come home.
-topics:
+tags:
   - Getting Started
   - Conversion
 branches:

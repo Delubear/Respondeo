@@ -2,7 +2,7 @@
 id: church-objection-saints
 title: "Praying to the Saints"
 summary: Whether asking the saints to pray for us is idolatry — or the communion of the living Body of Christ.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 ---

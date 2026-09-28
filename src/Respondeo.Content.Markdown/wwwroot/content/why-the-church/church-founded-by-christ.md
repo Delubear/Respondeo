@@ -2,7 +2,7 @@
 id: church-founded-by-christ
 title: "Did Christ Found a Church?"
 summary: Whether Christ established a visible Church with a teaching office.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 branches:

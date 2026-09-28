@@ -2,7 +2,7 @@
 id: sacrament-baptism
 title: "Baptism"
 summary: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.
-topics:
+tags:
   - The Catholic Church
   - Sacraments
 branches:

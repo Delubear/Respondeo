@@ -2,7 +2,7 @@
 id: which-god
 title: "Which God?"
 summary: Reason reaches *a* God — one, simple, all-powerful. But is He personal, and has He spoken? From the God of the philosophers to the God of Abraham.
-topics:
+tags:
   - Getting Started
   - Divine Revelation
 branches:

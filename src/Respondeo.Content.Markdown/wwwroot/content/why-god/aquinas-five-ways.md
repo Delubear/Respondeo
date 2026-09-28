@@ -2,7 +2,7 @@
 id: aquinas-five-ways
 title: "The Five Ways"
 summary: St. Thomas Aquinas's five demonstrations of the existence of God.
-topics:
+tags:
   - Existence of God
   - St. Thomas Aquinas
 sections:

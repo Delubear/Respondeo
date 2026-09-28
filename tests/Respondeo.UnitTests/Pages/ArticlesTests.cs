@@ -16,9 +16,9 @@ public class ArticlesTests : TestContext
     private const string Manifest = "{\"files\":[\"alpha.md\",\"beta.md\",\"gamma.md\",\"section.md\"]}";
 
     // alpha references section.md as a section, so section.md must be excluded from the list.
-    private const string AlphaMd = "---\nid: alpha\ntitle: Alpha\ntopics:\n  - Existence of God\n  - St. Thomas Aquinas\nsections:\n  - section\n---\nBody";
-    private const string BetaMd = "---\nid: beta\ntitle: Beta\ntopics:\n  - Existence of God\n---\nBody";
-    private const string GammaMd = "---\nid: gamma\ntitle: Gamma\ntopics:\n  - St. Thomas Aquinas\n---\nBody";
+    private const string AlphaMd = "---\nid: alpha\ntitle: Alpha\ntags:\n  - Existence of God\n  - St. Thomas Aquinas\nsections:\n  - section\n---\nBody";
+    private const string BetaMd = "---\nid: beta\ntitle: Beta\ntags:\n  - Existence of God\n---\nBody";
+    private const string GammaMd = "---\nid: gamma\ntitle: Gamma\ntags:\n  - St. Thomas Aquinas\n---\nBody";
     private const string SectionMd = "---\nid: section\ntitle: Section\n---\nBody";
 
     public ArticlesTests()

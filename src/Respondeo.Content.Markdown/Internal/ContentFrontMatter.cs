@@ -1,3 +1,4 @@
+using Respondeo.Content.Abstractions;
 using YamlDotNet.Serialization;
 
 namespace Respondeo.Content.Markdown.Internal;
@@ -5,25 +6,10 @@ namespace Respondeo.Content.Markdown.Internal;
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter block.
 /// This is an internal serialization DTO; the parser maps it onto the public <see cref="Abstractions.ContentNode"/> so YAML concerns never leak past the boundary.
+/// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
-internal sealed class ContentFrontMatter
+internal sealed class ContentFrontMatter : ContentFrontMatterBase
 {
-    /// <summary>Stable unique id used for linking between nodes (the graph key).</summary>
-    [YamlMember(Alias = "id")]
-    public string Id { get; set; } = string.Empty;
-
-    /// <summary>Headline shown on the node page and in link cards.</summary>
-    [YamlMember(Alias = "title")]
-    public string Title { get; set; } = string.Empty;
-
-    /// <summary>Short one-line description used on cards and previews.</summary>
-    [YamlMember(Alias = "summary")]
-    public string Summary { get; set; } = string.Empty;
-
-    /// <summary>Categories this node belongs to, used to group and filter articles.</summary>
-    [YamlMember(Alias = "topics")]
-    public List<string> Topics { get; set; } = [];
-
     /// <summary>Child branches; several nodes may link to the same child id, forming a graph.</summary>
     [YamlMember(Alias = "branches")]
     public List<BranchLinkDto> Branches { get; set; } = [];

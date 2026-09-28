@@ -2,7 +2,7 @@
 id: church-objections
 title: "Objections to the Church"
 summary: What are the strongest objections to the Catholic claim, and how do we respond?
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 sections:

@@ -2,7 +2,7 @@
 id: begin-entering-outside
 title: "If You Are Entering the Faith from Outside"
 summary: The ordinary path of formation for the unbaptized or those coming from another tradition.
-topics:
+tags:
   - The Catholic Church
   - Conversion
 ---

@@ -2,7 +2,7 @@
 id: church-objection-papacy
 title: "Was the Rock Peter, or Only His Faith?"
 summary: Whether Christ founded His Church on Peter and a continuing papal office, or merely on Peter's confession.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 ---

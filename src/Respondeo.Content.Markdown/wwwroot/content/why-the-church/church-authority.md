@@ -2,7 +2,7 @@
 id: church-authority
 title: "Scripture, Tradition, and Authority"
 summary: How Christ's revelation is preserved and interpreted — and who has authority to settle what it means.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
   - Scripture & Tradition

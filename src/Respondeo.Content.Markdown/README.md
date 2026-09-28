@@ -18,7 +18,7 @@ New files must be added to [`manifest.json`](manifest.json) to be loaded.
 id: does-god-exist
 title: "Does God exist?"
 summary: A short one-line description used on cards and previews.
-topics:
+tags:
   - Existence of God
   - Getting Started
 branches:
@@ -37,7 +37,7 @@ Your Markdown body starts here.
 | `id` | Yes | Stable unique key used to link between nodes. Keep it URL-friendly (lowercase, hyphens). |
 | `title` | Yes | Headline shown on the page and in link cards. |
 | `summary` | No | One-line description used on cards and previews. |
-| `topics` | No | Categories this node belongs to, used to group and filter articles (e.g. `Existence of God`, `St. Thomas Aquinas`). |
+| `tags` | No | Categories this node belongs to, used to group and filter articles (e.g. `Existence of God`, `St. Thomas Aquinas`). |
 | `branches` | No | Outgoing links to other nodes (see below). |
 | `sections` | No | Ids of section nodes rendered inline as a collapsible accordion on this page. |
 

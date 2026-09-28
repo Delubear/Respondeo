@@ -2,7 +2,7 @@
 id: begin-returning-catholic
 title: "If You Are a Catholic Returning After Time Away"
 summary: The short way back for the baptized Catholic — Confession, Mass, and a parish.
-topics:
+tags:
   - The Catholic Church
   - Conversion
 ---

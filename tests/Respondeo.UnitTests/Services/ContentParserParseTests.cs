@@ -28,25 +28,25 @@ public class ContentParserParseTests
     }
 
     [Fact]
-    public void Parses_topics_list_in_order()
+    public void Parses_tags_list_in_order()
     {
-        var raw = "---\nid: parent\ntitle: Parent\ntopics:\n  - Existence of God\n  - St. Thomas Aquinas\n---\nBody";
+        var raw = "---\nid: parent\ntitle: Parent\ntags:\n  - Existence of God\n  - St. Thomas Aquinas\n---\nBody";
 
         var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
-        Assert.Equal(["Existence of God", "St. Thomas Aquinas"], node!.Topics);
+        Assert.Equal(["Existence of God", "St. Thomas Aquinas"], node!.Tags);
     }
 
     [Fact]
-    public void Topics_defaults_to_empty_when_absent()
+    public void Tags_defaults_to_empty_when_absent()
     {
         var raw = "---\nid: parent\ntitle: Parent\n---\nBody";
 
         var node = new ContentParser(ContentRendering.Renderer).Parse(raw);
 
         Assert.NotNull(node);
-        Assert.Empty(node!.Topics);
+        Assert.Empty(node!.Tags);
     }
 
     [Fact]

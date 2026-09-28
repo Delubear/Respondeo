@@ -4,4 +4,8 @@
 	<SupportedPlatform Include="browser" />
   </ItemGroup>
 
+  <ItemGroup>
+	<PackageReference Include="YamlDotNet" />
+  </ItemGroup>
+
 </Project>

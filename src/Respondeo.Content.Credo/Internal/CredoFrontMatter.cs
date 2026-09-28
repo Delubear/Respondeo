@@ -1,3 +1,4 @@
+using Respondeo.Content.Abstractions;
 using YamlDotNet.Serialization;
 
 namespace Respondeo.Content.Credo.Internal;
@@ -5,18 +6,10 @@ namespace Respondeo.Content.Credo.Internal;
 /// <summary>
 /// The structured metadata parsed from a prayer file's YAML front-matter block.
 /// Internal serialization DTO; the parser maps it onto the public <see cref="Prayer"/> model.
+/// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
-internal sealed class PrayerFrontMatter
+internal sealed class PrayerFrontMatter : ContentFrontMatterBase
 {
-    [YamlMember(Alias = "id")]
-    public string Id { get; set; } = string.Empty;
-
-    [YamlMember(Alias = "title")]
-    public string Title { get; set; } = string.Empty;
-
-    [YamlMember(Alias = "summary")]
-    public string Summary { get; set; } = string.Empty;
-
     [YamlMember(Alias = "category")]
     public string Category { get; set; } = string.Empty;
 
@@ -26,9 +19,6 @@ internal sealed class PrayerFrontMatter
     [YamlMember(Alias = "translationKey")]
     public string? TranslationKey { get; set; }
 
-    [YamlMember(Alias = "tags")]
-    public List<string> Tags { get; set; } = [];
-
     [YamlMember(Alias = "attribution")]
     public string? Attribution { get; set; }
 }
@@ -36,23 +26,12 @@ internal sealed class PrayerFrontMatter
 /// <summary>
 /// The structured metadata parsed from an article file's YAML front-matter block.
 /// Internal serialization DTO; the parser maps it onto the public <see cref="Article"/> model.
+/// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
-internal sealed class ArticleFrontMatter
+internal sealed class ArticleFrontMatter : ContentFrontMatterBase
 {
-    [YamlMember(Alias = "id")]
-    public string Id { get; set; } = string.Empty;
-
-    [YamlMember(Alias = "title")]
-    public string Title { get; set; } = string.Empty;
-
-    [YamlMember(Alias = "summary")]
-    public string Summary { get; set; } = string.Empty;
-
     [YamlMember(Alias = "topic")]
     public string Topic { get; set; } = string.Empty;
-
-    [YamlMember(Alias = "tags")]
-    public List<string> Tags { get; set; } = [];
 
     [YamlMember(Alias = "sources")]
     public List<SourceFrontMatter> Sources { get; set; } = [];

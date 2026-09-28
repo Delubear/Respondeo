@@ -2,7 +2,7 @@
 id: church-objection-mary
 title: "The Blessed Virgin Mary"
 summary: Why the Church honors Mary so highly — her unique role in salvation, and why she is the New Ark of the Covenant.
-topics:
+tags:
   - The Catholic Church
   - Divine Revelation
 ---

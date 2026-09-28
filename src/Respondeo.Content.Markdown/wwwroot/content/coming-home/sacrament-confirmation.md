@@ -2,7 +2,7 @@
 id: sacrament-confirmation
 title: "Confirmation"
 summary: The sacrament of the Holy Spirit — sealing and strengthening the baptized for a mature Christian life.
-topics:
+tags:
   - The Catholic Church
   - Sacraments
 branches:

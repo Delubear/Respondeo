@@ -2,7 +2,7 @@
 id: why-jesus
 title: "Why Jesus?"
 summary: From the God of Abraham to the God who speaks in history — has He shown His face in Jesus of Nazareth?
-topics:
+tags:
   - Jesus Christ
   - Divine Revelation
 branches:

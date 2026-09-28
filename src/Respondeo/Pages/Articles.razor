@@ -77,7 +77,7 @@
             .ToList();
 
         _topics = _articles
-            .SelectMany(n => n.Topics)
+            .SelectMany(n => n.Tags)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
@@ -90,6 +90,6 @@
             : _selected.Count == 0
                 ? _articles
                 : _articles
-                    .Where(n => _selected.All(s => n.Topics.Contains(s, StringComparer.OrdinalIgnoreCase)))
+                    .Where(n => _selected.All(s => n.Tags.Contains(s, StringComparer.OrdinalIgnoreCase)))
                     .ToList();
 }

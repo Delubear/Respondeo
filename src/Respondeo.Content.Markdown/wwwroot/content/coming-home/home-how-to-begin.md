@@ -2,7 +2,7 @@
 id: home-how-to-begin
 title: "How to Begin Again"
 summary: The concrete first steps — for the returning Catholic, the enquirer, and the one seeking full communion.
-topics:
+tags:
   - Getting Started
   - The Catholic Church
   - Conversion

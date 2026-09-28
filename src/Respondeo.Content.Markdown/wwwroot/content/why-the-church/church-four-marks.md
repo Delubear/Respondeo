@@ -2,7 +2,7 @@
 id: church-four-marks
 title: "The Four Marks"
 summary: One, holy, catholic, and apostolic — and where these marks are found today.
-topics:
+tags:
   - The Catholic Church
 branches:
   - to: church-authority

@@ -2,7 +2,7 @@
 id: home-returning-catholic
 title: "Returning to the Faith"
 summary: For the baptized Catholic who drifted away — why and how to come back.
-topics:
+tags:
   - The Catholic Church
   - Conversion
 branches:

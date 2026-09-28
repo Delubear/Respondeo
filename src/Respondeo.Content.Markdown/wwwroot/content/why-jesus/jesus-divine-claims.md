@@ -2,7 +2,7 @@
 id: jesus-divine-claims
 title: "Did Jesus Claim to Be God?"
 summary: Whether Jesus claimed divine authority, and how that claim was understood.
-topics:
+tags:
   - Jesus Christ
   - Divine Revelation
 branches:

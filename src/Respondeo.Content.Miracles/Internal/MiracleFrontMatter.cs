@@ -1,3 +1,4 @@
+using Respondeo.Content.Abstractions;
 using YamlDotNet.Serialization;
 
 namespace Respondeo.Content.Miracles.Internal;
@@ -6,21 +7,10 @@ namespace Respondeo.Content.Miracles.Internal;
 /// The structured metadata parsed from a miracle file's YAML front-matter block.
 /// This is an internal serialization DTO; the parser maps it onto the public typed models so YAML
 /// concerns never leak past the boundary.
+/// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
-internal sealed class MiracleFrontMatter
+internal sealed class MiracleFrontMatter : ContentFrontMatterBase
 {
-    /// <summary>Stable unique id / URL slug (e.g. "lanciano").</summary>
-    [YamlMember(Alias = "id")]
-    public string Id { get; set; } = string.Empty;
-
-    /// <summary>Headline shown on the detail page and in cards.</summary>
-    [YamlMember(Alias = "title")]
-    public string Title { get; set; } = string.Empty;
-
-    /// <summary>Short one-line description used on cards and previews.</summary>
-    [YamlMember(Alias = "summary")]
-    public string Summary { get; set; } = string.Empty;
-
     /// <summary>The miracle category slugs (e.g. ["marian", "image", "stigmata"]).</summary>
     [YamlMember(Alias = "types")]
     public List<string> Types { get; set; } = [];
@@ -44,10 +34,6 @@ internal sealed class MiracleFrontMatter
     /// <summary>Optional feast day.</summary>
     [YamlMember(Alias = "feastDay")]
     public string? FeastDay { get; set; }
-
-    /// <summary>Free-text tags for extra searchable categorization.</summary>
-    [YamlMember(Alias = "tags")]
-    public List<string> Tags { get; set; } = [];
 
     /// <summary>Citations / further reading.</summary>
     [YamlMember(Alias = "sources")]

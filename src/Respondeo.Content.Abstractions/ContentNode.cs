@@ -18,8 +18,8 @@ public sealed class ContentNode
     /// <summary>Rendered HTML of the Markdown body (safe, author-curated).</summary>
     public required string BodyHtml { get; init; }
 
-    /// <summary>Categories this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
-    public IReadOnlyList<string> Topics { get; init; } = [];
+    /// <summary>Free-text tags this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
+    public IReadOnlyList<string> Tags { get; init; } = [];
 
     /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
     public IReadOnlyList<BranchLink> Branches { get; init; } = [];

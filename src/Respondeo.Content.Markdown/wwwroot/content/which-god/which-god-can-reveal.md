@@ -2,7 +2,7 @@
 id: which-god-can-reveal
 title: "Could God Speak to Us?"
 summary: Whether a personal God can reveal Himself, and how we would recognize it.
-topics:
+tags:
   - Divine Revelation
 branches:
   - to: which-god-other-faiths
