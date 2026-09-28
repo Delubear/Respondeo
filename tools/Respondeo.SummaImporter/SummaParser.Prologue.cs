@@ -2,8 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace Respondeo.SummaImporter;
 
-// Prologue clean-up: trimming the enumerated article list that duplicates the on-page table of contents
-// while preserving the lead-in sentence and every other prologue paragraph.
+// Prologue clean-up: trimming the enumerated article list that duplicates the on-page table of contents while preserving the lead-in sentence and every other prologue paragraph.
 internal static partial class SummaParser
 {
     // Regex for the numbered inquiry-point paragraphs at the end of a question prologue, e.g. "(1) Whether God is a body?".

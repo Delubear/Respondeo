@@ -3,8 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Respondeo.SummaImporter;
 
-// Paragraph extraction from the hard-wrapped source lines and tokenisation of the classic Summa section cues
-// (Objection, On the contrary, I answer that, Reply to Objection).
+// Paragraph extraction from the hard-wrapped source lines and tokenisation of the classic Summa section cues (Objection, On the contrary, I answer that, Reply to Objection).
 internal static partial class SummaParser
 {
     // Turns the indented, hard-wrapped source lines into Markdown paragraphs.
@@ -32,9 +31,9 @@ internal static partial class SummaParser
                 continue;
             }
 
-            // A treatise heading (e.g. "TREATISE ON HABITS (QQ[49]-54)") sits between questions but falls inside
-            // the previous question's range, so it would otherwise leak into the last article's body. Once seen,
-            // nothing after it belongs to the current article, so stop extracting here.
+            // A treatise heading (e.g. "TREATISE ON HABITS (QQ[49]-54)") sits between questions but falls inside the previous question's range,
+            // so it would otherwise leak into the last article's body.
+            // Once seen, nothing after it belongs to the current article, so stop extracting here.
             if (TreatiseHeadingRegex().IsMatch(line))
             {
                 break;
@@ -85,32 +84,28 @@ internal static partial class SummaParser
         return text;
     }
 
-    // The section header is normally colon-delimited ("Objection 1:") but the source occasionally uses a
-    // period ("Objection 1."); accept either so the objection/reply is tokenised rather than leaking into
-    // the preamble.
+    // The section header is normally colon-delimited ("Objection 1:") but the source occasionally uses a period ("Objection 1.");
+    // accept either so the objection/reply is tokenised rather than leaking into the preamble.
     [GeneratedRegex(@"^Reply to Objection (?<n>\d+)[:.]", RegexOptions.Compiled)]
     private static partial Regex ReplyRegex();
 
     [GeneratedRegex(@"^Objection (?<n>\d+)[:.]", RegexOptions.Compiled)]
     private static partial Regex ObjectionRegex();
 
-    // The respondeo cue is normally comma-delimited ("I answer that,") but the source occasionally omits
-    // the comma ("I answer that As stated above ..."); accept either so the respondeo is tokenised rather
-    // than leaking into the preceding section (e.g. the sed contra).
+    // The respondeo cue is normally comma-delimited ("I answer that,") but the source occasionally omits the comma ("I answer that As stated above ...");
+    // accept either so the respondeo is tokenised rather than leaking into the preceding section (e.g. the sed contra).
     [GeneratedRegex(@"^I answer that,?", RegexOptions.Compiled)]
     private static partial Regex RespondeoRegex();
 
-    // Matches the leading section-cue token that ExtractText/FormatParagraph puts at the start of each
-    // classic Summa section paragraph, e.g. "{{scue|objection|2}}" or "{{scue|respondeo}}".
+    // Matches the leading section-cue token that ExtractText/FormatParagraph puts at the start of each classic Summa section paragraph,
+    // e.g. "{{scue|objection|2}}" or "{{scue|respondeo}}".
     [GeneratedRegex(@"^\{\{scue\|(?<kind>objection|reply|contra|respondeo)(?:\|(?<n>\d+))?\}\}", RegexOptions.Compiled)]
     private static partial Regex SectionCueRegex();
 
-    // Splits an already-linkified article body (Markdown paragraphs joined by blank lines, each classic
-    // section paragraph carrying a leading {{scue|...}} token) into the structural pieces of a Summa
-    // article. The {{scue|...}} tokens are preserved inside each bucket so the render stage still emits
-    // the same labels and deep-link anchor ids. Paragraphs before the first cue become the preamble;
-    // paragraphs without their own cue attach to the currently open section (e.g. a multi-paragraph
-    // "I answer that").
+    // Splits an already-linkified article body (Markdown paragraphs joined by blank lines,
+    // each classic section paragraph carrying a leading {{scue|...}} token) into the structural pieces of a Summa article.
+    // The {{scue|...}} tokens are preserved inside each bucket so the render stage still emits the same labels and deep-link anchor ids.
+    // Paragraphs before the first cue become the preamble; paragraphs without their own cue attach to the currently open section (e.g. a multi-paragraph "I answer that").
     internal static ArticleSections SplitArticleSections(string bodyMarkdown)
     {
         var preamble = new List<string>();
@@ -169,27 +164,26 @@ internal static partial class SummaParser
             replies.Select(r => new NumberedSection(r.Number, Join(r.Paragraphs))).ToList());
     }
 
-    // A treatise heading between questions. The source uses several formats, e.g.
-    // "TREATISE ON HABITS (QQ[49]-54)", "TREATISE ON THE CREATION (QQ 44-46)",
-    // "TREATISE ON THE DISTINCTION OF THINGS IN GENERAL (Q[47])" and
-    // "TREATISE ON SACRED DOCTRINE [1](Q[1])". These are not part of any article body. The match is
-    // case-sensitive, so the all-caps heading is caught while ordinary prose ("the treatise on
-    // charity") is left untouched.
+    // A treatise heading between questions.
+    // The source uses several formats, e.g.
+    //  "TREATISE ON HABITS (QQ[49]-54)", "TREATISE ON THE CREATION (QQ 44-46)",
+    //  "TREATISE ON THE DISTINCTION OF THINGS IN GENERAL (Q[47])" and
+    //  "TREATISE ON SACRED DOCTRINE [1](Q[1])".
+    //  These are not part of any article body. The match is case-sensitive, so the all-caps heading is caught while ordinary prose ("the treatise on charity") is left untouched.
     [GeneratedRegex(@"^\s*TREATISE\b", RegexOptions.Compiled)]
     private static partial Regex TreatiseHeadingRegex();
 
     // A Supplement sacrament section heading, which does not use the "TREATISE ..." form, e.g.
-    // "EXTREME UNCTION (QQ[29]-33)", "HOLY ORDERS (QQ[34]-40)", "MATRIMONY (QQ[41]-67)". The line is
-    // wholly upper-case words followed by a CCEL question-range in parentheses and nothing else, which
-    // distinguishes it from the Supplement's descriptive banner ("... SENTENCES (QQ[1] -99)", note the
-    // space) and from ordinary prose cross-references like "above (Q[50], A[7]).".
+    // "EXTREME UNCTION (QQ[29]-33)", "HOLY ORDERS (QQ[34]-40)", "MATRIMONY (QQ[41]-67)".
+    // The line is wholly upper-case words followed by a CCEL question-range in parentheses and nothing else,
+    // which distinguishes it from the Supplement's descriptive banner ("... SENTENCES (QQ[1] -99)", note the space)
+    // and from ordinary prose cross-references like "above (Q[50], A[7]).".
     [GeneratedRegex(@"^\s*[A-Z][A-Z ]+\((?:QQ|Q)\[?\d+\]?(?:-\d+)?\)\s*$", RegexOptions.Compiled)]
     private static partial Regex SupplementSectionRegex();
 
-    // Turns a raw treatise heading line into a clean display title. The descriptive name always
-    // precedes the first "[" or "(", which introduce the CCEL question-range/footnote (e.g.
-    // "(QQ[22]-48)", "[1](Q[1])") and any trailing tail like "GOOD HABITS, i.e. VIRTUES"; everything
-    // from that bracket onward is dropped and the remainder is title-cased for display.
+    // Turns a raw treatise heading line into a clean display title.
+    // The descriptive name always precedes the first "[" or "(", which introduce the CCEL question-range/footnote (e.g. "(QQ[22]-48)", "[1](Q[1])")
+    // and any trailing tail like "GOOD HABITS, i.e. VIRTUES"; everything from that bracket onward is dropped and the remainder is title-cased for display.
     internal static string CleanTreatiseTitle(string line)
     {
         var text = line.Trim();

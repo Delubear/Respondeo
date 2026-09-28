@@ -84,14 +84,12 @@ internal static partial class SummaParser
     }
 
     // Collects the treatise headings within a part, each paired with the source line where it begins.
-    // Treatise headings introduce the block of questions that follows them, so a question belongs to
-    // the last heading appearing before its own header line.
+    // Treatise headings introduce the block of questions that follows them, so a question belongs to the last heading appearing before its own header line.
     //
-    // The Supplement is organised under the sacraments rather than "TREATISE ..." headings for its
-    // first four sections: Penance (QQ 1-28), Extreme Unction (QQ 29-33), Holy Orders (QQ 34-40) and
-    // Matrimony (QQ 41-67). Its later sections (Resurrection, Last Things) do use "TREATISE ..."
-    // headings, which the loop below still catches. Penance has no heading line of its own in the
-    // source, so it is seeded at the part start so questions 1-28 are grouped rather than orphaned.
+    // The Supplement is organised under the sacraments rather than "TREATISE ..." headings for its first four sections:
+    // Penance (QQ 1-28), Extreme Unction (QQ 29-33), Holy Orders (QQ 34-40) and Matrimony (QQ 41-67).
+    // Its later sections (Resurrection, Last Things) do use "TREATISE ..." headings, which the loop below still catches.
+    // Penance has no heading line of its own in the source, so it is seeded at the part start so questions 1-28 are grouped rather than orphaned.
     private static List<(string Title, int Line)> FindTreatiseHeadings(string partId, string[] lines, int start, int end)
     {
         var treatises = new List<(string Title, int Line)>();
@@ -156,9 +154,8 @@ internal sealed record ParsedQuestion(
 
 internal sealed record ParsedArticle(int Number, string Title, ArticleSections Sections);
 
-// The structural pieces of a Summa article, each as linkified Markdown (still carrying {{scue|...}}
-// tokens). PreambleMarkdown holds any text before the first Objection; SedContra/Respondeo are null
-// when absent.
+// The structural pieces of a Summa article, each as linkified Markdown (still carrying {{scue|...}} tokens).
+// PreambleMarkdown holds any text before the first Objection; SedContra/Respondeo are null when absent.
 internal sealed record ArticleSections(
     string PreambleMarkdown,
     IReadOnlyList<NumberedSection> Objections,

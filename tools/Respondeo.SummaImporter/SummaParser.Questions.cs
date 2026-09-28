@@ -67,8 +67,7 @@ internal static partial class SummaParser
                 && i + 1 < end
                 && SplitCountContinuationRegex().IsMatch(lines[i + 1]))
             {
-                // The title may itself have wrapped, so gather any preceding contiguous non-blank,
-                // non-rule lines and prepend them to the portion captured on this line.
+                // The title may itself have wrapped, so gather any preceding contiguous non-blank, non-rule lines and prepend them to the portion captured on this line.
                 var titleParts = new List<string> { splitMatch.Groups["title"].Value };
                 var j = i - 1;
                 while (j >= start && lines[j].Trim().Length > 0 && !RuleRegex().IsMatch(lines[j]))
@@ -86,8 +85,7 @@ internal static partial class SummaParser
                 continue;
             }
 
-            // Handle the variant where "(N ARTICLES)" wrapped onto its own line: the title is on the preceding non-blank line(s),
-            // which may themselves span multiple lines.
+            // Handle the variant where "(N ARTICLES)" wrapped onto its own line: the title is on the preceding non-blank line(s), which may themselves span multiple lines.
             if (WrappedCountRegex().IsMatch(lines[i]))
             {
                 var j = i - 1;
@@ -115,8 +113,8 @@ internal static partial class SummaParser
                 }
             }
 
-            // Handle the Appendix's count-first heading form (e.g. "TWO ARTICLES ON PURGATORY"), which has
-            // no parenthesised "(N ARTICLES)" marker and would otherwise fold into the preceding question.
+            // Handle the Appendix's count-first heading form (e.g. "TWO ARTICLES ON PURGATORY"),
+            // which has no parenthesised "(N ARTICLES)" marker and would otherwise fold into the preceding question.
             var countFirst = CountFirstHeaderRegex().Match(lines[i]);
             if (countFirst.Success)
             {
@@ -131,8 +129,8 @@ internal static partial class SummaParser
         return headers;
     }
 
-    // A wrapped question-title continuation line: indented exactly two spaces (prose paragraphs use three),
-    // non-blank, not a rule line, and containing no lowercase letters (titles are ALL-CAPS).
+    // A wrapped question-title continuation line:
+    // indented exactly two spaces (prose paragraphs use three), non-blank, not a rule line, and containing no lowercase letters (titles are ALL-CAPS).
     private static bool IsTitleContinuationLine(string line)
     {
         if (line.Length < 3 || line[0] != ' ' || line[1] != ' ' || line[2] == ' ')

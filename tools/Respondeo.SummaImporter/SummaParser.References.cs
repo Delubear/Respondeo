@@ -10,9 +10,9 @@ internal static partial class SummaParser
     // These are leftover anchor numbers from the source's link table and carry no reading meaning, so they are removed.
     // Two shapes are stripped:
     //   1. A bracket number immediately followed by a reference letter or "(", e.g. "[1433]Q[28]".
-    //   2. A bracket number sitting right after a "(" or ";" list separator, even when a space follows before the
-    //      reference, e.g. "A[5];[1434] Q[37]". The lookbehind keeps this from touching meaningful "Q[2]"/"A[2]"
-    //      brackets (which are preceded by a letter, and are followed by punctuation or whitespace, never a letter or "(").
+    //   2. A bracket number sitting right after a "(" or ";" list separator, even when a space follows before the reference, e.g. "A[5];[1434] Q[37]".
+    //      The lookbehind keeps this from touching meaningful "Q[2]"/"A[2]" brackets
+    //      (which are preceded by a letter, and are followed by punctuation or whitespace, never a letter or "(").
     [GeneratedRegex(@"\[\d+\](?=[A-Za-z(])|(?<=[;(])\[\d+\](?=\s*[A-Za-z(])", RegexOptions.Compiled)]
     private static partial Regex CrossRefCruftRegex();
 
@@ -25,8 +25,8 @@ internal static partial class SummaParser
     private static partial Regex QuestionRefRegex();
 
     // A same-question article reference that stands alone (no preceding "Q[...]"), e.g. "AA[1],3".
-    // Captures the first article number, any additional article numbers, and an optional trailing objection
-    // citation like ", OBJ[3]", ", Reply to OBJ[1]" or the lower-case ", ad 2" reply form.
+    // Captures the first article number, any additional article numbers,
+    // and an optional trailing objection citation like ", OBJ[3]", ", Reply to OBJ[1]" or the lower-case ", ad 2" reply form.
     [GeneratedRegex(@"A{1,2}\[(?<a>\d+)\](?<am>(?:\s*,\s*\d+)*)(?:\s*,\s*(?:(?<reply>Reply(?:\s+to)?\s+)?OBJ\[(?<obj>\d+)\]|ad\s+(?<ad>\d+)))?", RegexOptions.Compiled)]
     private static partial Regex ArticleRefRegex();
 
@@ -39,8 +39,8 @@ internal static partial class SummaParser
     [GeneratedRegex(@"(?<reply>Reply(?:\s+to)?\s+)?OBJ\[(?<obj>\d+)\]", RegexOptions.Compiled)]
     private static partial Regex StandaloneObjectionRegex();
 
-    // A bare parenthesised reply self-reference, e.g. "(ad 1)", citing the reply to objection n in the
-    // current article. Restricted to the "(ad n)" shape so it never matches Latin prose containing "ad".
+    // A bare parenthesised reply self-reference, e.g. "(ad 1)", citing the reply to objection n in the current article.
+    // Restricted to the "(ad n)" shape so it never matches Latin prose containing "ad".
     // Only the "ad n" span is captured; the surrounding parentheses are preserved by the lookbehind/lookahead.
     [GeneratedRegex(@"(?<=\()ad\s+(?<ad>\d+)(?=\))", RegexOptions.Compiled)]
     private static partial Regex SelfReplyRegex();
@@ -79,8 +79,8 @@ internal static partial class SummaParser
             var questionNumber = int.Parse(match.Groups["q"].Value);
             var articles = JoinArticles(match.Groups["a"], match.Groups["am"]);
 
-            // A single-article reference that also cites an objection/reply collapses to one deep link
-            // straight to that objection/reply, instead of an article link followed by a separate one.
+            // A single-article reference that also cites an objection/reply collapses to one deep link straight to that objection/reply,
+            // instead of an article link followed by a separate one.
             var combined = TryBuildCombined(match, partId, questionNumber, questionShown: true, hasPart);
             if (combined is not null)
             {
@@ -126,12 +126,11 @@ internal static partial class SummaParser
         return text;
     }
 
-    // Builds a single combined citation token when a reference points at exactly one article (or a
-    // single-article question where the article is implied) and carries an objection/reply citation.
-    // The whole "Q. 13, A. 1, ad 2" style phrase then renders as one deep link straight to the
-    // objection/reply, instead of an article link followed by a separate objection link. Returns null
-    // when the citation has no objection/reply, or when multiple articles are cited (which keeps the
-    // existing per-article link behaviour so no link is dropped).
+    // Builds a single combined citation token when a reference points at exactly one article (or a single-article question where the article is implied)
+    // and carries an objection/reply citation.
+    // The whole "Q. 13, A. 1, ad 2" style phrase then renders as one deep link straight to the objection/reply,
+    // instead of an article link followed by a separate objection link.
+    // Returns null when the citation has no objection/reply, or when multiple articles are cited (which keeps the existing per-article link behaviour so no link is dropped).
     //   {{scite|<labelKind>|<partId>|<q>|<article>|<kind>|<n>}}
     // where <labelKind> is "qp" (show part + Q + A), "q" (Q + A) or "a" (article only).
     private static string? TryBuildCombined(Match match, string partId, int questionNumber, bool questionShown, bool hasPart)
@@ -148,8 +147,7 @@ internal static partial class SummaParser
             return null;
         }
 
-        // An article number is required to anchor the objection/reply. CCEL omits it only for
-        // single-article questions, where the target is article 1.
+        // An article number is required to anchor the objection/reply. CCEL omits it only for single-article questions, where the target is article 1.
         var article = match.Groups["a"].Success ? match.Groups["a"].Value : "1";
 
         var kind = isAd || match.Groups["reply"].Success ? "reply" : "objection";
@@ -159,11 +157,11 @@ internal static partial class SummaParser
         return $"{{{{scite|{labelKind}|{partId}|{questionNumber}|{article}|{kind}|{number}}}}}";
     }
 
-    // Builds the companion objection token for a reference that carries a trailing "OBJ[n]" (or "Reply to OBJ[n]")
-    // citation, or the lower-case "ad n" form (which always cites the reply to objection n). Used only for the
-    // multi-article fallback path now that single-article citations collapse into a combined scite token.
-    // The objection is scoped to the article named in the same reference. When no article is present there is no anchor to
-    // link to, so the citation is preserved as readable text rather than being silently dropped from the sentence.
+    // Builds the companion objection token for a reference that carries a trailing "OBJ[n]" (or "Reply to OBJ[n]") citation,
+    // or the lower-case "ad n" form (which always cites the reply to objection n).
+    // Used only for the multi-article fallback path now that single-article citations collapse into a combined scite token.
+    // The objection is scoped to the article named in the same reference.
+    // When no article is present there is no anchor to link to, so the citation is preserved as readable text rather than being silently dropped from the sentence.
     private static string Objection(Match match, string partId, int questionNumber, Group article)
     {
         var isAd = match.Groups["ad"].Success;
