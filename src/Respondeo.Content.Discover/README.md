@@ -1,23 +1,33 @@
-# Authoring Credo Content
+# Authoring Discover Content
 
-This project ships the **Credo** pillar — the content for *living* the Catholic faith — as static
-web assets from the `Respondeo.Content.Credo` library. It holds three kinds of content:
+This project ships the **Discover** pillar — the content for *living* the Catholic faith — as static
+web assets from the `Respondeo.Content.Discover` library. It holds four kinds of content:
 
 | Kind | Format | Folder | Purpose |
 |---|---|---|---|
-| **Prayers** | Markdown (`.md`) | `wwwroot/credo/prayers/` | A single traditional/public-domain prayer. |
-| **Devotions** | JSON (`.json`) | `wwwroot/credo/devotions/` | A data-driven prayer sequence (Rosary, chaplet, …). |
-| **Articles** | Markdown (`.md`) | `wwwroot/credo/articles/` | A deeper dive on a practice or teaching. |
+| **Prayers** | Markdown (`.md`) | `wwwroot/discover/prayers/` | A single traditional/public-domain prayer. |
+| **Devotions** | JSON (`.json`) | `wwwroot/discover/devotions/` | A data-driven prayer sequence (Rosary, chaplet, …). |
+| **Articles** | Markdown (`.md`) | `wwwroot/discover/articles/` | A deeper dive on a practice or teaching. |
+| **Miracles** | Markdown (`.md`) | `wwwroot/discover/miracles/` | A reported miracle with typed facet metadata. |
 
-Every new file must be registered in
-[`wwwroot/credo/credo-manifest.json`](wwwroot/credo/credo-manifest.json) to be loaded.
+Every new file must be registered in its per-type manifest
+([`wwwroot/discover/prayers/prayers-manifest.json`](wwwroot/discover/prayers/prayers-manifest.json),
+[`wwwroot/discover/devotions/devotions-manifest.json`](wwwroot/discover/devotions/devotions-manifest.json),
+[`wwwroot/discover/articles/articles-manifest.json`](wwwroot/discover/articles/articles-manifest.json),
+[`wwwroot/discover/miracles/miracles-manifest.json`](wwwroot/discover/miracles/miracles-manifest.json)) to be loaded.
+
+Ready-to-copy templates live under [`docs/templates/`](../../docs/templates):
+[`example-prayer.md`](../../docs/templates/example-prayer.md),
+[`example-devotion.json`](../../docs/templates/example-devotion.json),
+[`example-article.md`](../../docs/templates/example-article.md), and
+[`example-miracle.md`](../../docs/templates/example-miracle.md).
 
 > **Copyright care:** only catalogue prayers that are public-domain or traditional. Where a
 > translation credit is required, add an `attribution` line (see below).
 
 ---
 
-## 1. Prayers (`wwwroot/credo/prayers/*.md`)
+## 1. Prayers (`wwwroot/discover/prayers/*.md`)
 
 A prayer is a Markdown file: YAML front-matter between `---` lines, then the prayer text as body.
 
@@ -60,7 +70,7 @@ it as `LatinHtml`.
 
 ---
 
-## 2. Devotions (`wwwroot/credo/devotions/*.json`)
+## 2. Devotions (`wwwroot/discover/devotions/*.json`)
 
 A devotion is a JSON document describing an ordered **sequence** of steps that reference prayers by
 `id`, plus optional selectable **mystery sets**. The interactive player walks the sequence, so a new
@@ -127,7 +137,7 @@ devotion is added purely as data — no code change.
 |---|---|---|
 | `kind` | No | `prayer` (default) prays a single prayer; `mysteries` iterates the chosen mystery set. |
 | `title` | No | Optional heading for the step (e.g. `Begin`, `Closing prayers`). |
-| `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/credo/prayers/`. |
+| `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/discover/prayers/`. |
 | `repeat` | No | How many times to pray the step (e.g. `10` for a decade). Defaults to `1`. |
 | `perMystery` | For `mysteries` steps | The step template run once per mystery of the chosen set (a list of `prayer` steps). |
 
@@ -135,7 +145,7 @@ Every `prayerId` must refer to an existing prayer file, or the player has nothin
 
 ---
 
-## 3. Articles (`wwwroot/credo/articles/*.md`)
+## 3. Articles (`wwwroot/discover/articles/*.md`)
 
 An article is Markdown with front-matter. Top-level `## ` headings split the body into titled
 sections; the text before the first heading is the untitled lead-in.
@@ -181,8 +191,9 @@ Sections are formed by `## ` headings in the body; write normal Markdown beneath
 
 1. Create the file in the matching folder (`prayers/`, `devotions/`, or `articles/`) with `id`
    matching the file name stem.
-2. Register the file name under the right key in
-   [`credo-manifest.json`](wwwroot/credo/credo-manifest.json).
+2. Register the file name in that content type's manifest
+   (`prayers/prayers-manifest.json`, `devotions/devotions-manifest.json`, or
+   `articles/articles-manifest.json`).
 3. For devotions, confirm every `prayerId` refers to an existing prayer file.
 4. For paired translations, give both files the same `translationKey` and set each `language`.
 5. Run the app and verify the item lists, filters, and detail page render correctly.

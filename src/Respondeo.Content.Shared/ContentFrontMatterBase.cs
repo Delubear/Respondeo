@@ -5,7 +5,7 @@ namespace Respondeo.Content.Shared;
 /// <summary>
 /// The common metadata every content pillar's front-matter block shares: a stable id, a title, a short summary, and a set of free-text tags.
 /// Pillar-specific front-matter DTOs inherit this so the four shared fields stay identical (same YAML aliases, same defaults)
-/// across Markdown journey nodes, Credo prayers/articles, and miracles.
+/// across Markdown journey nodes, Discover prayers/articles, and miracles.
 /// Pillar-specific fields (categories, topics, sources, translation keys, etc.) are added by the derived classes.
 /// </summary>
 public abstract class ContentFrontMatterBase

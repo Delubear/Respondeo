@@ -1,0 +1,42 @@
+{
+  "//": "EXAMPLE DEVOTION FILE — copy this as a starting point for a new Discover devotion.",
+  "//lives": "src/Respondeo.Content.Discover/wwwroot/discover/devotions/. Register the file name in devotions/devotions-manifest.json so DevotionService loads it.",
+  "//structure": "A devotion is an ordered sequence of steps that reference prayers by id, plus optional selectable mystery sets. The interactive player walks the sequence, so a new devotion is pure data — no code change. Every prayerId must refer to an existing prayer file.",
+
+  "id": "example-devotion",
+  "title": "The Example Devotion",
+  "summary": "A one-line description shown on cards.",
+  "kind": "chaplet",
+  "intro": "Markdown introduction shown before the reader begins. Explain the devotion's origin and when it is prayed.",
+
+  "mysterySets": [
+    {
+      "id": "decades",
+      "name": "The Five Decades",
+      "when": "Optional note on when this set is prayed (e.g. Mondays and Saturdays).",
+      "mysteries": [
+        { "title": "First Decade", "reflection": "Optional *Markdown* meditation shown for this mystery." },
+        { "title": "Second Decade" },
+        { "title": "Third Decade" },
+        { "title": "Fourth Decade" },
+        { "title": "Fifth Decade" }
+      ]
+    }
+  ],
+
+  "sequence": [
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
+    { "kind": "prayer", "prayerId": "our-father" },
+    { "kind": "prayer", "prayerId": "hail-mary" },
+    {
+      "kind": "mysteries",
+      "title": "The Decades",
+      "perMystery": [
+        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "our-father" },
+        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "hail-mary", "repeat": 10 }
+      ]
+    },
+    { "kind": "prayer", "title": "Conclude", "prayerId": "glory-be", "repeat": 3 },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+  ]
+}

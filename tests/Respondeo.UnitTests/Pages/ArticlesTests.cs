@@ -13,7 +13,7 @@ namespace Respondeo.UnitTests.Pages;
 
 public class ArticlesTests : TestContext
 {
-    private const string CredoManifest = """
+    private const string DiscoverManifest = """
         { "files": [ "confession.md" ] }
         """;
 
@@ -41,7 +41,7 @@ public class ArticlesTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Discover/discover/articles/articles-manifest.json"] = CredoManifest,
+            ["_content/Respondeo.Content.Discover/discover/articles/articles-manifest.json"] = DiscoverManifest,
             ["_content/Respondeo.Content.Discover/discover/articles/confession.md"] = ConfessionMd,
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = ContentManifest,
             ["_content/Respondeo.Content.Markdown/content/beta.md"] = BetaMd,
@@ -56,7 +56,7 @@ public class ArticlesTests : TestContext
     }
 
     [Fact]
-    public void Renders_both_credo_articles_and_inquiry_articles()
+    public void Renders_both_discover_articles_and_inquiry_articles()
     {
         var cut = RenderComponent<Articles>();
 
@@ -97,7 +97,7 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        var tagsHeading = cut.FindAll("h2.credo__sidebar-title").Any(h => h.TextContent.Trim() == "Tags");
+        var tagsHeading = cut.FindAll("h2.discover__sidebar-title").Any(h => h.TextContent.Trim() == "Tags");
         Assert.True(tagsHeading);
 
         var options = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();

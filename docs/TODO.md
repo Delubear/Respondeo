@@ -105,13 +105,14 @@ Audience-based hub (not linear); entry paths converge on how-to-begin and the sa
 - [ ] Glossary of key terms (act/potency, contingency, hypostatic union, etc.)
 - [ ] Reading list / primary-source references per stage
 
-## Pillar: Miracles
+## Discover area: Miracles
 
-A separate, searchable pillar (like the Summa), outside the journey tabs and reached from the masthead.
-Each miracle is a hand-authored Markdown file with typed facet front-matter (type, approval, region,
-country, year, tags), parsed into a typed model and browsable by facet + free-text search.
+An area within the Discover pillar (reached from the Discover sub-navigation, routes under
+`/discover/miracles/`), gated by the `MiraclesFeature` flag. Each miracle is a hand-authored Markdown
+file with typed facet front-matter (type, approval, region, country, year, tags), parsed into a typed
+model and browsable by facet + free-text search.
 
-- [~] Miracles pillar scaffolding (project, models, service, browse state, pages, masthead link)
+- [~] Miracles area scaffolding (models, service, browse state, pages, Discover sub-nav link, feature flag)
 - [~] Browse page: facet filters (kind / judgment / region) + search + sort by title/year
 - [~] Detail page: facts panel, prose sections, tags, sources
 - [~] The Eucharistic Miracle of Lanciano
@@ -123,30 +124,31 @@ country, year, tags), parsed into a typed model and browsable by facet + free-te
 - [ ] Consider: more Eucharistic miracles (Orvieto-Bolsena, Santarém, Sokółka)
 - [ ] Consider: more approved apparitions (Lourdes 1858, Fatima, Knock, Akita)
 - [ ] Consider: canonization miracles / more incorruptibles
-- [ ] Consider: link the pillar from relevant journey articles (e.g. the Eucharist, the Resurrection)
+- [ ] Consider: link the area from relevant journey articles (e.g. the Eucharist, the Resurrection)
 
-## Pillar: Credo
+## Pillar: Discover
 
-The "living the faith" pillar (label/route `Credo` / `/credo/`), reached from the masthead and from the
+The "living the faith" pillar (label/route `Discover` / `/discover/`), reached from the masthead and from the
 end of Coming Home as an ongoing endgame rather than a new journey stage. Prayers and articles are
 hand-authored Markdown; devotions are data-driven JSON so an interactive Rosary/chaplet player can walk
 the visitor bead by bead without code changes.
 
-- [~] Credo pillar scaffolding (project, models, parser, service, manifest, DI, masthead link, feature flag)
-- [~] Hub page (`/credo`) linking Prayers, Devotions, Articles
-- [~] Prayers: searchable index (`/credo/prayers`) + detail with optional Latin (`/credo/prayers/{id}`)
-- [~] Devotions: index (`/credo/devotions`) + interactive data-driven player (`/credo/devotions/{id}`)
-- [~] Articles: index (`/credo/articles`) + sectioned detail with sources (`/credo/articles/{id}`)
-- [~] Coming Home finale hands off into Credo via `nextStage`
-- [ ] Relocate the Sacraments content into Credo articles (currently deferred under Coming Home)
+- [~] Discover pillar scaffolding (project, models, parser, services, manifests, DI, masthead link, feature flags)
+- [~] Hub page (`/discover`) linking Miracles, Prayers, Devotions, Articles
+- [~] Prayers: searchable index (`/discover/prayers`) + detail with optional Latin (`/discover/prayers/{id}`)
+- [~] Devotions: index (`/discover/devotions`) + interactive data-driven player (`/discover/devotions/{id}`)
+- [~] Articles: index (`/discover/articles`) + sectioned detail with sources (`/discover/articles/{id}`)
+- [~] Coming Home finale hands off into Discover via `nextStage`
+- [ ] Relocate the Sacraments content into Discover articles (currently deferred under Coming Home)
 - [ ] Consider: more prayers (Litanies, the Angelus, Divine Mercy), more chaplets
 - [ ] Consider: more deep-dive articles (the Eucharist, Confession practice, the liturgical year)
 - [ ] Consider: mind copyright on any non-public-domain prayers/translations
 
 ## Future / possible pillars
 
-Additional standalone, searchable pillars (like Miracles and the Summa) that would fit the same
-browse-by-facet + Summa-style reading layout. Not started; captured here as editorial intent.
+Additional standalone, searchable pillars (like the Summa, or the Miracles/Saints browse areas) that
+would fit the same browse-by-facet + Summa-style reading layout. Not started; captured here as
+editorial intent.
 
 - [ ] **The Bible** — a browsable Scripture pillar (books → chapters → verses) with cross-references,
   mapping naturally onto the Summa-style navigation. Would need a public-domain translation
@@ -156,9 +158,8 @@ browse-by-facet + Summa-style reading layout. Not started; captured here as edit
   copyright and cannot be shipped in this repository; revisit if a suitably licensed or public-domain
   text becomes available.
 - [ ] **The Saints** — a searchable pillar of saints with typed facets (era, region, feast day,
-  patronage, state of life) and hand-authored profiles, close in shape to the Miracles pillar.
+  patronage, state of life) and hand-authored profiles, close in shape to the Miracles area.
 
 ## Housekeeping
 
-- [ ] Remove or replace `test.md` placeholder in the manifest
 - [ ] Vet "unvetted content" stubs and remove the NOTE banner as they are finished

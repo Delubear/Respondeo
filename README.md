@@ -11,8 +11,7 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | `Respondeo.Content.Rendering` | Shared rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
 | `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
-| `Respondeo.Content.Miracles` | The Miracles corpus and its models/service. |
-| `Respondeo.Content.Credo` | The Credo pillar (prayers, devotions, articles) and its models/service. |
+| `Respondeo.Content.Discover` | The Discover pillar (miracles, prayers, devotions, articles) and its models/services. |
 | `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
@@ -135,8 +134,11 @@ change. The flags live in the **`FeatureFlags`** section of
 | --- | --- |
 | `AquinasPortrait` | Hides the St. Thomas Aquinas portrait in the masthead. |
 | `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
-| `MiraclesPillar` | Hides the Miracles pill in the pillar switcher. |
-| `CredoPillar` | Hides the Credo pill in the pillar switcher. |
+| `DiscoverPillar` | Hides the entire Discover pill in the pillar switcher (supersedes the per-feature flags). |
+| `MiraclesFeature` | Hides the Miracles area within Discover. |
+| `PrayerFeature` | Hides the Prayers area within Discover. |
+| `DevotionsFeature` | Hides the Devotions area within Discover. |
+| `ArticlesFeature` | Hides the Articles area within Discover. |
 
 To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a
 per-environment override at `wwwroot/appsettings.{Environment}.json` (it merges over the base file).
@@ -210,7 +212,7 @@ sitemap agree on the canonical origin, name, and default description.
   correct on localhost/preview hosts), and Open Graph / Twitter overrides via `HeadContent`.
   It is applied on
   [`Home.razor`](src/Respondeo/Pages/Home.razor),
-  [`CredoArticles.razor`](src/Respondeo/Pages/CredoArticles.razor),
+  [`Articles.razor`](src/Respondeo/Pages/Articles.razor),
   [`Summa.razor`](src/Respondeo/Pages/Summa.razor),
   [`Miracles.razor`](src/Respondeo/Pages/Miracles.razor),
   [`SummaQuestion.razor`](src/Respondeo/Pages/SummaQuestion.razor),
