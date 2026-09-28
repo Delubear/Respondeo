@@ -4,29 +4,19 @@ using Respondeo.Content.Credo.Internal;
 namespace Respondeo.Content.Credo.Services;
 
 /// <summary>
-/// Loads the bundled Credo content (prayers, devotions, articles) from static files shipped by the
-/// Respondeo.Content.Credo library under the <c>_content/Respondeo.Content.Credo/</c> static-web-asset
-/// path. Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to
-/// <see cref="CredoParser"/>, and caches the parsed items and derived index in memory for the app's
-/// lifetime. The whole hand-authored catalog is small, so it is loaded once up front.
+/// Loads the bundled Credo content (prayers, devotions, articles) from static files shipped by the Respondeo.Content.Credo library under the
+/// <c>_content/Respondeo.Content.Credo/</c> static-web-asset path.
+/// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="CredoParser"/>,
+/// and caches the parsed items and derived index in memory for the app's lifetime. The whole hand-authored catalog is small, so it is loaded once up front.
 /// </summary>
-internal sealed class CredoService : ICredoService
+internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) : ICredoService
 {
     private const string CredoRoot = "_content/Respondeo.Content.Credo/credo";
     private const string ManifestPath = CredoRoot + "/credo-manifest.json";
 
-    private readonly CredoParser _parser;
-    private readonly ContentFetcher _fetcher;
+    private readonly CredoParser _parser = new(html);
+    private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<Catalog> _catalog = new();
-
-    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
-    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
-    // serving stale content across deploys.
-    public CredoService(HttpClient http, IContentHtmlRenderer html)
-    {
-        _parser = new CredoParser(html);
-        _fetcher = new ContentFetcher(http, ContentCachePolicy.Immutable);
-    }
 
     /// <summary>Returns the browse index, loading the catalog once and caching it.</summary>
     public async Task<CredoIndex> GetIndexAsync() => (await Load()).Index;

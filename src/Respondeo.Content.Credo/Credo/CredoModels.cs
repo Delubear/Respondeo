@@ -5,9 +5,8 @@ namespace Respondeo.Content.Credo;
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// A single prayer as it appears in the browse index: enough to render a card without fetching the
-/// full text. Only traditional / public-domain prayers are catalogued; each carries an optional
-/// attribution so the source can be shown where one is required.
+/// A single prayer as it appears in the browse index: enough to render a card without fetching the full text.
+/// Only traditional / public-domain prayers are catalogued; each carries an optional attribution so the source can be shown where one is required.
 /// </summary>
 public sealed class PrayerSummary
 {
@@ -48,8 +47,8 @@ public sealed class Prayer
     public string Language { get; init; } = "en";
 
     /// <summary>
-    /// Optional key shared with the prayer's translations. Files with the same key are the same
-    /// prayer in different languages; the service uses it to pair an English prayer with its Latin.
+    /// Optional key shared with the prayer's translations.
+    /// Files with the same key are the same prayer in different languages; the service uses it to pair an English prayer with its Latin.
     /// </summary>
     public string? TranslationKey { get; init; }
 
@@ -57,8 +56,8 @@ public sealed class Prayer
     public required string Html { get; init; }
 
     /// <summary>
-    /// Optional Latin (or original-language) rendered HTML, shown alongside the vernacular. Populated
-    /// by the service from the linked Latin file that shares this prayer's <see cref="TranslationKey"/>.
+    /// Optional Latin (or original-language) rendered HTML, shown alongside the vernacular.
+    /// Populated by the service from the linked Latin file that shares this prayer's <see cref="TranslationKey"/>.
     /// </summary>
     public string? LatinHtml { get; set; }
 
@@ -90,10 +89,9 @@ public sealed class DevotionSummary
 }
 
 /// <summary>
-/// A complete, data-driven devotion: an ordered sequence of steps referencing prayers by id, plus
-/// optional mystery sets. The interactive player walks the sequence; a "mysteries" step is expanded
-/// once per mystery of the chosen set, so a new devotion (a chaplet, a different rosary form) is added
-/// purely as data with no code change.
+/// A complete, data-driven devotion: an ordered sequence of steps referencing prayers by id, plus optional mystery sets.
+/// The interactive player walks the sequence; a "mysteries" step is expanded once per mystery of the chosen set,
+/// so a new devotion (a chaplet, a different rosary form) is added purely as data with no code change.
 /// </summary>
 public sealed class Devotion
 {
@@ -113,8 +111,7 @@ public sealed class Devotion
     public string? IntroHtml { get; init; }
 
     /// <summary>
-    /// The selectable mystery / meditation sets (e.g. the Joyful, Sorrowful, Glorious, Luminous
-    /// mysteries). Empty for devotions that have no per-mystery meditation.
+    /// The selectable mystery / meditation sets (e.g. the Joyful, Sorrowful, Glorious, Luminous mysteries). Empty for devotions that have no per-mystery meditation.
     /// </summary>
     public IReadOnlyList<MysterySet> MysterySets { get; init; } = [];
 
@@ -149,9 +146,8 @@ public sealed class Mystery
 }
 
 /// <summary>
-/// One step of a devotion. A <see cref="Kind"/> of "prayer" prays <see cref="PrayerId"/>
-/// <see cref="Repeat"/> times; a kind of "mysteries" iterates the chosen <see cref="MysterySet"/>,
-/// running <see cref="PerMystery"/> once for each mystery (so the decade template lives in data).
+/// One step of a devotion. A <see cref="Kind"/> of "prayer" prays <see cref="PrayerId"/> <see cref="Repeat"/> times;
+/// a kind of "mysteries" iterates the chosen <see cref="MysterySet"/>, running <see cref="PerMystery"/> once for each mystery (so the decade template lives in data).
 /// </summary>
 public sealed class DevotionStep
 {
@@ -168,8 +164,8 @@ public sealed class DevotionStep
     public int Repeat { get; init; } = 1;
 
     /// <summary>
-    /// The per-mystery sub-steps for a "mysteries" step (e.g. one Our Father, ten Hail Marys, one
-    /// Glory Be). Run once for each mystery of the selected set.
+    /// The per-mystery sub-steps for a "mysteries" step (e.g. one Our Father, ten Hail Marys, one Glory Be).
+    /// Run once for each mystery of the selected set.
     /// </summary>
     public IReadOnlyList<DevotionStep> PerMystery { get; init; } = [];
 }

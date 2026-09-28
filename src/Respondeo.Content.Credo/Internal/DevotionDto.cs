@@ -1,9 +1,8 @@
 namespace Respondeo.Content.Credo.Internal;
 
 /// <summary>
-/// The JSON shape of a devotion file. A devotion is authored entirely as data so new ones (a chaplet,
-/// a different rosary form) are added without any code change. The parser maps this onto the public
-/// <see cref="Devotion"/> model, rendering the Markdown intro / reflections to HTML on the way.
+/// The JSON shape of a devotion file. A devotion is authored entirely as data so new ones (a chaplet, a different rosary form) are added without any code change.
+/// The parser maps this onto the public <see cref="Devotion"/> model, rendering the Markdown intro / reflections to HTML on the way.
 /// </summary>
 internal sealed class DevotionDto
 {

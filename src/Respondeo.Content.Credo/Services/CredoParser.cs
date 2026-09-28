@@ -4,18 +4,15 @@ using Respondeo.Content.Credo.Internal;
 namespace Respondeo.Content.Credo.Services;
 
 /// <summary>
-/// Turns raw Credo content files into the typed public models. Prayers and articles are Markdown with
-/// a "---" delimited YAML front-matter block; devotions arrive as already-deserialized JSON DTOs whose
-/// Markdown intro / reflections are rendered here. Front-matter reading is delegated to the shared
-/// <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>;
+/// Turns raw Credo content files into the typed public models.
+/// Prayers and articles are Markdown with a "---" delimited YAML front-matter block;
+/// devotions arrive as already-deserialized JSON DTOs whose Markdown intro / reflections are rendered here.
+/// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>;
 /// the parser performs no I/O so it can be tested in isolation.
 /// </summary>
-internal sealed class CredoParser
+internal sealed class CredoParser(IContentHtmlRenderer html)
 {
-    private readonly IContentHtmlRenderer _html;
     private readonly FrontMatterReader _reader = new();
-
-    public CredoParser(IContentHtmlRenderer html) => _html = html;
 
     /// <summary>Parses a prayer Markdown file, or returns null when it lacks valid front-matter / an id.</summary>
     public Prayer? ParsePrayer(string raw)
@@ -33,7 +30,7 @@ internal sealed class CredoParser
             Category = NormalizeSlug(meta.Category, "other"),
             Language = NormalizeSlug(meta.Language, "en"),
             TranslationKey = string.IsNullOrWhiteSpace(meta.TranslationKey) ? null : meta.TranslationKey.Trim(),
-            Html = _html.ToHtml(body.Trim()),
+            Html = html.ToHtml(body.Trim()),
             Tags = meta.Tags,
             Attribution = meta.Attribution,
         };
@@ -73,7 +70,7 @@ internal sealed class CredoParser
             Title = dto.Title,
             Summary = dto.Summary,
             Kind = NormalizeSlug(dto.Kind, "devotion"),
-            IntroHtml = string.IsNullOrWhiteSpace(dto.Intro) ? null : _html.ToHtml(dto.Intro),
+            IntroHtml = string.IsNullOrWhiteSpace(dto.Intro) ? null : html.ToHtml(dto.Intro),
             MysterySets = [.. dto.MysterySets.Select(MapSet)],
             Sequence = [.. dto.Sequence.Select(MapStep)],
         };
@@ -113,7 +110,7 @@ internal sealed class CredoParser
         Mysteries = [.. set.Mysteries.Select(m => new Mystery
         {
             Title = m.Title,
-            ReflectionHtml = string.IsNullOrWhiteSpace(m.Reflection) ? null : _html.ToHtml(m.Reflection),
+            ReflectionHtml = string.IsNullOrWhiteSpace(m.Reflection) ? null : html.ToHtml(m.Reflection),
         })],
     };
 
@@ -129,8 +126,8 @@ internal sealed class CredoParser
     private static string NormalizeSlug(string? slug, string fallback) =>
         string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
-    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's
-    // Markdown to HTML. Content before the first heading is an untitled lead-in section.
+    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's Markdown to HTML.
+    // Content before the first heading is an untitled lead-in section.
     private IReadOnlyList<ArticleSection> SplitSections(string body) =>
-        [.. MarkdownSections.Split(body).Select(s => new ArticleSection { Heading = s.Heading, Html = _html.ToHtml(s.Markdown) })];
+        [.. MarkdownSections.Split(body).Select(s => new ArticleSection { Heading = s.Heading, Html = html.ToHtml(s.Markdown) })];
 }
