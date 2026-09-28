@@ -1,5 +1,5 @@
 @page "/discover/devotions"
-@inject IDiscoverService Credo
+@inject IDevotionService DevotionService
 @inject IBreadcrumbTrail Trail
 @inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
@@ -106,8 +106,8 @@
         _query = BrowseState.GetQuery("devotions");
         _selectedKinds = new HashSet<string>(BrowseState.GetFilter("devotions.kind"), StringComparer.OrdinalIgnoreCase);
 
-        var index = await Credo.GetIndexAsync();
-        _devotions = index.Devotions;
+        var devotions = await DevotionService.GetIndexAsync();
+        _devotions = devotions;
 
         _kinds = _devotions.Select(d => d.Kind)
             .Where(k => !string.IsNullOrWhiteSpace(k) && k != "devotion")

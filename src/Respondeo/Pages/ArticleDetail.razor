@@ -1,5 +1,5 @@
 @page "/discover/articles/{Id}"
-@inject IDiscoverService Credo
+@inject IArticleService Articles
 @inject IBreadcrumbTrail Trail
 
 <PageTitle>@(_article is null ? "Article" : $"{_article.Title} \u2014 Respondeo")</PageTitle>
@@ -91,7 +91,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
-        _article = await Credo.GetArticleAsync(Id);
+        _article = await Articles.GetArticleAsync(Id);
         _loading = false;
     }
 }

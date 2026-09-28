@@ -2,7 +2,7 @@ using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Discover;
+using Respondeo.Content.Discover.Miracles;
 using Respondeo.Content.Discover.Services;
 using Respondeo.Pages;
 using Respondeo.Services;
@@ -64,7 +64,7 @@ public class MiraclesTests : TestContext
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            [$"{Root}/miracles-manifest.json"] = ManifestJson,
+            ["_content/Respondeo.Content.Discover/discover/miracles/miracles-manifest.json"] = ManifestJson,
             [$"{Root}/facets.json"] = FacetsJson,
             [$"{Root}/lanciano-eucharistic-miracle.md"] = LancianoMd,
             [$"{Root}/our-lady-of-guadalupe.md"] = GuadalupeMd,

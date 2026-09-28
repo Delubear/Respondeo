@@ -1,5 +1,6 @@
 using Respondeo.Content.Shared;
 using Respondeo.Content.Discover.Internal;
+using Respondeo.Content.Discover.Miracles;
 
 namespace Respondeo.Content.Discover.Services;
 

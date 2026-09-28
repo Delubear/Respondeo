@@ -1,5 +1,5 @@
 @page "/discover/articles"
-@inject IDiscoverService Credo
+@inject IArticleService ArticleService
 @inject IContentService Content
 @inject IBreadcrumbTrail Trail
 @inject DiscoverBrowseState BrowseState
@@ -148,8 +148,8 @@
         _source = BrowseState.GetFilter("articles.source").FirstOrDefault() ?? SourceAll;
         _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
 
-        var index = await Credo.GetIndexAsync();
-        var credoRows = index.Articles.Select(a =>
+        var articles = await ArticleService.GetIndexAsync();
+        var credoRows = articles.Select(a =>
             new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"));
 
         // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).

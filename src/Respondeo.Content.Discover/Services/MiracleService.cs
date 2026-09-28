@@ -1,5 +1,6 @@
 using Respondeo.Content.Shared;
 using Respondeo.Content.Discover.Internal;
+using Respondeo.Content.Discover.Miracles;
 
 namespace Respondeo.Content.Discover.Services;
 
@@ -13,7 +14,8 @@ namespace Respondeo.Content.Discover.Services;
 internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) :
     MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
-    private const string MiraclesRoot = "_content/Respondeo.Content.Discover/discover/miracles";
+    private const string DiscoverRoot = "_content/Respondeo.Content.Discover/discover";
+    private const string MiraclesRoot = DiscoverRoot + "/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";
 
@@ -59,7 +61,7 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
 
     private async Task<Catalog> LoadCatalogAsync()
     {
-        var manifest = await Fetcher.GetFromJsonAsync<MiracleManifest>(ManifestPath) ?? new MiracleManifest();
+        var manifest = await Fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
         // Fetch every file concurrently rather than sequentially so the cold load overlaps the network round trips;
         // results are assembled in manifest order for deterministic index order.
@@ -82,11 +84,6 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
     }
 
     private sealed record Catalog(Dictionary<string, MiracleRecord> Records, MiracleIndex Index);
-
-    private sealed class MiracleManifest
-    {
-        public List<string> Files { get; set; } = [];
-    }
 
     // Serialization shape for facets.json: three slug->label maps.
     private sealed class FacetsDto

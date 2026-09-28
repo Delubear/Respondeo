@@ -1,7 +1,7 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Discover;
+using Respondeo.Content.Discover.Articles;
 using Respondeo.Content.Discover.Services;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.Content.Shared;
@@ -14,11 +14,7 @@ namespace Respondeo.UnitTests.Pages;
 public class ArticlesTests : TestContext
 {
     private const string CredoManifest = """
-        {
-          "prayers": [],
-          "devotions": [],
-          "articles": [ "confession.md" ]
-        }
+        { "files": [ "confession.md" ] }
         """;
 
     private const string ConfessionMd = """
@@ -45,7 +41,7 @@ public class ArticlesTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Discover/discover/discover-manifest.json"] = CredoManifest,
+            ["_content/Respondeo.Content.Discover/discover/articles/articles-manifest.json"] = CredoManifest,
             ["_content/Respondeo.Content.Discover/discover/articles/confession.md"] = ConfessionMd,
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = ContentManifest,
             ["_content/Respondeo.Content.Markdown/content/beta.md"] = BetaMd,
@@ -53,7 +49,7 @@ public class ArticlesTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<IDiscoverService>(new DiscoverService(http, ContentRendering.Renderer));
+        Services.AddSingleton<IArticleService>(new ArticleService(http, ContentRendering.Renderer));
         Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));

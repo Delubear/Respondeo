@@ -1,5 +1,5 @@
 @page "/discover/prayers/{Id}"
-@inject IDiscoverService Credo
+@inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 
 <PageTitle>@(_prayer is null ? "Prayer" : $"{_prayer.Title} \u2014 Respondeo")</PageTitle>
@@ -75,7 +75,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
-        _prayer = await Credo.GetPrayerAsync(Id);
+        _prayer = await Prayers.GetPrayerAsync(Id);
         _loading = false;
     }
 }

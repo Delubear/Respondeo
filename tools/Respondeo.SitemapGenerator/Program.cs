@@ -34,9 +34,9 @@ internal static class SitemapGenerator
         var routes = new RouteSet();
         CollectStaticRoutes(routes);
         CollectSummaRoutes(routes, paths.SummaIndex);
-        CollectMiracleRoutes(routes, paths.MiraclesManifest);
+        CollectMiracleRoutes(routes, paths.DiscoverRoot, paths.MiraclesManifest);
         CollectJourneyRoutes(routes, paths.ContentRoot, paths.ContentManifest);
-        CollectCredoRoutes(routes, paths.CredoRoot, paths.CredoManifest);
+        CollectDiscoverRoutes(routes, paths.DiscoverRoot, paths.PrayersManifest, paths.DevotionsManifest, paths.ArticlesManifest);
 
         return WriteSitemap(routes, outputPath);
     }
@@ -90,7 +90,8 @@ internal static class SitemapGenerator
     }
 
     // 3. Miracle detail pages. The id is the file name without its .md extension.
-    private static void CollectMiracleRoutes(RouteSet routes, string miraclesManifestPath)
+    // Miracles are listed in miracles/miracles-manifest.json under a "files" array.
+    private static void CollectMiracleRoutes(RouteSet routes, string discoverRoot, string miraclesManifestPath)
     {
         if (!File.Exists(miraclesManifestPath))
         {
@@ -148,25 +149,34 @@ internal static class SitemapGenerator
         }
     }
 
-    // 5. Credo detail pages: prayers, devotions, and articles.
-    // The Credo manifest groups files into separate arrays rather than a single "files" list.
+    // 5. Discover detail pages: prayers, devotions, and articles.
+    // Each content type ships its own manifest with a single "files" list.
     // Prayer ids come from the markdown front matter, but only primary-language (non-Latin) prayers get their own browse/detail route;
     // Latin translations are shown inline on the English prayer's page, so they are excluded here.
     // Devotion ids come from the JSON "id" field, article ids from the markdown front matter.
-    private static void CollectCredoRoutes(RouteSet routes, string credoRoot, string credoManifestPath)
+    private static void CollectDiscoverRoutes(
+        RouteSet routes,
+        string discoverRoot,
+        string prayersManifestPath,
+        string devotionsManifestPath,
+        string articlesManifestPath)
     {
-        if (!File.Exists(credoManifestPath))
+        CollectPrayerRoutes(routes, discoverRoot, prayersManifestPath);
+        CollectDevotionRoutes(routes, discoverRoot, devotionsManifestPath);
+        CollectArticleRoutes(routes, discoverRoot, articlesManifestPath);
+    }
+
+    private static void CollectPrayerRoutes(RouteSet routes, string discoverRoot, string prayersManifestPath)
+    {
+        if (!File.Exists(prayersManifestPath))
         {
-            Console.Error.WriteLine($"warning: Credo manifest not found at {credoManifestPath}; skipping Credo routes.");
+            Console.Error.WriteLine($"warning: Prayers manifest not found at {prayersManifestPath}; skipping prayer routes.");
             return;
         }
 
-        using var doc = JsonDocument.Parse(File.ReadAllText(credoManifestPath));
-        var root = doc.RootElement;
-
-        foreach (var file in ReadCredoArray(root, "prayers"))
+        foreach (var file in ReadManifestFiles(prayersManifestPath))
         {
-            var fullPath = Path.Combine(credoRoot, "prayers", file);
+            var fullPath = Path.Combine(discoverRoot, "prayers", file);
             if (!File.Exists(fullPath))
             {
                 continue;
@@ -184,10 +194,19 @@ internal static class SitemapGenerator
                 routes.Add($"discover/prayers/{id}");
             }
         }
+    }
 
-        foreach (var file in ReadCredoArray(root, "devotions"))
+    private static void CollectDevotionRoutes(RouteSet routes, string discoverRoot, string devotionsManifestPath)
+    {
+        if (!File.Exists(devotionsManifestPath))
         {
-            var fullPath = Path.Combine(credoRoot, "devotions", file);
+            Console.Error.WriteLine($"warning: Devotions manifest not found at {devotionsManifestPath}; skipping devotion routes.");
+            return;
+        }
+
+        foreach (var file in ReadManifestFiles(devotionsManifestPath))
+        {
+            var fullPath = Path.Combine(discoverRoot, "devotions", file);
             if (!File.Exists(fullPath))
             {
                 continue;
@@ -199,10 +218,19 @@ internal static class SitemapGenerator
                 routes.Add($"discover/devotions/{id}");
             }
         }
+    }
 
-        foreach (var file in ReadCredoArray(root, "articles"))
+    private static void CollectArticleRoutes(RouteSet routes, string discoverRoot, string articlesManifestPath)
+    {
+        if (!File.Exists(articlesManifestPath))
         {
-            var fullPath = Path.Combine(credoRoot, "articles", file);
+            Console.Error.WriteLine($"warning: Articles manifest not found at {articlesManifestPath}; skipping article routes.");
+            return;
+        }
+
+        foreach (var file in ReadManifestFiles(articlesManifestPath))
+        {
+            var fullPath = Path.Combine(discoverRoot, "articles", file);
             if (!File.Exists(fullPath))
             {
                 continue;
@@ -320,24 +348,6 @@ internal static class SitemapGenerator
         return doc.RootElement.TryGetProperty("id", out var id) ? id.GetString() : null;
     }
 
-    // Reads a named string array (e.g. "prayers") from the Credo manifest.
-    private static IEnumerable<string> ReadCredoArray(JsonElement root, string property)
-    {
-        if (!root.TryGetProperty(property, out var array) || array.ValueKind != JsonValueKind.Array)
-        {
-            yield break;
-        }
-
-        foreach (var item in array.EnumerateArray())
-        {
-            var value = item.GetString();
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                yield return value;
-            }
-        }
-    }
-
     private static string Escape(string value) => value
         .Replace("&", "&amp;")
         .Replace("<", "&lt;")
@@ -347,26 +357,28 @@ internal static class SitemapGenerator
 // The absolute paths to every content manifest and root the generator reads, derived once from the repo root so the individual Collect* methods do not each re-assemble them.
 internal readonly record struct ContentPaths(
     string SummaIndex,
-    string MiraclesManifest,
     string ContentRoot,
     string ContentManifest,
-    string CredoRoot,
-    string CredoManifest)
+    string DiscoverRoot,
+    string PrayersManifest,
+    string DevotionsManifest,
+    string ArticlesManifest,
+    string MiraclesManifest)
 {
     public static ContentPaths ForRepo(string repoRoot)
     {
         var contentRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
         var discoverRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Discover", "wwwroot", "discover");
-        var miraclesRoot = Path.Combine(discoverRoot, "miracles");
-        var credoRoot = discoverRoot;
 
         return new ContentPaths(
             SummaIndex: Path.Combine(repoRoot, "src", "Respondeo.Content.Summa", "wwwroot", "summa", "summa-index.json"),
-            MiraclesManifest: Path.Combine(miraclesRoot, "miracles-manifest.json"),
             ContentRoot: contentRoot,
             ContentManifest: Path.Combine(contentRoot, "manifest.json"),
-            CredoRoot: credoRoot,
-            CredoManifest: Path.Combine(credoRoot, "discover-manifest.json"));
+            DiscoverRoot: discoverRoot,
+            PrayersManifest: Path.Combine(discoverRoot, "prayers", "prayers-manifest.json"),
+            DevotionsManifest: Path.Combine(discoverRoot, "devotions", "devotions-manifest.json"),
+            ArticlesManifest: Path.Combine(discoverRoot, "articles", "articles-manifest.json"),
+            MiraclesManifest: Path.Combine(discoverRoot, "miracles", "miracles-manifest.json"));
     }
 }
 

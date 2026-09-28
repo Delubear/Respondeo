@@ -1,5 +1,6 @@
 @page "/discover/devotions/{Id}"
-@inject IDiscoverService Credo
+@inject IDevotionService Devotions
+@inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 
 <PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
@@ -163,7 +164,7 @@ else
         _loading = true;
         _beads = null;
         _index = 0;
-        _devotion = await Credo.GetDevotionAsync(Id);
+        _devotion = await Devotions.GetDevotionAsync(Id);
 
         if (_devotion is not null)
         {
@@ -196,7 +197,7 @@ else
 
         foreach (var id in ids)
         {
-            var prayer = await Credo.GetPrayerAsync(id);
+            var prayer = await Prayers.GetPrayerAsync(id);
             if (prayer is not null)
             {
                 _prayers[id] = prayer;
