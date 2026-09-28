@@ -2,15 +2,13 @@ namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Shared helper for splitting a "---" delimited YAML front-matter block from a Markdown body.
-/// Used by every content pillar's parser so the fenced-front-matter convention stays identical
-/// across the Markdown, Summa, and Miracles content types.
+/// Used by every content pillar's parser so the fenced-front-matter convention stays identical across the Markdown, Summa, and Miracles content types.
 /// </summary>
 public static class FrontMatter
 {
     /// <summary>
-    /// Splits a "---" delimited YAML front-matter block from the Markdown body. Newlines are
-    /// normalized and a leading BOM/whitespace is tolerated. Returns (null, raw) when no valid
-    /// front-matter block is present.
+    /// Splits a "---" delimited YAML front-matter block from the Markdown body.
+    /// Newlines are normalized and a leading BOM/whitespace is tolerated. Returns (null, raw) when no valid front-matter block is present.
     /// </summary>
     public static (string? FrontMatter, string Body) Split(string raw)
     {

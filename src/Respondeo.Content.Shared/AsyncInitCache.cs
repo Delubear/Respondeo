@@ -1,9 +1,9 @@
 namespace Respondeo.Content.Shared;
 
 /// <summary>
-/// A one-time asynchronous lazy-initialization cache. Runs the supplied factory at most once even
-/// under concurrent access, using the double-checked <see cref="SemaphoreSlim"/> pattern that every
-/// content service would otherwise hand-roll, then hands back the cached value on subsequent calls.
+/// A one-time asynchronous lazy-initialization cache.
+/// Runs the supplied factory at most once even under concurrent access,
+/// using the double-checked <see cref="SemaphoreSlim"/> pattern that every content service would otherwise hand-roll, then hands back the cached value on subsequent calls.
 /// </summary>
 /// <typeparam name="T">The reference type produced once and cached for the app's lifetime.</typeparam>
 public sealed class AsyncInitCache<T>
@@ -16,8 +16,8 @@ public sealed class AsyncInitCache<T>
     public bool IsInitialized => _value is not null;
 
     /// <summary>
-    /// Returns the cached value, invoking <paramref name="factory"/> exactly once to create it on the
-    /// first call. Concurrent callers await the single in-flight initialization.
+    /// Returns the cached value, invoking <paramref name="factory"/> exactly once to create it on the first call.
+    /// Concurrent callers await the single in-flight initialization.
     /// </summary>
     public async Task<T> GetAsync(Func<Task<T>> factory)
     {

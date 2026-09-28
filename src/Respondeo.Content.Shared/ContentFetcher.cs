@@ -9,24 +9,24 @@ namespace Respondeo.Content.Shared;
 public enum ContentCachePolicy
 {
     /// <summary>
-    /// Send a <c>no-cache</c> request directive so the browser revalidates with the origin. Used by
-    /// pillars whose static files can be updated in place on hosts where server cache headers cannot
-    /// be set (e.g. GitHub Pages), so users never run against an outdated manifest or node.
+    /// Send a <c>no-cache</c> request directive so the browser revalidates with the origin.
+    /// Used by pillars whose static files can be updated in place on hosts where server cache headers cannot be set (e.g. GitHub Pages),
+    /// so users never run against an outdated manifest or node.
     /// </summary>
     Revalidate,
 
     /// <summary>
-    /// Opt into the browser cache for a year. Used by pillars whose bundled catalog is immutable for
-    /// the lifetime of a deploy and whose static assets are fingerprinted per build, so repeat visits
-    /// reuse the stored copy with no risk of serving stale content across deploys.
+    /// Opt into the browser cache for a year.
+    /// Used by pillars whose bundled catalog is immutable for the lifetime of a deploy and whose static assets are fingerprinted per build,
+    /// so repeat visits reuse the stored copy with no risk of serving stale content across deploys.
     /// </summary>
     Immutable,
 }
 
 /// <summary>
 /// Shared HTTP helper that fetches a content pillar's static assets with a consistent cache policy.
-/// Centralizes the fetch-with-cache-directive plumbing that every pillar's loader would otherwise
-/// duplicate, while leaving each pillar free to choose its <see cref="ContentCachePolicy"/>.
+/// Centralizes the fetch-with-cache-directive plumbing that every pillar's loader would otherwise duplicate,
+/// while leaving each pillar free to choose its <see cref="ContentCachePolicy"/>.
 /// </summary>
 public sealed class ContentFetcher(HttpClient http, ContentCachePolicy policy)
 {

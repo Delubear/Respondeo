@@ -74,10 +74,9 @@ internal sealed class ContentContainerRenderer : HtmlObjectRenderer<CustomContai
 
     private static void WriteYouTube(HtmlRenderer renderer, string videoId)
     {
-        // Render a lightweight "façade" instead of an eager iframe: a lazy thumbnail plus a
-        // play button. The heavy YouTube player (and its many requests) is only loaded when the
-        // visitor clicks play — see the delegated click handler in index.html. This keeps
-        // article loads fast and private (no YouTube requests until the user opts in).
+        // Render a lightweight "façade" instead of an eager iframe: a lazy thumbnail plus a play button.
+        // The heavy YouTube player (and its many requests) is only loaded when the visitor clicks play — see the delegated click handler in index.html.
+        // This keeps article loads fast and private (no YouTube requests until the user opts in).
         renderer.EnsureLine();
         renderer.Write("<div class=\"video-embed video-facade\" data-youtube=\"");
         renderer.WriteEscape(videoId);

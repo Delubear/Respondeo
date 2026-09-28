@@ -7,9 +7,8 @@ public readonly record struct MarkdownSection(string Heading, string Markdown);
 
 /// <summary>
 /// Shared helper that splits a Markdown body into titled sections on each top-level "## " heading.
-/// Content before the first heading (if any) becomes an untitled lead-in section with an empty
-/// heading. Returns raw Markdown per section so each pillar renders it with its own renderer into
-/// its own section model. Performs no rendering or I/O.
+/// Content before the first heading (if any) becomes an untitled lead-in section with an empty heading.
+/// Returns raw Markdown per section so each pillar renders it with its own renderer into its own section model. Performs no rendering or I/O.
 /// </summary>
 public static class MarkdownSections
 {
