@@ -1,0 +1,122 @@
+@page "/credo/prayers"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+@inject CredoBrowseState BrowseState
+@inject IJSRuntime JS
+
+<PageTitle>Prayers &mdash; Credo &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Catholic Prayers"
+         Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
+
+<Breadcrumb CurrentTitle="Prayers"
+            StageHref="credo"
+            StageLabel="Credo" />
+
+<section class="credo" data-credo-browse="prayers">
+    <header class="credo__header">
+        <p class="credo__eyebrow">Credo</p>
+        <h1 class="credo__title">Prayers</h1>
+        <p class="credo__lede">
+            The Church's own words, learned by heart and prayed across the centuries. Search by name,
+            or browse below.
+        </p>
+    </header>
+
+    @if (_prayers is null)
+    {
+        <Loading>Gathering the prayers&hellip;</Loading>
+    }
+    else
+    {
+        <div class="credo__search">
+            <label class="credo__search-label" for="prayer-search">Search prayers</label>
+            <input id="prayer-search"
+                   class="credo__search-input"
+                   type="search"
+                   placeholder="e.g. Hail Mary, Creed, mercy..."
+                   value="@_query"
+                   @oninput="OnSearchInput" />
+        </div>
+
+        @if (Filtered.Count == 0)
+        {
+            <p class="credo__empty">No prayers match your search.</p>
+        }
+        else
+        {
+            <CredoList>
+                @foreach (var p in Filtered)
+                {
+                    <CredoRow Href="@($"credo/prayers/{p.Id}")"
+                              Title="@p.Title"
+                              Meta="@FormatCategory(p.Category)"
+                              Summary="@p.Summary"
+                              Cta="Pray" />
+                }
+            </CredoList>
+        }
+    }
+</section>
+
+@code {
+    private IReadOnlyList<PrayerSummary>? _prayers;
+    private string _query = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        _query = BrowseState.GetQuery("prayers");
+        var index = await Credo.GetIndexAsync();
+        _prayers = index.Prayers;
+    }
+
+    // After the list first renders, ask JS to restore the remembered scroll position (the helper
+    // polls across frames until the async content is tall enough to honour the target).
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("respondeoCredoBrowse.restoreScroll", "prayers");
+        }
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _query = e.Value?.ToString() ?? string.Empty;
+        BrowseState.SetQuery("prayers", _query);
+    }
+
+    // Turns a category slug (e.g. "marian") into a display tag (e.g. "Marian").
+    private static string? FormatCategory(string category)
+    {
+        if (string.IsNullOrWhiteSpace(category) || category == "other")
+        {
+            return null;
+        }
+
+        return char.ToUpperInvariant(category[0]) + category[1..];
+    }
+
+    private IReadOnlyList<PrayerSummary> Filtered
+    {
+        get
+        {
+            if (_prayers is null)
+            {
+                return [];
+            }
+
+            if (string.IsNullOrWhiteSpace(_query))
+            {
+                return _prayers;
+            }
+
+            var q = _query.Trim();
+            return [.. _prayers.Where(p =>
+                p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+                || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
+                || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)))];
+        }
+    }
+}

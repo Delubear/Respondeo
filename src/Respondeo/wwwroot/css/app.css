@@ -433,3 +433,469 @@ h1, h2, h3 {
         transition: opacity 0.25s ease;
     }
 }
+
+/* ---------------------------------------------------------------------------
+   Credo pillar: prayers, devotions, and articles for living the faith.
+   --------------------------------------------------------------------------- */
+
+.credo,
+.prayer,
+.devotion {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+}
+
+.credo__header,
+.prayer__header,
+.devotion__header {
+    margin-bottom: 1.5rem;
+}
+
+.credo__eyebrow,
+.devotion__eyebrow {
+    font-family: var(--display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin: 0 0 0.35rem;
+}
+
+.credo__title,
+.prayer__title,
+.devotion__title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    color: var(--ink);
+}
+
+.credo__lede,
+.prayer__summary,
+.devotion__summary {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    max-width: 42rem;
+}
+
+.credo__search {
+    margin: 1.5rem 0;
+}
+
+.credo__search-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.35rem;
+}
+
+.credo__search-input {
+    width: 100%;
+    max-width: 28rem;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.4rem;
+    background: var(--parchment);
+    color: var(--ink);
+    font: inherit;
+}
+
+.credo__empty {
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* Credo browse list — a gilded, tappable column used across the Credo pages */
+.credo-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.credo-row {
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--paper);
+}
+
+.credo-row__link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.credo-row__link:hover,
+.credo-row__link:focus-visible {
+    background: var(--parchment);
+    outline: none;
+    text-decoration: none;
+}
+
+.credo-row__emblem {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    color: var(--accent);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.credo-row__link:hover .credo-row__emblem,
+.credo-row__link:focus-visible .credo-row__emblem {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+}
+
+.credo-row__emblem svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+}
+
+.credo-row__body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.credo-row__title-line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.credo-row__title {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    color: var(--ink);
+}
+
+.credo-row__meta {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.1rem 0.6rem;
+}
+
+.credo-row__summary {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+
+.credo-row__cta {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.credo-row__cta-label {
+    font-family: var(--display);
+}
+
+.credo-row__arrow {
+    transition: transform 0.15s ease;
+}
+
+.credo-row__link:hover .credo-row__arrow,
+.credo-row__link:focus-visible .credo-row__arrow {
+    transform: translateX(0.25rem);
+}
+
+@media (max-width: 640px) {
+    .credo-row__link {
+        gap: 0.9rem;
+        padding: 1rem 1.1rem;
+    }
+
+    .credo-row__cta-label {
+        display: none;
+    }
+}
+
+/* Prayer detail */
+.prayer__text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+.prayer__latin {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+}
+
+.prayer__latin-title {
+    font-family: var(--display);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.prayer__latin .prayer__text {
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.prayer__attribution {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.prayer__back,
+.devotion__exit {
+    margin-top: 2rem;
+}
+
+/* Devotion player */
+.devotion--praying {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh;
+}
+
+.devotion__progress {
+    height: 6px;
+    background: var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.devotion__progress-bar {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.2s ease;
+}
+
+.devotion__step-count {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+}
+
+.devotion__mystery {
+    margin-bottom: 1.5rem;
+}
+
+.devotion__mystery-title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+}
+
+.devotion__reflection {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+.devotion__bead {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 0.6rem;
+    padding: 1.5rem;
+    margin: 0 auto 1.5rem;
+    max-width: 42rem;
+}
+
+.devotion__bead-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.devotion__prayer-title {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--ink);
+}
+
+.devotion__count {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.devotion__prayer {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+.devotion__controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
+}
+
+.devotion__nav {
+    padding: 0.65rem 1.4rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--parchment);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+}
+
+.devotion__nav:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.devotion__nav--primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+}
+
+/* On narrow screens the prayer text varies in length step to step, so anchoring the controls with
+   the content makes the Next button jump to a new spot each tap. Pin them to the viewport bottom so
+   they never move, and pad the section so the scrolling text is never hidden behind them. */
+@media (max-width: 640px) {
+    .devotion--praying {
+        min-height: 0;
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+
+    .devotion__controls {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin-top: 0;
+        padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+        background: var(--paper);
+        border-top: 1px solid var(--rule);
+        z-index: 20;
+    }
+}
+
+/* Devotion intro + mystery-set chooser */
+.devotion__intro-body {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 42rem;
+    margin-bottom: 1.5rem;
+}
+
+.devotion__sets {
+    margin-bottom: 1.5rem;
+}
+
+.devotion__sets-title {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+}
+
+.devotion__set-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.devotion__set {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--parchment);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.devotion__set--active {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.devotion__set-name {
+    font-family: var(--display);
+}
+
+.devotion__set-when {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.devotion__begin {
+    padding: 0.75rem 1.6rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font: inherit;
+    cursor: pointer;
+}
+
+/* Credo articles */
+.credo-article {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+}
+
+.credo-article__section {
+    margin-bottom: 1.5rem;
+}
+
+.credo-article__section-title {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin: 1.5rem 0 0.75rem;
+}
+
+.credo-article__body {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+.credo-article__sources {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}

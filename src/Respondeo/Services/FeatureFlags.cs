@@ -20,4 +20,7 @@ public sealed class FeatureFlags
 
     /// <summary>Shows the Miracles pillar pill in the pillar switcher when enabled.</summary>
     public bool MiraclesPillar { get; set; } = true;
+
+    /// <summary>Shows the Credo pillar pill (prayers, devotions, articles) in the pillar switcher when enabled.</summary>
+    public bool CredoPillar { get; set; } = true;
 }

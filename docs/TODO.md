@@ -125,6 +125,24 @@ country, year, tags), parsed into a typed model and browsable by facet + free-te
 - [ ] Consider: canonization miracles / more incorruptibles
 - [ ] Consider: link the pillar from relevant journey articles (e.g. the Eucharist, the Resurrection)
 
+## Pillar: Credo
+
+The "living the faith" pillar (label/route `Credo` / `/credo/`), reached from the masthead and from the
+end of Coming Home as an ongoing endgame rather than a new journey stage. Prayers and articles are
+hand-authored Markdown; devotions are data-driven JSON so an interactive Rosary/chaplet player can walk
+the visitor bead by bead without code changes.
+
+- [~] Credo pillar scaffolding (project, models, parser, service, manifest, DI, masthead link, feature flag)
+- [~] Hub page (`/credo`) linking Prayers, Devotions, Articles
+- [~] Prayers: searchable index (`/credo/prayers`) + detail with optional Latin (`/credo/prayers/{id}`)
+- [~] Devotions: index (`/credo/devotions`) + interactive data-driven player (`/credo/devotions/{id}`)
+- [~] Articles: index (`/credo/articles`) + sectioned detail with sources (`/credo/articles/{id}`)
+- [~] Coming Home finale hands off into Credo via `nextStage`
+- [ ] Relocate the Sacraments content into Credo articles (currently deferred under Coming Home)
+- [ ] Consider: more prayers (Litanies, the Angelus, Divine Mercy), more chaplets
+- [ ] Consider: more deep-dive articles (the Eucharist, Confession practice, the liturgical year)
+- [ ] Consider: mind copyright on any non-public-domain prayers/translations
+
 ## Future / possible pillars
 
 Additional standalone, searchable pillars (like Miracles and the Summa) that would fit the same

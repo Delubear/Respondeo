@@ -5,6 +5,7 @@ using Respondeo.Content.Markdown;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Miracles;
+using Respondeo.Content.Credo;
 using Respondeo.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -34,6 +35,10 @@ builder.Services.AddRespondeoSumma();
 // Respondeo.Content.Miracles; the app depends only on IMiracleService.
 builder.Services.AddRespondeoMiracles();
 
+// The hand-authored prayers, data-driven devotions, and deeper-dive articles for living the faith are
+// shipped as static content by Respondeo.Content.Credo; the app depends only on ICredoService.
+builder.Services.AddRespondeoCredo();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
@@ -42,6 +47,9 @@ builder.Services.AddScoped<IThemeService, ThemeService>();
 
 // Signals whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
 builder.Services.AddScoped<NavigationIntent>();
+
+// Remembers search text and scroll position for the Credo browse lists across Back navigation.
+builder.Services.AddScoped<CredoBrowseState>();
 
 // Remembers the Summa browse/search view (search text + expanded parts/treatises) across page
 // remounts, resetting itself when the visitor leaves the Summa area.

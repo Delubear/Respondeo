@@ -22,6 +22,7 @@
 	<ProjectReference Include="..\..\src\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Miracles\Respondeo.Content.Miracles.csproj" />
+	<ProjectReference Include="..\..\src\Respondeo.Content.Credo\Respondeo.Content.Credo.csproj" />
 	<ProjectReference Include="..\..\tools\Respondeo.SummaImporter\Respondeo.SummaImporter.csproj" />
   </ItemGroup>
 

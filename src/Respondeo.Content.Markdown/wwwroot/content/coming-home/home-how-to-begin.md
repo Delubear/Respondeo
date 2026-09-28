@@ -6,10 +6,11 @@ topics:
   - Getting Started
   - The Catholic Church
   - Conversion
-branches:
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: The steps below lead into the sacraments — see what you are stepping toward.
+nextStage:
+  href: credo
+  label: "Begin Living the Faith"
+  icon: flame
+  prompt: You have come home. Now the faith becomes something you live — prayed, practised, and deepened day by day. Step into Credo.
 sections:
   - begin-returning-catholic
   - begin-entering-outside
@@ -32,4 +33,4 @@ On the far side of that one small act, they nearly always found the same thing �
 
 The step that feels enormous from the outside turns out, from the inside, to have been the easy part.
 
-**Where to go from here.** Each of these paths leads into the sacraments — it is worth seeing what you are stepping toward.
+**Where to go from here.** Coming home is not the end of the road but the start of a life. Once you have taken that first step, the faith becomes something you live day by day — in prayer, in the sacraments, and in an ever-deeper understanding of what you believe.

@@ -1,0 +1,81 @@
+@page "/credo/prayers/{Id}"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>@(_prayer is null ? "Prayer" : $"{_prayer.Title} \u2014 Respondeo")</PageTitle>
+
+@if (_prayer is not null)
+{
+    <SeoHead Title="@_prayer.Title" Description="@_prayer.Summary" Article="true" />
+}
+
+<Breadcrumb CurrentTitle="@(_prayer?.Title ?? "Prayer")"
+            StageHref="credo"
+            StageLabel="Credo"
+            Crumbs="_crumbs" />
+
+@if (_loading)
+{
+    <Loading>Opening the prayer&hellip;</Loading>
+}
+else if (_prayer is null)
+{
+    <section class="prayer">
+        <h1 class="prayer__title">Prayer not found</h1>
+        <p class="prayer__missing">
+            There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;. <a href="credo/prayers">Return to all prayers</a>.
+        </p>
+    </section>
+}
+else
+{
+    <article class="prayer">
+        <header class="prayer__header">
+            <h1 class="prayer__title">@_prayer.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(_prayer.Summary))
+            {
+                <p class="prayer__summary">@_prayer.Summary</p>
+            }
+        </header>
+
+        <div class="prayer__text">
+            @((MarkupString)_prayer.Html)
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_prayer.LatinHtml))
+        {
+            <section class="prayer__latin">
+                <h2 class="prayer__latin-title">In Latin</h2>
+                <div class="prayer__text">
+                    @((MarkupString)_prayer.LatinHtml)
+                </div>
+            </section>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_prayer.Attribution))
+        {
+            <p class="prayer__attribution">@_prayer.Attribution</p>
+        }
+
+        <p class="prayer__back">
+            <a href="credo/prayers">&larr; Back to all prayers</a>
+        </p>
+    </article>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private static readonly Breadcrumb.Crumb[] _crumbs =
+        [new("prayers", "Prayers", Href: "credo/prayers")];
+
+    private Prayer? _prayer;
+    private bool _loading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _prayer = await Credo.GetPrayerAsync(Id);
+        _loading = false;
+    }
+}

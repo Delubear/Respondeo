@@ -24,6 +24,8 @@ public static class Emblems
         "church" => "M11 2h2v2h2v2h-2v2.2l6 3.6V22h-5v-5a2 2 0 0 0-4 0v5H5V11.8l6-3.6V6H9V4h2V2zm1 8.3-5 3V20h1v-3a4 4 0 0 1 8 0v3h1v-6.7l-5-3z",
         // Home / hearth — Coming Home.
         "home" => "M12 3 2 11h3v9h6v-6h2v6h6v-9h3L12 3z",
+        // Flame — Credo (prayer and the devotional life).
+        "flame" => "M12 2c-.6 3-2.5 4.6-3.9 6.4C6.8 10.1 6 11.9 6 13.9 6 17.3 8.7 20 12 20s6-2.7 6-6.1c0-1.6-.5-3-1.4-4.3-.3 1.2-1.1 2-2.2 2.4C15 9.3 14 6.6 12 2z",
         // Question mark — default (e.g. Why God, and any unspecified transition).
         _ => "M11 18h2v-2h-2v2zm1-16C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm0-14a4 4 0 0 0-4 4h2a2 2 0 1 1 3 1.7c-.8.6-2 1.3-2 3.3h2c0-1.3 1.2-1.6 2.2-2.6A4 4 0 0 0 12 6z",
     };

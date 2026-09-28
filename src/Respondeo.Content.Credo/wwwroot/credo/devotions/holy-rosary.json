@@ -1,0 +1,77 @@
+{
+  "id": "holy-rosary",
+  "title": "The Holy Rosary",
+  "summary": "The great Marian devotion: meditating the mysteries of Christ's life through the beads.",
+  "kind": "rosary",
+  "intro": "The Rosary weaves vocal prayer and meditation together. Choose a set of mysteries — traditionally the Joyful on Mondays and Saturdays, the Sorrowful on Tuesdays and Fridays, the Glorious on Wednesdays and Sundays, and the Luminous on Thursdays — and let each decade carry you into a scene from the Gospel.",
+  "mysterySets": [
+    {
+      "id": "joyful",
+      "name": "The Joyful Mysteries",
+      "when": "Mondays and Saturdays",
+      "mysteries": [
+        { "title": "The Annunciation", "reflection": "The angel Gabriel announces to Mary that she is to be the Mother of God, and she answers, *Let it be done to me according to your word.*" },
+        { "title": "The Visitation", "reflection": "Mary visits Elizabeth, and the child leaps in Elizabeth's womb. *Blessed are you among women.*" },
+        { "title": "The Nativity", "reflection": "Christ is born in Bethlehem and laid in a manger — God made small for our sake." },
+        { "title": "The Presentation", "reflection": "The Child is presented in the Temple, and Simeon foretells the sword that will pierce Mary's soul." },
+        { "title": "The Finding in the Temple", "reflection": "After three days the twelve-year-old Jesus is found teaching in the Temple. *Did you not know I must be about my Father's business?*" }
+      ]
+    },
+    {
+      "id": "sorrowful",
+      "name": "The Sorrowful Mysteries",
+      "when": "Tuesdays and Fridays",
+      "mysteries": [
+        { "title": "The Agony in the Garden", "reflection": "In Gethsemane Jesus sweats blood and prays, *Not my will, but yours be done.*" },
+        { "title": "The Scourging at the Pillar", "reflection": "Christ is bound and scourged, bearing in his body the punishment for our sins." },
+        { "title": "The Crowning with Thorns", "reflection": "The soldiers mock the King of kings with a crown of thorns." },
+        { "title": "The Carrying of the Cross", "reflection": "Jesus takes up the Cross and carries it to Calvary for love of us." },
+        { "title": "The Crucifixion", "reflection": "On the Cross Christ gives up his life, and gives us his Mother: *Behold your son... behold your mother.*" }
+      ]
+    },
+    {
+      "id": "glorious",
+      "name": "The Glorious Mysteries",
+      "when": "Wednesdays and Sundays",
+      "mysteries": [
+        { "title": "The Resurrection", "reflection": "Christ rises victorious from the tomb, conquering sin and death." },
+        { "title": "The Ascension", "reflection": "The risen Lord ascends to the right hand of the Father." },
+        { "title": "The Descent of the Holy Spirit", "reflection": "At Pentecost the Spirit descends upon Our Lady and the Apostles, and the Church is sent out." },
+        { "title": "The Assumption", "reflection": "Mary is taken up body and soul into heavenly glory." },
+        { "title": "The Coronation of Mary", "reflection": "Our Lady is crowned Queen of Heaven and earth." }
+      ]
+    },
+    {
+      "id": "luminous",
+      "name": "The Luminous Mysteries",
+      "when": "Thursdays",
+      "mysteries": [
+        { "title": "The Baptism in the Jordan", "reflection": "The Father's voice proclaims, *This is my beloved Son,* as the Spirit descends." },
+        { "title": "The Wedding at Cana", "reflection": "At Mary's word — *Do whatever he tells you* — Christ works his first sign." },
+        { "title": "The Proclamation of the Kingdom", "reflection": "Jesus calls all to conversion and the forgiveness of sins." },
+        { "title": "The Transfiguration", "reflection": "On the mountain Christ's glory shines out before Peter, James, and John." },
+        { "title": "The Institution of the Eucharist", "reflection": "At the Last Supper Christ gives his Body and Blood under the signs of bread and wine." }
+      ]
+    }
+  ],
+  "sequence": [
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
+    { "kind": "prayer", "prayerId": "apostles-creed" },
+    { "kind": "prayer", "prayerId": "our-father" },
+    { "kind": "prayer", "title": "For faith, hope, and charity", "prayerId": "hail-mary", "repeat": 3 },
+    { "kind": "prayer", "prayerId": "glory-be" },
+    {
+      "kind": "mysteries",
+      "title": "The Decades",
+      "perMystery": [
+        { "kind": "prayer", "prayerId": "our-father" },
+        { "kind": "prayer", "prayerId": "hail-mary", "repeat": 10 },
+        { "kind": "prayer", "prayerId": "glory-be" },
+        { "kind": "prayer", "prayerId": "fatima-prayer" }
+      ]
+    },
+    { "kind": "prayer", "title": "Conclude", "prayerId": "hail-holy-queen" },
+    { "kind": "prayer", "prayerId": "rosary-concluding-prayer" },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+  ]
+}

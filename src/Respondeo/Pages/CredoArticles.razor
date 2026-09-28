@@ -1,0 +1,77 @@
+@page "/credo/articles"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+@inject IJSRuntime JS
+
+<PageTitle>Articles &mdash; Credo &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Living the Faith — Articles"
+         Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
+
+<Breadcrumb CurrentTitle="Articles"
+            StageHref="credo"
+            StageLabel="Credo" />
+
+<section class="credo" data-credo-browse="articles">
+    <header class="credo__header">
+        <p class="credo__eyebrow">Credo</p>
+        <h1 class="credo__title">Articles</h1>
+        <p class="credo__lede">
+            Once you are living the faith, questions deepen rather than disappear. These articles dig
+            into the practices and teachings of the Church &mdash; the reasons beneath the rhythm.
+        </p>
+    </header>
+
+    @if (_articles is null)
+    {
+        <Loading>Gathering the articles&hellip;</Loading>
+    }
+    else if (_articles.Count == 0)
+    {
+        <p class="credo__empty">No articles are available yet.</p>
+    }
+    else
+    {
+        <CredoList>
+            @foreach (var a in _articles)
+            {
+                <CredoRow Href="@($"credo/articles/{a.Id}")"
+                          Title="@a.Title"
+                          Meta="@FormatTopic(a.Topic)"
+                          Summary="@a.Summary"
+                          Cta="Read" />
+            }
+        </CredoList>
+    }
+</section>
+
+@code {
+    private IReadOnlyList<ArticleSummary>? _articles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        var index = await Credo.GetIndexAsync();
+        _articles = index.Articles;
+    }
+
+    // After the list first renders, ask JS to restore the remembered scroll position.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("respondeoCredoBrowse.restoreScroll", "articles");
+        }
+    }
+
+    // Turns a topic slug (e.g. "sacraments") into a display tag (e.g. "Sacraments").
+    private static string? FormatTopic(string topic)
+    {
+        if (string.IsNullOrWhiteSpace(topic) || topic == "general")
+        {
+            return null;
+        }
+
+        return char.ToUpperInvariant(topic[0]) + topic[1..];
+    }
+}

@@ -1,0 +1,290 @@
+@page "/credo/devotions/{Id}"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
+
+@if (_devotion is not null)
+{
+    <SeoHead Title="@_devotion.Title" Description="@_devotion.Summary" Article="true" />
+}
+
+<Breadcrumb CurrentTitle="@(_devotion?.Title ?? "Devotion")"
+            StageHref="credo"
+            StageLabel="Credo"
+            Crumbs="_crumbs" />
+
+@if (_loading)
+{
+    <Loading>Preparing the devotion&hellip;</Loading>
+}
+else if (_devotion is null)
+{
+    <section class="devotion">
+        <h1 class="devotion__title">Devotion not found</h1>
+        <p class="devotion__missing">
+            There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="credo/devotions">Return to all devotions</a>.
+        </p>
+    </section>
+}
+else if (_beads is null)
+{
+    @* Intro + mystery-set chooser, shown before the reader begins. *@
+    <section class="devotion devotion--intro">
+        <header class="devotion__header">
+            <h1 class="devotion__title">@_devotion.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(_devotion.Summary))
+            {
+                <p class="devotion__summary">@_devotion.Summary</p>
+            }
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(_devotion.IntroHtml))
+        {
+            <div class="devotion__intro-body">
+                @((MarkupString)_devotion.IntroHtml)
+            </div>
+        }
+
+        @if (_devotion.MysterySets.Count > 1)
+        {
+            <div class="devotion__sets">
+                <h2 class="devotion__sets-title">Choose today's mysteries</h2>
+                <div class="devotion__set-options">
+                    @foreach (var set in _devotion.MysterySets)
+                    {
+                        <button class="devotion__set @(set.Id == _selectedSetId ? "devotion__set--active" : "")"
+                                @onclick="() => SelectSet(set.Id)">
+                            <span class="devotion__set-name">@set.Name</span>
+                            @if (!string.IsNullOrWhiteSpace(set.When))
+                            {
+                                <span class="devotion__set-when">@set.When</span>
+                            }
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+
+        <button class="devotion__begin" @onclick="Begin">Begin praying &rarr;</button>
+    </section>
+}
+else
+{
+    var bead = _beads[_index];
+    <section class="devotion devotion--praying">
+        <div class="devotion__progress" role="progressbar" aria-valuemin="1" aria-valuenow="@(_index + 1)" aria-valuemax="@_beads.Count">
+            <div class="devotion__progress-bar" style="width:@(((_index + 1) * 100 / _beads.Count))%"></div>
+        </div>
+        <p class="devotion__step-count">Step @(_index + 1) of @_beads.Count</p>
+
+        @if (!string.IsNullOrWhiteSpace(bead.Heading))
+        {
+            <p class="devotion__eyebrow">@bead.Heading</p>
+        }
+
+        @if (bead.MysteryTitle is not null)
+        {
+            <div class="devotion__mystery">
+                <h2 class="devotion__mystery-title">@bead.MysteryTitle</h2>
+                @if (!string.IsNullOrWhiteSpace(bead.MysteryReflectionHtml))
+                {
+                    <div class="devotion__reflection">
+                        @((MarkupString)bead.MysteryReflectionHtml)
+                    </div>
+                }
+            </div>
+        }
+
+        @if (bead.PrayerHtml is not null)
+        {
+            <div class="devotion__bead">
+                <div class="devotion__bead-head">
+                    <h3 class="devotion__prayer-title">@bead.PrayerTitle</h3>
+                    @if (bead.RepeatCount > 1)
+                    {
+                        <span class="devotion__count">@bead.RepeatIndex of @bead.RepeatCount</span>
+                    }
+                </div>
+                <div class="devotion__prayer">
+                    @((MarkupString)bead.PrayerHtml)
+                </div>
+            </div>
+        }
+
+        <div class="devotion__controls">
+            <button class="devotion__nav" @onclick="Prev" disabled="@(_index == 0)">&larr; Back</button>
+            @if (_index < _beads.Count - 1)
+            {
+                <button class="devotion__nav devotion__nav--primary" @onclick="Next">Next &rarr;</button>
+            }
+            else
+            {
+                <button class="devotion__nav devotion__nav--primary" @onclick="Restart">Amen &mdash; pray again</button>
+            }
+        </div>
+
+        <p class="devotion__exit">
+            <a href="credo/devotions">Leave the devotion</a>
+        </p>
+    </section>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private static readonly Breadcrumb.Crumb[] _crumbs =
+        [new("devotions", "Devotions", Href: "credo/devotions")];
+
+    private Devotion? _devotion;
+    private bool _loading = true;
+    private string? _selectedSetId;
+
+    private readonly Dictionary<string, Prayer> _prayers = new(StringComparer.OrdinalIgnoreCase);
+
+    private List<Bead>? _beads;
+    private int _index;
+
+    // A single flattened step the reader walks through: either a mystery announcement, a prayer
+    // (with its repetition position), or both.
+    private sealed class Bead
+    {
+        public string? Heading { get; init; }
+        public string? MysteryTitle { get; init; }
+        public string? MysteryReflectionHtml { get; init; }
+        public string? PrayerTitle { get; init; }
+        public string? PrayerHtml { get; init; }
+        public int RepeatIndex { get; init; }
+        public int RepeatCount { get; init; }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _beads = null;
+        _index = 0;
+        _devotion = await Credo.GetDevotionAsync(Id);
+
+        if (_devotion is not null)
+        {
+            _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
+            await LoadPrayersAsync(_devotion);
+        }
+
+        _loading = false;
+    }
+
+    // Fetch every distinct prayer referenced anywhere in the sequence once, so the player can render
+    // each bead's text without further round trips.
+    private async Task LoadPrayersAsync(Devotion devotion)
+    {
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        void Collect(IEnumerable<DevotionStep> steps)
+        {
+            foreach (var step in steps)
+            {
+                if (!string.IsNullOrWhiteSpace(step.PrayerId))
+                {
+                    ids.Add(step.PrayerId);
+                }
+
+                Collect(step.PerMystery);
+            }
+        }
+
+        Collect(devotion.Sequence);
+
+        foreach (var id in ids)
+        {
+            var prayer = await Credo.GetPrayerAsync(id);
+            if (prayer is not null)
+            {
+                _prayers[id] = prayer;
+            }
+        }
+    }
+
+    private void SelectSet(string setId) => _selectedSetId = setId;
+
+    private void Begin()
+    {
+        _beads = BuildBeads(_devotion!, _selectedSetId);
+        _index = 0;
+    }
+
+    private void Next()
+    {
+        if (_beads is not null && _index < _beads.Count - 1)
+        {
+            _index++;
+        }
+    }
+
+    private void Prev()
+    {
+        if (_index > 0)
+        {
+            _index--;
+        }
+    }
+
+    private void Restart() => _index = 0;
+
+    // Expands the data-driven sequence into the flat list of beads. A "mysteries" step iterates the
+    // chosen set, emitting an announcement bead for each mystery followed by its per-mystery prayers.
+    private List<Bead> BuildBeads(Devotion devotion, string? selectedSetId)
+    {
+        var beads = new List<Bead>();
+        var set = devotion.MysterySets.FirstOrDefault(s => s.Id == selectedSetId)
+                  ?? devotion.MysterySets.FirstOrDefault();
+
+        foreach (var step in devotion.Sequence)
+        {
+            if (step.Kind == "mysteries" && set is not null)
+            {
+                foreach (var mystery in set.Mysteries)
+                {
+                    beads.Add(new Bead
+                    {
+                        Heading = step.Title,
+                        MysteryTitle = mystery.Title,
+                        MysteryReflectionHtml = mystery.ReflectionHtml,
+                    });
+
+                    foreach (var sub in step.PerMystery)
+                    {
+                        AddPrayerBeads(beads, sub, null);
+                    }
+                }
+            }
+            else
+            {
+                AddPrayerBeads(beads, step, step.Title);
+            }
+        }
+
+        return beads;
+    }
+
+    private void AddPrayerBeads(List<Bead> beads, DevotionStep step, string? heading)
+    {
+        if (string.IsNullOrWhiteSpace(step.PrayerId) || !_prayers.TryGetValue(step.PrayerId, out var prayer))
+        {
+            return;
+        }
+
+        var count = Math.Max(1, step.Repeat);
+        for (var i = 1; i <= count; i++)
+        {
+            beads.Add(new Bead
+            {
+                // Only label the first of a repeated group so the heading is not shouted ten times.
+                Heading = i == 1 ? (heading ?? step.Title) : null,
+                PrayerTitle = prayer.Title,
+                PrayerHtml = prayer.Html,
+                RepeatIndex = i,
+                RepeatCount = count,
+            });
+        }
+    }
+}

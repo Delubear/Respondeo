@@ -1,0 +1,77 @@
+@page "/credo/devotions"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+@inject IJSRuntime JS
+
+<PageTitle>Devotions &mdash; Credo &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Catholic Devotions"
+         Description="Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery." />
+
+<Breadcrumb CurrentTitle="Devotions"
+            StageHref="credo"
+            StageLabel="Credo" />
+
+<section class="credo" data-credo-browse="devotions">
+    <header class="credo__header">
+        <p class="credo__eyebrow">Credo</p>
+        <h1 class="credo__title">Devotions</h1>
+        <p class="credo__lede">
+            Choose a devotion and pray it bead by bead. The guide keeps your place, announces each
+            mystery, and counts the prayers so you can simply pray.
+        </p>
+    </header>
+
+    @if (_devotions is null)
+    {
+        <Loading>Gathering the devotions&hellip;</Loading>
+    }
+    else if (_devotions.Count == 0)
+    {
+        <p class="credo__empty">No devotions are available yet.</p>
+    }
+    else
+    {
+        <CredoList>
+            @foreach (var d in _devotions)
+            {
+                <CredoRow Href="@($"credo/devotions/{d.Id}")"
+                          Title="@d.Title"
+                          Meta="@FormatKind(d.Kind)"
+                          Summary="@d.Summary"
+                          Cta="Begin" />
+            }
+        </CredoList>
+    }
+</section>
+
+@code {
+    private IReadOnlyList<DevotionSummary>? _devotions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        var index = await Credo.GetIndexAsync();
+        _devotions = index.Devotions;
+    }
+
+    // After the list first renders, ask JS to restore the remembered scroll position.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("respondeoCredoBrowse.restoreScroll", "devotions");
+        }
+    }
+
+    // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
+    private static string? FormatKind(string kind)
+    {
+        if (string.IsNullOrWhiteSpace(kind) || kind == "devotion")
+        {
+            return null;
+        }
+
+        return char.ToUpperInvariant(kind[0]) + kind[1..];
+    }
+}

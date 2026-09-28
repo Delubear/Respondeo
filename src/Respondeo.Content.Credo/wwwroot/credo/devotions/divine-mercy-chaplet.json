@@ -1,0 +1,36 @@
+{
+  "id": "divine-mercy-chaplet",
+  "title": "The Chaplet of Divine Mercy",
+  "summary": "A short, powerful chaplet prayed on ordinary Rosary beads, pleading God's mercy for the world.",
+  "kind": "chaplet",
+  "intro": "Given to St. Faustina Kowalska, the Chaplet of Divine Mercy is prayed on ordinary Rosary beads. It is especially prayed at the three o'clock hour, the hour of Christ's death, for God's mercy upon ourselves and the whole world.",
+  "mysterySets": [
+    {
+      "id": "decades",
+      "name": "The Five Decades",
+      "mysteries": [
+        { "title": "First Decade" },
+        { "title": "Second Decade" },
+        { "title": "Third Decade" },
+        { "title": "Fourth Decade" },
+        { "title": "Fifth Decade" }
+      ]
+    }
+  ],
+  "sequence": [
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
+    { "kind": "prayer", "prayerId": "our-father" },
+    { "kind": "prayer", "prayerId": "hail-mary" },
+    { "kind": "prayer", "prayerId": "apostles-creed" },
+    {
+      "kind": "mysteries",
+      "title": "The Decades",
+      "perMystery": [
+        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "divine-mercy-eternal-father" },
+        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "divine-mercy-for-the-sake", "repeat": 10 }
+      ]
+    },
+    { "kind": "prayer", "title": "Conclude", "prayerId": "divine-mercy-holy-god", "repeat": 3 },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+  ]
+}

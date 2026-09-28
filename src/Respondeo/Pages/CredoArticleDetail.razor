@@ -1,0 +1,97 @@
+@page "/credo/articles/{Id}"
+@inject ICredoService Credo
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>@(_article is null ? "Article" : $"{_article.Title} \u2014 Respondeo")</PageTitle>
+
+@if (_article is not null)
+{
+    <SeoHead Title="@_article.Title" Description="@_article.Summary" Article="true" />
+}
+
+<Breadcrumb CurrentTitle="@(_article?.Title ?? "Article")"
+            StageHref="credo"
+            StageLabel="Credo"
+            Crumbs="_crumbs" />
+
+@if (_loading)
+{
+    <Loading>Opening the article&hellip;</Loading>
+}
+else if (_article is null)
+{
+    <section class="credo-article">
+        <h1 class="credo__title">Article not found</h1>
+        <p class="credo__empty">
+            There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="credo/articles">Return to all articles</a>.
+        </p>
+    </section>
+}
+else
+{
+    <article class="credo-article">
+        <header class="credo__header">
+            <h1 class="credo__title">@_article.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(_article.Summary))
+            {
+                <p class="credo__lede">@_article.Summary</p>
+            }
+        </header>
+
+        @foreach (var section in _article.Sections)
+        {
+            <section class="credo-article__section">
+                @if (!string.IsNullOrWhiteSpace(section.Heading))
+                {
+                    <h2 class="credo-article__section-title">@section.Heading</h2>
+                }
+                <div class="credo-article__body">
+                    @((MarkupString)section.Html)
+                </div>
+            </section>
+        }
+
+        @if (_article.Sources.Count > 0)
+        {
+            <section class="credo-article__sources">
+                <h2 class="credo-article__section-title">Sources &amp; further reading</h2>
+                <ul>
+                    @foreach (var source in _article.Sources)
+                    {
+                        <li>
+                            @if (!string.IsNullOrWhiteSpace(source.Url))
+                            {
+                                <a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Label</a>
+                            }
+                            else
+                            {
+                                @source.Label
+                            }
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+
+        <p class="prayer__back">
+            <a href="credo/articles">&larr; Back to all articles</a>
+        </p>
+    </article>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private static readonly Breadcrumb.Crumb[] _crumbs =
+        [new("articles", "Articles", Href: "credo/articles")];
+
+    private Article? _article;
+    private bool _loading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _article = await Credo.GetArticleAsync(Id);
+        _loading = false;
+    }
+}

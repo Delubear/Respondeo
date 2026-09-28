@@ -23,12 +23,16 @@ public static class SitePillars
     /// <summary>The Miracles pillar id.</summary>
     public const string MiraclesId = "miracles";
 
+    /// <summary>The Credo pillar id (prayers, devotions, and articles for living the faith).</summary>
+    public const string CredoId = "credo";
+
     /// <summary>The pillars, in display order. The Journey is first because it is the site's spine.</summary>
     public static readonly IReadOnlyList<Pillar> Items =
     [
         new(JourneyId, "", "Inquiry"),
         new(SummaId, "summa", "Summa Theologiae"),
         new(MiraclesId, "miracles", "Miracles"),
+        new(CredoId, "credo", "Credo"),
     ];
 
     /// <summary>
@@ -48,6 +52,11 @@ public static class SitePillars
         if (StartsWithSegment(path, "miracles"))
         {
             return MiraclesId;
+        }
+
+        if (StartsWithSegment(path, "credo"))
+        {
+            return CredoId;
         }
 
         return JourneyId;

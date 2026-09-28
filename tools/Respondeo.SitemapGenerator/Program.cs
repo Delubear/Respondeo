@@ -27,6 +27,9 @@ var miraclesManifestPath = Path.Combine(miraclesRoot, "miracles-manifest.json");
 var contentRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
 var contentManifestPath = Path.Combine(contentRoot, "manifest.json");
 
+var credoRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Credo", "wwwroot", "credo");
+var credoManifestPath = Path.Combine(credoRoot, "credo-manifest.json");
+
 // LinkedHashSet-style ordering: preserve discovery order but drop duplicates.
 var routes = new List<string>();
 var seen = new HashSet<string>(StringComparer.Ordinal);
@@ -45,6 +48,10 @@ Add("");            // Home
 Add("summa");
 Add("miracles");
 Add("articles");
+Add("credo");
+Add("credo/prayers");
+Add("credo/devotions");
+Add("credo/articles");
 
 // 2. Summa part landing pages + every question, mapping storage keys (p1) to URL slugs (prima).
 if (File.Exists(summaIndexPath))
@@ -138,6 +145,72 @@ else
     Console.Error.WriteLine($"warning: Content manifest not found at {contentManifestPath}; skipping journey routes.");
 }
 
+// 5. Credo detail pages: prayers, devotions, and articles. The Credo manifest groups files into
+//    separate arrays rather than a single "files" list. Prayer ids come from the markdown front
+//    matter, but only primary-language (non-Latin) prayers get their own browse/detail route; Latin
+//    translations are shown inline on the English prayer's page, so they are excluded here. Devotion
+//    ids come from the JSON "id" field, article ids from the markdown front matter.
+if (File.Exists(credoManifestPath))
+{
+    using var doc = JsonDocument.Parse(File.ReadAllText(credoManifestPath));
+    var root = doc.RootElement;
+
+    foreach (var file in ReadCredoArray(root, "prayers"))
+    {
+        var fullPath = Path.Combine(credoRoot, "prayers", file);
+        if (!File.Exists(fullPath))
+        {
+            continue;
+        }
+
+        var language = ReadFrontMatterValue(fullPath, "language") ?? "en";
+        if (string.Equals(language, "la", StringComparison.OrdinalIgnoreCase))
+        {
+            continue; // Latin translations render inline on the English page, not their own route.
+        }
+
+        var id = ReadFrontMatterId(fullPath);
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            Add($"credo/prayers/{id}");
+        }
+    }
+
+    foreach (var file in ReadCredoArray(root, "devotions"))
+    {
+        var fullPath = Path.Combine(credoRoot, "devotions", file);
+        if (!File.Exists(fullPath))
+        {
+            continue;
+        }
+
+        var id = ReadJsonId(fullPath);
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            Add($"credo/devotions/{id}");
+        }
+    }
+
+    foreach (var file in ReadCredoArray(root, "articles"))
+    {
+        var fullPath = Path.Combine(credoRoot, "articles", file);
+        if (!File.Exists(fullPath))
+        {
+            continue;
+        }
+
+        var id = ReadFrontMatterId(fullPath);
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            Add($"credo/articles/{id}");
+        }
+    }
+}
+else
+{
+    Console.Error.WriteLine($"warning: Credo manifest not found at {credoManifestPath}; skipping Credo routes.");
+}
+
 // Write the sitemap. Deterministic ordering (sorted) keeps diffs small across regenerations.
 routes.Sort(StringComparer.Ordinal);
 
@@ -202,8 +275,13 @@ static IEnumerable<string> ReadManifestFiles(string manifestPath)
 }
 
 // Reads the "id:" value from a markdown file's YAML front matter without a full YAML parse.
-static string? ReadFrontMatterId(string path)
+static string? ReadFrontMatterId(string path) => ReadFrontMatterValue(path, "id");
+
+// Reads a named scalar value (e.g. "id" or "language") from a markdown file's YAML front matter
+// without a full YAML parse.
+static string? ReadFrontMatterValue(string path, string key)
 {
+    var prefix = key + ":";
     var inFrontMatter = false;
     foreach (var raw in File.ReadLines(path))
     {
@@ -219,13 +297,38 @@ static string? ReadFrontMatterId(string path)
             break; // End of front matter.
         }
 
-        if (inFrontMatter && line.StartsWith("id:", StringComparison.Ordinal))
+        if (inFrontMatter && line.StartsWith(prefix, StringComparison.Ordinal))
         {
-            return line[3..].Trim().Trim('"', '\'');
+            return line[prefix.Length..].Trim().Trim('"', '\'');
         }
     }
 
     return null;
+}
+
+// Reads the "id" property from a devotion JSON file.
+static string? ReadJsonId(string path)
+{
+    using var doc = JsonDocument.Parse(File.ReadAllText(path));
+    return doc.RootElement.TryGetProperty("id", out var id) ? id.GetString() : null;
+}
+
+// Reads a named string array (e.g. "prayers") from the Credo manifest.
+static IEnumerable<string> ReadCredoArray(JsonElement root, string property)
+{
+    if (!root.TryGetProperty(property, out var array) || array.ValueKind != JsonValueKind.Array)
+    {
+        yield break;
+    }
+
+    foreach (var item in array.EnumerateArray())
+    {
+        var value = item.GetString();
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            yield return value;
+        }
+    }
 }
 
 static string Escape(string value) => value

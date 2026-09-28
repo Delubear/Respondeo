@@ -1,0 +1,11 @@
+---
+id: rosary-concluding-prayer
+title: "The Concluding Prayer of the Rosary"
+summary: The collect said after the Hail Holy Queen to close the Rosary.
+category: marian
+tags:
+  - rosary
+  - marian
+---
+
+Let us pray. O God, whose only begotten Son, by his life, death, and resurrection, has purchased for us the rewards of eternal life; grant, we beseech thee, that meditating upon these mysteries of the most holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.

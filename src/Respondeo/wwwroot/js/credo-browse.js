@@ -1,0 +1,121 @@
+// Remembers the window scroll position for the Credo browse lists (Prayers, Devotions, Articles) so
+// that drilling into an item and pressing Back returns the visitor to where they were, rather than
+// resetting to the top.
+//
+// Mirrors the approach proven for the Summa browse page: take manual control of scroll restoration,
+// save the position in the capture phase of a link click (before Blazor resets it to the top), and
+// re-apply the target across a short settle window because <FocusOnNavigate> otherwise snaps the
+// page back to the top a frame or two after we restore. State is keyed per list so each Credo page
+// keeps its own position, and stored in sessionStorage so it survives the component remount.
+window.respondeoCredoBrowse = (function () {
+    var SCROLL_PREFIX = 'respondeo.credoBrowseScroll.';
+
+    // Own scroll restoration ourselves; the default browser restore fires after our poll and, because
+    // the list renders asynchronously after remount, would "restore" to 0.
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    function readScroll(key) {
+        try {
+            var raw = sessionStorage.getItem(SCROLL_PREFIX + key);
+            var value = raw ? parseInt(raw, 10) : 0;
+            return isNaN(value) ? 0 : value;
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    return {
+        // Records the current scroll position for a list. Called in the capture phase of a link click
+        // (see below) so it captures the true position before Blazor's navigation resets it.
+        save: function (key) {
+            try {
+                sessionStorage.setItem(SCROLL_PREFIX + key, String(Math.round(window.scrollY)));
+            } catch (e) { }
+        },
+        // Restores the remembered scroll position for a list. Polls across animation frames until the
+        // async content is tall enough to honour the target, then keeps enforcing for a short settle
+        // window to override the post-navigation focus reset. Bails immediately on real user input.
+        restoreScroll: function (key) {
+            var target = readScroll(key);
+            if (target <= 0) {
+                return;
+            }
+
+            var settleFrames = 20;      // ~330ms: long enough to outlast FocusOnNavigate's reset.
+            var maxFrames = 90;         // ~1.5s hard cap while waiting for async height.
+            var frame = 0;
+            var reached = 0;
+            var userScrolled = false;
+
+            function onUserScroll() {
+                userScrolled = true;
+            }
+            window.addEventListener('wheel', onUserScroll, { passive: true, once: true });
+            window.addEventListener('touchmove', onUserScroll, { passive: true, once: true });
+            window.addEventListener('keydown', onUserScroll, { once: true });
+
+            function cleanup() {
+                window.removeEventListener('wheel', onUserScroll);
+                window.removeEventListener('touchmove', onUserScroll);
+                window.removeEventListener('keydown', onUserScroll);
+            }
+
+            (function tick() {
+                if (userScrolled) {
+                    cleanup();
+                    return;
+                }
+
+                var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                var clamped = Math.min(target, Math.max(maxScroll, 0));
+                window.scrollTo(0, clamped);
+                frame++;
+
+                if (maxScroll >= target) {
+                    reached++;
+                    if (reached >= settleFrames) {
+                        cleanup();
+                        return;
+                    }
+                } else if (frame >= maxFrames) {
+                    cleanup();
+                    return;
+                }
+
+                requestAnimationFrame(tick);
+            })();
+        },
+        // Forgets the remembered scroll for a list (used when the visitor leaves the Credo area).
+        clear: function (key) {
+            try {
+                sessionStorage.removeItem(SCROLL_PREFIX + key);
+            } catch (e) { }
+        }
+    };
+})();
+
+// Capture the scroll position the instant the visitor clicks a link that navigates away from a Credo
+// browse list. Capture phase runs before Blazor's delegated click handler resets scroll to the top,
+// so it records the true departure position. The list root carries [data-credo-browse="<key>"] so we
+// know which list to save under.
+(function () {
+    document.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+            return;
+        }
+        var anchor = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!anchor) {
+            return;
+        }
+        var browse = document.querySelector('[data-credo-browse]');
+        if (!browse) {
+            return;
+        }
+        var key = browse.getAttribute('data-credo-browse');
+        if (key) {
+            window.respondeoCredoBrowse.save(key);
+        }
+    }, true);
+})();

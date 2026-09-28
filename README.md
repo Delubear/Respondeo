@@ -12,6 +12,7 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
 | `Respondeo.Content.Miracles` | The Miracles corpus and its models/service. |
+| `Respondeo.Content.Credo` | The Credo pillar (prayers, devotions, articles) and its models/service. |
 | `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
@@ -135,6 +136,7 @@ change. The flags live in the **`FeatureFlags`** section of
 | `AquinasPortrait` | Hides the St. Thomas Aquinas portrait in the masthead. |
 | `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
 | `MiraclesPillar` | Hides the Miracles pill in the pillar switcher. |
+| `CredoPillar` | Hides the Credo pill in the pillar switcher. |
 
 To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a
 per-environment override at `wwwroot/appsettings.{Environment}.json` (it merges over the base file).
