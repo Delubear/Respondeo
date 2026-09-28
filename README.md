@@ -208,9 +208,9 @@ sitemap agree on the canonical origin, name, and default description.
   [`Components/SeoHead.razor`](src/Respondeo/Components/SeoHead.razor) component emits per-route
   `<meta name="description">`, a canonical URL (resolved against the production origin so it stays
   correct on localhost/preview hosts), and Open Graph / Twitter overrides via `HeadContent`.
-  JS-capable crawlers (e.g. Googlebot) pick these up. It is applied on
+  It is applied on
   [`Home.razor`](src/Respondeo/Pages/Home.razor),
-  [`Articles.razor`](src/Respondeo/Pages/Articles.razor),
+  [`CredoArticles.razor`](src/Respondeo/Pages/CredoArticles.razor),
   [`Summa.razor`](src/Respondeo/Pages/Summa.razor),
   [`Miracles.razor`](src/Respondeo/Pages/Miracles.razor),
   [`SummaQuestion.razor`](src/Respondeo/Pages/SummaQuestion.razor),

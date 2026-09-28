@@ -3,8 +3,8 @@ id: sacrament-reconciliation
 title: "Reconciliation (Confession)"
 summary: The sacrament of mercy — Christ's forgiveness given personally to the repentant.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: home-sacraments
     label: "The sacraments: an overview"

@@ -16,17 +16,6 @@ public class BreadcrumbTests : TestContext
     }
 
     [Fact]
-    public void Renders_the_articles_link_only_when_show_articles_is_set()
-    {
-        var cut = RenderComponent<Breadcrumb>(p => p
-            .Add(c => c.ShowArticles, true));
-
-        var articles = cut.Find("a.breadcrumb__articles");
-        Assert.Equal("Articles", articles.TextContent);
-        Assert.Equal("articles", articles.GetAttribute("href"));
-    }
-
-    [Fact]
     public void Omits_the_articles_link_by_default()
     {
         var cut = RenderComponent<Breadcrumb>();

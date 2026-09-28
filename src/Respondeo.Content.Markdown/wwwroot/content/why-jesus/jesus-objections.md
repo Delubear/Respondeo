@@ -3,8 +3,8 @@ id: jesus-objections
 title: "Objections to Jesus"
 summary: What are the strongest objections to the Christian claim about Jesus, and how do we respond?
 tags:
-  - Jesus Christ
-  - Divine Revelation
+  - jesus christ
+  - divine revelation
 sections:
   - jesus-objection-legend
   - jesus-objection-resurrection-alternatives

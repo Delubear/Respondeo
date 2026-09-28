@@ -3,8 +3,8 @@ id: jesus-who-was-he
 title: "Who Was Jesus?"
 summary: The historical man of Nazareth, and the startling claim Christianity makes about him.
 tags:
-  - Jesus Christ
-  - Divine Revelation
+  - jesus christ
+  - divine revelation
 branches:
   - to: jesus-gospel-reliability
     label: "Can we trust the Gospels?"

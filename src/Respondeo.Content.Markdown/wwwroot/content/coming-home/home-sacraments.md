@@ -3,8 +3,8 @@ id: home-sacraments
 title: "The Sacraments: An Overview"
 summary: What the sacraments are, why there are seven, and why each is worth celebrating.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: sacrament-baptism
     prompt: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.

@@ -3,9 +3,9 @@ id: jesus-gospel-reliability
 title: "Can We Trust the Gospels?"
 summary: Whether the Gospels are early, eyewitness-rooted sources we can reason from historically.
 tags:
-  - Jesus Christ
-  - Divine Revelation
-  - Scripture & Tradition
+  - jesus christ
+  - divine revelation
+  - scripture & tradition
 branches:
   - to: jesus-divine-claims
     label: "Did Jesus claim to be God?"

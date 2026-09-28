@@ -3,9 +3,9 @@ id: church-objection-sola-scriptura
 title: "Isn't Scripture Alone Enough?"
 summary: Why appeal to a Church and Tradition when the Bible is the sufficient rule of faith?
 tags:
-  - The Catholic Church
-  - Divine Revelation
-  - Scripture & Tradition
+  - the catholic church
+  - divine revelation
+  - scripture & tradition
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

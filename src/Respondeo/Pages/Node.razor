@@ -10,7 +10,7 @@
     <SeoHead Title="@_node.Title" Description="@_node.Summary" Article="true" />
 }
 
-<Breadcrumb Crumbs="_breadcrumb.Ancestors" CurrentTitle="@_breadcrumb.CurrentTitle" ShowArticles="_fromArticles" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
+<Breadcrumb Crumbs="_breadcrumb.Ancestors" CurrentTitle="@_breadcrumb.CurrentTitle" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
 
 @if (_loading)
 {
@@ -38,7 +38,6 @@ else
 
     private ContentNode? _node;
     private bool _loading = true;
-    private bool _fromArticles;
     private BreadcrumbContext _breadcrumb = BreadcrumbContext.ForCurrent(null);
 
     protected override async Task OnParametersSetAsync()
@@ -68,13 +67,12 @@ else
         }
 
         _node = node;
-        _fromArticles = await Trail.IsFromArticlesAsync();
 
-        // When the node belongs to a stage (and the visitor didn't arrive via Articles), root the
-        // breadcrumb at that stage's landing page instead of Home so it reflects the section.
+        // When the node belongs to a stage, root the breadcrumb at that stage's landing page
+        // instead of Home so it reflects the section.
         string? stageHref = null;
         string? stageLabel = null;
-        if (!_fromArticles && node?.Stage is { Length: > 0 } stage)
+        if (node?.Stage is { Length: > 0 } stage)
         {
             stageHref = stage;
             stageLabel = SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label ?? node.Stage;

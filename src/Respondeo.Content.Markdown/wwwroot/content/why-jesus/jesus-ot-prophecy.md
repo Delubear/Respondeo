@@ -3,8 +3,8 @@ id: jesus-ot-prophecy
 title: "Did Jesus Fulfill Prophecy?"
 summary: Whether the Hebrew Scriptures' messianic expectation converges on Jesus of Nazareth.
 tags:
-  - Jesus Christ
-  - Divine Revelation
+  - jesus christ
+  - divine revelation
 branches:
   - to: jesus-resurrection
     label: "The Resurrection"

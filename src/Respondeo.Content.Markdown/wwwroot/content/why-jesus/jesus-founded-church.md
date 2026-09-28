@@ -3,8 +3,8 @@ id: jesus-founded-church
 title: "Did Jesus Found a Church?"
 summary: Whether Jesus established a visible Church and entrusted it with His teaching office.
 tags:
-  - Jesus Christ
-  - The Catholic Church
+  - jesus christ
+  - the catholic church
 nextStage:
   href: why-the-church
   label: "Why the Church?"

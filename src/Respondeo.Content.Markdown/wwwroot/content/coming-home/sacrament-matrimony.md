@@ -3,8 +3,8 @@ id: sacrament-matrimony
 title: "Matrimony"
 summary: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: home-sacraments
     label: "The sacraments: an overview"

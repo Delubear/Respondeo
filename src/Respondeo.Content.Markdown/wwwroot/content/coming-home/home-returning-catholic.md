@@ -3,8 +3,8 @@ id: home-returning-catholic
 title: "Returning to the Faith"
 summary: For the baptized Catholic who drifted away — why and how to come back.
 tags:
-  - The Catholic Church
-  - Conversion
+  - the catholic church
+  - conversion
 branches:
   - to: home-obstacles
     label: "What holds people back"

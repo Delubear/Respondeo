@@ -1,5 +1,6 @@
 @page "/credo/articles"
 @inject ICredoService Credo
+@inject IContentService Content
 @inject IBreadcrumbTrail Trail
 @inject CredoBrowseState BrowseState
 @inject IJSRuntime JS
@@ -50,6 +51,11 @@
                     <h2 class="credo__sidebar-title">Topic</h2>
                     <TopicFilter Topics="_topicLabels" Selected="_selectedTopics" SelectedChanged="OnTopicsChanged" />
                 }
+                @if (_tags.Count > 0)
+                {
+                    <h2 class="credo__sidebar-title">Tags</h2>
+                    <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
+                }
             </aside>
 
             <div class="credo__results">
@@ -62,7 +68,7 @@
                     <CredoList>
                         @foreach (var a in Filtered)
                         {
-                            <CredoRow Href="@($"credo/articles/{a.Id}")"
+                            <CredoRow Href="@a.Href"
                                       Title="@a.Title"
                                       Meta="@FormatTopic(a.Topic)"
                                       Summary="@a.Summary"
@@ -76,21 +82,42 @@
 </section>
 
 @code {
-    private IReadOnlyList<ArticleSummary>? _articles;
+    // A unified row shape so Credo articles and Inquiry nodes can share one searchable, filterable list.
+    private sealed record ArticleRow(string Id, string Title, string Summary, string Topic, IReadOnlyList<string> Tags, string Href);
+
+    private const string InquiryTopic = "inquiry";
+
+    private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
 
     private IReadOnlyList<string> _topics = [];
     private IReadOnlyList<string> _topicLabels = [];
     private IReadOnlySet<string> _selectedTopics = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+    private IReadOnlyList<string> _tags = [];
+    private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
         _query = BrowseState.GetQuery("articles");
         _selectedTopics = new HashSet<string>(BrowseState.GetFilter("articles.topic"), StringComparer.OrdinalIgnoreCase);
+        _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
 
         var index = await Credo.GetIndexAsync();
-        _articles = index.Articles;
+        var credoRows = index.Articles.Select(a =>
+            new ArticleRow(a.Id, a.Title, a.Summary, a.Topic, a.Tags, $"credo/articles/{a.Id}"));
+
+        // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).
+        var nodes = await Content.GetAllAsync();
+        var sectionIds = nodes.SelectMany(n => n.Sections).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var inquiryRows = nodes
+            .Where(n => !sectionIds.Contains(n.Id))
+            .Select(n => new ArticleRow(n.Id, n.Title, n.Summary, InquiryTopic, n.Tags, ContentRoutes.NodeHref(n)));
+
+        _articles = credoRows.Concat(inquiryRows)
+            .OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
 
         _topics = _articles.Select(a => a.Topic)
             .Where(t => !string.IsNullOrWhiteSpace(t) && t != "general")
@@ -98,6 +125,12 @@
             .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
         _topicLabels = [.. _topics.Select(t => FormatTopic(t) ?? t)];
+
+        _tags = _articles.SelectMany(a => a.Tags)
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -121,6 +154,12 @@
         BrowseState.SetFilter("articles.topic", selected);
     }
 
+    private void OnTagsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedTags = selected;
+        BrowseState.SetFilter("articles.tag", selected);
+    }
+
     // Turns a topic slug (e.g. "sacraments") into a display tag (e.g. "Sacraments").
     private static string? FormatTopic(string topic)
     {
@@ -129,10 +168,15 @@
             return null;
         }
 
+        if (topic == InquiryTopic)
+        {
+            return "From Inquiry";
+        }
+
         return char.ToUpperInvariant(topic[0]) + topic[1..];
     }
 
-    private IReadOnlyList<ArticleSummary> Filtered
+    private IReadOnlyList<ArticleRow> Filtered
     {
         get
         {
@@ -141,11 +185,16 @@
                 return [];
             }
 
-            IEnumerable<ArticleSummary> results = _articles;
+            IEnumerable<ArticleRow> results = _articles;
 
             if (_selectedTopics.Count > 0)
             {
                 results = results.Where(a => _selectedTopics.Contains(FormatTopic(a.Topic) ?? a.Topic));
+            }
+
+            if (_selectedTags.Count > 0)
+            {
+                results = results.Where(a => a.Tags.Any(t => _selectedTags.Contains(t)));
             }
 
             if (!string.IsNullOrWhiteSpace(_query))

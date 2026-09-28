@@ -11,7 +11,6 @@ namespace Respondeo.Services;
 public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
 {
     private const string StorageKey = "respondeo.breadcrumb";
-    private const string ArticlesOriginKey = "respondeo.breadcrumb.fromArticles";
 
     public async Task<IReadOnlyList<string>> VisitAsync(string nodeId)
     {
@@ -35,25 +34,6 @@ public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
     public async Task ClearAsync()
     {
         await js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
-        await js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
-    }
-
-    public async Task SetArticlesOriginAsync(bool fromArticles)
-    {
-        if (fromArticles)
-        {
-            await js.InvokeVoidAsync("sessionStorage.setItem", ArticlesOriginKey, "1");
-        }
-        else
-        {
-            await js.InvokeVoidAsync("sessionStorage.removeItem", ArticlesOriginKey);
-        }
-    }
-
-    public async Task<bool> IsFromArticlesAsync()
-    {
-        var value = await js.InvokeAsync<string?>("sessionStorage.getItem", ArticlesOriginKey);
-        return value == "1";
     }
 
     private async Task<List<string>> LoadAsync()

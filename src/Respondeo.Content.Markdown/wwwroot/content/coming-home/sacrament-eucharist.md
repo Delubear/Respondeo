@@ -3,8 +3,8 @@ id: sacrament-eucharist
 title: "The Eucharist"
 summary: The sacrament of Christ's true presence — the source and summit of the Christian life.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: home-sacraments
     label: "The sacraments: an overview"

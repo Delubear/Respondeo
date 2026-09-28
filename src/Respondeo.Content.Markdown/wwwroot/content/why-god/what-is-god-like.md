@@ -3,8 +3,8 @@ id: what-is-god-like
 title: "What is God like?"
 summary: From the arguments to the God of classical theism — the divine attributes that follow.
 tags:
-  - Existence of God
-  - St. Thomas Aquinas
+  - existence of god
+  - st. thomas aquinas
 nextStage:
   href: which-god
   label: "Which God?"

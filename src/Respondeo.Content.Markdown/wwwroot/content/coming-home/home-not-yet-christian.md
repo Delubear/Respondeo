@@ -3,8 +3,8 @@ id: home-not-yet-christian
 title: "If You're Not Yet Christian"
 summary: For the seeker who finds the case compelling but has not yet believed or been baptized.
 tags:
-  - The Catholic Church
-  - Conversion
+  - the catholic church
+  - conversion
 branches:
   - to: home-why-practice
     label: "Why believe and practice?"

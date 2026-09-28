@@ -3,8 +3,8 @@ id: coming-home
 title: "Coming Home"
 summary: For those who know the Church is true, but have kept their distance — an invitation to come home.
 tags:
-  - Getting Started
-  - Conversion
+  - getting started
+  - conversion
 branches:
   - to: home-not-yet-christian
     label: "I'm not yet Christian"

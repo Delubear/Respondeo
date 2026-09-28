@@ -3,8 +3,8 @@ id: sacrament-anointing
 title: "Anointing of the Sick"
 summary: The sacrament of healing and strength for those facing serious illness, suffering, or death.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: home-sacraments
     label: "The sacraments: an overview"

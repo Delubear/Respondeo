@@ -47,7 +47,6 @@ internal static class SitemapGenerator
         routes.Add("");            // Home
         routes.Add("summa");
         routes.Add("miracles");
-        routes.Add("articles");
         routes.Add("credo");
         routes.Add("credo/prayers");
         routes.Add("credo/devotions");

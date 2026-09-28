@@ -3,7 +3,7 @@ id: where-the-path-has-led
 title: "Where the Path Has Led"
 summary: Drawing the whole case together — from Christ's Church to the threshold of coming home.
 tags:
-  - The Catholic Church
+  - the catholic church
 nextStage:
   href: coming-home
   label: "Coming Home"

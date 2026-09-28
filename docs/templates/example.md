@@ -10,7 +10,7 @@ id: example                      # REQUIRED. Unique id and URL slug (/node/examp
 title: "Example Node"            # REQUIRED. Shown on the page and in link cards.
 summary: A template node that demonstrates every field and directive.  # REQUIRED (one line).
 
-# OPTIONAL. Categories this node belongs to. Used to group and filter articles on /articles.
+# OPTIONAL. Categories this node belongs to. Used to group and filter articles on /credo/articles.
 # Free-form display strings, e.g. "Existence of God", "St. Thomas Aquinas".
 topics:
   - Existence of God

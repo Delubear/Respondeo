@@ -3,8 +3,8 @@ id: home-what-church-offers
 title: "What the Church Offers"
 summary: What the Church actually holds out — grace, the sacraments, communion, and belonging.
 tags:
-  - The Catholic Church
-  - The Christian Life
+  - the catholic church
+  - the christian life
 branches:
   - to: home-sacraments
     label: "The sacraments"

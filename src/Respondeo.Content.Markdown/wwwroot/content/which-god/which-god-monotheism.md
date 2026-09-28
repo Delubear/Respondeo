@@ -3,8 +3,8 @@ id: which-god-monotheism
 title: "Why One God, Not Many?"
 summary: From one necessary, unlimited being to monotheism — ruling out polytheism and dualism.
 tags:
-  - Existence of God
-  - Divine Revelation
+  - existence of god
+  - divine revelation
 branches:
   - to: which-god-personal
     label: "Is the first cause personal?"

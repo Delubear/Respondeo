@@ -3,8 +3,8 @@ id: sacrament-holy-orders
 title: "Holy Orders"
 summary: The sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
 tags:
-  - The Catholic Church
-  - Sacraments
+  - the catholic church
+  - sacraments
 branches:
   - to: home-sacraments
     label: "The sacraments: an overview"

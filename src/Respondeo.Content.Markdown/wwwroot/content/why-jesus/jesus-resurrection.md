@@ -3,8 +3,8 @@ id: jesus-resurrection
 title: "The Resurrection"
 summary: Whether the Resurrection is a historical event that vindicates Jesus's claims.
 tags:
-  - Jesus Christ
-  - Divine Revelation
+  - jesus christ
+  - divine revelation
 branches:
   - to: jesus-objections
     label: "Objections to Jesus"

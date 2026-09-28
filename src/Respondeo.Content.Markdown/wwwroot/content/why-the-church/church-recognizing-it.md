@@ -3,7 +3,7 @@ id: church-recognizing-it
 title: "Which Church Is It?"
 summary: How to recognize Christ's Church among the many that claim His name.
 tags:
-  - The Catholic Church
+  - the catholic church
 branches:
   - to: church-four-marks
     label: "The four marks"

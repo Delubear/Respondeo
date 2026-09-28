@@ -3,7 +3,7 @@ id: which-god-of-israel
 title: "Why the God of Israel?"
 summary: Of all the claimants to revelation, why the covenant God of Abraham, the prophets, and the Shema.
 tags:
-  - Divine Revelation
+  - divine revelation
 nextStage:
   href: why-jesus
   label: "Why Jesus?"

@@ -14,13 +14,6 @@
                 <a href="">Home</a>
             </li>
         }
-        @if (ShowArticles)
-        {
-            <li class="breadcrumb__item">
-                <span class="breadcrumb__sep" aria-hidden="true">/</span>
-                <a class="breadcrumb__articles" href="articles">Articles</a>
-            </li>
-        }
         @if (BackHref is not null)
         {
             <li class="breadcrumb__item">
@@ -48,9 +41,6 @@
 
     /// <summary>Title of the node currently being viewed, shown as the final, non-linked crumb.</summary>
     [Parameter] public string? CurrentTitle { get; set; }
-
-    /// <summary>When true, renders an Articles link after Home (the visitor arrived via the /articles index).</summary>
-    [Parameter] public bool ShowArticles { get; set; }
 
     /// <summary>Optional stage landing route (e.g. "why-god"); when set it replaces Home as the breadcrumb root.</summary>
     [Parameter] public string? StageHref { get; set; }

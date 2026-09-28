@@ -3,8 +3,8 @@ id: church-objection-orthodoxy
 title: "What About the Eastern Orthodox?"
 summary: The Orthodox share apostolic succession and ancient worship — so why Rome rather than Constantinople?
 tags:
-  - The Catholic Church
-  - Divine Revelation
+  - the catholic church
+  - divine revelation
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

@@ -3,8 +3,8 @@ id: begin-eastern-orthodox
 title: "If You Are Eastern Orthodox"
 summary: The distinct path into full communion for the Orthodox — recognized sacraments, and the Eastern Catholic option.
 tags:
-  - The Catholic Church
-  - Conversion
+  - the catholic church
+  - conversion
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
