@@ -8,11 +8,11 @@
 <SeoHead Title="Catholic Miracles"
          Description="A growing catalog of reported and recognized Catholic miracles — Eucharistic miracles, Marian apparitions, and healings — with the Church's judgment on each." />
 
-<section class="miracles">
-    <header class="miracles__header">
-        <p class="miracles__eyebrow">Signs and wonders</p>
-        <h1 class="miracles__title">Catholic Miracles</h1>
-        <p class="miracles__lede">
+<section class="discover">
+    <header class="discover__header">
+        <p class="discover__eyebrow">Signs and wonders</p>
+        <h1 class="discover__title">Catholic Miracles</h1>
+        <p class="discover__lede">
             A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian
             apparitions, healings, and more. Filter by kind, by the Church&rsquo;s judgment, or by place,
             and search by name. Each entry explains what is claimed and how the Church regards it.
@@ -25,49 +25,43 @@
     }
     else
     {
-        <div class="miracles__search">
-            <label class="miracles__search-label" for="miracles-search">Search miracles</label>
+        <div class="discover__search">
+            <label class="discover__search-label" for="miracles-search">Search miracles</label>
             <input id="miracles-search"
-                   class="miracles__search-input"
+                   class="discover__search-input"
                    type="search"
                    placeholder="e.g. Lanciano, healing, Italy..."
                    value="@Browse.Query"
                    @oninput="OnSearchInput" />
         </div>
 
-        <div class="miracles__layout">
-            <aside class="miracles__sidebar">
-                <div class="miracles__facet">
-                    <h2 class="miracles__facet-title">Kind</h2>
-                    <TopicFilter Topics="_types"
-                                 Selected="Browse.Types"
-                                 SelectedChanged="OnTypesChanged"
-                                 DisplayLabel="_facets.Category" />
-                </div>
+        <div class="discover__layout">
+            <aside class="discover__sidebar">
+                <h2 class="discover__sidebar-title">Kind</h2>
+                <TopicFilter Topics="_types"
+                             Selected="Browse.Types"
+                             SelectedChanged="OnTypesChanged"
+                             DisplayLabel="_facets.Category" />
 
-                <div class="miracles__facet">
-                    <h2 class="miracles__facet-title">Church&rsquo;s judgment</h2>
-                    <TopicFilter Topics="_approvals"
-                                 Selected="Browse.Approvals"
-                                 SelectedChanged="OnApprovalsChanged"
-                                 DisplayLabel="_facets.Approval" />
-                </div>
+                <h2 class="discover__sidebar-title">Church&rsquo;s judgment</h2>
+                <TopicFilter Topics="_approvals"
+                             Selected="Browse.Approvals"
+                             SelectedChanged="OnApprovalsChanged"
+                             DisplayLabel="_facets.Approval" />
 
-                <div class="miracles__facet">
-                    <h2 class="miracles__facet-title">Region</h2>
-                    <TopicFilter Topics="_regions"
-                                 Selected="Browse.Regions"
-                                 SelectedChanged="OnRegionsChanged"
-                                 DisplayLabel="_facets.Region" />
-                </div>
+                <h2 class="discover__sidebar-title">Region</h2>
+                <TopicFilter Topics="_regions"
+                             Selected="Browse.Regions"
+                             SelectedChanged="OnRegionsChanged"
+                             DisplayLabel="_facets.Region" />
 
                 <ClearFiltersButton Active="Browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="miracles__results">
-                <div class="miracles__toolbar">
-                    <p class="miracles__count">@Filtered.Count of @_all.Count miracles</p>
-                    <label class="miracles__sort">
+            <div class="discover__results">
+                <div class="discover__toolbar">
+                    <p class="discover__count">@Filtered.Count of @_all.Count miracles</p>
+                    <label class="discover__sort">
                         <span>Sort</span>
                         <select value="@_sort" @onchange="OnSortChanged">
                             <option value="@nameof(MiracleSort.TitleAsc)">Title (A&ndash;Z)</option>
@@ -79,7 +73,7 @@
 
                 @if (Filtered.Count == 0)
                 {
-                    <p class="miracles__empty">No miracles match the current filters.</p>
+                    <p class="discover__empty">No miracles match the current filters.</p>
                 }
                 else
                 {
