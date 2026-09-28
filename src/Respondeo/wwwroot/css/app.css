@@ -507,6 +507,42 @@ h1, h2, h3 {
     font-style: italic;
 }
 
+/* Credo browse layout — a filter sidebar beside the results column, mirroring the Articles index */
+.credo__layout {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+.credo__sidebar {
+    position: sticky;
+    top: 5rem;
+}
+
+.credo__sidebar-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 1.25rem 0 0.75rem;
+}
+
+.credo__sidebar-title:first-child {
+    margin-top: 0;
+}
+
+@media (max-width: 640px) {
+    .credo__layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .credo__sidebar {
+        position: static;
+    }
+}
+
 /* Credo browse list — a gilded, tappable column used across the Credo pages */
 .credo-list {
     list-style: none;
@@ -873,6 +909,12 @@ h1, h2, h3 {
     max-width: 46rem;
     margin: 0 auto;
     padding: 1rem 0 3rem;
+}
+
+.credo-article__summary {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
 }
 
 .credo-article__section {

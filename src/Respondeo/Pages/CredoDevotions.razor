@@ -1,6 +1,7 @@
 @page "/credo/devotions"
 @inject ICredoService Credo
 @inject IBreadcrumbTrail Trail
+@inject CredoBrowseState BrowseState
 @inject IJSRuntime JS
 
 <PageTitle>Devotions &mdash; Credo &mdash; Respondeo</PageTitle>
@@ -32,27 +33,71 @@
     }
     else
     {
-        <CredoList>
-            @foreach (var d in _devotions)
-            {
-                <CredoRow Href="@($"credo/devotions/{d.Id}")"
-                          Title="@d.Title"
-                          Meta="@FormatKind(d.Kind)"
-                          Summary="@d.Summary"
-                          Cta="Begin" />
-            }
-        </CredoList>
+        <div class="credo__search">
+            <label class="credo__search-label" for="devotion-search">Search devotions</label>
+            <input id="devotion-search"
+                   class="credo__search-input"
+                   type="search"
+                   placeholder="e.g. Rosary, chaplet, mercy..."
+                   value="@_query"
+                   @oninput="OnSearchInput" />
+        </div>
+
+        <div class="credo__layout">
+            <aside class="credo__sidebar">
+                @if (_kinds.Count > 0)
+                {
+                    <h2 class="credo__sidebar-title">Kind</h2>
+                    <TopicFilter Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
+                }
+            </aside>
+
+            <div class="credo__results">
+                @if (Filtered.Count == 0)
+                {
+                    <p class="credo__empty">No devotions match your search.</p>
+                }
+                else
+                {
+                    <CredoList>
+                        @foreach (var d in Filtered)
+                        {
+                            <CredoRow Href="@($"credo/devotions/{d.Id}")"
+                                      Title="@d.Title"
+                                      Meta="@FormatKind(d.Kind)"
+                                      Summary="@d.Summary"
+                                      Cta="Begin" />
+                        }
+                    </CredoList>
+                }
+            </div>
+        </div>
     }
 </section>
 
 @code {
     private IReadOnlyList<DevotionSummary>? _devotions;
+    private string _query = string.Empty;
+
+    private IReadOnlyList<string> _kinds = [];
+    private IReadOnlyList<string> _kindLabels = [];
+    private IReadOnlySet<string> _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        _query = BrowseState.GetQuery("devotions");
+        _selectedKinds = new HashSet<string>(BrowseState.GetFilter("devotions.kind"), StringComparer.OrdinalIgnoreCase);
+
         var index = await Credo.GetIndexAsync();
         _devotions = index.Devotions;
+
+        _kinds = _devotions.Select(d => d.Kind)
+            .Where(k => !string.IsNullOrWhiteSpace(k) && k != "devotion")
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(k => k, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+        _kindLabels = [.. _kinds.Select(k => FormatKind(k) ?? k)];
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -64,6 +109,18 @@
         }
     }
 
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _query = e.Value?.ToString() ?? string.Empty;
+        BrowseState.SetQuery("devotions", _query);
+    }
+
+    private void OnKindsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedKinds = selected;
+        BrowseState.SetFilter("devotions.kind", selected);
+    }
+
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
     private static string? FormatKind(string kind)
     {
@@ -73,5 +130,33 @@
         }
 
         return char.ToUpperInvariant(kind[0]) + kind[1..];
+    }
+
+    private IReadOnlyList<DevotionSummary> Filtered
+    {
+        get
+        {
+            if (_devotions is null)
+            {
+                return [];
+            }
+
+            IEnumerable<DevotionSummary> results = _devotions;
+
+            if (_selectedKinds.Count > 0)
+            {
+                results = results.Where(d => _selectedKinds.Contains(FormatKind(d.Kind) ?? d.Kind));
+            }
+
+            if (!string.IsNullOrWhiteSpace(_query))
+            {
+                var q = _query.Trim();
+                results = results.Where(d =>
+                    d.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || d.Summary.Contains(q, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return [.. results];
+        }
     }
 }

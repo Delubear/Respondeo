@@ -17,6 +17,7 @@ public sealed class CredoBrowseState : IDisposable
     private readonly NavigationManager _nav;
     private readonly IJSRuntime _js;
     private readonly Dictionary<string, string> _queries = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, HashSet<string>> _filters = new(StringComparer.Ordinal);
     private readonly HashSet<string> _keys = new(StringComparer.Ordinal);
 
     public CredoBrowseState(NavigationManager nav, IJSRuntime js)
@@ -36,6 +37,21 @@ public sealed class CredoBrowseState : IDisposable
         _queries[key] = query ?? string.Empty;
     }
 
+    /// <summary>
+    /// The remembered set of selected filter values for <paramref name="key"/> (e.g. the chosen
+    /// prayer categories), or an empty set if none. A composite key such as "prayers.category" lets a
+    /// single list page keep several independent facet selections.
+    /// </summary>
+    public IReadOnlySet<string> GetFilter(string key) =>
+        _filters.TryGetValue(key, out var set) ? set : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Records the current filter selection for <paramref name="key"/>.</summary>
+    public void SetFilter(string key, IReadOnlySet<string> selected)
+    {
+        _keys.Add(key);
+        _filters[key] = new HashSet<string>(selected, StringComparer.OrdinalIgnoreCase);
+    }
+
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var path = new Uri(e.Location).AbsolutePath.Trim('/');
@@ -53,6 +69,7 @@ public sealed class CredoBrowseState : IDisposable
     private void Reset()
     {
         _queries.Clear();
+        _filters.Clear();
 
         // Forget the JS-owned scroll snapshots too so a later return to Credo starts at the top.
         // Fire-and-forget: LocationChanged is synchronous and we are leaving the area anyway.

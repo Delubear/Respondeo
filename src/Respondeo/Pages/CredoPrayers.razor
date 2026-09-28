@@ -39,23 +39,40 @@
                    @oninput="OnSearchInput" />
         </div>
 
-        @if (Filtered.Count == 0)
-        {
-            <p class="credo__empty">No prayers match your search.</p>
-        }
-        else
-        {
-            <CredoList>
-                @foreach (var p in Filtered)
+        <div class="credo__layout">
+            <aside class="credo__sidebar">
+                @if (_categories.Count > 0)
                 {
-                    <CredoRow Href="@($"credo/prayers/{p.Id}")"
-                              Title="@p.Title"
-                              Meta="@FormatCategory(p.Category)"
-                              Summary="@p.Summary"
-                              Cta="Pray" />
+                    <h2 class="credo__sidebar-title">Category</h2>
+                    <TopicFilter Topics="_categoryLabels" Selected="_selectedCategories" SelectedChanged="OnCategoriesChanged" />
                 }
-            </CredoList>
-        }
+                @if (_tags.Count > 0)
+                {
+                    <h2 class="credo__sidebar-title">Tags</h2>
+                    <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" />
+                }
+            </aside>
+
+            <div class="credo__results">
+                @if (Filtered.Count == 0)
+                {
+                    <p class="credo__empty">No prayers match your search.</p>
+                }
+                else
+                {
+                    <CredoList>
+                        @foreach (var p in Filtered)
+                        {
+                            <CredoRow Href="@($"credo/prayers/{p.Id}")"
+                                      Title="@p.Title"
+                                      Meta="@FormatCategory(p.Category)"
+                                      Summary="@p.Summary"
+                                      Cta="Pray" />
+                        }
+                    </CredoList>
+                }
+            </div>
+        </div>
     }
 </section>
 
@@ -63,12 +80,35 @@
     private IReadOnlyList<PrayerSummary>? _prayers;
     private string _query = string.Empty;
 
+    // Facet option lists derived from the loaded index (only values that actually occur).
+    private IReadOnlyList<string> _categories = [];
+    private IReadOnlyList<string> _categoryLabels = [];
+    private IReadOnlyList<string> _tags = [];
+
+    private IReadOnlySet<string> _selectedCategories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
         _query = BrowseState.GetQuery("prayers");
+        _selectedCategories = new HashSet<string>(BrowseState.GetFilter("prayers.category"), StringComparer.OrdinalIgnoreCase);
+        _selectedTags = new HashSet<string>(BrowseState.GetFilter("prayers.tags"), StringComparer.OrdinalIgnoreCase);
+
         var index = await Credo.GetIndexAsync();
         _prayers = index.Prayers;
+
+        _categories = _prayers.Select(p => p.Category)
+            .Where(c => !string.IsNullOrWhiteSpace(c) && c != "other")
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(c => c, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+        _categoryLabels = [.. _categories.Select(c => FormatCategory(c) ?? c)];
+
+        _tags = _prayers.SelectMany(p => p.Tags)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position (the helper
@@ -85,6 +125,18 @@
     {
         _query = e.Value?.ToString() ?? string.Empty;
         BrowseState.SetQuery("prayers", _query);
+    }
+
+    private void OnCategoriesChanged(IReadOnlySet<string> selected)
+    {
+        _selectedCategories = selected;
+        BrowseState.SetFilter("prayers.category", selected);
+    }
+
+    private void OnTagsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedTags = selected;
+        BrowseState.SetFilter("prayers.tags", selected);
     }
 
     // Turns a category slug (e.g. "marian") into a display tag (e.g. "Marian").
@@ -107,16 +159,30 @@
                 return [];
             }
 
-            if (string.IsNullOrWhiteSpace(_query))
+            IEnumerable<PrayerSummary> results = _prayers;
+
+            // Categories are chosen by their display label; match back to the underlying slug.
+            if (_selectedCategories.Count > 0)
             {
-                return _prayers;
+                results = results.Where(p => _selectedCategories.Contains(FormatCategory(p.Category) ?? p.Category));
             }
 
-            var q = _query.Trim();
-            return [.. _prayers.Where(p =>
-                p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
-                || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)))];
+            // A prayer must carry every selected tag (intersection).
+            if (_selectedTags.Count > 0)
+            {
+                results = results.Where(p => _selectedTags.All(t => p.Tags.Contains(t, StringComparer.OrdinalIgnoreCase)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(_query))
+            {
+                var q = _query.Trim();
+                results = results.Where(p =>
+                    p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            return [.. results];
         }
     }
 }

@@ -1,6 +1,7 @@
 @page "/credo/articles"
 @inject ICredoService Credo
 @inject IBreadcrumbTrail Trail
+@inject CredoBrowseState BrowseState
 @inject IJSRuntime JS
 
 <PageTitle>Articles &mdash; Credo &mdash; Respondeo</PageTitle>
@@ -32,27 +33,71 @@
     }
     else
     {
-        <CredoList>
-            @foreach (var a in _articles)
-            {
-                <CredoRow Href="@($"credo/articles/{a.Id}")"
-                          Title="@a.Title"
-                          Meta="@FormatTopic(a.Topic)"
-                          Summary="@a.Summary"
-                          Cta="Read" />
-            }
-        </CredoList>
+        <div class="credo__search">
+            <label class="credo__search-label" for="article-search">Search articles</label>
+            <input id="article-search"
+                   class="credo__search-input"
+                   type="search"
+                   placeholder="e.g. Confession, Eucharist, prayer..."
+                   value="@_query"
+                   @oninput="OnSearchInput" />
+        </div>
+
+        <div class="credo__layout">
+            <aside class="credo__sidebar">
+                @if (_topics.Count > 0)
+                {
+                    <h2 class="credo__sidebar-title">Topic</h2>
+                    <TopicFilter Topics="_topicLabels" Selected="_selectedTopics" SelectedChanged="OnTopicsChanged" />
+                }
+            </aside>
+
+            <div class="credo__results">
+                @if (Filtered.Count == 0)
+                {
+                    <p class="credo__empty">No articles match your search.</p>
+                }
+                else
+                {
+                    <CredoList>
+                        @foreach (var a in Filtered)
+                        {
+                            <CredoRow Href="@($"credo/articles/{a.Id}")"
+                                      Title="@a.Title"
+                                      Meta="@FormatTopic(a.Topic)"
+                                      Summary="@a.Summary"
+                                      Cta="Read" />
+                        }
+                    </CredoList>
+                }
+            </div>
+        </div>
     }
 </section>
 
 @code {
     private IReadOnlyList<ArticleSummary>? _articles;
+    private string _query = string.Empty;
+
+    private IReadOnlyList<string> _topics = [];
+    private IReadOnlyList<string> _topicLabels = [];
+    private IReadOnlySet<string> _selectedTopics = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        _query = BrowseState.GetQuery("articles");
+        _selectedTopics = new HashSet<string>(BrowseState.GetFilter("articles.topic"), StringComparer.OrdinalIgnoreCase);
+
         var index = await Credo.GetIndexAsync();
         _articles = index.Articles;
+
+        _topics = _articles.Select(a => a.Topic)
+            .Where(t => !string.IsNullOrWhiteSpace(t) && t != "general")
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+        _topicLabels = [.. _topics.Select(t => FormatTopic(t) ?? t)];
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -64,6 +109,18 @@
         }
     }
 
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _query = e.Value?.ToString() ?? string.Empty;
+        BrowseState.SetQuery("articles", _query);
+    }
+
+    private void OnTopicsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedTopics = selected;
+        BrowseState.SetFilter("articles.topic", selected);
+    }
+
     // Turns a topic slug (e.g. "sacraments") into a display tag (e.g. "Sacraments").
     private static string? FormatTopic(string topic)
     {
@@ -73,5 +130,34 @@
         }
 
         return char.ToUpperInvariant(topic[0]) + topic[1..];
+    }
+
+    private IReadOnlyList<ArticleSummary> Filtered
+    {
+        get
+        {
+            if (_articles is null)
+            {
+                return [];
+            }
+
+            IEnumerable<ArticleSummary> results = _articles;
+
+            if (_selectedTopics.Count > 0)
+            {
+                results = results.Where(a => _selectedTopics.Contains(FormatTopic(a.Topic) ?? a.Topic));
+            }
+
+            if (!string.IsNullOrWhiteSpace(_query))
+            {
+                var q = _query.Trim();
+                results = results.Where(a =>
+                    a.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || a.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || a.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            return [.. results];
+        }
     }
 }
