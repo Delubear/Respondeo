@@ -64,7 +64,7 @@ public class CredoArticlesTests : TestContext
     {
         var cut = RenderComponent<CredoArticles>();
 
-        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("credo/articles/confession", hrefs);
         Assert.Contains("node/beta", hrefs);
     }
@@ -74,17 +74,17 @@ public class CredoArticlesTests : TestContext
     {
         var cut = RenderComponent<CredoArticles>();
 
-        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.DoesNotContain("node/section", hrefs);
     }
 
     [Fact]
-    public void Surfaces_the_inquiry_topic_as_a_filter()
+    public void Surfaces_the_inquiry_source_as_a_filter()
     {
         var cut = RenderComponent<CredoArticles>();
 
-        var topics = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();
-        Assert.Contains("From Inquiry", topics);
+        var sources = cut.FindAll("button.source-filter__option").Select(o => o.TextContent.Trim()).ToList();
+        Assert.Contains("From Inquiry", sources);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class CredoArticlesTests : TestContext
     {
         var cut = RenderComponent<CredoArticles>();
 
-        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Equal(hrefs.Count, hrefs.Distinct(StringComparer.OrdinalIgnoreCase).Count());
     }
 
@@ -120,7 +120,7 @@ public class CredoArticlesTests : TestContext
             .QuerySelector("input[type=checkbox]")!;
         checkbox.Change(true);
 
-        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("node/beta", hrefs);
         Assert.DoesNotContain("credo/articles/confession", hrefs);
     }
