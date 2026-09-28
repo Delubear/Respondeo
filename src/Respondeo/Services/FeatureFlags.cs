@@ -17,9 +17,21 @@ public sealed class FeatureFlags
     /// <summary>Shows the Summa Theologiae pillar pill in the pillar switcher when enabled.</summary>
     public bool SummaPillar { get; set; } = true;
 
-    /// <summary>Shows the Miracles pillar pill in the pillar switcher when enabled.</summary>
-    public bool MiraclesPillar { get; set; } = true;
+    /// <summary>
+    /// Master switch for the whole Discover Catholicism pillar. When disabled, the pillar and all of its
+    /// sub-areas are hidden regardless of the individual feature flags below (it supersedes them).
+    /// </summary>
+    public bool DiscoverPillar { get; set; } = true;
 
-    /// <summary>Shows the living-faith pillar pill (prayers, devotions, articles) in the pillar switcher when enabled.</summary>
-    public bool LivingFaithPillar { get; set; } = true;
+    /// <summary>Shows the Miracles sub-area within the Discover pillar when enabled.</summary>
+    public bool MiraclesFeature { get; set; } = true;
+
+    /// <summary>Shows the Prayers sub-area within the Discover pillar when enabled.</summary>
+    public bool PrayerFeature { get; set; } = true;
+
+    /// <summary>Shows the Devotions sub-area within the Discover pillar when enabled.</summary>
+    public bool DevotionsFeature { get; set; } = true;
+
+    /// <summary>Shows the Articles sub-area within the Discover pillar when enabled.</summary>
+    public bool ArticlesFeature { get; set; } = true;
 }
