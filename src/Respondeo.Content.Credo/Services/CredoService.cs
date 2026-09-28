@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Credo.Internal;
 
@@ -12,25 +10,26 @@ namespace Respondeo.Content.Credo.Services;
 /// <see cref="CredoParser"/>, and caches the parsed items and derived index in memory for the app's
 /// lifetime. The whole hand-authored catalog is small, so it is loaded once up front.
 /// </summary>
-internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) : ICredoService
+internal sealed class CredoService : ICredoService
 {
     private const string CredoRoot = "_content/Respondeo.Content.Credo/credo";
     private const string ManifestPath = CredoRoot + "/credo-manifest.json";
 
-    private readonly CredoParser _parser = new(html);
-    private readonly SemaphoreSlim _gate = new(1, 1);
+    private readonly CredoParser _parser;
+    private readonly ContentFetcher _fetcher;
+    private readonly AsyncInitCache<Catalog> _catalog = new();
 
-    private Dictionary<string, Prayer>? _prayers;
-    private Dictionary<string, Devotion>? _devotions;
-    private Dictionary<string, Article>? _articles;
-    private CredoIndex? _index;
+    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
+    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
+    // serving stale content across deploys.
+    public CredoService(HttpClient http, IContentHtmlRenderer html)
+    {
+        _parser = new CredoParser(html);
+        _fetcher = new ContentFetcher(http, ContentCachePolicy.Immutable);
+    }
 
     /// <summary>Returns the browse index, loading the catalog once and caching it.</summary>
-    public async Task<CredoIndex> GetIndexAsync()
-    {
-        await EnsureLoadedAsync();
-        return _index!;
-    }
+    public async Task<CredoIndex> GetIndexAsync() => (await Load()).Index;
 
     /// <summary>Returns the full text of a single prayer by id, or null if it does not exist.</summary>
     public async Task<Prayer?> GetPrayerAsync(string id)
@@ -40,8 +39,8 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
             return null;
         }
 
-        await EnsureLoadedAsync();
-        return _prayers!.TryGetValue(id, out var prayer) ? prayer : null;
+        var catalog = await Load();
+        return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer : null;
     }
 
     /// <summary>Returns the full definition of a single devotion by id, or null if it does not exist.</summary>
@@ -52,8 +51,8 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
             return null;
         }
 
-        await EnsureLoadedAsync();
-        return _devotions!.TryGetValue(id, out var devotion) ? devotion : null;
+        var catalog = await Load();
+        return catalog.Devotions.TryGetValue(id, out var devotion) ? devotion : null;
     }
 
     /// <summary>Returns the full content of a single article by id, or null if it does not exist.</summary>
@@ -64,57 +63,47 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
             return null;
         }
 
-        await EnsureLoadedAsync();
-        return _articles!.TryGetValue(id, out var article) ? article : null;
+        var catalog = await Load();
+        return catalog.Articles.TryGetValue(id, out var article) ? article : null;
     }
 
-    private async Task EnsureLoadedAsync()
+    private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
-        if (_index is not null)
+        var manifest = await _fetcher.GetFromJsonAsync<CredoManifest>(ManifestPath) ?? new CredoManifest();
+
+        var prayers = await Task.WhenAll(manifest.Prayers.Select(LoadPrayerAsync));
+        var devotions = await Task.WhenAll(manifest.Devotions.Select(LoadDevotionAsync));
+        var articles = await Task.WhenAll(manifest.Articles.Select(LoadArticleAsync));
+
+        var loadedPrayers = prayers.Where(p => p is not null).Cast<Prayer>().ToList();
+        PairTranslations(loadedPrayers);
+
+        // Every prayer (including Latin) stays addressable by id, but only the primary-language
+        // prayers appear in the browse index so translations are not listed as separate rows.
+        var prayerMap = loadedPrayers.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
+        var prayerSummaries = loadedPrayers
+            .Where(IsPrimaryLanguage)
+            .Select(CredoParser.ToSummary)
+            .ToList();
+
+        var devotionMap = BuildMap(devotions, d => d.Id, out var devotionSummaries, CredoParser.ToSummary);
+        var articleMap = BuildMap(articles, a => a.Id, out var articleSummaries, CredoParser.ToSummary);
+
+        var index = new CredoIndex
         {
-            return;
-        }
+            Prayers = prayerSummaries,
+            Devotions = devotionSummaries,
+            Articles = articleSummaries,
+        };
 
-        await _gate.WaitAsync();
-        try
-        {
-            if (_index is not null)
-            {
-                return;
-            }
+        return new Catalog(prayerMap, devotionMap, articleMap, index);
+    });
 
-            var manifest = await GetFromJsonCachedAsync<CredoManifest>(ManifestPath) ?? new CredoManifest();
-
-            var prayers = await Task.WhenAll(manifest.Prayers.Select(LoadPrayerAsync));
-            var devotions = await Task.WhenAll(manifest.Devotions.Select(LoadDevotionAsync));
-            var articles = await Task.WhenAll(manifest.Articles.Select(LoadArticleAsync));
-
-            var loadedPrayers = prayers.Where(p => p is not null).Cast<Prayer>().ToList();
-            PairTranslations(loadedPrayers);
-
-            // Every prayer (including Latin) stays addressable by id, but only the primary-language
-            // prayers appear in the browse index so translations are not listed as separate rows.
-            _prayers = loadedPrayers.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
-            var prayerSummaries = loadedPrayers
-                .Where(IsPrimaryLanguage)
-                .Select(CredoParser.ToSummary)
-                .ToList();
-
-            _devotions = BuildMap(devotions, d => d.Id, out var devotionSummaries, CredoParser.ToSummary);
-            _articles = BuildMap(articles, a => a.Id, out var articleSummaries, CredoParser.ToSummary);
-
-            _index = new CredoIndex
-            {
-                Prayers = prayerSummaries,
-                Devotions = devotionSummaries,
-                Articles = articleSummaries,
-            };
-        }
-        finally
-        {
-            _gate.Release();
-        }
-    }
+    private sealed record Catalog(
+        Dictionary<string, Prayer> Prayers,
+        Dictionary<string, Devotion> Devotions,
+        Dictionary<string, Article> Articles,
+        CredoIndex Index);
 
     // A prayer is "primary" (browsable) unless it is a Latin translation of another prayer.
     private static bool IsPrimaryLanguage(Prayer prayer) =>
@@ -170,7 +159,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var raw = await GetStringCachedAsync($"{CredoRoot}/prayers/{fileName}");
+            var raw = await _fetcher.GetStringAsync($"{CredoRoot}/prayers/{fileName}");
             return _parser.ParsePrayer(raw);
         }
         catch (HttpRequestException)
@@ -183,7 +172,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var raw = await GetStringCachedAsync($"{CredoRoot}/articles/{fileName}");
+            var raw = await _fetcher.GetStringAsync($"{CredoRoot}/articles/{fileName}");
             return _parser.ParseArticle(raw);
         }
         catch (HttpRequestException)
@@ -196,39 +185,13 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var dto = await GetFromJsonCachedAsync<DevotionDto>($"{CredoRoot}/devotions/{fileName}");
+            var dto = await _fetcher.GetFromJsonAsync<DevotionDto>($"{CredoRoot}/devotions/{fileName}");
             return _parser.ParseDevotion(dto);
         }
         catch (HttpRequestException)
         {
             return null;
         }
-    }
-
-    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
-    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
-    // serving stale content across deploys.
-    private async Task<string> GetStringCachedAsync(string url)
-    {
-        using var response = await SendCachedAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
-    }
-
-    private async Task<T?> GetFromJsonCachedAsync<T>(string url)
-    {
-        using var response = await SendCachedAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<T>();
-    }
-
-    private Task<HttpResponseMessage> SendCachedAsync(string url)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url)
-        {
-            Headers = { CacheControl = new CacheControlHeaderValue { MaxAge = TimeSpan.FromDays(365) } }
-        };
-        return http.SendAsync(request);
     }
 
     private sealed class CredoManifest

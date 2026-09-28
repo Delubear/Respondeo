@@ -1,6 +1,5 @@
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using Respondeo.Content.Abstractions;
+using Respondeo.Content.Miracles.Internal;
 
 namespace Respondeo.Content.Miracles.Services;
 
@@ -11,57 +10,46 @@ namespace Respondeo.Content.Miracles.Services;
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to
 /// <see cref="MiracleParser"/>, and caches the parsed records and derived index in memory for the
 /// app's lifetime. The whole (hand-authored) catalog is small, so it is loaded once up front.
+/// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
-internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) : IMiracleService
+internal sealed class MiracleService : MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>, IMiracleService
 {
     private const string MiraclesRoot = "_content/Respondeo.Content.Miracles/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";
 
-    private readonly MiracleParser _parser = new(html);
-    private readonly SemaphoreSlim _gate = new(1, 1);
-    private Dictionary<string, MiracleRecord>? _records;
-    private MiracleIndex? _index;
-    private MiracleFacetCatalog? _facets;
+    private readonly MiracleParser _parser;
+    private readonly AsyncInitCache<Catalog> _catalog = new();
+    private readonly AsyncInitCache<MiracleFacetCatalog> _facets = new();
+
+    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
+    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
+    // serving stale content across deploys.
+    public MiracleService(HttpClient http, IContentHtmlRenderer html)
+        : base(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()) =>
+        _parser = new MiracleParser(html);
 
     /// <summary>Returns the browse/search index, loading the catalog once and caching it.</summary>
     public async Task<MiracleIndex> GetIndexAsync()
     {
-        await EnsureLoadedAsync();
-        return _index!;
+        var catalog = await _catalog.GetAsync(LoadCatalogAsync);
+        return catalog.Index;
     }
 
     /// <summary>Returns the slug&#8594;label facet catalog, loading and caching it once.</summary>
-    public async Task<MiracleFacetCatalog> GetFacetsAsync()
+    public Task<MiracleFacetCatalog> GetFacetsAsync() => _facets.GetAsync(async () =>
     {
-        if (_facets is not null)
-        {
-            return _facets;
-        }
-
-        await _gate.WaitAsync();
         try
         {
-            if (_facets is not null)
-            {
-                return _facets;
-            }
-
-            var dto = await GetFromJsonCachedAsync<FacetsDto>(FacetsPath);
-            _facets = dto?.ToCatalog() ?? MiracleFacetCatalog.Empty;
-            return _facets;
+            var dto = await Fetcher.GetFromJsonAsync<FacetsDto>(FacetsPath);
+            return dto?.ToCatalog() ?? MiracleFacetCatalog.Empty;
         }
         catch (HttpRequestException)
         {
             // Missing facets file must not break browsing; labels fall back to humanized slugs.
-            _facets = MiracleFacetCatalog.Empty;
-            return _facets;
+            return MiracleFacetCatalog.Empty;
         }
-        finally
-        {
-            _gate.Release();
-        }
-    }
+    });
 
     /// <summary>Returns the full content of a single miracle by id, or null if it does not exist.</summary>
     public async Task<MiracleRecord?> GetByIdAsync(string id)
@@ -71,93 +59,38 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
             return null;
         }
 
-        var records = await EnsureLoadedAsync();
-        return records.TryGetValue(id, out var record) ? record : null;
+        var catalog = await _catalog.GetAsync(LoadCatalogAsync);
+        return catalog.Records.TryGetValue(id, out var record) ? record : null;
     }
 
-    private async Task<Dictionary<string, MiracleRecord>> EnsureLoadedAsync()
-    {
-        if (_records is not null)
-        {
-            return _records;
-        }
+    protected override MiracleRecord Map(MiracleFrontMatter meta, string body, string fileName) =>
+        _parser.Map(meta, body);
 
-        await _gate.WaitAsync();
-        try
+    private async Task<Catalog> LoadCatalogAsync()
+    {
+        var manifest = await Fetcher.GetFromJsonAsync<MiracleManifest>(ManifestPath) ?? new MiracleManifest();
+
+        // Fetch every file concurrently rather than sequentially so the cold load overlaps the
+        // network round trips; results are assembled in manifest order for deterministic index order.
+        var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{MiraclesRoot}/{f}", f)));
+
+        var records = new Dictionary<string, MiracleRecord>(StringComparer.OrdinalIgnoreCase);
+        var entries = new List<MiracleIndexEntry>();
+        foreach (var record in parsed)
         {
-            if (_records is not null)
+            if (record is null)
             {
-                return _records;
+                continue;
             }
 
-            var manifest = await GetFromJsonCachedAsync<MiracleManifest>(ManifestPath) ?? new MiracleManifest();
-
-            // Fetch every file concurrently rather than sequentially so the cold load overlaps the
-            // network round trips; results are assembled in manifest order for deterministic index order.
-            var parsed = await Task.WhenAll(manifest.Files.Select(LoadRecordAsync));
-
-            var records = new Dictionary<string, MiracleRecord>(StringComparer.OrdinalIgnoreCase);
-            var entries = new List<MiracleIndexEntry>();
-            foreach (var record in parsed)
-            {
-                if (record is null)
-                {
-                    continue;
-                }
-
-                records[record.Id] = record;
-                entries.Add(MiracleParser.ToIndexEntry(record));
-            }
-
-            _records = records;
-            _index = new MiracleIndex { Entries = entries };
-            return _records;
+            records[record.Id] = record;
+            entries.Add(MiracleParser.ToIndexEntry(record));
         }
-        finally
-        {
-            _gate.Release();
-        }
+
+        return new Catalog(records, new MiracleIndex { Entries = entries });
     }
 
-    private async Task<MiracleRecord?> LoadRecordAsync(string fileName)
-    {
-        try
-        {
-            var raw = await GetStringCachedAsync($"{MiraclesRoot}/{fileName}");
-            return _parser.Parse(raw);
-        }
-        catch (HttpRequestException)
-        {
-            // A single missing or unreachable file must not take down the whole catalog; skip it.
-            return null;
-        }
-    }
-
-    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
-    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
-    // serving stale content across deploys.
-    private async Task<string> GetStringCachedAsync(string url)
-    {
-        using var response = await SendCachedAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
-    }
-
-    private async Task<T?> GetFromJsonCachedAsync<T>(string url)
-    {
-        using var response = await SendCachedAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<T>();
-    }
-
-    private Task<HttpResponseMessage> SendCachedAsync(string url)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url)
-        {
-            Headers = { CacheControl = new CacheControlHeaderValue { MaxAge = TimeSpan.FromDays(365) } }
-        };
-        return http.SendAsync(request);
-    }
+    private sealed record Catalog(Dictionary<string, MiracleRecord> Records, MiracleIndex Index);
 
     private sealed class MiracleManifest
     {

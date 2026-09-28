@@ -1,45 +1,33 @@
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Credo.Internal;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Respondeo.Content.Credo.Services;
 
 /// <summary>
 /// Turns raw Credo content files into the typed public models. Prayers and articles are Markdown with
 /// a "---" delimited YAML front-matter block; devotions arrive as already-deserialized JSON DTOs whose
-/// Markdown intro / reflections are rendered here. HTML rendering is delegated to the injected
-/// <see cref="IContentHtmlRenderer"/>; the parser performs no I/O so it can be tested in isolation.
+/// Markdown intro / reflections are rendered here. Front-matter reading is delegated to the shared
+/// <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>;
+/// the parser performs no I/O so it can be tested in isolation.
 /// </summary>
 internal sealed class CredoParser
 {
     private readonly IContentHtmlRenderer _html;
+    private readonly FrontMatterReader _reader = new();
 
     public CredoParser(IContentHtmlRenderer html) => _html = html;
-
-    private readonly IDeserializer _yaml = new DeserializerBuilder()
-        .WithNamingConvention(CamelCaseNamingConvention.Instance)
-        .IgnoreUnmatchedProperties()
-        .Build();
 
     /// <summary>Parses a prayer Markdown file, or returns null when it lacks valid front-matter / an id.</summary>
     public Prayer? ParsePrayer(string raw)
     {
-        var (frontMatter, body) = FrontMatter.Split(raw);
-        if (frontMatter is null)
-        {
-            return null;
-        }
-
-        var meta = _yaml.Deserialize<PrayerFrontMatter>(frontMatter);
-        if (meta is null || string.IsNullOrWhiteSpace(meta.Id))
+        if (!_reader.TryRead<PrayerFrontMatter>(raw, out var meta, out var body))
         {
             return null;
         }
 
         return new Prayer
         {
-            Id = meta.Id,
+            Id = meta!.Id,
             Title = meta.Title,
             Summary = meta.Summary,
             Category = NormalizeSlug(meta.Category, "other"),
@@ -54,21 +42,14 @@ internal sealed class CredoParser
     /// <summary>Parses an article Markdown file, or returns null when it lacks valid front-matter / an id.</summary>
     public Article? ParseArticle(string raw)
     {
-        var (frontMatter, body) = FrontMatter.Split(raw);
-        if (frontMatter is null)
-        {
-            return null;
-        }
-
-        var meta = _yaml.Deserialize<ArticleFrontMatter>(frontMatter);
-        if (meta is null || string.IsNullOrWhiteSpace(meta.Id))
+        if (!_reader.TryRead<ArticleFrontMatter>(raw, out var meta, out var body))
         {
             return null;
         }
 
         return new Article
         {
-            Id = meta.Id,
+            Id = meta!.Id,
             Title = meta.Title,
             Summary = meta.Summary,
             Topic = NormalizeSlug(meta.Topic, "general"),
@@ -148,50 +129,8 @@ internal sealed class CredoParser
     private static string NormalizeSlug(string? slug, string fallback) =>
         string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
-    // Split the Markdown body into sections on each top-level "## " heading. Content before the first
-    // heading is an untitled lead-in section with an empty heading.
-    private IReadOnlyList<ArticleSection> SplitSections(string body)
-    {
-        var lines = body.Replace("\r\n", "\n").Split('\n');
-        var sections = new List<ArticleSection>();
-
-        var currentHeading = string.Empty;
-        var buffer = new List<string>();
-
-        void Flush()
-        {
-            if (buffer.Count == 0)
-            {
-                return;
-            }
-
-            var markdown = string.Join('\n', buffer).Trim();
-            buffer.Clear();
-            if (markdown.Length == 0)
-            {
-                return;
-            }
-
-            sections.Add(new ArticleSection
-            {
-                Heading = currentHeading,
-                Html = _html.ToHtml(markdown),
-            });
-        }
-
-        foreach (var line in lines)
-        {
-            if (line.StartsWith("## ", StringComparison.Ordinal))
-            {
-                Flush();
-                currentHeading = line[3..].Trim();
-                continue;
-            }
-
-            buffer.Add(line);
-        }
-
-        Flush();
-        return sections;
-    }
+    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's
+    // Markdown to HTML. Content before the first heading is an untitled lead-in section.
+    private IReadOnlyList<ArticleSection> SplitSections(string body) =>
+        [.. MarkdownSections.Split(body).Select(s => new ArticleSection { Heading = s.Heading, Html = _html.ToHtml(s.Markdown) })];
 }

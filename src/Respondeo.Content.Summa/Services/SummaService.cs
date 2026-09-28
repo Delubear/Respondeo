@@ -1,5 +1,4 @@
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using Respondeo.Content.Abstractions;
 
 namespace Respondeo.Content.Summa.Services;
 
@@ -8,34 +7,26 @@ namespace Respondeo.Content.Summa.Services;
 /// The lightweight browse/search index is fetched once and cached;
 /// each question's full content is fetched on demand and cached individually so the initial load stays small even though the whole corpus is bundled.
 /// </summary>
-internal sealed class SummaService(HttpClient http) : ISummaService
+internal sealed class SummaService : ISummaService
 {
     private const string SummaRoot = "_content/Respondeo.Content.Summa/summa";
     private const string IndexPath = SummaRoot + "/summa-index.json";
 
+    private readonly ContentFetcher _fetcher;
+    private readonly AsyncInitCache<SummaIndex> _index = new();
     private readonly SemaphoreSlim _gate = new(1, 1);
     private readonly Dictionary<string, SummaQuestionContent> _questions = new(StringComparer.OrdinalIgnoreCase);
-    private SummaIndex? _index;
+
+    // The bundled Summa corpus is large but immutable for the lifetime of a deploy, so it is cached
+    // aggressively: each fetched item is held in-memory for the session, and the HTTP request opts into
+    // the browser cache so repeat visits reuse the stored JSON. The static assets are fingerprinted per
+    // deploy, so a new build produces new URLs and there is no risk of serving stale content.
+    public SummaService(HttpClient http) =>
+        _fetcher = new ContentFetcher(http, ContentCachePolicy.Immutable);
 
     /// <summary>Returns the browse/search index, loading it once and caching it.</summary>
-    public async Task<SummaIndex> GetIndexAsync()
-    {
-        if (_index is not null)
-        {
-            return _index;
-        }
-
-        await _gate.WaitAsync();
-        try
-        {
-            _index ??= await GetFromJsonCachedAsync<SummaIndex>(IndexPath) ?? new SummaIndex();
-            return _index;
-        }
-        finally
-        {
-            _gate.Release();
-        }
-    }
+    public Task<SummaIndex> GetIndexAsync() =>
+        _index.GetAsync(async () => await _fetcher.GetFromJsonAsync<SummaIndex>(IndexPath) ?? new SummaIndex());
 
     /// <summary>Returns the full content of a single question by id, or null if it does not exist.</summary>
     public async Task<SummaQuestionContent?> GetQuestionAsync(string id)
@@ -60,7 +51,7 @@ internal sealed class SummaService(HttpClient http) : ISummaService
 
             try
             {
-                var content = await GetFromJsonCachedAsync<SummaQuestionContent>($"{SummaRoot}/{PartFolder(id)}/{id}.json");
+                var content = await _fetcher.GetFromJsonAsync<SummaQuestionContent>($"{SummaRoot}/{PartFolder(id)}/{id}.json");
                 if (content is not null)
                 {
                     _questions[id] = content;
@@ -78,29 +69,6 @@ internal sealed class SummaService(HttpClient http) : ISummaService
         {
             _gate.Release();
         }
-    }
-
-    // The bundled Summa corpus is large but immutable for the lifetime of a deploy, so it is cached aggressively:
-    // each fetched item is held in-memory for the session (above),
-    // and the HTTP request opts into the browser cache so repeat visits and reloads reuse the stored JSON instead of re-downloading it.
-    // The static assets are fingerprinted per deploy, so a new build produces new URLs and there is no risk of serving stale content.
-    private async Task<T?> GetFromJsonCachedAsync<T>(string url)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url)
-        {
-            Headers =
-            {
-                CacheControl = new CacheControlHeaderValue
-                {
-                    // Prefer a stored response and treat it as fresh for up to a year.
-                    MaxAge = TimeSpan.FromDays(365),
-                }
-            }
-        };
-
-        using var response = await http.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<T>();
     }
 
     // Question content is split into one subfolder per part.

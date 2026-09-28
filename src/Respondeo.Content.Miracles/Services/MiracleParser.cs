@@ -1,62 +1,48 @@
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Miracles.Internal;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Respondeo.Content.Miracles.Services;
 
 /// <summary>
 /// Turns a raw miracle Markdown file (with a "---" delimited YAML front-matter block) into the typed
 /// <see cref="MiracleRecord"/> and its lightweight <see cref="MiracleIndexEntry"/> projection.
-/// Owns the YAML deserializer; HTML rendering is delegated to the injected <see cref="IContentHtmlRenderer"/>
-/// so the Markdown engine stays behind an abstraction. Performs no I/O so it can be tested in isolation.
-/// The body is split into titled sections on top-level "## " headings.
+/// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the
+/// injected <see cref="IContentHtmlRenderer"/> so the Markdown engine stays behind an abstraction. Performs no
+/// I/O so it can be tested in isolation. The body is split into titled sections on top-level "## " headings.
 /// </summary>
 internal sealed class MiracleParser
 {
     private readonly IContentHtmlRenderer _html;
+    private readonly FrontMatterReader _reader = new();
 
     public MiracleParser(IContentHtmlRenderer html) => _html = html;
-
-    private readonly IDeserializer _yaml = new DeserializerBuilder()
-        .WithNamingConvention(CamelCaseNamingConvention.Instance)
-        .IgnoreUnmatchedProperties()
-        .Build();
 
     /// <summary>
     /// Parses raw file content into a miracle record, or returns null when there is no valid
     /// front-matter block or the front-matter lacks an id.
     /// </summary>
-    public MiracleRecord? Parse(string raw)
+    public MiracleRecord? Parse(string raw) =>
+        _reader.TryRead<MiracleFrontMatter>(raw, out var meta, out var body) ? Map(meta!, body) : null;
+
+    /// <summary>
+    /// Maps an already-parsed front-matter block and body onto a <see cref="MiracleRecord"/>. Shared by
+    /// <see cref="Parse"/> and the content loader so both produce identical records from the same input.
+    /// </summary>
+    public MiracleRecord Map(MiracleFrontMatter meta, string body) => new()
     {
-        var (frontMatter, body) = FrontMatter.Split(raw);
-        if (frontMatter is null)
-        {
-            return null;
-        }
-
-        var meta = _yaml.Deserialize<MiracleFrontMatter>(frontMatter);
-        if (meta is null || string.IsNullOrWhiteSpace(meta.Id))
-        {
-            return null;
-        }
-
-        return new MiracleRecord
-        {
-            Id = meta.Id,
-            Title = meta.Title,
-            Summary = meta.Summary,
-            Types = NormalizeTypes(meta.Types),
-            Approval = NormalizeSlug(meta.Approval, "historical"),
-            Region = NormalizeSlug(meta.Region, "unknown"),
-            Country = meta.Country,
-            Year = meta.Year,
-            FeastDay = meta.FeastDay,
-            Tags = meta.Tags,
-            Sections = SplitSections(body),
-            Sources = [.. meta.Sources.Select(s => new MiracleSource { Label = s.Label, Url = s.Url })],
-        };
-    }
+        Id = meta.Id,
+        Title = meta.Title,
+        Summary = meta.Summary,
+        Types = NormalizeTypes(meta.Types),
+        Approval = NormalizeSlug(meta.Approval, "historical"),
+        Region = NormalizeSlug(meta.Region, "unknown"),
+        Country = meta.Country,
+        Year = meta.Year,
+        FeastDay = meta.FeastDay,
+        Tags = meta.Tags,
+        Sections = SplitSections(body),
+        Sources = [.. meta.Sources.Select(s => new MiracleSource { Label = s.Label, Url = s.Url })],
+    };
 
     /// <summary>Projects a full record down to its lightweight index entry.</summary>
     public static MiracleIndexEntry ToIndexEntry(MiracleRecord record) => new()
@@ -103,51 +89,8 @@ internal sealed class MiracleParser
         return result.Count > 0 ? result : ["other"];
     }
 
-
-    // Split the Markdown body into sections on each top-level "## " heading. Content before the first
-    // heading (if any) is rendered as an untitled lead-in section with an empty heading.
-    private IReadOnlyList<MiracleSection> SplitSections(string body)
-    {
-        var lines = body.Replace("\r\n", "\n").Split('\n');
-        var sections = new List<MiracleSection>();
-
-        var currentHeading = string.Empty;
-        var buffer = new List<string>();
-
-        void Flush()
-        {
-            if (buffer.Count == 0)
-            {
-                return;
-            }
-
-            var markdown = string.Join('\n', buffer).Trim();
-            buffer.Clear();
-            if (markdown.Length == 0)
-            {
-                return;
-            }
-
-            sections.Add(new MiracleSection
-            {
-                Heading = currentHeading,
-                Html = _html.ToHtml(markdown),
-            });
-        }
-
-        foreach (var line in lines)
-        {
-            if (line.StartsWith("## ", StringComparison.Ordinal))
-            {
-                Flush();
-                currentHeading = line[3..].Trim();
-                continue;
-            }
-
-            buffer.Add(line);
-        }
-
-        Flush();
-        return sections;
-    }
+    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's
+    // Markdown to HTML. Content before the first heading becomes an untitled lead-in section.
+    private IReadOnlyList<MiracleSection> SplitSections(string body) =>
+        [.. MarkdownSections.Split(body).Select(s => new MiracleSection { Heading = s.Heading, Html = _html.ToHtml(s.Markdown) })];
 }

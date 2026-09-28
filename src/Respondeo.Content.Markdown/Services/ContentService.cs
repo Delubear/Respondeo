@@ -1,6 +1,5 @@
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using Respondeo.Content.Abstractions;
+using Respondeo.Content.Markdown.Internal;
 
 namespace Respondeo.Content.Markdown.Services;
 
@@ -8,14 +7,22 @@ namespace Respondeo.Content.Markdown.Services;
 /// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content.Markdown library.
 /// The files live in that library's <c>wwwroot/content/</c> and are served by Blazor under the <c>_content/Respondeo.Content.Markdown/</c> static-web-asset path.
 /// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ContentParser"/>, and caches the parsed graph in memory for the app's lifetime.
+/// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
-internal sealed class ContentService(HttpClient http, ContentParser parser) : IContentService
+internal sealed class ContentService : MarkdownContentLoader<ContentFrontMatter, ContentNode>, IContentService
 {
     private const string ContentRoot = "_content/Respondeo.Content.Markdown/content";
     private const string ManifestPath = "_content/Respondeo.Content.Markdown/content/manifest.json";
 
-    private readonly SemaphoreSlim _gate = new(1, 1);
-    private Dictionary<string, ContentNode>? _nodes;
+    private readonly ContentParser _parser;
+    private readonly AsyncInitCache<Dictionary<string, ContentNode>> _nodes = new();
+
+    // Content is fetched at runtime and served as ordinary static files, so on hosts where we cannot
+    // set server cache headers (e.g. GitHub Pages) requests must revalidate with the origin so users
+    // never run against an outdated manifest or node.
+    public ContentService(HttpClient http, ContentParser parser)
+        : base(new ContentFetcher(http, ContentCachePolicy.Revalidate), new FrontMatterReader()) =>
+        _parser = parser;
 
     /// <summary>Returns every loaded node, loading the content set if needed.</summary>
     public async Task<IReadOnlyCollection<ContentNode>> GetAllAsync()
@@ -31,61 +38,29 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
         return nodes.TryGetValue(id, out var node) ? node : null;
     }
 
-    private async Task<Dictionary<string, ContentNode>> EnsureLoadedAsync()
+    protected override ContentNode Map(ContentFrontMatter meta, string body, string fileName) =>
+        _parser.Map(meta, body, StageFromFileName(fileName));
+
+    private Task<Dictionary<string, ContentNode>> EnsureLoadedAsync() => _nodes.GetAsync(async () =>
     {
-        if (_nodes is not null)
-        {
-            return _nodes;
-        }
+        var manifest = await Fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
-        await _gate.WaitAsync();
-        try
+        // Fetch every node concurrently rather than sequentially: on a cold load the content set is
+        // dozens of small files, and awaiting them one at a time serialises the network round trips
+        // into a noticeable first-load delay. Results are assembled in manifest order for determinism.
+        var nodes = await LoadFilesAsync(manifest.Files.Select(f => ($"{ContentRoot}/{f}", f)));
+
+        var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
+        foreach (var node in nodes)
         {
-            if (_nodes is not null)
+            if (node is not null)
             {
-                return _nodes;
+                loaded[node.Id] = node;
             }
-
-            var manifest = await GetFromJsonNoCacheAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-            // Fetch every node concurrently rather than sequentially: on a cold load the content set
-            // is dozens of small files, and awaiting them one at a time serialises the network round
-            // trips into a noticeable first-load delay. Task.WhenAll lets them overlap; results are
-            // then assembled in manifest order so iteration stays deterministic.
-            var nodes = await Task.WhenAll(manifest.Files.Select(LoadNodeAsync));
-
-            var loaded = new Dictionary<string, ContentNode>(StringComparer.OrdinalIgnoreCase);
-            foreach (var node in nodes)
-            {
-                if (node is not null)
-                {
-                    loaded[node.Id] = node;
-                }
-            }
-
-            _nodes = loaded;
-            return _nodes;
         }
-        finally
-        {
-            _gate.Release();
-        }
-    }
 
-    private async Task<ContentNode?> LoadNodeAsync(string fileName)
-    {
-        try
-        {
-            var raw = await GetStringNoCacheAsync($"{ContentRoot}/{fileName}");
-            return parser.Parse(raw, StageFromFileName(fileName));
-        }
-        catch (HttpRequestException)
-        {
-            // A single missing or unreachable file (e.g. a stale static-web-asset manifest returning 404) must not take down the entire content set.
-            // Skip it and keep the rest of the site working; the absent node simply resolves to "not found".
-            return null;
-        }
-    }
+        return loaded;
+    });
 
     // A node's stage is the content sub-folder it lives in (e.g. "why-god/aquinas-five-ways.md"
     // belongs to the "why-god" stage). Files at the content root belong to no stage. Deriving it
@@ -96,33 +71,6 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : IC
         var normalized = fileName.Replace('\\', '/');
         var slash = normalized.IndexOf('/');
         return slash > 0 ? normalized[..slash] : null;
-    }
-
-    // Content is fetched at runtime and served as ordinary static files, so the browser/CDN would
-    // otherwise be free to hand back a stale copy after a deploy. On hosts where we cannot set
-    // server cache headers (e.g. GitHub Pages), sending a no-cache request directive forces the
-    // browser to revalidate with the origin so users never run against an outdated manifest or node.
-    private async Task<string> GetStringNoCacheAsync(string url)
-    {
-        using var response = await SendNoCacheAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
-    }
-
-    private async Task<T?> GetFromJsonNoCacheAsync<T>(string url)
-    {
-        using var response = await SendNoCacheAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<T>();
-    }
-
-    private Task<HttpResponseMessage> SendNoCacheAsync(string url)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url)
-        {
-            Headers = { CacheControl = new CacheControlHeaderValue { NoCache = true } }
-        };
-        return http.SendAsync(request);
     }
 
     private sealed class ContentManifest

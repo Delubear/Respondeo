@@ -1,65 +1,45 @@
 using Respondeo.Content.Abstractions;
 using Respondeo.Content.Markdown.Internal;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Respondeo.Content.Markdown.Services;
 
 /// <summary>
 /// Turns a raw Markdown file (with a "---" delimited YAML front-matter block) into a <see cref="ContentNode"/>.
-/// Owns the YAML deserializer; HTML rendering is delegated to the injected <see cref="IContentHtmlRenderer"/> so the
-/// Markdown engine stays behind an abstraction. Performs no I/O so it can be tested in isolation.
+/// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the
+/// injected <see cref="IContentHtmlRenderer"/> so the Markdown engine stays behind an abstraction. Performs no
+/// I/O so it can be tested in isolation.
 /// </summary>
 internal sealed class ContentParser
 {
     private readonly IContentHtmlRenderer _html;
+    private readonly FrontMatterReader _reader = new();
 
     public ContentParser(IContentHtmlRenderer html) => _html = html;
-
-    private readonly IDeserializer _yaml = new DeserializerBuilder()
-        .WithNamingConvention(CamelCaseNamingConvention.Instance)
-        .IgnoreUnmatchedProperties()
-        .Build();
 
     /// <summary>
     /// Parses raw file content into a node, or returns null when there is no valid front-matter
     /// block or the front-matter lacks an id. The <paramref name="stage"/> is supplied by the
     /// loader (derived from the file's content folder) rather than authored in front matter.
     /// </summary>
-    public ContentNode? Parse(string raw, string? stage = null)
-    {
-        var (frontMatter, body) = FrontMatter.Split(raw);
-        if (frontMatter is null)
-        {
-            return null;
-        }
-
-        var meta = _yaml.Deserialize<ContentFrontMatter>(frontMatter);
-        if (meta is null || string.IsNullOrWhiteSpace(meta.Id))
-        {
-            return null;
-        }
-
-        var html = _html.ToHtml(body);
-        return new ContentNode
-        {
-            Id = meta.Id,
-            Title = meta.Title,
-            Summary = meta.Summary,
-            BodyHtml = html,
-            Tags = meta.Tags,
-            Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
-            Sections = meta.Sections,
-            NextStage = meta.NextStage is null
-                ? null
-                : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt, Icon = meta.NextStage.Icon },
-            Stage = stage,
-        };
-    }
+    public ContentNode? Parse(string raw, string? stage = null) =>
+        _reader.TryRead<ContentFrontMatter>(raw, out var meta, out var body) ? Map(meta!, body, stage) : null;
 
     /// <summary>
-    /// Splits a "---" delimited YAML front-matter block from the Markdown body.
-    /// Returns (null, raw) when no front-matter block is present.
+    /// Maps an already-parsed front-matter block and body onto a <see cref="ContentNode"/>. Shared by
+    /// <see cref="Parse"/> and the content loader so both produce identical nodes from the same input.
     /// </summary>
-    internal static (string? FrontMatter, string Body) SplitFrontMatter(string raw) => FrontMatter.Split(raw);
+    public ContentNode Map(ContentFrontMatter meta, string body, string? stage) => new()
+    {
+        Id = meta.Id,
+        Title = meta.Title,
+        Summary = meta.Summary,
+        BodyHtml = _html.ToHtml(body),
+        Tags = meta.Tags,
+        Branches = [.. meta.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
+        Sections = meta.Sections,
+        NextStage = meta.NextStage is null
+            ? null
+            : new StageLink { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt, Icon = meta.NextStage.Icon },
+        Stage = stage,
+    };
 }
