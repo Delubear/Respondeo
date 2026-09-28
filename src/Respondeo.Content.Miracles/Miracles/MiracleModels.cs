@@ -1,9 +1,8 @@
 namespace Respondeo.Content.Miracles;
 
 /// <summary>
-/// The lightweight browse/search index for the whole miracles catalog: every miracle's typed facets
-/// and summary, but without the heavy rendered article bodies. Loaded once so the catalog can be
-/// filtered by facet and searched by title/summary/tags with a single pass.
+/// The lightweight browse/search index for the whole miracles catalog: every miracle's typed facets and summary, but without the heavy rendered article bodies.
+/// Loaded once so the catalog can be filtered by facet and searched by title/summary/tags with a single pass.
 /// </summary>
 public sealed class MiracleIndex
 {
@@ -12,8 +11,7 @@ public sealed class MiracleIndex
 }
 
 /// <summary>
-/// A single miracle as it appears in the browse index: enough to render a card and apply every facet
-/// filter, without fetching the full body.
+/// A single miracle as it appears in the browse index: enough to render a card and apply every facet filter, without fetching the full body.
 /// </summary>
 public sealed class MiracleIndexEntry
 {
@@ -82,8 +80,8 @@ public sealed class MiracleRecord
     public IReadOnlyList<string> Tags { get; init; } = [];
 
     /// <summary>
-    /// The prose body, split into titled sections (Overview, History, Evidence, Church statement, etc.),
-    /// in author order. Each section's HTML is rendered from the Markdown body.
+    /// The prose body, split into titled sections (Overview, History, Evidence, Church statement, etc.), in author order.
+    /// Each section's HTML is rendered from the Markdown body.
     /// </summary>
     public IReadOnlyList<MiracleSection> Sections { get; init; } = [];
 

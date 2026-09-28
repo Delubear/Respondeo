@@ -4,30 +4,22 @@ using Respondeo.Content.Miracles.Internal;
 namespace Respondeo.Content.Miracles.Services;
 
 /// <summary>
-/// Loads the bundled catalog of Catholic miracles from static Markdown files shipped by the
-/// Respondeo.Content.Miracles library, served under the
-/// <c>_content/Respondeo.Content.Miracles/</c> static-web-asset path.
-/// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to
-/// <see cref="MiracleParser"/>, and caches the parsed records and derived index in memory for the
-/// app's lifetime. The whole (hand-authored) catalog is small, so it is loaded once up front.
+/// Loads the bundled catalog of Catholic miracles from static Markdown files shipped by the Respondeo.Content.Miracles library,
+/// served under the <c>_content/Respondeo.Content.Miracles/</c> static-web-asset path.
+/// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="MiracleParser"/>,
+/// and caches the parsed records and derived index in memory for the app's lifetime. The whole (hand-authored) catalog is small, so it is loaded once up front.
 /// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
-internal sealed class MiracleService : MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>, IMiracleService
+internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) :
+    MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
     private const string MiraclesRoot = "_content/Respondeo.Content.Miracles/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";
 
-    private readonly MiracleParser _parser;
+    private readonly MiracleParser _parser = new(html);
     private readonly AsyncInitCache<Catalog> _catalog = new();
     private readonly AsyncInitCache<MiracleFacetCatalog> _facets = new();
-
-    // The bundled catalog is immutable for the lifetime of a deploy and the static assets are
-    // fingerprinted per build, so requests opt into the browser cache for a year with no risk of
-    // serving stale content across deploys.
-    public MiracleService(HttpClient http, IContentHtmlRenderer html)
-        : base(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()) =>
-        _parser = new MiracleParser(html);
 
     /// <summary>Returns the browse/search index, loading the catalog once and caching it.</summary>
     public async Task<MiracleIndex> GetIndexAsync()
@@ -63,15 +55,14 @@ internal sealed class MiracleService : MarkdownContentLoader<MiracleFrontMatter,
         return catalog.Records.TryGetValue(id, out var record) ? record : null;
     }
 
-    protected override MiracleRecord Map(MiracleFrontMatter meta, string body, string fileName) =>
-        _parser.Map(meta, body);
+    protected override MiracleRecord Map(MiracleFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
 
     private async Task<Catalog> LoadCatalogAsync()
     {
         var manifest = await Fetcher.GetFromJsonAsync<MiracleManifest>(ManifestPath) ?? new MiracleManifest();
 
-        // Fetch every file concurrently rather than sequentially so the cold load overlaps the
-        // network round trips; results are assembled in manifest order for deterministic index order.
+        // Fetch every file concurrently rather than sequentially so the cold load overlaps the network round trips;
+        // results are assembled in manifest order for deterministic index order.
         var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{MiraclesRoot}/{f}", f)));
 
         var records = new Dictionary<string, MiracleRecord>(StringComparer.OrdinalIgnoreCase);

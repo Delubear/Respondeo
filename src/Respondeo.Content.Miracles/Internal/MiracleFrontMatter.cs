@@ -5,8 +5,7 @@ namespace Respondeo.Content.Miracles.Internal;
 
 /// <summary>
 /// The structured metadata parsed from a miracle file's YAML front-matter block.
-/// This is an internal serialization DTO; the parser maps it onto the public typed models so YAML
-/// concerns never leak past the boundary.
+/// This is an internal serialization DTO; the parser maps it onto the public typed models so YAML concerns never leak past the boundary.
 /// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
 internal sealed class MiracleFrontMatter : ContentFrontMatterBase

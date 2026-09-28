@@ -3,8 +3,7 @@ namespace Respondeo.Content.Miracles;
 /// <summary>
 /// The public contract for reading the bundled catalog of Catholic miracles.
 /// Implementations own loading, parsing, and caching; consumers depend only on this surface.
-/// The lightweight index is loaded once for browsing/filtering/search, while a single miracle's full
-/// content is fetched on demand.
+/// The lightweight index is loaded once for browsing/filtering/search, while a single miracle's full content is fetched on demand.
 /// </summary>
 public interface IMiracleService
 {
@@ -12,8 +11,8 @@ public interface IMiracleService
     Task<MiracleIndex> GetIndexAsync();
 
     /// <summary>
-    /// Returns the slug&#8594;label catalog for the browse facets (category, approval, region), loaded from
-    /// the bundled <c>facets.json</c> content file so labels stay data-driven.
+    /// Returns the slug&#8594;label catalog for the browse facets (category, approval, region),
+    /// loaded from the bundled <c>facets.json</c> content file so labels stay data-driven.
     /// </summary>
     Task<MiracleFacetCatalog> GetFacetsAsync();
 
