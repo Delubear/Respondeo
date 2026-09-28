@@ -50,6 +50,7 @@
                     <h2 class="credo__sidebar-title">Kind</h2>
                     <TopicFilter Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
                 }
+                <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
             </aside>
 
             <div class="credo__results">
@@ -143,6 +144,12 @@
     {
         _selectedKinds = selected;
         BrowseState.SetFilter("devotions.kind", selected);
+    }
+
+    private void ClearFilters()
+    {
+        _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        BrowseState.SetFilter("devotions.kind", _selectedKinds);
     }
 
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").

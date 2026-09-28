@@ -64,6 +64,7 @@
                     <h2 class="credo__sidebar-title">Tags</h2>
                     <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
+                <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
             <div class="credo__results">
@@ -219,6 +220,16 @@
     {
         _selectedTags = selected;
         BrowseState.SetFilter("articles.tag", selected);
+    }
+
+    private bool HasActiveFilters => _source != SourceAll || _selectedTags.Count > 0;
+
+    private void ClearFilters()
+    {
+        _source = SourceAll;
+        _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        BrowseState.SetFilter("articles.source", new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+        BrowseState.SetFilter("articles.tag", _selectedTags);
     }
 
     // Display-only pill for a Credo article: capitalizes the topic slug, or shows nothing for the

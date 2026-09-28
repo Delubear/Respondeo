@@ -535,6 +535,11 @@ h1, h2, h3 {
     font-style: italic;
 }
 
+/* Show the pointer (hand) cursor on the native "clear search" X across all search boxes. */
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
 /* Credo results toolbar \u2014 result count and a sort control, mirroring the Miracles list */
 .credo__toolbar {
     display: flex;
@@ -588,6 +593,22 @@ h1, h2, h3 {
 
 .credo__sidebar-title:first-child {
     margin-top: 0;
+}
+
+/* Clear-all-filters button, shared across the browse sidebars (Miracles and the Credo lists). */
+.browse-clear {
+    align-self: flex-start;
+    margin-top: 1.25rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.4rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+.browse-clear:hover {
+    background: var(--parchment-hover);
 }
 
 /* Source facet \u2014 a small segmented control (All / Credo / Inquiry) for the articles browse. */

@@ -61,10 +61,7 @@
                                  DisplayLabel="_facets.Region" />
                 </div>
 
-                @if (Browse.HasActiveFilters)
-                {
-                    <button type="button" class="miracles__clear" @onclick="ClearFilters">Clear all filters</button>
-                }
+                <ClearFiltersButton Active="Browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
             <div class="miracles__results">

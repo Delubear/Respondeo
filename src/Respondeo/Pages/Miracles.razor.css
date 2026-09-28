@@ -98,20 +98,6 @@
     color: var(--ink-soft);
 }
 
-.miracles__clear {
-    align-self: flex-start;
-    padding: 0.4rem 0.7rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.4rem;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-}
-
-.miracles__clear:hover {
-    background: var(--parchment-hover);
-}
-
 .miracles__results {
     display: flex;
     flex-direction: column;

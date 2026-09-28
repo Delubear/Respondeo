@@ -1,0 +1,18 @@
+@* Sidebar-level "clear all filters" action. Renders only when there is something to clear, so
+   pages can drop it in unconditionally and let it decide its own visibility. *@
+
+@if (Active)
+{
+    <button type="button" class="browse-clear" @onclick="OnClear">@Text</button>
+}
+
+@code {
+    /// <summary>Whether any filter is currently active; the button hides itself when false.</summary>
+    [Parameter, EditorRequired] public bool Active { get; set; }
+
+    /// <summary>Invoked when the visitor clears the filters.</summary>
+    [Parameter, EditorRequired] public EventCallback OnClear { get; set; }
+
+    /// <summary>Button caption.</summary>
+    [Parameter] public string Text { get; set; } = "Clear all filters";
+}
