@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Generic base for a content service that loads a set of Markdown files, each carrying a "---"

@@ -1,5 +1,4 @@
-using Respondeo.Content.Abstractions;
-using Respondeo.Content.Rendering;
+using Respondeo.Content.Shared;
 
 namespace Respondeo.UnitTests.TestSupport;
 

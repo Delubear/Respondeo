@@ -1,7 +1,7 @@
 using Markdig;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Rendering;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Markdig-backed implementation of <see cref="IContentHtmlRenderer"/>. Owns the pipeline configuration

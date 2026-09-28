@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\Respondeo.Content.Abstractions\Respondeo.Content.Abstractions.csproj" />
+	<ProjectReference Include="..\Respondeo.Content.Shared\Respondeo.Content.Shared.csproj" />
   </ItemGroup>
 
 </Project>

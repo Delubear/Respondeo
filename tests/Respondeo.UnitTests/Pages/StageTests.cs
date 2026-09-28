@@ -2,7 +2,7 @@ using System.Net;
 using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Pages;

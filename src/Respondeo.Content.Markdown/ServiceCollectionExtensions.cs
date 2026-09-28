@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Markdown.Services;
 
 namespace Respondeo.Content.Markdown;

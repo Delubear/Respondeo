@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Expands the neutral Summa placeholder tokens emitted by the importer (cross-references and

@@ -22,8 +22,7 @@
     <Project Path="tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj" />
     <Project Path="tools/Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />
   </Folder>
-  <Project Path="src/Respondeo.Content.Abstractions/Respondeo.Content.Abstractions.csproj" />
-  <Project Path="src/Respondeo.Content.Rendering/Respondeo.Content.Rendering.csproj" />
+  <Project Path="src/Respondeo.Content.Shared/Respondeo.Content.Shared.csproj" />
   <Project Path="src/Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
   <Folder Name="/Tests/">
     <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />

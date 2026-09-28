@@ -1,4 +1,4 @@
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Miracles.Internal;
 
 namespace Respondeo.Content.Miracles.Services;

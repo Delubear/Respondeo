@@ -1,5 +1,5 @@
 using Markdig;
-using Respondeo.Content.Rendering;
+using Respondeo.Content.Shared;
 
 namespace Respondeo.UnitTests.Services;
 

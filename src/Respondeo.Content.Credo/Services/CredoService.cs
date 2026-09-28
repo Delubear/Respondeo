@@ -1,4 +1,4 @@
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Credo.Internal;
 
 namespace Respondeo.Content.Credo.Services;

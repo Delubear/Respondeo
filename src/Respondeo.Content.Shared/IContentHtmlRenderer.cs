@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Contract for turning authored Markdown (including the shared "::: youtube" / "::: pdf" / "::: button"

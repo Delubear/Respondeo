@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.Content.Summa;
 using Respondeo.UnitTests.TestSupport;

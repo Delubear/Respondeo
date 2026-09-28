@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
 using Respondeo.Content.Markdown;
-using Respondeo.Content.Rendering;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Credo;

@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Rendering;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Expands the neutral placeholders emitted by the Summa importer into HTML at render time. The

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Summa.Services;
 
 namespace Respondeo.Content.Summa;

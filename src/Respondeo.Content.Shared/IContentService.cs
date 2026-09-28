@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// The public contract for reading author-curated content nodes.

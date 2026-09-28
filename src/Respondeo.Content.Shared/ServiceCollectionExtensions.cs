@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Rendering;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Registration surface for the shared content HTML rendering implementation.

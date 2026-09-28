@@ -5,7 +5,7 @@ using Bunit.TestDoubles;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
 using Respondeo.UnitTests.TestSupport;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Markdown.Services;
 
 namespace Respondeo.UnitTests.Components;

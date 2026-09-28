@@ -1,4 +1,4 @@
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Markdown.Internal;
 
 namespace Respondeo.Content.Markdown.Services;

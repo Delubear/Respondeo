@@ -3,7 +3,7 @@ using Markdig.Extensions.CustomContainers;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
 
-namespace Respondeo.Content.Rendering;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Renders a small vocabulary of authoring directives so content authors can embed media without hand-writing HTML.

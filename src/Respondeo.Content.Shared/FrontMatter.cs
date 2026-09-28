@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Shared helper for splitting a "---" delimited YAML front-matter block from a Markdown body.

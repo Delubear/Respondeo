@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// A fully materialized content node: author-curated metadata plus the rendered HTML of its Markdown body.

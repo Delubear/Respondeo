@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// Resolves a stable Summa part storage key (e.g. <c>p2b</c>) to the presentation values the

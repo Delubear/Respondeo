@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// How a content pillar wants the browser/CDN to treat its static-asset requests.

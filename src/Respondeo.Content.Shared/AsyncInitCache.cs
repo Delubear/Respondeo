@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Abstractions;
+namespace Respondeo.Content.Shared;
 
 /// <summary>
 /// A one-time asynchronous lazy-initialization cache. Runs the supplied factory at most once even

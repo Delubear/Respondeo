@@ -1,6 +1,6 @@
 using Bunit;
 using Respondeo.Components;
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 
 namespace Respondeo.UnitTests.Components;
 

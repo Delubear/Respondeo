@@ -1,4 +1,4 @@
-using Respondeo.Content.Abstractions;
+using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
 namespace Respondeo.Content.Credo.Internal;

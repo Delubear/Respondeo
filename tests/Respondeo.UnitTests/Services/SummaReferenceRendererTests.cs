@@ -1,4 +1,4 @@
-using Respondeo.Content.Rendering;
+using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
 
 namespace Respondeo.UnitTests.Services;
