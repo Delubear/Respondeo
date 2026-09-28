@@ -1,4 +1,3 @@
-using System.Net;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -95,5 +94,34 @@ public class CredoArticlesTests : TestContext
 
         var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
         Assert.Equal(hrefs.Count, hrefs.Distinct(StringComparer.OrdinalIgnoreCase).Count());
+    }
+
+    [Fact]
+    public void Surfaces_tags_as_title_cased_filter_options()
+    {
+        var cut = RenderComponent<CredoArticles>();
+
+        var tagsHeading = cut.FindAll("h2.credo__sidebar-title").Any(h => h.TextContent.Trim() == "Tags");
+        Assert.True(tagsHeading);
+
+        var options = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();
+        Assert.Contains("Existence of God", options);
+        Assert.Contains("Confession", options);
+    }
+
+    [Fact]
+    public void Selecting_a_tag_narrows_the_list_to_matching_articles()
+    {
+        var cut = RenderComponent<CredoArticles>();
+
+        // The "Existence of God" tag belongs only to the inquiry article (beta), not to confession.
+        var checkbox = cut.FindAll("label.topic-filter__option")
+            .First(o => o.TextContent.Trim() == "Existence of God")
+            .QuerySelector("input[type=checkbox]")!;
+        checkbox.Change(true);
+
+        var hrefs = cut.FindAll("a.credo-row__link").Select(c => c.GetAttribute("href")).ToList();
+        Assert.Contains("node/beta", hrefs);
+        Assert.DoesNotContain("credo/articles/confession", hrefs);
     }
 }
