@@ -15,9 +15,6 @@ branches:
   - to: home-returning-catholic
     label: "I was Catholic and drifted away"
     prompt: You were baptized Catholic and have been away — and you are being waited for.
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: An overview of the seven sacraments and why each is worth celebrating.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

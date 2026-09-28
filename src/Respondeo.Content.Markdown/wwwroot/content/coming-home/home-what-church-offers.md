@@ -6,9 +6,6 @@ tags:
   - the catholic church
   - the christian life
 branches:
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: The sacraments are the concrete channels of everything named here — look closer.
   - to: home-obstacles
     label: "What holds people back"
     prompt: If this is what is offered, what keeps people from it — and how each hesitation is met.

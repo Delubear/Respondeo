@@ -1,25 +1,11 @@
 ---
-id: home-sacraments
+id: the-sacraments
 title: "The Sacraments: An Overview"
 summary: What the sacraments are, why there are seven, and why each is worth celebrating.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: sacrament-baptism
-    prompt: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.
-  - to: sacrament-confirmation
-    prompt: The sacrament of the Holy Spirit — sealing and strengthening the baptized for a mature Christian life.
-  - to: sacrament-eucharist
-    prompt: The sacrament of Christ's true presence — the source and summit of the Christian life.
-  - to: sacrament-reconciliation
-    prompt: The sacrament of mercy — Christ's forgiveness given personally to the repentant.
-  - to: sacrament-anointing
-    prompt: The sacrament of healing and strength for those facing serious illness, suffering, or death.
-  - to: sacrament-holy-orders
-    prompt: The sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
-  - to: sacrament-matrimony
-    prompt: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -32,7 +18,8 @@ That is, it is a visible action — washing, anointing, eating, forgiving, joini
 God, who made us body and soul, deals with us bodily.
 He does not leave His grace to float as an idea; He attaches it to water and oil and bread so that we can receive it and *know* we have.
 
-**Why seven?**
+## Why seven?
+
 The Church recognizes seven sacraments because they answer to the whole shape of a human life and its supernatural counterpart:
 
 - Some **initiate** us into the life of grace — Baptism, Confirmation, and the Eucharist.
@@ -45,6 +32,14 @@ Together they accompany a Christian from birth to death: born in the font, stren
 
 The sacraments are not obligations to be endured but gifts to be *celebrated*, because in each one it is Christ Himself who acts.
 Choose a sacrament below to see what it is and why it is worth receiving with joy.
+
+- [Baptism](credo/articles/sacrament-baptism) — the sacrament of rebirth, dying and rising with Christ, washed and made a new creation.
+- [Confirmation](credo/articles/sacrament-confirmation) — the sacrament of the Holy Spirit, sealing and strengthening the baptized for a mature Christian life.
+- [The Eucharist](credo/articles/sacrament-eucharist) — the sacrament of Christ's true presence, the source and summit of the Christian life.
+- [Reconciliation (Confession)](credo/articles/sacrament-reconciliation) — the sacrament of mercy, Christ's forgiveness given personally to the repentant.
+- [Anointing of the Sick](credo/articles/sacrament-anointing) — the sacrament of healing and strength for those facing serious illness, suffering, or death.
+- [Holy Orders](credo/articles/sacrament-holy-orders) — the sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
+- [Matrimony](credo/articles/sacrament-matrimony) — the sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
 
 ::: youtube uJCTHCMHPYg
 :::

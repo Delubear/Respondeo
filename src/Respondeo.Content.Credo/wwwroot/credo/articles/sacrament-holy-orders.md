@@ -2,13 +2,11 @@
 id: sacrament-holy-orders
 title: "Holy Orders"
 summary: The sacrament by which bishops, priests, and deacons are ordained to serve Christ and His Church.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: home-sacraments
-    label: "The sacraments: an overview"
-    prompt: Back to the list of all seven sacraments.
+  - holy orders
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -23,3 +21,5 @@ Holy Orders exists for the sake of everyone else.
 It is not a promotion but a self-gift: through the ordained, Christ continues to teach, forgive, and offer the Eucharist.
 Without this sacrament there would be no Mass, no absolution, no continuity with the apostles.
 To celebrate an ordination is to celebrate that Christ has not left His Church without shepherds, but keeps His promise to remain with her until the end of the age.
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

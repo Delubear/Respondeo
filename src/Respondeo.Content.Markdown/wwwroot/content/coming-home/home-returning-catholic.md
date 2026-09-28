@@ -12,9 +12,6 @@ branches:
   - to: home-how-to-begin
     label: "How to begin again"
     prompt: When you are ready, the way back is simpler and gentler than you may fear.
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: Rediscover what you are coming back to — the sacraments that carry God's own life.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

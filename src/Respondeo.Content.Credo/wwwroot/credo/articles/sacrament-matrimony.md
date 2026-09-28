@@ -2,13 +2,11 @@
 id: sacrament-matrimony
 title: "Matrimony"
 summary: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: home-sacraments
-    label: "The sacraments: an overview"
-    prompt: Back to the list of all seven sacraments.
+  - matrimony
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -23,3 +21,5 @@ Marriage is not merely a contract or a milestone but a vocation and a channel of
 The couple's love becomes a living image of the faithful, self-giving, fruitful love of Christ for His Church.
 The sacrament gives them the grace to love each other as Christ loves — through joy and hardship alike — and orders their life toward the good of one another, their children, and the wider communion.
 To celebrate a wedding is to celebrate a love made stronger than the couple could make it on their own, because God has joined it to His own.
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

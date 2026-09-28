@@ -2,13 +2,11 @@
 id: sacrament-anointing
 title: "Anointing of the Sick"
 summary: The sacrament of healing and strength for those facing serious illness, suffering, or death.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: home-sacraments
-    label: "The sacraments: an overview"
-    prompt: Back to the list of all seven sacraments.
+  - anointing of the sick
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -21,3 +19,5 @@ It carries on the ministry of Jesus, who healed the sick and drew near to the su
 This sacrament meets a person at their most vulnerable with grace rather than abandonment.
 It gives strength, peace, and courage to bear illness or the approach of death; it unites the sufferer to the passion of Christ, giving redemptive meaning to what would otherwise be only loss; it forgives sins if the person cannot confess; and at times it restores bodily health.
 It is a profound comfort to know that even here — especially here — Christ does not leave His own alone.
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

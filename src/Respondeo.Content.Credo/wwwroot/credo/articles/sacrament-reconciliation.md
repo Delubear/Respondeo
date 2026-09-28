@@ -1,13 +1,14 @@
 ---
-id: confession
-title: "Confession: Why Catholics Confess to a Priest"
-summary: Where the Sacrament of Reconciliation comes from, what it does, and how to make a good confession.
+id: sacrament-reconciliation
+title: "Reconciliation (Confession)"
+summary: The sacrament of mercy — where it comes from, what it does, and how to make a good confession.
 topic: sacraments
 tags:
-  - confession
-  - reconciliation
   - sacraments
+  - reconciliation
+  - confession
   - forgiveness
+  - the catholic church
 sources:
   - label: "Catechism of the Catholic Church, 1420–1498"
     url: "https://www.vatican.va/archive/ENG0015/__P4C.HTM"
@@ -16,7 +17,16 @@ sources:
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
-Few practices of the Catholic faith are as misunderstood — or, once recovered, as freeing — as confession. To many it looks strange: why tell your sins to a priest when you could tell them to God directly? The answer runs deeper than most expect, and it begins with Christ himself.
+**What it is.**
+In Reconciliation — also called Confession or Penance — the risen Christ exercises the power He gave His apostles: "Whose sins you forgive are forgiven them."
+The penitent confesses their sins to a priest, expresses sorrow, and receives absolution — Christ's own forgiveness, spoken aloud, with certainty.
+
+**Why celebrate it.**
+This is the sacrament that reopens the door for anyone who has wandered.
+It exists not to shame but to free.
+Where a private "I'm sorry" leaves us wondering whether we are truly forgiven, Confession gives the answer out loud: *you are forgiven*, on the authority of Christ Himself.
+It restores the grace lost through serious sin and heals the smaller wounds of daily failure.
+This is why it is the natural first step home — not a hurdle to clear, but the mercy the sacrament was made to give.
 
 ## Why not just tell God directly?
 
@@ -35,3 +45,5 @@ The priest is not the source of forgiveness; God is. The priest acts *in persona
 ## How to make a good confession
 
 If it has been a long time, the priest expects that and will help. A simple form: begin with the Sign of the Cross and *Bless me, Father, for I have sinned; it has been [time] since my last confession.* Then confess your sins plainly, listen to any counsel, pray an Act of Contrition, and receive absolution. That is the whole of it — and on the far side is the relief the sacrament exists to give.
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

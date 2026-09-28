@@ -2,13 +2,11 @@
 id: sacrament-baptism
 title: "Baptism"
 summary: The sacrament of rebirth — dying and rising with Christ, washed and made a new creation.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: home-sacraments
-    label: "The sacraments: an overview"
-    prompt: Back to the list of all seven sacraments.
+  - baptism
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -27,3 +25,5 @@ For the one entering the faith from outside, this is the threshold the whole pat
 
 ::: youtube Euxu36jVJpU
 :::
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

@@ -2,13 +2,11 @@
 id: sacrament-confirmation
 title: "Confirmation"
 summary: The sacrament of the Holy Spirit — sealing and strengthening the baptized for a mature Christian life.
+topic: sacraments
 tags:
-  - the catholic church
   - sacraments
-branches:
-  - to: home-sacraments
-    label: "The sacraments: an overview"
-    prompt: Back to the list of all seven sacraments.
+  - confirmation
+  - the catholic church
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
@@ -23,3 +21,5 @@ In Confirmation, the Holy Spirit deepens the grace of Baptism, roots a person mo
 It is the same Spirit who transformed frightened disciples into bold witnesses.
 To be confirmed is to be commissioned — no longer only receiving the faith but empowered to carry it.
 This is cause for joy: God does not leave His own to face the world on their own strength.
+
+[Back to the overview of all seven sacraments](credo/articles/the-sacraments)

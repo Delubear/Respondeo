@@ -9,9 +9,6 @@ branches:
   - to: home-how-to-begin
     label: "How to begin"
     prompt: If belief is meant to be lived, here is where the living starts.
-  - to: home-sacraments
-    label: "The sacraments"
-    prompt: Practice is not abstract — it is made concrete in the sacraments. See how.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
