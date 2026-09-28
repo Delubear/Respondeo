@@ -7,26 +7,18 @@ namespace Respondeo.Content.Summa.Services;
 /// The lightweight browse/search index is fetched once and cached;
 /// each question's full content is fetched on demand and cached individually so the initial load stays small even though the whole corpus is bundled.
 /// </summary>
-internal sealed class SummaService : ISummaService
+internal sealed class SummaService(HttpClient http) : ISummaService
 {
     private const string SummaRoot = "_content/Respondeo.Content.Summa/summa";
     private const string IndexPath = SummaRoot + "/summa-index.json";
 
-    private readonly ContentFetcher _fetcher;
+    private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<SummaIndex> _index = new();
     private readonly SemaphoreSlim _gate = new(1, 1);
     private readonly Dictionary<string, SummaQuestionContent> _questions = new(StringComparer.OrdinalIgnoreCase);
 
-    // The bundled Summa corpus is large but immutable for the lifetime of a deploy, so it is cached
-    // aggressively: each fetched item is held in-memory for the session, and the HTTP request opts into
-    // the browser cache so repeat visits reuse the stored JSON. The static assets are fingerprinted per
-    // deploy, so a new build produces new URLs and there is no risk of serving stale content.
-    public SummaService(HttpClient http) =>
-        _fetcher = new ContentFetcher(http, ContentCachePolicy.Immutable);
-
     /// <summary>Returns the browse/search index, loading it once and caching it.</summary>
-    public Task<SummaIndex> GetIndexAsync() =>
-        _index.GetAsync(async () => await _fetcher.GetFromJsonAsync<SummaIndex>(IndexPath) ?? new SummaIndex());
+    public Task<SummaIndex> GetIndexAsync() => _index.GetAsync(async () => await _fetcher.GetFromJsonAsync<SummaIndex>(IndexPath) ?? new SummaIndex());
 
     /// <summary>Returns the full content of a single question by id, or null if it does not exist.</summary>
     public async Task<SummaQuestionContent?> GetQuestionAsync(string id)

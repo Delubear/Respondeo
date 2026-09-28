@@ -3,8 +3,8 @@ using Respondeo.Content.Shared;
 namespace Respondeo.Content.Summa;
 
 /// <summary>
-/// Adapts the shared <see cref="ISummaPartMap"/> contract onto the corpus-local <see cref="SummaParts"/>
-/// registry, letting the rendering layer resolve part labels and slugs without referencing this project.
+/// Adapts the shared <see cref="ISummaPartMap"/> contract onto the corpus-local <see cref="SummaParts"/> registry,
+/// letting the rendering layer resolve part labels and slugs without referencing this project.
 /// </summary>
 internal sealed class SummaPartMap : ISummaPartMap
 {

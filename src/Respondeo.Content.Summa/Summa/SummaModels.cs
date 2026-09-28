@@ -37,8 +37,8 @@ public sealed class SummaQuestionEntry
     public required string Title { get; init; }
 
     /// <summary>
-    /// The treatise this question belongs to (e.g. "Treatise on the Passions"), used to group
-    /// questions within a part. Null for the few questions that precede any treatise heading.
+    /// The treatise this question belongs to (e.g. "Treatise on the Passions"), used to group questions within a part.
+    /// Null for the few questions that precede any treatise heading.
     /// </summary>
     public string? Treatise { get; init; }
 
@@ -91,8 +91,7 @@ public sealed class SummaArticleContent
     public required string Title { get; init; }
 
     /// <summary>
-    /// Optional rendered HTML that precedes the first objection (rare lead-in text). Empty when the
-    /// article opens directly with "Objection 1".
+    /// Optional rendered HTML that precedes the first objection (rare lead-in text). Empty when the article opens directly with "Objection 1".
     /// </summary>
     public string PreambleHtml { get; init; } = string.Empty;
 

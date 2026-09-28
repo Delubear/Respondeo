@@ -26,8 +26,7 @@ public sealed record SummaPart(
     string Description);
 
 /// <summary>
-/// The single source of truth mapping a Summa part between its stable storage key, its URL slug,
-/// its display label, its title, and its on-disk folder.
+/// The single source of truth mapping a Summa part between its stable storage key, its URL slug, its display label, its title, and its on-disk folder.
 /// Storage keys are permanent; the slug and label are presentation concerns that can change without touching the generated corpus.
 ///
 /// Question ids come in two forms that this type translates between:
@@ -41,7 +40,7 @@ public static partial class SummaParts
     // Reading order. Key = permanent storage id; Slug = URL form; Label = cross-reference display.
     public static IReadOnlyList<SummaPart> All { get; } =
     [
-        new("p1", "prima", "I", "First Part", "first-part", "Prima Pars",
+        new("p1", "prima", "I", "First Part", "first-part", "Prima Pars", 
             "God, the Trinity, creation, the angels, and the nature of man."),
         new("p2a", "primsec", "I-II", "First Part of the Second Part", "first-part-of-the-second-part", "Prima Secundae",
             "Human happiness and the general principles of morality: acts, passions, habits, virtues, sin, law, and grace."),
@@ -112,10 +111,7 @@ public static partial class SummaParts
         return string.Equals(canonical, urlId, StringComparison.Ordinal) ? null : canonical;
     }
 
-    private static string MapId(
-        string id,
-        Dictionary<string, SummaPart> lookup,
-        Func<SummaPart, string> pick)
+    private static string MapId(string id, Dictionary<string, SummaPart> lookup, Func<SummaPart, string> pick)
     {
         if (string.IsNullOrEmpty(id))
         {
