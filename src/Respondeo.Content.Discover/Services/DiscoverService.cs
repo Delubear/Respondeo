@@ -1,25 +1,25 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Credo.Internal;
+using Respondeo.Content.Discover.Internal;
 
-namespace Respondeo.Content.Credo.Services;
+namespace Respondeo.Content.Discover.Services;
 
 /// <summary>
-/// Loads the bundled Credo content (prayers, devotions, articles) from static files shipped by the Respondeo.Content.Credo library under the
-/// <c>_content/Respondeo.Content.Credo/</c> static-web-asset path.
-/// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="CredoParser"/>,
+/// Loads the bundled Discover content (prayers, devotions, articles) from static files shipped by the Respondeo.Content.Discover library under the
+/// <c>_content/Respondeo.Content.Discover/</c> static-web-asset path.
+/// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="DiscoverParser"/>,
 /// and caches the parsed items and derived index in memory for the app's lifetime. The whole hand-authored catalog is small, so it is loaded once up front.
 /// </summary>
-internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) : ICredoService
+internal sealed class DiscoverService(HttpClient http, IContentHtmlRenderer html) : IDiscoverService
 {
-    private const string CredoRoot = "_content/Respondeo.Content.Credo/credo";
-    private const string ManifestPath = CredoRoot + "/credo-manifest.json";
+    private const string DiscoverRoot = "_content/Respondeo.Content.Discover/discover";
+    private const string ManifestPath = DiscoverRoot + "/discover-manifest.json";
 
-    private readonly CredoParser _parser = new(html);
+    private readonly DiscoverParser _parser = new(html);
     private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<Catalog> _catalog = new();
 
     /// <summary>Returns the browse index, loading the catalog once and caching it.</summary>
-    public async Task<CredoIndex> GetIndexAsync() => (await Load()).Index;
+    public async Task<DiscoverIndex> GetIndexAsync() => (await Load()).Index;
 
     /// <summary>Returns the full text of a single prayer by id, or null if it does not exist.</summary>
     public async Task<Prayer?> GetPrayerAsync(string id)
@@ -59,7 +59,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
-        var manifest = await _fetcher.GetFromJsonAsync<CredoManifest>(ManifestPath) ?? new CredoManifest();
+        var manifest = await _fetcher.GetFromJsonAsync<DiscoverManifest>(ManifestPath) ?? new DiscoverManifest();
 
         var prayers = await Task.WhenAll(manifest.Prayers.Select(LoadPrayerAsync));
         var devotions = await Task.WhenAll(manifest.Devotions.Select(LoadDevotionAsync));
@@ -73,13 +73,13 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
         var prayerMap = loadedPrayers.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
         var prayerSummaries = loadedPrayers
             .Where(IsPrimaryLanguage)
-            .Select(CredoParser.ToSummary)
+            .Select(DiscoverParser.ToSummary)
             .ToList();
 
-        var devotionMap = BuildMap(devotions, d => d.Id, out var devotionSummaries, CredoParser.ToSummary);
-        var articleMap = BuildMap(articles, a => a.Id, out var articleSummaries, CredoParser.ToSummary);
+        var devotionMap = BuildMap(devotions, d => d.Id, out var devotionSummaries, DiscoverParser.ToSummary);
+        var articleMap = BuildMap(articles, a => a.Id, out var articleSummaries, DiscoverParser.ToSummary);
 
-        var index = new CredoIndex
+        var index = new DiscoverIndex
         {
             Prayers = prayerSummaries,
             Devotions = devotionSummaries,
@@ -93,7 +93,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
         Dictionary<string, Prayer> Prayers,
         Dictionary<string, Devotion> Devotions,
         Dictionary<string, Article> Articles,
-        CredoIndex Index);
+        DiscoverIndex Index);
 
     // A prayer is "primary" (browsable) unless it is a Latin translation of another prayer.
     private static bool IsPrimaryLanguage(Prayer prayer) =>
@@ -149,7 +149,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var raw = await _fetcher.GetStringAsync($"{CredoRoot}/prayers/{fileName}");
+            var raw = await _fetcher.GetStringAsync($"{DiscoverRoot}/prayers/{fileName}");
             return _parser.ParsePrayer(raw);
         }
         catch (HttpRequestException)
@@ -162,7 +162,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var raw = await _fetcher.GetStringAsync($"{CredoRoot}/articles/{fileName}");
+            var raw = await _fetcher.GetStringAsync($"{DiscoverRoot}/articles/{fileName}");
             return _parser.ParseArticle(raw);
         }
         catch (HttpRequestException)
@@ -175,7 +175,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
     {
         try
         {
-            var dto = await _fetcher.GetFromJsonAsync<DevotionDto>($"{CredoRoot}/devotions/{fileName}");
+            var dto = await _fetcher.GetFromJsonAsync<DevotionDto>($"{DiscoverRoot}/devotions/{fileName}");
             return _parser.ParseDevotion(dto);
         }
         catch (HttpRequestException)
@@ -184,7 +184,7 @@ internal sealed class CredoService(HttpClient http, IContentHtmlRenderer html) :
         }
     }
 
-    private sealed class CredoManifest
+    private sealed class DiscoverManifest
     {
         public List<string> Prayers { get; set; } = [];
         public List<string> Devotions { get; set; } = [];

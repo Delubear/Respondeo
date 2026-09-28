@@ -16,7 +16,7 @@ public class MiracleFacetIntegrityTests
     {
         // This file lives at <repo>/tests/Respondeo.UnitTests/Content/MiracleFacetIntegrityTests.cs.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo.Content.Miracles", "wwwroot", "miracles");
+        return Path.Combine(repoRoot, "src", "Respondeo.Content.Discover", "wwwroot", "discover", "miracles");
     }
 
     private sealed record FacetMaps(

@@ -1,8 +1,8 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Credo;
-using Respondeo.Content.Credo.Services;
+using Respondeo.Content.Discover;
+using Respondeo.Content.Discover.Services;
 using Respondeo.Content.Markdown.Services;
 using Respondeo.Content.Shared;
 using Respondeo.Pages;
@@ -45,15 +45,15 @@ public class ArticlesTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Credo/credo/credo-manifest.json"] = CredoManifest,
-            ["_content/Respondeo.Content.Credo/credo/articles/confession.md"] = ConfessionMd,
+            ["_content/Respondeo.Content.Discover/discover/discover-manifest.json"] = CredoManifest,
+            ["_content/Respondeo.Content.Discover/discover/articles/confession.md"] = ConfessionMd,
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = ContentManifest,
             ["_content/Respondeo.Content.Markdown/content/beta.md"] = BetaMd,
             ["_content/Respondeo.Content.Markdown/content/section.md"] = SectionMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<ICredoService>(new CredoService(http, ContentRendering.Renderer));
+        Services.AddSingleton<IDiscoverService>(new DiscoverService(http, ContentRendering.Renderer));
         Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));

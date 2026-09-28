@@ -1,5 +1,5 @@
 @page "/discover/articles/{Id}"
-@inject ICredoService Credo
+@inject IDiscoverService Credo
 @inject IBreadcrumbTrail Trail
 
 <PageTitle>@(_article is null ? "Article" : $"{_article.Title} \u2014 Respondeo")</PageTitle>

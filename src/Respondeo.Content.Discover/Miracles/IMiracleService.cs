@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Miracles;
+namespace Respondeo.Content.Discover;
 
 /// <summary>
 /// The public contract for reading the bundled catalog of Catholic miracles.

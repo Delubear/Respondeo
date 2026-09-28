@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Credo;
+namespace Respondeo.Content.Discover;
 
 // ---------------------------------------------------------------------------
 // Prayers
@@ -243,10 +243,10 @@ public sealed class ArticleSource
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// The lightweight browse index for the whole Credo pillar: prayer, devotion, and article summaries,
+/// The lightweight browse index for the whole Discover pillar: prayer, devotion, and article summaries,
 /// loaded once so each section can be listed and searched without fetching full bodies.
 /// </summary>
-public sealed class CredoIndex
+public sealed class DiscoverIndex
 {
     /// <summary>Every catalogued prayer, in load order.</summary>
     public IReadOnlyList<PrayerSummary> Prayers { get; init; } = [];

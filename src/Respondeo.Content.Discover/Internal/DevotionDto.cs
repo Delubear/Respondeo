@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Credo.Internal;
+namespace Respondeo.Content.Discover.Internal;
 
 /// <summary>
 /// The JSON shape of a devotion file. A devotion is authored entirely as data so new ones (a chaplet, a different rosary form) are added without any code change.

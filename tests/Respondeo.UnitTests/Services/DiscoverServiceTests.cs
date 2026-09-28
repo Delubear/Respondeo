@@ -1,10 +1,10 @@
 using System.Net;
-using Respondeo.Content.Credo.Services;
+using Respondeo.Content.Discover.Services;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
 
-public class CredoServiceTests
+public class DiscoverServiceTests
 {
     private const string ManifestJson = """
         {
@@ -94,13 +94,13 @@ public class CredoServiceTests
         Because sin wounds our friendship with God.
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content.Credo/credo/credo-manifest.json";
-    private const string HailMaryPath = "_content/Respondeo.Content.Credo/credo/prayers/hail-mary.md";
-    private const string HailMaryLatinPath = "_content/Respondeo.Content.Credo/credo/prayers/ave-maria.md";
-    private const string RosaryPath = "_content/Respondeo.Content.Credo/credo/devotions/holy-rosary.json";
-    private const string ConfessionPath = "_content/Respondeo.Content.Credo/credo/articles/confession.md";
+    private const string ManifestPath = "_content/Respondeo.Content.Discover/discover/discover-manifest.json";
+    private const string HailMaryPath = "_content/Respondeo.Content.Discover/discover/prayers/hail-mary.md";
+    private const string HailMaryLatinPath = "_content/Respondeo.Content.Discover/discover/prayers/ave-maria.md";
+    private const string RosaryPath = "_content/Respondeo.Content.Discover/discover/devotions/holy-rosary.json";
+    private const string ConfessionPath = "_content/Respondeo.Content.Discover/discover/articles/confession.md";
 
-    private static CredoService CreateService()
+    private static DiscoverService CreateService()
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
@@ -112,7 +112,7 @@ public class CredoServiceTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new CredoService(http, ContentRendering.Renderer);
+        return new DiscoverService(http, ContentRendering.Renderer);
     }
 
     [Fact]

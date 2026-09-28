@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Respondeo.Content.Miracles;
+using Respondeo.Content.Discover;
 using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
 

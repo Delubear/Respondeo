@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Miracles;
+namespace Respondeo.Content.Discover;
 
 /// <summary>
 /// The lightweight browse/search index for the whole miracles catalog: every miracle's typed facets and summary, but without the heavy rendered article bodies.

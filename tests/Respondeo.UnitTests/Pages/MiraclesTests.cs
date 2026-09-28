@@ -2,8 +2,8 @@ using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Miracles;
-using Respondeo.Content.Miracles.Services;
+using Respondeo.Content.Discover;
+using Respondeo.Content.Discover.Services;
 using Respondeo.Pages;
 using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
@@ -58,7 +58,7 @@ public class MiraclesTests : TestContext
         The Virgin appeared to St. Juan Diego.
         """;
 
-    private const string Root = "_content/Respondeo.Content.Miracles/miracles";
+    private const string Root = "_content/Respondeo.Content.Discover/discover/miracles";
 
     public MiraclesTests()
     {

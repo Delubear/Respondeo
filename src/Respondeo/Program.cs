@@ -4,8 +4,7 @@ using Respondeo;
 using Respondeo.Content.Markdown;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
-using Respondeo.Content.Miracles;
-using Respondeo.Content.Credo;
+using Respondeo.Content.Discover;
 using Respondeo.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -30,12 +29,9 @@ builder.Services.AddRespondeoContent();
 // The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa; the app depends only on ISummaService.
 builder.Services.AddRespondeoSumma();
 
-// The hand-authored catalog of Catholic miracles is shipped as static Markdown by Respondeo.Content.Miracles; the app depends only on IMiracleService.
-builder.Services.AddRespondeoMiracles();
-
-// The hand-authored prayers, data-driven devotions, and deeper-dive articles for living the faith are shipped as static content by Respondeo.Content.Credo;
-// the app depends only on ICredoService.
-builder.Services.AddRespondeoCredo();
+// The hand-authored prayers, data-driven devotions, deeper-dive articles, and the catalog of Catholic miracles are shipped as static content by
+// Respondeo.Content.Discover; the app depends only on IDiscoverService and IMiracleService.
+builder.Services.AddRespondeoDiscover();
 
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();

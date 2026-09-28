@@ -356,8 +356,9 @@ internal readonly record struct ContentPaths(
     public static ContentPaths ForRepo(string repoRoot)
     {
         var contentRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
-        var miraclesRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Miracles", "wwwroot", "miracles");
-        var credoRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Credo", "wwwroot", "credo");
+        var discoverRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Discover", "wwwroot", "discover");
+        var miraclesRoot = Path.Combine(discoverRoot, "miracles");
+        var credoRoot = discoverRoot;
 
         return new ContentPaths(
             SummaIndex: Path.Combine(repoRoot, "src", "Respondeo.Content.Summa", "wwwroot", "summa", "summa-index.json"),
@@ -365,7 +366,7 @@ internal readonly record struct ContentPaths(
             ContentRoot: contentRoot,
             ContentManifest: Path.Combine(contentRoot, "manifest.json"),
             CredoRoot: credoRoot,
-            CredoManifest: Path.Combine(credoRoot, "credo-manifest.json"));
+            CredoManifest: Path.Combine(credoRoot, "discover-manifest.json"));
     }
 }
 

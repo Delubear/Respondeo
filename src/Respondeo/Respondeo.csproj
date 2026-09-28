@@ -61,8 +61,7 @@
     <ProjectReference Include="..\Respondeo.Content.Shared\Respondeo.Content.Shared.csproj" />
     <ProjectReference Include="..\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
     <ProjectReference Include="..\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
-    <ProjectReference Include="..\Respondeo.Content.Miracles\Respondeo.Content.Miracles.csproj" />
-    <ProjectReference Include="..\Respondeo.Content.Credo\Respondeo.Content.Credo.csproj" />
+    <ProjectReference Include="..\Respondeo.Content.Discover\Respondeo.Content.Discover.csproj" />
   </ItemGroup>
 
 </Project>

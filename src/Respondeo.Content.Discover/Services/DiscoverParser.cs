@@ -1,16 +1,16 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Credo.Internal;
+using Respondeo.Content.Discover.Internal;
 
-namespace Respondeo.Content.Credo.Services;
+namespace Respondeo.Content.Discover.Services;
 
 /// <summary>
-/// Turns raw Credo content files into the typed public models.
+/// Turns raw Discover content files into the typed public models.
 /// Prayers and articles are Markdown with a "---" delimited YAML front-matter block;
 /// devotions arrive as already-deserialized JSON DTOs whose Markdown intro / reflections are rendered here.
 /// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>;
 /// the parser performs no I/O so it can be tested in isolation.
 /// </summary>
-internal sealed class CredoParser(IContentHtmlRenderer html)
+internal sealed class DiscoverParser(IContentHtmlRenderer html)
 {
     private readonly FrontMatterReader _reader = new();
 

@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text;
-using Respondeo.Content.Miracles;
-using Respondeo.Content.Miracles.Services;
+using Respondeo.Content.Discover;
+using Respondeo.Content.Discover.Services;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
@@ -57,9 +57,9 @@ public class MiracleServiceTests
         The Virgin appeared to St. Juan Diego.
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content.Miracles/miracles/miracles-manifest.json";
-    private const string LancianoPath = "_content/Respondeo.Content.Miracles/miracles/lanciano-eucharistic-miracle.md";
-    private const string GuadalupePath = "_content/Respondeo.Content.Miracles/miracles/our-lady-of-guadalupe.md";
+    private const string ManifestPath = "_content/Respondeo.Content.Discover/discover/miracles/miracles-manifest.json";
+    private const string LancianoPath = "_content/Respondeo.Content.Discover/discover/miracles/lanciano-eucharistic-miracle.md";
+    private const string GuadalupePath = "_content/Respondeo.Content.Discover/discover/miracles/our-lady-of-guadalupe.md";
 
     private static MiracleService CreateService()
     {
