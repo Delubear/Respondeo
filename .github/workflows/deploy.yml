@@ -67,6 +67,31 @@ jobs:
         with:
           global-json-file: global.json
 
+      # Install the WebAssembly build tools so Publish natively relinks the .NET
+      # runtime (trims unused runtime code, ~halving dotnet.native.wasm). Without
+      # this the SDK silently falls back to the larger prebuilt runtime, so the
+      # deployed site would lose the first-load size win. Relinking only runs at
+      # publish, so this step is unnecessary for the build/test steps above.
+      #
+      # The workload packs (Emscripten + Mono AOT tooling) are hundreds of MB and
+      # slow to download, so cache them keyed on the pinned SDK version from
+      # global.json. On a cache hit the install step is skipped entirely.
+      - name: Cache wasm-tools workload
+        id: wasm-cache
+        if: steps.filter.outputs.code-changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/share/dotnet/packs
+            /usr/share/dotnet/sdk-manifests
+            /usr/share/dotnet/metadata
+            /usr/share/dotnet/template-packs
+          key: ${{ runner.os }}-wasm-tools-${{ hashFiles('global.json') }}
+
+      - name: Install wasm-tools workload
+        if: steps.filter.outputs.code-changed == 'true' && steps.wasm-cache.outputs.cache-hit != 'true'
+        run: dotnet workload install wasm-tools
+
       # Cache restored NuGet packages keyed on the project files. Any dependency
       # change edits a .csproj, busting the key; otherwise restore is near-instant.
       - name: Cache NuGet packages

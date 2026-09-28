@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <!--
+      English-only site: drop the runtime's ICU globalization data (~hundreds of KB) from the
+      download so first load is smaller. Culture-aware APIs behave as invariant; the app's
+      CurrentCulture string sorting stays correct for the Latin/English content it orders.
+    -->
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
