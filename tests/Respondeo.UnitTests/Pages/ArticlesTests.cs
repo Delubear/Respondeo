@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text;
+using AngleSharp.Dom;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -62,7 +63,7 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        var topics = cut.FindAll("button.topic-filter__item").Select(b => b.TextContent.Trim()).ToList();
+        var topics = cut.FindAll("label.topic-filter__option").Select(b => b.TextContent.Trim()).ToList();
         Assert.Equal(["Existence of God", "St. Thomas Aquinas"], topics);
     }
 
@@ -71,8 +72,8 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        var topicButton = cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == "St. Thomas Aquinas");
-        topicButton.Click();
+        var topicButton = cut.FindAll("label.topic-filter__option").First(b => b.TextContent.Trim() == "St. Thomas Aquinas");
+        topicButton.QuerySelector("input")!.Change(true);
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("node/alpha", hrefs);
@@ -87,7 +88,7 @@ public class ArticlesTests : TestContext
 
         foreach (var label in new[] { "Existence of God", "St. Thomas Aquinas" })
         {
-            cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == label).Click();
+            cut.FindAll("label.topic-filter__option").First(b => b.TextContent.Trim() == label).QuerySelector("input")!.Change(true);
         }
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
@@ -101,7 +102,7 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").Click();
+        cut.FindAll("label.topic-filter__option").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").QuerySelector("input")!.Change(true);
         cut.Find("button.topic-filter__clear").Click();
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();

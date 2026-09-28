@@ -1,3 +1,4 @@
+using AngleSharp.Dom;
 using Bunit;
 using Respondeo.Components;
 
@@ -8,11 +9,11 @@ public class TopicFilterTests : TestContext
     private static readonly string[] Topics = ["Existence of God", "St. Thomas Aquinas"];
 
     [Fact]
-    public void Renders_a_button_for_each_topic()
+    public void Renders_a_checkbox_for_each_topic()
     {
         var cut = RenderComponent<TopicFilter>(p => p.Add(c => c.Topics, Topics));
 
-        var labels = cut.FindAll("button.topic-filter__item").Select(b => b.TextContent.Trim()).ToList();
+        var labels = cut.FindAll("label.topic-filter__option").Select(b => b.TextContent.Trim()).ToList();
         Assert.Equal(Topics, labels);
     }
 
@@ -22,7 +23,7 @@ public class TopicFilterTests : TestContext
         var cut = RenderComponent<TopicFilter>(p => p.Add(c => c.Topics, Array.Empty<string>()));
 
         Assert.NotNull(cut.Find("p.topic-filter__empty"));
-        Assert.Empty(cut.FindAll("button.topic-filter__item"));
+        Assert.Empty(cut.FindAll("label.topic-filter__option"));
     }
 
     [Fact]
@@ -33,7 +34,7 @@ public class TopicFilterTests : TestContext
             .Add(c => c.Topics, Topics)
             .Add(c => c.SelectedChanged, s => selection = s));
 
-        cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").Click();
+        cut.FindAll("label.topic-filter__option").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").QuerySelector("input")!.Change(true);
 
         Assert.NotNull(selection);
         Assert.Equal(["St. Thomas Aquinas"], selection!);
@@ -48,22 +49,23 @@ public class TopicFilterTests : TestContext
             .Add(c => c.Selected, new HashSet<string>(["St. Thomas Aquinas"], StringComparer.OrdinalIgnoreCase))
             .Add(c => c.SelectedChanged, s => selection = s));
 
-        cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").Click();
+        cut.FindAll("label.topic-filter__option").First(b => b.TextContent.Trim() == "St. Thomas Aquinas").QuerySelector("input")!.Change(false);
 
         Assert.NotNull(selection);
         Assert.Empty(selection!);
     }
 
     [Fact]
-    public void Marks_selected_topics_as_pressed()
+    public void Marks_selected_topics_as_checked()
     {
         var cut = RenderComponent<TopicFilter>(p => p
             .Add(c => c.Topics, Topics)
             .Add(c => c.Selected, new HashSet<string>(["St. Thomas Aquinas"], StringComparer.OrdinalIgnoreCase)));
 
-        var active = cut.FindAll("button.topic-filter__item").First(b => b.TextContent.Trim() == "St. Thomas Aquinas");
-        Assert.Equal("true", active.GetAttribute("aria-pressed"));
-        Assert.Contains("topic-filter__item--active", active.GetAttribute("class"));
+        var checkbox = cut.FindAll("label.topic-filter__option")
+            .First(b => b.TextContent.Trim() == "St. Thomas Aquinas")
+            .QuerySelector("input")!;
+        Assert.True(checkbox.HasAttribute("checked"));
     }
 
     [Fact]

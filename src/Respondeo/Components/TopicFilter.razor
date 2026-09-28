@@ -6,19 +6,17 @@
 }
 else
 {
-    <ul class="topic-filter">
+    <div class="topic-filter">
         @foreach (var topic in Topics)
         {
-            <li>
-                <button type="button"
-                        class="topic-filter__item @(IsSelected(topic) ? "topic-filter__item--active" : "")"
-                        aria-pressed="@(IsSelected(topic) ? "true" : "false")"
-                        @onclick="() => ToggleTopic(topic)">
-                    @topic
-                </button>
-            </li>
+            <label class="topic-filter__option">
+                <input type="checkbox"
+                       checked="@IsSelected(topic)"
+                       @onchange="() => ToggleTopic(topic)" />
+                <span>@Label(topic)</span>
+            </label>
         }
-    </ul>
+    </div>
     @if (Selected.Count > 0)
     {
         <button type="button" class="topic-filter__clear" @onclick="ClearTopics">
@@ -37,7 +35,15 @@ else
     /// <summary>Raised with a new selection set whenever the visitor toggles or clears topics.</summary>
     [Parameter] public EventCallback<IReadOnlySet<string>> SelectedChanged { get; set; }
 
+    /// <summary>
+    /// Optional map from a topic value to the text shown to the visitor. When null the value is shown as-is.
+    /// Lets callers store neutral slugs in <see cref="Selected"/> while displaying friendly labels.
+    /// </summary>
+    [Parameter] public Func<string, string>? DisplayLabel { get; set; }
+
     private bool IsSelected(string topic) => Selected.Contains(topic);
+
+    private string Label(string topic) => DisplayLabel?.Invoke(topic) ?? topic;
 
     private Task ToggleTopic(string topic)
     {

@@ -30,15 +30,6 @@ public sealed class MiracleBrowseState(NavigationManager nav) : AreaBrowseState(
     /// <summary>True when any query or facet filter is active.</summary>
     public bool HasActiveFilters => !string.IsNullOrWhiteSpace(Query) || Types.Count > 0 || Approvals.Count > 0 || Regions.Count > 0;
 
-    /// <summary>Toggles a type facet on or off.</summary>
-    public void ToggleType(string type) => Toggle(Types, type);
-
-    /// <summary>Toggles an approval facet on or off.</summary>
-    public void ToggleApproval(string approval) => Toggle(Approvals, approval);
-
-    /// <summary>Toggles a region facet on or off.</summary>
-    public void ToggleRegion(string region) => Toggle(Regions, region);
-
     /// <summary>Clears the query and every selected facet.</summary>
     public void Clear()
     {
@@ -46,14 +37,6 @@ public sealed class MiracleBrowseState(NavigationManager nav) : AreaBrowseState(
         Types.Clear();
         Approvals.Clear();
         Regions.Clear();
-    }
-
-    private static void Toggle<T>(HashSet<T> set, T value)
-    {
-        if (!set.Add(value))
-        {
-            set.Remove(value);
-        }
     }
 
     protected override void OnExitArea() => Clear();

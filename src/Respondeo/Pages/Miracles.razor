@@ -39,41 +39,26 @@
             <aside class="miracles__sidebar">
                 <div class="miracles__facet">
                     <h2 class="miracles__facet-title">Kind</h2>
-                    @foreach (var type in _types)
-                    {
-                        <label class="miracles__facet-option">
-                            <input type="checkbox"
-                                   checked="@Browse.Types.Contains(type)"
-                                   @onchange="() => ToggleType(type)" />
-                            <span>@_facets.Category(type)</span>
-                        </label>
-                    }
+                    <TopicFilter Topics="_types"
+                                 Selected="Browse.Types"
+                                 SelectedChanged="OnTypesChanged"
+                                 DisplayLabel="_facets.Category" />
                 </div>
 
                 <div class="miracles__facet">
                     <h2 class="miracles__facet-title">Church&rsquo;s judgment</h2>
-                    @foreach (var approval in _approvals)
-                    {
-                        <label class="miracles__facet-option">
-                            <input type="checkbox"
-                                   checked="@Browse.Approvals.Contains(approval)"
-                                   @onchange="() => ToggleApproval(approval)" />
-                            <span>@_facets.Approval(approval)</span>
-                        </label>
-                    }
+                    <TopicFilter Topics="_approvals"
+                                 Selected="Browse.Approvals"
+                                 SelectedChanged="OnApprovalsChanged"
+                                 DisplayLabel="_facets.Approval" />
                 </div>
 
                 <div class="miracles__facet">
                     <h2 class="miracles__facet-title">Region</h2>
-                    @foreach (var region in _regions)
-                    {
-                        <label class="miracles__facet-option">
-                            <input type="checkbox"
-                                   checked="@Browse.Regions.Contains(region)"
-                                   @onchange="() => ToggleRegion(region)" />
-                            <span>@_facets.Region(region)</span>
-                        </label>
-                    }
+                    <TopicFilter Topics="_regions"
+                                 Selected="Browse.Regions"
+                                 SelectedChanged="OnRegionsChanged"
+                                 DisplayLabel="_facets.Region" />
                 </div>
 
                 @if (Browse.HasActiveFilters)
@@ -151,11 +136,20 @@
         }
     }
 
-    private void ToggleType(string type) => Browse.ToggleType(type);
+    private void OnTypesChanged(IReadOnlySet<string> selected) => Replace(Browse.Types, selected);
 
-    private void ToggleApproval(string approval) => Browse.ToggleApproval(approval);
+    private void OnApprovalsChanged(IReadOnlySet<string> selected) => Replace(Browse.Approvals, selected);
 
-    private void ToggleRegion(string region) => Browse.ToggleRegion(region);
+    private void OnRegionsChanged(IReadOnlySet<string> selected) => Replace(Browse.Regions, selected);
+
+    private static void Replace(HashSet<string> target, IReadOnlySet<string> selected)
+    {
+        target.Clear();
+        foreach (var value in selected)
+        {
+            target.Add(value);
+        }
+    }
 
     private void ClearFilters() => Browse.Clear();
 
