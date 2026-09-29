@@ -529,6 +529,8 @@ h1, h2, h3 {
     margin: 1.5rem 0;
     text-align: center;
 }
+
+.discover__search-label {
     display: block;
     font-size: 0.9rem;
     color: var(--ink-soft);
