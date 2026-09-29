@@ -12,15 +12,17 @@ public class DevotionPlayerTests : TestContext
 {
     private IDevotionService _devotions = default!;
     private IPrayerService _prayers = default!;
+    private IDevotionProgressService _progress = default!;
 
     public DevotionPlayerTests()
     {
         _devotions = Substitute.For<IDevotionService>();
         _prayers = Substitute.For<IPrayerService>();
+        _progress = Substitute.For<IDevotionProgressService>();
         Services.AddSingleton(_devotions);
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(Substitute.For<IDevotionProgressService>());
+        Services.AddSingleton(_progress);
         Services.AddSingleton(Substitute.For<IThemeService>());
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
@@ -179,5 +181,23 @@ public class DevotionPlayerTests : TestContext
         Assert.Equal(2, cut.FindAll(".devotion__prayer-row.is-done").Count);
         var mains = cut.FindAll(".devotion__prayer-main").ToList();
         Assert.False(mains[2].HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Completing_the_final_step_clears_the_saved_progress()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        // Mark every prayer row complete, in order, to finish the devotion.
+        for (var i = 0; i < 4; i++)
+        {
+            cut.Find(".devotion__prayer-row.is-current .devotion__prayer-main").Click();
+        }
+
+        // Finishing a devotion should wipe any saved place so it doesn't offer to resume a
+        // completed devotion on the next visit.
+        _progress.Received().ClearAsync("divine-mercy-chaplet");
     }
 }

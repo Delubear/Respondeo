@@ -124,7 +124,6 @@ model and browsable by facet + free-text search.
 - [ ] Consider: more Eucharistic miracles (Orvieto-Bolsena, Santarém, Sokółka)
 - [ ] Consider: more approved apparitions (Lourdes 1858, Fatima, Knock, Akita)
 - [ ] Consider: canonization miracles / more incorruptibles
-- [ ] Consider: link the area from relevant journey articles (e.g. the Eucharist, the Resurrection)
 
 ## Pillar: Discover
 
@@ -139,7 +138,7 @@ the visitor bead by bead without code changes.
 - [~] Devotions: index (`/discover/devotions`) + interactive data-driven player (`/discover/devotions/{id}`)
 - [~] Articles: index (`/discover/articles`) + sectioned detail with sources (`/discover/articles/{id}`)
 - [~] Coming Home finale hands off into Discover via `nextStage`
-- [ ] Relocate the Sacraments content into Discover articles (currently deferred under Coming Home)
+- [x] Relocate the Sacraments content into Discover articles
 - [ ] Consider: more prayers (Litanies, the Angelus, Divine Mercy), more chaplets
 - [ ] Consider: more deep-dive articles (the Eucharist, Confession practice, the liturgical year)
 - [ ] Consider: mind copyright on any non-public-domain prayers/translations
@@ -147,8 +146,8 @@ the visitor bead by bead without code changes.
 ## Future / possible pillars
 
 Additional standalone, searchable pillars (like the Summa, or the Miracles/Saints browse areas) that
-would fit the same browse-by-facet + Summa-style reading layout. Not started; captured here as
-editorial intent.
+would fit the same browse-by-facet + Summa-style reading layout. Not being pursued for now; captured
+here as editorial intent. The Saints is the most likely next Discover area if any is revisited.
 
 - [ ] **The Bible** — a browsable Scripture pillar (books → chapters → verses) with cross-references,
   mapping naturally onto the Summa-style navigation. Would need a public-domain translation
