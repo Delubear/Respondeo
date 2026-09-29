@@ -29,15 +29,11 @@
     }
     else
     {
-        <div class="discover__search">
-            <label class="discover__search-label" for="devotion-search">Search devotions</label>
-            <input id="devotion-search"
-                   class="discover__search-input"
-                   type="search"
-                   placeholder="e.g. Rosary, chaplet, mercy..."
-                   value="@_query"
-                   @oninput="OnSearchInput" />
-        </div>
+        <SearchBox Id="devotion-search"
+                           Label="Search devotions"
+                           Placeholder="e.g. Rosary, chaplet, mercy..."
+                           Value="@_query"
+                           ValueChanged="OnSearchChanged" />
 
         <div class="discover__layout">
             <aside class="discover__sidebar">
@@ -122,9 +118,9 @@
         }
     }
 
-    private void OnSearchInput(ChangeEventArgs e)
+    private void OnSearchChanged(string value)
     {
-        _query = e.Value?.ToString() ?? string.Empty;
+        _query = value;
         BrowseState.SetQuery("devotions", _query);
     }
 

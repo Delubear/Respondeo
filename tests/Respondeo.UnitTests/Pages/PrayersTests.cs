@@ -71,9 +71,12 @@ public class PrayersTests : TestContext
 
         cut.Find("input#prayer-search").Input("father");
 
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("discover/prayers/our-father", hrefs);
-        Assert.DoesNotContain("discover/prayers/hail-mary", hrefs);
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/prayers/our-father", hrefs);
+            Assert.DoesNotContain("discover/prayers/hail-mary", hrefs);
+        });
     }
 
     [Fact]
@@ -83,9 +86,12 @@ public class PrayersTests : TestContext
 
         cut.Find("input#prayer-search").Input("Marian");
 
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("discover/prayers/hail-mary", hrefs);
-        Assert.DoesNotContain("discover/prayers/our-father", hrefs);
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/prayers/hail-mary", hrefs);
+            Assert.DoesNotContain("discover/prayers/our-father", hrefs);
+        });
     }
 
     [Fact]
@@ -95,8 +101,11 @@ public class PrayersTests : TestContext
 
         cut.Find("input#prayer-search").Input("zzz-no-match");
 
-        Assert.Empty(cut.FindAll("a.card"));
-        Assert.Contains("No prayers match your search.", cut.Find(".discover__empty").TextContent);
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Empty(cut.FindAll("a.card"));
+            Assert.Contains("No prayers match your search.", cut.Find(".discover__empty").TextContent);
+        });
     }
 
     [Fact]

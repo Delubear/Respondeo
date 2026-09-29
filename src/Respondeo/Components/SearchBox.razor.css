@@ -1,0 +1,31 @@
+.search-box {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.search-box__label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin-bottom: 0.35rem;
+}
+
+.search-box__input {
+    display: block;
+    width: 100%;
+    max-width: 28rem;
+    margin-inline: auto;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.4rem;
+    background: var(--parchment);
+    color: var(--ink);
+    font: inherit;
+}
+
+.search-box__input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}

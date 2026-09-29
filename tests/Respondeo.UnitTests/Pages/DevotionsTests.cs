@@ -74,8 +74,11 @@ public class DevotionsTests : TestContext
 
         cut.Find("#devotion-search").Input("Chaplet");
 
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("discover/devotions/divine-mercy-chaplet", hrefs);
-        Assert.DoesNotContain("discover/devotions/holy-rosary", hrefs);
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/devotions/divine-mercy-chaplet", hrefs);
+            Assert.DoesNotContain("discover/devotions/holy-rosary", hrefs);
+        });
     }
 }

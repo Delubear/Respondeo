@@ -1,0 +1,72 @@
+@implements IDisposable
+
+<div class="search-box">
+    <label class="search-box__label" for="@Id">@Label</label>
+    <input id="@Id"
+           class="search-box__input"
+           type="search"
+           placeholder="@Placeholder"
+           value="@_value"
+           @oninput="OnInput" />
+</div>
+
+@code {
+    // A short debounce coalesces bursts of keystrokes into a single search + render pass on the owning page, keeping large in-memory filters responsive.
+    private string _value = string.Empty;
+    private CancellationTokenSource? _debounceCts;
+
+    [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>The current query text. Kept in sync with the input between renders.</summary>
+    [Parameter] public string Value { get; set; } = string.Empty;
+
+    /// <summary>Raised after the debounce settles, with the latest query text.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    /// <summary>Debounce window in milliseconds; defaults to 150ms.</summary>
+    [Parameter] public int DebounceMs { get; set; } = 150;
+
+    // Mirror the page-owned Value into the input whenever it changes externally (e.g. restored from
+    // saved browse state on mount), without clobbering in-flight typing.
+    protected override void OnParametersSet()
+    {
+        if (!string.Equals(Value, _value, StringComparison.Ordinal))
+        {
+            _value = Value;
+        }
+    }
+
+    private void OnInput(ChangeEventArgs e)
+    {
+        _value = e.Value?.ToString() ?? string.Empty;
+        DebounceNotify();
+    }
+
+    private void DebounceNotify()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        var cts = new CancellationTokenSource();
+        _debounceCts = cts;
+
+        _ = Task.Delay(DebounceMs, cts.Token).ContinueWith(t =>
+        {
+            if (t.IsCanceled)
+            {
+                return;
+            }
+
+            InvokeAsync(() => ValueChanged.InvokeAsync(_value));
+        }, TaskScheduler.Default);
+    }
+
+    public void Dispose()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+    }
+}

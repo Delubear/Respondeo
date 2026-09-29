@@ -4,36 +4,6 @@
     margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
 }
 
-/* ---------- Search ---------- */
-.summa__search {
-    margin: 0 auto 2rem;
-    max-width: 34rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.summa__search-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-soft);
-}
-
-.summa__search-input {
-    font: inherit;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.5rem;
-    background: var(--parchment);
-    color: var(--ink);
-}
-
-.summa__search-input:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 1px;
-}
-
 /* ---------- Search results ---------- */
 .summa__results-count {
     color: var(--ink-soft);

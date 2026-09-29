@@ -129,8 +129,11 @@ public class ArticlesTests : TestContext
         // "sacraments" renders as the "Sacraments" pill on the confession card.
         cut.Find("#article-search").Input("Sacraments");
 
-        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("discover/articles/confession", hrefs);
-        Assert.DoesNotContain("node/beta", hrefs);
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/articles/confession", hrefs);
+            Assert.DoesNotContain("node/beta", hrefs);
+        });
     }
 }

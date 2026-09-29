@@ -25,15 +25,11 @@
     }
     else
     {
-        <div class="discover__search">
-            <label class="discover__search-label" for="miracles-search">Search miracles</label>
-            <input id="miracles-search"
-                   class="discover__search-input"
-                   type="search"
-                   placeholder="e.g. Lanciano, healing, Italy..."
-                   value="@Browse.Query"
-                   @oninput="OnSearchInput" />
-        </div>
+        <SearchBox Id="miracles-search"
+                           Label="Search miracles"
+                           Placeholder="e.g. Lanciano, healing, Italy..."
+                           Value="@Browse.Query"
+                           ValueChanged="OnSearchChanged" />
 
         <div class="discover__layout">
             <aside class="discover__sidebar">
@@ -118,7 +114,7 @@
         _regions = _all.Select(m => m.Region).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Region, StringComparer.CurrentCultureIgnoreCase).ToList();
     }
 
-    private void OnSearchInput(ChangeEventArgs e) => Browse.Query = e.Value?.ToString() ?? string.Empty;
+    private void OnSearchChanged(string value) => Browse.Query = value;
 
     private void OnSortChanged(ChangeEventArgs e)
     {
@@ -186,7 +182,8 @@
             || m.Summary.Contains(query, StringComparison.OrdinalIgnoreCase)
             || (m.Country?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
             || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase))
-            || m.Types.Select(_facets.Category).Any(k => k.Contains(query, StringComparison.OrdinalIgnoreCase));
+            || m.Types.Select(_facets.Category).Any(k => k.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || _facets.Region(m.Region).Contains(query, StringComparison.OrdinalIgnoreCase);
     }
 
     private string CardSummary(MiracleIndexEntry m)

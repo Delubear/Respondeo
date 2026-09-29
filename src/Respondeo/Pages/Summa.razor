@@ -4,7 +4,6 @@
 @inject IBreadcrumbTrail Trail
 @inject SummaBrowseState Browse
 @inject IJSRuntime JS
-@implements IDisposable
 
 <PageTitle>@(_activePart is null ? "Summa Theologiae — Respondeo" : $"{_activePart.Title} — Summa Theologiae")</PageTitle>
 
@@ -47,15 +46,11 @@
     }
     else
     {
-        <div class="summa__search">
-            <label class="summa__search-label" for="summa-search">Search questions &amp; articles</label>
-            <input id="summa-search"
-                   class="summa__search-input"
-                   type="search"
-                   placeholder="e.g. existence of God, virtue, grace..."
-                   value="@_query"
-                   @oninput="OnSearchInput" />
-        </div>
+        <SearchBox Id="summa-search"
+                           Label="Search questions &amp; articles"
+                           Placeholder="e.g. existence of God, virtue, grace..."
+                           Value="@_query"
+                           ValueChanged="OnSearchChanged" />
 
         @if (IsSearching)
         {
@@ -192,10 +187,6 @@
     // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
     private SearchEntry[] _entries = Array.Empty<SearchEntry>();
 
-    // A short debounce coalesces bursts of keystrokes into a single search + render pass.
-    private CancellationTokenSource? _debounceCts;
-    private const int DebounceMs = 150;
-
     // Cap on rendered results so a broad query stays responsive; when hit, a hint asks the user to
     // refine the search.
     private const int MaxResults = 50;
@@ -275,10 +266,10 @@
         return _index.Parts.Where(part => string.Equals(part.Id, _activePart.Key, StringComparison.OrdinalIgnoreCase));
     }
 
-    private void OnSearchInput(ChangeEventArgs e)
+    private void OnSearchChanged(string value)
     {
-        _query = e.Value?.ToString() ?? string.Empty;
-        DebounceSearch();
+        _query = value;
+        RunSearch();
     }
 
     // A part is expanded when the mount-time snapshot (read from the JS store) says so. This value
@@ -294,28 +285,6 @@
     // Snapshot of which sections were open when this page mounted; drives the initial `open`
     // attributes and never changes afterward (see IsPartOpen).
     private readonly HashSet<string> _openOnMount = new(StringComparer.Ordinal);
-
-    private void DebounceSearch()
-    {
-        _debounceCts?.Cancel();
-        _debounceCts?.Dispose();
-        var cts = new CancellationTokenSource();
-        _debounceCts = cts;
-
-        _ = Task.Delay(DebounceMs, cts.Token).ContinueWith(t =>
-        {
-            if (t.IsCanceled)
-            {
-                return;
-            }
-
-            InvokeAsync(() =>
-            {
-                RunSearch();
-                StateHasChanged();
-            });
-        }, TaskScheduler.Default);
-    }
 
     // Groups a part's questions into consecutive runs sharing the same treatise heading, preserving
     // reading order. Questions before the first treatise heading form a leading group with a null
@@ -403,12 +372,6 @@
                 entry.ArticleNumber,
                 entry.Treatise));
         }
-    }
-
-    public void Dispose()
-    {
-        _debounceCts?.Cancel();
-        _debounceCts?.Dispose();
     }
 
     private sealed record SearchEntry(

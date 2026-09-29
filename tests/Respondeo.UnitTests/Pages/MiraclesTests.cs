@@ -125,4 +125,34 @@ public class MiraclesTests : TestContext
             Assert.DoesNotContain("discover/miracles/lanciano-eucharistic-miracle", hrefs);
         });
     }
+
+    [Fact]
+    public void Search_by_region_label_filters_to_matching_miracle()
+    {
+        var cut = RenderComponent<Miracles>();
+
+        cut.Find("#miracles-search").Input("Latin America");
+
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/miracles/our-lady-of-guadalupe", hrefs);
+            Assert.DoesNotContain("discover/miracles/lanciano-eucharistic-miracle", hrefs);
+        });
+    }
+
+    [Fact]
+    public void Search_by_country_filters_to_matching_miracle()
+    {
+        var cut = RenderComponent<Miracles>();
+
+        cut.Find("#miracles-search").Input("Italy");
+
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/miracles/lanciano-eucharistic-miracle", hrefs);
+            Assert.DoesNotContain("discover/miracles/our-lady-of-guadalupe", hrefs);
+        });
+    }
 }

@@ -520,35 +520,11 @@ h1, h2, h3 {
     padding-top: 0;
 }
 
-/* Shared Discover browse chrome (.discover__*): search box, results toolbar, sort control, and the
-   filter sidebar. These are GLOBAL on purpose — the same markup is reused across the Prayers,
-   Devotions, Miracles, and Discover browse pages, so they are not scoped to any single component.
-   Component-owned styles live in their own .razor.css files (DiscoverList, DiscoverRow, PrayerDetail,
-   DevotionPlayer). */
-.discover__search {
-    margin: 1.5rem 0;
-    text-align: center;
-}
-
-.discover__search-label {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-    margin-bottom: 0.35rem;
-}
-
-.discover__search-input {
-    display: block;
-    width: 100%;
-    max-width: 28rem;
-    margin-inline: auto;
-    padding: 0.6rem 0.85rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.4rem;
-    background: var(--parchment);
-    color: var(--ink);
-    font: inherit;
-}
+/* Shared Discover browse chrome (.discover__*): results toolbar, sort control, and the filter
+   sidebar. These are GLOBAL on purpose — the same markup is reused across the Prayers, Devotions,
+   Miracles, and Discover browse pages, so they are not scoped to any single component. The search
+   box lives in its own SearchBox component (SearchBox.razor.css). Other component-owned styles live
+   in their own .razor.css files (DiscoverList, DiscoverRow, PrayerDetail, DevotionPlayer). */
 
 .discover__empty {
     color: var(--ink-soft);
