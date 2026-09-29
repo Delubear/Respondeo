@@ -429,7 +429,7 @@
 
     /* A compact exit affordance keeps the focus on the prayers, not the chrome. */
     .devotion__exit {
-        padding-top: 0.6rem;
+        padding-top: 0.3rem;
     }
 
     /* Tighter mystery spacing so a decade's announcement doesn't push the beads
