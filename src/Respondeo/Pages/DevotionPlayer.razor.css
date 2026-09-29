@@ -39,6 +39,16 @@
     text-align: center;
 }
 
+/* On desktop there is plenty of vertical room, so keep the scrolling list from stretching the full
+   height by reserving more space around it. */
+@media (min-width: 40.0625rem) {
+    .devotion--praying {
+        height: auto;
+        max-height: calc(100vh - 20rem);
+        max-height: calc(100dvh - 20rem);
+    }
+}
+
 .devotion__hint {
     color: var(--ink-soft);
     font-size: 0.95rem;
