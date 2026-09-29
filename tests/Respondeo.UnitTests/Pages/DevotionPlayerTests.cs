@@ -20,6 +20,8 @@ public class DevotionPlayerTests : TestContext
         Services.AddSingleton(_devotions);
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddSingleton(Substitute.For<IDevotionProgressService>());
+        Services.AddSingleton(Substitute.For<IThemeService>());
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -122,5 +124,29 @@ public class DevotionPlayerTests : TestContext
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "nope"));
 
         Assert.Contains("Devotion not found", cut.Markup);
+    }
+
+    [Fact]
+    public void Resume_prompt_shows_progress_count_as_a_single_card()
+    {
+        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
+        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
+        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+
+        var progress = Substitute.For<IDevotionProgressService>();
+        progress.LoadAsync("divine-mercy-chaplet")
+            .Returns(new DevotionProgress("divine-mercy-chaplet", null, 2));
+        Services.AddSingleton(progress);
+
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+
+        // Single-set devotion expands to four prayer rows; the reader had completed two of them.
+        var resume = cut.Find(".devotion__resume");
+        Assert.Contains("2 of 4 prayers", resume.TextContent);
+
+        // The resume prompt is a single Card action (same component as the set choices), with no
+        // separate "Start over" control.
+        Assert.NotEmpty(resume.QuerySelectorAll("button.card"));
+        Assert.DoesNotContain("Start over", resume.TextContent);
     }
 }

@@ -386,6 +386,12 @@
     margin-bottom: 1.5rem;
 }
 
+/* Resume prompt shown on the intro when an un-finished devotion is saved. It's a single Card (the
+   same component as the set choices below), so it just needs spacing beneath it. */
+.devotion__resume {
+    margin: 0 0 1.5rem;
+}
+
 .devotion__sets-title {
     font-family: var(--display);
     font-size: 1.1rem;
@@ -400,6 +406,42 @@
 
 /* ---------- Mobile ---------- */
 @media (max-width: 40rem) {
+    /* On a phone the content chain (.content/.content__inner) is a flex column filling the viewport,
+       so the praying section flexes to fill whatever height is left below the chrome instead of
+       subtracting a guessed value. This kills the dead background below the exit link regardless of
+       the real chrome height. In immersive mode the chrome is hidden, so the same rule simply fills
+       even more of the screen. Break out of the layout's side padding so rows run edge to edge. */
+    .devotion--praying {
+        height: auto;
+        max-height: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        margin-inline: -1rem;
+        padding-inline: 1rem;
+    }
+
+    /* Trim the hint to a single quiet line so it doesn't cost a full text block
+       of vertical space above the list. */
+    .devotion__hint {
+        font-size: 0.82rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* A compact exit affordance keeps the focus on the prayers, not the chrome. */
+    .devotion__exit {
+        padding-top: 0.6rem;
+    }
+
+    /* Tighter mystery spacing so a decade's announcement doesn't push the beads
+       off-screen. */
+    .devotion__mystery {
+        margin: 0.5rem 0 0.35rem;
+    }
+
+    .devotion__mystery-title {
+        font-size: 1.2rem;
+    }
+
     /* Reclaim horizontal room: a narrower thread column and tighter body padding. */
     .devotion__step {
         grid-template-columns: 2rem 1fr;

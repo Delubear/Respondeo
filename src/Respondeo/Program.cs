@@ -39,6 +39,9 @@ builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 // Applies and persists the visitor's preferred light/dark theme.
 builder.Services.AddScoped<IThemeService, ThemeService>();
 
+// Persists the reader's place in a devotion (localStorage) so it can be resumed after leaving.
+builder.Services.AddScoped<IDevotionProgressService, DevotionProgressService>();
+
 // Signals whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
 builder.Services.AddScoped<NavigationIntent>();
 

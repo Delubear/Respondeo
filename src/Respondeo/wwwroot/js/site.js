@@ -100,6 +100,19 @@ window.respondeoDialog = {
     }
 };
 
+// Toggles a body-level "immersive" class so the layout can hide its chrome (masthead, nav, footer)
+// while the reader is actively praying a devotion. Kept as a body class rather than component state so
+// the shared MainLayout can react without a cascading parameter. Always paired: enter on begin, leave
+// on exit/dispose, so the chrome never stays hidden after leaving the devotion.
+window.respondeoImmersive = {
+    enter: function () {
+        document.body.classList.add('is-immersive');
+    },
+    leave: function () {
+        document.body.classList.remove('is-immersive');
+    }
+};
+
 // Reports scroll position to a .NET component so a floating control can mirror the back-to-top
 // button's reveal threshold (kept in sync with js/scroll.js: shows once scrolled past 400px).
 window.respondeoScrollWatch = {

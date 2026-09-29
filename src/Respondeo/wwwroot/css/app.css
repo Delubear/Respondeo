@@ -618,3 +618,93 @@ input[type="search"]::-webkit-search-cancel-button {
    DiscoverList and DiscoverRow components (see their .razor.css files). */
 
 /* Discover article detail styles (.discover-article*) are scoped to the ArticleDetail page. */
+
+/* ---------- Mobile layout fill ----------
+   On phones, make the shell's content chain a flex column so any page that opts in (currently the
+   devotion praying view) can flex to fill the leftover viewport height instead of guessing a
+   subtracted chrome height. This is inert for normal pages: with no flex:1 child, items keep their
+   natural height and stack top-down exactly like ordinary block flow. */
+@media (max-width: 640px) {
+    .content {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .content__inner {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}
+
+/* ---------- Immersive devotion mode ----------
+   While the reader is actively praying a devotion, DevotionPlayer toggles body.is-immersive so the
+   surrounding chrome steps aside and the prayer thread gets nearly the whole viewport. Only applied
+   on phones, where the stacked masthead/nav/footer otherwise claim most of the screen; desktops keep
+   their full chrome. These rules live here (not in a scoped stylesheet) because the nav and footer are
+   separate components, so a global selector is needed to reach them all. */
+@media (max-width: 640px) {
+    body.is-immersive .masthead,
+    body.is-immersive .pillarnav,
+    body.is-immersive .mastnav,
+    body.is-immersive .breadcrumb,
+    body.is-immersive .colophon {
+        display: none;
+    }
+
+    /* Bound the shell to the viewport so the praying view's list scrolls internally instead of
+       growing the whole page. Without a fixed height, .page (min-height:100vh) grows past the screen
+       when a Rosary is long, the body scrolls, and the reader lands mid-page (missing the hint/top
+       bead) with "Leave" stranded at the bottom. Locking the height lets min-height:0 propagate so
+       .devotion__list's overflow-y:auto actually takes effect, pinning the hint at top and exit at
+       bottom. Only safe in immersive mode, where all chrome is hidden. */
+    body.is-immersive .page {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    body.is-immersive .content__inner {
+        padding: 0.75rem 1rem 1rem;
+    }
+
+    /* The praying view carries a second ThemeToggle (the masthead's is hidden here). It rides in the
+       exit row and is off-screen unless immersive. Targeted globally because .theme-toggle belongs to
+       the ThemeToggle component's own scope, so a scoped DevotionPlayer rule can't reach it. */
+    .devotion__exit-theme {
+        display: none;
+    }
+
+    body.is-immersive .devotion__exit {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.is-immersive .devotion__exit-theme {
+        display: inline-flex;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Reset the shared toggle from its masthead-corner absolute positioning/colors to sit in the exit
+       row and read against the paper background. It stays flush to the row's right edge (via the
+       wrapper above) so "Leave" remains truly centered in the full width. */
+    body.is-immersive .devotion__exit-theme .theme-toggle {
+        position: static;
+        top: auto;
+        right: auto;
+        color: var(--ink-soft);
+    }
+
+    body.is-immersive .devotion__exit-theme .theme-toggle:hover {
+        color: var(--accent);
+        border-color: var(--rule);
+        background: var(--parchment);
+    }
+}

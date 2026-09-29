@@ -3,6 +3,7 @@
 @inject IDevotionService Devotions
 @inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
+@inject IDevotionProgressService Progress
 @inject IJSRuntime JS
 
 <PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
@@ -42,6 +43,20 @@ else if (_beads is null)
             }
         </header>
 
+        @if (_savedProgress is { CompletedCount: > 0 })
+        {
+            @* A previous visit was left un-finished; offer to pick up where they left off. Beginning
+               any set below already starts fresh, so a single Resume action is all that's needed. *@
+            <div class="devotion__resume" role="status">
+                <Card Title="Resume where you left off"
+                      Pill="In progress"
+                      Summary="@ResumeText"
+                      Cta="Resume &rarr;"
+                      Level="2"
+                      OnClick="Resume" />
+            </div>
+        }
+
         @if (!string.IsNullOrWhiteSpace(_devotion.IntroHtml))
         {
             <div class="devotion__intro-body">
@@ -76,7 +91,7 @@ else if (_beads is null)
                       Summary="@_devotion.Summary"
                       Cta="Begin praying &rarr;"
                       Level="3"
-                      OnClick="Begin" />
+                      OnClick="() => Begin()" />
             </div>
         }
     </section>
@@ -166,9 +181,14 @@ else
             }
         </ol>
 
-        <p class="devotion__exit">
+        <div class="devotion__exit">
             <a href="discover/devotions">Leave the devotion</a>
-        </p>
+            @* Only reachable in immersive mode, where the masthead (and its theme toggle) is hidden;
+               kept beside the exit link so it stays out of the prayer flow. Hidden by CSS elsewhere. *@
+            <span class="devotion__exit-theme">
+                <ThemeToggle />
+            </span>
+        </div>
     </section>
 
     <dialog @ref="_prayerDialog" class="devotion-dialog" aria-labelledby="devotion-dialog-title">
@@ -203,6 +223,38 @@ else
     private int _prayerCount;
     private int _completedCount;
 
+    // Saved progress for this devotion (from a previous, un-finished visit), if any. Drives the
+    // Resume / Start over choice on the intro screen.
+    private DevotionProgress? _savedProgress;
+
+    // Summary line for the resume card, naming the saved mystery set (when there is one) and how far
+    // along the reader was (e.g. "The Sorrowful Mysteries — 12 of 59 prayers complete."). The card's
+    // title and "In progress" pill carry the rest of the meaning, so this stays purely descriptive.
+    private string ResumeText
+    {
+        get
+        {
+            var saved = _savedProgress;
+            if (saved is null || _devotion is null)
+            {
+                return "Pick up where you left off.";
+            }
+
+            var setName = _devotion.MysterySets
+                .FirstOrDefault(s => s.Id == saved.SetId)?.Name;
+
+            var total = CountPrayers(saved.SetId);
+            var done = Math.Clamp(saved.CompletedCount, 0, total);
+
+            // Set names already read as full titles ("The Sorrowful Mysteries").
+            var progress = total > 0 ? $"{done} of {total} prayers complete." : "in progress.";
+
+            return string.IsNullOrWhiteSpace(setName)
+                ? $"You've prayed {progress}"
+                : $"{setName} \u2014 {progress}";
+        }
+    }
+
     private ElementReference _prayerDialog;
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
@@ -230,12 +282,19 @@ else
         _beads = null;
         _completedCount = 0;
         _prayerCount = 0;
+        _savedProgress = null;
         _devotion = await Devotions.GetDevotionAsync(Id);
+
+        // Reset chrome in case we arrived here directly from another devotion's praying view.
+        await LeaveImmersiveAsync();
 
         if (_devotion is not null)
         {
             _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
             await LoadPrayersAsync(_devotion);
+
+            // Surface any un-finished progress so the intro screen can offer Resume / Start over.
+            _savedProgress = await Progress.LoadAsync(Id);
         }
 
         _loading = false;
@@ -271,13 +330,27 @@ else
         }
     }
 
-    private void SelectAndBegin(string setId)
+    private async Task SelectAndBegin(string setId)
     {
         _selectedSetId = setId;
-        Begin();
+        await Begin();
     }
 
-    private void Begin()
+    // Counts how many prayer rows a given set expands to, so the resume banner can show a total
+    // without disturbing the live praying state. Mirrors the ordinal numbering done in Begin.
+    private int CountPrayers(string? setId)
+    {
+        if (_devotion is null)
+        {
+            return 0;
+        }
+
+        return BuildBeads(_devotion, setId).Count(b => b.IsPrayer);
+    }
+
+    // Starts (or resumes) praying the currently selected set. A non-zero startCompleted restores an
+    // earlier place in the thread; the value is clamped so a saved count can never exceed the rows.
+    private async Task Begin(int startCompleted = 0)
     {
         _beads = BuildBeads(_devotion!, _selectedSetId);
 
@@ -292,12 +365,59 @@ else
         }
 
         _prayerCount = ordinal;
-        _completedCount = 0;
+        _completedCount = Math.Clamp(startCompleted, 0, _prayerCount);
+
+        // Persist the starting point so an immediate exit still leaves something to resume.
+        await SaveProgressAsync();
+
+        // Enter immersive mode so the layout can hand the praying view the full screen on mobile.
+        await EnterImmersiveAsync();
+    }
+
+    // Resumes the saved slot: reselect the stored set, rebuild the thread and restore the pointer.
+    private async Task Resume()
+    {
+        if (_savedProgress is null)
+        {
+            await Begin();
+            return;
+        }
+
+        _selectedSetId = _savedProgress.SetId ?? _selectedSetId;
+        await Begin(_savedProgress.CompletedCount);
+    }
+
+    private async Task SaveProgressAsync() =>
+        await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _completedCount));
+
+    private async Task EnterImmersiveAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoImmersive.enter");
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit going away during teardown; nothing to toggle.
+        }
+    }
+
+    private async Task LeaveImmersiveAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoImmersive.leave");
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit going away during teardown; the class resets on next load anyway.
+        }
     }
 
     // Marks the next prayer complete, or unmarks the most recently completed one. Completion can only
-    // move forward one step at a time, so nothing can be marked out of order.
-    private void ToggleComplete(int ordinal)
+    // move forward one step at a time, so nothing can be marked out of order. Each change is persisted
+    // so leaving mid-devotion can be resumed; finishing the devotion clears the saved slot.
+    private async Task ToggleComplete(int ordinal)
     {
         if (ordinal == _completedCount)
         {
@@ -306,6 +426,20 @@ else
         else if (ordinal == _completedCount - 1)
         {
             _completedCount--;
+        }
+        else
+        {
+            return;
+        }
+
+        if (_completedCount >= _prayerCount)
+        {
+            // The devotion is finished; nothing left to resume.
+            await Progress.ClearAsync(Id);
+        }
+        else
+        {
+            await SaveProgressAsync();
         }
     }
 
@@ -403,6 +537,7 @@ else
         try
         {
             await JS.InvokeVoidAsync("respondeoDialog.close", _prayerDialog);
+            await JS.InvokeVoidAsync("respondeoImmersive.leave");
         }
         catch (JSDisconnectedException)
         {
