@@ -8,4 +8,9 @@ tags:
   - chaplet
 ---
 
-Eternal Father, I offer you the Body and Blood, Soul and Divinity of your dearly beloved Son, our Lord Jesus Christ, in atonement for our sins and those of the whole world.
+Eternal Father,
+I offer you the Body and Blood,
+Soul and Divinity of your dearly beloved Son,
+our Lord Jesus Christ,
+in atonement for our sins
+and those of the whole world.

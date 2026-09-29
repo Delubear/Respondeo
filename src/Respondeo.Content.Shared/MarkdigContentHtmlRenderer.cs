@@ -15,5 +15,15 @@ internal sealed class MarkdigContentHtmlRenderer : IContentHtmlRenderer
         .Use<ContentContainerExtension>()
         .Build();
 
+    // Same pipeline as above, but soft line breaks (single newlines) render as <br /> so
+    // authored line breaks in verse-like content such as prayers are preserved.
+    private readonly MarkdownPipeline _lineBreakPipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .Use<ContentContainerExtension>()
+        .UseSoftlineBreakAsHardlineBreak()
+        .Build();
+
     public string ToHtml(string markdown) => Markdown.ToHtml(markdown, _pipeline);
+
+    public string ToHtmlPreservingLineBreaks(string markdown) => Markdown.ToHtml(markdown, _lineBreakPipeline);
 }

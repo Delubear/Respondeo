@@ -8,4 +8,5 @@ tags:
   - chaplet
 ---
 
-Holy God, Holy Mighty One, Holy Immortal One, have mercy on us and on the whole world.
+Holy God, Holy Mighty One, Holy Immortal One,
+have mercy on us and on the whole world.

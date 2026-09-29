@@ -8,4 +8,11 @@ public interface IContentHtmlRenderer
 {
     /// <summary>Renders the supplied Markdown body to HTML.</summary>
     string ToHtml(string markdown);
+
+    /// <summary>
+    /// Renders the supplied Markdown body to HTML, treating a single (soft) line break as a hard
+    /// line break so authored line breaks are preserved. Intended for verse-like content such as
+    /// prayers, where the traditional line layout is significant.
+    /// </summary>
+    string ToHtmlPreservingLineBreaks(string markdown);
 }
