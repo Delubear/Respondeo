@@ -210,7 +210,8 @@
                 results = results.Where(p =>
                     p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
                     || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
+                    || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase))
+                    || (FormatCategory(p.Category)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
             }
 
             results = _sort == PrayerSort.TitleDesc

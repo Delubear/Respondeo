@@ -77,6 +77,18 @@ public class PrayersTests : TestContext
     }
 
     [Fact]
+    public void Search_by_category_label_filters_to_matching_prayers()
+    {
+        var cut = RenderComponent<Prayers>();
+
+        cut.Find("input#prayer-search").Input("Marian");
+
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+        Assert.Contains("discover/prayers/hail-mary", hrefs);
+        Assert.DoesNotContain("discover/prayers/our-father", hrefs);
+    }
+
+    [Fact]
     public void Shows_an_empty_message_when_nothing_matches()
     {
         var cut = RenderComponent<Prayers>();
