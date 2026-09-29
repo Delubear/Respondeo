@@ -620,18 +620,20 @@ input[type="search"]::-webkit-search-cancel-button {
 /* Discover article detail styles (.discover-article*) are scoped to the ArticleDetail page. */
 
 /* ---------- Mobile layout fill ----------
-   On phones, make the shell's content chain a flex column so any page that opts in (currently the
-   devotion praying view) can flex to fill the leftover viewport height instead of guessing a
-   subtracted chrome height. This is inert for normal pages: with no flex:1 child, items keep their
-   natural height and stack top-down exactly like ordinary block flow. */
+   On phones, the immersive devotion praying view needs the shell's content chain to be a flex
+   column so it can flex to fill the leftover viewport height (instead of guessing a subtracted
+   chrome height) and let min-height:0 propagate down to its internally-scrolling list. This is
+   gated to immersive mode: applying it to every page turned normal block flow into a min-height:0
+   flex column, which broke width/scroll measurement on pages like the Home reel and let the column
+   scroll vertically past the footer. */
 @media (max-width: 640px) {
-    .content {
+    body.is-immersive .content {
         display: flex;
         flex-direction: column;
         min-height: 0;
     }
 
-    .content__inner {
+    body.is-immersive .content__inner {
         display: flex;
         flex-direction: column;
         flex: 1 1 auto;
