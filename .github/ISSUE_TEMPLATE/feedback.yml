@@ -1,0 +1,35 @@
+name: Feedback or content correction
+description: Share a suggestion, an idea, or a correction to the content.
+title: "[Feedback]: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping make Respondeo better. Corrections to prayers, translations, or citations are especially welcome.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of feedback is this?
+      options:
+        - Content correction (prayer, translation, citation, etc.)
+        - Suggestion or idea
+        - Something confusing or unclear
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Tell us what you have in mind. For a correction, please note the source if you can.
+      placeholder: The Latin of this prayer should read...
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page or URL
+      description: Where does this apply?
+      placeholder: /discover/prayers/hail-mary
+    validations:
+      required: false

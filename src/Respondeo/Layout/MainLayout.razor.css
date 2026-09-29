@@ -89,6 +89,33 @@
     margin: 0 auto;
 }
 
+.colophon__meta {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    opacity: 0.7;
+}
+
+.colophon__meta a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.colophon__meta a:hover,
+.colophon__meta a:focus-visible {
+    color: var(--masthead-fg);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.colophon__sep {
+    opacity: 0.6;
+}
+
 /* ---------- Responsive ---------- */
 /* On narrower viewports the centered pillar nav creeps toward the portrait; shrink it so its
    right edge stays clear of the "Inquiry" tab before it's hidden entirely on phones. */
