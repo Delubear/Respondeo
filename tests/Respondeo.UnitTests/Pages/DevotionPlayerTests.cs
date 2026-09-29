@@ -32,6 +32,23 @@ public class DevotionPlayerTests : TestContext
         _prayers.GetPrayerAsync(id).Returns(new Prayer { Id = id, Title = title, Html = html });
     }
 
+    // Wires up the simple chaplet plus the two prayers it references, the arrangement shared by
+    // nearly every test here.
+    private void ArrangeSimpleDevotion()
+    {
+        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
+        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
+        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+    }
+
+    // Registers a progress service that reports the given saved progress for the simple chaplet.
+    private void ArrangeSavedProgress(DevotionProgress? progress)
+    {
+        var service = Substitute.For<IDevotionProgressService>();
+        service.LoadAsync("divine-mercy-chaplet").Returns(progress);
+        Services.AddSingleton(service);
+    }
+
     private static Devotion SimpleDevotion() => new()
     {
         Id = "divine-mercy-chaplet",
@@ -48,9 +65,7 @@ public class DevotionPlayerTests : TestContext
     [Fact]
     public void Shows_the_intro_and_begin_button_before_starting()
     {
-        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
-        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
-        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+        ArrangeSimpleDevotion();
 
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
 
@@ -62,9 +77,7 @@ public class DevotionPlayerTests : TestContext
     [Fact]
     public void Begin_lists_every_repetition_as_its_own_row()
     {
-        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
-        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
-        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+        ArrangeSimpleDevotion();
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
 
         cut.Find("button.card").Click();
@@ -82,9 +95,7 @@ public class DevotionPlayerTests : TestContext
     [Fact]
     public void Steps_can_only_be_marked_complete_in_order()
     {
-        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
-        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
-        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+        ArrangeSimpleDevotion();
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
         cut.Find("button.card").Click();
 
@@ -104,9 +115,7 @@ public class DevotionPlayerTests : TestContext
     [Fact]
     public void Tapping_the_book_opens_the_prayer_text_in_a_dialog()
     {
-        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
-        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
-        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+        ArrangeSimpleDevotion();
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
         cut.Find("button.card").Click();
 
@@ -129,14 +138,8 @@ public class DevotionPlayerTests : TestContext
     [Fact]
     public void Resume_prompt_shows_progress_count_as_a_single_card()
     {
-        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
-        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
-        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
-
-        var progress = Substitute.For<IDevotionProgressService>();
-        progress.LoadAsync("divine-mercy-chaplet")
-            .Returns(new DevotionProgress("divine-mercy-chaplet", null, 2));
-        Services.AddSingleton(progress);
+        ArrangeSimpleDevotion();
+        ArrangeSavedProgress(new DevotionProgress("divine-mercy-chaplet", null, 2));
 
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
 
@@ -148,5 +151,33 @@ public class DevotionPlayerTests : TestContext
         // separate "Start over" control.
         Assert.NotEmpty(resume.QuerySelectorAll("button.card"));
         Assert.DoesNotContain("Start over", resume.TextContent);
+    }
+
+    [Fact]
+    public void No_resume_prompt_when_there_is_no_saved_progress()
+    {
+        ArrangeSimpleDevotion();
+        ArrangeSavedProgress(null);
+
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+
+        Assert.Empty(cut.FindAll(".devotion__resume"));
+    }
+
+    [Fact]
+    public void Resuming_restores_the_saved_place_in_the_thread()
+    {
+        ArrangeSimpleDevotion();
+        // Two of the four prayer rows were completed before the reader left.
+        ArrangeSavedProgress(new DevotionProgress("divine-mercy-chaplet", null, 2));
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+
+        cut.Find(".devotion__resume button.card").Click();
+
+        // The praying view opens with the first two rows already marked done and the third enabled.
+        Assert.NotEmpty(cut.FindAll(".devotion--praying"));
+        Assert.Equal(2, cut.FindAll(".devotion__prayer-row.is-done").Count);
+        var mains = cut.FindAll(".devotion__prayer-main").ToList();
+        Assert.False(mains[2].HasAttribute("disabled"));
     }
 }
