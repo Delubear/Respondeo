@@ -67,23 +67,13 @@ jobs:
       # (and any relinking/trimming regressions) representative of production.
       # Relinking only runs at publish, so the build/test steps do not need it.
       #
-      # The workload packs (Emscripten + Mono AOT tooling) are hundreds of MB and
-      # slow to download, so cache them keyed on the pinned SDK version from
-      # global.json. On a cache hit the install step is skipped entirely.
-      - name: Cache wasm-tools workload
-        id: wasm-cache
-        if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/cache@v4
-        with:
-          path: |
-            /usr/share/dotnet/packs
-            /usr/share/dotnet/sdk-manifests
-            /usr/share/dotnet/metadata
-            /usr/share/dotnet/template-packs
-          key: ${{ runner.os }}-wasm-tools-${{ hashFiles('global.json') }}
-
+      # The workload packs live under root-owned /usr/share/dotnet, so caching
+      # them with actions/cache is not viable: tar restores under the non-root
+      # runner user and fails with "Cannot change mode ... Operation not
+      # permitted" (exit code 2), breaking the whole job. Installing fresh each
+      # run is slower but reliable; NuGet packages are still cached below.
       - name: Install wasm-tools workload
-        if: steps.filter.outputs.code-changed == 'true' && steps.wasm-cache.outputs.cache-hit != 'true'
+        if: steps.filter.outputs.code-changed == 'true'
         run: dotnet workload install wasm-tools
 
       # Cache restored NuGet packages keyed on the project files. Any dependency
