@@ -1,0 +1,117 @@
+.dialog {
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    background: var(--paper);
+    color: var(--ink);
+    max-width: min(var(--dialog-max-width, 38rem), 100vw - 2rem);
+    width: 100%;
+    box-shadow: 0 1.5rem 3rem var(--shadow);
+}
+
+.dialog::backdrop {
+    background: rgba(17, 17, 17, 0.55);
+}
+
+.dialog__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(85vh, 48rem);
+}
+
+.dialog__head {
+    position: relative;
+    padding: 1.25rem 1.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.dialog__eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin: 0 0 0.3rem;
+}
+
+.dialog__title {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    margin: 0;
+    padding-right: 2rem;
+}
+
+.dialog__close {
+    position: absolute;
+    top: 0.85rem;
+    right: 1rem;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.4rem;
+}
+
+.dialog__close:hover {
+    color: var(--accent);
+}
+
+.dialog__close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.dialog__body {
+    padding: 1.5rem 1.75rem;
+    overflow-y: auto;
+    line-height: 1.7;
+}
+
+.dialog__body p {
+    margin: 0 0 1rem;
+}
+
+/* Roomier body typography for reading longer prose (e.g. a prayer text). */
+.dialog--roomy .dialog__body {
+    font-size: 1.15rem;
+}
+
+.dialog__foot {
+    padding: 1rem 1.75rem 1.5rem;
+    border-top: 1px solid var(--rule);
+    text-align: right;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 40rem) {
+    /* Full-width dialog that sits at the bottom of the screen, easier to reach one-handed. */
+    .dialog {
+        max-width: 100vw;
+        width: 100vw;
+        margin: auto auto 0;
+        border-radius: 0.75rem 0.75rem 0 0;
+    }
+
+    .dialog__panel {
+        max-height: 80vh;
+        max-height: 80dvh;
+    }
+
+    .dialog__head {
+        padding: 1rem 1.25rem 0.85rem;
+    }
+
+    .dialog__body {
+        padding: 1.25rem;
+    }
+
+    .dialog--roomy .dialog__body {
+        font-size: 1.1rem;
+    }
+
+    .dialog__foot {
+        padding: 0.85rem 1.25rem 1.25rem;
+    }
+}

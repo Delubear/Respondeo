@@ -335,71 +335,6 @@
     stroke-linejoin: round;
 }
 
-/* Prayer text dialog */
-.devotion-dialog {
-    padding: 0;
-    border: 1px solid var(--rule);
-    border-radius: 0.75rem;
-    background: var(--paper);
-    color: var(--ink);
-    max-width: min(38rem, 100vw - 2rem);
-    width: 100%;
-    box-shadow: 0 1.5rem 3rem var(--shadow);
-}
-
-.devotion-dialog::backdrop {
-    background: rgba(17, 17, 17, 0.55);
-}
-
-.devotion-dialog__panel {
-    display: flex;
-    flex-direction: column;
-    max-height: min(85vh, 40rem);
-}
-
-.devotion-dialog__head {
-    position: relative;
-    padding: 1.25rem 1.75rem 1rem;
-    border-bottom: 1px solid var(--rule);
-}
-
-.devotion-dialog__title {
-    font-family: var(--display);
-    font-size: 1.5rem;
-    margin: 0;
-    padding-right: 2rem;
-}
-
-.devotion-dialog__close {
-    position: absolute;
-    top: 0.85rem;
-    right: 1rem;
-    border: none;
-    background: transparent;
-    color: var(--ink-soft);
-    font-size: 1.6rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.4rem;
-}
-
-.devotion-dialog__close:hover {
-    color: var(--accent);
-}
-
-.devotion-dialog__close:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-}
-
-.devotion-dialog__body {
-    padding: 1.5rem 1.75rem;
-    overflow-y: auto;
-    font-size: 1.15rem;
-    line-height: 1.7;
-}
-
 /* Devotion intro + mystery-set chooser */
 .devotion__intro-body {
     color: var(--ink-soft);
@@ -488,27 +423,5 @@
 
     .devotion__prayer-book {
         width: 3.25rem;
-    }
-
-    /* Full-width dialog that sits at the bottom of the screen, easier to reach one-handed. */
-    .devotion-dialog {
-        max-width: 100vw;
-        width: 100vw;
-        margin: auto auto 0;
-        border-radius: 0.75rem 0.75rem 0 0;
-    }
-
-    .devotion-dialog__panel {
-        max-height: 80vh;
-        max-height: 80dvh;
-    }
-
-    .devotion-dialog__head {
-        padding: 1rem 1.25rem 0.85rem;
-    }
-
-    .devotion-dialog__body {
-        padding: 1.25rem;
-        font-size: 1.1rem;
     }
 }

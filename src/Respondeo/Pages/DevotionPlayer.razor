@@ -201,20 +201,12 @@ else
         </div>
     </section>
 
-    <dialog @ref="_prayerDialog" class="devotion-dialog" aria-labelledby="devotion-dialog-title">
-        <div class="devotion-dialog__panel">
-            <header class="devotion-dialog__head">
-                <h2 id="devotion-dialog-title" class="devotion-dialog__title">@_openPrayerTitle</h2>
-                <button type="button" class="devotion-dialog__close" aria-label="Close" @onclick="ClosePrayer">&times;</button>
-            </header>
-            <div class="devotion-dialog__body">
-                @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
-                {
-                    @((MarkupString)_openPrayerHtml)
-                }
-            </div>
-        </div>
-    </dialog>
+    <Dialog @ref="_prayerDialog" Title="@_openPrayerTitle" Class="dialog--roomy" MaxWidth="38rem">
+        @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
+        {
+            @((MarkupString)_openPrayerHtml)
+        }
+    </Dialog>
 }
 
 @code {
@@ -277,7 +269,7 @@ else
         }
     }
 
-    private ElementReference _prayerDialog;
+    private Dialog? _prayerDialog;
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
 
@@ -559,10 +551,19 @@ else
     {
         _openPrayerTitle = bead.PrayerTitle;
         _openPrayerHtml = bead.PrayerHtml;
-        await JS.InvokeVoidAsync("respondeoDialog.show", _prayerDialog);
+        if (_prayerDialog is not null)
+        {
+            await _prayerDialog.Show();
+        }
     }
 
-    private async Task ClosePrayer() => await JS.InvokeVoidAsync("respondeoDialog.close", _prayerDialog);
+    private async Task ClosePrayer()
+    {
+        if (_prayerDialog is not null)
+        {
+            await _prayerDialog.Close();
+        }
+    }
 
     // Expands the data-driven sequence into the flat list of rows. A "mysteries" step iterates the
     // chosen set, emitting an announcement row for each mystery followed by its per-mystery prayers.
@@ -628,7 +629,11 @@ else
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoDialog.close", _prayerDialog);
+            if (_prayerDialog is not null)
+            {
+                await _prayerDialog.Close();
+            }
+
             await JS.InvokeVoidAsync("respondeoImmersive.leave");
         }
         catch (JSDisconnectedException)

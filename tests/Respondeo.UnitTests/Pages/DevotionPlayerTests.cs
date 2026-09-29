@@ -123,8 +123,8 @@ public class DevotionPlayerTests : TestContext
 
         cut.FindAll(".devotion__prayer-book").ToList()[0].Click();
 
-        Assert.Contains("Our Father", cut.Find(".devotion-dialog__title").TextContent);
-        Assert.Contains("Our Father...", cut.Find(".devotion-dialog__body").TextContent);
+        Assert.Contains("Our Father", cut.Find(".dialog__title").TextContent);
+        Assert.Contains("Our Father...", cut.Find(".dialog__body").TextContent);
     }
 
     [Fact]

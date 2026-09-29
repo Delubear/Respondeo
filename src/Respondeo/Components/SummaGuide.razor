@@ -14,16 +14,9 @@
     <span class="summa-guide__trigger-mark" aria-hidden="true">?</span>
 </button>
 
-<dialog @ref="_dialog" class="summa-guide" aria-labelledby="summa-guide-title">
-    <div class="summa-guide__panel">
-        <header class="summa-guide__head">
-            <p class="summa-guide__eyebrow">A short orientation</p>
-            <h2 id="summa-guide-title" class="summa-guide__title">How to read the Summa</h2>
-            <button type="button" class="summa-guide__close" aria-label="Close" @onclick="CloseAsync">&times;</button>
-        </header>
-
-        <div class="summa-guide__body">
-            <p>
+<Dialog @ref="_dialog" Title="How to read the Summa" Eyebrow="A short orientation" MaxWidth="52rem">
+    <ChildContent>
+    <p>
                 The <em>Summa Theologiae</em> is built from thousands of small debates. Everything nests
                 in the same order, so once you can read one article you can read them all.
             </p>
@@ -141,16 +134,15 @@
                 <li>Blue references like <span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> are links; follow them, then use the breadcrumb to return.</li>
                 <li>Search matches both questions and articles, and jumps straight to the article.</li>
             </ul>
-        </div>
+    </ChildContent>
 
-        <footer class="summa-guide__foot">
-            <button type="button" class="btn" @onclick="CloseAsync">Begin reading</button>
-        </footer>
-    </div>
-</dialog>
+    <Footer>
+        <button type="button" class="btn" @onclick="CloseAsync">Begin reading</button>
+    </Footer>
+</Dialog>
 
 @code {
-    private ElementReference _dialog;
+    private Dialog? _dialog;
     private bool _stacked;
     private DotNetObjectReference<SummaGuide>? _ref;
 
@@ -173,16 +165,27 @@
         }
     }
 
-    private async Task OpenAsync() => await JS.InvokeVoidAsync("respondeoDialog.show", _dialog);
+    private async Task OpenAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Show();
+        }
+    }
 
-    private async Task CloseAsync() => await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
+    private async Task CloseAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Close();
+        }
+    }
 
     public async ValueTask DisposeAsync()
     {
         try
         {
             await JS.InvokeVoidAsync("respondeoScrollWatch.unregister");
-            await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
         }
         catch (JSDisconnectedException)
         {

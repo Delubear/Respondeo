@@ -1,0 +1,62 @@
+@inject IJSRuntime JS
+
+@* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog
+   interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free). Callers supply a
+   title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close()
+   methods through an @ref. The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css
+   so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
+
+<dialog @ref="_dialog" class="dialog @Class" aria-labelledby="@_titleId" style="@WidthStyle">
+    <div class="dialog__panel">
+        <header class="dialog__head">
+            @if (!string.IsNullOrWhiteSpace(Eyebrow))
+            {
+                <p class="dialog__eyebrow">@Eyebrow</p>
+            }
+            <h2 id="@_titleId" class="dialog__title">@Title</h2>
+            <button type="button" class="dialog__close" aria-label="Close" @onclick="Close">&times;</button>
+        </header>
+
+        <div class="dialog__body">
+            @ChildContent
+        </div>
+
+        @if (Footer is not null)
+        {
+            <footer class="dialog__foot">
+                @Footer
+            </footer>
+        }
+    </div>
+</dialog>
+
+@code {
+    private ElementReference _dialog;
+    private readonly string _titleId = $"dialog-title-{Guid.NewGuid():N}";
+
+    /// <summary>The dialog heading text.</summary>
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    /// <summary>An optional small line shown above the title (e.g. "A short orientation").</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>The dialog body content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Optional footer content, rendered below the body with a divider.</summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    /// <summary>Optional extra CSS class(es) applied to the &lt;dialog&gt; for per-caller tweaks.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Optional max-width for the dialog (any CSS length). Defaults to the shared value.</summary>
+    [Parameter] public string? MaxWidth { get; set; }
+
+    private string? WidthStyle => string.IsNullOrWhiteSpace(MaxWidth) ? null : $"--dialog-max-width: {MaxWidth};";
+
+    /// <summary>Opens the dialog as a modal.</summary>
+    public async Task Show() => await JS.InvokeVoidAsync("respondeoDialog.show", _dialog);
+
+    /// <summary>Closes the dialog if it is open.</summary>
+    public async Task Close() => await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
+}

@@ -50,81 +50,7 @@
     }
 }
 
-/* ---------- Dialog ---------- */
-.summa-guide {
-    padding: 0;
-    border: 1px solid var(--rule);
-    border-radius: 0.75rem;
-    background: var(--paper);
-    color: var(--ink);
-    max-width: min(52rem, 100vw - 2rem);
-    width: 100%;
-    box-shadow: 0 1.5rem 3rem var(--shadow);
-}
-
-.summa-guide::backdrop {
-    background: rgba(17, 17, 17, 0.55);
-}
-
-.summa-guide__panel {
-    display: flex;
-    flex-direction: column;
-    max-height: min(85vh, 48rem);
-}
-
-.summa-guide__head {
-    position: relative;
-    padding: 1.5rem 1.75rem 1rem;
-    border-bottom: 1px solid var(--rule);
-}
-
-.summa-guide__eyebrow {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink-soft);
-    margin: 0 0 0.3rem;
-}
-
-.summa-guide__title {
-    font-family: var(--display);
-    font-size: 1.6rem;
-    margin: 0;
-}
-
-.summa-guide__close {
-    position: absolute;
-    top: 0.85rem;
-    right: 1rem;
-    border: none;
-    background: transparent;
-    color: var(--ink-soft);
-    font-size: 1.6rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.4rem;
-}
-
-.summa-guide__close:hover {
-    color: var(--accent);
-}
-
-.summa-guide__close:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-}
-
-.summa-guide__body {
-    padding: 1.25rem 1.75rem;
-    overflow-y: auto;
-    line-height: 1.6;
-}
-
-.summa-guide__body p {
-    margin: 0 0 1rem;
-}
-
+/* ---------- Guide content ---------- */
 .summa-guide__note {
     font-size: 0.9rem;
     opacity: 0.8;
@@ -209,10 +135,4 @@
 .summa-guide__ref {
     color: var(--accent);
     white-space: nowrap;
-}
-
-.summa-guide__foot {
-    padding: 1rem 1.75rem 1.5rem;
-    border-top: 1px solid var(--rule);
-    text-align: right;
 }
