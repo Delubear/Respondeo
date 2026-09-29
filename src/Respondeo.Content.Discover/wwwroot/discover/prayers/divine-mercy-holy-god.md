@@ -1,6 +1,6 @@
 ---
 id: divine-mercy-holy-god
-title: "Holy God (Chaplet of Divine Mercy)"
+title: "Holy God"
 summary: The concluding threefold acclamation of the Chaplet of Divine Mercy.
 category: chaplet
 tags:

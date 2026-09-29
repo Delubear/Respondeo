@@ -3,33 +3,43 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-size: 0.8rem;
-    color: var(--accent);
+    color: var(--ink-soft);
     margin: 0 0 0.35rem;
 }
 
 .devotion__exit {
-    margin-top: 2rem;
+    margin-top: 1.25rem;
+    flex: 0 0 auto;
 }
 
-/* Devotion player */
+/* Devotion player. The praying view fills the height left below the masthead/breadcrumb and above
+   the footer, so the list expands to take exactly the remaining space — no dead gap beneath the
+   content and no over-tall scroll area. */
 .devotion--praying {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 13rem);
+    max-height: calc(100vh - 13rem);
     text-align: center;
 }
 
 .devotion__hint {
     color: var(--ink-soft);
     font-size: 0.95rem;
-    margin: 0 0 1.25rem;
+    margin: 0 0 0.85rem;
+    flex: 0 0 auto;
 }
 
-/* The step list scrolls within a bounded panel so a long devotion (e.g. a full Rosary) never
-   stretches the page to many screens tall. */
+/* The step list scrolls within the space the flex column leaves it, so a long devotion (e.g. a full
+   Rosary) never stretches the page while a short one still fills down to the exit link. */
 .devotion__list {
     list-style: none;
     margin: 0 auto;
     padding: 0.25rem 0.25rem 0.25rem 0;
+    width: 100%;
     max-width: 42rem;
-    max-height: 60vh;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     text-align: left;
 }
@@ -72,7 +82,7 @@
     z-index: 1;
     border-radius: 50%;
     background: var(--paper);
-    border: 2px solid var(--accent);
+    border: 2px solid var(--ink-soft);
 }
 
 .devotion__marker--large::after {
@@ -92,7 +102,7 @@
     width: 0.32rem;
     height: 0.32rem;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--ink-soft);
 }
 
 /* The Sign of the Cross marker. A padded halo masks the thread line behind it so the cross
@@ -106,11 +116,11 @@
     padding: 0.15rem;
     border-radius: 0.25rem;
     background: var(--paper);
-    fill: var(--accent);
+    fill: var(--ink-soft);
 }
 
 .devotion__step.is-done .devotion__cross {
-    background: var(--accent);
+    background: var(--ink-soft);
     fill: var(--paper);
 }
 
@@ -125,22 +135,22 @@
     padding: 0.1rem;
     border-radius: 50%;
     background: var(--paper);
-    fill: var(--accent);
+    fill: var(--ink-soft);
 }
 
 .devotion__step.is-done .devotion__medal {
-    background: var(--accent);
+    background: var(--ink-soft);
     fill: var(--paper);
 }
 
 /* Completed beads fill in so progress reads at a glance down the thread. */
 .devotion__step.is-done .devotion__marker::before {
-    background: var(--accent);
+    background: var(--ink-soft);
 }
 
 .devotion__step.is-done .devotion__marker--large::after,
 .devotion__step.is-done .devotion__marker--small::after {
-    background: var(--accent);
+    background: var(--ink-soft);
 }
 
 .devotion__step-body {
@@ -155,7 +165,7 @@
 .devotion__mystery-title {
     font-family: var(--display);
     font-size: 1.4rem;
-    color: var(--accent);
+    color: var(--ink);
     margin: 0 0 0.5rem;
 }
 
@@ -225,33 +235,6 @@
     margin-bottom: 0.15rem;
 }
 
-/* An empty check that fills once the step is marked prayed. */
-.devotion__check {
-    flex: 0 0 auto;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--rule);
-    border-radius: 50%;
-    position: relative;
-}
-
-.devotion__prayer-row.is-done .devotion__check {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-.devotion__prayer-row.is-done .devotion__check::after {
-    content: "";
-    position: absolute;
-    left: 0.35rem;
-    top: 0.15rem;
-    width: 0.32rem;
-    height: 0.62rem;
-    border: solid var(--accent-ink);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
 .devotion__prayer-row.is-done .devotion__prayer-name {
     color: var(--ink-soft);
 }
@@ -266,21 +249,26 @@
     border: none;
     border-left: 1px solid var(--rule);
     background: transparent;
-    color: var(--accent);
+    color: var(--ink-soft);
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
 .devotion__prayer-book:hover,
 .devotion__prayer-book:focus-visible {
     background: var(--parchment);
+    color: var(--accent);
     outline: none;
 }
 
 .devotion__prayer-book svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    fill: currentColor;
+    width: 1.35rem;
+    height: 1.35rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* Prayer text dialog */

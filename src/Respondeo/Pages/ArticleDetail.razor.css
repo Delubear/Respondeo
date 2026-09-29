@@ -34,3 +34,17 @@
     color: var(--ink-soft);
     font-size: 0.95rem;
 }
+
+.discover-article__back {
+    margin-top: 2rem;
+}
+
+.discover-article__back a {
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.discover-article__back a:hover,
+.discover-article__back a:focus-visible {
+    color: var(--accent);
+}

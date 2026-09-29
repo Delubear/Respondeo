@@ -1,6 +1,6 @@
 ---
 id: divine-mercy-for-the-sake
-title: "For the Sake of His Sorrowful Passion (Chaplet of Divine Mercy)"
+title: "For the Sake of His Sorrowful Passion"
 summary: The petition prayed on the Hail Mary beads of the Chaplet of Divine Mercy.
 category: chaplet
 tags:
