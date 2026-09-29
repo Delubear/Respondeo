@@ -53,7 +53,7 @@ public class DevotionPlayerTests : TestContext
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
 
         Assert.Contains("Begin in the name of the Father.", cut.Markup);
-        Assert.NotEmpty(cut.FindAll("button.devotion__begin"));
+        Assert.NotEmpty(cut.FindAll("button.card"));
         Assert.Empty(cut.FindAll(".devotion--praying"));
     }
 
@@ -65,7 +65,7 @@ public class DevotionPlayerTests : TestContext
         SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
 
-        cut.Find("button.devotion__begin").Click();
+        cut.Find("button.card").Click();
 
         // Each repetition gets its own row: one Our Father + three Hail Marys = four rows.
         var rows = cut.FindAll(".devotion__prayer-row").ToList();
@@ -84,7 +84,7 @@ public class DevotionPlayerTests : TestContext
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
         SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
-        cut.Find("button.devotion__begin").Click();
+        cut.Find("button.card").Click();
 
         var mains = cut.FindAll(".devotion__prayer-main").ToList();
         // Only the first step is enabled at the start.
@@ -106,7 +106,7 @@ public class DevotionPlayerTests : TestContext
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
         SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
-        cut.Find("button.devotion__begin").Click();
+        cut.Find("button.card").Click();
 
         cut.FindAll(".devotion__prayer-book").ToList()[0].Click();
 

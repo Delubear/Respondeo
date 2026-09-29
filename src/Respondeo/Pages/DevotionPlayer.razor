@@ -49,10 +49,13 @@ else if (_beads is null)
             </div>
         }
 
-        @if (_devotion.MysterySets.Count > 1)
+        @if (_devotion.MysterySets.Count > 0)
         {
             <div class="devotion__sets">
-                <h2 class="devotion__sets-title">Choose today's mysteries</h2>
+                @if (_devotion.MysterySets.Count > 1)
+                {
+                    <h2 class="devotion__sets-title">Choose today's mysteries</h2>
+                }
                 <div class="devotion__set-options">
                     @foreach (var set in _devotion.MysterySets)
                     {
@@ -68,7 +71,13 @@ else if (_beads is null)
         }
         else
         {
-            <button class="devotion__begin" @onclick="Begin">Begin praying &rarr;</button>
+            <div class="devotion__set-options">
+                <Card Title="Begin"
+                      Summary="@_devotion.Summary"
+                      Cta="Begin praying &rarr;"
+                      Level="3"
+                      OnClick="Begin" />
+            </div>
         }
     </section>
 }
