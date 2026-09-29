@@ -8,8 +8,22 @@
 }
 
 .devotion__exit {
-    margin-top: 1.25rem;
     flex: 0 0 auto;
+    margin: 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+}
+
+.devotion__exit a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.devotion__exit a:hover,
+.devotion__exit a:focus-visible {
+    color: var(--accent);
 }
 
 /* Devotion player. The praying view fills the height left below the masthead/breadcrumb and above
@@ -19,7 +33,9 @@
     display: flex;
     flex-direction: column;
     height: calc(100vh - 13rem);
+    height: calc(100dvh - 13rem);
     max-height: calc(100vh - 13rem);
+    max-height: calc(100dvh - 13rem);
     text-align: center;
 }
 
@@ -396,4 +412,51 @@
     color: var(--accent-ink);
     font: inherit;
     cursor: pointer;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 40rem) {
+    /* Reclaim horizontal room: a narrower thread column and tighter body padding. */
+    .devotion__step {
+        grid-template-columns: 2rem 1fr;
+    }
+
+    .devotion__step-body {
+        padding: 0.25rem 0 0.25rem 0.35rem;
+    }
+
+    /* Larger touch targets for the completion and book buttons. */
+    .devotion__prayer-main {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .devotion__prayer-name {
+        font-size: 1.05rem;
+    }
+
+    .devotion__prayer-book {
+        width: 3.25rem;
+    }
+
+    /* Full-width dialog that sits at the bottom of the screen, easier to reach one-handed. */
+    .devotion-dialog {
+        max-width: 100vw;
+        width: 100vw;
+        margin: auto auto 0;
+        border-radius: 0.75rem 0.75rem 0 0;
+    }
+
+    .devotion-dialog__panel {
+        max-height: 80vh;
+        max-height: 80dvh;
+    }
+
+    .devotion-dialog__head {
+        padding: 1rem 1.25rem 0.85rem;
+    }
+
+    .devotion-dialog__body {
+        padding: 1.25rem;
+        font-size: 1.1rem;
+    }
 }
