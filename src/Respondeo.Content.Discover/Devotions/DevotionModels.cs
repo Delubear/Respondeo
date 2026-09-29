@@ -63,6 +63,9 @@ public sealed class MysterySet
     /// <summary>Optional note on when the set is prayed (e.g. "Mondays and Saturdays").</summary>
     public string? When { get; init; }
 
+    /// <summary>Optional short description of the set shown on its selection card.</summary>
+    public string? Summary { get; init; }
+
     /// <summary>The ordered meditations of the set.</summary>
     public required IReadOnlyList<Mystery> Mysteries { get; init; }
 }

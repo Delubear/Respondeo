@@ -23,6 +23,7 @@ internal sealed class MysterySetDto
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string? When { get; set; }
+    public string? Summary { get; set; }
     public List<MysteryDto> Mysteries { get; set; } = [];
 }
 

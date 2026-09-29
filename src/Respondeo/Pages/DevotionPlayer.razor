@@ -56,20 +56,20 @@ else if (_beads is null)
                 <div class="devotion__set-options">
                     @foreach (var set in _devotion.MysterySets)
                     {
-                        <button class="devotion__set @(set.Id == _selectedSetId ? "devotion__set--active" : "")"
-                                @onclick="() => SelectSet(set.Id)">
-                            <span class="devotion__set-name">@set.Name</span>
-                            @if (!string.IsNullOrWhiteSpace(set.When))
-                            {
-                                <span class="devotion__set-when">@set.When</span>
-                            }
-                        </button>
+                        <Card Title="@set.Name"
+                              Pill="@set.When"
+                              Summary="@set.Summary"
+                              Cta="Begin praying &rarr;"
+                              Level="3"
+                              OnClick="() => SelectAndBegin(set.Id)" />
                     }
                 </div>
             </div>
         }
-
-        <button class="devotion__begin" @onclick="Begin">Begin praying &rarr;</button>
+        else
+        {
+            <button class="devotion__begin" @onclick="Begin">Begin praying &rarr;</button>
+        }
     </section>
 }
 else
@@ -262,7 +262,11 @@ else
         }
     }
 
-    private void SelectSet(string setId) => _selectedSetId = setId;
+    private void SelectAndBegin(string setId)
+    {
+        _selectedSetId = setId;
+        Begin();
+    }
 
     private void Begin()
     {

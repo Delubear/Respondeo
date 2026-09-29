@@ -10,11 +10,25 @@
     transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
 
+/* When rendered as an in-page action the card is a <button>; strip native chrome
+   so it matches the link card exactly. */
+button.card {
+    width: 100%;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
 .card:hover {
     text-decoration: none;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px var(--shadow);
     background: var(--parchment-hover);
+}
+
+.card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .card__title {

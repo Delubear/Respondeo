@@ -88,6 +88,7 @@ devotion is added purely as data — no code change.
       "id": "decades",
       "name": "The Five Decades",
       "when": "Optional note on when it is prayed",
+      "summary": "Optional short description shown on the set's selection card.",
       "mysteries": [
         { "title": "First Decade", "reflection": "Optional *Markdown* meditation." }
       ]
@@ -130,6 +131,7 @@ devotion is added purely as data — no code change.
 | `id` | Yes | Slug for the set (e.g. `joyful`). |
 | `name` | Yes | Display name (e.g. `The Joyful Mysteries`). |
 | `when` | No | Note on when the set is prayed (e.g. `Mondays and Saturdays`). |
+| `summary` | No | Short description shown on the set's selection card. |
 | `mysteries` | Yes | Ordered meditations; each has a `title` and an optional Markdown `reflection`. |
 
 ### Sequence steps

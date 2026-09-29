@@ -43,6 +43,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         Id = set.Id,
         Name = set.Name,
         When = set.When,
+        Summary = set.Summary,
         Mysteries = [.. set.Mysteries.Select(m => new Mystery
         {
             Title = m.Title,

@@ -393,37 +393,9 @@
 }
 
 .devotion__set-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-.devotion__set {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.6rem 1rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.5rem;
-    background: var(--parchment);
-    color: var(--ink);
-    font: inherit;
-    cursor: pointer;
-    text-align: left;
-}
-
-.devotion__set--active {
-    border-color: var(--accent);
-    box-shadow: inset 0 0 0 1px var(--accent);
-}
-
-.devotion__set-name {
-    font-family: var(--display);
-}
-
-.devotion__set-when {
-    font-size: 0.8rem;
-    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 0.75rem;
 }
 
 .devotion__begin {

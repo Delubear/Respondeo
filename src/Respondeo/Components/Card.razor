@@ -1,23 +1,24 @@
-@* Reusable link card used for stage cards and branches. *@
+@* Reusable card used for stage cards and branches. Renders as a link by default,
+   or as a button when an OnClick handler is supplied (e.g. an in-page action). *@
 
-<a class="card" href="@Href">
-    @if (Level <= 2)
-    {
-        <h2 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>
-    }
-    else
-    {
-        <h3 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
-    }
-    @if (!string.IsNullOrWhiteSpace(Summary))
-    {
-        <p class="card__summary">@Summary</p>
-    }
-    <span class="card__cta">@Cta</span>
-</a>
+@if (OnClick.HasDelegate)
+{
+    <button type="button" class="card" @onclick="OnClick">
+        @CardBody
+    </button>
+}
+else
+{
+    <a class="card" href="@Href">
+        @CardBody
+    </a>
+}
 
 @code {
-    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+    [Parameter] public string? Href { get; set; }
+
+    /// <summary>Optional in-page click handler. When set, the card renders as a button instead of a link.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
 
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
 
@@ -40,4 +41,21 @@
             .Concat(string.IsNullOrWhiteSpace(Pill) ? [] : new[] { Pill! })
             .Where(p => !string.IsNullOrWhiteSpace(p))
             .ToList();
+
+    private RenderFragment CardBody => __builder =>
+    {
+        @if (Level <= 2)
+        {
+            <h2 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>
+        }
+        else
+        {
+            <h3 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
+        }
+        @if (!string.IsNullOrWhiteSpace(Summary))
+        {
+            <p class="card__summary">@Summary</p>
+        }
+        <span class="card__cta">@Cta</span>
+    };
 }

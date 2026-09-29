@@ -9,6 +9,7 @@
       "id": "joyful",
       "name": "The Joyful Mysteries",
       "when": "Mondays and Saturdays",
+      "summary": "The Incarnation and hidden years \u2014 from the Annunciation to finding the Lord in the Temple.",
       "mysteries": [
         { "title": "The Annunciation", "reflection": "The angel Gabriel announces to Mary that she is to be the Mother of God, and she answers, *Let it be done to me according to your word.*" },
         { "title": "The Visitation", "reflection": "Mary visits Elizabeth, and the child leaps in Elizabeth's womb. *Blessed are you among women.*" },
@@ -21,6 +22,7 @@
       "id": "sorrowful",
       "name": "The Sorrowful Mysteries",
       "when": "Tuesdays and Fridays",
+      "summary": "The Passion of Christ \u2014 from the Agony in the Garden to the Crucifixion.",
       "mysteries": [
         { "title": "The Agony in the Garden", "reflection": "In Gethsemane Jesus sweats blood and prays, *Not my will, but yours be done.*" },
         { "title": "The Scourging at the Pillar", "reflection": "Christ is bound and scourged, bearing in his body the punishment for our sins." },
@@ -33,6 +35,7 @@
       "id": "glorious",
       "name": "The Glorious Mysteries",
       "when": "Wednesdays and Sundays",
+      "summary": "Christ's victory and Our Lady's glory \u2014 from the Resurrection to the Coronation.",
       "mysteries": [
         { "title": "The Resurrection", "reflection": "Christ rises victorious from the tomb, conquering sin and death." },
         { "title": "The Ascension", "reflection": "The risen Lord ascends to the right hand of the Father." },
@@ -45,6 +48,7 @@
       "id": "luminous",
       "name": "The Luminous Mysteries",
       "when": "Thursdays",
+      "summary": "The public ministry \u2014 from the Baptism in the Jordan to the Institution of the Eucharist.",
       "mysteries": [
         { "title": "The Baptism in the Jordan", "reflection": "The Father's voice proclaims, *This is my beloved Son,* as the Spirit descends." },
         { "title": "The Wedding at Cana", "reflection": "At Mary's word — *Do whatever he tells you* — Christ works his first sign." },
