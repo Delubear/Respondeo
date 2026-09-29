@@ -21,8 +21,3 @@ thine eyes of mercy toward us,
 and after this our exile
 show unto us the blessed fruit of thy womb, Jesus.
 O clement, O loving, O sweet Virgin Mary.
-
-Pray for us, O holy Mother of God,
-that we may be made worthy of the promises of Christ.
-
-Amen.

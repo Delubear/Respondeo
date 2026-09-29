@@ -76,7 +76,9 @@
       ]
     },
     { "kind": "prayer", "title": "Conclude", "prayerId": "hail-holy-queen", "bead": "medal" },
+    { "kind": "prayer", "prayerId": "dominican-versicle-queen", "bead": "medal" },
     { "kind": "prayer", "prayerId": "rosary-concluding-prayer", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "dominican-versicle-assistance-departed", "bead": "cross" },
     { "kind": "prayer", "prayerId": "sign-of-the-cross", "bead": "cross" }
   ]
 }

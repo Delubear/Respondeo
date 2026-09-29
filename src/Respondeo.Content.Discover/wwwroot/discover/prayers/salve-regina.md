@@ -22,8 +22,3 @@ illos tuos misericórdes óculos ad nos convérte.
 Et Iesum, benedíctum fructum ventris tui,
 nobis post hoc exsílium osténde.
 O clemens, O pia, O dulcis Virgo María.
-
-Ora pro nobis, sancta Dei Génetrix,
-ut digni efficiámur promissiónibus Christi.
-
-Amen.
