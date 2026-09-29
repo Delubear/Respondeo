@@ -106,6 +106,12 @@ public sealed class DevotionStep
     public string? Bead { get; init; }
 
     /// <summary>
+    /// Optional short rubric shown beside the step (e.g. that a prayer varies by liturgical season).
+    /// A gentle indication that the step may differ, without opening the prayer text.
+    /// </summary>
+    public string? Note { get; init; }
+
+    /// <summary>
     /// The per-mystery sub-steps for a "mysteries" step (e.g. one Our Father, ten Hail Marys, one Glory Be).
     /// Run once for each mystery of the selected set.
     /// </summary>

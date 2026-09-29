@@ -293,6 +293,16 @@
     color: var(--ink-soft);
 }
 
+/* A quiet rubric under a prayer name, e.g. that the step varies by liturgical season. */
+.devotion__prayer-note {
+    display: block;
+    font-family: var(--body);
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 0.15rem;
+}
+
 /* The book button that opens the prayer text dialog. */
 .devotion__prayer-book {
     flex: 0 0 auto;

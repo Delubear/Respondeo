@@ -170,6 +170,10 @@ else
                                         }
                                         @step.PrayerTitle
                                     </span>
+                                    @if (!string.IsNullOrWhiteSpace(step.Note))
+                                    {
+                                        <span class="devotion__prayer-note">@step.Note</span>
+                                    }
                                 </button>
                                 <button type="button"
                                         class="devotion__prayer-book"
@@ -287,6 +291,7 @@ else
         public string? PrayerTitle { get; init; }
         public string? PrayerHtml { get; init; }
         public string? BeadType { get; init; }
+        public string? Note { get; init; }
 
         // Index of this row among prayer rows (for in-order completion); -1 for mystery announcements.
         public int PrayerOrdinal { get; set; } = -1;
@@ -525,7 +530,8 @@ else
     {
         var position = $"step {step.PrayerOrdinal + 1} of {_prayerCount}";
         var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
-        return $"{step.PrayerTitle}, {position}, {state}";
+        var note = string.IsNullOrWhiteSpace(step.Note) ? null : $", {step.Note}";
+        return $"{step.PrayerTitle}{note}, {position}, {state}";
     }
 
     // A row is "done" once completion has passed it. A mystery announcement is treated as done once
@@ -613,6 +619,7 @@ else
                 PrayerTitle = prayer.Title,
                 PrayerHtml = prayer.Html,
                 BeadType = step.Bead,
+                Note = i == 0 ? step.Note : null,
             });
         }
     }

@@ -60,10 +60,11 @@
   ],
   "sequence": [
     { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross", "bead": "cross" },
-    { "kind": "prayer", "title": "The Dominican opening", "prayerId": "dominican-versicle-hail", "bead": "small" },
+    { "kind": "prayer", "title": "The Dominican opening", "prayerId": "dominican-versicle-hail", "bead": "large" },
     { "kind": "prayer", "prayerId": "dominican-versicle-lips", "bead": "small" },
     { "kind": "prayer", "prayerId": "dominican-versicle-assistance", "bead": "small" },
-    { "kind": "prayer", "prayerId": "glory-be", "bead": "between" },
+    { "kind": "prayer", "prayerId": "glory-be", "bead": "small" },
+    { "kind": "prayer", "prayerId": "dominican-alleluia", "bead": "between", "note": "In Lent, \u201cPraise to Thee, O Lord, King of eternal Glory\u201d" },
     {
       "kind": "mysteries",
       "title": "The Decades",
