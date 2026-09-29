@@ -3,6 +3,8 @@ id: divine-mercy-eternal-father
 title: "Eternal Father"
 summary: The offering prayed on the Our Father beads of the Chaplet of Divine Mercy.
 category: chaplet
+language: en
+translationKey: divine-mercy-eternal-father
 tags:
   - divine-mercy
   - chaplet

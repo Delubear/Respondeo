@@ -3,6 +3,8 @@ id: dominican-versicle-assistance
 title: "O God, Come to My Assistance"
 summary: The second versicle that opens the Dominican Rosary, prayed on the second bead.
 category: marian
+language: en
+translationKey: dominican-versicle-assistance
 tags:
   - rosary
   - marian

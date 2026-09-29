@@ -3,6 +3,8 @@ id: apostles-creed
 title: "The Apostles' Creed"
 summary: The ancient baptismal profession of the Church's faith.
 category: daily
+language: en
+translationKey: apostles-creed
 tags:
   - basic
   - rosary

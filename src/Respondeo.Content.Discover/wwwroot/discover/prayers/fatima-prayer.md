@@ -3,6 +3,8 @@ id: fatima-prayer
 title: "The Fatima Prayer"
 summary: The prayer Our Lady of Fátima asked be added after each decade of the Rosary.
 category: marian
+language: en
+translationKey: fatima-prayer
 tags:
   - rosary
   - marian
