@@ -122,6 +122,21 @@ window.respondeoFocus = {
         if (el && typeof el.focus === 'function') {
             el.focus({ preventScroll: false });
         }
+    },
+    // Scrolls an element by id to the centre of its nearest scrollable ancestor. Unlike
+    // respondeoScroll.intoView (which moves the window), this uses the native scrollIntoView so it
+    // also works inside the devotion player's inner scroll container (.devotion__list) in immersive
+    // mode. Deferred with a double rAF so the immersive layout has settled before we measure.
+    centreInScrollParent: function (id) {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                const el = document.getElementById(id);
+                if (el && typeof el.scrollIntoView === 'function') {
+                    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+                }
+            });
+        });
     }
 };
 

@@ -233,6 +233,10 @@ else
     // step (see ToggleComplete / OnAfterRenderAsync). Cleared once the focus has been handed over.
     private bool _focusCurrentStep;
 
+    // Set when resuming an in-progress devotion mid-thread so the next render scrolls the current step
+    // into view (the thread can be long, and the reader should land on their spot, not the top).
+    private bool _scrollToCurrentStep;
+
     // Polite live-region text announcing progress to screen readers as steps are prayed. Non-visual
     // users otherwise get no feedback that a step was marked, or that the devotion is complete.
     private string? _announcement;
@@ -319,6 +323,20 @@ else
     // the last step is prayed there is no current step, so focus falls to the "Leave the devotion" link.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (_scrollToCurrentStep)
+        {
+            _scrollToCurrentStep = false;
+
+            try
+            {
+                await JS.InvokeVoidAsync("respondeoFocus.centreInScrollParent", "devotion-current-step");
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit going away during teardown; nothing to scroll.
+            }
+        }
+
         if (!_focusCurrentStep)
         {
             return;
@@ -402,6 +420,13 @@ else
 
         _prayerCount = ordinal;
         _completedCount = Math.Clamp(startCompleted, 0, _prayerCount);
+
+        // Resuming mid-thread: scroll the current step into view on the next render so the reader
+        // lands on their place rather than the top of a long devotion.
+        if (_completedCount > 0 && _completedCount < _prayerCount)
+        {
+            _scrollToCurrentStep = true;
+        }
 
         // Persist the starting point so an immediate exit still leaves something to resume.
         await SaveProgressAsync();
