@@ -6,9 +6,7 @@
 
 /* ---------- Search results ---------- */
 .summa__results-count {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-    margin: 0 0 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .summa__match-list {

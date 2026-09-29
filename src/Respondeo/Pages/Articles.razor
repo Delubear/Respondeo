@@ -61,7 +61,7 @@
 
             <div class="discover__results">
                 <div class="discover__toolbar">
-                    <p class="discover__count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
+                    <p class="results-count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
                     <label class="discover__sort">
                         <span>Sort</span>
                         <select value="@_sort" @onchange="OnSortChanged">

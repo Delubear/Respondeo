@@ -524,7 +524,7 @@ h1, h2, h3 {
    sidebar. These are GLOBAL on purpose — the same markup is reused across the Prayers, Devotions,
    Miracles, and Discover browse pages, so they are not scoped to any single component. The search
    box lives in its own SearchBox component (SearchBox.razor.css). Other component-owned styles live
-   in their own .razor.css files (DiscoverList, DiscoverRow, PrayerDetail, DevotionPlayer). */
+   in their own .razor.css files (PrayerDetail, DevotionPlayer). */
 
 /* Generic empty/no-results message, shared across browse pages and the Summa search view. */
 .empty-state {
@@ -548,9 +548,11 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-bottom: 0.5rem;
 }
 
-.discover__count {
+/* Muted result-count line, shared by the Discover toolbar and the Summa search view. */
+.results-count {
     margin: 0;
     color: var(--ink-soft);
+    font-size: 0.9rem;
 }
 
 .discover__sort {
@@ -606,9 +608,6 @@ input[type="search"]::-webkit-search-cancel-button {
         position: static;
     }
 }
-
-/* Discover browse list — the .discover-list container and .discover-row items are scoped to the
-   DiscoverList and DiscoverRow components (see their .razor.css files). */
 
 /* Discover article detail styles (.discover-article*) are scoped to the ArticleDetail page. */
 
