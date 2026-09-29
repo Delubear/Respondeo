@@ -99,7 +99,10 @@ else if (_beads is null)
 else
 {
     <section class="devotion devotion--praying">
-        <p class="devotion__hint">Tap a step to mark it prayed &mdash; in order. Open the book to read its words.</p>
+        <p class="devotion__hint">Select each step to mark it prayed, in order. Open the book to read a prayer's words.</p>
+
+        @* Announces progress to screen readers as each step is prayed, without moving focus. *@
+        <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
         <ol class="devotion__list">
             @for (var i = 0; i < _beads.Count; i++)
@@ -153,9 +156,12 @@ else
                             var clickable = current || step.PrayerOrdinal == _completedCount - 1;
                             <div class="devotion__prayer-row @(done ? "is-done" : null) @(current ? "is-current" : null) @(!done && !current ? "is-upcoming" : null)">
                                 <button type="button"
+                                        id="@(current ? "devotion-current-step" : null)"
                                         class="devotion__prayer-main"
                                         @onclick="() => ToggleComplete(step.PrayerOrdinal)"
                                         disabled="@(!clickable)"
+                                        aria-current="@(current ? "step" : null)"
+                                        aria-label="@PrayerStepLabel(step, done, current)"
                                         aria-pressed="@done">
                                     <span class="devotion__prayer-name">
                                         @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
@@ -222,6 +228,14 @@ else
     private List<Bead>? _beads;
     private int _prayerCount;
     private int _completedCount;
+
+    // Set when a step is marked prayed so the next render moves keyboard focus onto the new current
+    // step (see ToggleComplete / OnAfterRenderAsync). Cleared once the focus has been handed over.
+    private bool _focusCurrentStep;
+
+    // Polite live-region text announcing progress to screen readers as steps are prayed. Non-visual
+    // users otherwise get no feedback that a step was marked, or that the devotion is complete.
+    private string? _announcement;
 
     // Saved progress for this devotion (from a previous, un-finished visit), if any. Drives the
     // Resume / Start over choice on the intro screen.
@@ -298,6 +312,28 @@ else
         }
 
         _loading = false;
+    }
+
+    // After marking a step prayed, hand keyboard focus to the new current step so pressing Space or
+    // Enter walks forward through the thread instead of toggling the just-prayed step off again. When
+    // the last step is prayed there is no current step, so focus falls to the "Leave the devotion" link.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_focusCurrentStep)
+        {
+            return;
+        }
+
+        _focusCurrentStep = false;
+
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoFocus.byId", "devotion-current-step");
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit going away during teardown; nothing to focus.
+        }
     }
 
     // Fetch every distinct prayer referenced anywhere in the sequence once, so the player can render
@@ -422,6 +458,9 @@ else
         if (ordinal == _completedCount)
         {
             _completedCount++;
+            // Keyboard focus is still on the step just prayed. Move it forward to the new current step
+            // after this render so Space/Enter advances the thread rather than un-marking the same step.
+            _focusCurrentStep = true;
         }
         else if (ordinal == _completedCount - 1)
         {
@@ -435,12 +474,33 @@ else
         if (_completedCount >= _prayerCount)
         {
             // The devotion is finished; nothing left to resume.
+            _announcement = "Devotion complete.";
             await Progress.ClearAsync(Id);
         }
         else
         {
+            AnnounceCurrentStep();
             await SaveProgressAsync();
         }
+    }
+
+    // Announces the step now to be prayed (title and position) so screen-reader users get spoken
+    // feedback after each mark, mirroring the visual "current" highlight.
+    private void AnnounceCurrentStep()
+    {
+        var current = _beads?.FirstOrDefault(b => b.IsPrayer && b.PrayerOrdinal == _completedCount);
+        _announcement = current is null
+            ? null
+            : $"Step {_completedCount + 1} of {_prayerCount}: {current.PrayerTitle}.";
+    }
+
+    // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a
+    // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary".
+    private string PrayerStepLabel(Bead step, bool done, bool current)
+    {
+        var position = $"step {step.PrayerOrdinal + 1} of {_prayerCount}";
+        var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
+        return $"{step.PrayerTitle}, {position}, {state}";
     }
 
     // A row is "done" once completion has passed it. A mystery announcement is treated as done once

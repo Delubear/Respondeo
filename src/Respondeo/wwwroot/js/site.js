@@ -113,6 +113,18 @@ window.respondeoImmersive = {
     }
 };
 
+// Focuses an element by id, keeping it in view. Used by the devotion player to move keyboard
+// focus onto the next step after one is marked prayed, so pressing Space/Enter walks the thread
+// forward instead of toggling the same step off and on again.
+window.respondeoFocus = {
+    byId: function (id) {
+        const el = document.getElementById(id);
+        if (el && typeof el.focus === 'function') {
+            el.focus({ preventScroll: false });
+        }
+    }
+};
+
 // Reports scroll position to a .NET component so a floating control can mirror the back-to-top
 // button's reveal threshold (kept in sync with js/scroll.js: shows once scrolled past 400px).
 window.respondeoScrollWatch = {

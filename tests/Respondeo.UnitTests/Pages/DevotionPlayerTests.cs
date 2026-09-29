@@ -200,4 +200,51 @@ public class DevotionPlayerTests : TestContext
         // completed devotion on the next visit.
         _progress.Received().ClearAsync("divine-mercy-chaplet");
     }
+
+    [Fact]
+    public void Current_step_is_marked_for_assistive_tech_and_carries_a_descriptive_label()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        // The first step is current: it advertises aria-current and a label with its position/state.
+        var current = cut.Find(".devotion__prayer-row.is-current .devotion__prayer-main");
+        Assert.Equal("step", current.GetAttribute("aria-current"));
+        var label = current.GetAttribute("aria-label");
+        Assert.Contains("Our Father", label);
+        Assert.Contains("step 1 of 4", label);
+        Assert.Contains("current", label);
+    }
+
+    [Fact]
+    public void Marking_a_step_announces_the_next_step_in_a_live_region()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        cut.Find(".devotion__prayer-row.is-current .devotion__prayer-main").Click();
+
+        // The polite status region should now name the step now to be prayed and its position.
+        var status = cut.Find("[role=status][aria-live=polite]");
+        Assert.Contains("Step 2 of 4", status.TextContent);
+        Assert.Contains("Hail Mary", status.TextContent);
+    }
+
+    [Fact]
+    public void Completing_the_final_step_announces_completion()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        for (var i = 0; i < 4; i++)
+        {
+            cut.Find(".devotion__prayer-row.is-current .devotion__prayer-main").Click();
+        }
+
+        var status = cut.Find("[role=status][aria-live=polite]");
+        Assert.Contains("Devotion complete", status.TextContent);
+    }
 }
