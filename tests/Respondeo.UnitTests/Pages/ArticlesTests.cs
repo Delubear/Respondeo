@@ -120,4 +120,17 @@ public class ArticlesTests : TestContext
         Assert.Contains("node/beta", hrefs);
         Assert.DoesNotContain("discover/articles/confession", hrefs);
     }
+
+    [Fact]
+    public void Searching_a_topic_pill_label_matches_the_article()
+    {
+        var cut = RenderComponent<Articles>();
+
+        // "sacraments" renders as the "Sacraments" pill on the confession card.
+        cut.Find("#article-search").Input("Sacraments");
+
+        var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+        Assert.Contains("discover/articles/confession", hrefs);
+        Assert.DoesNotContain("node/beta", hrefs);
+    }
 }

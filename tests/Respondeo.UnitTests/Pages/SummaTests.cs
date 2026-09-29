@@ -32,6 +32,7 @@ public class SummaTests : TestContext
                   "id": "p1-q002",
                   "number": 2,
                   "title": "The Simplicity of God",
+                  "treatise": "Treatise on the Divine Essence",
                   "articles": [
                     { "number": 1, "title": "Whether God is a body?" }
                   ]
@@ -103,5 +104,19 @@ public class SummaTests : TestContext
         cut.Find("#summa-search").Input("zzznomatch");
 
         cut.WaitForAssertion(() => Assert.Contains("No questions or articles match", cut.Markup));
+    }
+
+    [Fact]
+    public void Search_by_treatise_matches_questions_in_that_treatise()
+    {
+        var cut = RenderComponent<SummaPage>();
+
+        cut.Find("#summa-search").Input("Divine Essence");
+
+        cut.WaitForAssertion(() =>
+        {
+            var matches = cut.FindAll("a.summa__match-link").Select(a => a.GetAttribute("href")).ToList();
+            Assert.Contains("summa/prima-q002", matches);
+        });
     }
 }

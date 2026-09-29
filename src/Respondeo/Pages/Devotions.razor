@@ -180,7 +180,8 @@
                 var q = _query.Trim();
                 results = results.Where(d =>
                     d.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || d.Summary.Contains(q, StringComparison.OrdinalIgnoreCase));
+                    || d.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
+                    || (FormatKind(d.Kind)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
             }
 
             results = _sort == DevotionSort.TitleDesc

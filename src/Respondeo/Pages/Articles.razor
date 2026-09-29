@@ -265,7 +265,8 @@
                 results = results.Where(a =>
                     a.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
                     || a.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || a.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase)));
+                    || a.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase))
+                    || (a.Pill?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
             }
 
             results = _sort == ArticleSort.TitleDesc

@@ -110,4 +110,19 @@ public class MiraclesTests : TestContext
         // The kind is shown in the pill, not repeated in the summary.
         Assert.DoesNotContain("Eucharistic", lanciano);
     }
+
+    [Fact]
+    public void Search_by_kind_label_filters_to_matching_miracle()
+    {
+        var cut = RenderComponent<Miracles>();
+
+        cut.Find("#miracles-search").Input("Marian apparition");
+
+        cut.WaitForAssertion(() =>
+        {
+            var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+            Assert.Contains("discover/miracles/our-lady-of-guadalupe", hrefs);
+            Assert.DoesNotContain("discover/miracles/lanciano-eucharistic-miracle", hrefs);
+        });
+    }
 }

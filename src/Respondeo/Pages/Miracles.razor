@@ -175,7 +175,7 @@
         }
     }
 
-    private static bool Matches(MiracleIndexEntry m, string query)
+    private bool Matches(MiracleIndexEntry m, string query)
     {
         if (query.Length == 0)
         {
@@ -185,7 +185,8 @@
         return m.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
             || m.Summary.Contains(query, StringComparison.OrdinalIgnoreCase)
             || (m.Country?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
-            || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase));
+            || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || m.Types.Select(_facets.Category).Any(k => k.Contains(query, StringComparison.OrdinalIgnoreCase));
     }
 
     private string CardSummary(MiracleIndexEntry m)

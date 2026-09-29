@@ -81,7 +81,12 @@
                         {
                             <li class="summa__match">
                                 <a class="summa__match-link" href="@MatchHref(match)">
-                                    <span class="summa__match-ref">@match.PartTitle &middot; Q@(match.QuestionNumber)</span>
+                                    <span class="summa__match-ref">
+                                        @match.PartTitle@if (!string.IsNullOrWhiteSpace(match.Treatise))
+                                        {
+                                            @: &middot; @match.Treatise
+                                        } &middot; Q@(match.QuestionNumber)
+                                    </span>
                                     <span class="summa__match-title">@match.Title</span>
                                     @if (match.ArticleNumber is int articleNumber)
                                     {
@@ -350,11 +355,11 @@
         {
             foreach (var question in part.Questions)
             {
-                entries.Add(new SearchEntry(part.Title, question.Id, question.Number, question.Title, null));
+                entries.Add(new SearchEntry(part.Title, question.Id, question.Number, question.Title, null, question.Treatise));
 
                 foreach (var article in question.Articles)
                 {
-                    entries.Add(new SearchEntry(part.Title, question.Id, question.Number, article.Title, article.Number));
+                    entries.Add(new SearchEntry(part.Title, question.Id, question.Number, article.Title, article.Number, question.Treatise));
                 }
             }
         }
@@ -378,7 +383,8 @@
 
         foreach (var entry in _entries)
         {
-            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase))
+            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase)
+                && !(entry.Treatise?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false))
             {
                 continue;
             }
@@ -389,7 +395,13 @@
                 break;
             }
 
-            _matches.Add(new SearchMatch(entry.PartTitle, entry.QuestionId, entry.QuestionNumber, entry.Title, entry.ArticleNumber));
+            _matches.Add(new SearchMatch(
+                entry.PartTitle,
+                entry.QuestionId,
+                entry.QuestionNumber,
+                entry.Title,
+                entry.ArticleNumber,
+                entry.Treatise));
         }
     }
 
@@ -404,14 +416,16 @@
         string QuestionId,
         int QuestionNumber,
         string Title,
-        int? ArticleNumber);
+        int? ArticleNumber,
+        string? Treatise);
 
     private sealed record SearchMatch(
         string PartTitle,
         string QuestionId,
         int QuestionNumber,
         string Title,
-        int? ArticleNumber);
+        int? ArticleNumber,
+        string? Treatise);
 
     private sealed record TreatiseGroup(string? Treatise, List<SummaQuestionEntry> Questions);
 }
