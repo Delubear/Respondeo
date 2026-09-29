@@ -131,6 +131,10 @@
     background: var(--ink-soft);
 }
 
+.devotion__step.is-done .devotion__pip {
+    background: var(--gold);
+}
+
 /* The Sign of the Cross marker. A padded halo masks the thread line behind it so the cross
    reads as a distinct shape rather than blending into the line once progressed past. */
 .devotion__cross {
@@ -146,7 +150,7 @@
 }
 
 .devotion__step.is-done .devotion__cross {
-    background: var(--ink-soft);
+    background: var(--gold);
     fill: var(--paper);
 }
 
@@ -165,18 +169,26 @@
 }
 
 .devotion__step.is-done .devotion__medal {
-    background: var(--ink-soft);
+    background: var(--gold);
     fill: var(--paper);
 }
 
-/* Completed beads fill in so progress reads at a glance down the thread. */
+/* Completed beads fill in gold — the traditional rosary metal — so the prayed portion of the
+   thread reads warmly at a glance while the road ahead stays a quiet neutral. */
 .devotion__step.is-done .devotion__marker::before {
-    background: var(--ink-soft);
+    background: var(--gold);
 }
 
 .devotion__step.is-done .devotion__marker--large::after,
 .devotion__step.is-done .devotion__marker--small::after {
-    background: var(--ink-soft);
+    border-color: var(--gold);
+}
+
+/* The bead you are praying now glows gold-rimmed so the eye lands on where you are. */
+.devotion__step.is-current .devotion__marker--large::after,
+.devotion__step.is-current .devotion__marker--small::after {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-bright);
 }
 
 .devotion__step-body {

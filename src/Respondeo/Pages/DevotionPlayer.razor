@@ -82,7 +82,8 @@ else
             {
                 var step = _beads[i];
                 var itemDone = IsItemDone(i);
-                <li class="devotion__step @(itemDone ? "is-done" : null)">
+                var itemCurrent = step.IsPrayer && step.PrayerOrdinal == _completedCount;
+                <li class="devotion__step @(itemDone ? "is-done" : null) @(itemCurrent ? "is-current" : null)">
                     <span class="devotion__marker devotion__marker--@(step.BeadType ?? "none")" aria-hidden="true">
                         @if (step.BeadType == "cross")
                         {
