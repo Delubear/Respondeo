@@ -526,7 +526,9 @@ h1, h2, h3 {
    box lives in its own SearchBox component (SearchBox.razor.css). Other component-owned styles live
    in their own .razor.css files (DiscoverList, DiscoverRow, PrayerDetail, DevotionPlayer). */
 
-.discover__empty {
+/* Generic empty/no-results message, shared across browse pages and the Summa search view. */
+.empty-state {
+    text-align: center;
     color: var(--ink-soft);
     font-style: italic;
 }

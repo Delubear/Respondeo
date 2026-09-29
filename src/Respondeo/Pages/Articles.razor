@@ -26,7 +26,7 @@
     }
     else if (_articles.Count == 0)
     {
-        <p class="discover__empty">No articles are available yet.</p>
+        <p class="empty-state">No articles are available yet.</p>
     }
     else
     {
@@ -73,7 +73,7 @@
 
                 @if (Filtered.Count == 0)
                 {
-                    <p class="discover__empty">No articles match your search.</p>
+                    <p class="empty-state">No articles match your search.</p>
                 }
                 else
                 {

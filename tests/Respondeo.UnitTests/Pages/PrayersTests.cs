@@ -104,7 +104,7 @@ public class PrayersTests : TestContext
         cut.WaitForAssertion(() =>
         {
             Assert.Empty(cut.FindAll("a.card"));
-            Assert.Contains("No prayers match your search.", cut.Find(".discover__empty").TextContent);
+            Assert.Contains("No prayers match your search.", cut.Find(".empty-state").TextContent);
         });
     }
 
