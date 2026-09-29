@@ -55,23 +55,23 @@
     }
   ],
   "sequence": [
-    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
-    { "kind": "prayer", "prayerId": "apostles-creed" },
-    { "kind": "prayer", "prayerId": "our-father" },
-    { "kind": "prayer", "title": "For faith, hope, and charity", "prayerId": "hail-mary", "repeat": 3 },
-    { "kind": "prayer", "prayerId": "glory-be" },
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "apostles-creed", "bead": "between" },
+    { "kind": "prayer", "prayerId": "our-father", "bead": "large" },
+    { "kind": "prayer", "title": "For faith, hope, and charity", "prayerId": "hail-mary", "repeat": 3, "bead": "small" },
+    { "kind": "prayer", "prayerId": "glory-be", "bead": "between" },
     {
       "kind": "mysteries",
       "title": "The Decades",
       "perMystery": [
-        { "kind": "prayer", "prayerId": "our-father" },
-        { "kind": "prayer", "prayerId": "hail-mary", "repeat": 10 },
-        { "kind": "prayer", "prayerId": "glory-be" },
-        { "kind": "prayer", "prayerId": "fatima-prayer" }
+        { "kind": "prayer", "prayerId": "our-father", "bead": "large" },
+        { "kind": "prayer", "prayerId": "hail-mary", "repeat": 10, "bead": "small" },
+        { "kind": "prayer", "prayerId": "glory-be", "bead": "between" },
+        { "kind": "prayer", "prayerId": "fatima-prayer", "bead": "between" }
       ]
     },
-    { "kind": "prayer", "title": "Conclude", "prayerId": "hail-holy-queen" },
-    { "kind": "prayer", "prayerId": "rosary-concluding-prayer" },
-    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+    { "kind": "prayer", "title": "Conclude", "prayerId": "hail-holy-queen", "bead": "medal" },
+    { "kind": "prayer", "prayerId": "rosary-concluding-prayer", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross", "bead": "cross" }
   ]
 }

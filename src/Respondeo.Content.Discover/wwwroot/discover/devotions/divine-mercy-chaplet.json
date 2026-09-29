@@ -18,19 +18,19 @@
     }
   ],
   "sequence": [
-    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
-    { "kind": "prayer", "prayerId": "our-father" },
-    { "kind": "prayer", "prayerId": "hail-mary" },
-    { "kind": "prayer", "prayerId": "apostles-creed" },
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "our-father", "bead": "large" },
+    { "kind": "prayer", "prayerId": "hail-mary", "bead": "small" },
+    { "kind": "prayer", "prayerId": "apostles-creed", "bead": "between" },
     {
       "kind": "mysteries",
       "title": "The Decades",
       "perMystery": [
-        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "divine-mercy-eternal-father" },
-        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "divine-mercy-for-the-sake", "repeat": 10 }
+        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "divine-mercy-eternal-father", "bead": "large" },
+        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "divine-mercy-for-the-sake", "repeat": 10, "bead": "small" }
       ]
     },
-    { "kind": "prayer", "title": "Conclude", "prayerId": "divine-mercy-holy-god", "repeat": 3 },
-    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+    { "kind": "prayer", "title": "Conclude", "prayerId": "divine-mercy-holy-god", "repeat": 3, "bead": "small" },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross", "bead": "cross" }
   ]
 }

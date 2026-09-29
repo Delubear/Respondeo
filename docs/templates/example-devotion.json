@@ -2,6 +2,7 @@
   "//": "EXAMPLE DEVOTION FILE — copy this as a starting point for a new Discover devotion.",
   "//lives": "src/Respondeo.Content.Discover/wwwroot/discover/devotions/. Register the file name in devotions/devotions-manifest.json so DevotionService loads it.",
   "//structure": "A devotion is an ordered sequence of steps that reference prayers by id, plus optional selectable mystery sets. The interactive player walks the sequence, so a new devotion is pure data — no code change. Every prayerId must refer to an existing prayer file.",
+  "//bead": "Optional 'bead' on a step draws a marker on the left rosary thread: 'cross' (Sign of the Cross), 'medal' (centerpiece medal), 'large' (Our Father bead), 'small' (Hail Mary bead), or 'between' (three small pips for prayers said between beads). Omit for spoken steps not prayed on a bead.",
 
   "id": "example-devotion",
   "title": "The Example Devotion",
@@ -25,18 +26,19 @@
   ],
 
   "sequence": [
-    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
-    { "kind": "prayer", "prayerId": "our-father" },
-    { "kind": "prayer", "prayerId": "hail-mary" },
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "our-father", "bead": "large" },
+    { "kind": "prayer", "prayerId": "hail-mary", "bead": "small" },
     {
       "kind": "mysteries",
       "title": "The Decades",
       "perMystery": [
-        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "our-father" },
-        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "hail-mary", "repeat": 10 }
+        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "our-father", "bead": "large" },
+        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "hail-mary", "repeat": 10, "bead": "small" },
+        { "kind": "prayer", "title": "Between the beads", "prayerId": "glory-be", "bead": "between" }
       ]
     },
-    { "kind": "prayer", "title": "Conclude", "prayerId": "glory-be", "repeat": 3 },
-    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+    { "kind": "prayer", "title": "Conclude", "prayerId": "glory-be", "repeat": 3, "bead": "small" },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross", "bead": "cross" }
   ]
 }

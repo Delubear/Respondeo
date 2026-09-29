@@ -1,7 +1,9 @@
 @page "/discover/devotions/{Id}"
+@implements IAsyncDisposable
 @inject IDevotionService Devotions
 @inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
+@inject IJSRuntime JS
 
 <PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
 
@@ -73,49 +75,107 @@ else if (_beads is null)
 else
 {
     <section class="devotion devotion--praying">
-        @foreach (var bead in _beads)
-        {
-            <article class="devotion__step">
-                @if (!string.IsNullOrWhiteSpace(bead.Heading))
-                {
-                    <p class="devotion__eyebrow">@bead.Heading</p>
-                }
+        <p class="devotion__hint">Tap a step to mark it prayed &mdash; in order. Open the book to read its words.</p>
 
-                @if (bead.MysteryTitle is not null)
-                {
-                    <div class="devotion__mystery">
-                        <h2 class="devotion__mystery-title">@bead.MysteryTitle</h2>
-                        @if (!string.IsNullOrWhiteSpace(bead.MysteryReflectionHtml))
+        <ol class="devotion__list">
+            @for (var i = 0; i < _beads.Count; i++)
+            {
+                var step = _beads[i];
+                var itemDone = IsItemDone(i);
+                <li class="devotion__step @(itemDone ? "is-done" : null)">
+                    <span class="devotion__marker devotion__marker--@(step.BeadType ?? "none")" aria-hidden="true">
+                        @if (step.BeadType == "cross")
                         {
-                            <div class="devotion__reflection">
-                                @((MarkupString)bead.MysteryReflectionHtml)
+                            <svg class="devotion__cross" viewBox="0 0 24 24">
+                                <path d="M10.5 2h3v5h5v3h-5v12h-3V10h-5V7h5z" />
+                            </svg>
+                        }
+                        else if (step.BeadType == "medal")
+                        {
+                            <svg class="devotion__medal" viewBox="0 0 24 24">
+                                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zm-.9 2.6v2.4H8.7v1.8h2.4v4.6h1.8v-4.6h2.4V9.5h-2.4V7.1z" />
+                            </svg>
+                        }
+                        else if (step.BeadType == "between")
+                        {
+                            <span class="devotion__pip"></span>
+                            <span class="devotion__pip"></span>
+                            <span class="devotion__pip"></span>
+                        }
+                    </span>
+
+                    <div class="devotion__step-body">
+                        @if (step.MysteryTitle is not null)
+                        {
+                            <div class="devotion__mystery">
+                                @if (!string.IsNullOrWhiteSpace(step.Heading))
+                                {
+                                    <p class="devotion__eyebrow">@step.Heading</p>
+                                }
+                                <h2 class="devotion__mystery-title">@step.MysteryTitle</h2>
+                                @if (!string.IsNullOrWhiteSpace(step.MysteryReflectionHtml))
+                                {
+                                    <div class="devotion__reflection">
+                                        @((MarkupString)step.MysteryReflectionHtml)
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else if (step.IsPrayer)
+                        {
+                            var done = step.PrayerOrdinal < _completedCount;
+                            var current = step.PrayerOrdinal == _completedCount;
+                            var clickable = current || step.PrayerOrdinal == _completedCount - 1;
+                            <div class="devotion__prayer-row @(done ? "is-done" : null) @(current ? "is-current" : null) @(!done && !current ? "is-upcoming" : null)">
+                                <button type="button"
+                                        class="devotion__prayer-main"
+                                        @onclick="() => ToggleComplete(step.PrayerOrdinal)"
+                                        disabled="@(!clickable)"
+                                        aria-pressed="@done">
+                                    <span class="devotion__prayer-name">
+                                        @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
+                                        {
+                                            <span class="devotion__prayer-lead">@step.Heading</span>
+                                        }
+                                        @step.PrayerTitle
+                                    </span>
+                                    <span class="devotion__check" aria-hidden="true"></span>
+                                </button>
+                                <button type="button"
+                                        class="devotion__prayer-book"
+                                        @onclick="() => OpenPrayer(step)"
+                                        aria-label="@($"Read the words of {step.PrayerTitle}")"
+                                        title="Read the prayer">
+                                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687z" />
+                                    </svg>
+                                </button>
                             </div>
                         }
                     </div>
-                }
-
-                @if (bead.PrayerHtml is not null)
-                {
-                    <div class="devotion__bead">
-                        <div class="devotion__bead-head">
-                            <h3 class="devotion__prayer-title">@bead.PrayerTitle</h3>
-                            @if (bead.RepeatCount > 1)
-                            {
-                                <span class="devotion__count">@bead.RepeatIndex of @bead.RepeatCount</span>
-                            }
-                        </div>
-                        <div class="devotion__prayer">
-                            @((MarkupString)bead.PrayerHtml)
-                        </div>
-                    </div>
-                }
-            </article>
-        }
+                </li>
+            }
+        </ol>
 
         <p class="devotion__exit">
             <a href="discover/devotions">Leave the devotion</a>
         </p>
     </section>
+
+    <dialog @ref="_prayerDialog" class="devotion-dialog" aria-labelledby="devotion-dialog-title">
+        <div class="devotion-dialog__panel">
+            <header class="devotion-dialog__head">
+                <h2 id="devotion-dialog-title" class="devotion-dialog__title">@_openPrayerTitle</h2>
+                <button type="button" class="devotion-dialog__close" aria-label="Close" @onclick="ClosePrayer">&times;</button>
+            </header>
+            <div class="devotion-dialog__body">
+                @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
+                {
+                    @((MarkupString)_openPrayerHtml)
+                }
+            </div>
+        </div>
+    </dialog>
 }
 
 @code {
@@ -131,9 +191,15 @@ else
     private readonly Dictionary<string, Prayer> _prayers = new(StringComparer.OrdinalIgnoreCase);
 
     private List<Bead>? _beads;
+    private int _prayerCount;
+    private int _completedCount;
 
-    // A single step in the scroll: either a mystery announcement, a prayer
-    // (with its repetition position), or both.
+    private ElementReference _prayerDialog;
+    private string? _openPrayerTitle;
+    private string? _openPrayerHtml;
+
+    // A single row in the devotion: either a mystery announcement (with its reflection) or a prayer
+    // the reader taps to mark prayed. Repeated prayers each get their own row (their own bead).
     private sealed class Bead
     {
         public string? Heading { get; init; }
@@ -141,14 +207,20 @@ else
         public string? MysteryReflectionHtml { get; init; }
         public string? PrayerTitle { get; init; }
         public string? PrayerHtml { get; init; }
-        public int RepeatIndex { get; init; }
-        public int RepeatCount { get; init; }
+        public string? BeadType { get; init; }
+
+        // Index of this row among prayer rows (for in-order completion); -1 for mystery announcements.
+        public int PrayerOrdinal { get; set; } = -1;
+
+        public bool IsPrayer => PrayerHtml is not null;
     }
 
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
         _beads = null;
+        _completedCount = 0;
+        _prayerCount = 0;
         _devotion = await Devotions.GetDevotionAsync(Id);
 
         if (_devotion is not null)
@@ -192,10 +264,70 @@ else
 
     private void SelectSet(string setId) => _selectedSetId = setId;
 
-    private void Begin() => _beads = BuildBeads(_devotion!, _selectedSetId);
+    private void Begin()
+    {
+        _beads = BuildBeads(_devotion!, _selectedSetId);
 
-    // Expands the data-driven sequence into the flat list of beads. A "mysteries" step iterates the
-    // chosen set, emitting an announcement bead for each mystery followed by its per-mystery prayers.
+        // Number the prayer rows so completion can advance through them strictly in order.
+        var ordinal = 0;
+        foreach (var bead in _beads)
+        {
+            if (bead.IsPrayer)
+            {
+                bead.PrayerOrdinal = ordinal++;
+            }
+        }
+
+        _prayerCount = ordinal;
+        _completedCount = 0;
+    }
+
+    // Marks the next prayer complete, or unmarks the most recently completed one. Completion can only
+    // move forward one step at a time, so nothing can be marked out of order.
+    private void ToggleComplete(int ordinal)
+    {
+        if (ordinal == _completedCount)
+        {
+            _completedCount++;
+        }
+        else if (ordinal == _completedCount - 1)
+        {
+            _completedCount--;
+        }
+    }
+
+    // A row is "done" once completion has passed it. A mystery announcement is treated as done once
+    // the pointer reaches the first prayer of the decade it introduces.
+    private bool IsItemDone(int index)
+    {
+        var beads = _beads!;
+        if (beads[index].IsPrayer)
+        {
+            return beads[index].PrayerOrdinal < _completedCount;
+        }
+
+        for (var j = index + 1; j < beads.Count; j++)
+        {
+            if (beads[j].IsPrayer)
+            {
+                return beads[j].PrayerOrdinal < _completedCount;
+            }
+        }
+
+        return _completedCount >= _prayerCount;
+    }
+
+    private async Task OpenPrayer(Bead bead)
+    {
+        _openPrayerTitle = bead.PrayerTitle;
+        _openPrayerHtml = bead.PrayerHtml;
+        await JS.InvokeVoidAsync("respondeoDialog.show", _prayerDialog);
+    }
+
+    private async Task ClosePrayer() => await JS.InvokeVoidAsync("respondeoDialog.close", _prayerDialog);
+
+    // Expands the data-driven sequence into the flat list of rows. A "mysteries" step iterates the
+    // chosen set, emitting an announcement row for each mystery followed by its per-mystery prayers.
     private List<Bead> BuildBeads(Devotion devotion, string? selectedSetId)
     {
         var beads = new List<Bead>();
@@ -217,20 +349,22 @@ else
 
                     foreach (var sub in step.PerMystery)
                     {
-                        AddPrayerBeads(beads, sub, null);
+                        AddPrayerRow(beads, sub, null);
                     }
                 }
             }
             else
             {
-                AddPrayerBeads(beads, step, step.Title);
+                AddPrayerRow(beads, step, step.Title);
             }
         }
 
         return beads;
     }
 
-    private void AddPrayerBeads(List<Bead> beads, DevotionStep step, string? heading)
+    // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its
+    // own bead on the thread and its own step to mark complete.
+    private void AddPrayerRow(List<Bead> beads, DevotionStep step, string? heading)
     {
         if (string.IsNullOrWhiteSpace(step.PrayerId) || !_prayers.TryGetValue(step.PrayerId, out var prayer))
         {
@@ -238,17 +372,28 @@ else
         }
 
         var count = Math.Max(1, step.Repeat);
-        for (var i = 1; i <= count; i++)
+        for (var i = 0; i < count; i++)
         {
             beads.Add(new Bead
             {
-                // Only label the first of a repeated group so the heading is not shouted ten times.
-                Heading = i == 1 ? (heading ?? step.Title) : null,
+                // Only label the first of a repeated group so the heading is not shouted many times.
+                Heading = i == 0 ? (heading ?? step.Title) : null,
                 PrayerTitle = prayer.Title,
                 PrayerHtml = prayer.Html,
-                RepeatIndex = i,
-                RepeatCount = count,
+                BeadType = step.Bead,
             });
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("respondeoDialog.close", _prayerDialog);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit already gone during teardown; nothing to close.
         }
     }
 }

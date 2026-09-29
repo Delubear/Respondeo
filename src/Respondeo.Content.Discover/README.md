@@ -94,18 +94,19 @@ devotion is added purely as data — no code change.
     }
   ],
   "sequence": [
-    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross" },
-    { "kind": "prayer", "prayerId": "our-father" },
+    { "kind": "prayer", "title": "Begin", "prayerId": "sign-of-the-cross", "bead": "cross" },
+    { "kind": "prayer", "prayerId": "our-father", "bead": "large" },
+    { "kind": "prayer", "prayerId": "apostles-creed", "bead": "between" },
     {
       "kind": "mysteries",
       "title": "The Decades",
       "perMystery": [
-        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "divine-mercy-eternal-father" },
-        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "divine-mercy-for-the-sake", "repeat": 10 }
+        { "kind": "prayer", "title": "On the Our Father bead", "prayerId": "divine-mercy-eternal-father", "bead": "large" },
+        { "kind": "prayer", "title": "On the Hail Mary beads", "prayerId": "divine-mercy-for-the-sake", "repeat": 10, "bead": "small" }
       ]
     },
-    { "kind": "prayer", "prayerId": "divine-mercy-holy-god", "repeat": 3 },
-    { "kind": "prayer", "prayerId": "sign-of-the-cross" }
+    { "kind": "prayer", "prayerId": "divine-mercy-holy-god", "repeat": 3, "bead": "small" },
+    { "kind": "prayer", "prayerId": "sign-of-the-cross", "bead": "cross" }
   ]
 }
 ```
@@ -138,7 +139,8 @@ devotion is added purely as data — no code change.
 | `kind` | No | `prayer` (default) prays a single prayer; `mysteries` iterates the chosen mystery set. |
 | `title` | No | Optional heading for the step (e.g. `Begin`, `Closing prayers`). |
 | `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/discover/prayers/`. |
-| `repeat` | No | How many times to pray the step (e.g. `10` for a decade). Defaults to `1`. |
+| `repeat` | No | How many times to pray the step (e.g. `10` for a decade). Defaults to `1`. Each repetition is its own row/bead. |
+| `bead` | No | Marker drawn on the left-hand rosary "thread" beside the step. One of `cross` (Sign of the Cross), `medal` (centerpiece medal), `large` (Our Father bead), `small` (Hail Mary bead), or `between` (prayed between beads, drawn as three small pips). Omit for spoken steps that are not prayed on a bead. |
 | `perMystery` | For `mysteries` steps | The step template run once per mystery of the chosen set (a list of `prayer` steps). |
 
 Every `prayerId` must refer to an existing prayer file, or the player has nothing to render.

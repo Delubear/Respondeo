@@ -96,6 +96,13 @@ public sealed class DevotionStep
     public int Repeat { get; init; } = 1;
 
     /// <summary>
+    /// Optional visual bead type for the rosary "thread" beside the step: "cross" (Sign of the Cross),
+    /// "large" (a large / Our Father bead), "small" (a small / Hail Mary bead), or "between" (prayed
+    /// between beads, drawn as three small pips). Null renders no marker.
+    /// </summary>
+    public string? Bead { get; init; }
+
+    /// <summary>
     /// The per-mystery sub-steps for a "mysteries" step (e.g. one Our Father, ten Hail Marys, one Glory Be).
     /// Run once for each mystery of the selected set.
     /// </summary>

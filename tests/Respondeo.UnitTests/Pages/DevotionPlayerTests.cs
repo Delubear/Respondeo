@@ -22,6 +22,7 @@ public class DevotionPlayerTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
+        JSInterop.Mode = JSRuntimeMode.Loose;
     }
 
     private void SetPrayer(string id, string title, string html)
@@ -57,7 +58,7 @@ public class DevotionPlayerTests : TestContext
     }
 
     [Fact]
-    public void Begin_renders_the_whole_devotion_as_a_scroll()
+    public void Begin_lists_every_repetition_as_its_own_row()
     {
         _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
@@ -66,26 +67,51 @@ public class DevotionPlayerTests : TestContext
 
         cut.Find("button.devotion__begin").Click();
 
-        Assert.NotEmpty(cut.FindAll(".devotion--praying"));
-        // Every step is on the page at once: 1 Our Father + 3 Hail Marys = 4 prayer titles.
-        Assert.Equal(4, cut.FindAll(".devotion__prayer-title").Count);
-        Assert.Empty(cut.FindAll(".devotion__nav"));
+        // Each repetition gets its own row: one Our Father + three Hail Marys = four rows.
+        var rows = cut.FindAll(".devotion__prayer-row").ToList();
+        Assert.Equal(4, rows.Count);
+        Assert.Contains("Our Father", rows[0].TextContent);
+        Assert.Contains("Hail Mary", rows[1].TextContent);
+        Assert.Contains("Hail Mary", rows[3].TextContent);
+        // Prayer text is not rendered inline; it only appears once opened.
+        Assert.DoesNotContain("Our Father...", cut.Markup);
     }
 
     [Fact]
-    public void Repeated_prayers_are_listed_once_per_repetition()
+    public void Steps_can_only_be_marked_complete_in_order()
     {
         _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
         SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
-
         cut.Find("button.devotion__begin").Click();
 
-        var counts = cut.FindAll(".devotion__count").ToList();
-        Assert.Equal(3, counts.Count);
-        Assert.Contains("1 of 3", counts[0].TextContent);
-        Assert.Contains("3 of 3", counts[2].TextContent);
+        var mains = cut.FindAll(".devotion__prayer-main").ToList();
+        // Only the first step is enabled at the start.
+        Assert.False(mains[0].HasAttribute("disabled"));
+        Assert.True(mains[1].HasAttribute("disabled"));
+
+        mains[0].Click();
+
+        // After completing the first, the second becomes enabled and the first is marked done.
+        mains = cut.FindAll(".devotion__prayer-main").ToList();
+        Assert.False(mains[1].HasAttribute("disabled"));
+        Assert.NotEmpty(cut.FindAll(".devotion__prayer-row.is-done"));
+    }
+
+    [Fact]
+    public void Tapping_the_book_opens_the_prayer_text_in_a_dialog()
+    {
+        _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
+        SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
+        SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.devotion__begin").Click();
+
+        cut.FindAll(".devotion__prayer-book").ToList()[0].Click();
+
+        Assert.Contains("Our Father", cut.Find(".devotion-dialog__title").TextContent);
+        Assert.Contains("Our Father...", cut.Find(".devotion-dialog__body").TextContent);
     }
 
     [Fact]
