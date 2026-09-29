@@ -1,0 +1,34 @@
+.prayer__text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+.prayer__latin {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+}
+
+.prayer__latin-title {
+    font-family: var(--display);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.prayer__latin .prayer__text {
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.prayer__attribution {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.prayer__back {
+    margin-top: 2rem;
+}

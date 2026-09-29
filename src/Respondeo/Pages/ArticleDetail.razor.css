@@ -1,0 +1,36 @@
+.discover-article {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+}
+
+.discover-article__summary {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+.discover-article__section {
+    margin-bottom: 1.5rem;
+}
+
+.discover-article__section-title {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin: 1.5rem 0 0.75rem;
+}
+
+.discover-article__body {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+.discover-article__sources {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}

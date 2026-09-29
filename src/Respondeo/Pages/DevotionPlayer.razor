@@ -72,58 +72,45 @@ else if (_beads is null)
 }
 else
 {
-    var bead = _beads[_index];
     <section class="devotion devotion--praying">
-        <div class="devotion__progress" role="progressbar" aria-valuemin="1" aria-valuenow="@(_index + 1)" aria-valuemax="@_beads.Count">
-            <div class="devotion__progress-bar" style="width:@(((_index + 1) * 100 / _beads.Count))%"></div>
-        </div>
-        <p class="devotion__step-count">Step @(_index + 1) of @_beads.Count</p>
-
-        @if (!string.IsNullOrWhiteSpace(bead.Heading))
+        @foreach (var bead in _beads)
         {
-            <p class="devotion__eyebrow">@bead.Heading</p>
-        }
-
-        @if (bead.MysteryTitle is not null)
-        {
-            <div class="devotion__mystery">
-                <h2 class="devotion__mystery-title">@bead.MysteryTitle</h2>
-                @if (!string.IsNullOrWhiteSpace(bead.MysteryReflectionHtml))
+            <article class="devotion__step">
+                @if (!string.IsNullOrWhiteSpace(bead.Heading))
                 {
-                    <div class="devotion__reflection">
-                        @((MarkupString)bead.MysteryReflectionHtml)
+                    <p class="devotion__eyebrow">@bead.Heading</p>
+                }
+
+                @if (bead.MysteryTitle is not null)
+                {
+                    <div class="devotion__mystery">
+                        <h2 class="devotion__mystery-title">@bead.MysteryTitle</h2>
+                        @if (!string.IsNullOrWhiteSpace(bead.MysteryReflectionHtml))
+                        {
+                            <div class="devotion__reflection">
+                                @((MarkupString)bead.MysteryReflectionHtml)
+                            </div>
+                        }
                     </div>
                 }
-            </div>
-        }
 
-        @if (bead.PrayerHtml is not null)
-        {
-            <div class="devotion__bead">
-                <div class="devotion__bead-head">
-                    <h3 class="devotion__prayer-title">@bead.PrayerTitle</h3>
-                    @if (bead.RepeatCount > 1)
-                    {
-                        <span class="devotion__count">@bead.RepeatIndex of @bead.RepeatCount</span>
-                    }
-                </div>
-                <div class="devotion__prayer">
-                    @((MarkupString)bead.PrayerHtml)
-                </div>
-            </div>
+                @if (bead.PrayerHtml is not null)
+                {
+                    <div class="devotion__bead">
+                        <div class="devotion__bead-head">
+                            <h3 class="devotion__prayer-title">@bead.PrayerTitle</h3>
+                            @if (bead.RepeatCount > 1)
+                            {
+                                <span class="devotion__count">@bead.RepeatIndex of @bead.RepeatCount</span>
+                            }
+                        </div>
+                        <div class="devotion__prayer">
+                            @((MarkupString)bead.PrayerHtml)
+                        </div>
+                    </div>
+                }
+            </article>
         }
-
-        <div class="devotion__controls">
-            <button class="devotion__nav" @onclick="Prev" disabled="@(_index == 0)">&larr; Back</button>
-            @if (_index < _beads.Count - 1)
-            {
-                <button class="devotion__nav devotion__nav--primary" @onclick="Next">Next &rarr;</button>
-            }
-            else
-            {
-                <button class="devotion__nav devotion__nav--primary" @onclick="Restart">Amen &mdash; pray again</button>
-            }
-        </div>
 
         <p class="devotion__exit">
             <a href="discover/devotions">Leave the devotion</a>
@@ -144,9 +131,8 @@ else
     private readonly Dictionary<string, Prayer> _prayers = new(StringComparer.OrdinalIgnoreCase);
 
     private List<Bead>? _beads;
-    private int _index;
 
-    // A single flattened step the reader walks through: either a mystery announcement, a prayer
+    // A single step in the scroll: either a mystery announcement, a prayer
     // (with its repetition position), or both.
     private sealed class Bead
     {
@@ -163,7 +149,6 @@ else
     {
         _loading = true;
         _beads = null;
-        _index = 0;
         _devotion = await Devotions.GetDevotionAsync(Id);
 
         if (_devotion is not null)
@@ -207,29 +192,7 @@ else
 
     private void SelectSet(string setId) => _selectedSetId = setId;
 
-    private void Begin()
-    {
-        _beads = BuildBeads(_devotion!, _selectedSetId);
-        _index = 0;
-    }
-
-    private void Next()
-    {
-        if (_beads is not null && _index < _beads.Count - 1)
-        {
-            _index++;
-        }
-    }
-
-    private void Prev()
-    {
-        if (_index > 0)
-        {
-            _index--;
-        }
-    }
-
-    private void Restart() => _index = 0;
+    private void Begin() => _beads = BuildBeads(_devotion!, _selectedSetId);
 
     // Expands the data-driven sequence into the flat list of beads. A "mysteries" step iterates the
     // chosen set, emitting an announcement bead for each mystery followed by its per-mystery prayers.

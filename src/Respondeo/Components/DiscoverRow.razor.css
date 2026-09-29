@@ -1,0 +1,120 @@
+.discover-row {
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--paper);
+}
+
+.discover-row__link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.35rem 1.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.discover-row__link:hover,
+.discover-row__link:focus-visible {
+    background: var(--parchment);
+    outline: none;
+    text-decoration: none;
+}
+
+.discover-row__emblem {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    color: var(--accent);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.discover-row__link:hover .discover-row__emblem,
+.discover-row__link:focus-visible .discover-row__emblem {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+}
+
+.discover-row__emblem svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+}
+
+.discover-row__body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.discover-row__title-line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.discover-row__title {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    line-height: 1.25;
+    color: var(--ink);
+}
+
+.discover-row__meta {
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.12rem 0.65rem;
+    white-space: nowrap;
+}
+
+.discover-row__summary {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 60ch;
+}
+
+.discover-row__cta {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.discover-row__cta-label {
+    font-family: var(--display);
+}
+
+.discover-row__arrow {
+    transition: transform 0.15s ease;
+}
+
+.discover-row__link:hover .discover-row__arrow,
+.discover-row__link:focus-visible .discover-row__arrow {
+    transform: translateX(0.25rem);
+}
+
+@media (max-width: 640px) {
+    .discover-row__link {
+        gap: 0.9rem;
+        padding: 1rem 1.1rem;
+    }
+
+    .discover-row__cta-label {
+        display: none;
+    }
+}

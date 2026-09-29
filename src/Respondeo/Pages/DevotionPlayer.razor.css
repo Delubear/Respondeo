@@ -1,0 +1,138 @@
+.devotion__eyebrow {
+    font-family: var(--display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin: 0 0 0.35rem;
+}
+
+.devotion__exit {
+    margin-top: 2rem;
+}
+
+/* Devotion player */
+.devotion--praying {
+    text-align: center;
+}
+
+.devotion__step {
+    margin-bottom: 2rem;
+}
+
+.devotion__mystery {
+    margin-bottom: 1.5rem;
+}
+
+.devotion__mystery-title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+}
+
+.devotion__reflection {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+.devotion__bead {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 0.6rem;
+    padding: 1.5rem;
+    margin: 0 auto 1.5rem;
+    max-width: 42rem;
+}
+
+.devotion__bead-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.devotion__prayer-title {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--ink);
+}
+
+.devotion__count {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.devotion__prayer {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+/* Devotion intro + mystery-set chooser */
+.devotion__intro-body {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 42rem;
+    margin-bottom: 1.5rem;
+}
+
+.devotion__sets {
+    margin-bottom: 1.5rem;
+}
+
+.devotion__sets-title {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+}
+
+.devotion__set-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.devotion__set {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--parchment);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.devotion__set--active {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.devotion__set-name {
+    font-family: var(--display);
+}
+
+.devotion__set-when {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.devotion__begin {
+    padding: 0.75rem 1.6rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font: inherit;
+    cursor: pointer;
+}

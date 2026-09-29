@@ -57,7 +57,7 @@ public class DevotionPlayerTests : TestContext
     }
 
     [Fact]
-    public void Begin_walks_into_the_first_bead()
+    public void Begin_renders_the_whole_devotion_as_a_scroll()
     {
         _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
@@ -67,24 +67,25 @@ public class DevotionPlayerTests : TestContext
         cut.Find("button.devotion__begin").Click();
 
         Assert.NotEmpty(cut.FindAll(".devotion--praying"));
-        Assert.Contains("Our Father", cut.Find(".devotion__prayer-title").TextContent);
-        Assert.Contains("Step 1 of 4", cut.Find(".devotion__step-count").TextContent);
+        // Every step is on the page at once: 1 Our Father + 3 Hail Marys = 4 prayer titles.
+        Assert.Equal(4, cut.FindAll(".devotion__prayer-title").Count);
+        Assert.Empty(cut.FindAll(".devotion__nav"));
     }
 
     [Fact]
-    public void Next_advances_through_the_repeated_beads()
+    public void Repeated_prayers_are_listed_once_per_repetition()
     {
         _devotions.GetDevotionAsync("divine-mercy-chaplet").Returns(SimpleDevotion());
         SetPrayer("our-father", "Our Father", "<p>Our Father...</p>");
         SetPrayer("hail-mary", "Hail Mary", "<p>Hail Mary...</p>");
         var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+
         cut.Find("button.devotion__begin").Click();
 
-        cut.Find("button.devotion__nav--primary").Click();
-
-        Assert.Contains("Step 2 of 4", cut.Find(".devotion__step-count").TextContent);
-        Assert.Contains("Hail Mary", cut.Find(".devotion__prayer-title").TextContent);
-        Assert.Contains("1 of 3", cut.Find(".devotion__count").TextContent);
+        var counts = cut.FindAll(".devotion__count").ToList();
+        Assert.Equal(3, counts.Count);
+        Assert.Contains("1 of 3", counts[0].TextContent);
+        Assert.Contains("3 of 3", counts[2].TextContent);
     }
 
     [Fact]
