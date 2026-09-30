@@ -8,6 +8,9 @@ branches:
   - to: which-god-other-faiths
     label: "What about other faiths?"
     prompt: Before naming the one who speaks, how does this God relate to Islam, deism, and Eastern conceptions?
+  - to: which-god-objections
+    label: "What are the objections to this God?"
+    prompt: A personal, self-revealing God of Israel draws hard objections — meet the strongest ones before going further.
   - to: which-god-of-israel
     label: "Why the God of Israel?"
     prompt: Of all the claimants to revelation, why the covenant God of Abraham?
