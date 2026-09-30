@@ -1,7 +1,7 @@
 namespace Respondeo.Content.Summa.Contracts;
 
 /// <summary>
-/// Expands the neutral Summa placeholder tokens
+/// Expands the neutral Summa placeholder tokens emitted by the importer (cross-references and section cues) into final HTML at render time.
 /// Kept as a contract alongside the Summa feature so the app depends only on this interface; the concrete implementation stays internal.
 /// </summary>
 public interface ISummaReferenceRenderer

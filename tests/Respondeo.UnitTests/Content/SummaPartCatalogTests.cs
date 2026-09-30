@@ -3,7 +3,7 @@ using Respondeo.Content.Summa.Contracts;
 
 namespace Respondeo.UnitTests.Content;
 
-public class SummaPartsTests
+public class SummaPartCatalogTests
 {
     private readonly ISummaPartCatalog _parts = new SummaPartCatalog();
 
