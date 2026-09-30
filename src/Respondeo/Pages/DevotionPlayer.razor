@@ -202,10 +202,16 @@ else
     </section>
 
     <Dialog @ref="_prayerDialog" Title="@_openPrayerTitle" Class="dialog--roomy" MaxWidth="38rem">
-        @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
-        {
-            @((MarkupString)_openPrayerHtml)
-        }
+        <ChildContent>
+            @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
+            {
+                @((MarkupString)_openPrayerHtml)
+            }
+        </ChildContent>
+        <Footer>
+            @* A footer Close button so long prayers can be dismissed without scrolling back up to the X. *@
+            <button type="button" class="btn" @onclick="ClosePrayer">Close</button>
+        </Footer>
     </Dialog>
 }
 
@@ -554,6 +560,13 @@ else
         if (_prayerDialog is not null)
         {
             await _prayerDialog.Show();
+        }
+
+        // Reading the words of the current step counts as praying it: mark it complete so opening the
+        // book keeps the thread moving without a separate tap on the step itself.
+        if (bead.IsPrayer && bead.PrayerOrdinal == _completedCount)
+        {
+            await ToggleComplete(bead.PrayerOrdinal);
         }
     }
 
