@@ -51,6 +51,7 @@ internal static class SitemapGenerator
         routes.Add("discover/prayers");
         routes.Add("discover/devotions");
         routes.Add("discover/articles");
+        routes.Add("thanks");
     }
 
     // 2. Summa part landing pages + every question, mapping storage keys (p1) to URL slugs (prima).

@@ -1,0 +1,114 @@
+@page "/thanks"
+@layout MainLayout
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>Thanks &amp; Sources &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Thanks & Sources"
+         Description="The inspiration behind Respondeo, the public-domain and open sources it draws on, and further reading we recommend for exploring the Catholic faith." />
+
+<section class="thanks">
+    <header class="pillar__header">
+        <p class="pillar__eyebrow">Thanks &amp; Sources</p>
+        <h1 class="pillar__title">With Gratitude</h1>
+        <p class="pillar__lede">
+            Respondeo stands on the shoulders of saints, scholars, and stewards who preserved and
+            shared the treasures of the faith. This page names the inspiration behind the project,
+            the sources it draws on, and further reading we warmly recommend.
+        </p>
+    </header>
+
+    <div class="thanks__body">
+        <section class="thanks__section">
+            <h2 class="thanks__heading">Our Inspiration</h2>
+            <p>
+                The project takes its name and spirit from St. Thomas Aquinas, whose
+                <i>Summa Theologiae</i> answers real questions with patient, ordered reason. Every
+                article of the <i>Summa</i> opens by taking objections seriously, then replies
+                &mdash; <i>respondeo dicendum</i>, &ldquo;I answer that.&rdquo; That posture, meeting
+                honest doubt with charity and clarity, is the model this site tries to follow.
+            </p>
+            <p>
+                Respondeo is presented in that spirit: real questions, reasoned answers, always
+                pointing beyond itself to the living faith of the Catholic Church and the guidance
+                of her Magisterium.
+            </p>
+            <p>
+                We owe a particular debt to
+                <a href="https://aquinas101.thomisticinstitute.org/" target="_blank" rel="noopener noreferrer">Aquinas 101</a>,
+                a project of the Thomistic Institute. Their video series and their far more robust
+                online <i>Summa</i> have been a major inspiration for this site, and we recommend
+                them wholeheartedly to anyone who wants to go deeper.
+            </p>
+        </section>
+
+        <section class="thanks__section">
+            <h2 class="thanks__heading">Sources We Rely On</h2>
+            <p>These public-domain and freely shared works make the content here possible.</p>
+            <ul class="thanks__list">
+                <li>
+                    <span class="thanks__item-title">Summa Theologiae</span> &mdash; English
+                    translation by the Fathers of the English Dominican Province (Benziger Bros.
+                    edition, 1947), in the public domain. Source text from the
+                    <a href="https://ccel.org/ccel/a/aquinas/summa/cache/summa.txt" target="_blank" rel="noopener noreferrer">Christian Classics Ethereal Library (CCEL)</a>.
+                </li>
+                <li>
+                    <span class="thanks__item-title">Christian Classics Ethereal Library</span>
+                    &mdash; a public-domain digital library of Christian texts hosted at
+                    <a href="https://ccel.org/" target="_blank" rel="noopener noreferrer">ccel.org</a>.
+                </li>
+                @* TODO: add the remaining sources actually used by the content manifests
+                   (prayer texts, miracle references, article citations) as they are confirmed. *@
+            </ul>
+        </section>
+
+        <section class="thanks__section">
+            <h2 class="thanks__heading">Further Reading</h2>
+            <p>
+                Respondeo is a starting point, not a substitute for the Church's own voice. For
+                deeper study we recommend these authoritative and time-tested resources.
+            </p>
+            <ul class="thanks__list">
+                <li>
+                    <span class="thanks__item-title">Catechism of the Catholic Church</span> &mdash;
+                    the Church's official summary of doctrine, available at
+                    <a href="https://www.vatican.va/archive/ENG0015/_INDEX.HTM" target="_blank" rel="noopener noreferrer">vatican.va</a>.
+                </li>
+                <li>
+                    <span class="thanks__item-title">The Holy Bible</span> &mdash; the sacred
+                    Scriptures, foundation of all that follows.
+                </li>
+                <li>
+                    <span class="thanks__item-title">Aquinas 101</span> &mdash; free video courses
+                    and a rich online <i>Summa</i> from the Thomistic Institute, at
+                    <a href="https://aquinas101.thomisticinstitute.org/" target="_blank" rel="noopener noreferrer">aquinas101.thomisticinstitute.org</a>.
+                </li>
+                <li>
+                    <span class="thanks__item-title">Capturing Catholicism</span> &mdash; thoughtful
+                    apologetics videos with an especially strong treatment of miracles, on
+                    <a href="https://www.youtube.com/@@CapturingCatholicism" target="_blank" rel="noopener noreferrer">YouTube</a>.
+                </li>
+                <li>
+                    <span class="thanks__item-title">Pints with Aquinas</span> &mdash; an engaging,
+                    approachable introduction to St. Thomas Aquinas that first drew us in more
+                    deeply; a fun way for anyone to learn more, at
+                    <a href="https://pintswithaquinas.com/" target="_blank" rel="noopener noreferrer">pintswithaquinas.com</a>.
+                </li>
+                @* TODO: add further recommended resources (e.g. Church Fathers, apologetics,
+                   devotional classics) once the curated list is finalized. *@
+            </ul>
+        </section>
+
+        <p class="thanks__closing">
+            If we have overlooked a source that ought to be credited here, please
+            <a href="https://github.com/Delubear/Respondeo/issues/new/choose" target="_blank" rel="noopener noreferrer">let us know</a>.
+        </p>
+    </div>
+</section>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+    }
+}
