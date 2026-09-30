@@ -595,8 +595,7 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-top: 0;
 }
 
-/* Clear-all-filters button is scoped to the ClearFiltersButton component, and the article source
-   facet (.source-filter*) is scoped to the Articles page — see their .razor.css files. */
+/* Clear-all-filters button is scoped to the ClearFiltersButton component — see its .razor.css file. */
 
 @media (max-width: 640px) {
     .discover__layout {

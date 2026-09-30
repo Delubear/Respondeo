@@ -1,6 +1,5 @@
 @page "/discover/articles"
 @inject IArticleService ArticleService
-@inject IContentService Content
 @inject IBreadcrumbTrail Trail
 @inject DiscoverBrowseState BrowseState
 @inject IJSRuntime JS
@@ -38,19 +37,6 @@
 
         <div class="discover__layout">
             <aside class="discover__sidebar">
-                <h2 class="discover__sidebar-title">Source</h2>
-                <div class="source-filter" role="radiogroup" aria-label="Article source">
-                    @foreach (var option in SourceOptions)
-                    {
-                        <button type="button"
-                                class="source-filter__option @(option.Value == _source ? "source-filter__option--active" : null)"
-                                role="radio"
-                                aria-checked="@(option.Value == _source)"
-                                @onclick="() => OnSourceChanged(option.Value)">
-                            @option.Label
-                        </button>
-                    }
-                </div>
                 @if (_tags.Count > 0)
                 {
                     <h2 class="discover__sidebar-title">Tags</h2>
@@ -95,27 +81,11 @@
 </section>
 
 @code {
-    // A unified row shape so Discover articles and Inquiry nodes can share one searchable, filterable list.
-    // Pill is a precomputed display-only kicker (the article's topic for Discover rows, the stage name for
-    // Inquiry rows); IsInquiry drives both the Source filter and the subtle row accent.
-    private sealed record ArticleRow(string Id, string Title, string Summary, bool IsInquiry, string? Pill, IReadOnlyList<string> Tags, string Href);
-
-    // The Source facet values persisted in browse state.
-    private const string SourceAll = "all";
-    private const string SourceDiscover = "discover";
-    private const string SourceInquiry = "inquiry";
-
-    private static readonly (string Value, string Label)[] SourceOptions =
-    [
-        (SourceAll, "All"),
-        (SourceDiscover, "From Discover"),
-        (SourceInquiry, "From Inquiry"),
-    ];
+    // A searchable, filterable row for a Discover article. Pill is a precomputed display-only kicker (the article's topic).
+    private sealed record ArticleRow(string Id, string Title, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href);
 
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
-
-    private string _source = SourceAll;
 
     private ArticleSort _sort = ArticleSort.TitleAsc;
 
@@ -123,10 +93,8 @@
 
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    // Tags on offer follow the chosen Source, so selecting "Inquiry" never lists Discover-only tags
-    // (and vice versa) that could never match anything in view.
     private IReadOnlyList<string> _tags =>
-        SourceScoped(_articles ?? [])
+        (_articles ?? [])
             .SelectMany(a => a.Tags)
             .Where(t => !string.IsNullOrWhiteSpace(t))
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -137,29 +105,11 @@
     {
         await Trail.ClearAsync();
         _query = BrowseState.GetQuery("articles");
-        _source = BrowseState.GetFilter("articles.source").FirstOrDefault() ?? SourceAll;
         _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
 
         var articles = await ArticleService.GetIndexAsync();
-        var discoverRows = articles.Select(a =>
-            new ArticleRow(a.Id, a.Title, a.Summary, false, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"));
-
-        // Pull the standalone Inquiry articles (any node not folded into another node's Sections as inline content).
-        var nodes = await Content.GetAllAsync();
-        var sectionIds = nodes.SelectMany(n => n.Sections).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var inquiryRows = nodes
-            .Where(n => !sectionIds.Contains(n.Id))
-            .Select(n =>
-            {
-                var stage = StageLabel(n.Stage);
-                // Surface the Inquiry stage as a selectable tag (in addition to the node's own tags).
-                var tags = string.IsNullOrWhiteSpace(stage)
-                    ? n.Tags
-                    : new[] { stage! }.Concat(n.Tags).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-                return new ArticleRow(n.Id, n.Title, n.Summary, true, stage, tags, ContentRoutes.NodeHref(n));
-            });
-
-        _articles = discoverRows.Concat(inquiryRows)
+        _articles = articles
+            .Select(a => new ArticleRow(a.Id, a.Title, a.Summary, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"))
             .OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
     }
@@ -187,40 +137,17 @@
         }
     }
 
-    private void OnSourceChanged(string source)
-    {
-        _source = source;
-        BrowseState.SetFilter("articles.source", source == SourceAll ? [] : new HashSet<string> { source });
-
-        // Drop any selected tags that the new source no longer offers so the filter can't hide the whole list.
-        var available = _tags.ToHashSet(StringComparer.OrdinalIgnoreCase);
-        if (_selectedTags.Any(t => !available.Contains(t)))
-        {
-            OnTagsChanged(new HashSet<string>(_selectedTags.Where(available.Contains), StringComparer.OrdinalIgnoreCase));
-        }
-    }
-
-    // Narrows the article set to the chosen Source axis (all / discover-only / inquiry-only).
-    private IEnumerable<ArticleRow> SourceScoped(IEnumerable<ArticleRow> rows) => _source switch
-    {
-        SourceDiscover => rows.Where(a => !a.IsInquiry),
-        SourceInquiry => rows.Where(a => a.IsInquiry),
-        _ => rows,
-    };
-
     private void OnTagsChanged(IReadOnlySet<string> selected)
     {
         _selectedTags = selected;
         BrowseState.SetFilter("articles.tag", selected);
     }
 
-    private bool HasActiveFilters => _source != SourceAll || _selectedTags.Count > 0;
+    private bool HasActiveFilters => _selectedTags.Count > 0;
 
     private void ClearFilters()
     {
-        _source = SourceAll;
         _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        BrowseState.SetFilter("articles.source", new HashSet<string>(StringComparer.OrdinalIgnoreCase));
         BrowseState.SetFilter("articles.tag", _selectedTags);
     }
 
@@ -231,13 +158,6 @@
             ? null
             : char.ToUpperInvariant(topic[0]) + topic[1..];
 
-    // Display-only pill for an Inquiry article: the stage's friendly name (e.g. "Why God?"), or nothing
-    // when the node has no known stage.
-    private static string? StageLabel(string? stage) =>
-        string.IsNullOrEmpty(stage)
-            ? null
-            : SiteNavigation.Items.FirstOrDefault(i => string.Equals(i.Href, stage, StringComparison.OrdinalIgnoreCase))?.Label;
-
     private IReadOnlyList<ArticleRow> Filtered
     {
         get
@@ -247,7 +167,7 @@
                 return [];
             }
 
-            IEnumerable<ArticleRow> results = SourceScoped(_articles);
+            IEnumerable<ArticleRow> results = _articles;
 
             // Tags: OR within the facet (match any selected tag), AND with the other facets.
             if (_selectedTags.Count > 0)

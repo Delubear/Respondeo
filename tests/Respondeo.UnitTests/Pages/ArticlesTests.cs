@@ -14,7 +14,7 @@ namespace Respondeo.UnitTests.Pages;
 public class ArticlesTests : TestContext
 {
     private const string DiscoverManifest = """
-        { "files": [ "confession.md" ] }
+        { "files": [ "confession.md", "eucharist.md" ] }
         """;
 
     private const string ConfessionMd = """
@@ -25,6 +25,19 @@ public class ArticlesTests : TestContext
         topic: sacraments
         tags:
           - confession
+        ---
+
+        A lead-in paragraph.
+        """;
+
+    private const string EucharistMd = """
+        ---
+        id: eucharist
+        title: "Eucharist"
+        summary: The source and summit of the Christian life.
+        topic: sacraments
+        tags:
+          - eucharist
         ---
 
         A lead-in paragraph.
@@ -43,6 +56,7 @@ public class ArticlesTests : TestContext
         {
             ["_content/Respondeo.Content.Discover/discover/articles/articles-manifest.json"] = DiscoverManifest,
             ["_content/Respondeo.Content.Discover/discover/articles/confession.md"] = ConfessionMd,
+            ["_content/Respondeo.Content.Discover/discover/articles/eucharist.md"] = EucharistMd,
             ["_content/Respondeo.Content.Markdown/content/manifest.json"] = ContentManifest,
             ["_content/Respondeo.Content.Markdown/content/beta.md"] = BetaMd,
             ["_content/Respondeo.Content.Markdown/content/section.md"] = SectionMd,
@@ -56,31 +70,30 @@ public class ArticlesTests : TestContext
     }
 
     [Fact]
-    public void Renders_both_discover_articles_and_inquiry_articles()
+    public void Renders_discover_articles()
     {
         var cut = RenderComponent<Articles>();
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Contains("discover/articles/confession", hrefs);
-        Assert.Contains("node/beta", hrefs);
     }
 
     [Fact]
-    public void Excludes_inquiry_section_nodes()
+    public void Does_not_render_inquiry_nodes()
     {
         var cut = RenderComponent<Articles>();
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
+        Assert.DoesNotContain("node/beta", hrefs);
         Assert.DoesNotContain("node/section", hrefs);
     }
 
     [Fact]
-    public void Surfaces_the_inquiry_source_as_a_filter()
+    public void Does_not_render_a_source_filter()
     {
         var cut = RenderComponent<Articles>();
 
-        var sources = cut.FindAll("button.source-filter__option").Select(o => o.TextContent.Trim()).ToList();
-        Assert.Contains("From Inquiry", sources);
+        Assert.Empty(cut.FindAll("button.source-filter__option"));
     }
 
     [Fact]
@@ -101,7 +114,7 @@ public class ArticlesTests : TestContext
         Assert.True(tagsHeading);
 
         var options = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();
-        Assert.Contains("Existence of God", options);
+        Assert.Contains("Eucharist", options);
         Assert.Contains("Confession", options);
     }
 
@@ -110,14 +123,14 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        // The "Existence of God" tag belongs only to the inquiry article (beta), not to confession.
+        // The "Eucharist" tag belongs only to the eucharist article, not to confession.
         var checkbox = cut.FindAll("label.topic-filter__option")
-            .First(o => o.TextContent.Trim() == "Existence of God")
+            .First(o => o.TextContent.Trim() == "Eucharist")
             .QuerySelector("input[type=checkbox]")!;
         checkbox.Change(true);
 
         var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
-        Assert.Contains("node/beta", hrefs);
+        Assert.Contains("discover/articles/eucharist", hrefs);
         Assert.DoesNotContain("discover/articles/confession", hrefs);
     }
 
@@ -133,7 +146,7 @@ public class ArticlesTests : TestContext
         {
             var hrefs = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
             Assert.Contains("discover/articles/confession", hrefs);
-            Assert.DoesNotContain("node/beta", hrefs);
+            Assert.Contains("discover/articles/eucharist", hrefs);
         });
     }
 }
