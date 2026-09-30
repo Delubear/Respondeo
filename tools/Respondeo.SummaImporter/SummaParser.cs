@@ -71,6 +71,17 @@ internal static partial class SummaParser
 
         var treatises = FindTreatiseHeadings(id, lines, start, end);
         var headerLines = FindQuestionHeaders(lines, start, end);
+
+        // A few parts open with an explicit "PROLOGUE" block before their first question (e.g. the Prima Secundae
+        // and the Tertia Pars). When present, hoist it into the first slot of the part as a synthetic, article-less
+        // "prologue" entry with no treatise, so the browse view can show it ahead of every question.
+        var firstQuestionLine = headerLines.Count > 0 ? headerLines[0].Line : end;
+        var prologue = ParsePartPrologue(id, lines, start, firstQuestionLine);
+        if (prologue is not null)
+        {
+            questions.Add(prologue);
+        }
+
         for (var q = 0; q < headerLines.Count; q++)
         {
             var qStart = headerLines[q].Line;
@@ -150,7 +161,12 @@ internal sealed record ParsedQuestion(
     string Title,
     string? Treatise,
     string PrologueMarkdown,
-    IReadOnlyList<ParsedArticle> Articles);
+    IReadOnlyList<ParsedArticle> Articles)
+{
+    // True for a synthetic part-level prologue entry: it sits in the first slot of a part (no treatise),
+    // carries Number 0, has no articles, and stores its text in PrologueMarkdown.
+    public bool IsPrologue { get; init; }
+}
 
 internal sealed record ParsedArticle(int Number, string Title, ArticleSections Sections);
 

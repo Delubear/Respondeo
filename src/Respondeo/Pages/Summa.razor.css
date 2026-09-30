@@ -203,6 +203,17 @@
     font-size: 0.85rem;
 }
 
+/* A part-level prologue row: no question number or article count, just an italic label spanning the row. */
+.summa__question-link--prologue {
+    grid-template-columns: 1fr;
+}
+
+.summa__question-title--prologue {
+    font-style: italic;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+}
+
 .summa__question-articles {
     font-size: 0.75rem;
     color: var(--ink-soft);

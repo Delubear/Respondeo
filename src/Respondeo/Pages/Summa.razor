@@ -127,11 +127,20 @@
                                     @foreach (var question in group.Questions)
                                     {
                                         <li class="summa__question">
-                                            <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
-                                                <span class="summa__question-number">Q@(question.Number)</span>
-                                                <span class="summa__question-title">@question.Title</span>
-                                                <span class="summa__question-articles">@question.Articles.Count articles</span>
-                                            </a>
+                                            @if (question.IsPrologue)
+                                            {
+                                                <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                    <span class="summa__question-title summa__question-title--prologue">@question.Title</span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                    <span class="summa__question-number">Q@(question.Number)</span>
+                                                    <span class="summa__question-title">@question.Title</span>
+                                                    <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                                </a>
+                                            }
                                         </li>
                                     }
                                 </ol>
@@ -324,6 +333,12 @@
         {
             foreach (var question in part.Questions)
             {
+                if (question.IsPrologue)
+                {
+                    // Prologues carry no articles and are part-level framing rather than a searchable question; skip them.
+                    continue;
+                }
+
                 entries.Add(new SearchEntry(part.Title, question.Id, question.Number, question.Title, null, question.Treatise));
 
                 foreach (var article in question.Articles)

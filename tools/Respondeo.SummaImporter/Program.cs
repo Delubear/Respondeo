@@ -104,6 +104,7 @@ internal static class SummaImport
             partId = question.PartId,
             number = question.Number,
             title = question.Title,
+            isPrologue = question.IsPrologue,
             prologueHtml = renderer.ToHtml(question.PrologueMarkdown),
             articles,
         };
@@ -117,6 +118,7 @@ internal static class SummaImport
         id = question.Id,
         number = question.Number,
         title = question.Title,
+        isPrologue = question.IsPrologue,
         treatise = question.Treatise,
         articles = question.Articles.Select(a => new { number = a.Number, title = a.Title }).ToList(),
     };

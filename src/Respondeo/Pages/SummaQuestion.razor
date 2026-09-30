@@ -37,7 +37,7 @@ else
 {
     <article class="summa-question">
         <header class="summa-question__header">
-            <p class="summa-question__eyebrow">@PartTitle &middot; Question @_question.Number</p>
+            <p class="summa-question__eyebrow">@PartTitle@(string.IsNullOrWhiteSpace(_treatise) ? null : $" · {_treatise}") @(_question.IsPrologue ? $"· {_question.Title}" : $"· Question {_question.Number}")</p>
             <h1 class="summa-question__title">@_question.Title</h1>
         </header>
 
@@ -50,6 +50,8 @@ else
             </div>
         }
 
+        @if (!_question.IsPrologue)
+        {
         <nav class="summa-question__toc" aria-label="Articles in this question">
             <ol class="summa-question__toc-list">
                 @foreach (var article in _question.Articles)
@@ -103,6 +105,7 @@ else
                 </div>
             </details>
         }
+        }
 
         <nav class="summa-question__pager" aria-label="Question navigation">
             <a class="summa-question__back" href="summa">&larr; All questions</a>
@@ -117,6 +120,7 @@ else
 
     private SummaQuestionContent? _question;
     private string PartTitle = string.Empty;
+    private string? _treatise;
     private bool _loading = true;
     private bool _scrolledToFragment;
 
@@ -132,6 +136,11 @@ else
             }
 
             var articles = string.Join("; ", _question.Articles.Select(a => a.Title));
+            if (_question.IsPrologue)
+            {
+                return $"{PartTitle} · Prologue: {_question.Title}. From St. Thomas Aquinas's Summa Theologiae.";
+            }
+
             return string.IsNullOrWhiteSpace(articles)
                 ? $"{PartTitle} · Question {_question.Number}: {_question.Title}. From St. Thomas Aquinas's Summa Theologiae."
                 : $"{_question.Title} — St. Thomas Aquinas asks: {articles}.";
@@ -248,7 +257,7 @@ else
         _scrolledToFragment = false;
         _openArticles.Clear();
         _question = await Summa.GetQuestionAsync(SummaParts.ToStorageId(Id));
-        PartTitle = await ResolvePartTitleAsync();
+        await ResolvePartContextAsync();
         _crumbs = BuildPartCrumbs(_question);
         await ResolveReferenceOriginAsync();
         _loading = false;
@@ -344,17 +353,24 @@ else
         await OpenFragmentTargetAsync();
     }
 
-    // The question content stores only the part id; look up the display title from the index.
-    private async Task<string> ResolvePartTitleAsync()
+    // The question content stores only the part id; look up the display title and treatise from the index.
+    private async Task ResolvePartContextAsync()
     {
+        _treatise = null;
+
         if (_question is null)
         {
-            return string.Empty;
+            PartTitle = string.Empty;
+            return;
         }
 
         var index = await Summa.GetIndexAsync();
         var part = index.Parts.FirstOrDefault(p =>
             string.Equals(p.Id, _question.PartId, StringComparison.OrdinalIgnoreCase));
-        return part?.Title ?? string.Empty;
+        PartTitle = part?.Title ?? string.Empty;
+
+        _treatise = part?.Questions
+            .FirstOrDefault(q => string.Equals(q.Id, _question.Id, StringComparison.OrdinalIgnoreCase))
+            ?.Treatise;
     }
 }

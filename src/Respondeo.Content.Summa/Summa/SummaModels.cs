@@ -37,6 +37,13 @@ public sealed class SummaQuestionEntry
     public required string Title { get; init; }
 
     /// <summary>
+    /// True when this entry is a part-level prologue rather than a numbered question.
+    /// Prologues sit in the first slot of a part (outside any treatise), carry <see cref="Number"/> 0,
+    /// and have no articles; the browse view renders them as a "Prologue" row without a question number or article count.
+    /// </summary>
+    public bool IsPrologue { get; init; }
+
+    /// <summary>
     /// The treatise this question belongs to (e.g. "Treatise on the Passions"), used to group questions within a part.
     /// Null for the few questions that precede any treatise heading.
     /// </summary>
@@ -73,6 +80,12 @@ public sealed class SummaQuestionContent
 
     /// <summary>Display title of the question.</summary>
     public required string Title { get; init; }
+
+    /// <summary>
+    /// True when this content is a part-level prologue rather than a numbered question.
+    /// Prologues carry <see cref="Number"/> 0, populate <see cref="PrologueHtml"/>, and have no articles.
+    /// </summary>
+    public bool IsPrologue { get; init; }
 
     /// <summary>Optional prologue text (rendered HTML) that precedes the articles.</summary>
     public string PrologueHtml { get; init; } = string.Empty;

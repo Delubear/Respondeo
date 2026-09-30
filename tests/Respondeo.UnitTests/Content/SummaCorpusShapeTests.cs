@@ -46,6 +46,12 @@ public class SummaCorpusShapeTests
 
         foreach (var (path, question) in AllQuestions())
         {
+            // Part-level prologues are article-less by design; they are not questions.
+            if (question.IsPrologue)
+            {
+                continue;
+            }
+
             if (question.Articles.Count == 0)
             {
                 empty.Add(Path.GetFileName(path));
@@ -174,6 +180,12 @@ public class SummaCorpusShapeTests
 
         foreach (var (_, question) in AllQuestions())
         {
+            // Part-level prologues are not questions and are excluded from the Benziger question/article baselines.
+            if (question.IsPrologue)
+            {
+                continue;
+            }
+
             actual.TryGetValue(question.PartId, out var running);
             actual[question.PartId] = (running.Questions + 1, running.Articles + question.Articles.Count);
         }
@@ -216,6 +228,12 @@ public class SummaCorpusShapeTests
         {
             foreach (var question in part.Questions)
             {
+                // Part-level prologues sit outside any treatise by design.
+                if (question.IsPrologue)
+                {
+                    continue;
+                }
+
                 if (string.IsNullOrWhiteSpace(question.Treatise))
                 {
                     orphans.Add(question.Id);
