@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Respondeo;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Content;
@@ -32,7 +32,7 @@ public class StageNavigationConsistencyTests
         return manifest?.Files ?? [];
     }
 
-    // Mirrors ContentService.StageFromFileName: a node's stage is its content sub-folder.
+    // Mirrors InquiryService.StageFromFileName: a node's stage is its content sub-folder.
     private static string? StageFromFile(string file)
     {
         var normalized = file.Replace('\\', '/');
@@ -42,7 +42,7 @@ public class StageNavigationConsistencyTests
 
     private static IReadOnlyList<ContentNode> LoadNodes(string contentDir)
     {
-        var parser = new ContentParser(ContentRendering.Renderer);
+        var parser = new InquiryParser(ContentRendering.Renderer);
         return ReadManifestFiles(contentDir)
             .Select(file => parser.Parse(File.ReadAllText(Path.Combine(contentDir, file)), StageFromFile(file)))
             .Where(node => node is not null)

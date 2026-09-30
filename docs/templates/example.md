@@ -3,7 +3,7 @@
 # EXAMPLE CONTENT FILE — copy this as a starting point for a new node.
 # Everything between the --- fences is YAML front matter (structured metadata).
 # After copying: give it a unique `id`, edit the body, and add the file name to
-# manifest.json so ContentService will load it.
+# manifest.json so InquiryService will load it.
 # ─────────────────────────────────────────────────────────────────────────────
 
 id: example                      # REQUIRED. Unique id and URL slug (/node/example).

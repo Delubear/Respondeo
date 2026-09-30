@@ -2,10 +2,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Articles;
 using Respondeo.Content.Devotions;
 using Respondeo.Content.Discover;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Prayers;
-using Respondeo.Content.Services;
 using Respondeo.Content.Shared;
 
 namespace Respondeo.Content;
@@ -35,8 +34,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDiscoverOverview, DiscoverOverview>();
 
         // Inquiry pillar
-        services.AddSingleton<ContentParser>();
-        services.AddScoped<IContentService, ContentService>();
+        services.AddSingleton<InquiryParser>();
+        services.AddScoped<IContentService, InquiryService>();
 
         return services;
     }

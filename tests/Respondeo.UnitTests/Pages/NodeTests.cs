@@ -4,7 +4,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 using Respondeo.Pages;
 using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
@@ -35,7 +35,7 @@ public class NodeTests : TestContext
         // Default: the trail contains just the current node (no ancestors).
         _trail.VisitAsync(Arg.Any<string>()).Returns(call => Task.FromResult<IReadOnlyList<string>>(new[] { (string)call[0] }));
 
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
+        Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(_trail);
     }
 

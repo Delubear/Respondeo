@@ -1,16 +1,15 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Inquiry.Internal;
 
-namespace Respondeo.Content.Inquiry.Services;
+namespace Respondeo.Content.Inquiry;
 
 /// <summary>
 /// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content library (Inquiry pillar).
 /// The files live in that library's <c>wwwroot/inquiry/</c> and are served by Blazor under the <c>_content/Respondeo.Content/</c> static-web-asset path.
-/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ContentParser"/>,
+/// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="InquiryParser"/>,
 /// and caches the parsed graph in memory for the app's lifetime.
 /// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
-internal sealed class ContentService(HttpClient http, ContentParser parser) : MarkdownContentLoader<ContentFrontMatter, ContentNode>(new ContentFetcher(http, ContentCachePolicy.Revalidate), new FrontMatterReader()), IContentService
+internal sealed class InquiryService(HttpClient http, InquiryParser parser) : MarkdownContentLoader<InquiryFrontMatter, ContentNode>(new ContentFetcher(http, ContentCachePolicy.Revalidate), new FrontMatterReader()), IContentService
 {
     private const string ContentRoot = "_content/Respondeo.Content/inquiry";
     private const string ManifestPath = "_content/Respondeo.Content/inquiry/manifest.json";
@@ -30,7 +29,7 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : Ma
         return nodes.TryGetValue(id, out var node) ? node : null;
     }
 
-    protected override ContentNode Map(ContentFrontMatter meta, string body, string fileName) => parser.Map(meta, body, StageFromFileName(fileName));
+    protected override ContentNode Map(InquiryFrontMatter meta, string body, string fileName) => parser.Map(meta, body, StageFromFileName(fileName));
 
     private Task<Dictionary<string, ContentNode>> EnsureLoadedAsync() => _nodes.GetAsync(async () =>
     {
@@ -61,10 +60,5 @@ internal sealed class ContentService(HttpClient http, ContentParser parser) : Ma
         var normalized = fileName.Replace('\\', '/');
         var slash = normalized.IndexOf('/');
         return slash > 0 ? normalized[..slash] : null;
-    }
-
-    private sealed class ContentManifest
-    {
-        public List<string> Files { get; set; } = new();
     }
 }

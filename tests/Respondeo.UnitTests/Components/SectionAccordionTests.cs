@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -28,7 +28,7 @@ public class SectionAccordionTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
+        Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         _nav = Services.GetRequiredService<FakeNavigationManager>();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }

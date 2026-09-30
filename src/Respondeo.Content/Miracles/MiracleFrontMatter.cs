@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Internal;
+namespace Respondeo.Content.Miracles;
 
 /// <summary>
 /// The structured metadata parsed from a miracle file's YAML front-matter block.

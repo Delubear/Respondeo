@@ -3,7 +3,7 @@ using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Pages;
 
@@ -28,7 +28,7 @@ public class StageTests : TestContext
         }
 
         var http = new HttpClient(new StubHandler(responses)) { BaseAddress = new Uri("https://localhost/") };
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
+        Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class StageTests : TestContext
             ["_content/Respondeo.Content/inquiry/manifest.json"] = "{\"files\":[]}",
         }))
         { BaseAddress = new Uri("https://localhost/") };
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
+        Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
 
         var cut = RenderComponent<Stage>(p => p.Add(c => c.Slug, "coming-home"));
 

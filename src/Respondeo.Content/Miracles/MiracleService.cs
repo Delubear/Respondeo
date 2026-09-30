@@ -1,8 +1,6 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Miracles;
-using Respondeo.Content.Internal;
 
-namespace Respondeo.Content.Services;
+namespace Respondeo.Content.Miracles;
 
 /// <summary>
 /// Loads the bundled catalog of Catholic miracles from static Markdown files shipped by the Respondeo.Content library,

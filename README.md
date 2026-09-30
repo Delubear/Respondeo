@@ -48,7 +48,7 @@ See [`tests/Respondeo.AcceptanceTests/README.md`](tests/Respondeo.AcceptanceTest
 
 Content lives in `src/Respondeo.Content/wwwroot/inquiry/` as Markdown files, each with a
 YAML front-matter header followed by a Markdown body. New files must also be listed in
-`manifest.json` so `ContentService` can load them.
+`manifest.json` so `InquiryService` can load them.
 
 The full authoring guide — front matter, links, and the media directives (YouTube, PDF, buttons) —
 lives in **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/INQUIRY.md)**. Two

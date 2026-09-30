@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Inquiry;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
@@ -13,7 +13,7 @@ public class ContentServiceLoadingTests
 
     private const string BranchMd = "---\nid: branch\ntitle: Branch\n---\nA branch node";
 
-    private static ContentService CreateService()
+    private static InquiryService CreateService()
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
@@ -23,7 +23,7 @@ public class ContentServiceLoadingTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new ContentService(http, new ContentParser(ContentRendering.Renderer));
+        return new InquiryService(http, new InquiryParser(ContentRendering.Renderer));
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ContentServiceLoadingTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        var service = new ContentService(http, new ContentParser(ContentRendering.Renderer));
+        var service = new InquiryService(http, new InquiryParser(ContentRendering.Renderer));
 
         var all = await service.GetAllAsync();
 

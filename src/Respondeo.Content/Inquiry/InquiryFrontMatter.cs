@@ -1,14 +1,14 @@
 using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Inquiry.Internal;
+namespace Respondeo.Content.Inquiry;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter block.
 /// This is an internal serialization DTO; the parser maps it onto the public <see cref="Abstractions.ContentNode"/> so YAML concerns never leak past the boundary.
 /// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
-internal sealed class ContentFrontMatter : ContentFrontMatterBase
+internal sealed class InquiryFrontMatter : ContentFrontMatterBase
 {
     /// <summary>Child branches; several nodes may link to the same child id, forming a graph.</summary>
     [YamlMember(Alias = "branches")]

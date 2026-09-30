@@ -2,8 +2,8 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Articles;
-using Respondeo.Content.Services;
-using Respondeo.Content.Inquiry.Services;
+using Respondeo.Content.Miracles;
+using Respondeo.Content.Inquiry;
 using Respondeo.Content.Shared;
 using Respondeo.Pages;
 using Respondeo.Services;
@@ -64,7 +64,7 @@ public class ArticlesTests : TestContext
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
         Services.AddSingleton<IArticleService>(new ArticleService(http, ContentRendering.Renderer));
-        Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));
+        Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));
     }
