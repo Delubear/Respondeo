@@ -21,6 +21,9 @@ public sealed class MiracleIndexEntry
     /// <summary>Display title (e.g. "The Eucharistic Miracle of Lanciano").</summary>
     public required string Title { get; init; }
 
+    /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
+
     /// <summary>Short one-line description for cards and previews.</summary>
     public string Summary { get; init; } = string.Empty;
 
@@ -54,6 +57,9 @@ public sealed class MiracleRecord
 
     /// <summary>Display title.</summary>
     public required string Title { get; init; }
+
+    /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
 
     /// <summary>Short one-line description.</summary>
     public string Summary { get; init; } = string.Empty;

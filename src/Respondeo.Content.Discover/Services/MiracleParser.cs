@@ -28,6 +28,7 @@ internal sealed class MiracleParser(IContentHtmlRenderer html)
     {
         Id = meta.Id,
         Title = meta.Title,
+        SortValue = meta.SortValue,
         Summary = meta.Summary,
         Types = NormalizeTypes(meta.Types),
         Approval = NormalizeSlug(meta.Approval, "historical"),
@@ -45,6 +46,7 @@ internal sealed class MiracleParser(IContentHtmlRenderer html)
     {
         Id = record.Id,
         Title = record.Title,
+        SortValue = record.SortValue,
         Summary = record.Summary,
         Types = record.Types,
         Approval = record.Approval,

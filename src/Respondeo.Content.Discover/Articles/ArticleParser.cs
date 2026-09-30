@@ -24,6 +24,7 @@ internal sealed class ArticleParser(IContentHtmlRenderer html)
         {
             Id = meta!.Id,
             Title = meta.Title,
+            SortValue = meta.SortValue,
             Summary = meta.Summary,
             Topic = NormalizeSlug(meta.Topic, "general"),
             Tags = meta.Tags,
@@ -37,6 +38,7 @@ internal sealed class ArticleParser(IContentHtmlRenderer html)
     {
         Id = article.Id,
         Title = article.Title,
+        SortValue = article.SortValue,
         Summary = article.Summary,
         Topic = article.Topic,
         Tags = article.Tags,

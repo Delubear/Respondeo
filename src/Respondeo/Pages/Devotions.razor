@@ -84,8 +84,8 @@
     // dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<DevotionSummary>[] _sortOptions =
     [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(d => d.Title, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(d => d.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
     ];
 
     private IReadOnlyList<string> _kinds = [];

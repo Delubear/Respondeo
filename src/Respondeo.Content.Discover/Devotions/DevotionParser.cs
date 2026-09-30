@@ -21,6 +21,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         {
             Id = dto.Id,
             Title = dto.Title,
+            SortValue = string.IsNullOrWhiteSpace(dto.SortKey) ? dto.Title : dto.SortKey.Trim(),
             Summary = dto.Summary,
             Kind = NormalizeSlug(dto.Kind, "devotion"),
             IntroHtml = string.IsNullOrWhiteSpace(dto.Intro) ? null : html.ToHtml(dto.Intro),
@@ -34,6 +35,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
     {
         Id = devotion.Id,
         Title = devotion.Title,
+        SortValue = devotion.SortValue,
         Summary = devotion.Summary,
         Kind = devotion.Kind,
     };

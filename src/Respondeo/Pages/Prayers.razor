@@ -85,8 +85,8 @@
     // dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<PrayerSummary>[] _sortOptions =
     [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(p => p.Title, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(p => p.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
     ];
 
     // Facet option lists derived from the loaded index (only values that actually occur).

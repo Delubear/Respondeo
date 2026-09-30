@@ -13,6 +13,9 @@ public sealed class ArticleSummary
     /// <summary>Display title (e.g. "Confession: Why We Confess to a Priest").</summary>
     public required string Title { get; init; }
 
+    /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
+
     /// <summary>Short one-line description for cards and previews.</summary>
     public string Summary { get; init; } = string.Empty;
 
@@ -31,6 +34,9 @@ public sealed class Article
 
     /// <summary>Display title.</summary>
     public required string Title { get; init; }
+
+    /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
 
     /// <summary>Short one-line description.</summary>
     public string Summary { get; init; } = string.Empty;

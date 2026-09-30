@@ -13,6 +13,9 @@ public sealed class DevotionSummary
     /// <summary>Display title (e.g. "The Holy Rosary").</summary>
     public required string Title { get; init; }
 
+    /// <summary>Value used for alphabetical sorting; the sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
+
     /// <summary>Short one-line description for cards and previews.</summary>
     public string Summary { get; init; } = string.Empty;
 
@@ -32,6 +35,9 @@ public sealed class Devotion
 
     /// <summary>Display title.</summary>
     public required string Title { get; init; }
+
+    /// <summary>Value used for alphabetical sorting; the sortKey when set, otherwise the title.</summary>
+    public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
 
     /// <summary>Short one-line description.</summary>
     public string Summary { get; init; } = string.Empty;

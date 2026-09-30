@@ -22,7 +22,18 @@ public abstract class ContentFrontMatterBase
     [YamlMember(Alias = "summary")]
     public string Summary { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Optional filing key used for alphabetical sorting in place of the title.
+    /// Set this when the natural sort order differs from the display title — for example to drop a leading article
+    /// ("The Miracle of Lanciano" -> "Miracle of Lanciano"). Left blank, sorting falls back to the title.
+    /// </summary>
+    [YamlMember(Alias = "sortKey")]
+    public string? SortKey { get; set; }
+
     /// <summary>Free-text tags for grouping, filtering, and searchable categorization.</summary>
     [YamlMember(Alias = "tags")]
     public List<string> Tags { get; set; } = [];
+
+    /// <summary>The effective alphabetical-sort value: <see cref="SortKey"/> when set, otherwise the title.</summary>
+    public string SortValue => string.IsNullOrWhiteSpace(SortKey) ? Title : SortKey.Trim();
 }

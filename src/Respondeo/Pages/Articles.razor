@@ -76,7 +76,7 @@
 
 @code {
     // A searchable, filterable row for a Discover article. Pill is a precomputed display-only kicker (the article's topic).
-    private sealed record ArticleRow(string Id, string Title, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href);
+    private sealed record ArticleRow(string Id, string Title, string SortValue, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href);
 
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
@@ -87,8 +87,8 @@
     // dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<ArticleRow>[] _sortOptions =
     [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(a => a.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
     ];
 
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -109,8 +109,8 @@
 
         var articles = await ArticleService.GetIndexAsync();
         _articles = articles
-            .Select(a => new ArticleRow(a.Id, a.Title, a.Summary, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"))
-            .OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
+            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"))
+            .OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
     }
 

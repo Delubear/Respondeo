@@ -24,6 +24,7 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
         {
             Id = meta!.Id,
             Title = meta.Title,
+            SortValue = meta.SortValue,
             Summary = meta.Summary,
             Category = NormalizeSlug(meta.Category, "other"),
             Language = NormalizeSlug(meta.Language, "en"),
@@ -39,6 +40,7 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
     {
         Id = prayer.Id,
         Title = prayer.Title,
+        SortValue = prayer.SortValue,
         Summary = prayer.Summary,
         Category = prayer.Category,
         Tags = prayer.Tags,

@@ -8,6 +8,10 @@ internal sealed class DevotionDto
 {
     public string Id { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
+
+    /// <summary>Optional filing key for alphabetical sorting; falls back to the title when blank.</summary>
+    public string? SortKey { get; set; }
+
     public string Summary { get; set; } = string.Empty;
     public string Kind { get; set; } = string.Empty;
 

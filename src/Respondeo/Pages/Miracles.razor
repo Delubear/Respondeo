@@ -95,9 +95,10 @@
     // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
     private static readonly SortOption<MiracleIndexEntry>[] _sortOptions =
     [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
-        new("year-asc", "Year (oldest first)", rows => rows.OrderBy(m => m.Year ?? int.MaxValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
-        new("year-desc", "Year (newest first)", rows => rows.OrderByDescending(m => m.Year ?? int.MinValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(m => m.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(m => m.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("year-asc", "Year (oldest first)", rows => rows.OrderBy(m => m.Year ?? int.MaxValue).ThenBy(m => m.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("year-desc", "Year (newest first)", rows => rows.OrderByDescending(m => m.Year ?? int.MinValue).ThenBy(m => m.SortValue, StringComparer.CurrentCultureIgnoreCase)),
     ];
 
     protected override async Task OnInitializedAsync()
