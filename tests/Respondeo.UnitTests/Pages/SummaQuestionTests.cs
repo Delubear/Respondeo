@@ -3,7 +3,6 @@ using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Services;
 using Respondeo.Services;

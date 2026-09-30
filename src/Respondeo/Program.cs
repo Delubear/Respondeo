@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
-using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
 using Respondeo.Services;
 using Respondeo.Content;
@@ -16,10 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 // Registered as a singleton so a flag can be flipped per-deploy (or per-environment) without a code change.
 var featureFlags = builder.Configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags();
 builder.Services.AddSingleton(featureFlags);
-
-// Shared Markdown-to-HTML rendering (Markdig lives here,
-// behind IContentHtmlRenderer) used by every content pillar so the embed directive vocabulary stays identical across the site.
-builder.Services.AddRespondeoContentRendering();
 
 // The hand-authored content library ships both pillars as static assets: the Inquiry pillar
 // (author-curated Markdown nodes behind IContentService) and the Discover pillar (prayers,

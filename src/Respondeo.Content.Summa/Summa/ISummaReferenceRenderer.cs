@@ -1,8 +1,8 @@
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Summa;
 
 /// <summary>
 /// Expands the neutral Summa placeholder tokens emitted by the importer (cross-references and section cues) into final HTML at render time.
-/// Kept as a contract in the abstractions project so the app depends only on this interface; the concrete implementation lives in the rendering project.
+/// Kept as a contract alongside the Summa feature so the app depends only on this interface; the concrete implementation stays internal.
 /// </summary>
 public interface ISummaReferenceRenderer
 {

@@ -1,13 +1,12 @@
 using System.Text.RegularExpressions;
-using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Summa;
 
 /// <summary>
 /// Expands the neutral placeholders emitted by the Summa importer into HTML at render time.
 /// The importer writes tokens instead of baking final markup, so link routing,
 /// wording and the styling of the classic article section cues live here and can change without regenerating the corpus.
-/// Part labels/slugs are resolved through <see cref="ISummaPartMap"/> so this renderer stays free of any dependency on the Summa corpus project.
+/// Part labels/slugs are resolved through <see cref="ISummaPartMap"/> so this renderer stays free of any dependency on the Summa corpus data.
 /// Two token families are handled:
 /// <list type="bullet">
 /// <item><c>{{sref|kind|partId|q|a}}</c> — a cross-reference, rendered as an anchor.</item>

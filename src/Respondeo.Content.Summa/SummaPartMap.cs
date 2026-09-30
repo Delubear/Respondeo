@@ -1,5 +1,3 @@
-using Respondeo.Content.Shared;
-
 namespace Respondeo.Content.Summa;
 
 /// <summary>
