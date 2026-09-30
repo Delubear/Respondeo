@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Rendering;
 
 /// <summary>
 /// Contract for turning authored Markdown (including the shared "::: youtube" / "::: pdf" / "::: button" directive vocabulary) into HTML.

@@ -1,5 +1,5 @@
 using Respondeo;
-using Respondeo.Content.Shared;
+using Respondeo.Content.Infrastructure;
 
 namespace Respondeo.UnitTests.Routing;
 

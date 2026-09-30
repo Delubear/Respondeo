@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<PackageReference Include="Markdig" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	<PackageReference Include="YamlDotNet" />
   </ItemGroup>

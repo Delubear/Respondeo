@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Infrastructure;
 
 /// <summary>A titled slice of a Markdown body: the heading text and the raw Markdown beneath it.</summary>
 /// <param name="Heading">The section heading (empty for the lead-in content before the first heading).</param>

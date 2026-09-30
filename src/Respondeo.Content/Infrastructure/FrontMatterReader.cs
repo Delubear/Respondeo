@@ -1,7 +1,7 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Infrastructure;
 
 /// <summary>
 /// Shared reader that turns a raw Markdown file into its typed front-matter DTO and body.

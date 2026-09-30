@@ -2,6 +2,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Components;
+using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 
 namespace Respondeo.UnitTests.Components;

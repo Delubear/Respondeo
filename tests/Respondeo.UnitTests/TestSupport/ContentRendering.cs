@@ -1,4 +1,4 @@
-using Respondeo.Content.Shared;
+using Respondeo.Content.Rendering;
 
 namespace Respondeo.UnitTests.TestSupport;
 

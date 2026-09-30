@@ -2,9 +2,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Articles;
 using Respondeo.Content.Devotions;
 using Respondeo.Content.Discover;
+using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Prayers;
+using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
 
 namespace Respondeo.Content;
@@ -26,6 +28,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddRespondeoContent(this IServiceCollection services)
     {
+        // Markdown-to-HTML rendering (stateless singleton) shared by every pillar's parser.
+        services.AddSingleton<IContentHtmlRenderer, MarkdigContentHtmlRenderer>();
+
         // Discover pillar
         services.AddScoped<IPrayerService, PrayerService>();
         services.AddScoped<IDevotionService, DevotionService>();

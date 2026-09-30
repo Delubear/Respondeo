@@ -1,6 +1,6 @@
 using Markdig;
 
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Rendering;
 
 /// <summary>
 /// Markdig-backed implementation of <see cref="IContentHtmlRenderer"/>.

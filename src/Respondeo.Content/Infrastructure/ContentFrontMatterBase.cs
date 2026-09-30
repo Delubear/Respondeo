@@ -1,6 +1,6 @@
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Infrastructure;
 
 /// <summary>
 /// The common metadata every content pillar's front-matter block shares: a stable id, a title, a short summary, and a set of free-text tags.

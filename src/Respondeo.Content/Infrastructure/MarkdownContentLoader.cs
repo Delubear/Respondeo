@@ -1,4 +1,6 @@
-namespace Respondeo.Content.Shared;
+using Respondeo.Content.Shared;
+
+namespace Respondeo.Content.Infrastructure;
 
 /// <summary>
 /// Generic base for a content service that loads a set of Markdown files, each carrying a "---" delimited YAML front-matter block, into typed models.

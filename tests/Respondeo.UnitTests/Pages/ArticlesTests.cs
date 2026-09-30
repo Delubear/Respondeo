@@ -4,6 +4,7 @@ using NSubstitute;
 using Respondeo.Content.Articles;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Inquiry;
+using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 using Respondeo.Pages;
 using Respondeo.Services;

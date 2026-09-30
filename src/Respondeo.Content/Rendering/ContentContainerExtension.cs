@@ -3,7 +3,7 @@ using Markdig.Extensions.CustomContainers;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
 
-namespace Respondeo.Content.Shared;
+namespace Respondeo.Content.Rendering;
 
 /// <summary>
 /// Renders a small vocabulary of authoring directives so content authors can embed media without hand-writing HTML.
@@ -22,7 +22,7 @@ namespace Respondeo.Content.Shared;
 ///
 /// Any other container name falls back to Markdig's default &lt;div&gt; rendering.
 /// </summary>
-public sealed class ContentContainerExtension : IMarkdownExtension
+internal sealed class ContentContainerExtension : IMarkdownExtension
 {
     public void Setup(MarkdownPipelineBuilder pipeline)
     {

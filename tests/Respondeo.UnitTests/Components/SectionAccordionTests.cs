@@ -5,6 +5,7 @@ using Bunit.TestDoubles;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
 using Respondeo.UnitTests.TestSupport;
+using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Inquiry;
 

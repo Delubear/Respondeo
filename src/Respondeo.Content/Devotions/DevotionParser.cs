@@ -1,4 +1,5 @@
-using Respondeo.Content.Shared;
+using Respondeo.Content.Infrastructure;
+using Respondeo.Content.Rendering;
 
 namespace Respondeo.Content.Devotions;
 

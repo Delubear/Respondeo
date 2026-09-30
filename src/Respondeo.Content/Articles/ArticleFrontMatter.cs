@@ -1,4 +1,4 @@
-using Respondeo.Content.Shared;
+using Respondeo.Content.Infrastructure;
 using YamlDotNet.Serialization;
 
 namespace Respondeo.Content.Articles;

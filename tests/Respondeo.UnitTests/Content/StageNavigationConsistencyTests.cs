@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Respondeo;
+using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Inquiry;
 using Respondeo.UnitTests.TestSupport;
