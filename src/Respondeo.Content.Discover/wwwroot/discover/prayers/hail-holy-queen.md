@@ -1,6 +1,7 @@
 ---
 id: hail-holy-queen
 title: "The Hail Holy Queen"
+sortKey: "Hail Holy Queen"
 summary: The Salve Regina — the concluding antiphon of the Rosary.
 category: marian
 language: en

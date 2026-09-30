@@ -1,6 +1,7 @@
 ---
 id: sacrament-eucharist
 title: "The Eucharist"
+sortKey: "Eucharist"
 summary: The sacrament of Christ's true presence — the source and summit of the Christian life.
 topic: sacraments
 tags:

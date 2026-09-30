@@ -1,6 +1,7 @@
 ---
 id: rosary-concluding-prayer
 title: "The Concluding Prayer of the Rosary"
+sortKey: "Concluding Prayer of the Rosary"
 summary: The collect said after the Hail Holy Queen to close the Rosary.
 category: marian
 language: en

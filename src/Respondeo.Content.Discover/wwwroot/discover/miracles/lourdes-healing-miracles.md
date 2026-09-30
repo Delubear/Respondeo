@@ -1,6 +1,7 @@
 ---
 id: lourdes-healing-miracles
 title: "The Cures of Lourdes"
+sortKey: "Cures of Lourdes"
 summary: The healings reported at the Lourdes shrine, of which the Church has recognized dozens as medically unexplained.
 types: [healing]
 approval: approved

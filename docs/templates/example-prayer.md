@@ -12,6 +12,7 @@
 
 id: example-prayer               # REQUIRED. Unique id / URL slug (/discover/prayers/example-prayer). Matches the file name stem.
 title: "The Example Prayer"      # REQUIRED. Shown on cards and the prayer page.
+sortKey: "Example Prayer"        # OPTIONAL. Filing key used when sorting by title. Set it when the title should sort differently from how it reads (e.g. a title leading with "The"/"A"/"An"). Defaults to title.
 summary: A one-line description used on cards and previews.  # OPTIONAL.
 
 category: marian                 # OPTIONAL. Category slug used for browse filtering (e.g. marian, daily, mass). Defaults to "other" (hidden from the filter).

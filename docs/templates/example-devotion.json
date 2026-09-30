@@ -6,6 +6,8 @@
 
   "id": "example-devotion",
   "title": "The Example Devotion",
+  "//sortKey": "OPTIONAL. Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. a title leading with 'The'/'A'/'An'). Defaults to title.",
+  "sortKey": "Example Devotion",
   "summary": "A one-line description shown on cards.",
   "kind": "chaplet",
   "intro": "Markdown introduction shown before the reader begins. Explain the devotion's origin and when it is prayed.",

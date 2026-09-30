@@ -1,6 +1,7 @@
 ---
 id: glory-be
 title: "The Glory Be"
+sortKey: "Glory Be"
 summary: The Doxology — praise to the Holy Trinity.
 category: daily
 language: en

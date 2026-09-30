@@ -12,6 +12,7 @@
 
 id: example-article              # REQUIRED. Unique id / URL slug (/discover/articles/example-article). Matches the file name stem.
 title: "An Example Article"      # REQUIRED. Display title shown on cards and the article page.
+sortKey: "Example Article"       # OPTIONAL. Filing key used when sorting by title. Set it when the title should sort differently from how it reads (e.g. a title leading with "The"/"A"/"An"). Defaults to title.
 summary: One-line description shown on cards and (italicised) atop the article.  # OPTIONAL.
 
 topic: sacraments                # OPTIONAL. Topic slug used for the Topic browse filter (e.g. sacraments, prayer, the-mass).

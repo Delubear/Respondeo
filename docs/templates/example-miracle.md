@@ -13,6 +13,7 @@
 
 id: example-miracle              # REQUIRED. Unique id / URL slug (/discover/miracles/example-miracle). Matches the file name stem.
 title: "The Example Miracle"     # REQUIRED. Display title shown on cards and the detail page.
+sortKey: "Example Miracle"       # OPTIONAL. Filing key used when sorting by title. Set it when the title should sort differently from how it reads (e.g. a title leading with "The"/"A"/"An"). Defaults to title.
 summary: A one-line description used on cards and previews.  # OPTIONAL.
 
 types: [eucharistic]             # OPTIONAL. One or more type facets (e.g. eucharistic, marian, healing, incorruptible). Powers the "kind" filter.

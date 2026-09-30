@@ -1,6 +1,7 @@
 ---
 id: buenos-aires-eucharistic-miracle
 title: "The Eucharistic Miracle of Buenos Aires"
+sortKey: "Eucharistic Miracle of Buenos Aires"
 summary: A consecrated host that, in 1996, reportedly turned to bleeding heart tissue, investigated under then-Archbishop Jorge Bergoglio.
 types: [eucharistic]
 approval: under-investigation

@@ -1,6 +1,7 @@
 ---
 id: the-sacraments
 title: "The Sacraments: An Overview"
+sortKey: "Sacraments: An Overview"
 summary: What the sacraments are, why there are seven, and why each is worth celebrating.
 topic: sacraments
 tags:

@@ -57,6 +57,7 @@ death. Amen.
 |---|---|---|
 | `id` | Yes | Stable id / URL slug (lowercase, hyphens). Must match the file name stem. |
 | `title` | Yes | Display title shown on cards and the prayer page. |
+| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. a title leading with an article: `title: "The Hail Mary"` with `sortKey: "Hail Mary"`). Defaults to `title`. |
 | `summary` | No | One-line description used on cards and previews. |
 | `category` | No | Category slug used for browse filtering (e.g. `marian`, `daily`, `mass`). Defaults to `other` (hidden from the filter). |
 | `language` | No | Language of this text (`en`, `la`, …). Defaults to `en`. |
@@ -118,6 +119,7 @@ devotion is added purely as data — no code change.
 |---|---|---|
 | `id` | Yes | Stable id / URL slug. Must match the file name stem. |
 | `title` | Yes | Display title. |
+| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. `"title": "The Holy Rosary"` with `"sortKey": "Holy Rosary"`). Defaults to `title`. |
 | `summary` | No | One-line description for cards. |
 | `kind` | No | Kind slug used for grouping, iconography, and the Kind browse filter (e.g. `rosary`, `chaplet`, `litany`). Defaults to `devotion` (hidden from the filter). |
 | `intro` | No | Markdown introduction shown before the reader begins. |
@@ -182,6 +184,7 @@ The first titled section…
 |---|---|---|
 | `id` | Yes | Stable id / URL slug. Must match the file name stem. |
 | `title` | Yes | Display title. |
+| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. `title: "The Eucharist"` with `sortKey: "Eucharist"`). Defaults to `title`. |
 | `summary` | No | One-line description shown on cards and (italicised) atop the article. |
 | `topic` | No | Topic slug used for the Topic browse filter (e.g. `sacraments`, `practice`, `apologetics`). Defaults to `general` (hidden from the filter). |
 | `tags` | No | Free-text tags used for search. |
@@ -191,13 +194,67 @@ Sections are formed by `## ` headings in the body; write normal Markdown beneath
 
 ---
 
-## 4. Adding new content — checklist
+## 4. Miracles (`wwwroot/discover/miracles/*.md`)
 
-1. Create the file in the matching folder (`prayers/`, `devotions/`, or `articles/`) with `id`
-   matching the file name stem.
+A miracle is Markdown with front-matter carrying typed **facet** metadata that powers the browse
+page's filters and sort. Top-level `## ` headings split the body into titled sections; the text
+before the first heading is the untitled lead-in.
+
+```markdown
+---
+id: lanciano-eucharistic-miracle
+title: "The Eucharistic Miracle of Lanciano"
+sortKey: "Eucharistic Miracle of Lanciano"
+summary: Where a doubting monk saw the Host become flesh and the wine become blood.
+types: [eucharistic]
+approval: historical
+region: europe
+country: Italy
+year: 750
+feastDay: "Corpus Christi"
+tags:
+  - bleeding host
+  - scientifically studied
+sources:
+  - label: "Vatican International Exhibition of Eucharistic Miracles of the World"
+    url: "http://www.miracolieucaristici.org/"
+---
+
+An untitled lead-in paragraph.
+
+## What happened
+
+The first titled section…
+```
+
+### Front-matter fields
+
+| Field | Required | Description |
+|---|---|---|
+| `id` | Yes | Stable id / URL slug. Must match the file name stem. |
+| `title` | Yes | Display title shown on cards and the detail page. |
+| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. `title: "The Eucharistic Miracle of Lanciano"` with `sortKey: "Eucharistic Miracle of Lanciano"`). Defaults to `title`. |
+| `summary` | No | One-line description used on cards and previews. |
+| `types` | No | One or more type facets (e.g. `eucharistic`, `marian`, `healing`, `incorruptible`). Powers the "kind" filter. |
+| `approval` | No | Judgment facet (e.g. `approved`, `historical`, `studied`). Powers the "judgment" filter. |
+| `region` | No | Region facet used by the region filter. |
+| `country` | No | Country shown in the facts panel. |
+| `year` | No | Year shown in the facts panel and used for sort-by-year. |
+| `feastDay` | No | Associated feast day shown in the facts panel. |
+| `tags` | No | Free-text tags used for search and shown on the detail page. |
+| `sources` | No | Citations / further reading; each entry has a `label` and an optional `url`. |
+
+Sections are formed by `## ` headings in the body; write normal Markdown beneath each.
+
+---
+
+## 5. Adding new content — checklist
+
+1. Create the file in the matching folder (`prayers/`, `devotions/`, `articles/`, or `miracles/`)
+   with `id` matching the file name stem.
 2. Register the file name in that content type's manifest
-   (`prayers/prayers-manifest.json`, `devotions/devotions-manifest.json`, or
-   `articles/articles-manifest.json`).
+   (`prayers/prayers-manifest.json`, `devotions/devotions-manifest.json`,
+   `articles/articles-manifest.json`, or `miracles/miracles-manifest.json`).
 3. For devotions, confirm every `prayerId` refers to an existing prayer file.
 4. For paired translations, give both files the same `translationKey` and set each `language`.
 5. Run the app and verify the item lists, filters, and detail page render correctly.
