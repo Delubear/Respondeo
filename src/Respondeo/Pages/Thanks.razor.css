@@ -58,3 +58,90 @@
     color: var(--ink-soft);
     line-height: 1.6;
 }
+
+/* ---------- Special thanks to the Holy Spirit ---------- */
+/* Gold-forward so it reads as "divine light"; the site's red accent is kept deep in the
+   gradient and never placed directly against the gold, so the two never clash. */
+.thanks__spirit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.6rem;
+    padding: 2.75rem 1.75rem;
+    border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--rule));
+    border-radius: 1rem;
+    background:
+        radial-gradient(130% 100% at 50% 0%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 60%),
+        radial-gradient(160% 120% at 50% 120%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 55%),
+        var(--surface, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold-bright) 25%, transparent);
+}
+
+.thanks__dove {
+    width: 5rem;
+    height: 5rem;
+    color: var(--gold);
+    filter: drop-shadow(0 0 1.2rem color-mix(in srgb, var(--gold-bright) 55%, transparent));
+    animation: thanks-dove-glow 4s ease-in-out infinite;
+}
+
+@keyframes thanks-dove-glow {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.95;
+    }
+    50% {
+        transform: translateY(-0.35rem);
+        opacity: 1;
+    }
+}
+
+.thanks__spirit-eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    color: var(--gold);
+}
+
+.thanks__spirit-heading {
+    font-family: var(--display);
+    font-size: 1.85rem;
+    color: var(--ink);
+    margin: 0;
+    padding-bottom: 0.6rem;
+    position: relative;
+}
+
+/* A short gold rule under the heading keeps gold present without touching the red accent. */
+.thanks__spirit-heading::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 3rem;
+    height: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.thanks__spirit-text {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 34rem;
+}
+
+.thanks__spirit-prayer {
+    margin: 0.4rem 0 0;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 32rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .thanks__dove {
+        animation: none;
+    }
+}
