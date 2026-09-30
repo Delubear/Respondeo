@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
-using Respondeo.Content.Inquiry;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
 using Respondeo.Services;
@@ -22,16 +21,14 @@ builder.Services.AddSingleton(featureFlags);
 // behind IContentHtmlRenderer) used by every content pillar so the embed directive vocabulary stays identical across the site.
 builder.Services.AddRespondeoContentRendering();
 
-// Content is author-curated Markdown loaded once and cached for the app lifetime.
-// The parser and loader implementations are internal to the Respondeo.Content Inquiry pillar; the app depends only on IContentService.
+// The hand-authored content library ships both pillars as static assets: the Inquiry pillar
+// (author-curated Markdown nodes behind IContentService) and the Discover pillar (prayers,
+// devotions, articles, and the catalog of Catholic miracles). The app depends only on the
+// public content interfaces; the parser and loader implementations stay internal.
 builder.Services.AddRespondeoContent();
 
 // The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa; the app depends only on ISummaService.
 builder.Services.AddRespondeoSumma();
-
-// The hand-authored prayers, data-driven devotions, deeper-dive articles, and the catalog of Catholic miracles are shipped as static content by
-// the Respondeo.Content Discover pillar; the app depends only on IDiscoverService and IMiracleService.
-builder.Services.AddRespondeoDiscover();
 
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
