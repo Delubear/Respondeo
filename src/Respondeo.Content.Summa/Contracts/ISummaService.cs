@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Summa;
+namespace Respondeo.Content.Summa.Contracts;
 
 /// <summary>
 /// The public contract for reading the bundled Summa Theologica.

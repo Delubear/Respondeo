@@ -1,6 +1,7 @@
 @page "/summa"
 @page "/summa/part/{PartSlug}"
 @inject ISummaService SummaService
+@inject ISummaPartCatalog Parts
 @inject IBreadcrumbTrail Trail
 @inject SummaBrowseState Browse
 @inject IJSRuntime JS
@@ -103,7 +104,7 @@
             <div class="summa__browse">
                 @foreach (var part in BrowseParts())
                 {
-                    var partInfo = SummaParts.ByStorageKey(part.Id);
+                    var partInfo = Parts.ByStorageKey(part.Id);
                     <details class="summa__part" data-summa-section="@part.Id" open="@IsPartOpen(part)">
                         <summary class="summa__part-summary">
                             <span class="summa__part-heading">
@@ -129,13 +130,13 @@
                                         <li class="summa__question">
                                             @if (question.IsPrologue)
                                             {
-                                                <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
                                                     <span class="summa__question-title summa__question-title--prologue">@question.Title</span>
                                                 </a>
                                             }
                                             else
                                             {
-                                                <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
                                                     <span class="summa__question-number">Q@(question.Number)</span>
                                                     <span class="summa__question-title">@question.Title</span>
                                                     <span class="summa__question-articles">@question.Articles.Count articles</span>
@@ -157,7 +158,7 @@
                                         @foreach (var question in group.Questions)
                                         {
                                             <li class="summa__question">
-                                                <a class="summa__question-link" href="@($"summa/{SummaParts.ToUrlId(question.Id)}")">
+                                                <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
                                                     <span class="summa__question-number">Q@(question.Number)</span>
                                                     <span class="summa__question-title">@question.Title</span>
                                                     <span class="summa__question-articles">@question.Articles.Count articles</span>
@@ -204,9 +205,9 @@
     private bool IsSearching => _query.Trim().Length > 0;
 
     // Article matches deep-link to the specific article section; question matches go to the top.
-    private static string MatchHref(SearchMatch match) => match.ArticleNumber is int articleNumber
-        ? $"summa/{SummaParts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
-        : $"summa/{SummaParts.ToUrlId(match.QuestionId)}";
+    private string MatchHref(SearchMatch match) => match.ArticleNumber is int articleNumber
+        ? $"summa/{Parts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
+        : $"summa/{Parts.ToUrlId(match.QuestionId)}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -244,7 +245,7 @@
     // view is seeded open in OnInitializedAsync (once the JS snapshot is available).
     protected override void OnParametersSet()
     {
-        _activePart = string.IsNullOrEmpty(PartSlug) ? null : SummaParts.ByUrlSlug(PartSlug);
+        _activePart = string.IsNullOrEmpty(PartSlug) ? null : Parts.ByUrlSlug(PartSlug);
     }
 
     // After the browse markup first renders, ask JS to restore the remembered scroll position. The

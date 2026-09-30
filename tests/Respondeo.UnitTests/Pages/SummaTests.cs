@@ -4,7 +4,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Summa;
-using Respondeo.Content.Summa.Services;
+using Respondeo.Content.Summa.Contracts;
 using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
 using SummaPage = Respondeo.Pages.Summa;
@@ -52,7 +52,8 @@ public class SummaTests : TestContext
         var handler = new StubHandler(new Dictionary<string, string> { [IndexPath] = IndexJson });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<ISummaService>(new SummaService(http));
+        Services.AddSingleton<ISummaPartCatalog>(new SummaPartCatalog());
+        Services.AddSingleton<ISummaService>(new SummaService(http, new SummaPartCatalog()));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddScoped<SummaBrowseState>();
     }

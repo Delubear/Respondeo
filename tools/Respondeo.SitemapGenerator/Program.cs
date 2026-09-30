@@ -1,12 +1,13 @@
 using System.Text;
 using System.Text.Json;
 using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 
 // Build-time sitemap generator for Respondeo.
 //
 // Invoked by Respondeo.csproj before publish (and build).
 // It enumerates every canonical, crawlable route from the content manifests that ship in the site and writes wwwroot/sitemap.xml.
-// Slugs are resolved through SummaParts so the emitted URLs always match the app's real routes.
+// Slugs are resolved through the Summa part catalog so the emitted URLs always match the app's real routes.
 //
 // Usage: Respondeo.SitemapGenerator <repoRoot> <outputSitemapPath>
 //
@@ -18,6 +19,9 @@ return SitemapGenerator.Run(args);
 internal static class SitemapGenerator
 {
     private const string BaseUrl = "https://respondeo.faith";
+
+    // The catalog is pure and stateless, so the build-time tool simply news one up rather than resolving it from DI.
+    private static readonly ISummaPartCatalog Parts = new SummaPartCatalog();
 
     public static int Run(string[] args)
     {
@@ -72,7 +76,7 @@ internal static class SitemapGenerator
         foreach (var part in parts.EnumerateArray())
         {
             var partKey = part.GetProperty("id").GetString() ?? string.Empty;
-            routes.Add($"summa/part/{SummaParts.SlugForKey(partKey)}");
+            routes.Add($"summa/part/{Parts.SlugForKey(partKey)}");
 
             if (!part.TryGetProperty("questions", out var questions))
             {
@@ -289,7 +293,7 @@ internal static class SitemapGenerator
 
         var key = questionId[..dash];
         var rest = questionId[(dash + 1)..];
-        return $"{SummaParts.SlugForKey(key)}-{rest}";
+        return $"{Parts.SlugForKey(key)}-{rest}";
     }
 
     // Reads the "files" array from a { "files": [ ... ] } manifest.

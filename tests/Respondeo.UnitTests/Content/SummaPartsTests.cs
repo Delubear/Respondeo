@@ -1,9 +1,12 @@
 using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 
 namespace Respondeo.UnitTests.Content;
 
 public class SummaPartsTests
 {
+    private readonly ISummaPartCatalog _parts = new SummaPartCatalog();
+
     [Theory]
     [InlineData("prima-q1", "prima-q001")]
     [InlineData("prima-q02", "prima-q002")]
@@ -12,7 +15,7 @@ public class SummaPartsTests
     [InlineData("suppl-q99", "suppl-q099")]
     public void Canonicalize_pads_and_lowercases_known_ids(string input, string expected)
     {
-        Assert.Equal(expected, SummaParts.Canonicalize(input));
+        Assert.Equal(expected, _parts.Canonicalize(input));
     }
 
     [Theory]
@@ -21,7 +24,7 @@ public class SummaPartsTests
     [InlineData("suppl-q101")]
     public void Canonicalize_returns_null_when_already_canonical(string input)
     {
-        Assert.Null(SummaParts.Canonicalize(input));
+        Assert.Null(_parts.Canonicalize(input));
     }
 
     [Theory]
@@ -32,6 +35,6 @@ public class SummaPartsTests
     [InlineData("prima-a1")]
     public void Canonicalize_returns_null_for_unrecognized_or_malformed_ids(string? input)
     {
-        Assert.Null(SummaParts.Canonicalize(input));
+        Assert.Null(_parts.Canonicalize(input));
     }
 }

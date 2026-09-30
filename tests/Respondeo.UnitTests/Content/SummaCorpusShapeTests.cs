@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 
 namespace Respondeo.UnitTests.Content;
 

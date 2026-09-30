@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<!-- Reuse SummaParts so the storage-key -> URL-slug mapping (p1 -> prima) stays in one place
+	<!-- Reuse the Summa part catalog so the storage-key -> URL-slug mapping (p1 -> prima) stays in one place
 		 and the sitemap URLs always match the app's real routes. -->
 	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
   </ItemGroup>

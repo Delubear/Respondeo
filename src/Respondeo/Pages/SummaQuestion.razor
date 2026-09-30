@@ -1,6 +1,7 @@
 @page "/summa/{Id}"
 @implements IDisposable
 @inject ISummaService Summa
+@inject ISummaPartCatalog Parts
 @inject ISummaReferenceRenderer References
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
@@ -245,7 +246,7 @@ else
         // Keep URLs canonical: a hand-typed id like "prima-q1" (or "Prima-Q1") should resolve to the
         // padded, lower-cased "prima-q001". Redirect once to the canonical form, preserving any
         // "#article-N" fragment so deep links survive, before loading the question.
-        var canonical = SummaParts.Canonicalize(Id);
+        var canonical = Parts.Canonicalize(Id);
         if (canonical is not null)
         {
             var fragment = new Uri(Nav.Uri).Fragment;
@@ -256,7 +257,7 @@ else
         _loading = true;
         _scrolledToFragment = false;
         _openArticles.Clear();
-        _question = await Summa.GetQuestionAsync(SummaParts.ToStorageId(Id));
+        _question = await Summa.GetQuestionAsync(Parts.ToStorageId(Id));
         await ResolvePartContextAsync();
         _crumbs = BuildPartCrumbs(_question);
         await ResolveReferenceOriginAsync();
@@ -265,14 +266,14 @@ else
 
     // Builds the Part ancestor crumb from the question's part id, linking to that part's landing page.
     // Falls back to no crumb when the question or its part is unknown.
-    private static IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaQuestionContent? question)
+    private IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaQuestionContent? question)
     {
         if (question is null)
         {
             return Array.Empty<Breadcrumb.Crumb>();
         }
 
-        var part = SummaParts.ByStorageKey(question.PartId);
+        var part = Parts.ByStorageKey(question.PartId);
         if (part is null)
         {
             return Array.Empty<Breadcrumb.Crumb>();

@@ -1,13 +1,14 @@
 using Respondeo.Content.Shared;
+using Respondeo.Content.Summa.Contracts;
 
-namespace Respondeo.Content.Summa.Services;
+namespace Respondeo.Content.Summa;
 
 /// <summary>
 /// Loads the bundled Summa Theologica from static JSON files shipped by the Respondeo.Content.Summa library (produced by the SummaImporter tool).
 /// The lightweight browse/search index is fetched once and cached;
 /// each question's full content is fetched on demand and cached individually so the initial load stays small even though the whole corpus is bundled.
 /// </summary>
-internal sealed class SummaService(HttpClient http) : ISummaService
+internal sealed class SummaService(HttpClient http, ISummaPartCatalog parts) : ISummaService
 {
     private const string SummaRoot = "_content/Respondeo.Content.Summa/summa";
     private const string IndexPath = SummaRoot + "/summa-index.json";
@@ -65,11 +66,11 @@ internal sealed class SummaService(HttpClient http) : ISummaService
 
     // Question content is split into one subfolder per part.
     // The folder is derived from the question's stable part key (the prefix before the first '-'),
-    // via the shared SummaParts registry, so file layout stays independent of the URL slug and display label.
-    private static string PartFolder(string questionId)
+    // via the part catalog, so file layout stays independent of the URL slug and display label.
+    private string PartFolder(string questionId)
     {
         var separator = questionId.IndexOf('-');
         var partKey = separator > 0 ? questionId[..separator] : questionId;
-        return SummaParts.FolderForKey(partKey);
+        return parts.FolderForKey(partKey);
     }
 }

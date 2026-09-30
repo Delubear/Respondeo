@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Summa;
+namespace Respondeo.Content.Summa.Contracts;
 
 /// <summary>
 /// The lightweight browse/search index for the whole Summa Theologica:

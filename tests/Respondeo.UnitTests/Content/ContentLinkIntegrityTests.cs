@@ -5,6 +5,7 @@ using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Content;
@@ -129,6 +130,7 @@ public partial class ContentLinkIntegrityTests
 
         var corpus = LoadSummaCorpus();
         var problems = new List<string>();
+        var parts = new SummaPartCatalog();
 
         foreach (var node in nodes)
         {
@@ -140,13 +142,13 @@ public partial class ContentLinkIntegrityTests
                 // A content link uses the public url-id (e.g. "prima-q003"); the corpus is keyed by the
                 // storage id (e.g. "p1-q003"). Translating and canonicalising here mirrors exactly what
                 // SummaQuestion.razor does on navigation, so the test agrees with runtime resolution.
-                if (SummaParts.Canonicalize(urlId) is not null)
+                if (parts.Canonicalize(urlId) is not null)
                 {
                     problems.Add($"{node.Id}: 'summa/{urlId}' is not in canonical url-id form");
                     continue;
                 }
 
-                var storageId = SummaParts.ToStorageId(urlId);
+                var storageId = parts.ToStorageId(urlId);
                 if (!corpus.TryGetValue(storageId, out var articleCount))
                 {
                     problems.Add($"{node.Id}: 'summa/{urlId}' points at a question that does not exist");

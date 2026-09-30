@@ -1,10 +1,11 @@
 using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 
 namespace Respondeo.UnitTests.Services;
 
 public class SummaReferenceRendererTests
 {
-    private readonly SummaReferenceRenderer _renderer = new(new SummaPartMap());
+    private readonly SummaReferenceRenderer _renderer = new(new SummaPartMap(new SummaPartCatalog()));
 
     [Fact]
     public void Expand_returns_input_unchanged_when_no_tokens()

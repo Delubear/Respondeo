@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
-using Respondeo.Content.Summa.Services;
+using Respondeo.Content.Summa;
+using Respondeo.Content.Summa.Contracts;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
@@ -54,7 +55,7 @@ public class SummaServiceTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new SummaService(http);
+        return new SummaService(http, new SummaPartCatalog());
     }
 
     [Fact]
@@ -109,7 +110,7 @@ public class SummaServiceTests
     {
         var handler = new StubHandler(new Dictionary<string, string> { [IndexPath] = IndexJson });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        var service = new SummaService(http);
+        var service = new SummaService(http, new SummaPartCatalog());
 
         await service.GetIndexAsync();
         await service.GetIndexAsync();
