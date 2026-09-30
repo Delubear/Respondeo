@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Discover.Internal;
+using Respondeo.Content.Internal;
 
-namespace Respondeo.Content.Discover.Articles;
+namespace Respondeo.Content.Articles;
 
 /// <summary>
 /// Loads the bundled articles from static Markdown files shipped by the Respondeo.Content library under the

@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Discover.Articles;
+namespace Respondeo.Content.Articles;
 
 /// <summary>
 /// The public contract for reading the bundled articles (deeper dives on the sacraments, practice, apologetics).

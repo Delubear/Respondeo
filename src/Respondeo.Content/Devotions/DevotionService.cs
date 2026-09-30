@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Discover.Internal;
+using Respondeo.Content.Internal;
 
-namespace Respondeo.Content.Discover.Devotions;
+namespace Respondeo.Content.Devotions;
 
 /// <summary>
 /// Loads the bundled, data-driven devotions from static JSON files shipped by the Respondeo.Content library under the

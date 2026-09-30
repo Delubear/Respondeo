@@ -1,5 +1,5 @@
 using System.Net;
-using Respondeo.Content.Discover.Prayers;
+using Respondeo.Content.Prayers;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;

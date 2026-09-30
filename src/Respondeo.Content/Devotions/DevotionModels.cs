@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Discover.Devotions;
+namespace Respondeo.Content.Devotions;
 
 // ---------------------------------------------------------------------------
 // Devotions (data-driven prayer sequences: Rosary, chaplets, litanies, ...)

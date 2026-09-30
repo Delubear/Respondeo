@@ -1,8 +1,8 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Discover.Internal;
-using Respondeo.Content.Discover.Miracles;
+using Respondeo.Content.Miracles;
+using Respondeo.Content.Internal;
 
-namespace Respondeo.Content.Discover.Services;
+namespace Respondeo.Content.Services;
 
 /// <summary>
 /// Turns a raw miracle Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="MiracleRecord"/>

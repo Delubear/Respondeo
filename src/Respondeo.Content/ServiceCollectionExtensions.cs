@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
-using Respondeo.Content.Discover.Articles;
-using Respondeo.Content.Discover.Devotions;
-using Respondeo.Content.Discover.Discover;
-using Respondeo.Content.Discover.Miracles;
-using Respondeo.Content.Discover.Prayers;
-using Respondeo.Content.Discover.Services;
+using Respondeo.Content.Articles;
+using Respondeo.Content.Devotions;
+using Respondeo.Content.Discover;
+using Respondeo.Content.Miracles;
+using Respondeo.Content.Prayers;
+using Respondeo.Content.Services;
 
-namespace Respondeo.Content.Discover;
+namespace Respondeo.Content;
 
 /// <summary>
 /// Registration surface for the Discover feature: four peer content services (prayers, devotions, articles, and the catalog of Catholic miracles),

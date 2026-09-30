@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Discover.Articles;
+namespace Respondeo.Content.Articles;
 
 /// <summary>
 /// The structured metadata parsed from an article file's YAML front-matter block.

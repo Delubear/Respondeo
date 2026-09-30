@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Discover.Prayers;
+namespace Respondeo.Content.Prayers;
 
 /// <summary>
 /// The structured metadata parsed from a prayer file's YAML front-matter block.

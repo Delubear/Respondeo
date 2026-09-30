@@ -2,7 +2,7 @@ using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Discover.Prayers;
+using Respondeo.Content.Prayers;
 using Respondeo.Pages;
 using Respondeo.Services;
 

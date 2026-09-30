@@ -1,6 +1,6 @@
 using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Discover.Articles;
+namespace Respondeo.Content.Articles;
 
 /// <summary>
 /// Turns a raw article Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="Article"/>

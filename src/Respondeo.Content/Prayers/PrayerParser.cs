@@ -1,6 +1,6 @@
 using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Discover.Prayers;
+namespace Respondeo.Content.Prayers;
 
 /// <summary>
 /// Turns a raw prayer Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="Prayer"/>

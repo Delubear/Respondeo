@@ -1,6 +1,7 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Respondeo.Content.Articles;
 using Respondeo.Content.Discover.Articles;
 using Respondeo.Content.Discover.Services;
 using Respondeo.Content.Inquiry.Services;

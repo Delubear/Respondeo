@@ -1,4 +1,4 @@
-using Respondeo.Content.Discover.Devotions;
+using Respondeo.Content.Devotions;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;

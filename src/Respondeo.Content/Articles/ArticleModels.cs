@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Discover.Articles;
+namespace Respondeo.Content.Articles;
 
 // ---------------------------------------------------------------------------
 // Articles (deeper dives: Confession, the Eucharist, Catholic stances, ...)

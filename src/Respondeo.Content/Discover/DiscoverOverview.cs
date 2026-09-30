@@ -1,9 +1,9 @@
-using Respondeo.Content.Discover.Articles;
-using Respondeo.Content.Discover.Devotions;
-using Respondeo.Content.Discover.Miracles;
-using Respondeo.Content.Discover.Prayers;
+using Respondeo.Content.Articles;
+using Respondeo.Content.Devotions;
+using Respondeo.Content.Miracles;
+using Respondeo.Content.Prayers;
 
-namespace Respondeo.Content.Discover.Discover;
+namespace Respondeo.Content.Discover;
 
 /// <summary>
 /// The <see cref="IDiscoverOverview"/> implementation. A thin facade over the four peer content services;

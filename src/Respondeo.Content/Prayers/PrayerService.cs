@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Discover.Internal;
+using Respondeo.Content.Internal;
 
-namespace Respondeo.Content.Discover.Prayers;
+namespace Respondeo.Content.Prayers;
 
 /// <summary>
 /// Loads the bundled prayer treasury from static Markdown files shipped by the Respondeo.Content library under the

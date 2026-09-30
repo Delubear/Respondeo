@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Discover.Discover;
+namespace Respondeo.Content.Discover;
 
 /// <summary>
 /// A thin composition facade for the Discover landing page.

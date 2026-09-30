@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text;
 using Respondeo.Content.Discover;
-using Respondeo.Content.Discover.Services;
+using Respondeo.Content.Services;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;

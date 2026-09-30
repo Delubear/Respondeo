@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Discover.Prayers;
+namespace Respondeo.Content.Prayers;
 
 // ---------------------------------------------------------------------------
 // Prayers

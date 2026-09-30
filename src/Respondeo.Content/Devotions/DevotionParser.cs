@@ -1,6 +1,6 @@
 using Respondeo.Content.Shared;
 
-namespace Respondeo.Content.Discover.Devotions;
+namespace Respondeo.Content.Devotions;
 
 /// <summary>
 /// Maps an already-deserialized devotion JSON DTO onto the public <see cref="Devotion"/> model and its lightweight <see cref="DevotionSummary"/> projection,

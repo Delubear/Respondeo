@@ -4,8 +4,8 @@ using Respondeo;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Summa;
-using Respondeo.Content.Discover;
 using Respondeo.Services;
+using Respondeo.Content;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
