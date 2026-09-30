@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Components;
 using Respondeo.Content.Contracts;
+using Respondeo.Services;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -14,6 +15,11 @@ public class NodeArticleTests : TestContext
         var content = Substitute.For<IContentService>();
         content.GetByIdAsync(Arg.Any<string>()).Returns((InquiryNode?)null);
         Services.AddSingleton(content);
+
+        // NodeArticle reads the visited set to mark already-seen branch cards.
+        var visited = Substitute.For<IVisitedNodes>();
+        visited.GetVisitedAsync().Returns((IReadOnlySet<string>)new HashSet<string>());
+        Services.AddSingleton(visited);
     }
 
     private static InquiryNode NodeWithNextStage(string href) => new()

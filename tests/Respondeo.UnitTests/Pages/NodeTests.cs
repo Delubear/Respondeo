@@ -39,6 +39,7 @@ public class NodeTests : TestContext
 
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(_trail);
+        Services.AddSingleton(Substitute.For<IVisitedNodes>());
     }
 
     [Fact]

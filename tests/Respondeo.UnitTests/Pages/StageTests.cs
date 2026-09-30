@@ -2,10 +2,12 @@ using System.Net;
 using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Shared;
 using Respondeo.Content.Inquiry;
+using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Pages;
 
@@ -31,6 +33,7 @@ public class StageTests : TestContext
 
         var http = new HttpClient(new StubHandler(responses)) { BaseAddress = new Uri("https://localhost/") };
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
+        Services.AddSingleton(Substitute.For<IVisitedNodes>());
     }
 
     [Fact]

@@ -33,6 +33,7 @@ public class HomeTests : TestContext
 
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddSingleton(Substitute.For<IVisitedNodes>());
 
         // Home imports the reel JS module in OnAfterRenderAsync and calls init on it;
         // let bUnit handle the import and the module's method invocations.

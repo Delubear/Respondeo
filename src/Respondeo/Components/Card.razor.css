@@ -8,6 +8,7 @@
     color: var(--ink);
     box-shadow: 0 1px 0 var(--shadow);
     transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    position: relative;
 }
 
 /* When rendered as an in-page action the card is a <button>; strip native chrome
@@ -66,3 +67,23 @@ button.card {
     text-transform: uppercase;
     color: var(--accent);
 }
+
+.card--visited:hover {
+    opacity: 1;
+}
+
+.card__check {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--parchment);
+    box-shadow: 0 1px 0 var(--shadow);
+}
+

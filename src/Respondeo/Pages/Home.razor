@@ -1,6 +1,7 @@
 @page "/"
 @inject IContentService Content
 @inject IBreadcrumbTrail Trail
+@inject IVisitedNodes Visited
 
 <PageTitle>Respondeo &mdash; Real questions. Reasoned answers.</PageTitle>
 
@@ -35,6 +36,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        await Visited.ClearAsync();
 
         // A card for each stage landing node (id == the stage slug), linking to the stage page.
         var stages = new List<StageReel.ReelStage>();

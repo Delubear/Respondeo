@@ -10,6 +10,9 @@ sections:
   - which-god-objection-scripture-reliable
   - which-god-objection-projection
 branches:
+  - to: which-god-other-faiths
+    label: "What about other faiths?"
+    prompt: A companion detour — how does the God reason reaches relate to Islam, deism, and the Eastern conceptions?
   - to: which-god-of-israel
     label: "Why the God of Israel?"
     prompt: With the hardest objections in view, the path still narrows to one covenant God — why the God of Abraham?

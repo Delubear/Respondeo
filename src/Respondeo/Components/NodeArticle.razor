@@ -2,6 +2,7 @@
    sections accordion, and branch cards. Shared by the Node page and the stage
    landing pages so they present identical styling. *@
 @inject IContentService Content
+@inject IVisitedNodes Visited
 
 <article class="node" @key="Node.Id">
     <header class="node__header">
@@ -32,6 +33,7 @@
                           Title="@branch.Label"
                           Summary="@branch.Link.Prompt"
                           Cta="Continue →"
+                          Visited="@_visited.Contains(branch.Link.To)"
                           Level="3" />
                 }
             </CardGrid>
@@ -56,6 +58,7 @@
     [Parameter, EditorRequired] public InquiryNode Node { get; set; } = default!;
 
     private readonly List<ResolvedBranch> _branches = new();
+    private IReadOnlySet<string> _visited = new HashSet<string>();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -70,6 +73,8 @@
 
         _branches.Clear();
         _branches.AddRange(branches);
+
+        _visited = await Visited.GetVisitedAsync();
     }
 
     private sealed record ResolvedBranch(BranchLink Link, string Label, string Href);

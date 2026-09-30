@@ -3,13 +3,13 @@
 
 @if (OnClick.HasDelegate)
 {
-    <button type="button" class="card" @onclick="OnClick">
+    <button type="button" class="card@(Visited ? " card--visited" : "")" @onclick="OnClick">
         @CardBody
     </button>
 }
 else
 {
-    <a class="card" href="@Href">
+    <a class="card@(Visited ? " card--visited" : "")" href="@Href">
         @CardBody
     </a>
 }
@@ -36,6 +36,9 @@ else
     /// <summary>Heading level for the title (2 or 3) so cards nest correctly under their section.</summary>
     [Parameter] public int Level { get; set; } = 2;
 
+    /// <summary>When true, the card renders a faded "visited" treatment with a checkmark badge.</summary>
+    [Parameter] public bool Visited { get; set; }
+
     private IReadOnlyList<string> AllPills =>
         (Pills ?? [])
             .Concat(string.IsNullOrWhiteSpace(Pill) ? [] : new[] { Pill! })
@@ -44,6 +47,12 @@ else
 
     private RenderFragment CardBody => __builder =>
     {
+        @if (Visited)
+        {
+            <span class="card__check" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12" focusable="false"><path d="M13.5 4.5 6.5 11.5 2.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+        }
         @if (Level <= 2)
         {
             <h2 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>

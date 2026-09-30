@@ -6,6 +6,9 @@ tags:
   - jesus christ
   - divine revelation
 branches:
+  - to: jesus-trinity
+    label: "If Jesus is God, are there two gods?"
+    prompt: A companion detour — how can Jesus be divine without breaking the one God reason reached?
   - to: jesus-resurrection
     label: "The Resurrection"
     prompt: Prophecy points to who the Messiah would be; the Resurrection asks whether Jesus vindicated the claim.

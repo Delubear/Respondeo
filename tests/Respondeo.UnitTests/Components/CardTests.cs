@@ -60,4 +60,27 @@ public class CardTests : TestContext
 
         Assert.Equal("Start here", cut.Find("span.card__cta").TextContent);
     }
+
+    [Fact]
+    public void Omits_visited_badge_by_default()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home"));
+
+        Assert.Empty(cut.FindAll("span.card__check"));
+        Assert.Empty(cut.FindAll("a.card--visited"));
+    }
+
+    [Fact]
+    public void Renders_visited_badge_when_visited()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Visited, true));
+
+        Assert.NotNull(cut.Find("span.card__check"));
+        Assert.NotNull(cut.Find("a.card--visited"));
+    }
 }

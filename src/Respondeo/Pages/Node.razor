@@ -3,6 +3,7 @@
 @inject IContentService Content
 @inject NavigationManager Nav
 @inject IBreadcrumbTrail Trail
+@inject IVisitedNodes Visited
 
 @if (_node is not null)
 {
@@ -63,6 +64,7 @@ else
 
         if (node is not null)
         {
+            await Visited.MarkVisitedAsync(Id);
             crumbs = await BuildBreadcrumbAsync(Id);
         }
 

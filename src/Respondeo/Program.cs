@@ -28,6 +28,9 @@ builder.Services.AddRespondeoSumma();
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
+// Tracks which nodes the visitor has opened this journey (persisted in sessionStorage) to mark visited branch cards.
+builder.Services.AddScoped<IVisitedNodes, VisitedNodes>();
+
 // Applies and persists the visitor's preferred light/dark theme.
 builder.Services.AddScoped<IThemeService, ThemeService>();
 
