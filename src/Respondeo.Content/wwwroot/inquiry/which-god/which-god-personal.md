@@ -11,8 +11,6 @@ branches:
     prompt: If this God is personal, could He reveal Himself — and how would we recognize it?
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 > "Since therefore God is in the highest degree of immateriality... it follows that He is in the highest degree of knowledge." 
 &mdash; [*Summa Theologiae* I, Q. 14, A. 1](summa/prima-q014#article-1)
 
@@ -25,13 +23,18 @@ The real question is whether this first cause has
 
 **The argument, step by step:**
 
-1. Among the effects reason traces back to the first cause are minds — beings that know, understand, and choose. We are among them.
-2. A cause cannot give what it in no way possesses; the source of intelligence cannot itself be less than intelligent.
+1. We have minds. We know, understand, and choose. And like everything else that exists, we come from the first cause.
+2. But nothing can give what it doesn't have. A cause can't hand on more than it has to give — water rises no higher than its source. 
+   So whatever first produced minds cannot itself be mindless.
 3. The Fifth Way already points here: the reliable ordering of unthinking things toward ends is the mark of an ordering *intelligence*, 
-  as an arrow's flight marks an archer.
-4. Further, what limits knowledge in us is *matter* — being locked into one place, one time, one body. 
-  The first cause is unlimited and immaterial, so nothing confines it; it is knowing in the fullest degree.
-5. And where there is intellect grasping what is good, there is **will** — the inclination toward the good known. So the first cause knows and loves.
+   as an arrow's flight marks an archer.
+4. There is even reason to think this source doesn't just have a mind, but knows *perfectly*. Notice what holds *our* knowing back: we are physical. 
+   We can only be in one place, one time, one body — a rock is just itself and nothing more. 
+   But to know something is to take it in, to hold another thing in your mind without becoming it. 
+   The less a thing is tied down to matter, the more freely it can do this. 
+   The first cause isn't physical at all — nothing ties it down — so it knows in the fullest possible way.
+5. And a mind that knows what is good doesn't stay neutral toward it — to recognize something as good is to be drawn to it. 
+   That being drawn is what we mean by **will**. So the first cause doesn't only know; it also loves.
 
 Therefore the ultimate source is not a blind *something* but a *someone*: personal, not in the sense of being one more person among us, 
 but in possessing — infinitely — the mind and will that personhood names.
