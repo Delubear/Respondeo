@@ -1,0 +1,32 @@
+@* Toolbar-level sort dropdown shared by the Discover browse pages. It is purely presentational:
+   it renders the labelled <select> from a list of self-describing SortOption<T> values and reports
+   the chosen option's key back to the page, which owns its current-sort key and applies the option's
+   ordering. Pass whatever options a page needs (Title, Year, future Date, etc.) so the style and
+   behaviour stay consistent everywhere. *@
+@typeparam T
+
+<label class="sort-select">
+    <span>@Caption</span>
+    <select value="@Value" @onchange="OnChanged">
+        @foreach (var option in Options)
+        {
+            <option value="@option.Key">@option.Label</option>
+        }
+    </select>
+</label>
+
+@code {
+    /// <summary>The key of the currently selected option.</summary>
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+
+    /// <summary>Raised with the newly selected option's key when the visitor changes the sort.</summary>
+    [Parameter, EditorRequired] public EventCallback<string> ValueChanged { get; set; }
+
+    /// <summary>The self-describing sort options to display.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<SortOption<T>> Options { get; set; } = [];
+
+    /// <summary>The label shown beside the dropdown.</summary>
+    [Parameter] public string Caption { get; set; } = "Sort";
+
+    private Task OnChanged(ChangeEventArgs e) => ValueChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
+}

@@ -1,0 +1,18 @@
+/* Scoped styles for the shared sort dropdown. These travel with the component so every browse
+   page's sort control looks and behaves identically. CSS custom properties (--rule, --parchment,
+   --ink) are global theme tokens and resolve normally through the scope. */
+
+.sort-select {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sort-select select {
+    font: inherit;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.4rem;
+    background: var(--parchment);
+    color: var(--ink);
+}

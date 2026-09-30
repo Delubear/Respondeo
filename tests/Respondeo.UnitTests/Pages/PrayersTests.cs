@@ -117,7 +117,7 @@ public class PrayersTests : TestContext
         var ascending = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Equal(["discover/prayers/hail-mary", "discover/prayers/our-father"], ascending);
 
-        cut.Find("select").Change("TitleDesc");
+        cut.Find("select").Change("title-desc");
 
         var descending = cut.FindAll("a.card").Select(c => c.GetAttribute("href")).ToList();
         Assert.Equal(["discover/prayers/our-father", "discover/prayers/hail-mary"], descending);

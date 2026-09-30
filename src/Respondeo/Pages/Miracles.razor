@@ -57,14 +57,7 @@
             <div class="discover__results">
                 <div class="discover__toolbar">
                     <p class="results-count">@Filtered.Count of @_all.Count miracles</p>
-                    <label class="discover__sort">
-                        <span>Sort</span>
-                        <select value="@_sort" @onchange="OnSortChanged">
-                            <option value="@nameof(MiracleSort.TitleAsc)">Title (A&ndash;Z)</option>
-                            <option value="@nameof(MiracleSort.YearAsc)">Year (oldest first)</option>
-                            <option value="@nameof(MiracleSort.YearDesc)">Year (newest first)</option>
-                        </select>
-                    </label>
+                    <SortSelect T="MiracleIndexEntry" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>
 
                 @if (Filtered.Count == 0)
@@ -96,9 +89,16 @@
     private IReadOnlyList<string> _approvals = [];
     private IReadOnlyList<string> _regions = [];
     private MiracleFacetCatalog _facets = MiracleFacetCatalog.Empty;
-    private MiracleSort _sort = MiracleSort.TitleAsc;
+    private string _sortKey = _sortOptions[0].Key;
 
-    private enum MiracleSort { TitleAsc, YearAsc, YearDesc }
+    // Each sort option carries its own ordering, so the modes are declared once here and the
+    // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
+    private static readonly SortOption<MiracleIndexEntry>[] _sortOptions =
+    [
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("year-asc", "Year (oldest first)", rows => rows.OrderBy(m => m.Year ?? int.MaxValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("year-desc", "Year (newest first)", rows => rows.OrderByDescending(m => m.Year ?? int.MinValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase)),
+    ];
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,13 +116,7 @@
 
     private void OnSearchChanged(string value) => Browse.Query = value;
 
-    private void OnSortChanged(ChangeEventArgs e)
-    {
-        if (Enum.TryParse<MiracleSort>(e.Value?.ToString(), out var sort))
-        {
-            _sort = sort;
-        }
-    }
+    private void OnSortChanged(string value) => _sortKey = value;
 
     private void OnTypesChanged(IReadOnlySet<string> selected) => Replace(Browse.Types, selected);
 
@@ -160,14 +154,10 @@
                 && (Browse.Regions.Count == 0 || Browse.Regions.Contains(m.Region))
                 && Matches(m, query));
 
-            results = _sort switch
-            {
-                MiracleSort.YearAsc => results.OrderBy(m => m.Year ?? int.MaxValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
-                MiracleSort.YearDesc => results.OrderByDescending(m => m.Year ?? int.MinValue).ThenBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
-                _ => results.OrderBy(m => m.Title, StringComparer.CurrentCultureIgnoreCase),
-            };
+            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
+            var ordered = sort.Apply(results);
 
-            return results.ToList();
+            return ordered.ToList();
         }
     }
 

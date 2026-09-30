@@ -555,21 +555,6 @@ input[type="search"]::-webkit-search-cancel-button {
     font-size: 0.9rem;
 }
 
-.discover__sort {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.discover__sort select {
-    font: inherit;
-    padding: 0.35rem 0.5rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.4rem;
-    background: var(--parchment);
-    color: var(--ink);
-}
-
 /* Discover browse layout — a filter sidebar beside the results column, mirroring the Articles index */
 .discover__layout {
     display: grid;

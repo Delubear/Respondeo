@@ -48,13 +48,7 @@
             <div class="discover__results">
                 <div class="discover__toolbar">
                     <p class="results-count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
-                    <label class="discover__sort">
-                        <span>Sort</span>
-                        <select value="@_sort" @onchange="OnSortChanged">
-                            <option value="@nameof(ArticleSort.TitleAsc)">Title (A&ndash;Z)</option>
-                            <option value="@nameof(ArticleSort.TitleDesc)">Title (Z&ndash;A)</option>
-                        </select>
-                    </label>
+                    <SortSelect T="ArticleRow" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>
 
                 @if (Filtered.Count == 0)
@@ -87,9 +81,15 @@
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
 
-    private ArticleSort _sort = ArticleSort.TitleAsc;
+    private string _sortKey = _sortOptions[0].Key;
 
-    private enum ArticleSort { TitleAsc, TitleDesc }
+    // Each sort option carries its own ordering, so the modes are declared once here and the
+    // dropdown, current selection, and Filtered logic all stay in sync.
+    private static readonly SortOption<ArticleRow>[] _sortOptions =
+    [
+        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(a => a.Title, StringComparer.CurrentCultureIgnoreCase)),
+    ];
 
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -129,13 +129,7 @@
         BrowseState.SetQuery("articles", _query);
     }
 
-    private void OnSortChanged(ChangeEventArgs e)
-    {
-        if (Enum.TryParse<ArticleSort>(e.Value?.ToString(), out var sort))
-        {
-            _sort = sort;
-        }
-    }
+    private void OnSortChanged(string value) => _sortKey = value;
 
     private void OnTagsChanged(IReadOnlySet<string> selected)
     {
@@ -185,9 +179,8 @@
                     || (a.Pill?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
             }
 
-            results = _sort == ArticleSort.TitleDesc
-                ? results.OrderByDescending(a => a.Title, StringComparer.CurrentCultureIgnoreCase)
-                : results.OrderBy(a => a.Title, StringComparer.CurrentCultureIgnoreCase);
+            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
+            results = sort.Apply(results);
 
             return [.. results];
         }
