@@ -15,14 +15,13 @@
     <File Path="docs/TODO.md" />
   </Folder>
   <Project Path="src/Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
-  <Project Path="src/Respondeo.Content.Discover/Respondeo.Content.Discover.csproj" />
+  <Project Path="src/Respondeo.Content/Respondeo.Content.csproj" />
   <Project Path="src/Respondeo/Respondeo.csproj" />
   <Folder Name="/Tools/">
     <Project Path="tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj" />
     <Project Path="tools/Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />
   </Folder>
   <Project Path="src/Respondeo.Content.Shared/Respondeo.Content.Shared.csproj" />
-  <Project Path="src/Respondeo.Content.Markdown/Respondeo.Content.Markdown.csproj" />
   <Folder Name="/Tests/">
     <Project Path="tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj" />
     <Project Path="tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj" />

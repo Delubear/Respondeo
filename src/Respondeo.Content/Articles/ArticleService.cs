@@ -4,14 +4,14 @@ using Respondeo.Content.Discover.Internal;
 namespace Respondeo.Content.Discover.Articles;
 
 /// <summary>
-/// Loads the bundled articles from static Markdown files shipped by the Respondeo.Content.Discover library under the
-/// <c>_content/Respondeo.Content.Discover/discover/articles</c> static-web-asset path.
+/// Loads the bundled articles from static Markdown files shipped by the Respondeo.Content library under the
+/// <c>_content/Respondeo.Content/discover/articles</c> static-web-asset path.
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ArticleParser"/>,
 /// and caches the parsed articles and derived index in memory for the app's lifetime.
 /// </summary>
 internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html) : IArticleService
 {
-    private const string ArticlesRoot = "_content/Respondeo.Content.Discover/discover/articles";
+    private const string ArticlesRoot = "_content/Respondeo.Content/discover/articles";
     private const string ManifestPath = ArticlesRoot + "/articles-manifest.json";
 
     private readonly ArticleParser _parser = new(html);

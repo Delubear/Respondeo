@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Discover.Articles;
 using Respondeo.Content.Discover.Services;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.Content.Shared;
 using Respondeo.Pages;
 using Respondeo.Services;
@@ -54,12 +54,12 @@ public class ArticlesTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Discover/discover/articles/articles-manifest.json"] = DiscoverManifest,
-            ["_content/Respondeo.Content.Discover/discover/articles/confession.md"] = ConfessionMd,
-            ["_content/Respondeo.Content.Discover/discover/articles/eucharist.md"] = EucharistMd,
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = ContentManifest,
-            ["_content/Respondeo.Content.Markdown/content/beta.md"] = BetaMd,
-            ["_content/Respondeo.Content.Markdown/content/section.md"] = SectionMd,
+            ["_content/Respondeo.Content/discover/articles/articles-manifest.json"] = DiscoverManifest,
+            ["_content/Respondeo.Content/discover/articles/confession.md"] = ConfessionMd,
+            ["_content/Respondeo.Content/discover/articles/eucharist.md"] = EucharistMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = ContentManifest,
+            ["_content/Respondeo.Content/inquiry/beta.md"] = BetaMd,
+            ["_content/Respondeo.Content/inquiry/section.md"] = SectionMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 

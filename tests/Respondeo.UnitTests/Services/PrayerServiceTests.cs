@@ -41,9 +41,9 @@ public class PrayerServiceTests
         Ave Maria, gratia plena, Dominus tecum.
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content.Discover/discover/prayers/prayers-manifest.json";
-    private const string HailMaryPath = "_content/Respondeo.Content.Discover/discover/prayers/hail-mary.md";
-    private const string HailMaryLatinPath = "_content/Respondeo.Content.Discover/discover/prayers/ave-maria.md";
+    private const string ManifestPath = "_content/Respondeo.Content/discover/prayers/prayers-manifest.json";
+    private const string HailMaryPath = "_content/Respondeo.Content/discover/prayers/hail-mary.md";
+    private const string HailMaryLatinPath = "_content/Respondeo.Content/discover/prayers/ave-maria.md";
 
     private static PrayerService CreateService()
     {

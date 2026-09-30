@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.Content.Summa;
 using Respondeo.UnitTests.TestSupport;
 
@@ -51,7 +51,7 @@ public partial class ContentLinkIntegrityTests
         // This file lives at <repo>/tests/Respondeo.UnitTests/Content/ContentLinkIntegrityTests.cs.
         // Walk up to the repo root, then into the content library's src/.../wwwroot/content folder.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
+        return Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "inquiry");
     }
 
     private static IReadOnlyList<string> ReadManifestFiles(string contentDir)

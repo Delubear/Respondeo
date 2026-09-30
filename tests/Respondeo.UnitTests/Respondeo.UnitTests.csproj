@@ -19,9 +19,8 @@
   <ItemGroup>
 	<ProjectReference Include="..\..\src\Respondeo\Respondeo.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Shared\Respondeo.Content.Shared.csproj" />
-	<ProjectReference Include="..\..\src\Respondeo.Content.Markdown\Respondeo.Content.Markdown.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
-	<ProjectReference Include="..\..\src\Respondeo.Content.Discover\Respondeo.Content.Discover.csproj" />
+	<ProjectReference Include="..\..\src\Respondeo.Content\Respondeo.Content.csproj" />
 	<ProjectReference Include="..\..\tools\Respondeo.SummaImporter\Respondeo.SummaImporter.csproj" />
   </ItemGroup>
 

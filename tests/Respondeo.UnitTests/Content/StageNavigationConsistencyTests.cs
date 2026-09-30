@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Respondeo;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Content;
@@ -21,7 +21,7 @@ public class StageNavigationConsistencyTests
     {
         // This file lives at <repo>/tests/Respondeo.UnitTests/Content/StageNavigationConsistencyTests.cs.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
+        return Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "inquiry");
     }
 
     private static IReadOnlyList<string> ReadManifestFiles(string contentDir)

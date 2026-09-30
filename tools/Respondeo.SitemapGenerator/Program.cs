@@ -368,8 +368,8 @@ internal readonly record struct ContentPaths(
 {
     public static ContentPaths ForRepo(string repoRoot)
     {
-        var contentRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Markdown", "wwwroot", "content");
-        var discoverRoot = Path.Combine(repoRoot, "src", "Respondeo.Content.Discover", "wwwroot", "discover");
+        var contentRoot = Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "inquiry");
+        var discoverRoot = Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "discover");
 
         return new ContentPaths(
             SummaIndex: Path.Combine(repoRoot, "src", "Respondeo.Content.Summa", "wwwroot", "summa", "summa-index.json"),

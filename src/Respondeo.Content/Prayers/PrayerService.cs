@@ -4,14 +4,14 @@ using Respondeo.Content.Discover.Internal;
 namespace Respondeo.Content.Discover.Prayers;
 
 /// <summary>
-/// Loads the bundled prayer treasury from static Markdown files shipped by the Respondeo.Content.Discover library under the
-/// <c>_content/Respondeo.Content.Discover/discover/prayers</c> static-web-asset path.
+/// Loads the bundled prayer treasury from static Markdown files shipped by the Respondeo.Content library under the
+/// <c>_content/Respondeo.Content/discover/prayers</c> static-web-asset path.
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="PrayerParser"/>,
 /// pairs each vernacular prayer with its Latin translation, and caches the parsed prayers and derived index in memory for the app's lifetime.
 /// </summary>
 internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) : IPrayerService
 {
-    private const string PrayersRoot = "_content/Respondeo.Content.Discover/discover/prayers";
+    private const string PrayersRoot = "_content/Respondeo.Content/discover/prayers";
     private const string ManifestPath = PrayersRoot + "/prayers-manifest.json";
 
     private readonly PrayerParser _parser = new(html);

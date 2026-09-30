@@ -1,7 +1,9 @@
 # Authoring Discover Content
 
-This project ships the **Discover** pillar — the content for *living* the Catholic faith — as static
-web assets from the `Respondeo.Content.Discover` library. It holds four kinds of content:
+This is the **Discover** pillar of the `Respondeo.Content` library — the content for *living* the
+Catholic faith — served as static web assets from `wwwroot/discover/`. The sibling **Inquiry**
+pillar (the reasoned path into the faith) is documented in [`INQUIRY.md`](INQUIRY.md). It holds four
+kinds of content:
 
 | Kind | Format | Folder | Purpose |
 |---|---|---|---|

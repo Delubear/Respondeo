@@ -5,8 +5,8 @@ using Respondeo.Content.Discover.Miracles;
 namespace Respondeo.Content.Discover.Services;
 
 /// <summary>
-/// Loads the bundled catalog of Catholic miracles from static Markdown files shipped by the Respondeo.Content.Discover library,
-/// served under the <c>_content/Respondeo.Content.Discover/</c> static-web-asset path.
+/// Loads the bundled catalog of Catholic miracles from static Markdown files shipped by the Respondeo.Content library,
+/// served under the <c>_content/Respondeo.Content/</c> static-web-asset path.
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="MiracleParser"/>,
 /// and caches the parsed records and derived index in memory for the app's lifetime. The whole (hand-authored) catalog is small, so it is loaded once up front.
 /// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
@@ -14,7 +14,7 @@ namespace Respondeo.Content.Discover.Services;
 internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) :
     MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
-    private const string DiscoverRoot = "_content/Respondeo.Content.Discover/discover";
+    private const string DiscoverRoot = "_content/Respondeo.Content/discover";
     private const string MiraclesRoot = DiscoverRoot + "/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";

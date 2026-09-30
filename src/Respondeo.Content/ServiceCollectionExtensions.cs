@@ -9,11 +9,9 @@ using Respondeo.Content.Discover.Services;
 namespace Respondeo.Content.Discover;
 
 /// <summary>
-/// Registration surface for the Discover feature: four peer content services (prayers, devotions,
-/// articles, and the catalog of Catholic miracles),
+/// Registration surface for the Discover feature: four peer content services (prayers, devotions, articles, and the catalog of Catholic miracles),
 /// plus a thin <see cref="IDiscoverOverview"/> facade used by the landing page to warm them all.
-/// Consumers call <see cref="AddRespondeoDiscover"/> and depend only on the public interfaces;
-/// the service implementations stay internal.
+/// Consumers call <see cref="AddRespondeoDiscover"/> and depend only on the public interfaces; the service implementations stay internal.
 /// </summary>
 public static class ServiceCollectionExtensions
 {

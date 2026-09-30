@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -22,9 +22,9 @@ public class SectionAccordionTests : TestContext
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/one.md"] = OneMd,
-            ["_content/Respondeo.Content.Markdown/content/two.md"] = TwoMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/inquiry/one.md"] = OneMd,
+            ["_content/Respondeo.Content/inquiry/two.md"] = TwoMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 

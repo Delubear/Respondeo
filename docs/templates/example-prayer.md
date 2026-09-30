@@ -1,7 +1,7 @@
 ---
 # ────────────────────────────────────────────────────────────────────────────
 # EXAMPLE PRAYER FILE — copy this as a starting point for a new Discover prayer.
-# Lives in src/Respondeo.Content.Discover/wwwroot/discover/prayers/.
+# Lives in src/Respondeo.Content/wwwroot/discover/prayers/.
 # After copying: give it a unique `id` (matching the file name stem), edit the
 # body, and add the file name to prayers/prayers-manifest.json so PrayerService
 # will load it.

@@ -1,7 +1,7 @@
 ---
 # ────────────────────────────────────────────────────────────────────────────
 # EXAMPLE ARTICLE FILE — copy this as a starting point for a new Discover article.
-# Lives in src/Respondeo.Content.Discover/wwwroot/discover/articles/.
+# Lives in src/Respondeo.Content/wwwroot/discover/articles/.
 # After copying: give it a unique `id` (matching the file name stem), edit the
 # body, and add the file name to articles/articles-manifest.json so ArticleService
 # will load it.

@@ -1,8 +1,11 @@
-# Authoring Content Nodes
+# Authoring Inquiry Content Nodes
 
-This project holds the site's content, shipped as static web assets from the
-`Respondeo.Content.Markdown` library. Each **node** is a single Markdown file made of two
-parts:
+This is the **Inquiry** pillar of the `Respondeo.Content` library — the reasoned path *into* the
+faith (why God, why Jesus, why the Church, coming home). Its files live under `wwwroot/inquiry/` and
+are served as static web assets. The sibling **Discover** pillar (prayers, devotions, articles,
+miracles) is documented in [`DISCOVER.md`](DISCOVER.md).
+
+Each **node** is a single Markdown file made of two parts:
 
 1. **YAML front-matter** — structured metadata between two `---` lines.
 2. **Markdown body** — the readable content, rendered to HTML and shown on the node page.
@@ -121,7 +124,7 @@ arguments, then a closing `:::`.
 ### PDF (inline viewer)
 
 ```markdown
-::: pdf _content/Respondeo.Content.Markdown/content/assets/sample.pdf
+::: pdf _content/Respondeo.Content/inquiry/assets/sample.pdf
 :::
 ```
 
@@ -131,10 +134,10 @@ arguments, then a closing `:::`.
 ### Button (link styled as a button)
 
 ```markdown
-::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Open PDF in new tab
+::: button _content/Respondeo.Content/inquiry/assets/sample.pdf | Open PDF in new tab
 :::
 
-::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Download PDF | download
+::: button _content/Respondeo.Content/inquiry/assets/sample.pdf | Download PDF | download
 :::
 ```
 
@@ -158,7 +161,7 @@ consistent. Unknown `:::` container names fall back to a plain `<div>` with the 
 
 ## 4. Adding a new node — checklist
 
-1. Create `wwwroot/content/<id>.md` with front-matter and body.
+1. Create `wwwroot/inquiry/<id>.md` with front-matter and body.
 2. Add the file name to [`manifest.json`](manifest.json).
 3. Link to it from another node via a `branches` entry (`to: <id>`) or an inline
    `[label](node/<id>)` link.

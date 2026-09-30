@@ -19,7 +19,7 @@ public class PrayerTranslationIntegrityTests
         // This file lives at <repo>/tests/Respondeo.UnitTests/Content/PrayerTranslationIntegrityTests.cs.
         // Walk up to the repo root, then into the Discover content library's prayers folder.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo.Content.Discover", "wwwroot", "discover", "prayers");
+        return Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "discover", "prayers");
     }
 
     private static IReadOnlyList<PrayerMeta> ReadPrayers()

@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Services;
@@ -17,9 +17,9 @@ public class ContentServiceLoadingTests
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/home.md"] = HomeMd,
-            ["_content/Respondeo.Content.Markdown/content/branch.md"] = BranchMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/inquiry/home.md"] = HomeMd,
+            ["_content/Respondeo.Content/inquiry/branch.md"] = BranchMd,
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
@@ -77,9 +77,9 @@ public class ContentServiceLoadingTests
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = manifest,
-            ["_content/Respondeo.Content.Markdown/content/home.md"] = HomeMd,
-            ["_content/Respondeo.Content.Markdown/content/branch.md"] = BranchMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = manifest,
+            ["_content/Respondeo.Content/inquiry/home.md"] = HomeMd,
+            ["_content/Respondeo.Content/inquiry/branch.md"] = BranchMd,
             // "missing.md" is intentionally absent, so the handler returns 404 for it.
         });
 

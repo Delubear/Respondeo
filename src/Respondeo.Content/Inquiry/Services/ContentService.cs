@@ -1,19 +1,19 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Internal;
+using Respondeo.Content.Inquiry.Internal;
 
-namespace Respondeo.Content.Markdown.Services;
+namespace Respondeo.Content.Inquiry.Services;
 
 /// <summary>
-/// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content.Markdown library.
-/// The files live in that library's <c>wwwroot/content/</c> and are served by Blazor under the <c>_content/Respondeo.Content.Markdown/</c> static-web-asset path.
+/// Loads author-curated content nodes from static Markdown files shipped by the Respondeo.Content library (Inquiry pillar).
+/// The files live in that library's <c>wwwroot/inquiry/</c> and are served by Blazor under the <c>_content/Respondeo.Content/</c> static-web-asset path.
 /// Runs entirely client-side: it fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ContentParser"/>,
 /// and caches the parsed graph in memory for the app's lifetime.
 /// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
 internal sealed class ContentService(HttpClient http, ContentParser parser) : MarkdownContentLoader<ContentFrontMatter, ContentNode>(new ContentFetcher(http, ContentCachePolicy.Revalidate), new FrontMatterReader()), IContentService
 {
-    private const string ContentRoot = "_content/Respondeo.Content.Markdown/content";
-    private const string ManifestPath = "_content/Respondeo.Content.Markdown/content/manifest.json";
+    private const string ContentRoot = "_content/Respondeo.Content/inquiry";
+    private const string ManifestPath = "_content/Respondeo.Content/inquiry/manifest.json";
     private readonly AsyncInitCache<Dictionary<string, ContentNode>> _nodes = new();
 
     /// <summary>Returns every loaded node, loading the content set if needed.</summary>

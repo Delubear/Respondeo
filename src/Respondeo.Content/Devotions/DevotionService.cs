@@ -4,14 +4,14 @@ using Respondeo.Content.Discover.Internal;
 namespace Respondeo.Content.Discover.Devotions;
 
 /// <summary>
-/// Loads the bundled, data-driven devotions from static JSON files shipped by the Respondeo.Content.Discover library under the
-/// <c>_content/Respondeo.Content.Discover/discover/devotions</c> static-web-asset path.
+/// Loads the bundled, data-driven devotions from static JSON files shipped by the Respondeo.Content library under the
+/// <c>_content/Respondeo.Content/discover/devotions</c> static-web-asset path.
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="DevotionParser"/>,
 /// and caches the parsed devotions and derived index in memory for the app's lifetime.
 /// </summary>
 internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html) : IDevotionService
 {
-    private const string DevotionsRoot = "_content/Respondeo.Content.Discover/discover/devotions";
+    private const string DevotionsRoot = "_content/Respondeo.Content/discover/devotions";
     private const string ManifestPath = DevotionsRoot + "/devotions-manifest.json";
 
     private readonly DevotionParser _parser = new(html);

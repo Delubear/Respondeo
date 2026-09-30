@@ -50,15 +50,15 @@ fence. The closing fence is required — it terminates the block.
 
 ## Embedded PDF
 
-::: pdf _content/Respondeo.Content.Markdown/content/assets/sample.pdf
+::: pdf _content/Respondeo.Content/inquiry/assets/sample.pdf
 :::
 
 ## Buttons
 
 Open a file in a new tab, or force a download by adding `| download`:
 
-::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Open PDF in new tab
+::: button _content/Respondeo.Content/inquiry/assets/sample.pdf | Open PDF in new tab
 :::
 
-::: button _content/Respondeo.Content.Markdown/content/assets/sample.pdf | Download PDF | download
+::: button _content/Respondeo.Content/inquiry/assets/sample.pdf | Download PDF | download
 :::

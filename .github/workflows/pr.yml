@@ -43,6 +43,8 @@ jobs:
               - '**'
               - '!README.md'
               - '!**/README.md'
+              - '!**/DISCOVER.md'
+              - '!**/INQUIRY.md'
               - '!**/TODO.md'
               - '!.github/copilot-instructions.md'
               - '!.github/instructions/**'

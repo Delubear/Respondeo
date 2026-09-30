@@ -7,11 +7,9 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | Project | Purpose |
 | --- | --- |
 | `Respondeo` | The Blazor WebAssembly front end (pages, components, styling). |
-| `Respondeo.Content.Abstractions` | Shared content contracts (`ContentNode` and related types). |
-| `Respondeo.Content.Rendering` | Shared rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
-| `Respondeo.Content.Markdown` | Markdown/YAML content, the parser, and the shipped content library. |
+| `Respondeo.Content.Shared` | Shared content contracts and rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
+| `Respondeo.Content` | Hand-authored content: the Discover pillar (miracles, prayers, devotions, articles) and the Inquiry pillar (Markdown/YAML nodes), with their parsers and services. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
-| `Respondeo.Content.Discover` | The Discover pillar (miracles, prayers, devotions, articles) and its models/services. |
 | `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
@@ -48,17 +46,17 @@ See [`tests/Respondeo.AcceptanceTests/README.md`](tests/Respondeo.AcceptanceTest
 
 ## Authoring content
 
-Content lives in `src/Respondeo.Content.Markdown/wwwroot/content/` as Markdown files, each with a
+Content lives in `src/Respondeo.Content/wwwroot/inquiry/` as Markdown files, each with a
 YAML front-matter header followed by a Markdown body. New files must also be listed in
 `manifest.json` so `ContentService` can load them.
 
 The full authoring guide — front matter, links, and the media directives (YouTube, PDF, buttons) —
-lives in **[`src/Respondeo.Content.Markdown/README.md`](src/Respondeo.Content.Markdown/README.md)**. Two
+lives in **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/INQUIRY.md)**. Two
 ready-to-copy templates sit alongside the content to start from:
 
-- [`example.md`](src/Respondeo.Content.Markdown/wwwroot/content/example.md) — a full node stub showing
+- [`example.md`](docs/templates/example.md) — a full node stub showing
   every front-matter field and an example of each parser directive.
-- [`example-section.md`](src/Respondeo.Content.Markdown/wwwroot/content/example-section.md) — a minimal
+- [`example-section.md`](docs/templates/example-section.md) — a minimal
   section stub for use as a collapsible section of a parent page.
 
 ## Summa corpus
@@ -80,7 +78,7 @@ Part identity is decoupled from presentation: files and tokens use stable neutra
 corpus regeneration.
 
 When citing the Summa from Markdown content, follow the citation-style guidance in the content
-authoring guide: **[`src/Respondeo.Content.Markdown/README.md`](src/Respondeo.Content.Markdown/README.md)**.
+authoring guide: **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/INQUIRY.md)**.
 
 > **Future pillar idea — the Catechism of the Catholic Church.** Its numbered, cross-referenced
 > structure would map onto the Summa-style browsing layout very well and would make a great addition

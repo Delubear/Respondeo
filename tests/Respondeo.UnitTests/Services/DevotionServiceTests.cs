@@ -38,8 +38,8 @@ public class DevotionServiceTests
         }
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content.Discover/discover/devotions/devotions-manifest.json";
-    private const string RosaryPath = "_content/Respondeo.Content.Discover/discover/devotions/holy-rosary.json";
+    private const string ManifestPath = "_content/Respondeo.Content/discover/devotions/devotions-manifest.json";
+    private const string RosaryPath = "_content/Respondeo.Content/discover/devotions/holy-rosary.json";
 
     private static DevotionService CreateService()
     {

@@ -3,7 +3,7 @@ using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Pages;
 
@@ -19,8 +19,8 @@ public class StageTests : TestContext
     {
         var responses = new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/why-god.md"] = WhyGodMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/inquiry/why-god.md"] = WhyGodMd,
         };
         foreach (var (path, body) in extra)
         {
@@ -57,7 +57,7 @@ public class StageTests : TestContext
         // Known stage in SiteNavigation, but no landing node content is served for it.
         var http = new HttpClient(new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = "{\"files\":[]}",
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = "{\"files\":[]}",
         }))
         { BaseAddress = new Uri("https://localhost/") };
         Services.AddSingleton<IContentService>(new ContentService(http, new ContentParser(ContentRendering.Renderer)));

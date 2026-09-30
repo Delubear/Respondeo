@@ -58,13 +58,13 @@ public class MiraclesTests : TestContext
         The Virgin appeared to St. Juan Diego.
         """;
 
-    private const string Root = "_content/Respondeo.Content.Discover/discover/miracles";
+    private const string Root = "_content/Respondeo.Content/discover/miracles";
 
     public MiraclesTests()
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Discover/discover/miracles/miracles-manifest.json"] = ManifestJson,
+            ["_content/Respondeo.Content/discover/miracles/miracles-manifest.json"] = ManifestJson,
             [$"{Root}/facets.json"] = FacetsJson,
             [$"{Root}/lanciano-eucharistic-miracle.md"] = LancianoMd,
             [$"{Root}/our-lady-of-guadalupe.md"] = GuadalupeMd,

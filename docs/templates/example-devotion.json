@@ -1,6 +1,6 @@
 {
   "//": "EXAMPLE DEVOTION FILE — copy this as a starting point for a new Discover devotion.",
-  "//lives": "src/Respondeo.Content.Discover/wwwroot/discover/devotions/. Register the file name in devotions/devotions-manifest.json so DevotionService loads it.",
+  "//lives": "src/Respondeo.Content/wwwroot/discover/devotions/. Register the file name in devotions/devotions-manifest.json so DevotionService loads it.",
   "//structure": "A devotion is an ordered sequence of steps that reference prayers by id, plus optional selectable mystery sets. The interactive player walks the sequence, so a new devotion is pure data — no code change. Every prayerId must refer to an existing prayer file.",
   "//bead": "Optional 'bead' on a step draws a marker on the left rosary thread: 'cross' (Sign of the Cross), 'medal' (centerpiece medal), 'large' (Our Father bead), 'small' (Hail Mary bead), or 'between' (three small pips for prayers said between beads). Omit for spoken steps not prayed on a bead.",
 

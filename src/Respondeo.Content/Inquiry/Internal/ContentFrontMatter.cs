@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
 using YamlDotNet.Serialization;
 
-namespace Respondeo.Content.Markdown.Internal;
+namespace Respondeo.Content.Inquiry.Internal;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter block.

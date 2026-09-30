@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 
-namespace Respondeo.Content.Markdown;
+namespace Respondeo.Content.Inquiry;
 
 /// <summary>
 /// Registration surface for the content feature.

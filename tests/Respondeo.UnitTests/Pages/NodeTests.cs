@@ -4,7 +4,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.Pages;
 using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
@@ -25,9 +25,9 @@ public class NodeTests : TestContext
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/root.md"] = RootMd,
-            ["_content/Respondeo.Content.Markdown/content/child.md"] = ChildMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/inquiry/root.md"] = RootMd,
+            ["_content/Respondeo.Content/inquiry/child.md"] = ChildMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 

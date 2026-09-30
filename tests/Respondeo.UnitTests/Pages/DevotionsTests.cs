@@ -38,7 +38,7 @@ public class DevotionsTests : TestContext
         }
         """;
 
-    private const string Root = "_content/Respondeo.Content.Discover/discover/devotions";
+    private const string Root = "_content/Respondeo.Content/discover/devotions";
 
     public DevotionsTests()
     {

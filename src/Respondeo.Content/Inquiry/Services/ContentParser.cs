@@ -1,7 +1,7 @@
 using Respondeo.Content.Shared;
-using Respondeo.Content.Markdown.Internal;
+using Respondeo.Content.Inquiry.Internal;
 
-namespace Respondeo.Content.Markdown.Services;
+namespace Respondeo.Content.Inquiry.Services;
 
 /// <summary>
 /// Turns a raw Markdown file (with a "---" delimited YAML front-matter block) into a <see cref="ContentNode"/>.

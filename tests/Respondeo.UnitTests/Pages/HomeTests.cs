@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Shared;
 using Respondeo.UnitTests.TestSupport;
-using Respondeo.Content.Markdown.Services;
+using Respondeo.Content.Inquiry.Services;
 using Respondeo.Pages;
 using Respondeo.Services;
 
@@ -23,9 +23,9 @@ public class HomeTests : TestContext
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content.Markdown/content/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content.Markdown/content/why-god/why-god.md"] = WhyGodMd,
-            ["_content/Respondeo.Content.Markdown/content/why-jesus/why-jesus.md"] = WhyJesusMd,
+            ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
+            ["_content/Respondeo.Content/inquiry/why-god/why-god.md"] = WhyGodMd,
+            ["_content/Respondeo.Content/inquiry/why-jesus/why-jesus.md"] = WhyJesusMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
