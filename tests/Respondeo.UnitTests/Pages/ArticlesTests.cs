@@ -2,6 +2,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Articles;
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Infrastructure;

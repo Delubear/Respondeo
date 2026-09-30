@@ -1,3 +1,4 @@
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
@@ -31,7 +32,7 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         }
 
         var catalog = await Load();
-        return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer : null;
+        return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer.ToContract() : null;
     }
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
@@ -39,7 +40,7 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         var manifest = await _fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
 
         var prayers = await Task.WhenAll(manifest.Files.Select(LoadPrayerAsync));
-        var loaded = prayers.Where(p => p is not null).Cast<Prayer>().ToList();
+        var loaded = prayers.Where(p => p is not null).Cast<PrayerDocument>().ToList();
         PairTranslations(loaded);
 
         // Every prayer (including Latin) stays addressable by id, but only the primary-language
@@ -47,13 +48,13 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         var map = loaded.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
         var summaries = loaded
             .Where(IsPrimaryLanguage)
-            .Select(PrayerParser.ToSummary)
+            .Select(p => p.ToSummaryContract())
             .ToList();
 
         return new Catalog(map, summaries);
     });
 
-    private async Task<Prayer?> LoadPrayerAsync(string fileName)
+    private async Task<PrayerDocument?> LoadPrayerAsync(string fileName)
     {
         try
         {
@@ -67,12 +68,12 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
     }
 
     // A prayer is "primary" (browsable) unless it is a Latin translation of another prayer.
-    private static bool IsPrimaryLanguage(Prayer prayer) =>
+    private static bool IsPrimaryLanguage(PrayerDocument prayer) =>
         !string.Equals(prayer.Language, "la", StringComparison.OrdinalIgnoreCase);
 
     // Populate each primary prayer's LatinHtml from the Latin file that shares its translation key,
     // so the detail page can render the two languages together.
-    private static void PairTranslations(IReadOnlyList<Prayer> prayers)
+    private static void PairTranslations(IReadOnlyList<PrayerDocument> prayers)
     {
         var latinByKey = prayers
             .Where(p => !IsPrimaryLanguage(p) && !string.IsNullOrWhiteSpace(p.TranslationKey))
@@ -90,5 +91,5 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         }
     }
 
-    private sealed record Catalog(Dictionary<string, Prayer> Prayers, IReadOnlyList<PrayerSummary> Summaries);
+    private sealed record Catalog(Dictionary<string, PrayerDocument> Prayers, IReadOnlyList<PrayerSummary> Summaries);
 }

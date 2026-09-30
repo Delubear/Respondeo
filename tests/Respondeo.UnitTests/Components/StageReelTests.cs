@@ -1,7 +1,6 @@
 using Bunit;
 using Respondeo.Components;
-using Respondeo.Content.Infrastructure;
-using Respondeo.Content.Shared;
+using Respondeo.Content.Contracts;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -16,7 +15,7 @@ public class StageReelTests : TestContext
         reelModule.SetupVoid("scrollByStep", _ => true);
     }
 
-    private static ContentNode Node(string id, string title, string summary = "") => new() { Id = id, Title = title, Summary = summary, BodyHtml = string.Empty };
+    private static InquiryNode Node(string id, string title, string summary = "") => new() { Id = id, Title = title, Summary = summary, BodyHtml = string.Empty };
 
     private static IReadOnlyList<StageReel.ReelStage> ThreeStages() =>
     [

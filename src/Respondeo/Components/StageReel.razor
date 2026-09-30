@@ -96,7 +96,7 @@
     }
 
     /// <summary>A single stage in the reel: its slug (route) and its landing node.</summary>
-    public sealed record ReelStage(string Slug, ContentNode Node);
+    public sealed record ReelStage(string Slug, InquiryNode Node);
 
     /// <summary>An inquisitive, self-locating prompt for a stage: a headline question and optional subtext.</summary>
     private sealed record StagePrompt(string Question, string? Subtext);

@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Miracles;
+namespace Respondeo.Content.Contracts;
 
 /// <summary>
 /// The slug&#8594;label maps for the three miracle browse facets (category, approval, region), loaded from the bundled <c>miracles/facets.json</c> content file.

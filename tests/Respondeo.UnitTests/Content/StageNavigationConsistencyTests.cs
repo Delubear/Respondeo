@@ -41,7 +41,7 @@ public class StageNavigationConsistencyTests
         return slash > 0 ? normalized[..slash] : null;
     }
 
-    private static IReadOnlyList<ContentNode> LoadNodes(string contentDir)
+    private static IReadOnlyList<InquiryNodeDocument> LoadNodes(string contentDir)
     {
         var parser = new InquiryParser(ContentRendering.Renderer);
         return ReadManifestFiles(contentDir)

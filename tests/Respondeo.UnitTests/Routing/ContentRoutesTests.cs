@@ -1,5 +1,5 @@
 using Respondeo;
-using Respondeo.Content.Infrastructure;
+using Respondeo.Content.Contracts;
 
 namespace Respondeo.UnitTests.Routing;
 
@@ -30,7 +30,7 @@ public class ContentRoutesTests
     [Fact]
     public void Node_overload_uses_the_nodes_stage()
     {
-        var node = new ContentNode
+        var node = new InquiryNode
         {
             Id = "what-is-god-like",
             Title = "What is God like?",

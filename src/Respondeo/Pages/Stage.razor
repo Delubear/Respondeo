@@ -31,7 +31,7 @@ else
     // the single source of truth, so adding a stage is a content + navigation change only.
     [Parameter] public string Slug { get; set; } = string.Empty;
 
-    private ContentNode? _node;
+    private InquiryNode? _node;
     private bool _loading = true;
     private bool _isKnownStage;
     private string _label = string.Empty;

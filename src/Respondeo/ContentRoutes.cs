@@ -1,4 +1,4 @@
-using Respondeo.Content.Infrastructure;
+using Respondeo.Content.Contracts;
 
 namespace Respondeo;
 
@@ -10,7 +10,7 @@ namespace Respondeo;
 public static class ContentRoutes
 {
     /// <summary>Builds the href for a node, nesting under its stage when it has one.</summary>
-    public static string NodeHref(ContentNode node) => NodeHref(node.Id, node.Stage);
+    public static string NodeHref(InquiryNode node) => NodeHref(node.Id, node.Stage);
 
     /// <summary>Builds the href for a node id and optional stage.</summary>
     public static string NodeHref(string id, string? stage) => string.IsNullOrEmpty(stage) ? $"node/{id}" : $"{stage}/node/{id}";

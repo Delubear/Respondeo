@@ -1,3 +1,4 @@
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
@@ -31,7 +32,7 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
         }
 
         var catalog = await Load();
-        return catalog.Devotions.TryGetValue(id, out var devotion) ? devotion : null;
+        return catalog.Devotions.TryGetValue(id, out var devotion) ? devotion.ToContract() : null;
     }
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
@@ -40,7 +41,7 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
 
         var devotions = await Task.WhenAll(manifest.Files.Select(LoadDevotionAsync));
 
-        var map = new Dictionary<string, Devotion>(StringComparer.OrdinalIgnoreCase);
+        var map = new Dictionary<string, DevotionDocument>(StringComparer.OrdinalIgnoreCase);
         var summaries = new List<DevotionSummary>();
         foreach (var devotion in devotions)
         {
@@ -50,13 +51,13 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
             }
 
             map[devotion.Id] = devotion;
-            summaries.Add(DevotionParser.ToSummary(devotion));
+            summaries.Add(devotion.ToSummaryContract());
         }
 
         return new Catalog(map, summaries);
     });
 
-    private async Task<Devotion?> LoadDevotionAsync(string fileName)
+    private async Task<DevotionDocument?> LoadDevotionAsync(string fileName)
     {
         try
         {
@@ -69,5 +70,5 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
         }
     }
 
-    private sealed record Catalog(Dictionary<string, Devotion> Devotions, IReadOnlyList<DevotionSummary> Summaries);
+    private sealed record Catalog(Dictionary<string, DevotionDocument> Devotions, IReadOnlyList<DevotionSummary> Summaries);
 }

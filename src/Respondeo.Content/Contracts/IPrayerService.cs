@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Prayers;
+namespace Respondeo.Content.Contracts;
 
 /// <summary>
 /// The public contract for reading the bundled prayer treasury.

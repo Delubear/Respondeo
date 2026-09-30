@@ -1,3 +1,4 @@
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
@@ -12,7 +13,7 @@ namespace Respondeo.Content.Miracles;
 /// The shared <see cref="MarkdownContentLoader{TFrontMatter,TModel}"/> base provides the fetch-cache-parse plumbing.
 /// </summary>
 internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) :
-    MarkdownContentLoader<MiracleFrontMatter, MiracleRecord>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
+    MarkdownContentLoader<MiracleFrontMatter, MiracleRecordDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
     private const string DiscoverRoot = "_content/Respondeo.Content/discover";
     private const string MiraclesRoot = DiscoverRoot + "/miracles";
@@ -54,10 +55,10 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
         }
 
         var catalog = await _catalog.GetAsync(LoadCatalogAsync);
-        return catalog.Records.TryGetValue(id, out var record) ? record : null;
+        return catalog.Records.TryGetValue(id, out var record) ? record.ToContract() : null;
     }
 
-    protected override MiracleRecord Map(MiracleFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
+    protected override MiracleRecordDocument Map(MiracleFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
 
     private async Task<Catalog> LoadCatalogAsync()
     {
@@ -67,7 +68,7 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
         // results are assembled in manifest order for deterministic index order.
         var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{MiraclesRoot}/{f}", f)));
 
-        var records = new Dictionary<string, MiracleRecord>(StringComparer.OrdinalIgnoreCase);
+        var records = new Dictionary<string, MiracleRecordDocument>(StringComparer.OrdinalIgnoreCase);
         var entries = new List<MiracleIndexEntry>();
         foreach (var record in parsed)
         {
@@ -77,13 +78,13 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
             }
 
             records[record.Id] = record;
-            entries.Add(MiracleParser.ToIndexEntry(record));
+            entries.Add(record.ToIndexEntryContract());
         }
 
         return new Catalog(records, new MiracleIndex { Entries = entries });
     }
 
-    private sealed record Catalog(Dictionary<string, MiracleRecord> Records, MiracleIndex Index);
+    private sealed record Catalog(Dictionary<string, MiracleRecordDocument> Records, MiracleIndex Index);
 
     // Serialization shape for facets.json: three slug->label maps.
     private sealed class FacetsDto

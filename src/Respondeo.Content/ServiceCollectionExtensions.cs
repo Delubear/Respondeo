@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Articles;
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Devotions;
 using Respondeo.Content.Discover;
 using Respondeo.Content.Infrastructure;

@@ -1,10 +1,15 @@
-namespace Respondeo.Content.Infrastructure;
+namespace Respondeo.Content.Contracts;
+
+// ---------------------------------------------------------------------------
+// Inquiry content nodes. Public DTOs returned by IContentService. The
+// parsing/domain types live internally in the Infrastructure/Inquiry folders.
+// ---------------------------------------------------------------------------
 
 /// <summary>
-/// A fully materialized content node: author-curated metadata plus the rendered HTML of its Markdown body.
-/// This is the pure domain model exposed to consumers; it carries no serialization concerns.
+/// A fully materialized inquiry node: author-curated metadata plus the rendered HTML of its Markdown body.
+/// This is the pure DTO exposed to consumers; it carries no serialization concerns.
 /// </summary>
-public sealed class ContentNode
+public sealed class InquiryNode
 {
     /// <summary>Stable unique id used for linking between nodes (the graph key) and the URL slug.</summary>
     public required string Id { get; init; }
@@ -18,7 +23,7 @@ public sealed class ContentNode
     /// <summary>Rendered HTML of the Markdown body (safe, author-curated).</summary>
     public required string BodyHtml { get; init; }
 
-    /// <summary>Free-text tags this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
+    /// <summary>Free-text tags this node belongs to, used to group and filter articles.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
     /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
@@ -27,17 +32,10 @@ public sealed class ContentNode
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
 
-    /// <summary>
-    /// The stage this node belongs to (e.g. "why-god"), derived from its content sub-folder.
-    /// Null for nodes that live at the content root and belong to no stage.
-    /// Used to nest node routes under the stage so the URL reflects the section and the masthead tab lights up.
-    /// </summary>
+    /// <summary>The stage this node belongs to (e.g. "why-god"), derived from its content sub-folder. Null for root nodes.</summary>
     public string? Stage { get; init; }
 
-    /// <summary>
-    /// Optional culminating transition to the next stage of the journey (e.g. from the end of "Why God?" onward to "Why Jesus?").
-    /// Unlike a branch, this points at a stage landing route rather than another node, and is presented as a distinct, prominent call to action.
-    /// </summary>
+    /// <summary>Optional culminating transition to the next stage of the journey.</summary>
     public StageLink? NextStage { get; init; }
 }
 
@@ -56,10 +54,7 @@ public sealed class StageLink
     /// <summary>Optional short reason/prompt shown beneath the label.</summary>
     public string? Prompt { get; init; }
 
-    /// <summary>
-    /// Optional name of the emblem shown in the golden box (e.g. "cross", "compass").
-    /// Falls back to the cross when unset.
-    /// </summary>
+    /// <summary>Optional name of the emblem shown in the golden box (e.g. "cross", "compass"). Falls back to the cross when unset.</summary>
     public string? Icon { get; init; }
 }
 
@@ -68,7 +63,7 @@ public sealed class StageLink
 /// </summary>
 public sealed class BranchLink
 {
-    /// <summary>The id of the target <see cref="ContentNode"/>.</summary>
+    /// <summary>The id of the target <see cref="InquiryNode"/>.</summary>
     public required string To { get; init; }
 
     /// <summary>Optional override label; falls back to the target's title.</summary>

@@ -67,7 +67,7 @@ public partial class ContentLinkIntegrityTests
     /// Returns a labeled description of every internal link that does not resolve to a node in the set.
     /// Checks branches, sections, and in-body node hrefs. An empty result means all links are valid.
     /// </summary>
-    private static IReadOnlyList<string> FindBrokenLinks(IReadOnlyCollection<ContentNode> nodes)
+    private static IReadOnlyList<string> FindBrokenLinks(IReadOnlyCollection<InquiryNodeDocument> nodes)
     {
         var knownIds = nodes.Select(n => n.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var brokenLinks = new List<string>();
@@ -281,7 +281,7 @@ public partial class ContentLinkIntegrityTests
         Assert.Empty(broken);
     }
 
-    private static ContentNode Parse(string raw) => new InquiryParser(ContentRendering.Renderer).Parse(raw)!;
+    private static InquiryNodeDocument Parse(string raw) => new InquiryParser(ContentRendering.Renderer).Parse(raw)!;
 
     private sealed class ContentManifest
     {

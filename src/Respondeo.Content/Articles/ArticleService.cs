@@ -1,3 +1,4 @@
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
@@ -31,7 +32,7 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
         }
 
         var catalog = await Load();
-        return catalog.Articles.TryGetValue(id, out var article) ? article : null;
+        return catalog.Articles.TryGetValue(id, out var article) ? article.ToContract() : null;
     }
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
@@ -40,7 +41,7 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
 
         var articles = await Task.WhenAll(manifest.Files.Select(LoadArticleAsync));
 
-        var map = new Dictionary<string, Article>(StringComparer.OrdinalIgnoreCase);
+        var map = new Dictionary<string, ArticleDocument>(StringComparer.OrdinalIgnoreCase);
         var summaries = new List<ArticleSummary>();
         foreach (var article in articles)
         {
@@ -50,13 +51,13 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
             }
 
             map[article.Id] = article;
-            summaries.Add(ArticleParser.ToSummary(article));
+            summaries.Add(article.ToSummaryContract());
         }
 
         return new Catalog(map, summaries);
     });
 
-    private async Task<Article?> LoadArticleAsync(string fileName)
+    private async Task<ArticleDocument?> LoadArticleAsync(string fileName)
     {
         try
         {
@@ -69,5 +70,5 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
         }
     }
 
-    private sealed record Catalog(Dictionary<string, Article> Articles, IReadOnlyList<ArticleSummary> Summaries);
+    private sealed record Catalog(Dictionary<string, ArticleDocument> Articles, IReadOnlyList<ArticleSummary> Summaries);
 }

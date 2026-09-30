@@ -4,21 +4,21 @@ using Respondeo.Content.Rendering;
 namespace Respondeo.Content.Devotions;
 
 /// <summary>
-/// Maps an already-deserialized devotion JSON DTO onto the public <see cref="Devotion"/> model and its lightweight <see cref="DevotionSummary"/> projection,
+/// Maps an already-deserialized devotion JSON DTO onto the internal <see cref="DevotionDocument"/> domain model,
 /// rendering the Markdown intro / reflections to HTML via the injected <see cref="IContentHtmlRenderer"/>.
 /// Performs no I/O so it can be tested in isolation.
 /// </summary>
 internal sealed class DevotionParser(IContentHtmlRenderer html)
 {
-    /// <summary>Maps a devotion JSON DTO onto the public model, rendering its Markdown fields to HTML.</summary>
-    public Devotion? Parse(DevotionDto? dto)
+    /// <summary>Maps a devotion JSON DTO onto the domain model, rendering its Markdown fields to HTML.</summary>
+    public DevotionDocument? Parse(DevotionDto? dto)
     {
         if (dto is null || string.IsNullOrWhiteSpace(dto.Id))
         {
             return null;
         }
 
-        return new Devotion
+        return new DevotionDocument
         {
             Id = dto.Id,
             Title = dto.Title,
@@ -31,30 +31,20 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         };
     }
 
-    /// <summary>Projects a full devotion down to its lightweight browse-index summary.</summary>
-    public static DevotionSummary ToSummary(Devotion devotion) => new()
-    {
-        Id = devotion.Id,
-        Title = devotion.Title,
-        SortValue = devotion.SortValue,
-        Summary = devotion.Summary,
-        Kind = devotion.Kind,
-    };
-
-    private MysterySet MapSet(MysterySetDto set) => new()
+    private MysterySetDocument MapSet(MysterySetDto set) => new()
     {
         Id = set.Id,
         Name = set.Name,
         When = set.When,
         Summary = set.Summary,
-        Mysteries = [.. set.Mysteries.Select(m => new Mystery
+        Mysteries = [.. set.Mysteries.Select(m => new MysteryDocument
         {
             Title = m.Title,
             ReflectionHtml = string.IsNullOrWhiteSpace(m.Reflection) ? null : html.ToHtml(m.Reflection),
         })],
     };
 
-    private DevotionStep MapStep(DevotionStepDto step) => new()
+    private DevotionStepDocument MapStep(DevotionStepDto step) => new()
     {
         Kind = string.IsNullOrWhiteSpace(step.Kind) ? "prayer" : step.Kind.Trim().ToLowerInvariant(),
         Title = step.Title,

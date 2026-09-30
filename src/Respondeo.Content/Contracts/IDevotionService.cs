@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Devotions;
+namespace Respondeo.Content.Contracts;
 
 /// <summary>
 /// The public contract for reading the bundled, data-driven devotions (the Rosary, chaplets, litanies).

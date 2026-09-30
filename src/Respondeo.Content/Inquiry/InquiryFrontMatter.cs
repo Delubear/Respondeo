@@ -5,7 +5,7 @@ namespace Respondeo.Content.Inquiry;
 
 /// <summary>
 /// The structured metadata parsed from a content file's YAML front-matter block.
-/// This is an internal serialization DTO; the parser maps it onto the public <see cref="Abstractions.ContentNode"/> so YAML concerns never leak past the boundary.
+/// This is an internal serialization DTO; the parser maps it onto the public <see cref="Contracts.InquiryNode"/> so YAML concerns never leak past the boundary.
 /// Inherits the shared id/title/summary/tags fields from <see cref="ContentFrontMatterBase"/>.
 /// </summary>
 internal sealed class InquiryFrontMatter : ContentFrontMatterBase

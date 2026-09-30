@@ -2,8 +2,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Components;
-using Respondeo.Content.Infrastructure;
-using Respondeo.Content.Shared;
+using Respondeo.Content.Contracts;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -13,11 +12,11 @@ public class NodeArticleTests : TestContext
     {
         // NodeArticle resolves branch targets through IContentService; none are needed for these tests.
         var content = Substitute.For<IContentService>();
-        content.GetByIdAsync(Arg.Any<string>()).Returns((ContentNode?)null);
+        content.GetByIdAsync(Arg.Any<string>()).Returns((InquiryNode?)null);
         Services.AddSingleton(content);
     }
 
-    private static ContentNode NodeWithNextStage(string href) => new()
+    private static InquiryNode NodeWithNextStage(string href) => new()
     {
         Id = "what-is-god-like",
         Title = "What is God like?",

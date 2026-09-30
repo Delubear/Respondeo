@@ -36,7 +36,7 @@ else
     // it is present only so the stage-scoped URL resolves to this same page.
     [Parameter] public string? Stage { get; set; }
 
-    private ContentNode? _node;
+    private InquiryNode? _node;
     private bool _loading = true;
     private BreadcrumbContext _breadcrumb = BreadcrumbContext.ForCurrent(null);
 

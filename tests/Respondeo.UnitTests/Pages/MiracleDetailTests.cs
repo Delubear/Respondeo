@@ -1,7 +1,7 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Respondeo.Content.Miracles;
+using Respondeo.Content.Contracts;
 using Respondeo.Pages;
 using Respondeo.Services;
 

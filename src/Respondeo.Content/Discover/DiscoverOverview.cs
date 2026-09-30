@@ -1,7 +1,4 @@
-using Respondeo.Content.Articles;
-using Respondeo.Content.Devotions;
-using Respondeo.Content.Miracles;
-using Respondeo.Content.Prayers;
+using Respondeo.Content.Contracts;
 
 namespace Respondeo.Content.Discover;
 

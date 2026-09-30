@@ -1,4 +1,4 @@
-namespace Respondeo.Content.Infrastructure;
+namespace Respondeo.Content.Contracts;
 
 /// <summary>
 /// The public contract for reading author-curated content nodes.
@@ -7,8 +7,8 @@ namespace Respondeo.Content.Infrastructure;
 public interface IContentService
 {
     /// <summary>Returns every loaded node, loading the content set if needed.</summary>
-    Task<IReadOnlyCollection<ContentNode>> GetAllAsync();
+    Task<IReadOnlyCollection<InquiryNode>> GetAllAsync();
 
     /// <summary>Returns a single node by id, or null if it does not exist.</summary>
-    Task<ContentNode?> GetByIdAsync(string id);
+    Task<InquiryNode?> GetByIdAsync(string id);
 }
