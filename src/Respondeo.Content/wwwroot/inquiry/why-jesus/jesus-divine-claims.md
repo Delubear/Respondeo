@@ -6,9 +6,12 @@ tags:
   - jesus christ
   - divine revelation
 branches:
+  - to: jesus-trinity
+    label: "But doesn't that break monotheism?"
+    prompt: If Jesus is God alongside the Father, how is that not two gods, after reason proved God is one?
   - to: jesus-ot-prophecy
     label: "Did Jesus fulfill prophecy?"
-    prompt: Before the Resurrection, an optional step — do the Hebrew Scriptures' messianic expectations converge on Jesus?
+    prompt: Before the Resurrection, do the Hebrew Scriptures' messianic expectations converge on Jesus?
   - to: jesus-resurrection
     label: "The Resurrection"
     prompt: If Jesus claimed a divine authority, the next question is whether He vindicated it by rising from the dead.
@@ -58,9 +61,9 @@ That is the situation the Gospels stage.
 Jesus keeps speaking words that are absurd, or blasphemous, on any lips but God's.
 Which forces the question He clearly meant to force: who do you say that He is?
 
-**Where this leads.** A staggering claim is not yet a vindicated one; anyone can claim authority.
-The question is whether Jesus offered anything to back it.
-Here the path can pause to weigh an optional line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test: whether He rose from the dead.
+**Where this leads.** A staggering claim raises two different questions.
+The first is whether it even *coheres* — if Jesus is God alongside the Father, has the one God reason reached quietly become two? That objection is sharp enough to pause on.
+The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh an optional line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
 
 ::: youtube xphsJLRF9v8
 :::
