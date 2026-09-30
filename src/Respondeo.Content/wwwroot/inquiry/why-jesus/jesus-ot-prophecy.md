@@ -8,7 +8,7 @@ tags:
 branches:
   - to: jesus-trinity
     label: "If Jesus is God, are there two gods?"
-    prompt: A companion detour — how can Jesus be divine without breaking the one God reason reached?
+    prompt: How can Jesus be divine without breaking the one God reason reached?
   - to: jesus-resurrection
     label: "The Resurrection"
     prompt: Prophecy points to who the Messiah would be; the Resurrection asks whether Jesus vindicated the claim.
@@ -16,7 +16,6 @@ branches:
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
-This step is optional, and it is worth being honest about why.
 Prophecy arguments are easy to overstate, and a skeptic can always suspect that later writers shaped the story to fit older texts.
 So we will not lean the whole case on it.
 But taken carefully, the messianic expectation of the Hebrew Scriptures adds a distinctive kind of weight — the convergence of many independent lines onto one figure.

@@ -63,7 +63,7 @@ Which forces the question He clearly meant to force: who do you say that He is?
 
 **Where this leads.** A staggering claim raises two different questions.
 The first is whether it even *coheres* — if Jesus is God alongside the Father, has the one God reason reached quietly become two? That objection is sharp enough to pause on.
-The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh an optional line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
+The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh a line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
 
 ::: youtube xphsJLRF9v8
 :::

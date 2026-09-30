@@ -58,4 +58,4 @@ Together they let the Church speak with one voice where private reading alone fr
 **Where this leads.** This is the Catholic account of how revelation reaches us — Scripture, Tradition, and teaching office, together.
 With that, the case has been laid out in full: Christ founded a Church, it can be recognized, it bears the four marks, and it hands on His revelation with authority.
 From here the path draws together toward a decision.
-Those who want to test the claim against its hardest objections first can take the optional route through them; otherwise, we turn to what the whole path has shown.
+Those who want to test the claim against its hardest objections first can take the route through them; otherwise, we turn to what the whole path has shown.

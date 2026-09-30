@@ -8,7 +8,7 @@ tags:
 branches:
   - to: jesus-ot-prophecy
     label: "Did Jesus fulfill prophecy?"
-    prompt: With the monotheism worry answered, an optional step — do the Hebrew Scriptures' messianic expectations converge on Jesus?
+    prompt: With the monotheism worry answered — do the Hebrew Scriptures' messianic expectations converge on Jesus?
   - to: jesus-resurrection
     label: "The Resurrection"
     prompt: Or go straight to the decisive question — did Jesus vindicate the claim by rising from the dead?

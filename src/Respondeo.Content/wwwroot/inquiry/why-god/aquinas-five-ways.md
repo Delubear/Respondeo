@@ -16,7 +16,7 @@ sections:
 branches:
   - to: can-we-know-truth
     label: "Can we even know the truth?"
-    prompt: A companion detour — can the mind reach truth at all, before we test any argument?
+    prompt: Can the mind reach truth at all, before we test any argument?
   - to: objections-to-god
     label: "Objections to God"
     prompt: What are the strongest objections to the existence of God, and how do we respond?
