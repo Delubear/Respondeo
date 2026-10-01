@@ -17,7 +17,7 @@
 .reel__aside {
     text-align: center;
     max-width: 44rem;
-    margin: 1.75rem auto 0;
+    margin: 3rem auto 0;
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--ink-soft);
@@ -41,6 +41,6 @@
 
     .reel__aside {
         font-size: 0.9rem;
-        margin-top: 1.25rem;
+        margin-top: 2rem;
     }
 }
