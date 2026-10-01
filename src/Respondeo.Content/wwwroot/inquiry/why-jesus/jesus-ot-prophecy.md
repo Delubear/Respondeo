@@ -7,8 +7,6 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Prophecy arguments are easy to overstate, and a skeptic can always suspect that later writers shaped the story to fit older texts.
 So we will not lean the whole case on it.
 But taken carefully, the messianic expectation of the Hebrew Scriptures adds a distinctive kind of weight — the convergence of many independent lines onto one figure.
@@ -19,7 +17,8 @@ The question here is whether that expectation lands on Jesus of Nazareth.
 **The case that the messianic expectation converges on Jesus:**
 
 1. **The portrait is composed from many hands over many centuries.**
-   A suffering servant "pierced for our transgressions" (Isaiah 53), a righteous one whose hands and feet are pierced and whose garments are gambled for (Psalm 22), a ruler born in Bethlehem (Micah), a "son of man" given everlasting dominion (Daniel).
+   A suffering servant "pierced for our transgressions" (Isaiah 53), a righteous one whose hands and feet are pierced and whose garments are gambled for (Psalm 22), 
+   a ruler born in Bethlehem (Micah), a "son of man" given everlasting dominion (Daniel).
    No single author could have coordinated these; their agreement is not by design.
 
 2. **The most striking texts are the hardest to have retrofitted.**
@@ -34,6 +33,19 @@ The question here is whether that expectation lands on Jesus of Nazareth.
 None of this is decisive on its own, and it should not be pressed as though it were.
 Its real force is *cumulative*: many streams, flowing from different centuries and authors, gathering unexpectedly into one life.
 
+**The obvious objections, met.** Two replies naturally come to mind, and both have answers.
+
+- **"Couldn't Jesus have staged the matches?"** A clever man might contrive to ride in on a donkey — but the load-bearing prophecies are precisely 
+  the ones no one can arrange for himself.
+  You do not choose *where* you are born (Bethlehem, in Micah), nor *how* you are executed (hands and feet pierced, in Psalm 22 — written centuries 
+  before crucifixion was practiced in Israel), nor that enemies would gamble for your clothing, nor that your bones would be left unbroken.
+  The texts that matter most are the ones furthest outside anyone's control.
+
+- **"Aren't the prophecies vague enough to fit anyone?"** Some are general; the decisive ones are not.
+  One named town, death by piercing with the bones left intact, a betrayal priced at thirty pieces of silver — these are specific enough that 
+  fitting them is not the easy coincidence the objection imagines.
+  The argument never rested on any single verse, but on how many *particular* ones converge.
+
 ## See it today: a portrait drawn by strangers
 
 Imagine a dozen artists, working in different cities across five hundred years, each sketching one feature of a face they have never seen — the eyes, the scar, the set of the jaw.
@@ -44,5 +56,5 @@ The messianic texts are like those scattered sketches.
 Whether the assembled face is Jesus of Nazareth is a judgment each person must weigh — but the convergence is not nothing.
 
 **Where this leads.** Prophecy can show who the Messiah was meant to be; it cannot by itself prove that Jesus was He.
-the one they said turned an executed criminal into a vindicated Lord.
-The next question is the decisive one: did Jesus rise from the dead?
+That proof has to come from the event the earliest witnesses staked everything on — the one they said turned an executed criminal into a vindicated Lord.
+From here the path can still pause on the monotheism worry — if Jesus is God, are there now two? — but the decisive question is the Resurrection: did Jesus rise from the dead?
