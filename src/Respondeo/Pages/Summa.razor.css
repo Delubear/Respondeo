@@ -22,9 +22,6 @@
     text-decoration: none;
     color: inherit;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    /* Override the global a[href^="summa/"] nowrap (meant for inline citations) so long
-       titles/refs in these card-style result rows wrap instead of overflowing. */
-    white-space: normal;
 }
 
 .summa__match-link:hover,
