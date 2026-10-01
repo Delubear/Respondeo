@@ -1,0 +1,6 @@
+/* Scoped styling for the shared "Sources & further reading" block. The .section-rule separator
+   remains a global utility; only the source-specific colour and type size live here. */
+.content-sources {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}

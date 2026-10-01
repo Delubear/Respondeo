@@ -57,7 +57,7 @@ public sealed class Article
 }
 
 /// <summary>A citation or further-reading reference for an article.</summary>
-public sealed class ArticleSource
+public sealed class ArticleSource : IContentSource
 {
     /// <summary>The display label of the source.</summary>
     public required string Label { get; init; }

@@ -65,27 +65,7 @@ else
 
         <TagList Tags="_miracle.Tags" />
 
-        @if (_miracle.Sources.Count > 0)
-        {
-            <section class="content-sources section-rule">
-                <h2>Sources &amp; further reading</h2>
-                <ul>
-                    @foreach (var source in _miracle.Sources)
-                    {
-                        <li>
-                            @if (!string.IsNullOrWhiteSpace(source.Url))
-                            {
-                                <a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Label</a>
-                            }
-                            else
-                            {
-                                @source.Label
-                            }
-                        </li>
-                    }
-                </ul>
-            </section>
-        }
+        <SourcesList Sources="_miracle.Sources" />
 
         <BackLink Href="discover/miracles" Label="Back to all miracles" />
     </article>

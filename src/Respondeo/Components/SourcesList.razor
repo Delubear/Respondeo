@@ -1,0 +1,35 @@
+@using Respondeo.Content.Contracts
+
+@* Shared "Sources & further reading" block for detail pages (articles, miracles, ...). Renders
+   nothing when there are no sources, so callers can drop it in unconditionally. Each source links
+   out when a URL is present, otherwise shows the label as plain text. *@
+
+@if (Sources.Count > 0)
+{
+    <section class="content-sources section-rule">
+        <h2>@Title</h2>
+        <ul>
+            @foreach (var source in Sources)
+            {
+                <li>
+                    @if (!string.IsNullOrWhiteSpace(source.Url))
+                    {
+                        <a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Label</a>
+                    }
+                    else
+                    {
+                        @source.Label
+                    }
+                </li>
+            }
+        </ul>
+    </section>
+}
+
+@code {
+    /// <summary>The sources to render. An empty list renders nothing.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<IContentSource> Sources { get; set; } = [];
+
+    /// <summary>The section heading. Defaults to the shared "Sources & further reading" wording.</summary>
+    [Parameter] public string Title { get; set; } = "Sources & further reading";
+}

@@ -96,7 +96,7 @@ public sealed class MiracleRecord
 }
 
 /// <summary>A citation or further-reading reference for a miracle.</summary>
-public sealed class MiracleSource
+public sealed class MiracleSource : IContentSource
 {
     /// <summary>The display label of the source.</summary>
     public required string Label { get; init; }
