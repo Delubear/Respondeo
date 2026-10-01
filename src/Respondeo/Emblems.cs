@@ -27,18 +27,4 @@ public static class Emblems
         // Question mark — default (e.g. Why God, and any unspecified transition).
         _ => "M11 18h2v-2h-2v2zm1-16C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm0-14a4 4 0 0 0-4 4h2a2 2 0 1 1 3 1.7c-.8.6-2 1.3-2 3.3h2c0-1.3 1.2-1.6 2.2-2.6A4 4 0 0 0 12 6z",
     };
-
-    /// <summary>
-    /// Maps a stage slug (as defined in <see cref="SiteNavigation"/>) to its emblem name.
-    /// Used by the Home reel so each stage card shows the icon that represents that section.
-    /// </summary>
-    public static string ForStage(string slug) => (slug?.Trim().ToLowerInvariant()) switch
-    {
-        "why-god" => "question",
-        "which-god" => "compass",
-        "why-jesus" => "cross",
-        "why-the-church" => "church",
-        "coming-home" => "home",
-        _ => "question",
-    };
 }
