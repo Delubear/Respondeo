@@ -1,4 +1,5 @@
 .browse-clear {
+    display: block;
     align-self: flex-start;
     margin-top: 1.25rem;
     padding: 0.4rem 0.7rem;

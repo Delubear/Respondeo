@@ -37,8 +37,7 @@
             <aside class="filter-rail">
                 @if (_tags.Count > 0)
                 {
-                    <h2 class="filter-rail__title">Tags</h2>
-                    <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
+                    <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>

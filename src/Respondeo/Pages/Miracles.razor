@@ -12,8 +12,7 @@
     <PillarHeader Eyebrow="Signs and wonders" Title="Catholic Miracles">
         <Lede>
             A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian
-            apparitions, healings, and more. Filter by kind, by the Church&rsquo;s judgment, or by place,
-            and search by name. Each entry explains what is claimed and how the Church regards it.
+            apparitions, healings, and more. Each entry explains what is claimed and how the Church regards it.
         </Lede>
     </PillarHeader>
 
@@ -31,20 +30,20 @@
 
         <div class="filter-layout">
             <aside class="filter-rail">
-                <h2 class="filter-rail__title">Kind</h2>
-                <TopicFilter Topics="_types"
+                <TopicFilter Title="Kind"
+                             Topics="_types"
                              Selected="_selectedTypes"
                              SelectedChanged="OnTypesChanged"
                              DisplayLabel="_facets.Category" />
 
-                <h2 class="filter-rail__title">Church&rsquo;s judgment</h2>
-                <TopicFilter Topics="_approvals"
+                <TopicFilter Title="Church&rsquo;s judgment"
+                             Topics="_approvals"
                              Selected="_selectedApprovals"
                              SelectedChanged="OnApprovalsChanged"
                              DisplayLabel="_facets.Approval" />
 
-                <h2 class="filter-rail__title">Region</h2>
-                <TopicFilter Topics="_regions"
+                <TopicFilter Title="Region"
+                             Topics="_regions"
                              Selected="_selectedRegions"
                              SelectedChanged="OnRegionsChanged"
                              DisplayLabel="_facets.Region" />

@@ -15,6 +15,22 @@
     color: var(--ink);
 }
 
+.topic-filter__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.topic-filter__header:first-child {
+    margin-top: 0;
+}
+
+.topic-filter__header .filter-rail__title {
+    margin: 0 0 0.75rem;
+}
+
 .topic-filter__clear {
     margin-top: 0.75rem;
     background: none;
@@ -25,6 +41,19 @@
     color: var(--ink-soft);
     text-decoration: underline;
     cursor: pointer;
+}
+
+.topic-filter__header .topic-filter__clear {
+    margin-top: 0;
+    white-space: nowrap;
+}
+
+/* Keep the header height stable whether or not the clear action is shown, so the
+   title never shifts. The button still occupies its slot but is invisible/inert. */
+.topic-filter__header .topic-filter__clear[hidden] {
+    display: inline;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .topic-filter__clear:hover {

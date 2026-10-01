@@ -6,6 +6,18 @@
 }
 else
 {
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <div class="topic-filter__header">
+            <h2 class="filter-rail__title">@Title</h2>
+            <button type="button"
+                    class="topic-filter__clear"
+                    @onclick="ClearTopics"
+                    hidden="@(Selected.Count == 0)">
+                Clear filters
+            </button>
+        </div>
+    }
     <div class="topic-filter">
         @foreach (var topic in Topics)
         {
@@ -17,7 +29,7 @@ else
             </label>
         }
     </div>
-    @if (Selected.Count > 0)
+    @if (string.IsNullOrWhiteSpace(Title) && Selected.Count > 0)
     {
         <button type="button" class="topic-filter__clear" @onclick="ClearTopics">
             Clear filters
@@ -28,6 +40,9 @@ else
 @code {
     /// <summary>All selectable topics, in display order.</summary>
     [Parameter, EditorRequired] public IReadOnlyList<string> Topics { get; set; } = Array.Empty<string>();
+
+    /// <summary>Optional heading shown above the options; when set, the clear action renders beside it.</summary>
+    [Parameter] public string? Title { get; set; }
 
     /// <summary>The currently selected topics. Two-way bindable via <c>@bind-Selected</c>.</summary>
     [Parameter] public IReadOnlySet<string> Selected { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
