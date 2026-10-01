@@ -21,5 +21,3 @@ Marriage is not merely a contract or a milestone but a vocation and a channel of
 The couple's love becomes a living image of the faithful, self-giving, fruitful love of Christ for His Church.
 The sacrament gives them the grace to love each other as Christ loves — through joy and hardship alike — and orders their life toward the good of one another, their children, and the wider communion.
 To celebrate a wedding is to celebrate a love made stronger than the couple could make it on their own, because God has joined it to His own.
-
-[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

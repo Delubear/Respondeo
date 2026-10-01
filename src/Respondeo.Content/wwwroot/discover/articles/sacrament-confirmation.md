@@ -21,5 +21,3 @@ In Confirmation, the Holy Spirit deepens the grace of Baptism, roots a person mo
 It is the same Spirit who transformed frightened disciples into bold witnesses.
 To be confirmed is to be commissioned — no longer only receiving the faith but empowered to carry it.
 This is cause for joy: God does not leave His own to face the world on their own strength.
-
-[Back to the overview of all seven sacraments](discover/articles/the-sacraments)

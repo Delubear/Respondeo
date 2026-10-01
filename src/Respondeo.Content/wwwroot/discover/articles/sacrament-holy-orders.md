@@ -21,5 +21,3 @@ Holy Orders exists for the sake of everyone else.
 It is not a promotion but a self-gift: through the ordained, Christ continues to teach, forgive, and offer the Eucharist.
 Without this sacrament there would be no Mass, no absolution, no continuity with the apostles.
 To celebrate an ordination is to celebrate that Christ has not left His Church without shepherds, but keeps His promise to remain with her until the end of the age.
-
-[Back to the overview of all seven sacraments](discover/articles/the-sacraments)
