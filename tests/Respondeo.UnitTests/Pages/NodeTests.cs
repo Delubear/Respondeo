@@ -56,6 +56,11 @@ public class NodeTests : TestContext
         breadcrumbModule.SetupVoid("init", _ => true);
         breadcrumbModule.SetupVoid("refresh", _ => true);
         breadcrumbModule.SetupVoid("dispose", _ => true);
+
+        // NodeArticle imports ./js/table-mobile.js during OnAfterRenderAsync to enhance tables.
+        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        tableModule.SetupVoid("enhance", _ => true);
+        tableModule.SetupVoid("dispose", _ => true);
     }
 
     [Fact]
@@ -63,8 +68,8 @@ public class NodeTests : TestContext
     {
         var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
 
-        Assert.Equal("Root Question", cut.Find("h1.node__title").TextContent);
-        Assert.Contains("Root body", cut.Find(".node__body").TextContent);
+        Assert.Equal("Root Question", cut.Find("h1.pillar__title").TextContent);
+        Assert.Contains("Root body", cut.Find(".content-body").TextContent);
     }
 
     [Fact]

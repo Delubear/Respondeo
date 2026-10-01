@@ -19,6 +19,14 @@ public class StageTests : TestContext
     private const string Manifest = "{\"files\":[\"why-god.md\"]}";
     private const string WhyGodMd = "---\nid: why-god\ntitle: Why God?\nsummary: The first stage\n---\nStage body";
 
+    public StageTests()
+    {
+        // The landing node renders through NodeArticle, which imports ./js/table-mobile.js on render.
+        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        tableModule.SetupVoid("enhance", _ => true);
+        tableModule.SetupVoid("dispose", _ => true);
+    }
+
     private void RegisterContent(params (string Path, string Body)[] extra)
     {
         var responses = new Dictionary<string, string>
@@ -72,6 +80,9 @@ public class StageTests : TestContext
         }))
         { BaseAddress = new Uri("https://localhost/") };
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
+
+        Services.AddSingleton(Substitute.For<IInquiryFlow>());
+        Services.AddSingleton(Substitute.For<IVisitedNodes>());
 
         var cut = RenderComponent<Stage>(p => p.Add(c => c.Slug, "coming-home"));
 

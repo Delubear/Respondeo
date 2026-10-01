@@ -27,6 +27,11 @@ public class NodeArticleTests : TestContext
         var visited = Substitute.For<IVisitedNodes>();
         visited.GetVisitedAsync().Returns((IReadOnlySet<string>)new HashSet<string>());
         Services.AddSingleton(visited);
+
+        // NodeArticle imports the table-mobile module during OnAfterRenderAsync to enhance tables.
+        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        tableModule.SetupVoid("enhance", _ => true);
+        tableModule.SetupVoid("dispose", _ => true);
     }
 
     private static InquiryNode Node() => new()
