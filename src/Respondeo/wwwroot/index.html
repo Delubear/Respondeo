@@ -158,6 +158,13 @@
                         }
                     });
                 });
+
+                // The browser only re-fetches service-worker.js on navigation, which barely happens
+                // in a long-lived installed PWA / Blazor SPA - so a newly published worker could sit
+                // on the server unnoticed. Force an update check on load and then hourly so the
+                // "waiting" state (and the prompt above) actually gets reached.
+                reg.update();
+                setInterval(function () { reg.update(); }, 60 * 60 * 1000);
             });
         }
     </script>
