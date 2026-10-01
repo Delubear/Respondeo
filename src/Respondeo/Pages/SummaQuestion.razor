@@ -82,7 +82,7 @@ else
                     </span>
                     <span class="summa-article__marker" aria-hidden="true">@(_openArticles.Contains(article.Number) ? "\u2212" : "+")</span>
                 </summary>
-                <div class="summa-article__body">
+                <div class="summa-article__body content-body">
                     @if (!string.IsNullOrEmpty(article.PreambleHtml))
                     {
                         @((MarkupString)References.Expand(article.PreambleHtml, article.Number))
@@ -108,9 +108,7 @@ else
         }
         }
 
-        <nav class="summa-question__pager" aria-label="Question navigation">
-            <a class="summa-question__back" href="summa">&larr; All questions</a>
-        </nav>
+        <BackLink Href="summa" Label="All questions" />
     </article>
 
     <SummaAttribution />

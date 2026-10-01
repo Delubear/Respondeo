@@ -21,12 +21,6 @@
     margin: 1.5rem 0 0.75rem;
 }
 
-.discover-article__body {
-    font-size: 1.08rem;
-    line-height: 1.7;
-    color: var(--ink);
-}
-
 .discover-article__sources {
     margin-top: 2rem;
     padding-top: 1.25rem;

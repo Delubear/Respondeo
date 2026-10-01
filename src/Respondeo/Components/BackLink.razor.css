@@ -9,6 +9,6 @@
 
 .back-link a:hover,
 .back-link a:focus-visible {
-    color: var(--ink);
+    color: var(--accent);
     text-decoration: underline;
 }

@@ -803,12 +803,54 @@ input[type="search"]::-webkit-search-cancel-button {
 /* ---------- Content body images & tables ---------- */
 /* Images and tables are generic tags emitted into content body HTML by the content pipeline, so
    the same markup appears inside every content renderer (Inquiry nodes, accordion sections,
-   discover articles, miracle pages, etc.). These rules are scoped to the shared body containers so
-   they style content HTML consistently without leaking onto chrome elsewhere on the page. */
-.node__body img:not(.video-facade__thumb),
-.discover-article__body img:not(.video-facade__thumb),
-.miracle__body img:not(.video-facade__thumb),
-.summa-article__body img:not(.video-facade__thumb) {
+   discover articles, miracle pages, etc.). Each renderer keeps its own semantic class for
+   page-specific typography (in its scoped .razor.css), but they all also carry the shared
+   .content-body marker so this one set of rules styles their content HTML consistently without
+   leaking onto chrome elsewhere on the page. */
+
+/* Shared base reading behavior for every content body. Individual pages used to set slightly
+   different font-size/line-height here; they are intentionally unified so content reads the same
+   everywhere. */
+.content-body {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+/* Shared element styling for the HTML the content pipeline injects via MarkupString. Because app.css
+   is global (unlike the scoped .razor.css files) these rules reach those runtime children directly,
+   so every content surface (inquiry nodes, discover/miracle/summa articles, accordion panels) renders
+   headings, quotes, code, lists, and paragraphs identically. */
+.content-body h2 {
+    margin-top: 2rem;
+    font-size: 1.4rem;
+}
+
+.content-body p {
+    margin: 0 0 1rem;
+}
+
+.content-body blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.content-body code {
+    background: var(--code-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.content-body :is(ol, ul) {
+    padding-left: 1.4rem;
+}
+
+.content-body img:not(.video-facade__thumb) {
     max-width: 100%;
     height: auto;
     display: block;
@@ -816,11 +858,7 @@ input[type="search"]::-webkit-search-cancel-button {
     border: 1px solid var(--rule);
 }
 
-.node__body table,
-.discover-article__body table,
-.miracle__body table,
-.summa-article__body table,
-.accordion__panel table {
+.content-body table {
     width: 100%;
     margin: 1.5rem 0;
     border-collapse: collapse;
@@ -829,16 +867,7 @@ input[type="search"]::-webkit-search-cancel-button {
     overflow-x: auto;
 }
 
-.node__body th,
-.node__body td,
-.discover-article__body th,
-.discover-article__body td,
-.miracle__body th,
-.miracle__body td,
-.summa-article__body th,
-.summa-article__body td,
-.accordion__panel th,
-.accordion__panel td {
+.content-body :is(th, td) {
     padding: 0.5rem 0.85rem;
     border: 1px solid var(--rule);
     text-align: left;
@@ -847,29 +876,17 @@ input[type="search"]::-webkit-search-cancel-button {
 
 /* Zebra striping keeps rows legible when the cell background would otherwise sit too close to the
    page background. */
-.node__body tbody tr:nth-child(even),
-.discover-article__body tbody tr:nth-child(even),
-.miracle__body tbody tr:nth-child(even),
-.summa-article__body tbody tr:nth-child(even),
-.accordion__panel tbody tr:nth-child(even) {
+.content-body tbody tr:nth-child(even) {
     background: var(--code-bg);
 }
 
-.node__body thead th,
-.discover-article__body thead th,
-.miracle__body thead th,
-.summa-article__body thead th,
-.accordion__panel thead th {
+.content-body thead th {
     background: var(--parchment);
     font-weight: 600;
     border-bottom: 2px solid var(--accent);
 }
 
-.node__body tbody th,
-.discover-article__body tbody th,
-.miracle__body tbody th,
-.summa-article__body tbody th,
-.accordion__panel tbody th {
+.content-body tbody th {
     font-weight: 600;
     white-space: nowrap;
 }
@@ -878,29 +895,17 @@ input[type="search"]::-webkit-search-cancel-button {
    become rows). On desktop the companion is hidden and the original grid shows; on mobile we swap
    them so the comparison reads as a narrow label -> value table instead of an unreadable wide grid.
    If the script never runs the original simply scrolls horizontally, so nothing is lost. */
-.node__body .table--transposed,
-.discover-article__body .table--transposed,
-.miracle__body .table--transposed,
-.summa-article__body .table--transposed,
-.accordion__panel .table--transposed {
+.content-body .table--transposed {
     display: none;
 }
 
 /* On narrow screens show the transposed companion instead of the wide original. */
 @media (max-width: 36rem) {
-    .node__body > table:not(.table--transposed),
-    .discover-article__body > table:not(.table--transposed),
-    .miracle__body > table:not(.table--transposed),
-    .summa-article__body > table:not(.table--transposed),
-    .accordion__panel > table:not(.table--transposed) {
+    .content-body > table:not(.table--transposed) {
         display: none;
     }
 
-    .node__body .table--transposed,
-    .discover-article__body .table--transposed,
-    .miracle__body .table--transposed,
-    .summa-article__body .table--transposed,
-    .accordion__panel .table--transposed {
+    .content-body .table--transposed {
         display: block;
         width: 100%;
         max-width: 100%;
@@ -912,26 +917,13 @@ input[type="search"]::-webkit-search-cancel-button {
        viewport. table-layout: fixed divides the width evenly and lets sentence cells wrap; a shared
        min-width keeps columns legible, with internal horizontal scroll as the graceful last resort so
        the table never pushes the page wider than the screen. */
-    .node__body .table--transposed > tbody,
-    .discover-article__body .table--transposed > tbody,
-    .miracle__body .table--transposed > tbody,
-    .summa-article__body .table--transposed > tbody,
-    .accordion__panel .table--transposed > tbody {
+    .content-body .table--transposed > tbody {
         display: table;
         width: 100%;
         table-layout: fixed;
     }
 
-    .node__body .table--transposed th,
-    .node__body .table--transposed td,
-    .discover-article__body .table--transposed th,
-    .discover-article__body .table--transposed td,
-    .miracle__body .table--transposed th,
-    .miracle__body .table--transposed td,
-    .summa-article__body .table--transposed th,
-    .summa-article__body .table--transposed td,
-    .accordion__panel .table--transposed th,
-    .accordion__panel .table--transposed td {
+    .content-body .table--transposed :is(th, td) {
         min-width: 7rem;
         padding: 0.5rem 0.6rem;
         white-space: normal;
@@ -941,11 +933,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
     /* The transposed table's first column is the label column (original headers). Give it the same
        accent treatment the header row carried so the comparison keeps its visual anchor. */
-    .node__body .table--transposed th[scope="row"],
-    .discover-article__body .table--transposed th[scope="row"],
-    .miracle__body .table--transposed th[scope="row"],
-    .summa-article__body .table--transposed th[scope="row"],
-    .accordion__panel .table--transposed th[scope="row"] {
+    .content-body .table--transposed th[scope="row"] {
         background: var(--parchment);
         white-space: normal;
         border-right: 2px solid var(--accent);

@@ -34,7 +34,7 @@
                 </h3>
                 @if (isOpen)
                 {
-                    <div id="@panelId" role="region" aria-labelledby="@headerId" class="accordion__panel" @ref="_openPanel">
+                    <div id="@panelId" role="region" aria-labelledby="@headerId" class="accordion__panel content-body" @ref="_openPanel">
                         @((MarkupString)section.BodyHtml)
                     </div>
                 }

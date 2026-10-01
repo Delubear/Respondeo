@@ -123,29 +123,7 @@
 }
 
 .summa-article__body {
-    line-height: 1.7;
     padding-bottom: 1.5rem;
-}
-
-.summa-article__body p {
-    margin: 0 0 1rem;
-}
-
-/* ---------- Pager ---------- */
-.summa-question__pager {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--rule);
-}
-
-.summa-question__back {
-    color: var(--ink-soft);
-    text-decoration: none;
-}
-
-.summa-question__back:hover,
-.summa-question__back:focus-visible {
-    color: var(--accent);
 }
 
 /* ---------- Cross-reference links (injected via MarkupString, so target with ::deep) ---------- */
