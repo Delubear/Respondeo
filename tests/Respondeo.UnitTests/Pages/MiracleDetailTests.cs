@@ -13,6 +13,8 @@ public class MiracleDetailTests : TestContext
 
     public MiracleDetailTests()
     {
+        // Breadcrumb imports ./js/breadcrumb.js on first render; tolerate JS calls.
+        JSInterop.Mode = JSRuntimeMode.Loose;
         _miracles = Substitute.For<IMiracleService>();
         Services.AddSingleton(_miracles);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());

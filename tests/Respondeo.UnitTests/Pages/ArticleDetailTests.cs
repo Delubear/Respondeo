@@ -13,6 +13,8 @@ public class ArticleDetailTests : TestContext
 
     public ArticleDetailTests()
     {
+        // Breadcrumb imports ./js/breadcrumb.js on first render; tolerate JS calls.
+        JSInterop.Mode = JSRuntimeMode.Loose;
         _articles = Substitute.For<IArticleService>();
         Services.AddSingleton(_articles);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());

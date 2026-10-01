@@ -13,6 +13,8 @@ public class PrayerDetailTests : TestContext
 
     public PrayerDetailTests()
     {
+        // Breadcrumb imports ./js/breadcrumb.js on first render; tolerate JS calls.
+        JSInterop.Mode = JSRuntimeMode.Loose;
         _prayers = Substitute.For<IPrayerService>();
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());

@@ -1,6 +1,11 @@
 @* Presentational breadcrumb of the visitor's navigation trail. Pure UI: it renders the already-resolved crumbs and the current node title. Trail building stays with the caller. *@
+@inject IJSRuntime JS
+@implements IAsyncDisposable
 
-<nav class="breadcrumb" aria-label="Breadcrumb">
+<nav class="breadcrumb" aria-label="Breadcrumb" @ref="_root">
+    <button type="button" class="breadcrumb__chevron breadcrumb__chevron--prev" aria-label="Scroll breadcrumb left" tabindex="-1" @onclick="ScrollLeftAsync">
+        <span aria-hidden="true">&lsaquo;</span>
+    </button>
     <ol class="breadcrumb__list">
         @if (StageHref is not null)
         {
@@ -33,6 +38,9 @@
             <span class="breadcrumb__current" aria-current="page" title="@CurrentTitle">@(CurrentTitle ?? "…")</span>
         </li>
     </ol>
+    <button type="button" class="breadcrumb__chevron breadcrumb__chevron--next" aria-label="Scroll breadcrumb right" tabindex="-1" @onclick="ScrollRightAsync">
+        <span aria-hidden="true">&rsaquo;</span>
+    </button>
 </nav>
 
 @code {
@@ -65,4 +73,69 @@
     public sealed record Crumb(string Id, string Title, string? Stage = null, string? Href = null);
 
     private static string CrumbHref(Crumb crumb) => crumb.Href ?? ContentRoutes.NodeHref(crumb.Id, crumb.Stage);
+
+    private ElementReference _root;
+    private IJSObjectReference? _module;
+    private string? _lastTrailSignature;
+
+    // Identity of the rendered trail. We only want to re-anchor the scroll (jump back to the
+    // current crumb) when the trail itself actually changes — i.e. the visitor navigated to a
+    // new node. Re-rendering for any other reason (such as a chevron click, which is a normal
+    // component event) must NOT re-anchor, or the user's manual scroll gets snapped away.
+    private string TrailSignature => string.Join('>', Crumbs.Select(c => c.Id)) + "#" + (CurrentTitle ?? string.Empty);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Keep the trail on one scrollable line: land on the current (right-most) crumb and
+            // show the edge chevrons whenever, and whichever way, it can scroll.
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/breadcrumb.js");
+            _lastTrailSignature = TrailSignature;
+            await _module.InvokeVoidAsync("init", _root);
+        }
+        else if (_module is not null)
+        {
+            // Only re-anchor when the crumbs genuinely changed (navigated to a new node). Skip
+            // re-renders triggered by chevron clicks or other UI events so manual scrolling sticks.
+            var signature = TrailSignature;
+            if (signature != _lastTrailSignature)
+            {
+                _lastTrailSignature = signature;
+                await _module.InvokeVoidAsync("refresh", _root);
+            }
+        }
+    }
+
+    private async Task ScrollLeftAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.InvokeVoidAsync("step", _root, -1);
+        }
+    }
+
+    private async Task ScrollRightAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.InvokeVoidAsync("step", _root, 1);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            try
+            {
+                await _module.InvokeVoidAsync("dispose", _root);
+                await _module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit already gone during teardown; nothing to clean up.
+            }
+        }
+    }
 }

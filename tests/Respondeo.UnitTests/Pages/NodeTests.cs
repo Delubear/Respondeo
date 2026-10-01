@@ -40,6 +40,12 @@ public class NodeTests : TestContext
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(_trail);
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
+
+        // The Breadcrumb component imports ./js/breadcrumb.js on first render for the scroll/fade behaviour.
+        var breadcrumbModule = JSInterop.SetupModule("./js/breadcrumb.js");
+        breadcrumbModule.SetupVoid("init", _ => true);
+        breadcrumbModule.SetupVoid("refresh", _ => true);
+        breadcrumbModule.SetupVoid("dispose", _ => true);
     }
 
     [Fact]

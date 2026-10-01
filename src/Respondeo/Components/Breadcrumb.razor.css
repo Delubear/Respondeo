@@ -12,28 +12,71 @@
     border-bottom: 1px solid var(--rule);
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    row-gap: 0.25rem;
 }
 
+/* Keep the trail on a single line and let it scroll sideways instead of wrapping onto
+   several rows (which ate too much vertical space on mobile). The scrollbar is hidden;
+   on touch the row is swipeable, a mouse wheel over the row scrolls it horizontally, and
+   the edge chevrons hint/drive scrolling for anyone who misses those affordances. */
 .breadcrumb__list {
     list-style: none;
     margin: 0;
     padding: 0;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    row-gap: 0.25rem;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+}
+
+.breadcrumb__list::-webkit-scrollbar {
+    display: none;
 }
 
 .breadcrumb__item {
     display: flex;
     align-items: center;
+    flex: 0 0 auto;
 }
 
 .breadcrumb__sep {
     margin: 0 0.5rem;
     color: var(--rule);
+}
+
+/* Edge chevron buttons. They are real in-flow siblings of the scrolling list (not overlays),
+   so the crumb text can never slide behind them and both buttons are reliably clickable. Their
+   space is reserved permanently and only their visibility toggles (via .can-scroll-left /
+   .can-scroll-right on the <nav>), so showing/hiding one never resizes the list or causes jitter. */
+.breadcrumb__chevron {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    align-self: stretch;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.breadcrumb.can-scroll-left .breadcrumb__chevron--prev {
+    visibility: visible;
+}
+
+.breadcrumb.can-scroll-right .breadcrumb__chevron--next {
+    visibility: visible;
 }
 
 /* Keep individual crumbs from sprawling: cap width and ellipsize long titles. The full title remains available via the title attribute on hover. */
