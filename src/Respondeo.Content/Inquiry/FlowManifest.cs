@@ -32,6 +32,9 @@ internal sealed class FlowStageDto
     /// <summary>Display name for stage-ordering UI (e.g. "Why God?").</summary>
     public string Title { get; set; } = string.Empty;
 
+    /// <summary>Optional short kicker shown above the stage's landing title (e.g. "The First Question").</summary>
+    public string? Kicker { get; set; }
+
     /// <summary>Explicit 1-based position of this stage in the journey.</summary>
     public int Order { get; set; }
 

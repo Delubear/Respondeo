@@ -81,6 +81,9 @@ public sealed class InquiryStage
     /// <summary>Display name for the stage (e.g. "Why God?").</summary>
     public required string Title { get; init; }
 
+    /// <summary>Optional short kicker shown above the stage's landing title (e.g. "The First Question").</summary>
+    public string? Kicker { get; init; }
+
     /// <summary>Explicit 1-based position of this stage in the journey.</summary>
     public required int Order { get; init; }
 

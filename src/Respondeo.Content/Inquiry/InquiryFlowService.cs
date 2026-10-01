@@ -48,7 +48,7 @@ internal sealed class InquiryFlowService(HttpClient http) : IInquiryFlow
 
         foreach (var stage in manifest.Stages.OrderBy(s => s.Order))
         {
-            stages.Add(new InquiryStage { Id = stage.Id, Title = stage.Title, Order = stage.Order, Entry = stage.Entry });
+            stages.Add(new InquiryStage { Id = stage.Id, Title = stage.Title, Kicker = stage.Kicker, Order = stage.Order, Entry = stage.Entry });
 
             foreach (var (sourceId, edges) in stage.Edges)
             {

@@ -1,5 +1,6 @@
 @page "/{Slug}"
 @inject IContentService Content
+@inject IInquiryFlow Flow
 
 @if (_isKnownStage)
 {
@@ -18,7 +19,7 @@
     }
     else
     {
-        <NodeArticle Node="_node" />
+        <NodeArticle Node="_node" Kicker="@_kicker" />
     }
 }
 else
@@ -35,6 +36,7 @@ else
     private bool _loading = true;
     private bool _isKnownStage;
     private string _label = string.Empty;
+    private string? _kicker;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -50,6 +52,8 @@ else
         _label = item.Label;
         _loading = true;
         _node = await Content.GetByIdAsync(item.Href);
+        var stages = await Flow.GetStagesAsync();
+        _kicker = stages.FirstOrDefault(s => string.Equals(s.Id, item.Href, StringComparison.OrdinalIgnoreCase))?.Kicker;
         _loading = false;
     }
 }

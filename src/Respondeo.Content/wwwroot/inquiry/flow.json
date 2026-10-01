@@ -3,6 +3,7 @@
     {
       "id": "why-god",
       "title": "Why God?",
+      "kicker": "The Question of God",
       "order": 1,
       "entry": "why-god",
       "edges": {
@@ -34,6 +35,7 @@
     {
       "id": "which-god",
       "title": "Which God?",
+      "kicker": "The God Who Speaks",
       "order": 2,
       "entry": "which-god",
       "edges": {
@@ -72,6 +74,7 @@
     {
       "id": "why-jesus",
       "title": "Why Jesus?",
+      "kicker": "The Claim of Christ",
       "order": 3,
       "entry": "why-jesus",
       "edges": {
@@ -117,6 +120,7 @@
     {
       "id": "why-the-church",
       "title": "Why the Church?",
+      "kicker": "One Church Among Many",
       "order": 4,
       "entry": "why-the-church",
       "edges": {
@@ -152,6 +156,7 @@
     {
       "id": "coming-home",
       "title": "Coming Home",
+      "kicker": "The Decision",
       "order": 5,
       "entry": "coming-home",
       "edges": {
