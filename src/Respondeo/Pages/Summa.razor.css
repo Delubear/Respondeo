@@ -1,14 +1,6 @@
 /* ---------- Summa index & search ---------- */
-.summa {
-    width: min(60rem, 100vw - 2.5rem);
-    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
-}
 
 /* ---------- Search results ---------- */
-.summa__results-count {
-    margin-bottom: 0.75rem;
-}
-
 .summa__match-list {
     list-style: none;
     margin: 0;

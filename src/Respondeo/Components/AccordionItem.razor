@@ -1,0 +1,143 @@
+@* Presentational collapsible row shared by every "sections" surface. It owns only the shell —
+   the trigger, the label (optional eyebrow, title, optional summary), the +/- marker, and the
+   panel — while each caller keeps its own data loading, open-model, and URL behavior.
+
+   Two trigger modes:
+   - Button:  an accessible <button> with aria-expanded/aria-controls; the panel renders only when
+              Open. Used by SectionAccordion (single-open, ?section= state).
+   - Details: a native <details>/<summary> so the row is deep-linkable without JS; the panel is
+              always in the DOM and the native open attribute drives visibility. Used by the Summa
+              question (multi-open, #article-N fragments).
+
+   The open panel's ElementReference is surfaced through PanelRef so a parent can post-process the
+   injected HTML (e.g. SectionAccordion enhancing tables for mobile). PanelRef is a plain Action, not
+   an EventCallback, so reporting the element never triggers an extra render. *@
+
+@if (Mode == AccordionTriggerMode.Details)
+{
+    <details class="accordion__item" id="@Id" open="@Open">
+        <summary class="accordion__trigger"
+                 @onclick="OnToggle"
+                 @onclick:preventDefault="true">
+            @Label
+            <span class="accordion__marker" aria-hidden="true">@Marker</span>
+        </summary>
+        <div class="accordion__panel content-body" @ref="_panel">
+            @ChildContent
+        </div>
+    </details>
+}
+else
+{
+    <section class="accordion__item @(Open ? "accordion__item--open" : null)">
+        <h3 class="accordion__heading">
+            <button type="button"
+                    id="@HeaderId"
+                    class="accordion__trigger"
+                    aria-expanded="@(Open ? "true" : "false")"
+                    aria-controls="@PanelId"
+                    @onclick="OnToggle">
+                @Label
+                <span class="accordion__marker" aria-hidden="true">@Marker</span>
+            </button>
+        </h3>
+        @if (Open)
+        {
+            <div id="@PanelId"
+                 role="region"
+                 aria-labelledby="@HeaderId"
+                 class="accordion__panel content-body"
+                 @ref="_panel">
+                @ChildContent
+            </div>
+        }
+    </section>
+}
+
+@code {
+    /// <summary>Which element renders the collapsible trigger.</summary>
+    public enum AccordionTriggerMode
+    {
+        /// <summary>An accessible &lt;button&gt; whose panel renders only while open.</summary>
+        Button,
+
+        /// <summary>A native &lt;details&gt;/&lt;summary&gt; so the row is deep-linkable without JS.</summary>
+        Details
+    }
+
+    /// <summary>Trigger element to render. Defaults to the button form.</summary>
+    [Parameter] public AccordionTriggerMode Mode { get; set; } = AccordionTriggerMode.Button;
+
+    /// <summary>Whether this row is currently expanded.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    /// <summary>Small uppercased kicker shown above the title (e.g. "Article 3"). Optional.</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>The row's main heading text.</summary>
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    /// <summary>An italic one-line description shown beneath the title. Optional.</summary>
+    [Parameter] public string? Summary { get; set; }
+
+    /// <summary>The expanded body content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Invoked when the trigger is activated so the caller can update its open-model.</summary>
+    [Parameter] public EventCallback OnToggle { get; set; }
+
+    /// <summary>Id for the &lt;details&gt; element (Details mode), enabling fragment deep-links.</summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>Id for the &lt;button&gt; trigger (Button mode), referenced by the panel's aria-labelledby.</summary>
+    [Parameter] public string? HeaderId { get; set; }
+
+    /// <summary>Id for the panel (Button mode), referenced by the trigger's aria-controls.</summary>
+    [Parameter] public string? PanelId { get; set; }
+
+    /// <summary>Receives the open panel's element so a parent can post-process its injected HTML.</summary>
+    [Parameter] public Action<ElementReference>? PanelRef { get; set; }
+
+    private ElementReference _panel;
+
+    private string Marker => Open ? "\u2212" : "+";
+
+    private RenderFragment Label => builder =>
+    {
+        builder.OpenElement(0, "span");
+        builder.AddAttribute(1, "class", "accordion__label");
+
+        if (!string.IsNullOrWhiteSpace(Eyebrow))
+        {
+            builder.OpenElement(2, "span");
+            builder.AddAttribute(3, "class", "accordion__eyebrow eyebrow");
+            builder.AddContent(4, Eyebrow);
+            builder.CloseElement();
+        }
+
+        builder.OpenElement(5, "span");
+        builder.AddAttribute(6, "class", "accordion__title");
+        builder.AddContent(7, Title);
+        builder.CloseElement();
+
+        if (!string.IsNullOrWhiteSpace(Summary))
+        {
+            builder.OpenElement(8, "span");
+            builder.AddAttribute(9, "class", "accordion__summary");
+            builder.AddContent(10, Summary);
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    };
+
+    // Children's OnAfterRender runs before their parent's, so reporting the panel element here lets a
+    // parent read it during its own OnAfterRenderAsync. Only report while open (and thus rendered).
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (Open)
+        {
+            PanelRef?.Invoke(_panel);
+        }
+    }
+}

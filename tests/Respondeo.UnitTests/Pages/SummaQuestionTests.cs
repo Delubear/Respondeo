@@ -104,7 +104,7 @@ public class SummaQuestionTests : TestContext
 
         cut.WaitForAssertion(() =>
         {
-            var articles = cut.FindAll("details.summa-article").ToList();
+            var articles = cut.FindAll("details.accordion__item").ToList();
             Assert.Equal(2, articles.Count);
         });
     }
@@ -116,7 +116,7 @@ public class SummaQuestionTests : TestContext
 
         cut.WaitForAssertion(() =>
         {
-            var articles = cut.FindAll("details.summa-article").ToList();
+            var articles = cut.FindAll("details.accordion__item").ToList();
             Assert.All(articles, a => Assert.False(a.HasAttribute("open")));
         });
     }
@@ -132,7 +132,7 @@ public class SummaQuestionTests : TestContext
 
         cut.WaitForAssertion(() =>
         {
-            var articles = cut.FindAll("details.summa-article").ToList();
+            var articles = cut.FindAll("details.accordion__item").ToList();
             Assert.False(articles[0].HasAttribute("open"));
             Assert.True(articles[1].HasAttribute("open"));
         });
@@ -143,13 +143,13 @@ public class SummaQuestionTests : TestContext
     {
         var cut = RenderComponent<SummaQuestionPage>(p => p.Add(c => c.Id, "prima-q002"));
 
-        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("details.summa-article").Count));
+        cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("details.accordion__item").Count));
 
-        cut.FindAll(".summa-article__summary").ToList()[0].Click();
-        cut.WaitForAssertion(() => Assert.True(cut.FindAll("details.summa-article").ToList()[0].HasAttribute("open")));
+        cut.FindAll("summary.accordion__trigger").ToList()[0].Click();
+        cut.WaitForAssertion(() => Assert.True(cut.FindAll("details.accordion__item").ToList()[0].HasAttribute("open")));
 
-        cut.FindAll(".summa-article__summary").ToList()[0].Click();
-        cut.WaitForAssertion(() => Assert.False(cut.FindAll("details.summa-article").ToList()[0].HasAttribute("open")));
+        cut.FindAll("summary.accordion__trigger").ToList()[0].Click();
+        cut.WaitForAssertion(() => Assert.False(cut.FindAll("details.accordion__item").ToList()[0].HasAttribute("open")));
     }
 
     [Fact]

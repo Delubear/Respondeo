@@ -1,27 +1,4 @@
 /* ---------- Summa question page ---------- */
-.summa-question {
-    width: min(46rem, 100vw - 2.5rem);
-    margin-inline: auto;
-}
-
-.summa-question__header {
-    padding: 0.5rem 0 1.5rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 1.5rem;
-}
-
-.summa-question__eyebrow {
-    margin: 0 0 0.4rem;
-}
-
-.summa-question__title {
-    font-size: 2rem;
-    margin: 0;
-}
-
-.summa-question__missing {
-    color: var(--ink-soft);
-}
 
 .summa-question__prologue {
     color: var(--ink-soft);
@@ -58,97 +35,20 @@
     text-decoration: underline;
 }
 
-/* ---------- Article (collapsible panel) ---------- */
-.summa-article {
-    border-top: 1px solid var(--rule);
-    scroll-margin-top: 5rem;
-}
-
-/* Hide the native disclosure triangle; we render our own +/- marker. */
-.summa-article > summary {
-    list-style: none;
-}
-
-.summa-article > summary::-webkit-details-marker {
-    display: none;
-}
-
-.summa-article__summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 0.25rem;
-    cursor: pointer;
-    font-family: var(--display);
-    color: var(--ink);
-    transition: color 0.15s ease;
-}
-
-.summa-article__summary:hover,
-.summa-article__summary:focus-visible,
-.summa-article[open] > .summa-article__summary {
-    color: var(--accent);
-}
-
-.summa-article__label {
-    display: block;
-    min-width: 0;
-}
-
-.summa-article__title {
-    display: block;
-    font-size: 1.15rem;
-    line-height: 1.3;
-}
-
-.summa-article__number {
-    display: block;
-    margin-bottom: 0.2rem;
-}
-
-.summa-article__marker {
-    flex: 0 0 auto;
-    font-size: 1.4rem;
-    line-height: 1;
-    color: var(--ink-soft);
-}
-
-.summa-article__body {
-    padding-bottom: 1.5rem;
-}
-
-/* ---------- Cross-reference links (injected via MarkupString, so target with ::deep) ---------- */
-.summa-question__body ::deep .summa-ref,
-.summa-article__body ::deep .summa-ref,
+/* ---------- Prologue cross-reference links (injected via MarkupString in this page) ---------- */
+/* The prologue renders directly in the page, so ::deep reaches its injected links here. The article
+   panels render inside the AccordionItem child, so their .summa-ref/.summa-cue rules live globally in
+   app.css instead. */
 .summa-question__prologue ::deep .summa-ref {
     color: var(--accent);
     text-decoration: none;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
     border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
-}
-
-.summa-question__prologue ::deep .summa-ref {
     font-style: normal;
 }
 
-.summa-article__body ::deep .summa-ref:hover,
-.summa-article__body ::deep .summa-ref:focus-visible,
 .summa-question__prologue ::deep .summa-ref:hover,
 .summa-question__prologue ::deep .summa-ref:focus-visible {
     border-bottom-color: var(--accent);
-}
-
-/* ---------- Section cues (Objection / Reply / On the contrary / I answer that) ---------- */
-/* Rendered from neutral tokens at read time, so restyling never needs a corpus regen. */
-.summa-article__body ::deep .summa-cue {
-    font-weight: 700;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 640px) {
-    .summa-question__title {
-        font-size: 1.6rem;
-    }
 }

@@ -12,33 +12,16 @@
         @foreach (var section in _sections)
         {
             var isOpen = section.Id == _openId;
-            var panelId = $"panel-{section.Id}";
-            var headerId = $"header-{section.Id}";
-            <section class="accordion__item @(isOpen ? "accordion__item--open" : null)">
-                <h3 class="accordion__heading">
-                    <button type="button"
-                            id="@headerId"
-                            class="accordion__trigger"
-                            aria-expanded="@(isOpen ? "true" : "false")"
-                            aria-controls="@panelId"
-                            @onclick="() => ToggleAsync(section.Id)">
-                        <span class="accordion__label">
-                            <span class="accordion__title">@section.Title</span>
-                            @if (!string.IsNullOrWhiteSpace(section.Summary))
-                            {
-                                <span class="accordion__summary">@section.Summary</span>
-                            }
-                        </span>
-                        <span class="accordion__marker" aria-hidden="true">@(isOpen ? "\u2212" : "+")</span>
-                    </button>
-                </h3>
-                @if (isOpen)
-                {
-                    <div id="@panelId" role="region" aria-labelledby="@headerId" class="accordion__panel content-body" @ref="_openPanel">
-                        @((MarkupString)section.BodyHtml)
-                    </div>
-                }
-            </section>
+            <AccordionItem Mode="AccordionItem.AccordionTriggerMode.Button"
+                           Open="isOpen"
+                           Title="@section.Title"
+                           Summary="@section.Summary"
+                           HeaderId="@($"header-{section.Id}")"
+                           PanelId="@($"panel-{section.Id}")"
+                           OnToggle="() => ToggleAsync(section.Id)"
+                           PanelRef="el => _openPanel = el">
+                @((MarkupString)section.BodyHtml)
+            </AccordionItem>
         }
     </div>
 }

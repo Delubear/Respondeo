@@ -27,19 +27,19 @@
 }
 else if (_question is null)
 {
-    <section class="summa-question">
-        <h1 class="summa-question__title">Question not found</h1>
-        <p class="summa-question__missing">
+    <section class="content-article">
+        <h1 class="pillar__title">Question not found</h1>
+        <p class="empty-state">
             That question is not part of the Summa. <a href="summa">Return to the Summa</a>.
         </p>
     </section>
 }
 else
 {
-    <article class="summa-question">
-        <header class="summa-question__header">
-            <p class="summa-question__eyebrow eyebrow">@PartTitle@(string.IsNullOrWhiteSpace(_treatise) ? null : $" · {_treatise}") @(_question.IsPrologue ? $"· {_question.Title}" : $"· Question {_question.Number}")</p>
-            <h1 class="summa-question__title">@_question.Title</h1>
+    <article class="content-article">
+        <header class="pillar__header">
+            <p class="eyebrow">@PartTitle@(string.IsNullOrWhiteSpace(_treatise) ? null : $" · {_treatise}") @(_question.IsPrologue ? $"· {_question.Title}" : $"· Question {_question.Number}")</p>
+            <h1 class="pillar__title">@_question.Title</h1>
         </header>
 
         <SummaGuide />
@@ -68,50 +68,44 @@ else
             </ol>
         </nav>
 
+        <div class="accordion">
         @foreach (var article in _question.Articles)
         {
-            <details class="summa-article"
-                     id="@($"article-{article.Number}")"
-                     open="@_openArticles.Contains(article.Number)">
-                <summary class="summa-article__summary"
-                         @onclick="() => ToggleArticle(article.Number)"
-                         @onclick:preventDefault="true">
-                    <span class="summa-article__label">
-                        <span class="summa-article__number eyebrow">Article @article.Number</span>
-                        <span class="summa-article__title">@article.Title</span>
-                    </span>
-                    <span class="summa-article__marker" aria-hidden="true">@(_openArticles.Contains(article.Number) ? "\u2212" : "+")</span>
-                </summary>
-                <div class="summa-article__body content-body">
-                    @if (!string.IsNullOrEmpty(article.PreambleHtml))
-                    {
-                        @((MarkupString)References.Expand(article.PreambleHtml, article.Number))
-                    }
-                    @foreach (var objection in article.Objections)
-                    {
-                        @((MarkupString)References.Expand(objection.Html, article.Number))
-                    }
-                    @if (!string.IsNullOrEmpty(article.SedContraHtml))
-                    {
-                        @((MarkupString)References.Expand(article.SedContraHtml, article.Number))
-                    }
-                    @if (!string.IsNullOrEmpty(article.RespondeoHtml))
-                    {
-                        @((MarkupString)References.Expand(article.RespondeoHtml, article.Number))
-                    }
-                    @foreach (var reply in article.Replies)
-                    {
-                        @((MarkupString)References.Expand(reply.Html, article.Number))
-                    }
-                </div>
-            </details>
+            <AccordionItem Mode="AccordionItem.AccordionTriggerMode.Details"
+                           Open="_openArticles.Contains(article.Number)"
+                           Id="@($"article-{article.Number}")"
+                           Eyebrow="@($"Article {article.Number}")"
+                           Title="@article.Title"
+                           OnToggle="() => ToggleArticle(article.Number)">
+                @if (!string.IsNullOrEmpty(article.PreambleHtml))
+                {
+                    @((MarkupString)References.Expand(article.PreambleHtml, article.Number))
+                }
+                @foreach (var objection in article.Objections)
+                {
+                    @((MarkupString)References.Expand(objection.Html, article.Number))
+                }
+                @if (!string.IsNullOrEmpty(article.SedContraHtml))
+                {
+                    @((MarkupString)References.Expand(article.SedContraHtml, article.Number))
+                }
+                @if (!string.IsNullOrEmpty(article.RespondeoHtml))
+                {
+                    @((MarkupString)References.Expand(article.RespondeoHtml, article.Number))
+                }
+                @foreach (var reply in article.Replies)
+                {
+                    @((MarkupString)References.Expand(reply.Html, article.Number))
+                }
+            </AccordionItem>
         }
+        </div>
         }
 
         <BackLink Href="summa" Label="All questions" />
-    </article>
 
-    <SummaAttribution />
+        <SummaAttribution />
+    </article>
 }
 
 @code {

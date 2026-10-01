@@ -15,12 +15,10 @@
 
 @if (_activePart is not null)
 {
-    <Breadcrumb CurrentTitle="@_activePart.Title"
-                StageHref="summa"
-                StageLabel="Summa Theologiae" />
+    <Breadcrumb CurrentTitle="@_activePart.Title" StageHref="summa" StageLabel="Summa Theologiae" />
 }
 
-<section class="summa">
+<section class="pillar">
     <header class="pillar__header">
         <p class="pillar__eyebrow">St. Thomas Aquinas</p>
         @if (_activePart is null)
@@ -55,49 +53,47 @@
 
         @if (IsSearching)
         {
-            <div class="summa__results">
-                @if (_matches.Count == 0)
-                {
-                    <p class="empty-state">No questions or articles match &ldquo;@_query&rdquo;.</p>
-                }
-                else
-                {
-                    <p class="results-count summa__results-count">
-                        @if (_truncated)
-                        {
-                            @($"Showing first {_matches.Count} results — refine your search to narrow them down")
-                        }
-                        else
-                        {
-                            @($"{_matches.Count} result(s)")
-                        }
-                    </p>
-                    <ul class="summa__match-list">
-                        @foreach (var match in _matches)
-                        {
-                            <li class="summa__match">
-                                <a class="summa__match-link" href="@MatchHref(match)">
-                                    <span class="summa__match-ref eyebrow">
-                                        @match.PartTitle@if (!string.IsNullOrWhiteSpace(match.Treatise))
-                                        {
-                                            @: &middot; @match.Treatise
-                                        } &middot; Q@(match.QuestionNumber)
-                                    </span>
-                                    <span class="summa__match-title">@match.Title</span>
-                                    @if (match.ArticleNumber is int articleNumber)
+            @if (_matches.Count == 0)
+            {
+                <p class="empty-state">No questions or articles match &ldquo;@_query&rdquo;.</p>
+            }
+            else
+            {
+                <p class="results-count">
+                    @if (_truncated)
+                    {
+                        @($"Showing first {_matches.Count} results — refine your search to narrow them down")
+                    }
+                    else
+                    {
+                        @($"{_matches.Count} result(s)")
+                    }
+                </p>
+                <ul class="summa__match-list">
+                    @foreach (var match in _matches)
+                    {
+                        <li class="summa__match">
+                            <a class="summa__match-link" href="@MatchHref(match)">
+                                <span class="summa__match-ref eyebrow">
+                                    @match.PartTitle@if (!string.IsNullOrWhiteSpace(match.Treatise))
                                     {
-                                        <span class="summa__match-kind">Article @articleNumber</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="summa__match-kind">Question</span>
-                                    }
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                }
-            </div>
+                                        @: &middot; @match.Treatise
+                                    } &middot; Q@(match.QuestionNumber)
+                                </span>
+                                <span class="summa__match-title">@match.Title</span>
+                                @if (match.ArticleNumber is int articleNumber)
+                                {
+                                    <span class="summa__match-kind">Article @articleNumber</span>
+                                }
+                                else
+                                {
+                                    <span class="summa__match-kind">Question</span>
+                                }
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
         }
         else
         {

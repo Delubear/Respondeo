@@ -14,7 +14,7 @@ public sealed class SummaQuestionSteps(PlaywrightContext context)
     {
         await Page.GotoAsync($"{context.BaseUrl}/summa/{id}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
         // The articles render only after the question content loads over HTTP.
-        await Page.WaitForSelectorAsync("details.summa-article");
+        await Page.WaitForSelectorAsync("details.accordion__item");
     }
 
     [Given("I open question \"(.*)\" at article (\\d+)")]
@@ -23,7 +23,7 @@ public sealed class SummaQuestionSteps(PlaywrightContext context)
         await Page.GotoAsync(
             $"{context.BaseUrl}/summa/{id}#article-{articleNumber}",
             new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
-        await Page.WaitForSelectorAsync("details.summa-article");
+        await Page.WaitForSelectorAsync("details.accordion__item");
     }
 
     [When("I open article (\\d+) from the table of contents")]
@@ -36,7 +36,7 @@ public sealed class SummaQuestionSteps(PlaywrightContext context)
     [When("I toggle article (\\d+)")]
     public async Task WhenIToggleArticle(int articleNumber)
     {
-        await ArticlePanel(articleNumber).Locator("summary.summa-article__summary").ClickAsync();
+        await ArticlePanel(articleNumber).Locator("summary.accordion__trigger").ClickAsync();
     }
 
     [Then("article (\\d+) should be expanded")]
@@ -63,7 +63,7 @@ public sealed class SummaQuestionSteps(PlaywrightContext context)
         await Page.WaitForFunctionAsync($"() => location.href.endsWith({AsJsString(suffix)})");
     }
 
-    private ILocator ArticlePanel(int articleNumber) => Page.Locator($"details.summa-article#article-{articleNumber}");
+    private ILocator ArticlePanel(int articleNumber) => Page.Locator($"details.accordion__item#article-{articleNumber}");
 
     private static string AsJsString(string value) => "\"" + value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
 }
