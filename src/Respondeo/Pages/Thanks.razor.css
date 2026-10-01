@@ -1,35 +1,4 @@
 /* ---------- Thanks & Sources ---------- */
-.thanks {
-    width: min(46rem, 100vw - 2.5rem);
-    margin-inline: auto;
-}
-
-.thanks__body {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-}
-
-.thanks__section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.thanks__heading {
-    font-family: var(--display);
-    font-size: 1.4rem;
-    color: var(--ink);
-    margin: 0;
-    padding-bottom: 0.4rem;
-    border-bottom: 1px solid var(--rule);
-}
-
-.thanks__section p {
-    margin: 0;
-    line-height: 1.6;
-    color: var(--ink);
-}
 
 .thanks__list {
     list-style: none;
