@@ -799,3 +799,165 @@ input[type="search"]::-webkit-search-cancel-button {
     gap: 0.75rem;
     margin: 1.5rem 0;
 }
+
+/* ---------- Content body images & tables ---------- */
+/* Images and tables are generic tags emitted into content body HTML by the content pipeline, so
+   the same markup appears inside every content renderer (Inquiry nodes, accordion sections,
+   discover articles, miracle pages, etc.). These rules are scoped to the shared body containers so
+   they style content HTML consistently without leaking onto chrome elsewhere on the page. */
+.node__body img:not(.video-facade__thumb),
+.discover-article__body img:not(.video-facade__thumb),
+.miracle__body img:not(.video-facade__thumb),
+.summa-article__body img:not(.video-facade__thumb) {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border: 1px solid var(--rule);
+}
+
+.node__body table,
+.discover-article__body table,
+.miracle__body table,
+.summa-article__body table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    display: block;
+    overflow-x: auto;
+}
+
+.node__body th,
+.node__body td,
+.discover-article__body th,
+.discover-article__body td,
+.miracle__body th,
+.miracle__body td,
+.summa-article__body th,
+.summa-article__body td {
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Zebra striping keeps rows legible when the cell background would otherwise sit too close to the
+   page background. */
+.node__body tbody tr:nth-child(even),
+.discover-article__body tbody tr:nth-child(even),
+.miracle__body tbody tr:nth-child(even),
+.summa-article__body tbody tr:nth-child(even) {
+    background: var(--code-bg);
+}
+
+.node__body thead th,
+.discover-article__body thead th,
+.miracle__body thead th,
+.summa-article__body thead th {
+    background: var(--parchment);
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+}
+
+.node__body tbody th,
+.discover-article__body tbody th,
+.miracle__body tbody th,
+.summa-article__body tbody th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* On narrow screens a side-by-side grid becomes unreadable, so each row reflows into a card: the
+   first column becomes the card title (set off by an accent rule), and the remaining cells stack as
+   label/value pairs (labels come from data-label, emitted by DataLabelTableRenderer). */
+@media (max-width: 36rem) {
+    .node__body table,
+    .discover-article__body table,
+    .miracle__body table,
+    .summa-article__body table {
+        display: block;
+        overflow-x: visible;
+        border: 0;
+        font-size: 1rem;
+    }
+
+    .node__body thead,
+    .discover-article__body thead,
+    .miracle__body thead,
+    .summa-article__body thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .node__body tbody tr,
+    .discover-article__body tbody tr,
+    .miracle__body tbody tr,
+    .summa-article__body tbody tr {
+        display: block;
+        margin: 0 0 1.5rem;
+        padding: 0 0 0 0.9rem;
+        background: transparent;
+        border: 0;
+        border-left: 2px solid var(--rule);
+    }
+
+    /* First cell of each row (whether rendered as th or td) becomes the group heading. */
+    .node__body tbody tr > *:first-child,
+    .discover-article__body tbody tr > *:first-child,
+    .miracle__body tbody tr > *:first-child,
+    .summa-article__body tbody tr > *:first-child {
+        display: block;
+        width: auto;
+        margin: 0 0 0.4rem;
+        padding: 0;
+        background: transparent;
+        color: var(--accent);
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 1.1rem;
+        white-space: normal;
+        border: 0;
+    }
+
+    /* The first cell titles the group, so suppress its data-label prefix. */
+    .node__body tbody tr > *:first-child[data-label]::before,
+    .discover-article__body tbody tr > *:first-child[data-label]::before,
+    .miracle__body tbody tr > *:first-child[data-label]::before,
+    .summa-article__body tbody tr > *:first-child[data-label]::before {
+        content: none;
+    }
+
+    /* Each remaining cell pivots into a label -> value row. */
+    .node__body tbody td,
+    .discover-article__body tbody td,
+    .miracle__body tbody td,
+    .summa-article__body tbody td {
+        display: grid;
+        grid-template-columns: minmax(6rem, 40%) 1fr;
+        column-gap: 0.75rem;
+        align-items: baseline;
+        width: auto;
+        border: 0;
+        white-space: normal;
+        padding: 0.25rem 0;
+    }
+
+    .node__body tbody td[data-label]::before,
+    .discover-article__body tbody td[data-label]::before,
+    .miracle__body tbody td[data-label]::before,
+    .summa-article__body tbody td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.02em;
+        color: var(--ink-soft);
+    }
+}

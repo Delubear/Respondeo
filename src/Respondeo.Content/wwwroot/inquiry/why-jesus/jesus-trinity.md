@@ -53,7 +53,7 @@ Much of the confusion comes from running two different questions together — qu
 
 Lay three things side by side and the counts come apart:
 
-| | *What* is it? (nature) | *Who* is it? (persons) |
+| Example | *What* is it? (nature) | *Who* is it? (persons) |
 |---|---|---|
 | A tree | one tree-nature | **0** — a *what* with no *who*; a tree is a something, never a someone |
 | A human | one human nature | **1** — the ordinary case we know so well |

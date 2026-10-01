@@ -72,14 +72,6 @@
     padding-left: 1.4rem;
 }
 
-.node__body ::deep img:not(.video-facade__thumb) {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 1.5rem auto;
-    border: 1px solid var(--rule);
-}
-
 
 /* ---------- Branches section ---------- */
 .branches {

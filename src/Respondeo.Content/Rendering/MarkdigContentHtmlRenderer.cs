@@ -13,6 +13,7 @@ internal sealed class MarkdigContentHtmlRenderer : IContentHtmlRenderer
     private readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .Use<ContentContainerExtension>()
+        .Use<DataLabelTableExtension>()
         .Build();
 
     // Same pipeline as above, but soft line breaks (single newlines) render as <br /> so
@@ -20,6 +21,7 @@ internal sealed class MarkdigContentHtmlRenderer : IContentHtmlRenderer
     private readonly MarkdownPipeline _lineBreakPipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .Use<ContentContainerExtension>()
+        .Use<DataLabelTableExtension>()
         .UseSoftlineBreakAsHardlineBreak()
         .Build();
 
