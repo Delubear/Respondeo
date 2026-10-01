@@ -8,17 +8,7 @@
 @implements IAsyncDisposable
 
 <article class="node" @key="Node.Id">
-    <header class="pillar__header">
-        @if (!string.IsNullOrWhiteSpace(Kicker))
-        {
-            <p class="pillar__eyebrow">@Kicker</p>
-        }
-        <h1 class="pillar__title">@Node.Title</h1>
-        @if (!string.IsNullOrWhiteSpace(Node.Summary))
-        {
-            <p class="pillar__lede">@Node.Summary</p>
-        }
-    </header>
+    <PillarHeader Eyebrow="@Kicker" Title="@Node.Title" LedeText="@Node.Summary" />
 
     <div class="content-body" @ref="_body">
         @((MarkupString)Node.BodyHtml)

@@ -10,14 +10,12 @@
          Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
 
 <section class="pillar browse" data-discover-browse="prayers">
-    <header class="pillar__header">
-        <p class="pillar__eyebrow">Words for God</p>
-        <h1 class="pillar__title">Prayers</h1>
-        <p class="pillar__lede">
+    <PillarHeader Eyebrow="Words for God" Title="Prayers">
+        <Lede>
             The Church's own words, learned by heart and prayed across the centuries. Search by name,
             or browse below.
-        </p>
-    </header>
+        </Lede>
+    </PillarHeader>
 
     @if (_prayers is null)
     {

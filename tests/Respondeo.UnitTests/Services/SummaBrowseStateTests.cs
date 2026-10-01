@@ -38,19 +38,6 @@ public class SummaBrowseStateTests
     }
 
     [Fact]
-    public void Query_is_preserved_on_a_part_scoped_route()
-    {
-        var nav = new TestNavigationManager(Root + "summa");
-        var js = new RecordingJs();
-        using var state = new SummaBrowseState(nav, js) { Query = "law" };
-
-        nav.NavigateTo("summa/part/prima");
-
-        Assert.Equal("law", state.Query);
-        Assert.DoesNotContain("respondeoSummaBrowse.clear", js.Calls);
-    }
-
-    [Fact]
     public void Leaving_the_summa_area_resets_query_and_clears_the_js_store()
     {
         var nav = new TestNavigationManager(Root + "summa");

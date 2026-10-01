@@ -35,13 +35,7 @@ else if (_beads is null)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
     <section class="content-article">
-        <header class="pillar__header">
-            <h1 class="pillar__title">@_devotion.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(_devotion.Summary))
-            {
-                <p class="pillar__lede">@_devotion.Summary</p>
-            }
-        </header>
+        <PillarHeader Title="@_devotion.Title" LedeText="@_devotion.Summary" />
 
         @if (_savedProgress is { CompletedCount: > 0 })
         {

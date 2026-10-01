@@ -29,14 +29,7 @@ else if (_miracle is null)
 else
 {
     <article class="content-article">
-        <header class="pillar__header">
-            <p class="pillar__eyebrow">@string.Join(" · ", _miracle.Types.Select(_facets.Category))</p>
-            <h1 class="pillar__title">@_miracle.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(_miracle.Summary))
-            {
-                <p class="pillar__lede">@_miracle.Summary</p>
-            }
-        </header>
+        <PillarHeader Eyebrow="@string.Join(" · ", _miracle.Types.Select(_facets.Category))" Title="@_miracle.Title" LedeText="@_miracle.Summary" />
 
         <dl class="miracle__facts">
             <div class="miracle__fact">

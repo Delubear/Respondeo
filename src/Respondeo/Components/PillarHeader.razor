@@ -1,0 +1,41 @@
+@* Shared page/section header for every pillar: an optional accent-coloured eyebrow (kicker),
+   the display title, and an optional lede. One source of truth so spacing, type, and markup
+   (pillar__header / pillar__eyebrow / pillar__title / pillar__lede) stay identical everywhere.
+
+   Two lede shapes are supported: pass LedeText for a plain string (e.g. a content summary), or
+   Lede for rich markup (e.g. copy containing &mdash; or inline elements). ChildContent renders
+   extra header items (e.g. a Latin subtitle) between the title and the lede. *@
+
+<header class="pillar__header">
+    @if (!string.IsNullOrWhiteSpace(Eyebrow))
+    {
+        <p class="pillar__eyebrow">@Eyebrow</p>
+    }
+    <h1 class="pillar__title">@Title</h1>
+    @ChildContent
+    @if (Lede is not null)
+    {
+        <p class="pillar__lede">@Lede</p>
+    }
+    else if (!string.IsNullOrWhiteSpace(LedeText))
+    {
+        <p class="pillar__lede">@LedeText</p>
+    }
+</header>
+
+@code {
+    /// <summary>Optional accent-coloured kicker shown above the title.</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>The display title rendered as the page/section h1.</summary>
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    /// <summary>Optional plain-text lede shown beneath the title. Ignored when <see cref="Lede"/> is set.</summary>
+    [Parameter] public string? LedeText { get; set; }
+
+    /// <summary>Optional rich-markup lede shown beneath the title; takes precedence over <see cref="LedeText"/>.</summary>
+    [Parameter] public RenderFragment? Lede { get; set; }
+
+    /// <summary>Optional extra header content rendered between the title and the lede.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

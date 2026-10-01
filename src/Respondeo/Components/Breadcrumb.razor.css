@@ -93,3 +93,10 @@
 .breadcrumb__current {
     color: var(--ink);
 }
+
+/* A non-linked ancestor crumb (e.g. a Summa part, which has no landing page): rendered as plain text. */
+.breadcrumb__link--plain {
+    color: var(--ink);
+    cursor: default;
+    text-decoration: none;
+}

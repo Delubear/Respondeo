@@ -259,6 +259,18 @@ h1, h2, h3 {
     padding: 1rem 0 0;
 }
 
+/* When the article follows a breadcrumb, that breadcrumb already supplies the top gutter (its
+   margin-bottom), so the article's own top padding would double the space. Drop it in that case. */
+.breadcrumb + .content-article {
+    padding-top: 0;
+}
+
+/* Centered variant used for "not found" / empty article surfaces, so the title lines up with the
+   already-centered .empty-state message below it. */
+.content-article--empty {
+    text-align: center;
+}
+
 .content-section {
     margin-bottom: 1.5rem;
 }
@@ -683,8 +695,9 @@ details.accordion__item[open] > .accordion__trigger {
 .pillar__lede {
     color: var(--ink-soft);
     font-size: 1.1rem;
+    font-style: italic;
     max-width: 42rem;
-    margin-inline: auto;
+    margin: 0 auto 0.75rem;
 }
 
 /* ---------------------------------------------------------------------------

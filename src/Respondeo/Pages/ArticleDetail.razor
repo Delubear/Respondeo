@@ -30,13 +30,7 @@ else if (_article is null)
 else
 {
     <article class="content-article">
-        <header class="pillar__header">
-            <h1 class="pillar__title">@_article.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(_article.Summary))
-            {
-                <p class="pillar__lede">@_article.Summary</p>
-            }
-        </header>
+        <PillarHeader Title="@_article.Title" LedeText="@_article.Summary" />
 
         <div class="content-body">
             @((MarkupString)_article.BodyHtml)

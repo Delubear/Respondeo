@@ -27,7 +27,7 @@
 }
 else if (_question is null)
 {
-    <section class="content-article">
+    <section class="content-article content-article--empty">
         <h1 class="pillar__title">Question not found</h1>
         <p class="empty-state">
             That question is not part of the Summa. <a href="summa">Return to the Summa</a>.
@@ -37,10 +37,8 @@ else if (_question is null)
 else
 {
     <article class="content-article">
-        <header class="pillar__header">
-            <p class="eyebrow">@PartTitle@(string.IsNullOrWhiteSpace(_treatise) ? null : $" · {_treatise}") @(_question.IsPrologue ? $"· {_question.Title}" : $"· Question {_question.Number}")</p>
-            <h1 class="pillar__title">@_question.Title</h1>
-        </header>
+        <PillarHeader Eyebrow="@($"{PartTitle}{(string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}")} {(_question.IsPrologue ? $"\u00B7 {_question.Title}" : $"\u00B7 Question {_question.Number}")}")"
+                      Title="@_question.Title" />
 
         <SummaGuide />
 
@@ -256,8 +254,8 @@ else
         _loading = false;
     }
 
-    // Builds the Part ancestor crumb from the question's part id, linking to that part's landing page.
-    // Falls back to no crumb when the question or its part is unknown.
+    // Builds the Part ancestor crumb from the question's part id as plain, non-linked text (there is
+    // no dedicated part landing page). Falls back to no crumb when the question or its part is unknown.
     private IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaQuestionContent? question)
     {
         if (question is null)
@@ -271,7 +269,7 @@ else
             return Array.Empty<Breadcrumb.Crumb>();
         }
 
-        return [new Breadcrumb.Crumb(part.Key, part.Title, Href: ContentRoutes.SummaPartHref(part.Slug))];
+        return [new Breadcrumb.Crumb(part.Key, part.Title, Plain: true)];
     }
 
     // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked. If

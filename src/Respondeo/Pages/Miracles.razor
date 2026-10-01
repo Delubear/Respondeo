@@ -9,15 +9,13 @@
          Description="A growing catalog of reported and recognized Catholic miracles — Eucharistic miracles, Marian apparitions, and healings — with the Church's judgment on each." />
 
 <section class="pillar browse">
-    <header class="pillar__header">
-        <p class="pillar__eyebrow">Signs and wonders</p>
-        <h1 class="pillar__title">Catholic Miracles</h1>
-        <p class="pillar__lede">
+    <PillarHeader Eyebrow="Signs and wonders" Title="Catholic Miracles">
+        <Lede>
             A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian
             apparitions, healings, and more. Filter by kind, by the Church&rsquo;s judgment, or by place,
             and search by name. Each entry explains what is claimed and how the Church regards it.
-        </p>
-    </header>
+        </Lede>
+    </PillarHeader>
 
     @if (_all is null)
     {

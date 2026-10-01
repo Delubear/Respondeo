@@ -1,41 +1,22 @@
 @page "/summa"
-@page "/summa/part/{PartSlug}"
 @inject ISummaService SummaService
 @inject ISummaPartCatalog Parts
 @inject IBreadcrumbTrail Trail
 @inject SummaBrowseState Browse
 @inject IJSRuntime JS
 
-<PageTitle>@(_activePart is null ? "Summa Theologiae — Respondeo" : $"{_activePart.Title} — Summa Theologiae")</PageTitle>
+<PageTitle>Summa Theologiae — Respondeo</PageTitle>
 
-<SeoHead Title="@(_activePart?.Title ?? "Summa Theologiae")"
-         Description="@(_activePart is null
-             ? "Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance."
-             : $"Browse {_activePart.Title} of St. Thomas Aquinas's Summa Theologiae, question by question, with cross-references and guidance.")" />
-
-@if (_activePart is not null)
-{
-    <Breadcrumb CurrentTitle="@_activePart.Title" StageHref="summa" StageLabel="Summa Theologiae" />
-}
+<SeoHead Title="Summa Theologiae"
+         Description="Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance." />
 
 <section class="pillar">
-    <header class="pillar__header">
-        <p class="pillar__eyebrow">St. Thomas Aquinas</p>
-        @if (_activePart is null)
-        {
-            <h1 class="pillar__title">Summa Theologiae</h1>
-            <p class="pillar__lede">
-                The complete <i>Summa Theologiae</i>, St. Thomas Aquinas&rsquo; masterwork of Catholic theology.
-                Browse by part and question, or search the questions and articles by title.
-            </p>
-        }
-        else
-        {
-            <h1 class="pillar__title">@_activePart.Title</h1>
-            <p class="summa__part-latin">@_activePart.LatinName</p>
-            <p class="pillar__lede">@_activePart.Description</p>
-        }
-    </header>
+    <PillarHeader Eyebrow="St. Thomas Aquinas" Title="Summa Theologiae">
+        <Lede>
+            The complete <i>Summa Theologiae</i>, St. Thomas Aquinas&rsquo; masterwork of Catholic theology.
+            Browse by part and question, or search the questions and articles by title.
+        </Lede>
+    </PillarHeader>
 
     <SummaGuide />
 
@@ -175,10 +156,7 @@
 </section>
 
 @code {
-    [Parameter] public string? PartSlug { get; set; }
-
     private SummaIndex? _index;
-    private SummaPart? _activePart;
     private List<SearchMatch> _matches = new();
 
     // The search text lives in the scoped browse state so it survives leaving the page and pressing
@@ -221,14 +199,7 @@
             _openOnMount.Add(id);
         }
 
-        // A part-scoped view (/summa/part/...) should show that part expanded by default; seed it in
-        // both the JS store and this mount's snapshot so it renders open immediately.
-        if (_activePart is not null && _openOnMount.Add(_activePart.Key))
-        {
-            await JS.InvokeVoidAsync("respondeoSummaBrowse.setOpen", _activePart.Key, true);
-        }
-
-        // Restore any remembered search (e.g. after drilling into a question and pressing Back) so
+        // Restore any remembered search
         // the visitor returns to the results they left rather than a reset page.
         if (_query.Trim().Length > 0)
         {
@@ -236,15 +207,7 @@
         }
     }
 
-    // Resolves the optional part slug (e.g. "prima") to its part descriptor so the page can render a
-    // single-part view; a null or unknown slug falls back to the full browse list. The part-scoped
-    // view is seeded open in OnInitializedAsync (once the JS snapshot is available).
-    protected override void OnParametersSet()
-    {
-        _activePart = string.IsNullOrEmpty(PartSlug) ? null : Parts.ByUrlSlug(PartSlug);
-    }
-
-    // After the browse markup first renders, ask JS to restore the remembered scroll position. The
+    // After the browse markup first renders
     // helper polls across animation frames until the async content is tall enough to honour the
     // target, so it works despite the index loading (and the accordion expanding) after remount.
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -255,22 +218,8 @@
         }
     }
 
-    // The parts shown in the browse list: just the active part when the page is scoped to one,
-    // otherwise every part in reading order.
-    private IEnumerable<SummaPartEntry> BrowseParts()
-    {
-        if (_index is null)
-        {
-            return Array.Empty<SummaPartEntry>();
-        }
-
-        if (_activePart is null)
-        {
-            return _index.Parts;
-        }
-
-        return _index.Parts.Where(part => string.Equals(part.Id, _activePart.Key, StringComparison.OrdinalIgnoreCase));
-    }
+    // The parts shown in the browse list: every part in reading order.
+    private IEnumerable<SummaPartEntry> BrowseParts() => _index?.Parts ?? Array.Empty<SummaPartEntry>();
 
     private void OnSearchChanged(string value)
     {
