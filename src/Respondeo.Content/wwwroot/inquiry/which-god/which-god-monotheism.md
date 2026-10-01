@@ -5,10 +5,6 @@ summary: From one necessary, unlimited being to monotheism — ruling out polyth
 tags:
   - existence of god
   - divine revelation
-branches:
-  - to: which-god-personal
-    label: "Is the first cause personal?"
-    prompt: If there is one ultimate source, the next question is whether it has mind and will, or is a blind principle.
 ---
 
 > On the unity of God, see [*Summa Theologiae* I, Q. 11, A. 3](summa/prima-q011#article-3): "Whether God is one?"

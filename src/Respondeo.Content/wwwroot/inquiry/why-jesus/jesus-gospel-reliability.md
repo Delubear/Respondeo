@@ -6,10 +6,6 @@ tags:
   - jesus christ
   - divine revelation
   - scripture & tradition
-branches:
-  - to: jesus-divine-claims
-    label: "Did Jesus claim to be God?"
-    prompt: If the Gospels are reliable historical sources, the first question they raise is who Jesus claimed to be.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

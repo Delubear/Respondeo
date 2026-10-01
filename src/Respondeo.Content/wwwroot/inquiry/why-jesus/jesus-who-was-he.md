@@ -5,10 +5,6 @@ summary: The historical man of Nazareth, and the startling claim Christianity ma
 tags:
   - jesus christ
   - divine revelation
-branches:
-  - to: jesus-gospel-reliability
-    label: "Can we trust the Gospels?"
-    prompt: The claim rests on history, so the first question is whether the Gospels are sources we can reason from.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

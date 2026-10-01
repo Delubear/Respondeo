@@ -5,10 +5,6 @@ summary: Whether Christ established a visible Church with a teaching office.
 tags:
   - the catholic church
   - divine revelation
-branches:
-  - to: church-recognizing-it
-    label: "Which Church is it?"
-    prompt: If Christ founded a Church meant to endure, the next question is how to recognize it among the many that claim His name.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

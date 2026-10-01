@@ -5,13 +5,6 @@ summary: For the baptized Catholic who drifted away — why and how to come back
 tags:
   - the catholic church
   - conversion
-branches:
-  - to: home-obstacles
-    label: "What holds people back"
-    prompt: If something specific is keeping you away, it is worth naming it and meeting it honestly.
-  - to: home-how-to-begin
-    label: "How to begin again"
-    prompt: When you are ready, the way back is simpler and gentler than you may fear.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

@@ -13,7 +13,7 @@ namespace Respondeo.UnitTests.Content;
 /// <summary>
 /// Guards against broken internal links: every reference from one content node to another must point at a node that actually exists.
 /// This covers all three ways a node can link internally:
-///   1. front-matter <c>branches[].to</c> (next-step cards),
+///   1. flow.json <c>edges[].to</c> (next-step cards) and stage transitions,
 ///   2. front-matter <c>sections[]</c> (child accordion panels),
 ///   3. in-body Markdown links of the form <c>[label](node/&lt;id&gt;)</c>.
 /// It also validates hand-written links from node content into the Summa corpus (<c>summa/&lt;url-id&gt;[#article-N]</c>),
@@ -64,22 +64,60 @@ public partial class ContentLinkIntegrityTests
         return manifest?.Files ?? [];
     }
 
+    private static FlowManifest ReadFlow(string contentDir)
+    {
+        var flowPath = Path.Combine(contentDir, "flow.json");
+        var json = File.ReadAllText(flowPath);
+        var flow = JsonSerializer.Deserialize<FlowManifest>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return flow ?? new FlowManifest();
+    }
+
     /// <summary>
     /// Returns a labeled description of every internal link that does not resolve to a node in the set.
-    /// Checks branches, sections, and in-body node hrefs. An empty result means all links are valid.
+    /// Checks flow.json branch edges and transitions, front-matter sections, and in-body node hrefs.
+    /// An empty result means all links are valid.
     /// </summary>
-    private static IReadOnlyList<string> FindBrokenLinks(IReadOnlyCollection<InquiryNodeDocument> nodes)
+    private static IReadOnlyList<string> FindBrokenLinks(IReadOnlyCollection<InquiryNodeDocument> nodes, FlowManifest flow)
     {
         var knownIds = nodes.Select(n => n.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var brokenLinks = new List<string>();
 
-        foreach (var node in nodes)
+        foreach (var stage in flow.Stages)
         {
-            foreach (var branch in node.Branches.Where(b => !knownIds.Contains(b.To)))
+            if (!knownIds.Contains(stage.Entry))
             {
-                brokenLinks.Add($"{node.Id}: branch -> '{branch.To}'");
+                brokenLinks.Add($"{stage.Id}: entry -> '{stage.Entry}'");
             }
 
+            foreach (var (source, edges) in stage.Edges)
+            {
+                if (!knownIds.Contains(source))
+                {
+                    brokenLinks.Add($"{stage.Id}: edge source -> '{source}'");
+                }
+
+                foreach (var edge in edges.Where(e => !knownIds.Contains(e.To)))
+                {
+                    brokenLinks.Add($"{source}: branch -> '{edge.To}'");
+                }
+            }
+
+            if (stage.Transition is { } transition)
+            {
+                if (!knownIds.Contains(transition.From))
+                {
+                    brokenLinks.Add($"{stage.Id}: transition from -> '{transition.From}'");
+                }
+
+                if (!string.IsNullOrEmpty(transition.To) && !knownIds.Contains(transition.To))
+                {
+                    brokenLinks.Add($"{stage.Id}: transition to -> '{transition.To}'");
+                }
+            }
+        }
+
+        foreach (var node in nodes)
+        {
             foreach (var section in node.Sections.Where(s => !knownIds.Contains(s)))
             {
                 brokenLinks.Add($"{node.Id}: section -> '{section}'");
@@ -111,7 +149,8 @@ public partial class ContentLinkIntegrityTests
             .Select(node => node!)
             .ToList();
 
-        var brokenLinks = FindBrokenLinks(nodes);
+        var flow = ReadFlow(contentDir);
+        var brokenLinks = FindBrokenLinks(nodes, flow);
 
         Assert.True(brokenLinks.Count == 0, $"Broken internal links found:{Environment.NewLine}{string.Join(Environment.NewLine, brokenLinks)}");
     }
@@ -235,10 +274,12 @@ public partial class ContentLinkIntegrityTests
     {
         var nodes = new[]
         {
-            Parse("---\nid: home\ntitle: Home\nbranches:\n  - to: does-not-exist\n---\nBody"),
+            Parse("---\nid: home\ntitle: Home\n---\nBody"),
         };
 
-        var broken = FindBrokenLinks(nodes);
+        var flow = FlowWithEdge("home", "home", "does-not-exist");
+
+        var broken = FindBrokenLinks(nodes, flow);
 
         Assert.Contains("home: branch -> 'does-not-exist'", broken);
     }
@@ -251,7 +292,7 @@ public partial class ContentLinkIntegrityTests
             Parse("---\nid: home\ntitle: Home\nsections:\n  - missing-section\n---\nBody"),
         };
 
-        var broken = FindBrokenLinks(nodes);
+        var broken = FindBrokenLinks(nodes, new FlowManifest());
 
         Assert.Contains("home: section -> 'missing-section'", broken);
     }
@@ -264,7 +305,7 @@ public partial class ContentLinkIntegrityTests
             Parse("---\nid: home\ntitle: Home\n---\nSee [this](node/ghost) page."),
         };
 
-        var broken = FindBrokenLinks(nodes);
+        var broken = FindBrokenLinks(nodes, new FlowManifest());
 
         Assert.Contains("home: body link -> 'node/ghost'", broken);
     }
@@ -274,14 +315,32 @@ public partial class ContentLinkIntegrityTests
     {
         var nodes = new[]
         {
-            Parse("---\nid: home\ntitle: Home\nbranches:\n  - to: target\nsections:\n  - target\n---\nSee [target](node/target)."),
+            Parse("---\nid: home\ntitle: Home\nsections:\n  - target\n---\nSee [target](node/target)."),
             Parse("---\nid: target\ntitle: Target\n---\nBody"),
         };
 
-        var broken = FindBrokenLinks(nodes);
+        var flow = FlowWithEdge("home", "home", "target");
+
+        var broken = FindBrokenLinks(nodes, flow);
 
         Assert.Empty(broken);
     }
+
+    private static FlowManifest FlowWithEdge(string stageId, string source, string to) => new()
+    {
+        Stages =
+        [
+            new FlowStageDto
+            {
+                Id = stageId,
+                Entry = source,
+                Edges = new Dictionary<string, List<FlowEdgeDto>>
+                {
+                    [source] = [new FlowEdgeDto { To = to }],
+                },
+            },
+        ],
+    };
 
     private static InquiryNodeDocument Parse(string raw) => new InquiryParser(ContentRendering.Renderer).Parse(raw)!;
 

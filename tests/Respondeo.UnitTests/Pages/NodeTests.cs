@@ -17,8 +17,8 @@ public class NodeTests : TestContext
 {
     private const string Manifest = "{\"files\":[\"root.md\",\"child.md\"]}";
 
-    // root branches to child.
-    private const string RootMd = "---\nid: root\ntitle: Root Question\nsummary: The root\nbranches:\n  - to: child\n    label: Go deeper\n    prompt: Explore this path\n---\nRoot body";
+    // root branches to child (branch edges now live in flow, not front-matter).
+    private const string RootMd = "---\nid: root\ntitle: Root Question\nsummary: The root\n---\nRoot body";
     private const string ChildMd = "---\nid: child\ntitle: Child Node\n---\nChild body";
 
     private IBreadcrumbTrail _trail = default!;
@@ -37,7 +37,17 @@ public class NodeTests : TestContext
         // Default: the trail contains just the current node (no ancestors).
         _trail.VisitAsync(Arg.Any<string>()).Returns(call => Task.FromResult<IReadOnlyList<string>>(new[] { (string)call[0] }));
 
+        // Branch edges are sourced from IInquiryFlow (flow.json): root -> child.
+        var flow = Substitute.For<IInquiryFlow>();
+        flow.GetBranchesAsync(Arg.Any<string>()).Returns((IReadOnlyList<BranchLink>)[]);
+        flow.GetBranchesAsync("root").Returns((IReadOnlyList<BranchLink>)
+        [
+            new BranchLink { To = "child", Label = "Go deeper", Prompt = "Explore this path" },
+        ]);
+        flow.GetTransitionForNodeAsync(Arg.Any<string>(), Arg.Any<string?>()).Returns((StageLink?)null);
+
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
+        Services.AddSingleton(flow);
         Services.AddSingleton(_trail);
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
 

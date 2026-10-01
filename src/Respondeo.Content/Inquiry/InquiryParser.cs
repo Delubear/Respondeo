@@ -29,11 +29,7 @@ internal sealed class InquiryParser(IContentHtmlRenderer html)
         Summary = meta.Summary,
         BodyHtml = html.ToHtml(body),
         Tags = meta.Tags,
-        Branches = [.. meta.Branches.Select(b => new BranchLinkDocument { To = b.To, Label = b.Label, Prompt = b.Prompt })],
         Sections = meta.Sections,
-        NextStage = meta.NextStage is null
-            ? null
-            : new StageLinkDocument { Href = meta.NextStage.Href, Label = meta.NextStage.Label, Prompt = meta.NextStage.Prompt, Icon = meta.NextStage.Icon },
         Stage = stage,
     };
 }

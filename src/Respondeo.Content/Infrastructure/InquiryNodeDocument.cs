@@ -21,9 +21,6 @@ internal sealed class InquiryNodeDocument
     /// <summary>Free-text tags this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
-    public IReadOnlyList<BranchLinkDocument> Branches { get; init; } = [];
-
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
 
@@ -33,47 +30,4 @@ internal sealed class InquiryNodeDocument
     /// Used to nest node routes under the stage so the URL reflects the section and the masthead tab lights up.
     /// </summary>
     public string? Stage { get; init; }
-
-    /// <summary>
-    /// Optional culminating transition to the next stage of the journey (e.g. from the end of "Why God?" onward to "Why Jesus?").
-    /// Unlike a branch, this points at a stage landing route rather than another node, and is presented as a distinct, prominent call to action.
-    /// </summary>
-    public StageLinkDocument? NextStage { get; init; }
-}
-
-/// <summary>
-/// A prominent link that carries the visitor from the end of one stage to the beginning of the next (internal domain model).
-/// It targets a page route (e.g. "/why-jesus") rather than a node id.
-/// </summary>
-internal sealed class StageLinkDocument
-{
-    /// <summary>The route of the next stage's landing page (e.g. "/why-jesus").</summary>
-    public required string Href { get; init; }
-
-    /// <summary>Headline shown on the transition button.</summary>
-    public required string Label { get; init; }
-
-    /// <summary>Optional short reason/prompt shown beneath the label.</summary>
-    public string? Prompt { get; init; }
-
-    /// <summary>
-    /// Optional name of the emblem shown in the golden box (e.g. "cross", "compass").
-    /// Falls back to the cross when unset.
-    /// </summary>
-    public string? Icon { get; init; }
-}
-
-/// <summary>
-/// A directed link from one node to another (internal domain model), optionally labelled so the prompt can be phrased for the visitor.
-/// </summary>
-internal sealed class BranchLinkDocument
-{
-    /// <summary>The id of the target <see cref="InquiryNodeDocument"/>.</summary>
-    public required string To { get; init; }
-
-    /// <summary>Optional override label; falls back to the target's title.</summary>
-    public string? Label { get; init; }
-
-    /// <summary>Optional short reason/prompt shown beneath the label.</summary>
-    public string? Prompt { get; init; }
 }

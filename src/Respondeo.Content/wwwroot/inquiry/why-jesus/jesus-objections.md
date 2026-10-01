@@ -9,10 +9,6 @@ sections:
   - jesus-objection-legend
   - jesus-objection-resurrection-alternatives
   - jesus-objection-gospel-contradictions
-branches:
-  - to: jesus-founded-church
-    label: "Did Jesus found a Church?"
-    prompt: If the claim withstands its hardest objections, the next question is whether the risen Christ founded a visible Church.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

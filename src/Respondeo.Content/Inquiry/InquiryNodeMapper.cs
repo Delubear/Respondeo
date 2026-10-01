@@ -17,11 +17,7 @@ internal static class InquiryNodeMapper
         Summary = document.Summary,
         BodyHtml = document.BodyHtml,
         Tags = document.Tags,
-        Branches = [.. document.Branches.Select(b => new BranchLink { To = b.To, Label = b.Label, Prompt = b.Prompt })],
         Sections = document.Sections,
         Stage = document.Stage,
-        NextStage = document.NextStage is null
-            ? null
-            : new StageLink { Href = document.NextStage.Href, Label = document.NextStage.Label, Prompt = document.NextStage.Prompt, Icon = document.NextStage.Icon },
     };
 }

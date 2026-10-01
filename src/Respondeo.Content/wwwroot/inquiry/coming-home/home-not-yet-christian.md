@@ -5,16 +5,6 @@ summary: For the seeker who finds the case compelling but has not yet believed o
 tags:
   - the catholic church
   - conversion
-branches:
-  - to: home-why-practice
-    label: "Why believe and practice?"
-    prompt: Belief is not the finish line — it asks to be lived. Here is why that step is worth taking.
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: The concrete first step for someone entering the Church from outside.
-  - to: home-what-church-offers
-    label: "What the Church offers"
-    prompt: Before deciding, it is worth seeing what is actually being held out to you.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

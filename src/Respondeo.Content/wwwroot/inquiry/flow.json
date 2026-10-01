@@ -1,0 +1,199 @@
+{
+  "stages": [
+    {
+      "id": "why-god",
+      "title": "Why God?",
+      "order": 1,
+      "entry": "why-god",
+      "edges": {
+        "aquinas-five-ways": [
+          { "to": "can-we-know-truth", "label": "Can we even know the truth?", "prompt": "Can the mind reach truth at all, before we test any argument?" },
+          { "to": "objections-to-god", "label": "Objections to God", "prompt": "What are the strongest objections to the existence of God, and how do we respond?" },
+          { "to": "what-is-god-like", "label": "What is God like?", "prompt": "If the arguments succeed, what must this first being actually be?" }
+        ],
+        "can-we-know-truth": [
+          { "to": "aquinas-five-ways", "label": "Can reason show that God exists?", "prompt": "Before revelation, we can ask what unaided reason discovers." }
+        ],
+        "objections-to-god": [
+          { "to": "what-is-god-like", "label": "What is God like?", "prompt": "If the arguments succeed, what must this first being actually be?" }
+        ],
+        "why-god": [
+          { "to": "can-we-know-truth", "label": "Can we even know the truth?", "prompt": "Before any argument for God, we ask whether truth exists and whether the mind can reach it." },
+          { "to": "aquinas-five-ways", "label": "Can reason show that God exists?", "prompt": "Before revelation, we can ask what unaided reason discovers." }
+        ]
+      },
+      "transition": {
+        "from": "what-is-god-like",
+        "to": "which-god",
+        "href": "which-god",
+        "label": "Which God?",
+        "prompt": "Reason has brought us to the God of classical theism. The next road asks which God this is — whether He is personal, and whether He has spoken.",
+        "icon": "compass"
+      }
+    },
+    {
+      "id": "which-god",
+      "title": "Which God?",
+      "order": 2,
+      "entry": "which-god",
+      "edges": {
+        "which-god-can-reveal": [
+          { "to": "which-god-other-faiths", "label": "What about other faiths?", "prompt": "Before naming the one who speaks, how does this God relate to Islam, deism, and Eastern conceptions?" },
+          { "to": "which-god-objections", "label": "What are the objections to this God?", "prompt": "A personal, self-revealing God of Israel draws hard objections — meet the strongest ones before going further." },
+          { "to": "which-god-of-israel", "label": "Why the God of Israel?", "prompt": "Of all the claimants to revelation, why the covenant God of Abraham?" }
+        ],
+        "which-god-monotheism": [
+          { "to": "which-god-personal", "label": "Is the first cause personal?", "prompt": "If there is one ultimate source, the next question is whether it has mind and will, or is a blind principle." }
+        ],
+        "which-god-objections": [
+          { "to": "which-god-other-faiths", "label": "What about other faiths?", "prompt": "How does the God reason reaches relate to Islam, deism, and the Eastern conceptions?" },
+          { "to": "which-god-of-israel", "label": "Why the God of Israel?", "prompt": "With the hardest objections in view, the path still narrows to one covenant God — why the God of Abraham?" }
+        ],
+        "which-god-other-faiths": [
+          { "to": "which-god-objections", "label": "But what about the objections?", "prompt": "Comparing traditions raises sharp challenges — isn\u0027t choosing one arrogant, and is this God even good?" },
+          { "to": "which-god-of-israel", "label": "Why the God of Israel?", "prompt": "Having weighed the claimants, why the covenant God of Abraham in particular?" }
+        ],
+        "which-god-personal": [
+          { "to": "which-god-can-reveal", "label": "Could God speak to us?", "prompt": "If this God is personal, could He reveal Himself — and how would we recognize it?" }
+        ],
+        "which-god": [
+          { "to": "which-god-monotheism", "label": "Why one God, not many?", "prompt": "Reason\u0027s own arguments reach a single unlimited being — begin by seeing why the ultimate source must be one." }
+        ]
+      },
+      "transition": {
+        "from": "which-god-of-israel",
+        "to": "why-jesus",
+        "href": "why-jesus",
+        "label": "Why Jesus?",
+        "prompt": "If the God of Israel is the one who speaks, the next question is whether He entered history — whether He became man in Jesus of Nazareth.",
+        "icon": "cross"
+      }
+    },
+    {
+      "id": "why-jesus",
+      "title": "Why Jesus?",
+      "order": 3,
+      "entry": "why-jesus",
+      "edges": {
+        "jesus-divine-claims": [
+          { "to": "jesus-trinity", "label": "But doesn\u0027t that break monotheism?", "prompt": "If Jesus is God alongside the Father, how is that not two gods, after reason proved God is one?" },
+          { "to": "jesus-ot-prophecy", "label": "Did Jesus fulfill prophecy?", "prompt": "Before the Resurrection, do the Hebrew Scriptures\u0027 messianic expectations converge on Jesus?" },
+          { "to": "jesus-resurrection", "label": "The Resurrection", "prompt": "If Jesus claimed a divine authority, the next question is whether He vindicated it by rising from the dead." }
+        ],
+        "jesus-gospel-reliability": [
+          { "to": "jesus-divine-claims", "label": "Did Jesus claim to be God?", "prompt": "If the Gospels are reliable historical sources, the first question they raise is who Jesus claimed to be." }
+        ],
+        "jesus-objections": [
+          { "to": "jesus-founded-church", "label": "Did Jesus found a Church?", "prompt": "If the claim withstands its hardest objections, the next question is whether the risen Christ founded a visible Church." }
+        ],
+        "jesus-ot-prophecy": [
+          { "to": "jesus-trinity", "label": "If Jesus is God, are there two gods?", "prompt": "How can Jesus be divine without breaking the one God reason reached?" },
+          { "to": "jesus-resurrection", "label": "The Resurrection", "prompt": "Prophecy points to who the Messiah would be; the Resurrection asks whether Jesus vindicated the claim." }
+        ],
+        "jesus-resurrection": [
+          { "to": "jesus-objections", "label": "Objections to Jesus", "prompt": "Sit with the hardest objections: the legend theory, natural explanations of the Resurrection, and the Gospels themselves." },
+          { "to": "jesus-founded-church", "label": "Did Jesus found a Church?", "prompt": "If the Resurrection vindicates His authority, the next question is whether He established a visible Church to carry it on." }
+        ],
+        "jesus-trinity": [
+          { "to": "jesus-ot-prophecy", "label": "Did Jesus fulfill prophecy?", "prompt": "With the monotheism worry answered — do the Hebrew Scriptures\u0027 messianic expectations converge on Jesus?" },
+          { "to": "jesus-resurrection", "label": "The Resurrection", "prompt": "Or go straight to the decisive question — did Jesus vindicate the claim by rising from the dead?" }
+        ],
+        "jesus-who-was-he": [
+          { "to": "jesus-gospel-reliability", "label": "Can we trust the Gospels?", "prompt": "The claim rests on history, so the first question is whether the Gospels are sources we can reason from." }
+        ],
+        "why-jesus": [
+          { "to": "jesus-who-was-he", "label": "Who was Jesus?", "prompt": "Before weighing the evidence, be clear about the man of history and the claim Christianity makes about him." }
+        ]
+      },
+      "transition": {
+        "from": "jesus-founded-church",
+        "to": "why-the-church",
+        "href": "why-the-church",
+        "label": "Why the Church?",
+        "prompt": "If the risen Christ founded a visible Church and gave it authority to teach, the next question is where that Church is to be found today.",
+        "icon": "church"
+      }
+    },
+    {
+      "id": "why-the-church",
+      "title": "Why the Church?",
+      "order": 4,
+      "entry": "why-the-church",
+      "edges": {
+        "church-authority": [
+          { "to": "church-objections", "label": "Objections to the Church", "prompt": "Before drawing things together, it is fair to test the claim against its hardest objections." },
+          { "to": "where-the-path-has-led", "label": "Where the path has led", "prompt": "With the Catholic claim set out in full, the path draws together toward a decision." }
+        ],
+        "church-founded-by-christ": [
+          { "to": "church-recognizing-it", "label": "Which Church is it?", "prompt": "If Christ founded a Church meant to endure, the next question is how to recognize it among the many that claim His name." }
+        ],
+        "church-four-marks": [
+          { "to": "church-authority", "label": "Scripture, Tradition, and authority", "prompt": "If this is the Church Christ founded, the next question is how His revelation is preserved and who has authority to interpret it." }
+        ],
+        "church-objections": [
+          { "to": "where-the-path-has-led", "label": "Where the path has led", "prompt": "With the objections met, the path draws together toward a decision." }
+        ],
+        "church-recognizing-it": [
+          { "to": "church-four-marks", "label": "The four marks", "prompt": "Historical continuity shows where to look; the creed\u0027s four marks show what to look for." }
+        ],
+        "why-the-church": [
+          { "to": "church-founded-by-christ", "label": "Did Christ found a Church?", "prompt": "Did Christ establish a visible Church and give it a teaching office?" }
+        ]
+      },
+      "transition": {
+        "from": "where-the-path-has-led",
+        "to": "coming-home",
+        "href": "coming-home",
+        "label": "Coming Home",
+        "prompt": "If the path has led here, the question is no longer whether the Church is true but what to do about it — how to come home.",
+        "icon": "home"
+      }
+    },
+    {
+      "id": "coming-home",
+      "title": "Coming Home",
+      "order": 5,
+      "entry": "coming-home",
+      "edges": {
+        "coming-home": [
+          { "to": "home-not-yet-christian", "label": "I\u0027m not yet Christian", "prompt": "The case is persuasive, but you have not yet believed or been baptized." },
+          { "to": "home-not-yet-catholic", "label": "I\u0027m Christian but not Catholic", "prompt": "You love Christ in another tradition and have come to see the Catholic claim." },
+          { "to": "home-returning-catholic", "label": "I was Catholic and drifted away", "prompt": "You were baptized Catholic and have been away — and you are being waited for." }
+        ],
+        "home-not-yet-catholic": [
+          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "What full communion actually adds — above all, the Eucharist and the sacraments." },
+          { "to": "home-obstacles", "label": "What holds people back", "prompt": "The particular hesitations that come with leaving a tradition you have loved." },
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The concrete path into full communion for the already-baptized." }
+        ],
+        "home-not-yet-christian": [
+          { "to": "home-why-practice", "label": "Why believe and practice?", "prompt": "Belief is not the finish line — it asks to be lived. Here is why that step is worth taking." },
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The concrete first step for someone entering the Church from outside." },
+          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "Before deciding, it is worth seeing what is actually being held out to you." }
+        ],
+        "home-obstacles": [
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "When the obstacle loses its grip, here is the first concrete step." },
+          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "The obstacles are only half the picture — weigh them against what is actually held out to you." }
+        ],
+        "home-returning-catholic": [
+          { "to": "home-obstacles", "label": "What holds people back", "prompt": "If something specific is keeping you away, it is worth naming it and meeting it honestly." },
+          { "to": "home-how-to-begin", "label": "How to begin again", "prompt": "When you are ready, the way back is simpler and gentler than you may fear." }
+        ],
+        "home-what-church-offers": [
+          { "to": "home-obstacles", "label": "What holds people back", "prompt": "If this is what is offered, what keeps people from it — and how each hesitation is met." },
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The practical first step toward receiving what is described here." }
+        ],
+        "home-why-practice": [
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "If belief is meant to be lived, here is where the living starts." }
+        ]
+      },
+      "transition": {
+        "from": "home-how-to-begin",
+        "to": "",
+        "href": "discover",
+        "label": "Begin Living the Faith",
+        "prompt": "You have come home. Now the faith becomes something you live — prayed, practised, and deepened day by day. Step into Discover Catholicism.",
+        "icon": "flame"
+      }
+    }
+  ]
+}

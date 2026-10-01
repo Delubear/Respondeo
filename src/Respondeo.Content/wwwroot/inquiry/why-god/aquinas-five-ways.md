@@ -13,16 +13,6 @@ sections:
   - five-ways-contingency
   - five-ways-gradation
   - five-ways-governance
-branches:
-  - to: can-we-know-truth
-    label: "Can we even know the truth?"
-    prompt: Can the mind reach truth at all, before we test any argument?
-  - to: objections-to-god
-    label: "Objections to God"
-    prompt: What are the strongest objections to the existence of God, and how do we respond?
-  - to: what-is-god-like
-    label: "What is God like?"
-    prompt: If the arguments succeed, what must this first being actually be?
 ---
 
 St. Thomas offered *Five Ways* to demonstrate God's existence.
@@ -30,6 +20,7 @@ They do not rest on faith or Scripture; each starts from a plain feature of the 
 
 ::: youtube 42Eg6UUBqqo
 :::
+
 
 Start with one simple idea that every way depends on — the difference between **act and potency** (what a thing actually is now, versus what it has the potential to become) — then walk the ways themselves. Each has the same shape:
 

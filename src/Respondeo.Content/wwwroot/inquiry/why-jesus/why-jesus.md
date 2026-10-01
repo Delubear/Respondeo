@@ -5,10 +5,6 @@ summary: From the God of Abraham to the God who speaks in history — has He sho
 tags:
   - jesus christ
   - divine revelation
-branches:
-  - to: jesus-who-was-he
-    label: "Who was Jesus?"
-    prompt: Before weighing the evidence, be clear about the man of history and the claim Christianity makes about him.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

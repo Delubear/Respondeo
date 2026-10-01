@@ -11,10 +11,6 @@ sections:
   - objection-who-made-god
   - objection-science-explains
   - objection-burden-of-proof
-branches:
-  - to: what-is-god-like
-    label: "What is God like?"
-    prompt: If the arguments succeed, what must this first being actually be?
 ---
 
 Good arguments deserve to be tested against the hardest objections, not the weakest.

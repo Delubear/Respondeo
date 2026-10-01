@@ -5,16 +5,6 @@ summary: For the baptized Christian who has come to see the Catholic Church's cl
 tags:
   - the catholic church
   - conversion
-branches:
-  - to: home-what-church-offers
-    label: "What the Church offers"
-    prompt: What full communion actually adds — above all, the Eucharist and the sacraments.
-  - to: home-obstacles
-    label: "What holds people back"
-    prompt: The particular hesitations that come with leaving a tradition you have loved.
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: The concrete path into full communion for the already-baptized.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

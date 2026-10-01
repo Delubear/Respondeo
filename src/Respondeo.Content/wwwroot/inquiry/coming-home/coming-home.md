@@ -5,16 +5,6 @@ summary: For those who know the Church is true, but have kept their distance —
 tags:
   - getting started
   - conversion
-branches:
-  - to: home-not-yet-christian
-    label: "I'm not yet Christian"
-    prompt: The case is persuasive, but you have not yet believed or been baptized.
-  - to: home-not-yet-catholic
-    label: "I'm Christian but not Catholic"
-    prompt: You love Christ in another tradition and have come to see the Catholic claim.
-  - to: home-returning-catholic
-    label: "I was Catholic and drifted away"
-    prompt: You were baptized Catholic and have been away — and you are being waited for.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

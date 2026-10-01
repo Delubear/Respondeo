@@ -5,13 +5,6 @@ summary: What the Church actually holds out — grace, the sacraments, communion
 tags:
   - the catholic church
   - the christian life
-branches:
-  - to: home-obstacles
-    label: "What holds people back"
-    prompt: If this is what is offered, what keeps people from it — and how each hesitation is met.
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: The practical first step toward receiving what is described here.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

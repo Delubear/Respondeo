@@ -4,10 +4,6 @@ title: "The Four Marks"
 summary: One, holy, catholic, and apostolic — and where these marks are found today.
 tags:
   - the catholic church
-branches:
-  - to: church-authority
-    label: "Scripture, Tradition, and authority"
-    prompt: If this is the Church Christ founded, the next question is how His revelation is preserved and who has authority to interpret it.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

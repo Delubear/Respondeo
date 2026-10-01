@@ -26,17 +26,11 @@ public sealed class InquiryNode
     /// <summary>Free-text tags this node belongs to, used to group and filter articles.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    /// <summary>Directed links to other nodes, forming a graph rather than a tree.</summary>
-    public IReadOnlyList<BranchLink> Branches { get; init; } = [];
-
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
 
     /// <summary>The stage this node belongs to (e.g. "why-god"), derived from its content sub-folder. Null for root nodes.</summary>
     public string? Stage { get; init; }
-
-    /// <summary>Optional culminating transition to the next stage of the journey.</summary>
-    public StageLink? NextStage { get; init; }
 }
 
 /// <summary>
@@ -71,4 +65,25 @@ public sealed class BranchLink
 
     /// <summary>Optional short reason/prompt shown beneath the label.</summary>
     public string? Prompt { get; init; }
+}
+
+/// <summary>
+/// A stage of the Inquiry journey as declared by the orchestration file (flow.json): its identity,
+/// ordered position, and the node it opens on. Exposed so callers can present the journey's stages
+/// in order without reaching into content files. Branch edges and the stage transition are resolved
+/// separately through <see cref="Respondeo.Content.IInquiryFlow"/>.
+/// </summary>
+public sealed class InquiryStage
+{
+    /// <summary>Stage key, matching the content sub-folder its nodes live in (e.g. "why-god").</summary>
+    public required string Id { get; init; }
+
+    /// <summary>Display name for the stage (e.g. "Why God?").</summary>
+    public required string Title { get; init; }
+
+    /// <summary>Explicit 1-based position of this stage in the journey.</summary>
+    public required int Order { get; init; }
+
+    /// <summary>Id of the node this stage opens on.</summary>
+    public required string Entry { get; init; }
 }

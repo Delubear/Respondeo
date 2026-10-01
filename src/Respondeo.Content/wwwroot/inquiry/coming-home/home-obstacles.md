@@ -5,13 +5,6 @@ summary: The common obstacles to returning or entering — shame, wounds, habit,
 tags:
   - the catholic church
   - conversion
-branches:
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: When the obstacle loses its grip, here is the first concrete step.
-  - to: home-what-church-offers
-    label: "What the Church offers"
-    prompt: The obstacles are only half the picture — weigh them against what is actually held out to you.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

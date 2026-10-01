@@ -42,6 +42,7 @@ public static class ServiceCollectionExtensions
         // Inquiry pillar
         services.AddSingleton<InquiryParser>();
         services.AddScoped<IContentService, InquiryService>();
+        services.AddScoped<IInquiryFlow, InquiryFlowService>();
 
         return services;
     }

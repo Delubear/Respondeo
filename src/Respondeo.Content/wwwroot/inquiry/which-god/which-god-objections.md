@@ -9,13 +9,6 @@ sections:
   - which-god-objection-ot-violence
   - which-god-objection-scripture-reliable
   - which-god-objection-projection
-branches:
-  - to: which-god-other-faiths
-    label: "What about other faiths?"
-    prompt: How does the God reason reaches relate to Islam, deism, and the Eastern conceptions?
-  - to: which-god-of-israel
-    label: "Why the God of Israel?"
-    prompt: With the hardest objections in view, the path still narrows to one covenant God — why the God of Abraham?
 ---
 
 The arguments of this stage move past a bare first cause to something far bolder — a God who is *one*, who is *personal*, and who has *spoken* in the history of a particular people. 

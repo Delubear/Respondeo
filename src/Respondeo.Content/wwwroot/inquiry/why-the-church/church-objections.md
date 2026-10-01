@@ -13,10 +13,6 @@ sections:
   - church-objection-orthodoxy
   - church-objection-mary
   - church-objection-saints
-branches:
-  - to: where-the-path-has-led
-    label: "Where the path has led"
-    prompt: With the objections met, the path draws together toward a decision.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

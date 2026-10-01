@@ -5,13 +5,6 @@ summary: Whether the Hebrew Scriptures' messianic expectation converges on Jesus
 tags:
   - jesus christ
   - divine revelation
-branches:
-  - to: jesus-trinity
-    label: "If Jesus is God, are there two gods?"
-    prompt: How can Jesus be divine without breaking the one God reason reached?
-  - to: jesus-resurrection
-    label: "The Resurrection"
-    prompt: Prophecy points to who the Messiah would be; the Resurrection asks whether Jesus vindicated the claim.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

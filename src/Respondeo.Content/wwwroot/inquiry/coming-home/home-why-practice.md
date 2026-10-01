@@ -5,10 +5,6 @@ summary: Why the faith must be lived, not merely admired — and why to take it 
 tags:
   - the catholic church
   - the christian life
-branches:
-  - to: home-how-to-begin
-    label: "How to begin"
-    prompt: If belief is meant to be lived, here is where the living starts.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

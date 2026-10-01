@@ -4,11 +4,6 @@ title: "Where the Path Has Led"
 summary: Drawing the whole case together — from Christ's Church to the threshold of coming home.
 tags:
   - the catholic church
-nextStage:
-  href: coming-home
-  label: "Coming Home"
-  icon: home
-  prompt: If the path has led here, the question is no longer whether the Church is true but what to do about it — how to come home.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

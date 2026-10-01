@@ -5,10 +5,6 @@ summary: For Christians who follow Christ, but not yet His Church — why the Ca
 tags:
   - getting started
   - the catholic church
-branches:
-  - to: church-founded-by-christ
-    label: "Did Christ found a Church?"
-    prompt: Did Christ establish a visible Church and give it a teaching office?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

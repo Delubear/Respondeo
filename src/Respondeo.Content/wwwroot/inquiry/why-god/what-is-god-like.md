@@ -5,11 +5,6 @@ summary: From the arguments to the God of classical theism — the divine attrib
 tags:
   - existence of god
   - st. thomas aquinas
-nextStage:
-  href: which-god
-  label: "Which God?"
-  icon: compass
-  prompt: Reason has brought us to the God of classical theism. The next road asks which God this is — whether He is personal, and whether He has spoken.
 ---
 
 The Five Ways each conclude to a first term — an Unmoved Mover, a First Cause, a Necessary Being, a source of all perfection, an ordering Intellect.
@@ -59,6 +54,7 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 
 ::: youtube 3j79qY0RqRw
 :::
+
 
 **The God of the philosophers — and beyond.**
 Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.

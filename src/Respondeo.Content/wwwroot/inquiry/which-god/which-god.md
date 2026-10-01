@@ -5,10 +5,6 @@ summary: Reason reaches *a* God — one, simple, all-powerful. But is He persona
 tags:
   - getting started
   - divine revelation
-branches:
-  - to: which-god-monotheism
-    label: "Why one God, not many?"
-    prompt: Reason's own arguments reach a single unlimited being — begin by seeing why the ultimate source must be one.
 ---
 
 The arguments for God's existence bring us a long way — to a being that is one, eternal, all-knowing, and all-powerful. 

@@ -43,5 +43,6 @@ Aquinas's own reply turns the objection on its head: evil does not disprove God,
 ::: youtube Oo4hF3IYGp4
 :::
 
+
 ::: youtube TrghmTBYROI
 :::

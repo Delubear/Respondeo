@@ -4,10 +4,6 @@ title: "Can We Even Know the Truth?"
 summary: Before any argument for God can land, we have to answer whether truth exists and whether the mind can reach it.
 tags:
   - existence of god
-branches:
-  - to: aquinas-five-ways
-    label: "Can reason show that God exists?"
-    prompt: Before revelation, we can ask what unaided reason discovers.
 ---
 
 Every argument on this site assumes something easy to overlook: that there *is* a truth about how things are, and that your mind can reach it.

@@ -33,6 +33,12 @@ public class StageTests : TestContext
 
         var http = new HttpClient(new StubHandler(responses)) { BaseAddress = new Uri("https://localhost/") };
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
+
+        var flow = Substitute.For<IInquiryFlow>();
+        flow.GetBranchesAsync(Arg.Any<string>()).Returns((IReadOnlyList<BranchLink>)[]);
+        flow.GetTransitionForNodeAsync(Arg.Any<string>(), Arg.Any<string?>()).Returns((StageLink?)null);
+        Services.AddSingleton(flow);
+
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
     }
 

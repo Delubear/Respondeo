@@ -188,6 +188,14 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Summa citations (links into the summa/ corpus) read as a single reference unit: keep the whole
+   citation on one line and use tabular figures so the numerals align. Applied globally so every
+   content pillar — inquiry, articles, miracles, prayers, devotions — renders them identically. */
+a[href^="summa/"] {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
 /* Visually hidden but available to screen readers (labels and live-region announcements). */
 .sr-only {
     position: absolute;

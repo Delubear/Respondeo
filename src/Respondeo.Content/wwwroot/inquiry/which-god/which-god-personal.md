@@ -5,10 +5,6 @@ summary: Whether the God reason reaches has mind and will, or is a blind princip
 tags:
   - existence of god
   - divine revelation
-branches:
-  - to: which-god-can-reveal
-    label: "Could God speak to us?"
-    prompt: If this God is personal, could He reveal Himself — and how would we recognize it?
 ---
 
 > "Since therefore God is in the highest degree of immateriality... it follows that He is in the highest degree of knowledge." 

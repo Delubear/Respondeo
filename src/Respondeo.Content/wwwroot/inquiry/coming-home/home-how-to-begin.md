@@ -6,11 +6,6 @@ tags:
   - getting started
   - the catholic church
   - conversion
-nextStage:
-  href: discover
-  label: "Begin Living the Faith"
-  icon: flame
-  prompt: You have come home. Now the faith becomes something you live — prayed, practised, and deepened day by day. Step into Discover Catholicism.
 sections:
   - begin-returning-catholic
   - begin-entering-outside

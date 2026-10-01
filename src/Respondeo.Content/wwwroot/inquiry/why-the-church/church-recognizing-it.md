@@ -4,10 +4,6 @@ title: "Which Church Is It?"
 summary: How to recognize Christ's Church among the many that claim His name.
 tags:
   - the catholic church
-branches:
-  - to: church-four-marks
-    label: "The four marks"
-    prompt: Historical continuity shows where to look; the creed's four marks show what to look for.
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

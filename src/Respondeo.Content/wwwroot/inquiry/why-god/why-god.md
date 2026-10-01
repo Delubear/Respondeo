@@ -5,13 +5,6 @@ summary: Start here if you hold that there is no God, that the material world is
 tags:
   - getting started
   - existence of god
-branches:
-  - to: can-we-know-truth
-    label: "Can we even know the truth?"
-    prompt: Before any argument for God, we ask whether truth exists and whether the mind can reach it.
-  - to: aquinas-five-ways
-    label: "Can reason show that God exists?"
-    prompt: Before revelation, we can ask what unaided reason discovers.
 ---
 
 Welcome.

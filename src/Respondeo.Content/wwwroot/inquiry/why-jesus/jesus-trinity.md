@@ -5,13 +5,6 @@ summary: How the divinity of Jesus can be true without breaking the one God reas
 tags:
   - jesus christ
   - divine revelation
-branches:
-  - to: jesus-ot-prophecy
-    label: "Did Jesus fulfill prophecy?"
-    prompt: With the monotheism worry answered — do the Hebrew Scriptures' messianic expectations converge on Jesus?
-  - to: jesus-resurrection
-    label: "The Resurrection"
-    prompt: Or go straight to the decisive question — did Jesus vindicate the claim by rising from the dead?
 ---
 
 <b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>

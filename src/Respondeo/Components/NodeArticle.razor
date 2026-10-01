@@ -2,6 +2,7 @@
    sections accordion, and branch cards. Shared by the Node page and the stage
    landing pages so they present identical styling. *@
 @inject IContentService Content
+@inject IInquiryFlow Flow
 @inject IVisitedNodes Visited
 
 <article class="node" @key="Node.Id">
@@ -40,15 +41,15 @@
         </section>
     }
 
-    @if (Node.NextStage is not null)
+    @if (_nextStage is not null)
     {
         <section class="next-stage">
             <p class="next-stage__eyebrow"><span>The Next Stage</span></p>
             <div class="next-stage__plate">
-                <StageCard Href="@Node.NextStage.Href"
-                           Icon="@Node.NextStage.Icon"
-                           Label="@Node.NextStage.Label"
-                           Prompt="@Node.NextStage.Prompt" />
+                <StageCard Href="@_nextStage.Href"
+                           Icon="@_nextStage.Icon"
+                           Label="@_nextStage.Label"
+                           Prompt="@_nextStage.Prompt" />
             </div>
         </section>
     }
@@ -58,12 +59,13 @@
     [Parameter, EditorRequired] public InquiryNode Node { get; set; } = default!;
 
     private readonly List<ResolvedBranch> _branches = new();
+    private StageLink? _nextStage;
     private IReadOnlySet<string> _visited = new HashSet<string>();
 
     protected override async Task OnParametersSetAsync()
     {
         var branches = new List<ResolvedBranch>();
-        foreach (var link in Node.Branches)
+        foreach (var link in await Flow.GetBranchesAsync(Node.Id))
         {
             var target = await Content.GetByIdAsync(link.To);
             var label = link.Label ?? target?.Title ?? link.To;
@@ -73,6 +75,8 @@
 
         _branches.Clear();
         _branches.AddRange(branches);
+
+        _nextStage = await Flow.GetTransitionForNodeAsync(Node.Id, Node.Stage);
 
         _visited = await Visited.GetVisitedAsync();
     }

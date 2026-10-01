@@ -43,8 +43,10 @@ Aquinas answers that nature and human reason are not the bottom of the explanati
 ::: youtube VPZfmpEkal4
 :::
 
+
 ::: youtube JAkj5P6IHUQ
 :::
+
 
 ::: youtube tNJbhQVVz8I
 :::

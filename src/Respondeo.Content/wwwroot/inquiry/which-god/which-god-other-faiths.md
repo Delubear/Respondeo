@@ -4,13 +4,6 @@ title: "What About Other Faiths?"
 summary: How the God of Abraham relates to Islam, deism, and Eastern conceptions of the ultimate.
 tags:
   - divine revelation
-branches:
-  - to: which-god-objections
-    label: "But what about the objections?"
-    prompt: Comparing traditions raises sharp challenges — isn't choosing one arrogant, and is this God even good?
-  - to: which-god-of-israel
-    label: "Why the God of Israel?"
-    prompt: Having weighed the claimants, why the covenant God of Abraham in particular?
 ---
 
 > "That which is known of God is manifest in them. For God hath manifested it unto them." &mdash; Romans 1:19
