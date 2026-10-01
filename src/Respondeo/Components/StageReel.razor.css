@@ -408,6 +408,30 @@
 }
 
 /* ---------- Responsive ---------- */
+
+/* Desktop enhancement: on wide viewports the reel can feel a touch bare, so give it more presence.
+   Widen the reel viewport, enlarge the centred question card, and lift the headline ceiling. Scoped
+   to >=58rem (the same point the labelled hint pills appear) so the finely-tuned mobile/tablet
+   layouts below are untouched. */
+@media (min-width: 58rem) {
+    .reel-wrap {
+        max-width: 64rem;
+    }
+
+    .reel__step {
+        width: 36rem;
+    }
+
+    .reel__q-text {
+        font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
+    }
+
+    .reel__q-sub {
+        max-width: 30rem;
+        font-size: 1rem;
+    }
+}
+
 @media (max-width: 640px) {
     .reel-wrap {
         padding-bottom: 1.5rem;
