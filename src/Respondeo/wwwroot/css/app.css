@@ -819,7 +819,8 @@ input[type="search"]::-webkit-search-cancel-button {
 .node__body table,
 .discover-article__body table,
 .miracle__body table,
-.summa-article__body table {
+.summa-article__body table,
+.accordion__panel table {
     width: 100%;
     margin: 1.5rem 0;
     border-collapse: collapse;
@@ -835,7 +836,9 @@ input[type="search"]::-webkit-search-cancel-button {
 .miracle__body th,
 .miracle__body td,
 .summa-article__body th,
-.summa-article__body td {
+.summa-article__body td,
+.accordion__panel th,
+.accordion__panel td {
     padding: 0.5rem 0.85rem;
     border: 1px solid var(--rule);
     text-align: left;
@@ -847,14 +850,16 @@ input[type="search"]::-webkit-search-cancel-button {
 .node__body tbody tr:nth-child(even),
 .discover-article__body tbody tr:nth-child(even),
 .miracle__body tbody tr:nth-child(even),
-.summa-article__body tbody tr:nth-child(even) {
+.summa-article__body tbody tr:nth-child(even),
+.accordion__panel tbody tr:nth-child(even) {
     background: var(--code-bg);
 }
 
 .node__body thead th,
 .discover-article__body thead th,
 .miracle__body thead th,
-.summa-article__body thead th {
+.summa-article__body thead th,
+.accordion__panel thead th {
     background: var(--parchment);
     font-weight: 600;
     border-bottom: 2px solid var(--accent);
@@ -863,101 +868,86 @@ input[type="search"]::-webkit-search-cancel-button {
 .node__body tbody th,
 .discover-article__body tbody th,
 .miracle__body tbody th,
-.summa-article__body tbody th {
+.summa-article__body tbody th,
+.accordion__panel tbody th {
     font-weight: 600;
     white-space: nowrap;
 }
 
-/* On narrow screens a side-by-side grid becomes unreadable, so each row reflows into a card: the
-   first column becomes the card title (set off by an accent rule), and the remaining cells stack as
-   label/value pairs (labels come from data-label, emitted by DataLabelTableRenderer). */
+/* table-mobile.js builds a transposed companion right after each content table (original columns
+   become rows). On desktop the companion is hidden and the original grid shows; on mobile we swap
+   them so the comparison reads as a narrow label -> value table instead of an unreadable wide grid.
+   If the script never runs the original simply scrolls horizontally, so nothing is lost. */
+.node__body .table--transposed,
+.discover-article__body .table--transposed,
+.miracle__body .table--transposed,
+.summa-article__body .table--transposed,
+.accordion__panel .table--transposed {
+    display: none;
+}
+
+/* On narrow screens show the transposed companion instead of the wide original. */
 @media (max-width: 36rem) {
-    .node__body table,
-    .discover-article__body table,
-    .miracle__body table,
-    .summa-article__body table {
-        display: block;
-        overflow-x: visible;
-        border: 0;
-        font-size: 1rem;
+    .node__body > table:not(.table--transposed),
+    .discover-article__body > table:not(.table--transposed),
+    .miracle__body > table:not(.table--transposed),
+    .summa-article__body > table:not(.table--transposed),
+    .accordion__panel > table:not(.table--transposed) {
+        display: none;
     }
 
-    .node__body thead,
-    .discover-article__body thead,
-    .miracle__body thead,
-    .summa-article__body thead {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        white-space: nowrap;
-        border: 0;
+    .node__body .table--transposed,
+    .discover-article__body .table--transposed,
+    .miracle__body .table--transposed,
+    .summa-article__body .table--transposed,
+    .accordion__panel .table--transposed {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        font-size: 0.95rem;
     }
 
-    .node__body tbody tr,
-    .discover-article__body tbody tr,
-    .miracle__body tbody tr,
-    .summa-article__body tbody tr {
-        display: block;
-        margin: 0 0 1.5rem;
-        padding: 0 0 0 0.9rem;
-        background: transparent;
-        border: 0;
-        border-left: 2px solid var(--rule);
+    /* A comparison table can still carry several records, so even transposed it may be wider than the
+       viewport. table-layout: fixed divides the width evenly and lets sentence cells wrap; a shared
+       min-width keeps columns legible, with internal horizontal scroll as the graceful last resort so
+       the table never pushes the page wider than the screen. */
+    .node__body .table--transposed > tbody,
+    .discover-article__body .table--transposed > tbody,
+    .miracle__body .table--transposed > tbody,
+    .summa-article__body .table--transposed > tbody,
+    .accordion__panel .table--transposed > tbody {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
     }
 
-    /* First cell of each row (whether rendered as th or td) becomes the group heading. */
-    .node__body tbody tr > *:first-child,
-    .discover-article__body tbody tr > *:first-child,
-    .miracle__body tbody tr > *:first-child,
-    .summa-article__body tbody tr > *:first-child {
-        display: block;
-        width: auto;
-        margin: 0 0 0.4rem;
-        padding: 0;
-        background: transparent;
-        color: var(--accent);
-        font-family: var(--display);
-        font-weight: 600;
-        font-size: 1.1rem;
+    .node__body .table--transposed th,
+    .node__body .table--transposed td,
+    .discover-article__body .table--transposed th,
+    .discover-article__body .table--transposed td,
+    .miracle__body .table--transposed th,
+    .miracle__body .table--transposed td,
+    .summa-article__body .table--transposed th,
+    .summa-article__body .table--transposed td,
+    .accordion__panel .table--transposed th,
+    .accordion__panel .table--transposed td {
+        min-width: 7rem;
+        padding: 0.5rem 0.6rem;
         white-space: normal;
-        border: 0;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
-    /* The first cell titles the group, so suppress its data-label prefix. */
-    .node__body tbody tr > *:first-child[data-label]::before,
-    .discover-article__body tbody tr > *:first-child[data-label]::before,
-    .miracle__body tbody tr > *:first-child[data-label]::before,
-    .summa-article__body tbody tr > *:first-child[data-label]::before {
-        content: none;
-    }
-
-    /* Each remaining cell pivots into a label -> value row. */
-    .node__body tbody td,
-    .discover-article__body tbody td,
-    .miracle__body tbody td,
-    .summa-article__body tbody td {
-        display: grid;
-        grid-template-columns: minmax(6rem, 40%) 1fr;
-        column-gap: 0.75rem;
-        align-items: baseline;
-        width: auto;
-        border: 0;
+    /* The transposed table's first column is the label column (original headers). Give it the same
+       accent treatment the header row carried so the comparison keeps its visual anchor. */
+    .node__body .table--transposed th[scope="row"],
+    .discover-article__body .table--transposed th[scope="row"],
+    .miracle__body .table--transposed th[scope="row"],
+    .summa-article__body .table--transposed th[scope="row"],
+    .accordion__panel .table--transposed th[scope="row"] {
+        background: var(--parchment);
         white-space: normal;
-        padding: 0.25rem 0;
-    }
-
-    .node__body tbody td[data-label]::before,
-    .discover-article__body tbody td[data-label]::before,
-    .miracle__body tbody td[data-label]::before,
-    .summa-article__body tbody td[data-label]::before {
-        content: attr(data-label);
-        font-weight: 600;
-        font-size: 0.8rem;
-        letter-spacing: 0.02em;
-        color: var(--ink-soft);
+        border-right: 2px solid var(--accent);
     }
 }

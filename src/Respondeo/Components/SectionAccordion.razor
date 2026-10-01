@@ -1,7 +1,7 @@
 @using System.Web
 @using Microsoft.JSInterop
-@using Respondeo.Content.Shared
 @implements IDisposable
+@implements IAsyncDisposable
 @inject IContentService Content
 @inject NavigationManager Nav
 @inject IJSRuntime JS
@@ -34,7 +34,7 @@
                 </h3>
                 @if (isOpen)
                 {
-                    <div id="@panelId" role="region" aria-labelledby="@headerId" class="accordion__panel">
+                    <div id="@panelId" role="region" aria-labelledby="@headerId" class="accordion__panel" @ref="_openPanel">
                         @((MarkupString)section.BodyHtml)
                     </div>
                 }
@@ -56,6 +56,8 @@
     private string? _openId;
     private string? _pendingUrl;
     private string? _scrollToId;
+    private ElementReference _openPanel;
+    private IJSObjectReference? _tableModule;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -138,10 +140,40 @@
             // whose expanded content runs past the bottom of the viewport).
             await JS.InvokeVoidAsync("respondeoScroll.intoView", target);
         }
+
+        // The open panel's body is injected as a MarkupString, so any tables only exist once it has
+        // rendered. Give them transposed companions for the mobile layout; the module skips tables it
+        // has already processed.
+        if (_openId is not null)
+        {
+            try
+            {
+                _tableModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./js/table-mobile.js");
+                await _tableModule.InvokeVoidAsync("enhance", _openPanel);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 
     public void Dispose()
     {
         Nav.LocationChanged -= OnLocationChanged;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();
+        if (_tableModule is not null)
+        {
+            try
+            {
+                await _tableModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 }

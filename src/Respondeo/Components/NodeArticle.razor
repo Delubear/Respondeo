@@ -4,6 +4,8 @@
 @inject IContentService Content
 @inject IInquiryFlow Flow
 @inject IVisitedNodes Visited
+@inject IJSRuntime JS
+@implements IAsyncDisposable
 
 <article class="node" @key="Node.Id">
     <header class="node__header">
@@ -14,7 +16,7 @@
         }
     </header>
 
-    <div class="node__body">
+    <div class="node__body" @ref="_body">
         @((MarkupString)Node.BodyHtml)
     </div>
 
@@ -61,6 +63,8 @@
     private readonly List<ResolvedBranch> _branches = new();
     private StageLink? _nextStage;
     private IReadOnlySet<string> _visited = new HashSet<string>();
+    private ElementReference _body;
+    private IJSObjectReference? _tableModule;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -79,6 +83,36 @@
         _nextStage = await Flow.GetTransitionForNodeAsync(Node.Id, Node.Stage);
 
         _visited = await Visited.GetVisitedAsync();
+    }
+
+    // The body HTML is injected as a MarkupString, so any tables only exist in the DOM after render.
+    // We give each one a transposed companion for the mobile layout; the module skips tables it has
+    // already processed, so running on every render is safe and cheap.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            _tableModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./js/table-mobile.js");
+            await _tableModule.InvokeVoidAsync("enhance", _body);
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_tableModule is not null)
+        {
+            try
+            {
+                await _tableModule.InvokeVoidAsync("dispose", _body);
+                await _tableModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 
     private sealed record ResolvedBranch(BranchLink Link, string Label, string Href);
