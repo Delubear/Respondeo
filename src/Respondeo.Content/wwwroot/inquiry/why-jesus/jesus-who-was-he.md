@@ -7,8 +7,6 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Before asking whether Jesus rose from the dead or claimed to be God, it is worth being clear about *who* we are talking about and *what* exactly is being claimed.
 The question "Why Jesus?" is not vague admiration for a wise teacher.
 It is a claim about a particular man, in a particular time and place, and about something extraordinary said to be true of him.
@@ -23,12 +21,14 @@ Whatever one concludes about the Christian claim, the basic outline of Jesus' li
 
 2. **Attested outside the Bible.**
    He is not known only from Christian sources.
-   Non-Christian writers of the first and early second centuries — the Roman historian **Tacitus**, the Jewish historian **Josephus**, and the Roman official **Pliny the Younger** among them — refer to Jesus, his execution under Pilate, and the movement that sprang up in his name.
+   Non-Christian writers of the first and early second centuries — the Roman historian **Tacitus**, the Jewish historian **Josephus**, 
+   and the Roman official **Pliny the Younger** among them — refer to Jesus, his execution under Pilate, and the movement that sprang up in his name.
    That a Galilean teacher was crucified and yet worshipped shortly afterward is part of the historical record, not merely an article of faith.
 
 3. **A teacher, healer, and figure of controversy.**
    He gathered disciples, taught in parables, was renowned as a healer and exorcist even by opponents, and provoked the religious authorities of his day.
-   He was crucified — a Roman punishment for sedition and the lowest, most shameful death imaginable — and his followers then proclaimed, against every expectation, that he had risen.
+   He was crucified — a Roman punishment for sedition and the lowest, most shameful death imaginable — and his followers then proclaimed, 
+   against every expectation, that he had risen.
 
 ## The claim being made
 
@@ -37,7 +37,8 @@ Here is where Christianity says something no historian is forced to say, but whi
 1. **Not merely a prophet or teacher.**
    Many traditions honor Jesus as a great moral teacher or a prophet.
    The Christian claim is far more specific and far more startling — and whether Jesus himself invited it is a question this stage will weigh directly later on.
-   What the claim asserts is this: that in Jesus, the one God who created the world — the God of Abraham reached by the earlier steps of this path — took on a human nature and lived a human life.
+   What the claim asserts is this: that in Jesus, the one God who created the world — the God of Abraham 
+   reached by the earlier steps of this path — took on a human nature and lived a human life.
    This is what Christians mean by the **Incarnation**: not that a man became divine, but that God became man without ceasing to be God.
 
 2. **True God and true man.**
