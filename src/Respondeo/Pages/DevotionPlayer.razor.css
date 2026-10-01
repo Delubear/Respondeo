@@ -1,9 +1,4 @@
 .devotion__eyebrow {
-    font-family: var(--display);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    color: var(--ink-soft);
     margin: 0 0 0.35rem;
 }
 

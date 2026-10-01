@@ -41,9 +41,6 @@
 .summa__match-ref {
     grid-column: 1;
     font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
 }
 
 .summa__match-title {

@@ -11,10 +11,6 @@
 }
 
 .summa-question__eyebrow {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-soft);
     margin: 0 0 0.4rem;
 }
 
@@ -108,10 +104,6 @@
 
 .summa-article__number {
     display: block;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-soft);
     margin-bottom: 0.2rem;
 }
 

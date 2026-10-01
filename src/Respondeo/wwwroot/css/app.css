@@ -225,6 +225,28 @@ h1, h2, h3 {
     color: var(--ink);
 }
 
+/* ---------- Shared label/separator utilities ---------- */
+/* .eyebrow is the site-wide "kicker" label treatment: a small, uppercased, letter-spaced display
+   caption that sits above a title or beside a value (meta labels, section numbers, latin titles,
+   etc.). Previously each area reimplemented this with slightly drifted letter-spacing; it is now
+   one source of truth. font-size and color stay locally overridable for the few contexts that need
+   a different scale or accent colour (e.g. .pillar__eyebrow uses the accent). */
+.eyebrow {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+/* .section-rule is the standard "new section below a hairline" separator used at the foot of detail
+   pages and between major page regions: top margin, top padding, and a single rule. */
+.section-rule {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+
 /* ---------- Buttons ---------- */
 .btn {
     display: inline-block;
@@ -481,9 +503,6 @@ h1, h2, h3 {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* 1rem top matches the content column's own rhythm; the shared value keeps every
-       pillar's first line at the same height below the sub-nav. */
-    padding: 1rem 0 2rem;
     border-bottom: 1px solid var(--rule);
     margin-bottom: 2rem;
 }

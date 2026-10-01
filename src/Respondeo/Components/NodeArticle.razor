@@ -8,11 +8,11 @@
 @implements IAsyncDisposable
 
 <article class="node" @key="Node.Id">
-    <header class="node__header">
-        <h1 class="node__title">@Node.Title</h1>
+    <header class="pillar__header">
+        <h1 class="pillar__title">@Node.Title</h1>
         @if (!string.IsNullOrWhiteSpace(Node.Summary))
         {
-            <p class="node__summary">@Node.Summary</p>
+            <p class="pillar__lede">@Node.Summary</p>
         }
     </header>
 

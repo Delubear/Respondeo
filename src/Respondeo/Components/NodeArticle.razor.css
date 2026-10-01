@@ -24,24 +24,6 @@
     }
 }
 
-.node__header {
-    margin-bottom: 1.75rem;
-    padding-bottom: 1rem;
-    border-bottom: 3px double var(--ink);
-}
-
-.node__title {
-    font-size: 2rem;
-    margin: 0 0 0.5rem;
-}
-
-.node__summary {
-    font-style: italic;
-    color: var(--ink-soft);
-    margin: 0;
-}
-
-
 /* ---------- Branches section ---------- */
 .branches {
     margin-top: 3rem;

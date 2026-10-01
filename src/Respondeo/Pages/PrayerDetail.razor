@@ -44,8 +44,8 @@ else
 
         @if (!string.IsNullOrWhiteSpace(_prayer.LatinHtml))
         {
-            <section class="prayer__latin">
-                <h2 class="prayer__latin-title">In Latin</h2>
+            <section class="prayer__latin section-rule">
+                <h2 class="prayer__latin-title eyebrow">In Latin</h2>
                 <div class="prayer__text">
                     @((MarkupString)_prayer.LatinHtml)
                 </div>

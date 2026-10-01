@@ -21,10 +21,8 @@
     margin: 1.5rem 0 0.75rem;
 }
 
+/* Separator handled by the shared .section-rule utility; only the muted source-list styling is local. */
 .discover-article__sources {
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--rule);
     color: var(--ink-soft);
     font-size: 0.95rem;
 }

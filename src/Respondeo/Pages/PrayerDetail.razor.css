@@ -4,18 +4,11 @@
     color: var(--ink);
 }
 
-.prayer__latin {
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--rule);
-}
+/* Separator handled by the shared .section-rule utility. */
 
+/* Larger than the default .eyebrow scale: this is a section heading, not a caption. */
 .prayer__latin-title {
-    font-family: var(--display);
     font-size: 1rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
 }
 
 .prayer__latin .prayer__text {
