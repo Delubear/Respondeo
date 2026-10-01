@@ -60,7 +60,11 @@ window.respondeoScroll = {
                     return;
                 }
                 var breadcrumb = document.querySelector('.breadcrumb');
-                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
+                // Leave the sticky breadcrumb's height plus a small breathing gap above the target so
+                // its header (and the first line or two of content) stays visible rather than landing
+                // flush against - or tucked just under - the sticky bar.
+                var gap = 16;
+                var offset = (breadcrumb ? breadcrumb.getBoundingClientRect().height : 0) + gap;
                 var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
                 window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
             });
