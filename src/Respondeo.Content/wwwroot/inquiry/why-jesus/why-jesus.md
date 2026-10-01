@@ -7,13 +7,12 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Reason can reach *that* God exists and something of *what* He is.
 But reason alone cannot tell us whether this God has freely chosen to speak to us.
 That is a question of **history**, not only philosophy — of documents, witnesses, and events that either happened or did not.
 
-The Christian claim is that God did not stay at a distance but entered history in Jesus of Nazareth — whose life, death, and Resurrection are attested by witnesses who died rather than recant.
+The Christian claim is that God did not stay at a distance but entered history in Jesus of Nazareth — whose life, death, 
+and Resurrection are attested by witnesses who went to their deaths rather than take back what they claimed to have seen.
 That is a claim large enough to change everything if true, and specific enough to be tested if false.
 This stage walks it as an ordered path, one question leading to the next, refusing to assume what it sets out to weigh:
 
@@ -27,4 +26,3 @@ This stage walks it as an ordered path, one question leading to the next, refusi
 
 Each step earns the next: establish the sources before the claims, the claims before the vindication, the vindication before the Church.
 Begin below, and follow the path from step to step.
-
