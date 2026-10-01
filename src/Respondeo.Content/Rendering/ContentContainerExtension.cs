@@ -108,7 +108,7 @@ internal sealed class ContentContainerRenderer : HtmlObjectRenderer<CustomContai
         var isDownload = parts.Length > 2 && parts[2].Trim().Equals("download", StringComparison.OrdinalIgnoreCase);
 
         renderer.EnsureLine();
-        renderer.Write("<div class=\"test-actions\">");
+        renderer.Write("<div class=\"content-actions\">");
         renderer.Write("<a class=\"btn\" href=\"");
         renderer.WriteEscapeUrl(href);
         renderer.Write(isDownload ? "\" download>" : "\" target=\"_blank\" rel=\"noopener noreferrer\">");

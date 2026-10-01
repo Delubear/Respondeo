@@ -46,7 +46,7 @@ public class ContentContainerExtensionTests
     {
         var html = Render("::: button content/assets/sample.pdf\n:::");
 
-        Assert.Contains("class=\"test-actions\"", html);
+        Assert.Contains("class=\"content-actions\"", html);
         Assert.Contains("class=\"btn\"", html);
         Assert.Contains("target=\"_blank\"", html);
         Assert.Contains("rel=\"noopener noreferrer\"", html);
