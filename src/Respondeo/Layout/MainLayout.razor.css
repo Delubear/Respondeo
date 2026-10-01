@@ -84,6 +84,17 @@
     line-height: 1.5;
 }
 
+/* On installed PWAs with viewport-fit=cover (Android gesture nav, iOS home bar), the viewport now
+   extends into the bottom safe area. Grow the footer's bottom padding by that inset so its dark
+   background reaches the screen edge — otherwise the body's parchment colour shows through as a
+   persistent strip behind the gesture bar. The fallback keeps the original padding on browsers
+   without env() support. */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .colophon {
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    }
+}
+
 .colophon p {
     max-width: 40rem;
     margin: 0 auto;
