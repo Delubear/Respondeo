@@ -1,9 +1,8 @@
 /* ---------- Thanks & Sources ---------- */
 
 .thanks__list {
-    list-style: none;
     margin: 0;
-    padding: 0;
+    padding-left: 1.4rem;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
@@ -12,8 +11,6 @@
 .thanks__list li {
     line-height: 1.6;
     color: var(--ink-soft);
-    padding-left: 1rem;
-    border-left: 2px solid var(--rule);
 }
 
 .thanks__item-title {
