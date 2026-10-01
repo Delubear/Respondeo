@@ -24,9 +24,9 @@
 }
 else if (_devotion is null)
 {
-    <section class="devotion">
+    <section class="content-article">
         <h1 class="pillar__title">Devotion not found</h1>
-        <p class="devotion__missing">
+        <p class="empty-state">
             There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/devotions">Return to all devotions</a>.
         </p>
     </section>
@@ -34,7 +34,7 @@ else if (_devotion is null)
 else if (_beads is null)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
-    <section class="devotion devotion--intro">
+    <section class="content-article">
         <header class="pillar__header">
             <h1 class="pillar__title">@_devotion.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_devotion.Summary))
@@ -100,7 +100,7 @@ else if (_beads is null)
 }
 else
 {
-    <section class="devotion devotion--praying">
+    <section class="reading-wide devotion--praying">
         <p class="devotion__hint">Select each step to mark it prayed, in order. Open the book to read a prayer's words.</p>
 
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
@@ -140,7 +140,7 @@ else
                             <div class="devotion__mystery">
                                 @if (!string.IsNullOrWhiteSpace(step.Heading))
                                 {
-                                    <p class="devotion__eyebrow eyebrow">@step.Heading</p>
+                                    <p class="eyebrow">@step.Heading</p>
                                 }
                                 <h2 class="devotion__mystery-title">@step.MysteryTitle</h2>
                                 @if (!string.IsNullOrWhiteSpace(step.MysteryReflectionHtml))

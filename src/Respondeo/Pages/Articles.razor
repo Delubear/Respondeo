@@ -9,7 +9,7 @@
 <SeoHead Title="Living the Faith — Articles"
          Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
-<section class="discover" data-discover-browse="articles">
+<section class="pillar browse" data-discover-browse="articles">
     <header class="pillar__header">
         <p class="pillar__eyebrow">Beneath the practice</p>
         <h1 class="pillar__title">Articles</h1>
@@ -35,18 +35,18 @@
                            Value="@_query"
                            ValueChanged="OnSearchChanged" />
 
-        <div class="discover__layout">
-            <aside class="discover__sidebar">
+        <div class="filter-layout">
+            <aside class="filter-rail">
                 @if (_tags.Count > 0)
                 {
-                    <h2 class="discover__sidebar-title">Tags</h2>
+                    <h2 class="filter-rail__title">Tags</h2>
                     <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="discover__results">
-                <div class="discover__toolbar">
+            <div class="filter-results">
+                <div class="toolbar">
                     <p class="results-count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
                     <SortSelect T="ArticleRow" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>

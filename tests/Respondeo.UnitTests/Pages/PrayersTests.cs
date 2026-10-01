@@ -59,7 +59,7 @@ public class PrayersTests : TestContext
     {
         var cut = RenderComponent<Prayers>();
 
-        var sidebarTitles = cut.FindAll("h2.discover__sidebar-title").Select(h => h.TextContent.Trim()).ToList();
+        var sidebarTitles = cut.FindAll("h2.filter-rail__title").Select(h => h.TextContent.Trim()).ToList();
         Assert.Contains("Category", sidebarTitles);
         Assert.Contains("Tags", sidebarTitles);
     }

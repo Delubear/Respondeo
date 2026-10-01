@@ -112,7 +112,7 @@ public class ArticlesTests : TestContext
     {
         var cut = RenderComponent<Articles>();
 
-        var tagsHeading = cut.FindAll("h2.discover__sidebar-title").Any(h => h.TextContent.Trim() == "Tags");
+        var tagsHeading = cut.FindAll("h2.filter-rail__title").Any(h => h.TextContent.Trim() == "Tags");
         Assert.True(tagsHeading);
 
         var options = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();

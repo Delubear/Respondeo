@@ -561,32 +561,29 @@ h1, h2, h3 {
    Discover pillar: prayers, devotions, and articles for living the faith.
    --------------------------------------------------------------------------- */
 
-.discover,
-.prayer,
-.devotion {
+/* Wide centered reading column for detail surfaces whose content is layout rather than prose —
+   the Prayer detail and the Devotion intro/player, whose card grids and bead lists want the roomier
+   60rem measure. Long-form prose surfaces (articles, miracles) use the tighter .content-article
+   measure instead so their body text keeps an optimal line length. */
+.reading-wide {
     max-width: 60rem;
     margin: 0 auto;
     padding: 1rem 0 3rem;
 }
 
-/* Browse listings (articles, prayers, devotions index) break out of the global narrow content
-   column so the filter sidebar and results can breathe, matching the Miracles/Summa pillar width.
-   The .prayer/.devotion detail pages above keep the narrower reading measure. */
-.discover {
-    max-width: none;
-    width: min(60rem, 100vw - 2.5rem);
-    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
-    /* The .discover__header already supplies the 1rem top padding (matching the Home hero). The
-       shared .discover/.prayer/.devotion rule adds another 1rem on top, which pushed the browse
-       header 1rem lower than the Inquiry hero. Zero it here so both pillars start at the same height. */
-    padding-top: 0;
+/* Browse listings (articles, prayers, devotions, miracles index) reuse the shared .pillar width so
+   the filter rail and results can breathe. .pillar already supplies the centered width/margin; this
+   only adds the bottom gutter. The top padding is intentionally omitted so the browse header starts
+   at the same height as the Inquiry hero (the .pillar__header supplies its own 1rem top padding). */
+.browse {
+    padding-bottom: 3rem;
 }
 
-/* Shared Discover browse chrome (.discover__*): results toolbar, sort control, and the filter
-   sidebar. These are GLOBAL on purpose — the same markup is reused across the Prayers, Devotions,
-   Miracles, and Discover browse pages, so they are not scoped to any single component. The search
-   box lives in its own SearchBox component (SearchBox.razor.css). Other component-owned styles live
-   in their own .razor.css files (PrayerDetail, DevotionPlayer). */
+/* Shared browse chrome: a filter rail beside a results column, a results toolbar, and a sort control.
+   These are GLOBAL, generic utilities reused across the Prayers, Devotions, Articles, Miracles, and
+   Discover browse pages, so they are not scoped to any single component. The search box lives in its
+   own SearchBox component (SearchBox.razor.css). Other component-owned styles live in their own
+   .razor.css files (PrayerDetail, DevotionPlayer). */
 
 /* Generic empty/no-results message, shared across browse pages and the Summa search view. */
 .empty-state {
@@ -600,8 +597,8 @@ input[type="search"]::-webkit-search-cancel-button {
     cursor: pointer;
 }
 
-/* Discover results toolbar \u2014 result count and a sort control, mirroring the Miracles list */
-.discover__toolbar {
+/* Results toolbar — result count and a sort control, mirroring the Miracles list */
+.toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -610,27 +607,27 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-bottom: 0.5rem;
 }
 
-/* Muted result-count line, shared by the Discover toolbar and the Summa search view. */
+/* Muted result-count line, shared by the browse toolbar and the Summa search view. */
 .results-count {
     margin: 0;
     color: var(--ink-soft);
     font-size: 0.9rem;
 }
 
-/* Discover browse layout — a filter sidebar beside the results column, mirroring the Articles index */
-.discover__layout {
+/* Browse layout — a filter rail beside the results column, mirroring the Articles index */
+.filter-layout {
     display: grid;
     grid-template-columns: minmax(12rem, 16rem) 1fr;
     gap: 2.5rem;
     align-items: start;
 }
 
-.discover__sidebar {
+.filter-rail {
     position: sticky;
     top: 5rem;
 }
 
-.discover__sidebar-title {
+.filter-rail__title {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -638,19 +635,19 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 1.25rem 0 0.75rem;
 }
 
-.discover__sidebar-title:first-child {
+.filter-rail__title:first-child {
     margin-top: 0;
 }
 
 /* Clear-all-filters button is scoped to the ClearFiltersButton component — see its .razor.css file. */
 
 @media (max-width: 640px) {
-    .discover__layout {
+    .filter-layout {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
 
-    .discover__sidebar {
+    .filter-rail {
         position: static;
     }
 }

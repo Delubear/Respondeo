@@ -9,7 +9,7 @@
 <SeoHead Title="Catholic Prayers"
          Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
 
-<section class="discover" data-discover-browse="prayers">
+<section class="pillar browse" data-discover-browse="prayers">
     <header class="pillar__header">
         <p class="pillar__eyebrow">Words for God</p>
         <h1 class="pillar__title">Prayers</h1>
@@ -31,23 +31,23 @@
                            Value="@_query"
                            ValueChanged="OnSearchChanged" />
 
-        <div class="discover__layout">
-            <aside class="discover__sidebar">
+        <div class="filter-layout">
+            <aside class="filter-rail">
                 @if (_categories.Count > 0)
                 {
-                    <h2 class="discover__sidebar-title">Category</h2>
+                    <h2 class="filter-rail__title">Category</h2>
                     <TopicFilter Topics="_categoryLabels" Selected="_selectedCategories" SelectedChanged="OnCategoriesChanged" />
                 }
                 @if (_tags.Count > 0)
                 {
-                    <h2 class="discover__sidebar-title">Tags</h2>
+                    <h2 class="filter-rail__title">Tags</h2>
                     <TopicFilter Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="discover__results">
-                <div class="discover__toolbar">
+            <div class="filter-results">
+                <div class="toolbar">
                     <p class="results-count">@Filtered.Count of @(_prayers?.Count ?? 0) prayers</p>
                     <SortSelect T="PrayerSummary" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>

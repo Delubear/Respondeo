@@ -9,7 +9,7 @@
 <SeoHead Title="Catholic Devotions"
          Description="Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery." />
 
-<section class="discover" data-discover-browse="devotions">
+<section class="pillar browse" data-discover-browse="devotions">
     <header class="pillar__header">
         <p class="pillar__eyebrow">Pray, bead by bead</p>
         <h1 class="pillar__title">Devotions</h1>
@@ -35,18 +35,18 @@
                            Value="@_query"
                            ValueChanged="OnSearchChanged" />
 
-        <div class="discover__layout">
-            <aside class="discover__sidebar">
+        <div class="filter-layout">
+            <aside class="filter-rail">
                 @if (_kinds.Count > 0)
                 {
-                    <h2 class="discover__sidebar-title">Kind</h2>
+                    <h2 class="filter-rail__title">Kind</h2>
                     <TopicFilter Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
                 }
                 <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
             </aside>
 
-            <div class="discover__results">
-                <div class="discover__toolbar">
+            <div class="filter-results">
+                <div class="toolbar">
                     <p class="results-count">@Filtered.Count of @(_devotions?.Count ?? 0) devotions</p>
                     <SortSelect T="DevotionSummary" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>

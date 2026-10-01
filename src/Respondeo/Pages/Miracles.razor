@@ -8,7 +8,7 @@
 <SeoHead Title="Catholic Miracles"
          Description="A growing catalog of reported and recognized Catholic miracles — Eucharistic miracles, Marian apparitions, and healings — with the Church's judgment on each." />
 
-<section class="discover">
+<section class="pillar browse">
     <header class="pillar__header">
         <p class="pillar__eyebrow">Signs and wonders</p>
         <h1 class="pillar__title">Catholic Miracles</h1>
@@ -31,21 +31,21 @@
                            Value="@Browse.Query"
                            ValueChanged="OnSearchChanged" />
 
-        <div class="discover__layout">
-            <aside class="discover__sidebar">
-                <h2 class="discover__sidebar-title">Kind</h2>
+        <div class="filter-layout">
+            <aside class="filter-rail">
+                <h2 class="filter-rail__title">Kind</h2>
                 <TopicFilter Topics="_types"
                              Selected="Browse.Types"
                              SelectedChanged="OnTypesChanged"
                              DisplayLabel="_facets.Category" />
 
-                <h2 class="discover__sidebar-title">Church&rsquo;s judgment</h2>
+                <h2 class="filter-rail__title">Church&rsquo;s judgment</h2>
                 <TopicFilter Topics="_approvals"
                              Selected="Browse.Approvals"
                              SelectedChanged="OnApprovalsChanged"
                              DisplayLabel="_facets.Approval" />
 
-                <h2 class="discover__sidebar-title">Region</h2>
+                <h2 class="filter-rail__title">Region</h2>
                 <TopicFilter Topics="_regions"
                              Selected="Browse.Regions"
                              SelectedChanged="OnRegionsChanged"
@@ -54,8 +54,8 @@
                 <ClearFiltersButton Active="Browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="discover__results">
-                <div class="discover__toolbar">
+            <div class="filter-results">
+                <div class="toolbar">
                     <p class="results-count">@Filtered.Count of @_all.Count miracles</p>
                     <SortSelect T="MiracleIndexEntry" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
                 </div>

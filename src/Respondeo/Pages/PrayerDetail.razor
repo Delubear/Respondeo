@@ -20,16 +20,16 @@
 }
 else if (_prayer is null)
 {
-    <section class="prayer">
+    <section class="content-article">
         <h1 class="pillar__title">Prayer not found</h1>
-        <p class="prayer__missing">
+        <p class="empty-state">
             There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/prayers">Return to all prayers</a>.
         </p>
     </section>
 }
 else
 {
-    <article class="prayer">
+    <article class="content-article">
         <header class="pillar__header">
             <h1 class="pillar__title">@_prayer.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_prayer.Summary))
