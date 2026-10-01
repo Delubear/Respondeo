@@ -63,17 +63,9 @@ internal sealed class MiracleRecordDocument
 
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    public IReadOnlyList<MiracleSectionDocument> Sections { get; init; } = [];
+    public string BodyHtml { get; init; } = string.Empty;
 
     public IReadOnlyList<MiracleSourceDocument> Sources { get; init; } = [];
-}
-
-/// <summary>A titled prose section of a miracle article (internal domain model).</summary>
-internal sealed class MiracleSectionDocument
-{
-    public required string Heading { get; init; }
-
-    public required string Html { get; init; }
 }
 
 /// <summary>A citation or further-reading reference for a miracle (internal domain model).</summary>

@@ -22,17 +22,9 @@ internal sealed class ArticleDocument
 
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    public IReadOnlyList<ArticleSectionDocument> Sections { get; init; } = [];
+    public string BodyHtml { get; init; } = string.Empty;
 
     public IReadOnlyList<ArticleSourceDocument> Sources { get; init; } = [];
-}
-
-/// <summary>A titled prose section of an article (internal domain model).</summary>
-internal sealed class ArticleSectionDocument
-{
-    public required string Heading { get; init; }
-
-    public required string Html { get; init; }
 }
 
 /// <summary>A citation or further-reading reference for an article (internal domain model).</summary>

@@ -17,7 +17,7 @@ internal static class ArticleMapper
         Summary = document.Summary,
         Topic = document.Topic,
         Tags = document.Tags,
-        Sections = [.. document.Sections.Select(s => new ArticleSection { Heading = s.Heading, Html = s.Html })],
+        BodyHtml = document.BodyHtml,
         Sources = [.. document.Sources.Select(s => new ArticleSource { Label = s.Label, Url = s.Url })],
     };
 

@@ -49,21 +49,11 @@ public sealed class Article
     /// <summary>Free-text tags.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    /// <summary>The prose body, split into titled sections (rendered HTML), in author order.</summary>
-    public IReadOnlyList<ArticleSection> Sections { get; init; } = [];
+    /// <summary>Rendered HTML of the full Markdown body (safe, author-curated).</summary>
+    public string BodyHtml { get; init; } = string.Empty;
 
     /// <summary>Citations and further-reading references.</summary>
     public IReadOnlyList<ArticleSource> Sources { get; init; } = [];
-}
-
-/// <summary>A titled prose section of an article (rendered HTML under an author-supplied heading).</summary>
-public sealed class ArticleSection
-{
-    /// <summary>The section heading (empty for the untitled lead-in).</summary>
-    public required string Heading { get; init; }
-
-    /// <summary>The rendered HTML of the section body.</summary>
-    public required string Html { get; init; }
 }
 
 /// <summary>A citation or further-reading reference for an article.</summary>

@@ -1,0 +1,18 @@
+/* Wrapping row of read-only tag "pill" chips. Scoped to the TagList component now that chips
+   only render through it; the <ul>/<li> pair keeps list semantics while dropping the bullets. */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tag {
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    background: var(--parchment-hover);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}

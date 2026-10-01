@@ -247,6 +247,32 @@ h1, h2, h3 {
     border-top: 1px solid var(--rule);
 }
 
+/* Shared detail-article scaffolding: the centered reading column, the stacked content sections,
+   their display headings, and the muted "sources / further reading" list. Previously each detail
+   page (discover article, etc.) reimplemented these with its own BEM prefix; they are now one
+   source of truth so every reading surface shares the same measure, rhythm, and type. */
+.content-article {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+}
+
+.content-section {
+    margin-bottom: 1.5rem;
+}
+
+.content-section-title {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin: 1.5rem 0 0.75rem;
+}
+
+.content-sources {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}
+
 /* ---------- Buttons ---------- */
 .btn {
     display: inline-block;
@@ -628,8 +654,6 @@ input[type="search"]::-webkit-search-cancel-button {
         position: static;
     }
 }
-
-/* Discover article detail styles (.discover-article*) are scoped to the ArticleDetail page. */
 
 /* ---------- Mobile layout fill ----------
    On phones, the immersive devotion praying view needs the shell's content chain to be a flex

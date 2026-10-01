@@ -101,12 +101,10 @@ public class MiracleServiceTests
         Assert.NotNull(record);
         Assert.Equal("The Eucharistic Miracle of Lanciano", record!.Title);
 
-        // Lead-in (disclaimer) becomes an untitled section, then the two ## sections.
-        Assert.Equal(3, record.Sections.Count);
-        Assert.Equal(string.Empty, record.Sections[0].Heading);
-        Assert.Equal("What happened", record.Sections[1].Heading);
-        Assert.Contains("the host changed", record.Sections[1].Html);
-        Assert.Equal("The findings", record.Sections[2].Heading);
+        // The full body (disclaimer lead-in plus the ## sections) renders to a single HTML blob.
+        Assert.Contains("What happened", record.BodyHtml);
+        Assert.Contains("the host changed", record.BodyHtml);
+        Assert.Contains("The findings", record.BodyHtml);
 
         var source = Assert.Single(record.Sources);
         Assert.Equal("Vatican Exhibition", source.Label);

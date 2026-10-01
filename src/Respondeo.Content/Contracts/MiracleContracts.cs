@@ -88,21 +88,11 @@ public sealed class MiracleRecord
     /// <summary>Free-text tags.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
-    /// <summary>The prose body, split into titled sections, in author order.</summary>
-    public IReadOnlyList<MiracleSection> Sections { get; init; } = [];
+    /// <summary>Rendered HTML of the full Markdown body (safe, author-curated).</summary>
+    public string BodyHtml { get; init; } = string.Empty;
 
     /// <summary>Citations and further-reading references.</summary>
     public IReadOnlyList<MiracleSource> Sources { get; init; } = [];
-}
-
-/// <summary>A titled prose section of a miracle article (rendered HTML under an author-supplied heading).</summary>
-public sealed class MiracleSection
-{
-    /// <summary>The section heading (e.g. "What happened", "The scientific findings").</summary>
-    public required string Heading { get; init; }
-
-    /// <summary>The rendered HTML of the section body.</summary>
-    public required string Html { get; init; }
 }
 
 /// <summary>A citation or further-reading reference for a miracle.</summary>

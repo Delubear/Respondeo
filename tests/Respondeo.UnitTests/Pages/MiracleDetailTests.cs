@@ -37,10 +37,7 @@ public class MiracleDetailTests : TestContext
         Region = "europe",
         Country = "Italy",
         Year = 750,
-        Sections =
-        [
-            new MiracleSection { Heading = "What happened", Html = "<p>A monk doubted.</p>" },
-        ],
+        BodyHtml = "<p>A monk doubted.</p>",
         Sources =
         [
             new MiracleSource { Label = "Vatican Exhibition", Url = "https://example.org/exhibit" },
@@ -56,7 +53,7 @@ public class MiracleDetailTests : TestContext
         var cut = RenderComponent<MiracleDetail>(p => p.Add(c => c.Id, "lanciano"));
 
         Assert.Equal("The Eucharistic Miracle of Lanciano", cut.Find("h1.pillar__title").TextContent.Trim());
-        Assert.Contains("A monk doubted.", cut.Find(".miracle__body").TextContent);
+        Assert.Contains("A monk doubted.", cut.Find(".content-body").TextContent);
     }
 
     [Fact]

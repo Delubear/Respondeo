@@ -22,7 +22,7 @@ internal static class MiracleMapper
         Year = document.Year,
         FeastDay = document.FeastDay,
         Tags = document.Tags,
-        Sections = [.. document.Sections.Select(s => new MiracleSection { Heading = s.Heading, Html = s.Html })],
+        BodyHtml = document.BodyHtml,
         Sources = [.. document.Sources.Select(s => new MiracleSource { Label = s.Label, Url = s.Url })],
     };
 

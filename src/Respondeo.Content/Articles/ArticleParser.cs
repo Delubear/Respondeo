@@ -29,16 +29,11 @@ internal sealed class ArticleParser(IContentHtmlRenderer html)
             Summary = meta.Summary,
             Topic = NormalizeSlug(meta.Topic, "general"),
             Tags = meta.Tags,
-            Sections = SplitSections(body),
+            BodyHtml = html.ToHtml(body),
             Sources = [.. meta.Sources.Select(s => new ArticleSourceDocument { Label = s.Label, Url = s.Url })],
         };
     }
 
     private static string NormalizeSlug(string? slug, string fallback) =>
         string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
-
-    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's Markdown to HTML.
-    // Content before the first heading is an untitled lead-in section.
-    private IReadOnlyList<ArticleSectionDocument> SplitSections(string body) =>
-        [.. MarkdownSections.Split(body).Select(s => new ArticleSectionDocument { Heading = s.Heading, Html = html.ToHtml(s.Markdown) })];
 }

@@ -25,10 +25,7 @@ public class ArticleDetailTests : TestContext
         Id = "the-sacraments",
         Title = "The Sacraments",
         Summary = "An overview of the seven sacraments.",
-        Sections =
-        [
-            new ArticleSection { Heading = "Overview", Html = "<p>Grace made visible.</p>" },
-        ],
+        BodyHtml = "<p>Grace made visible.</p>",
         Sources =
         [
             new ArticleSource { Label = "Catechism", Url = "https://example.org/ccc" },
@@ -43,7 +40,7 @@ public class ArticleDetailTests : TestContext
         var cut = RenderComponent<ArticleDetail>(p => p.Add(c => c.Id, "the-sacraments"));
 
         Assert.Equal("The Sacraments", cut.Find("h1.pillar__title").TextContent.Trim());
-        Assert.Contains("Grace made visible.", cut.Find(".discover-article__body").TextContent);
+        Assert.Contains("Grace made visible.", cut.Find(".content-body").TextContent);
     }
 
     [Fact]
@@ -53,7 +50,7 @@ public class ArticleDetailTests : TestContext
 
         var cut = RenderComponent<ArticleDetail>(p => p.Add(c => c.Id, "the-sacraments"));
 
-        var link = cut.Find(".discover-article__sources a");
+        var link = cut.Find(".content-sources a");
         Assert.Equal("https://example.org/ccc", link.GetAttribute("href"));
         Assert.Equal("Catechism", link.TextContent.Trim());
     }

@@ -20,7 +20,7 @@
 }
 else if (_article is null)
 {
-    <section class="discover-article">
+    <section class="content-article">
         <h1 class="pillar__title">Article not found</h1>
         <p class="empty-state">
             There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/articles">Return to all articles</a>.
@@ -29,7 +29,7 @@ else if (_article is null)
 }
 else
 {
-    <article class="discover-article">
+    <article class="content-article">
         <header class="pillar__header">
             <h1 class="pillar__title">@_article.Title</h1>
             @if (!string.IsNullOrWhiteSpace(_article.Summary))
@@ -38,23 +38,14 @@ else
             }
         </header>
 
-        @foreach (var section in _article.Sections)
-        {
-            <section class="discover-article__section">
-                @if (!string.IsNullOrWhiteSpace(section.Heading))
-                {
-                    <h2 class="discover-article__section-title">@section.Heading</h2>
-                }
-                <div class="content-body">
-                    @((MarkupString)section.Html)
-                </div>
-            </section>
-        }
+        <div class="content-body">
+            @((MarkupString)_article.BodyHtml)
+        </div>
 
         @if (_article.Sources.Count > 0)
         {
-            <section class="discover-article__sources section-rule">
-                <h2 class="discover-article__section-title">Sources &amp; further reading</h2>
+            <section class="content-sources section-rule">
+                <h2 class="content-section-title">Sources &amp; further reading</h2>
                 <ul>
                     @foreach (var source in _article.Sources)
                     {
@@ -72,6 +63,8 @@ else
                 </ul>
             </section>
         }
+
+        <TagList Tags="_article.Tags" />
 
         <BackLink Href="discover/articles" Label="Back to all articles" />
     </article>

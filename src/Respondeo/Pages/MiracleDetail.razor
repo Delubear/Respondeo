@@ -66,33 +66,16 @@ else
             }
         </dl>
 
-        @foreach (var section in _miracle.Sections)
-        {
-            <section class="miracle__section">
-                @if (!string.IsNullOrWhiteSpace(section.Heading))
-                {
-                    <h2 class="miracle__section-title">@section.Heading</h2>
-                }
-                <div class="content-body">
-                    @((MarkupString)section.Html)
-                </div>
-            </section>
-        }
+        <div class="content-body">
+            @((MarkupString)_miracle.BodyHtml)
+        </div>
 
-        @if (_miracle.Tags.Count > 0)
-        {
-            <ul class="miracle__tags">
-                @foreach (var tag in _miracle.Tags)
-                {
-                    <li class="miracle__tag">@tag</li>
-                }
-            </ul>
-        }
+        <TagList Tags="_miracle.Tags" />
 
         @if (_miracle.Sources.Count > 0)
         {
-            <section class="miracle__sources">
-                <h2 class="miracle__section-title">Sources &amp; further reading</h2>
+            <section class="content-sources section-rule">
+                <h2 class="content-section-title">Sources &amp; further reading</h2>
                 <ul>
                     @foreach (var source in _miracle.Sources)
                     {

@@ -37,7 +37,7 @@ internal sealed class MiracleParser(IContentHtmlRenderer html)
         Year = meta.Year,
         FeastDay = meta.FeastDay,
         Tags = meta.Tags,
-        Sections = SplitSections(body),
+        BodyHtml = html.ToHtml(body),
         Sources = [.. meta.Sources.Select(s => new MiracleSourceDocument { Label = s.Label, Url = s.Url })],
     };
 
@@ -69,9 +69,4 @@ internal sealed class MiracleParser(IContentHtmlRenderer html)
 
         return result.Count > 0 ? result : ["other"];
     }
-
-    // Split the Markdown body into sections on each top-level "## " heading, rendering each section's Markdown to HTML.
-    // Content before the first heading becomes an untitled lead-in section.
-    private IReadOnlyList<MiracleSectionDocument> SplitSections(string body) =>
-        [.. MarkdownSections.Split(body).Select(s => new MiracleSectionDocument { Heading = s.Heading, Html = html.ToHtml(s.Markdown) })];
 }
