@@ -20,7 +20,7 @@ public sealed class DevotionSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstDevotion()
     {
         await Page.Locator("a.card").First.ClickAsync();
-        await Page.WaitForSelectorAsync(".devotion--intro");
+        await Page.WaitForSelectorAsync(".devotion__set-options");
     }
 
     [When("I begin praying")]
@@ -40,7 +40,7 @@ public sealed class DevotionSteps(PlaywrightContext context)
     [Then("the devotion intro should be visible")]
     public async Task ThenTheDevotionIntroShouldBeVisible()
     {
-        Assert.True(await Page.Locator(".devotion--intro").First.IsVisibleAsync());
+        Assert.True(await Page.Locator(".devotion__set-options").First.IsVisibleAsync());
     }
 
     [Then("I should see a way to begin praying")]

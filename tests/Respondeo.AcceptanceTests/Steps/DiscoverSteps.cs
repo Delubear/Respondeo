@@ -41,7 +41,7 @@ public sealed class DiscoverSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstArticle()
     {
         await Page.Locator("a.card").First.ClickAsync();
-        await Page.WaitForSelectorAsync(".discover-article__body");
+        await Page.WaitForSelectorAsync(".content-article .content-body");
     }
 
     [Then("I should see a link to \"(.*)\"")]
@@ -67,6 +67,6 @@ public sealed class DiscoverSteps(PlaywrightContext context)
     [Then("the article body should be visible")]
     public async Task ThenTheArticleBodyShouldBeVisible()
     {
-        Assert.True(await Page.Locator(".discover-article__body").First.IsVisibleAsync());
+        Assert.True(await Page.Locator(".content-article .content-body").First.IsVisibleAsync());
     }
 }
