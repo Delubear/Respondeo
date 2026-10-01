@@ -597,6 +597,7 @@ details.accordion__item[open] > .accordion__trigger {
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: min(28rem, 100vw - 2rem);
     max-width: calc(100vw - 2rem);
     padding: 0.75rem 1rem;
     transform: translate(-50%, 150%);
@@ -617,6 +618,7 @@ details.accordion__item[open] > .accordion__trigger {
 }
 
 .pwa-update__text {
+    flex: 1 1 auto;
     color: var(--ink-soft);
 }
 
