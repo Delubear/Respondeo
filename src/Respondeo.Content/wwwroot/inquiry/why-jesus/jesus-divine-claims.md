@@ -7,8 +7,6 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 If the Gospels are early, eyewitness-rooted sources, then the first thing they force on us is a decision about the man at their center.
 For they do not present Jesus as one more prophet relaying a message from God.
 They present Him as speaking and acting *in God's own place* — and that is a claim no mere teacher would dare to make.
@@ -29,7 +27,8 @@ So everything turns on this: did Jesus claim an authority that belongs to God al
    Jesus places His own authority alongside — and above — the Torah given at Sinai, as though the Lawgiver were speaking in the first person.
 
 3. **He accepted worship and applied divine titles to Himself.**
-   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13–14), and answers "before Abraham was, I AM" (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
+   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13–14), 
+   and answers "before Abraham was, I AM" (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
    The reaction of His opponents is the surest gauge of what they heard: not eccentricity, but blasphemy.
 
 4. **The claim is woven through the record, not stitched onto its edge.**
@@ -53,7 +52,8 @@ Which forces the question He clearly meant to force: who do you say that He is?
 
 **Where this leads.** A staggering claim raises two different questions.
 The first is whether it even *coheres* — if Jesus is God alongside the Father, has the one God reason reached quietly become two? That objection is sharp enough to pause on.
-The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh a line of evidence — whether the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
+The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh a line of evidence — whether 
+the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
 
 ::: youtube xphsJLRF9v8
 :::
