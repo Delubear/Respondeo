@@ -11,10 +11,16 @@ namespace Respondeo.Services;
 public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
 {
     private const string StorageKey = "respondeo.breadcrumb";
+    private const string StageKey = "respondeo.breadcrumb.stage";
 
-    public async Task<IReadOnlyList<string>> VisitAsync(string nodeId)
+    public async Task<IReadOnlyList<string>> VisitAsync(string nodeId, string? stage = null)
     {
-        var trail = await LoadAsync();
+        // Each stage is its own journey: when the visitor crosses into a different stage,
+        // start the trail over so breadcrumbs don't carry nodes from the previous section.
+        var previousStage = await js.InvokeAsync<string?>("sessionStorage.getItem", StageKey);
+        var trail = string.Equals(previousStage ?? string.Empty, stage ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+            ? await LoadAsync()
+            : [];
 
         var index = trail.IndexOf(nodeId);
         if (index >= 0)
@@ -28,12 +34,14 @@ public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
         }
 
         await SaveAsync(trail);
+        await js.InvokeVoidAsync("sessionStorage.setItem", StageKey, stage ?? string.Empty);
         return trail;
     }
 
     public async Task ClearAsync()
     {
         await js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
+        await js.InvokeVoidAsync("sessionStorage.removeItem", StageKey);
     }
 
     private async Task<List<string>> LoadAsync()

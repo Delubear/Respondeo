@@ -65,7 +65,7 @@ else
         if (node is not null)
         {
             await Visited.MarkVisitedAsync(Id);
-            crumbs = await BuildBreadcrumbAsync(Id);
+            crumbs = await BuildBreadcrumbAsync(Id, node.Stage);
         }
 
         _node = node;
@@ -84,9 +84,10 @@ else
         _loading = false;
     }
 
-    private async Task<IReadOnlyList<Breadcrumb.Crumb>> BuildBreadcrumbAsync(string id)
+    private async Task<IReadOnlyList<Breadcrumb.Crumb>> BuildBreadcrumbAsync(string id, string? stage)
     {
-        var trail = await Trail.VisitAsync(id);
+        // The trail resets per stage, so every node it returns belongs to the current stage.
+        var trail = await Trail.VisitAsync(id, stage);
 
         // The trail includes the current node as its last element; the rest are ancestors.
         var crumbs = new List<Breadcrumb.Crumb>(trail.Count);

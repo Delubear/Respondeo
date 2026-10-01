@@ -58,6 +58,32 @@ public class BreadcrumbTrailTests
         Assert.Equal(["a"], result);
     }
 
+    [Fact]
+    public async Task Visit_resets_the_trail_when_the_stage_changes()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        await trail.VisitAsync("a", "why-god");
+        await trail.VisitAsync("b", "why-god");
+        var result = await trail.VisitAsync("c", "which-god");
+
+        Assert.Equal(["c"], result);
+    }
+
+    [Fact]
+    public async Task Visit_keeps_the_trail_within_the_same_stage()
+    {
+        var js = new FakeSessionStorage();
+        var trail = new BreadcrumbTrail(js);
+
+        await trail.VisitAsync("a", "why-god");
+        await trail.VisitAsync("b", "why-god");
+        var result = await trail.VisitAsync("c", "why-god");
+
+        Assert.Equal(["a", "b", "c"], result);
+    }
+
     /// <summary>Minimal in-memory IJSRuntime emulating the sessionStorage calls the trail makes.</summary>
     private sealed class FakeSessionStorage : IJSRuntime
     {

@@ -9,8 +9,9 @@ public interface IBreadcrumbTrail
     /// <summary>
     /// Records a visit to <paramref name="nodeId"/> and returns the resulting trail (ordered from the first visited node to the current one, inclusive).
     /// Revisiting a node already in the trail truncates the trail back to that node, so loops and back-navigation don't accumulate duplicates.
+    /// When <paramref name="stage"/> differs from the stage of the previous visit, the trail is reset so each stage begins fresh.
     /// </summary>
-    Task<IReadOnlyList<string>> VisitAsync(string nodeId);
+    Task<IReadOnlyList<string>> VisitAsync(string nodeId, string? stage = null);
 
     /// <summary>
     /// Clears the trail. Called when the visitor returns to the Start page so a new journey begins fresh rather than continuing a previous one.
