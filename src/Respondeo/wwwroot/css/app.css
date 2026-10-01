@@ -179,6 +179,15 @@ html, body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* On installed PWAs with viewport-fit=cover, the viewport extends into the device safe areas
+   (Android gesture bar, iOS home indicator). The root shows through wherever a child box does not
+   reach the edge, so paint it with the page colour — matching the body and the full-screen loading
+   state so the initial load looks normal. The dark footer paints into the bottom inset itself via
+   its safe-area padding, so there is no mismatched strip once the app is loaded. */
+html {
+    background: var(--paper);
+}
+
 a {
     color: var(--accent);
     text-decoration: none;
