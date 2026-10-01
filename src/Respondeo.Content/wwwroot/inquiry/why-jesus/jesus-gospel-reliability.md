@@ -8,13 +8,11 @@ tags:
   - scripture & tradition
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
-The previous stage ended with a God who does not merely exist, but who acts in history and binds Himself by promise to a people.
-Whether He has now spoken decisively in Jesus of Nazareth is not a question philosophy can settle from the armchair.
-It is a question of **history** — of documents, witnesses, and evidence.
+If the claim about Jesus is to be weighed as history, we need historical sources to weigh it with.
 
 That makes the Gospels the natural first stop.
+The Gospels are the four early accounts of Jesus' life, teaching, death, 
+and Resurrection — *Matthew*, *Mark*, *Luke*, and *John* — written in the first century and placed at the opening of the New Testament.
 But before we ask *what* they claim about Jesus, we have to ask a prior, more modest question: are they the kind of sources a careful person can reason from at all?
 If they are late, anonymous legends, the rest of the case collapses before it begins.
 If they carry the marks of genuine testimony, then their claims deserve a hearing.
@@ -28,7 +26,8 @@ Notice the order: we are not yet asking anyone to *believe* the Gospels — only
    Legends that overwrite history need generations; here the witnesses were still alive to object.
 
 2. **They are rooted in testimony, not anonymous drift.**
-   The accounts name places, customs, and people with a specificity that fits first-century Palestine, and they preserve the sort of concrete, incidental detail that eyewitnesses carry and inventors omit.
+   The accounts name places, customs, and people with a specificity that fits first-century Palestine, and they preserve the sort of concrete, 
+   incidental detail that eyewitnesses carry and inventors omit.
    Independent Gospels agree on the substance while differing in vantage point — the fingerprint of real witnesses, not a single copied script.
 
 3. **They preserve material an inventor would have removed.**
@@ -46,7 +45,8 @@ Notice the order: we are not yet asking anyone to *believe* the Gospels — only
 
 A jury does not demand that every witness be flawless before it listens.
 It asks whether the testimony is early, independent, and unflattering to the one giving it — the very things that make a story hard to have simply made up.
-A witness who admits embarrassing details against his own side, and whose account lines up with others he never coordinated with, is trusted precisely *because* of those rough edges.
+A witness who admits embarrassing details against his own side, and whose account lines up with others he never coordinated with, 
+is trusted precisely *because* of those rough edges.
 
 The Gospels invite exactly that kind of scrutiny.
 They are not asking to skip the witness stand; they are asking to take it.
