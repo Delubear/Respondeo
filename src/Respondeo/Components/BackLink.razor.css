@@ -1,0 +1,14 @@
+.back-link {
+    margin-top: 2rem;
+}
+
+.back-link a {
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.back-link a:hover,
+.back-link a:focus-visible {
+    color: var(--ink);
+    text-decoration: underline;
+}

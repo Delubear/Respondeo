@@ -71,11 +71,7 @@
     line-height: 1.6;
 }
 
-.miracle__back {
-    margin: 0;
-}
-
-/* Embedded media directives (youtube / pdf / button) are rendered into the body HTML, so they are reached via ::deep. */
+/* Embedded media directives
 .miracle__body ::deep .video-embed {
     position: relative;
     width: 100%;

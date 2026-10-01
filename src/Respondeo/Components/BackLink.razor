@@ -1,0 +1,15 @@
+@* Standardised "back to list" link used at the foot of detail pages (articles, prayers,
+   miracles, devotions). Renders an arrow plus label and always uses the muted ink colour so
+   the affordance is consistent across the Discover pillars rather than inheriting the red accent. *@
+
+<p class="back-link">
+    <a href="@Href">&larr; @Label</a>
+</p>
+
+@code {
+    /// <summary>Destination route for the back link (e.g. "discover/articles").</summary>
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+
+    /// <summary>Visible label following the arrow (e.g. "Back to all articles").</summary>
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+}
