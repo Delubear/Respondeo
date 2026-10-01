@@ -55,7 +55,7 @@ public class DevotionsTests : TestContext
 
         Services.AddSingleton<IDevotionService>(new DevotionService(http, ContentRendering.Renderer));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<NavigationManager>(), JSInterop.JSRuntime));
+        Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
     }
 
     [Fact]

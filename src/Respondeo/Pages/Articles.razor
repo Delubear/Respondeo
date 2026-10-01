@@ -1,7 +1,7 @@
 @page "/discover/articles"
 @inject IArticleService ArticleService
 @inject IBreadcrumbTrail Trail
-@inject DiscoverBrowseState BrowseState
+@inject BrowseState Browse
 @inject IJSRuntime JS
 
 <PageTitle>Articles &mdash; Discover &mdash; Respondeo</PageTitle>
@@ -90,6 +90,7 @@
     ];
 
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private BrowseSection _browse = default!;
 
     private IReadOnlyList<string> _tags =>
         (_articles ?? [])
@@ -102,8 +103,9 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _query = BrowseState.GetQuery("articles");
-        _selectedTags = new HashSet<string>(BrowseState.GetFilter("articles.tag"), StringComparer.OrdinalIgnoreCase);
+        _browse = Browse.Section("discover/articles", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "articles"));
+        _query = _browse.Query;
+        _selectedTags = new HashSet<string>(_browse.GetFilter("tag"), StringComparer.OrdinalIgnoreCase);
 
         var articles = await ArticleService.GetIndexAsync();
         _articles = articles
@@ -124,7 +126,7 @@
     private void OnSearchChanged(string value)
     {
         _query = value;
-        BrowseState.SetQuery("articles", _query);
+        _browse.Query = _query;
     }
 
     private void OnSortChanged(string value) => _sortKey = value;
@@ -132,7 +134,7 @@
     private void OnTagsChanged(IReadOnlySet<string> selected)
     {
         _selectedTags = selected;
-        BrowseState.SetFilter("articles.tag", selected);
+        _browse.SetFilter("tag", selected);
     }
 
     private bool HasActiveFilters => _selectedTags.Count > 0;
@@ -140,7 +142,7 @@
     private void ClearFilters()
     {
         _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        BrowseState.SetFilter("articles.tag", _selectedTags);
+        _browse.SetFilter("tag", _selectedTags);
     }
 
     // Display-only pill for a Discover article: capitalizes the topic slug, or shows nothing for the

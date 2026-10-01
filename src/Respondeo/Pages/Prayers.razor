@@ -1,7 +1,7 @@
 @page "/discover/prayers"
 @inject IPrayerService PrayerService
 @inject IBreadcrumbTrail Trail
-@inject DiscoverBrowseState BrowseState
+@inject BrowseState Browse
 @inject IJSRuntime JS
 
 <PageTitle>Prayers &mdash; Discover &mdash; Respondeo</PageTitle>
@@ -94,13 +94,15 @@
 
     private IReadOnlySet<string> _selectedCategories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private BrowseSection _browse = default!;
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _query = BrowseState.GetQuery("prayers");
-        _selectedCategories = new HashSet<string>(BrowseState.GetFilter("prayers.category"), StringComparer.OrdinalIgnoreCase);
-        _selectedTags = new HashSet<string>(BrowseState.GetFilter("prayers.tags"), StringComparer.OrdinalIgnoreCase);
+        _browse = Browse.Section("discover/prayers", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "prayers"));
+        _query = _browse.Query;
+        _selectedCategories = new HashSet<string>(_browse.GetFilter("category"), StringComparer.OrdinalIgnoreCase);
+        _selectedTags = new HashSet<string>(_browse.GetFilter("tags"), StringComparer.OrdinalIgnoreCase);
 
         var prayers = await PrayerService.GetIndexAsync();
         _prayers = prayers;
@@ -131,7 +133,7 @@
     private void OnSearchChanged(string value)
     {
         _query = value;
-        BrowseState.SetQuery("prayers", _query);
+        _browse.Query = _query;
     }
 
     private void OnSortChanged(string value) => _sortKey = value;
@@ -139,13 +141,13 @@
     private void OnCategoriesChanged(IReadOnlySet<string> selected)
     {
         _selectedCategories = selected;
-        BrowseState.SetFilter("prayers.category", selected);
+        _browse.SetFilter("category", selected);
     }
 
     private void OnTagsChanged(IReadOnlySet<string> selected)
     {
         _selectedTags = selected;
-        BrowseState.SetFilter("prayers.tags", selected);
+        _browse.SetFilter("tags", selected);
     }
 
     private bool HasActiveFilters => _selectedCategories.Count > 0 || _selectedTags.Count > 0;
@@ -154,8 +156,8 @@
     {
         _selectedCategories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        BrowseState.SetFilter("prayers.category", _selectedCategories);
-        BrowseState.SetFilter("prayers.tags", _selectedTags);
+        _browse.SetFilter("category", _selectedCategories);
+        _browse.SetFilter("tags", _selectedTags);
     }
 
     // Turns a category slug (e.g. "marian") into a display tag (e.g. "Marian").

@@ -40,13 +40,9 @@ builder.Services.AddScoped<IDevotionProgressService, DevotionProgressService>();
 // Signals whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
 builder.Services.AddScoped<NavigationIntent>();
 
-// Remembers search text and scroll position for the Discover browse lists across Back navigation.
-builder.Services.AddScoped<DiscoverBrowseState>();
-
-// Remembers the Summa browse/search view (search text + expanded parts/treatises) across page remounts, resetting itself when the visitor leaves the Summa area.
-builder.Services.AddScoped<SummaBrowseState>();
-
-// Remembers the miracles browse view (search text + selected facet filters) across page remounts, resetting itself when the visitor leaves the miracles area.
-builder.Services.AddScoped<MiracleBrowseState>();
+// Remembers transient browse view state (search text + facet filters) for every browse list across page
+// remounts. Each page scopes a section by its area path, so leaving a sub-area (Articles, Prayers,
+// Devotions, Miracles, Summa) resets just that section rather than all areas together.
+builder.Services.AddScoped<BrowseState>();
 
 await builder.Build().RunAsync();

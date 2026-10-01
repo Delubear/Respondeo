@@ -21,7 +21,7 @@ public class PrayersTests : TestContext
 
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<NavigationManager>(), JSInterop.JSRuntime));
+        Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
     }
 
     private static IReadOnlyList<PrayerSummary> SampleIndex() =>

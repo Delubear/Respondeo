@@ -1,7 +1,7 @@
 @page "/discover/miracles"
 @inject IMiracleService MiracleService
 @inject IBreadcrumbTrail Trail
-@inject MiracleBrowseState Browse
+@inject BrowseState Browse
 
 <PageTitle>Catholic Miracles &mdash; Respondeo</PageTitle>
 
@@ -26,30 +26,30 @@
         <SearchBox Id="miracles-search"
                            Label="Search miracles"
                            Placeholder="e.g. Lanciano, healing, Italy..."
-                           Value="@Browse.Query"
+                           Value="@_browse.Query"
                            ValueChanged="OnSearchChanged" />
 
         <div class="filter-layout">
             <aside class="filter-rail">
                 <h2 class="filter-rail__title">Kind</h2>
                 <TopicFilter Topics="_types"
-                             Selected="Browse.Types"
+                             Selected="_selectedTypes"
                              SelectedChanged="OnTypesChanged"
                              DisplayLabel="_facets.Category" />
 
                 <h2 class="filter-rail__title">Church&rsquo;s judgment</h2>
                 <TopicFilter Topics="_approvals"
-                             Selected="Browse.Approvals"
+                             Selected="_selectedApprovals"
                              SelectedChanged="OnApprovalsChanged"
                              DisplayLabel="_facets.Approval" />
 
                 <h2 class="filter-rail__title">Region</h2>
                 <TopicFilter Topics="_regions"
-                             Selected="Browse.Regions"
+                             Selected="_selectedRegions"
                              SelectedChanged="OnRegionsChanged"
                              DisplayLabel="_facets.Region" />
 
-                <ClearFiltersButton Active="Browse.HasActiveFilters" OnClear="ClearFilters" />
+                <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
             <div class="filter-results">
@@ -88,6 +88,10 @@
     private IReadOnlyList<string> _regions = [];
     private MiracleFacetCatalog _facets = MiracleFacetCatalog.Empty;
     private string _sortKey = _sortOptions[0].Key;
+    private BrowseSection _browse = default!;
+    private IReadOnlySet<string> _selectedTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedApprovals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     // Each sort option carries its own ordering, so the modes are declared once here and the
     // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
@@ -102,6 +106,10 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        _browse = Browse.Section("discover/miracles");
+        _selectedTypes = new HashSet<string>(_browse.GetFilter("type"), StringComparer.OrdinalIgnoreCase);
+        _selectedApprovals = new HashSet<string>(_browse.GetFilter("approval"), StringComparer.OrdinalIgnoreCase);
+        _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
 
         _facets = await MiracleService.GetFacetsAsync();
         var index = await MiracleService.GetIndexAsync();
@@ -113,26 +121,35 @@
         _regions = _all.Select(m => m.Region).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Region, StringComparer.CurrentCultureIgnoreCase).ToList();
     }
 
-    private void OnSearchChanged(string value) => Browse.Query = value;
+    private void OnSearchChanged(string value) => _browse.Query = value;
 
     private void OnSortChanged(string value) => _sortKey = value;
 
-    private void OnTypesChanged(IReadOnlySet<string> selected) => Replace(Browse.Types, selected);
-
-    private void OnApprovalsChanged(IReadOnlySet<string> selected) => Replace(Browse.Approvals, selected);
-
-    private void OnRegionsChanged(IReadOnlySet<string> selected) => Replace(Browse.Regions, selected);
-
-    private static void Replace(HashSet<string> target, IReadOnlySet<string> selected)
+    private void OnTypesChanged(IReadOnlySet<string> selected)
     {
-        target.Clear();
-        foreach (var value in selected)
-        {
-            target.Add(value);
-        }
+        _selectedTypes = selected;
+        _browse.SetFilter("type", selected);
     }
 
-    private void ClearFilters() => Browse.Clear();
+    private void OnApprovalsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedApprovals = selected;
+        _browse.SetFilter("approval", selected);
+    }
+
+    private void OnRegionsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedRegions = selected;
+        _browse.SetFilter("region", selected);
+    }
+
+    private void ClearFilters()
+    {
+        _selectedTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedApprovals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _browse.Clear();
+    }
 
     // A miracle matches when it satisfies every active facet group (intersection across groups, union
     // within a group) and its title/summary/country/tags contain the search query.
@@ -145,12 +162,12 @@
                 return Array.Empty<MiracleIndexEntry>();
             }
 
-            var query = Browse.Query?.Trim() ?? string.Empty;
+            var query = _browse.Query?.Trim() ?? string.Empty;
 
             var results = _all.Where(m =>
-                (Browse.Types.Count == 0 || m.Types.Any(Browse.Types.Contains))
-                && (Browse.Approvals.Count == 0 || Browse.Approvals.Contains(m.Approval))
-                && (Browse.Regions.Count == 0 || Browse.Regions.Contains(m.Region))
+                (_selectedTypes.Count == 0 || m.Types.Any(_selectedTypes.Contains))
+                && (_selectedApprovals.Count == 0 || _selectedApprovals.Contains(m.Approval))
+                && (_selectedRegions.Count == 0 || _selectedRegions.Contains(m.Region))
                 && Matches(m, query));
 
             var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];

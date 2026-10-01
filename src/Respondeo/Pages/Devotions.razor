@@ -1,7 +1,7 @@
 @page "/discover/devotions"
 @inject IDevotionService DevotionService
 @inject IBreadcrumbTrail Trail
-@inject DiscoverBrowseState BrowseState
+@inject BrowseState Browse
 @inject IJSRuntime JS
 
 <PageTitle>Devotions &mdash; Discover &mdash; Respondeo</PageTitle>
@@ -89,12 +89,14 @@
     private IReadOnlyList<string> _kinds = [];
     private IReadOnlyList<string> _kindLabels = [];
     private IReadOnlySet<string> _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private BrowseSection _browse = default!;
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _query = BrowseState.GetQuery("devotions");
-        _selectedKinds = new HashSet<string>(BrowseState.GetFilter("devotions.kind"), StringComparer.OrdinalIgnoreCase);
+        _browse = Browse.Section("discover/devotions", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "devotions"));
+        _query = _browse.Query;
+        _selectedKinds = new HashSet<string>(_browse.GetFilter("kind"), StringComparer.OrdinalIgnoreCase);
 
         var devotions = await DevotionService.GetIndexAsync();
         _devotions = devotions;
@@ -119,7 +121,7 @@
     private void OnSearchChanged(string value)
     {
         _query = value;
-        BrowseState.SetQuery("devotions", _query);
+        _browse.Query = _query;
     }
 
     private void OnSortChanged(string value) => _sortKey = value;
@@ -127,13 +129,13 @@
     private void OnKindsChanged(IReadOnlySet<string> selected)
     {
         _selectedKinds = selected;
-        BrowseState.SetFilter("devotions.kind", selected);
+        _browse.SetFilter("kind", selected);
     }
 
     private void ClearFilters()
     {
         _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        BrowseState.SetFilter("devotions.kind", _selectedKinds);
+        _browse.SetFilter("kind", _selectedKinds);
     }
 
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").

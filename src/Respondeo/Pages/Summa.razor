@@ -2,7 +2,7 @@
 @inject ISummaService SummaService
 @inject ISummaPartCatalog Parts
 @inject IBreadcrumbTrail Trail
-@inject SummaBrowseState Browse
+@inject BrowseState Browse
 @inject IJSRuntime JS
 
 <PageTitle>Summa Theologiae — Respondeo</PageTitle>
@@ -163,9 +163,11 @@
     // Back; this property is just a convenient proxy.
     private string _query
     {
-        get => Browse.Query;
-        set => Browse.Query = value;
+        get => _browse.Query;
+        set => _browse.Query = value;
     }
+
+    private BrowseSection _browse = default!;
 
     // Flattened, pre-computed view of every searchable entry (questions + articles) built once when
     // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
@@ -186,6 +188,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        _browse = Browse.Section("summa", () => JS.InvokeVoidAsync("respondeoSummaBrowse.clear"));
         _index = await SummaService.GetIndexAsync();
         _entries = BuildEntries(_index);
 

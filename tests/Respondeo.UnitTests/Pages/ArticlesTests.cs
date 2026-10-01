@@ -68,7 +68,7 @@ public class ArticlesTests : TestContext
         Services.AddSingleton<IArticleService>(new ArticleService(http, ContentRendering.Renderer));
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(sp => new DiscoverBrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>(), JSInterop.JSRuntime));
+        Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>()));
     }
 
     [Fact]

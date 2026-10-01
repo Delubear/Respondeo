@@ -73,7 +73,7 @@ public class MiraclesTests : TestContext
 
         Services.AddSingleton<IMiracleService>(new MiracleService(http, ContentRendering.Renderer));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
-        Services.AddSingleton(sp => new MiracleBrowseState(sp.GetRequiredService<NavigationManager>()));
+        Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
     }
 
     [Fact]
