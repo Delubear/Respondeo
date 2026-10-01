@@ -35,3 +35,11 @@ They never did.
 None covers the death, the empty tomb, the group appearances, the converted skeptics, *and* the willingness to die — all together.
 "Extraordinary claims require extraordinary evidence" is a sound principle, and it cuts both ways: the *ordinary* explanations turn out to require extraordinary strain to hold the facts together.
 The Resurrection is not believed for lack of alternatives, but because it explains what the alternatives cannot.
+
+## See it today: the theory that keeps needing patches
+
+A good explanation covers the evidence cleanly; a bad one survives only by bolting on a fresh exception for every fact it meets.
+When an account needs the executioners to fail, *and* the mourners to lose their way, *and* the grieving to hallucinate in groups, *and* the skeptics to convert for no reason, the patches have become the theory.
+
+That is the tell investigators watch for.
+The single explanation that needs no patches — that He actually rose — is dismissed only because of its cost, not because it fits the evidence worse.

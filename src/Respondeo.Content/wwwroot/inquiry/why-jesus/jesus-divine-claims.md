@@ -20,16 +20,16 @@ So everything turns on this: did Jesus claim an authority that belongs to God al
 **The case that Jesus claimed a divine authority:**
 
 1. **He forgave sins as one offended, not as a channel of pardon.**
-   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once — "Who can forgive sins but God alone?"
+   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once — "Who can forgive sins but God alone?" (Mark 2:7).
    He does not correct the charge of blasphemy; He answers it with a healing.
 
 2. **He set His own word above the Law.**
-   "You have heard that it was said… but I say to you."
+   "You have heard that it was said… but I say to you" (Matthew 5:21–22).
    No prophet spoke like this; a prophet said "thus says the Lord."
    Jesus places His own authority alongside — and above — the Torah given at Sinai, as though the Lawgiver were speaking in the first person.
 
 3. **He accepted worship and applied divine titles to Himself.**
-   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel's divine figure), and answers "I AM" — the very name revealed to Moses — for which His hearers take up stones.
+   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13–14), and answers "before Abraham was, I AM" (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
    The reaction of His opponents is the surest gauge of what they heard: not eccentricity, but blasphemy.
 
 4. **The claim is woven through the record, not stitched onto its edge.**

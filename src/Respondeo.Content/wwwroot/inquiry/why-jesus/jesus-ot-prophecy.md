@@ -44,5 +44,5 @@ The messianic texts are like those scattered sketches.
 Whether the assembled face is Jesus of Nazareth is a judgment each person must weigh — but the convergence is not nothing.
 
 **Where this leads.** Prophecy can show who the Messiah was meant to be; it cannot by itself prove that Jesus was He.
-For that we need the event the earliest witnesses staked everything on — the one they said turned a executed criminal into a vindicated Lord.
+the one they said turned an executed criminal into a vindicated Lord.
 The next question is the decisive one: did Jesus rise from the dead?

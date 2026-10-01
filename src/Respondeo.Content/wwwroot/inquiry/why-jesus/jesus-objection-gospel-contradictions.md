@@ -31,3 +31,11 @@ And that is exactly what the Gospels do.
 On the periphery — the hour, the order, the names listed — they vary.
 On the center — that Jesus was crucified, was buried, that the tomb was found empty, and that He was seen alive — they speak with one voice.
 The disagreements are real, and they are precisely the sort that mark four genuine witnesses rather than one rehearsed script.
+
+## See it today: four reports of the same accident
+
+Ask four bystanders to describe a crash and you will get four accounts that differ on the color of the car, the order of events, and who shouted first.
+A detective does not conclude that no crash occurred; the divergence is what tells him the witnesses are independent rather than coached.
+
+The one thing that would make a detective suspicious is the opposite — four statements matching word for word, which signals a story agreed on in advance.
+The Gospels fail that suspicious test and pass the honest one: they agree on the collision and differ on the details, exactly as real testimony does.

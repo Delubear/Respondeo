@@ -6,8 +6,10 @@ tags:
   - jesus christ
   - divine revelation
 sections:
+  - jesus-objection-did-he-exist
   - jesus-objection-legend
   - jesus-objection-resurrection-alternatives
+  - jesus-objection-pagan-parallels
   - jesus-objection-gospel-contradictions
 ---
 

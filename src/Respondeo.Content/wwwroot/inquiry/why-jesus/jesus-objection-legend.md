@@ -27,3 +27,11 @@ A late legend can be peeled away; this cannot, because it is woven through the e
 Finally, the exaltation happened among **monotheistic Jews** — the people least likely of all to start worshipping a man.
 For first-century Jews to attribute divinity to a crucified Galilean is not the natural drift of legend; it is a shocking rupture that demands an explanation strong enough to overturn their deepest conviction.
 That the belief arose *anyway*, that early, and among *those* people, is far harder to explain as gradual invention than as their response to what they claimed to have witnessed.
+
+## See it today: the obituary that cannot be rewritten
+
+A rumor can reshape a stranger's reputation across a few decades, once everyone who knew him is gone.
+But try to rewrite the life of someone whose friends, family, and critics are all still in the room, and the correction comes instantly — they were there, and they remember.
+
+That is the situation the legend theory has to beat.
+The claim that Jesus was divine was circulating while the people who had eaten with him, buried him, and opposed him were still alive to answer it — and the answer that spread was not denial but worship.
