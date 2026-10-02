@@ -29,6 +29,9 @@ builder.Services.AddRespondeoSumma();
 // the content services, keeping that orchestration out of the component.
 builder.Services.AddScoped<SummaQuestionPresenter>();
 
+// Pure title/treatise search over the Summa index, kept out of the Summa browse page so it is unit-testable.
+builder.Services.AddScoped<SummaSearch>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 

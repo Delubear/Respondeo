@@ -1,0 +1,125 @@
+@inject ISummaPartCatalog Parts
+
+<div class="summa__browse" data-browse-scroll="summa">
+    @foreach (var part in BrowseParts())
+    {
+        var partInfo = Parts.ByStorageKey(part.Id);
+        <details class="summa__part" data-browse-section="@part.Id" open="@IsPartOpen(part)">
+            <summary class="summa__part-summary">
+                <span class="summa__part-heading">
+                    <span class="summa__part-title">@part.Title</span>
+                    @if (partInfo is not null)
+                    {
+                        <span class="summa__part-latin">@partInfo.LatinName</span>
+                    }
+                </span>
+                <span class="summa__part-count">@part.Questions.Count questions</span>
+            </summary>
+            @if (partInfo is not null)
+            {
+                <p class="summa__part-description">@partInfo.Description</p>
+            }
+            @foreach (var group in GroupByTreatise(part.Questions))
+            {
+                @if (group.Treatise is null)
+                {
+                    <ol class="summa__question-list">
+                        @foreach (var question in group.Questions)
+                        {
+                            <li class="summa__question">
+                                @if (question.IsPrologue)
+                                {
+                                    <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                        <span class="summa__question-title summa__question-title--prologue">@question.Title</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                        <span class="summa__question-number">Q@(question.Number)</span>
+                                        <span class="summa__question-title">@question.Title</span>
+                                        <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                    </a>
+                                }
+                            </li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <details class="summa__treatise" data-browse-section="@TreatiseKey(part, group.Treatise)" open="@IsTreatiseOpen(part, group.Treatise)">
+                        <summary class="summa__treatise-summary">
+                            <span class="summa__treatise-marker" aria-hidden="true"></span>
+                            <span class="summa__treatise-title">@group.Treatise</span>
+                            <span class="summa__treatise-count">@FormatTreatiseRange(group.Questions)</span>
+                        </summary>
+                        <ol class="summa__question-list">
+                            @foreach (var question in group.Questions)
+                            {
+                                <li class="summa__question">
+                                    <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                        <span class="summa__question-number">Q@(question.Number)</span>
+                                        <span class="summa__question-title">@question.Title</span>
+                                        <span class="summa__question-articles">@question.Articles.Count articles</span>
+                                    </a>
+                                </li>
+                            }
+                        </ol>
+                    </details>
+                }
+            }
+        </details>
+    }
+</div>
+
+@code {
+    // The loaded Summa index whose parts/questions this list renders.
+    [Parameter, EditorRequired] public SummaIndex Index { get; set; } = default!;
+
+    // Snapshot of which part/treatise sections were open when the page mounted (read from the JS
+    // browse-state store). Drives the initial `open` attributes and must stay constant for the
+    // component's lifetime: the browser owns visual state after mount and browse-state.js records
+    // subsequent toggles for the NEXT restore, so Blazor never re-applies `open` mid-session.
+    [Parameter, EditorRequired] public IReadOnlySet<string> OpenOnMount { get; set; } = new HashSet<string>();
+
+    // The parts shown in the browse list: every part in reading order.
+    private IEnumerable<SummaPartEntry> BrowseParts() => Index?.Parts ?? Array.Empty<SummaPartEntry>();
+
+    private bool IsPartOpen(SummaPartEntry part) => OpenOnMount.Contains(part.Id);
+
+    private static string TreatiseKey(SummaPartEntry part, string treatise) => $"{part.Id}::{treatise}";
+
+    private bool IsTreatiseOpen(SummaPartEntry part, string treatise) => OpenOnMount.Contains(TreatiseKey(part, treatise));
+
+    // Groups a part's questions into consecutive runs sharing the same treatise heading, preserving
+    // reading order. Questions before the first treatise heading form a leading group with a null
+    // treatise so they render as a plain list rather than a sub-accordion.
+    private static List<TreatiseGroup> GroupByTreatise(IReadOnlyList<SummaQuestionEntry> questions)
+    {
+        var groups = new List<TreatiseGroup>();
+        foreach (var question in questions)
+        {
+            if (groups.Count == 0 || groups[^1].Treatise != question.Treatise)
+            {
+                groups.Add(new TreatiseGroup(question.Treatise, new List<SummaQuestionEntry>()));
+            }
+
+            groups[^1].Questions.Add(question);
+        }
+
+        return groups;
+    }
+
+    // Builds the treatise summary label: a question-number range (or a single number when the treatise
+    // has one question) followed by a singular/plural question count.
+    private static string FormatTreatiseRange(IReadOnlyList<SummaQuestionEntry> questions)
+    {
+        var first = questions[0].Number;
+        var last = questions[^1].Number;
+        var range = first == last ? $"Q{first}" : $"Q{first}\u2013Q{last}";
+        var count = questions.Count == 1 ? "1 question" : $"{questions.Count} questions";
+        return $"{range} \u00b7 {count}";
+    }
+
+    private sealed record TreatiseGroup(string? Treatise, List<SummaQuestionEntry> Questions);
+}

@@ -1,0 +1,59 @@
+@inject ISummaPartCatalog Parts
+
+@if (Matches.Count == 0)
+{
+    <p class="empty-state">No questions or articles match &ldquo;@Query&rdquo;.</p>
+}
+else
+{
+    <p class="results-count">
+        @if (Truncated)
+        {
+            @($"Showing first {Matches.Count} results — refine your search to narrow them down")
+        }
+        else
+        {
+            @($"{Matches.Count} result(s)")
+        }
+    </p>
+    <ul class="summa__match-list">
+        @foreach (var match in Matches)
+        {
+            <li class="summa__match">
+                <a class="summa__match-link" href="@MatchHref(match)">
+                    <span class="summa__match-ref eyebrow">
+                        @match.PartTitle@if (!string.IsNullOrWhiteSpace(match.Treatise))
+                        {
+                            @: &middot; @match.Treatise
+                        } &middot; Q@(match.QuestionNumber)
+                    </span>
+                    <span class="summa__match-title">@match.Title</span>
+                    @if (match.ArticleNumber is int articleNumber)
+                    {
+                        <span class="summa__match-kind">Article @articleNumber</span>
+                    }
+                    else
+                    {
+                        <span class="summa__match-kind">Question @(match.QuestionNumber)</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    // The search matches to render, already capped by the SummaSearch service.
+    [Parameter, EditorRequired] public IReadOnlyList<SummaSearchEntry> Matches { get; set; } = Array.Empty<SummaSearchEntry>();
+
+    // True when the result cap was hit, so the count line hints the reader to refine the query.
+    [Parameter] public bool Truncated { get; set; }
+
+    // The current query text, echoed in the empty-state message.
+    [Parameter] public string Query { get; set; } = string.Empty;
+
+    // Article matches deep-link to the specific article section; question matches go to the top.
+    private string MatchHref(SummaSearchEntry match) => match.ArticleNumber is int articleNumber
+        ? $"summa/{Parts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
+        : $"summa/{Parts.ToUrlId(match.QuestionId)}";
+}

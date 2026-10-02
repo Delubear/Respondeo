@@ -57,6 +57,7 @@ public class SummaTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddScoped<BrowseState>();
         Services.AddScoped<BrowseStateInterop>();
+        Services.AddScoped<SummaSearch>();
     }
 
     [Fact]

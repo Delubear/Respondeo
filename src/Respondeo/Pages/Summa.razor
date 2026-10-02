@@ -1,9 +1,9 @@
 @page "/summa"
 @inject ISummaService SummaService
-@inject ISummaPartCatalog Parts
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
+@inject SummaSearch Search
 
 <PageTitle>Summa Theologiae — Respondeo</PageTitle>
 
@@ -33,121 +33,11 @@
 
         @if (IsSearching)
         {
-            @if (_matches.Count == 0)
-            {
-                <p class="empty-state">No questions or articles match &ldquo;@_query&rdquo;.</p>
-            }
-            else
-            {
-                <p class="results-count">
-                    @if (_truncated)
-                    {
-                        @($"Showing first {_matches.Count} results — refine your search to narrow them down")
-                    }
-                    else
-                    {
-                        @($"{_matches.Count} result(s)")
-                    }
-                </p>
-                <ul class="summa__match-list">
-                    @foreach (var match in _matches)
-                    {
-                        <li class="summa__match">
-                            <a class="summa__match-link" href="@MatchHref(match)">
-                                <span class="summa__match-ref eyebrow">
-                                    @match.PartTitle@if (!string.IsNullOrWhiteSpace(match.Treatise))
-                                    {
-                                        @: &middot; @match.Treatise
-                                    } &middot; Q@(match.QuestionNumber)
-                                </span>
-                                <span class="summa__match-title">@match.Title</span>
-                                @if (match.ArticleNumber is int articleNumber)
-                                {
-                                    <span class="summa__match-kind">Article @articleNumber</span>
-                                }
-                                else
-                                {
-                                    <span class="summa__match-kind">Question @(match.QuestionNumber)</span>
-                                }
-                            </a>
-                        </li>
-                    }
-                </ul>
-            }
+            <SummaSearchResults Matches="_matches" Truncated="_truncated" Query="@_query" />
         }
         else
         {
-            <div class="summa__browse" data-browse-scroll="summa">
-                @foreach (var part in BrowseParts())
-                {
-                    var partInfo = Parts.ByStorageKey(part.Id);
-                    <details class="summa__part" data-browse-section="@part.Id" open="@IsPartOpen(part)">
-                        <summary class="summa__part-summary">
-                            <span class="summa__part-heading">
-                                <span class="summa__part-title">@part.Title</span>
-                                @if (partInfo is not null)
-                                {
-                                    <span class="summa__part-latin">@partInfo.LatinName</span>
-                                }
-                            </span>
-                            <span class="summa__part-count">@part.Questions.Count questions</span>
-                        </summary>
-                        @if (partInfo is not null)
-                        {
-                            <p class="summa__part-description">@partInfo.Description</p>
-                        }
-                        @foreach (var group in GroupByTreatise(part.Questions))
-                        {
-                            @if (group.Treatise is null)
-                            {
-                                <ol class="summa__question-list">
-                                    @foreach (var question in group.Questions)
-                                    {
-                                        <li class="summa__question">
-                                            @if (question.IsPrologue)
-                                            {
-                                                <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
-                                                    <span class="summa__question-title summa__question-title--prologue">@question.Title</span>
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
-                                                    <span class="summa__question-number">Q@(question.Number)</span>
-                                                    <span class="summa__question-title">@question.Title</span>
-                                                    <span class="summa__question-articles">@question.Articles.Count articles</span>
-                                                </a>
-                                            }
-                                        </li>
-                                    }
-                                </ol>
-                            }
-                            else
-                            {
-                                <details class="summa__treatise" data-browse-section="@TreatiseKey(part, group.Treatise)" open="@IsTreatiseOpen(part, group.Treatise)">
-                                    <summary class="summa__treatise-summary">
-                                        <span class="summa__treatise-marker" aria-hidden="true"></span>
-                                        <span class="summa__treatise-title">@group.Treatise</span>
-                                        <span class="summa__treatise-count">@FormatTreatiseRange(group.Questions)</span>
-                                    </summary>
-                                    <ol class="summa__question-list">
-                                        @foreach (var question in group.Questions)
-                                        {
-                                            <li class="summa__question">
-                                                <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
-                                                    <span class="summa__question-number">Q@(question.Number)</span>
-                                                    <span class="summa__question-title">@question.Title</span>
-                                                    <span class="summa__question-articles">@question.Articles.Count articles</span>
-                                                </a>
-                                            </li>
-                                        }
-                                    </ol>
-                                </details>
-                            }
-                        }
-                    </details>
-                }
-            </div>
+            <SummaBrowseList Index="_index" OpenOnMount="_openOnMount" />
         }
     }
 
@@ -156,7 +46,7 @@
 
 @code {
     private SummaIndex? _index;
-    private List<SearchMatch> _matches = new();
+    private IReadOnlyList<SummaSearchEntry> _matches = Array.Empty<SummaSearchEntry>();
 
     // The search text lives in the scoped browse state so it survives leaving the page and pressing
     // Back; this property is just a convenient proxy.
@@ -170,26 +60,18 @@
 
     // Flattened, pre-computed view of every searchable entry (questions + articles) built once when
     // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
-    private SearchEntry[] _entries = Array.Empty<SearchEntry>();
+    private SummaSearchEntry[] _entries = Array.Empty<SummaSearchEntry>();
 
-    // Cap on rendered results so a broad query stays responsive; when hit, a hint asks the user to
-    // refine the search.
-    private const int MaxResults = 50;
     private bool _truncated;
 
     private bool IsSearching => _query.Trim().Length > 0;
-
-    // Article matches deep-link to the specific article section; question matches go to the top.
-    private string MatchHref(SearchMatch match) => match.ArticleNumber is int articleNumber
-        ? $"summa/{Parts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
-        : $"summa/{Parts.ToUrlId(match.QuestionId)}";
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("summa", () => BrowseJs.ClearAsync("summa"));
         _index = await SummaService.GetIndexAsync();
-        _entries = BuildEntries(_index);
+        _entries = Search.BuildEntries(_index);
 
         // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open`
         // attributes. Blazor never writes `open` again after this render and never handles `toggle`
@@ -220,138 +102,21 @@
         }
     }
 
-    // The parts shown in the browse list: every part in reading order.
-    private IEnumerable<SummaPartEntry> BrowseParts() => _index?.Parts ?? Array.Empty<SummaPartEntry>();
-
     private void OnSearchChanged(string value)
     {
         _query = value;
         RunSearch();
     }
 
-    // A part is expanded when the mount-time snapshot (read from the JS store) says so. This value
-    // must stay constant for the component's lifetime: the browser owns the element's visual state
-    // after mount, and browse-state.js records subsequent toggles for the NEXT restore. Blazor never
-    // re-renders on a toggle, so `open` is never re-applied mid-session (the "endless jump" fix).
-    private bool IsPartOpen(SummaPartEntry part) => _openOnMount.Contains(part.Id);
-
-    private static string TreatiseKey(SummaPartEntry part, string treatise) => $"{part.Id}::{treatise}";
-
-    private bool IsTreatiseOpen(SummaPartEntry part, string treatise) => _openOnMount.Contains(TreatiseKey(part, treatise));
-
     // Snapshot of which sections were open when this page mounted; drives the initial `open`
-    // attributes and never changes afterward (see IsPartOpen).
+    // attributes passed to SummaBrowseList and never changes afterward.
     private readonly HashSet<string> _openOnMount = new(StringComparer.Ordinal);
 
-    // Groups a part's questions into consecutive runs sharing the same treatise heading, preserving
-    // reading order. Questions before the first treatise heading form a leading group with a null
-    // treatise so they render as a plain list rather than a sub-accordion.
-    private static List<TreatiseGroup> GroupByTreatise(IReadOnlyList<SummaQuestionEntry> questions)
-    {
-        var groups = new List<TreatiseGroup>();
-        foreach (var question in questions)
-        {
-            if (groups.Count == 0 || groups[^1].Treatise != question.Treatise)
-            {
-                groups.Add(new TreatiseGroup(question.Treatise, new List<SummaQuestionEntry>()));
-            }
-
-            groups[^1].Questions.Add(question);
-        }
-
-        return groups;
-    }
-
-    // Builds the treatise summary label: a question-number range (or a single number when the treatise
-    // has one question) followed by a singular/plural question count.
-    private static string FormatTreatiseRange(IReadOnlyList<SummaQuestionEntry> questions)
-    {
-        var first = questions[0].Number;
-        var last = questions[^1].Number;
-        var range = first == last ? $"Q{first}" : $"Q{first}\u2013Q{last}";
-        var count = questions.Count == 1 ? "1 question" : $"{questions.Count} questions";
-        return $"{range} \u00b7 {count}";
-    }
-
-    // Flattens the nested index into a single array of entries with their pre-resolved link metadata.
-    private static SearchEntry[] BuildEntries(SummaIndex index)
-    {
-        var entries = new List<SearchEntry>();
-        foreach (var part in index.Parts)
-        {
-            foreach (var question in part.Questions)
-            {
-                if (question.IsPrologue)
-                {
-                    // Prologues carry no articles and are part-level framing rather than a searchable question; skip them.
-                    continue;
-                }
-
-                entries.Add(new SearchEntry(part.Title, question.Id, question.Number, question.Title, null, question.Treatise));
-
-                foreach (var article in question.Articles)
-                {
-                    entries.Add(new SearchEntry(part.Title, question.Id, question.Number, article.Title, article.Number, question.Treatise));
-                }
-            }
-        }
-
-        return entries.ToArray();
-    }
-
-    // Title/question-text search over the pre-flattened entries: matches question titles and article
-    // ("Whether ...?") titles. Cheap enough to run synchronously over the in-memory list. Results are
-    // capped so a broad query (e.g. a couple of letters) doesn't render thousands of DOM nodes and
-    // stall the first keystroke; scanning stops as soon as the cap is reached.
+    // Delegates to the pure SummaSearch service, then stores the matches/truncation for rendering.
     private void RunSearch()
     {
-        _matches = new();
-        _truncated = false;
-        var term = _query.Trim();
-        if (term.Length == 0)
-        {
-            return;
-        }
-
-        foreach (var entry in _entries)
-        {
-            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase)
-                && !(entry.Treatise?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false))
-            {
-                continue;
-            }
-
-            if (_matches.Count >= MaxResults)
-            {
-                _truncated = true;
-                break;
-            }
-
-            _matches.Add(new SearchMatch(
-                entry.PartTitle,
-                entry.QuestionId,
-                entry.QuestionNumber,
-                entry.Title,
-                entry.ArticleNumber,
-                entry.Treatise));
-        }
+        var result = Search.Search(_entries, _query);
+        _matches = result.Matches;
+        _truncated = result.Truncated;
     }
-
-    private sealed record SearchEntry(
-        string PartTitle,
-        string QuestionId,
-        int QuestionNumber,
-        string Title,
-        int? ArticleNumber,
-        string? Treatise);
-
-    private sealed record SearchMatch(
-        string PartTitle,
-        string QuestionId,
-        int QuestionNumber,
-        string Title,
-        int? ArticleNumber,
-        string? Treatise);
-
-    private sealed record TreatiseGroup(string? Treatise, List<SummaQuestionEntry> Questions);
 }
