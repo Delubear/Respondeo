@@ -7,8 +7,6 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Everything narrows to this.
 Jesus claimed an authority that belongs to God alone — a claim that is either fraud, delusion, or truth.
 He staked its vindication not on argument but on an event: that God would raise Him from the dead.
@@ -25,7 +23,8 @@ And crucially, it is offered as a *public, historical* event — the kind of thi
    Roman executioners were thorough; the "swoon" idea asks us to believe they failed at their one job.
 
 2. **The tomb was found empty.**
-   The claim arose in Jerusalem, where the tomb could be checked, and the earliest counter-story — that the disciples stole the body — already concedes the tomb was empty.
+   The claim arose in Jerusalem, where the tomb could be checked, and the earliest counter-story — that the disciples 
+   stole the body — already concedes the tomb was empty.
    That the first witnesses are women, whose testimony carried little weight, is a detail no inventor would choose.
 
 3. **Many claimed to encounter the risen Jesus.**
@@ -41,7 +40,8 @@ Theft explains the empty tomb but not the sincere, transformed witnesses.
 Hallucination explains some appearances but not the empty tomb or the group encounters.
 Legend explains neither, given how early the claim is.
 The one explanation that accounts for every fact together is the one the witnesses themselves gave: He rose.
-That inference does not compel belief, but it is the most reasonable reading of the evidence — and it leaves the alternatives looking more strained than the miracle they were meant to avoid.
+That inference does not compel belief, but it is the most reasonable reading of the evidence — and it leaves 
+the alternatives looking more strained than the miracle they were meant to avoid.
 
 ## See it today: what the witnesses would not take back
 
@@ -53,4 +53,5 @@ They did the opposite, and they said why: not that they hoped, but that they had
 
 **Where this leads.** If the Resurrection stands, then Jesus' claim to divine authority is vindicated, and God has indeed entered history in person.
 But the risen Christ did not simply appear and depart.
-He gathered followers, appointed leaders, and commissioned them to carry His teaching to the world — which raises the next question: did He found a visible Church to continue His work?
+He gathered followers, appointed leaders, and commissioned them to carry His teaching to the world — which raises the next question: 
+did He found a visible Church to continue His work?
