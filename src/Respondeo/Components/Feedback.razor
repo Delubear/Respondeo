@@ -7,10 +7,13 @@
 
 @implements IAsyncDisposable
 @inject TallyInterop Tally
+@inject FeatureFlags Features
 
-<button type="button" class="feedback__trigger" @onclick="OpenAsync">@LinkText</button>
+@if (Features.ExternalFeedback)
+{
+    <button type="button" class="feedback__trigger" @onclick="OpenAsync">@LinkText</button>
 
-<Dialog @ref="_dialog" Title="Share feedback" Eyebrow="Two ways to reach us" MaxWidth="34rem" Class="dialog--feedback" Footer="@SubmittedFooter">
+    <Dialog @ref="_dialog" Title="Share feedback" Eyebrow="Two ways to reach us" MaxWidth="34rem" Class="dialog--feedback" Footer="@SubmittedFooter">
     <ChildContent>
         @if (!_showForm)
         {
@@ -21,7 +24,7 @@
 
             <div class="feedback__choices">
                 <a class="feedback__choice"
-                   href="https://github.com/Delubear/Respondeo/issues/new/choose"
+                   href="@GitHubIssuesUrl"
                    target="_blank" rel="noopener noreferrer"
                    @onclick="CloseAsync">
                     <span class="feedback__choice-title">Open a GitHub issue</span>
@@ -56,16 +59,24 @@
             </div>
         }
     </ChildContent>
-</Dialog>
+    </Dialog>
+}
+else
+{
+    @* No anonymous route for this deploy: the trigger goes straight to opening a GitHub issue. *@
+    <a class="feedback__trigger" href="@GitHubIssuesUrl" target="_blank" rel="noopener noreferrer">@LinkText</a>
+}
 
 @code {
     private const string TallyFormId = "b5bJd1";
 
+    /// <summary>Where the GitHub route sends visitors to file a tracked issue.</summary>
+    private const string GitHubIssuesUrl = "https://github.com/Delubear/Respondeo/issues/new/choose";
+
     // Use Tally's dedicated /embed/ path (not /r/, which is the full-page form that vertically
     // centers its content and leaves a gap inside a fixed iframe). alignLeft + hideTitle +
     // transparentBackground keep the embedded form flush and top-aligned in our dialog.
-    private string TallyEmbedUrl =>
-        $"https://tally.so/embed/{TallyFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+    private string TallyEmbedUrl => $"https://tally.so/embed/{TallyFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
 
     private Dialog _dialog = default!;
     private bool _showForm;

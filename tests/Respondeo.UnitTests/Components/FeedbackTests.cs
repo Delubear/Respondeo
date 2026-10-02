@@ -7,12 +7,16 @@ namespace Respondeo.UnitTests.Components;
 
 public class FeedbackTests : TestContext
 {
+    private readonly FeatureFlags _features = new();
+
     public FeedbackTests()
     {
         // Feedback renders a Dialog, which drives the native <dialog> through DialogInterop/JS.
         Services.AddScoped<DialogInterop>();
         // The anonymous form listens for Tally's submit message via TallyInterop/JS.
         Services.AddScoped<TallyInterop>();
+        // ExternalFeedback defaults to true, so the choice dialog is the default behavior under test.
+        Services.AddSingleton(_features);
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 
@@ -135,5 +139,31 @@ public class FeedbackTests : TestContext
 
         Assert.Empty(cut.FindAll("iframe.feedback__frame"));
         Assert.Equal(2, cut.FindAll(".feedback__choice").Count);
+    }
+
+    [Fact]
+    public void With_external_feedback_off_the_trigger_links_straight_to_github()
+    {
+        _features.ExternalFeedback = false;
+
+        var cut = Render();
+
+        // No dialog-opening button: the trigger is a direct GitHub anchor instead.
+        Assert.Empty(cut.FindAll("button.feedback__trigger"));
+        var trigger = cut.Find("a.feedback__trigger");
+        Assert.Equal("https://github.com/Delubear/Respondeo/issues/new/choose", trigger.GetAttribute("href"));
+        Assert.Equal("_blank", trigger.GetAttribute("target"));
+        Assert.Contains("noopener", trigger.GetAttribute("rel"));
+    }
+
+    [Fact]
+    public void With_external_feedback_off_there_is_no_choice_dialog()
+    {
+        _features.ExternalFeedback = false;
+
+        var cut = Render();
+
+        Assert.Empty(cut.FindAll(".feedback__choice"));
+        Assert.Empty(cut.FindAll("iframe.feedback__frame"));
     }
 }
