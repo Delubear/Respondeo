@@ -7,11 +7,10 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 The previous stage ended with the risen Christ commissioning followers and appointing leaders — the first sign that He meant to leave behind a body, not just a memory.
 This step takes up that thread and presses it further.
-It is one thing to say Jesus gathered disciples; it is another to say He founded a **Church** in the full sense: a visible society, with structure and a living authority to teach in His name.
+It is one thing to say Jesus gathered disciples; it is another to say He founded a **Church** in the full sense: a visible society, 
+with structure and a living authority to teach in His name.
 
 The question matters because everything downstream depends on it.
 If Christ left only a message, then each person is finally alone with a text to interpret.
@@ -29,11 +28,16 @@ If He left a Church with authority, then there is a *someone* charged to guard a
 
 3. **He meant it to endure and to be provided for.**
    "The gates of hell shall not prevail against it," and "I am with you always, to the end of the age."
-   A body promised protection until the end of time must have a form that lasts that long — which means the authority He gave was meant to be *handed on*, not to die with the first generation.
+   A body promised protection until the end of time must have a form that lasts that long — which 
+   means the authority He gave was meant to be *handed on*, not to die with the first generation.
 
 4. **The apostles clearly understood it this way.**
-   They did not disband into private discipleship; they appointed successors (laying on hands), settled disputes with binding authority (the Council of Jerusalem), and governed real communities with elders and overseers.
+   They did not disband into private discipleship; they appointed successors (laying on hands), 
+   settled disputes with binding authority (the Council of Jerusalem), and governed real communities with elders and overseers.
    The structured, teaching Church visible in the earliest records is the one they believed Christ had established.
+
+> "As the whole Church is termed one mystic body from its likeness to the natural body of a man... so likewise Christ is called the Head of the Church... He has the power of bestowing grace on all the members of the Church."
+> — [*Summa Theologiae* III, Q. 8, A. 1](summa/tertia-q008#article-1)
 
 ## See it today: a charter, not just a speech
 
@@ -43,6 +47,11 @@ The presence of that transferable authority is what turns an inspiration into an
 
 Christ does exactly this.
 He does not merely teach and depart; He appoints a leader, grants an office, and promises His presence to it through the ages.
+
+That tells us what to look for.
+If Christ really founded such a body, it would have to be the kind of thing that could still be standing two thousand years later — a visible, 
+continuing society, not a memory that faded with the first generation.
+A passing enthusiasm could never clear that bar; only an institution built to outlast its founder could even be a candidate.
 
 **Where this leads.** If Christ founded a visible Church and gave it a teaching office meant to endure, then that Church should still exist — identifiable, not lost to history.
 But many communities now claim His name.
