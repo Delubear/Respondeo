@@ -28,13 +28,13 @@ tags:
   that one God freely made all that is, that creation is good, that man is made in God's image, and that sin, not God,
   introduced death and disorder. To force that language into a stopwatch-and-ruler chronology is to misread the genre and
   miss the point the text is actually making.
-- **This is not a modern retreat.** Long before Darwin, the Fathers and Doctors warned against wooden literalism.
+- **This is not a modern retreat.** Long before Darwin, the Fathers and Doctors warned against reading Genesis too literally.
   St. Augustine held that the "days" of Genesis were not ordinary days and cautioned believers not to talk nonsense about
   the natural world in the name of Scripture. St. Thomas taught that where a passage can be read in more than one way,
   the faith is not to be tied to a reading that observation might overturn. Reading Genesis for its theology rather than
   its geology is the older and more Catholic instinct.
 
-**Faith and reason cannot finally contradict each other.** They have the same Author. God is the source both of the
+**Faith and reason cannot ultimately contradict each other.** They have the same Author. God is the source both of the
 truths He reveals and of the reason by which we study the world, so a genuine finding of science and a genuine teaching
 of faith can never really collide. Where they *seem* to, either the science has overreached its evidence or the Scripture
 has been misread &mdash; and patient inquiry, not panic, is the Catholic response:
