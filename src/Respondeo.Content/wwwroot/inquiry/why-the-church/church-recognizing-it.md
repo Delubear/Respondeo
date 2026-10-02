@@ -6,8 +6,6 @@ tags:
   - the catholic church
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 If Christ founded a visible Church meant to endure, then it did not vanish — it is somewhere, and it can be found.
 But that is where the difficulty begins.
 Many communities claim His name, and they teach contradictory things about baptism, authority, the Eucharist, and salvation.
@@ -25,11 +23,13 @@ It is historical and concrete: which body can be traced, without a break, to the
 
 2. **Apostolic succession, not self-appointment.**
    Christ gave authority to specific men and empowered them to hand it on.
-   So the true Church should have leaders who received their office in that continuous chain of laying-on-of-hands, rather than teachers who simply took up the task on their own initiative.
+   So the true Church should have leaders who received their office in that continuous chain of laying-on-of-hands, 
+   rather than teachers who simply took up the task on their own initiative.
 
 3. **A living teaching authority, not Scripture alone.**
    Christ left a Church *before* there was a New Testament, and it was that Church which discerned the canon.
-   A community that recognizes a living authority to settle disputes definitively reflects what Christ established; one that leaves every believer to interpret alone reproduces the very fragmentation He seems to have guarded against.
+   A community that recognizes a living authority to settle disputes definitively reflects what Christ established; 
+   one that leaves every believer to interpret alone reproduces the very fragmentation He seems to have guarded against.
 
 4. **Continuity of worship and belief.**
    The earliest Christians already held a sacrificial Eucharist, a real priesthood, sacraments, and a reverence for Mary and the saints.
@@ -48,6 +48,7 @@ The claimant with the unbroken, verifiable lineage is the heir; the others, howe
 The Church can be traced the same way: bishop to bishop, back to the apostles Christ appointed.
 The line either holds or it does not.
 
-**Where this leads.** Historical continuity tells us *where* to look, but Christ also gave His Church visible **marks** — features by which it could be recognized in any age.
+**Where this leads.** Historical continuity tells us *where* to look, 
+but Christ also gave His Church visible **marks** — features by which it could be recognized in any age.
 The creed names four of them: one, holy, catholic, and apostolic.
 The next question is what those marks mean, and where they are actually found today.
