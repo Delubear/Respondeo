@@ -1,7 +1,7 @@
 .mastnav {
     background: var(--masthead-bg);
     padding: 0 0.5rem;
-    border-bottom: 4px double var(--masthead-rule);
+    border-bottom: 4px solid var(--masthead-rule);
 }
 
 /* Toggle button is hidden on wide screens; the list is always shown there. */
