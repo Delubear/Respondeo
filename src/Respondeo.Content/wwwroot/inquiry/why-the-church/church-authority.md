@@ -8,12 +8,13 @@ tags:
   - scripture & tradition
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
+Once we grant that Christ founded a Church with a teaching office, 
+a practical question follows: *how does His revelation actually reach us, and in what form?*
+Before weighing objections, it helps to set out plainly what the Catholic Church claims — because 
+the claim is often misunderstood as "the Church versus the Bible," when in fact it is an account of how the two belong together.
 
-Once we grant that Christ founded a Church with a teaching office, a practical question follows: *how does His revelation actually reach us, and in what form?*
-Before weighing objections, it helps to set out plainly what the Catholic Church claims — because the claim is often misunderstood as "the Church versus the Bible," when in fact it is an account of how the two belong together.
-
-The short answer is that God's revelation is handed on through **three** things that stand or fall together: Sacred **Scripture**, Sacred **Tradition**, and the living **teaching office** that guards and interprets both.
+The short answer is that God's revelation is handed on through **three** things that stand 
+or fall together: Sacred **Scripture**, Sacred **Tradition**, and the living **teaching office** that guards and interprets both.
 None of the three is a rival to the others; each is meaningless without them.
 
 **The three that carry revelation:**
@@ -36,13 +37,16 @@ None of the three is a rival to the others; each is meaningless without them.
 
 **One deposit, three channels.**
 The picture is not Scripture *against* Tradition, nor either of them against the Church.
-It is a single **deposit of faith** — everything Christ revealed — reaching us through the written word and the Church's living teaching, with the Magisterium given to keep both together and rightly understood.
-Pull out any one leg and the whole thing topples: Scripture without an interpreter fragments, Tradition without Scripture drifts, and an office without the deposit has nothing to guard.
+It is a single **deposit of faith** — everything Christ revealed — reaching us through the written word and the Church's living teaching, 
+with the Magisterium given to keep both together and rightly understood.
+Pull out any one leg and the whole thing topples: Scripture without an interpreter fragments, 
+Tradition without Scripture drifts, and an office without the deposit has nothing to guard.
 
 ## See it today: a constitution, a legal tradition, and a court
 
 A nation is not governed by its written constitution alone.
-There is the text itself; there is the living legal tradition of how it has been understood and applied; and there is a court charged to interpret both with binding authority when citizens read them in opposite ways.
+There is the text itself; there is the living legal tradition of how it has been understood and applied; 
+and there is a court charged to interpret both with binding authority when citizens read them in opposite ways.
 Remove the court and the constitution does not produce unity — it produces a thousand rival readings, each sure it is faithful to the text.
 
 The Church's deposit of faith works the same way: Scripture is the text, Tradition the living understanding, and the Magisterium the court.
