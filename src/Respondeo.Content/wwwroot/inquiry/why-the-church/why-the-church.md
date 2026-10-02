@@ -7,8 +7,6 @@ tags:
   - the catholic church
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 If Jesus is Lord, a further question follows: did He leave us to interpret His teaching alone, or did He found a visible Church and entrust it with His own authority?
 
 The Catholic claim is that Christ established one Church — visible, hierarchical, and enduring — to guard and hand on what He revealed.
