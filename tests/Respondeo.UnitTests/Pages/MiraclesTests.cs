@@ -75,6 +75,7 @@ public class MiraclesTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
+        Services.AddScoped<MiracleBrowse>();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 

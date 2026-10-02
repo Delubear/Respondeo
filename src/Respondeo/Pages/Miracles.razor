@@ -1,5 +1,6 @@
 @page "/discover/miracles"
 @inject IMiracleService MiracleService
+@inject MiracleBrowse Browser
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
@@ -69,8 +70,8 @@
                         {
                             <Card Href="@($"discover/miracles/{m.Id}")"
                                   Title="@m.Title"
-                                  Pills="@MiraclePills(m)"
-                                  Summary="@CardSummary(m)"
+                                  Pills="@Browser.Pills(m, _facets)"
+                                  Summary="@Browser.CardSummary(m, _facets)"
                                   Cta="Read &rarr;"
                                   Level="2" />
                         }
@@ -116,9 +117,9 @@
         _all = index.Entries;
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.
-        _types = _all.SelectMany(m => m.Types).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Category, StringComparer.CurrentCultureIgnoreCase).ToList();
-        _approvals = _all.Select(m => m.Approval).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Approval, StringComparer.CurrentCultureIgnoreCase).ToList();
-        _regions = _all.Select(m => m.Region).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Region, StringComparer.CurrentCultureIgnoreCase).ToList();
+        _types = Browser.Types(_all, _facets);
+        _approvals = Browser.Approvals(_all, _facets);
+        _regions = Browser.Regions(_all, _facets);
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -162,63 +163,15 @@
 
     // A miracle matches when it satisfies every active facet group (intersection across groups, union
     // within a group) and its title/summary/country/tags contain the search query.
-    private IReadOnlyList<MiracleIndexEntry> Filtered
-    {
-        get
-        {
-            if (_all is null)
-            {
-                return Array.Empty<MiracleIndexEntry>();
-            }
-
-            var query = _browse.Query?.Trim() ?? string.Empty;
-
-            var results = _all.Where(m =>
-                (_selectedTypes.Count == 0 || m.Types.Any(_selectedTypes.Contains))
-                && (_selectedApprovals.Count == 0 || _selectedApprovals.Contains(m.Approval))
-                && (_selectedRegions.Count == 0 || _selectedRegions.Contains(m.Region))
-                && Matches(m, query));
-
-            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
-            var ordered = sort.Apply(results);
-
-            return ordered.ToList();
-        }
-    }
-
-    private bool Matches(MiracleIndexEntry m, string query)
-    {
-        if (query.Length == 0)
-        {
-            return true;
-        }
-
-        return m.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
-            || m.Summary.Contains(query, StringComparison.OrdinalIgnoreCase)
-            || (m.Country?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
-            || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase))
-            || m.Types.Select(_facets.Category).Any(k => k.Contains(query, StringComparison.OrdinalIgnoreCase))
-            || _facets.Region(m.Region).Contains(query, StringComparison.OrdinalIgnoreCase);
-    }
-
-    private string CardSummary(MiracleIndexEntry m)
-    {
-        var facets = new List<string> { _facets.Approval(m.Approval) };
-        var century = MiracleFacets.CenturyLabel(m.Year);
-        if (century is not null)
-        {
-            facets.Add(century);
-        }
-
-        if (!string.IsNullOrWhiteSpace(m.Country))
-        {
-            facets.Add(m.Country!);
-        }
-
-        return $"{m.Summary}  \u2014  {string.Join(" \u00b7 ", facets)}";
-    }
-
-    // One pill per kind, mirroring the category/kind pill on the Discover lists.
-    private IReadOnlyList<string> MiraclePills(MiracleIndexEntry m) =>
-        [.. m.Types.Select(_facets.Category).Where(k => !string.IsNullOrWhiteSpace(k))];
+    private IReadOnlyList<MiracleIndexEntry> Filtered =>
+        _all is null
+            ? Array.Empty<MiracleIndexEntry>()
+            : Browser.Filter(
+                _all,
+                _facets,
+                _browse.Query,
+                _selectedTypes,
+                _selectedApprovals,
+                _selectedRegions,
+                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }

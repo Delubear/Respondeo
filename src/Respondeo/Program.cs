@@ -35,6 +35,9 @@ builder.Services.AddScoped<SummaSearch>();
 // Pure facet/search/sort logic for the prayer treasury, kept out of the Prayers browse page so it is unit-testable.
 builder.Services.AddScoped<PrayerBrowse>();
 
+// Pure facet/search/sort logic plus card presentation for the miracles catalog, kept out of the Miracles browse page so it is unit-testable.
+builder.Services.AddScoped<MiracleBrowse>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
