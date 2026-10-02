@@ -53,4 +53,9 @@ builder.Services.AddScoped<BrowseState>();
 // browse pages call strongly-typed methods instead of raw JS interop strings.
 builder.Services.AddScoped<BrowseStateInterop>();
 
+// Typed wrappers over the small window-level navigation helpers (url.replace, scroll, focus) and the
+// Summa cross-reference module, so pages call strongly-typed methods instead of raw JS interop strings.
+builder.Services.AddScoped<NavigationInterop>();
+builder.Services.AddScoped<SummaRefInterop>();
+
 await builder.Build().RunAsync();

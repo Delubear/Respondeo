@@ -23,6 +23,7 @@ public class DevotionPlayerTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(_progress);
         Services.AddSingleton(Substitute.For<IThemeService>());
+        Services.AddScoped<NavigationInterop>();
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
         JSInterop.Mode = JSRuntimeMode.Loose;

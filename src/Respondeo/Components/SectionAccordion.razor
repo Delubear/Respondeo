@@ -4,6 +4,7 @@
 @implements IAsyncDisposable
 @inject IContentService Content
 @inject NavigationManager Nav
+@inject NavigationInterop Navigation
 @inject IJSRuntime JS
 
 @if (_sections.Count > 0)
@@ -112,7 +113,7 @@
             // In Blazor WASM, NavigateTo raises LocationChanged, which retriggers FocusOnNavigate and
             // scrolls to the top. history.replaceState keeps the URL shareable without any navigation,
             // focus shift, or scroll, so the visitor stays exactly where they are.
-            await JS.InvokeVoidAsync("respondeoUrl.replace", url);
+            await Navigation.ReplaceUrlAsync(url);
         }
 
         if (_scrollToId is not null)
@@ -121,7 +122,7 @@
             _scrollToId = null;
             // Smoothly bring the opened section into view (deep link on load or a normal open
             // whose expanded content runs past the bottom of the viewport).
-            await JS.InvokeVoidAsync("respondeoScroll.intoView", target);
+            await Navigation.ScrollIntoViewAsync(target);
         }
 
         // The open panel's body is injected as a MarkupString, so any tables only exist once it has

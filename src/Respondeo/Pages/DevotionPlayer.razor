@@ -4,6 +4,7 @@
 @inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 @inject IDevotionProgressService Progress
+@inject NavigationInterop Navigation
 @inject IJSRuntime JS
 
 <PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
@@ -310,7 +311,7 @@ else
 
             try
             {
-                await JS.InvokeVoidAsync("respondeoScroll.centreInParent", "devotion-current-step");
+                await Navigation.CentreInParentAsync("devotion-current-step");
             }
             catch (JSDisconnectedException)
             {
@@ -327,7 +328,7 @@ else
 
         try
         {
-            await JS.InvokeVoidAsync("respondeoFocus.byId", "devotion-current-step");
+            await Navigation.FocusAsync("devotion-current-step");
         }
         catch (JSDisconnectedException)
         {

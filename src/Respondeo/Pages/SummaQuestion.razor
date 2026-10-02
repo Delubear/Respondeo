@@ -6,7 +6,8 @@
 @inject SummaQuestionPresenter Presenter
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
-@inject IJSRuntime JS
+@inject NavigationInterop Navigation
+@inject SummaRefInterop SummaRef
 
 <PageTitle>@(_question is null ? "Summa Theologiae" : $"{_question.Title} — Summa Theologiae")</PageTitle>
 
@@ -153,14 +154,14 @@ else
     [JSInvokable]
     public async Task OpenArticleFromReference(string fragment)
     {
-        await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
+        await Navigation.ReplaceUrlAsync($"summa/{Id}#{fragment}");
 
         if (SummaFragment.TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
         {
             StateHasChanged();
         }
 
-        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+        await Navigation.ScrollIntoViewAsync(fragment);
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -188,7 +189,7 @@ else
             StateHasChanged();
         }
 
-        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+        await Navigation.ScrollIntoViewAsync(fragment);
     }
 
     public void Dispose()
@@ -239,12 +240,12 @@ else
     // asks the presenter to map it into a back crumb deep-linking to the origin article.
     private async Task ResolveReferenceOriginAsync()
     {
-        var origin = await JS.InvokeAsync<ReferenceOrigin?>("respondeoSummaRef.read");
+        var origin = await SummaRef.ReadOriginAsync();
 
         // Consume it so a later refresh or normal browse doesn't keep showing the back crumb.
         if (origin is not null)
         {
-            await JS.InvokeVoidAsync("respondeoSummaRef.clear");
+            await SummaRef.ClearOriginAsync();
         }
 
         (_backHref, _backLabel) = Presenter.BuildBackCrumb(origin, Id);
@@ -266,9 +267,9 @@ else
     {
         _openArticles.Add(articleNumber);
         var fragment = SummaFragment.ArticleAnchor(articleNumber);
-        await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
+        await Navigation.ReplaceUrlAsync($"summa/{Id}#{fragment}");
         StateHasChanged();
-        await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
+        await Navigation.ScrollIntoViewAsync(fragment);
     }
 
     // The articles render only after the question content loads, so a "#article-N" fragment in the
@@ -279,7 +280,7 @@ else
         if (firstRender)
         {
             _selfRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("respondeoSummaRef.registerPage", _selfRef);
+            await SummaRef.RegisterPageAsync(_selfRef);
         }
 
         if (_loading || _question is null || _scrolledToFragment)

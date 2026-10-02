@@ -4,6 +4,7 @@ using Bunit;
 using Bunit.TestDoubles;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
+using Respondeo.Services;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Infrastructure;
@@ -31,6 +32,7 @@ public class SectionAccordionTests : TestContext
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
+        Services.AddScoped<NavigationInterop>();
         _nav = Services.GetRequiredService<FakeNavigationManager>();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
