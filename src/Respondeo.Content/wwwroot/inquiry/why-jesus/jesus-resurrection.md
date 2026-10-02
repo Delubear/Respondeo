@@ -16,7 +16,7 @@ If He rose, no other explanation of Him will do.
 The Resurrection is therefore not a pious add-on but the hinge of the whole case.
 And crucially, it is offered as a *public, historical* event — the kind of thing that can be investigated, not merely felt.
 
-**The historical facts most scholars grant:**
+**The historical facts — most granted even by critical scholars:**
 
 1. **Jesus was crucified and died.**
    Attested by Christian and non-Christian sources alike, and the last thing a movement would invent about its founder.
@@ -28,8 +28,9 @@ And crucially, it is offered as a *public, historical* event — the kind of thi
    That the first witnesses are women, whose testimony carried little weight, is a detail no inventor would choose.
 
 3. **Many claimed to encounter the risen Jesus.**
-   Individuals and groups, friends and skeptics, on multiple occasions — including Paul, a persecutor, and James, a doubting brother.
-   These are not the profile of people primed to hallucinate, and hallucinations are not shared by crowds.
+   Individuals and groups, friends and skeptics, on multiple occasions — including Paul, who had been persecuting the church, 
+   and James, a follower who did not originally believe the claim.
+   It is the sheer *diversity* of these witnesses — hostile, skeptical, and in separate settings — that no single mental mechanism explains away.
 
 4. **The disciples were transformed and died for it.**
    Frightened deserters became fearless witnesses who suffered and died rather than recant.
@@ -40,8 +41,9 @@ Theft explains the empty tomb but not the sincere, transformed witnesses.
 Hallucination explains some appearances but not the empty tomb or the group encounters.
 Legend explains neither, given how early the claim is.
 The one explanation that accounts for every fact together is the one the witnesses themselves gave: He rose.
-That inference does not compel belief, but it is the most reasonable reading of the evidence — and it leaves 
-the alternatives looking more strained than the miracle they were meant to avoid.
+A miracle is the hardest explanation to accept — yet the only way to exclude it outright is to decide in advance that God cannot act.
+Drop that assumption, and the Resurrection is simply where the evidence points.
+It does not compel belief, but it leaves the alternatives looking more strained than the miracle they were meant to avoid.
 
 ## See it today: what the witnesses would not take back
 
@@ -55,3 +57,6 @@ They did the opposite, and they said why: not that they hoped, but that they had
 But the risen Christ did not simply appear and depart.
 He gathered followers, appointed leaders, and commissioned them to carry His teaching to the world — which raises the next question: 
 did He found a visible Church to continue His work?
+
+::: youtube zszBCU_Lmq0
+:::
