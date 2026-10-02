@@ -314,6 +314,99 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="The off-ramp offers two further paths")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "The off-ramp offers two further paths")]
+        public async global::System.Threading.Tasks.Task TheOff_RampOffersTwoFurtherPaths()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The off-ramp offers two further paths", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 36
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 37
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 38
+ await testRunner.ThenAsync("I should see the \"Already further along the path?\" off-ramp", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 39
+ await testRunner.AndAsync("I should see an off-ramp pill linking to \"discover\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 40
+ await testRunner.AndAsync("I should see an off-ramp pill linking to \"summa\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="The off-ramp pills are the same width")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "The off-ramp pills are the same width")]
+        public async global::System.Threading.Tasks.Task TheOff_RampPillsAreTheSameWidth()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The off-ramp pills are the same width", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 42
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 43
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 44
+ await testRunner.ThenAsync("the off-ramp pills should have the same width", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Choosing the Discover off-ramp opens Discover Catholicism")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "Choosing the Discover off-ramp opens Discover Catholicism")]
+        public async global::System.Threading.Tasks.Task ChoosingTheDiscoverOff_RampOpensDiscoverCatholicism()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Choosing the Discover off-ramp opens Discover Catholicism", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 46
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 47
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 48
+ await testRunner.WhenAsync("I choose the off-ramp pill linking to \"discover\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 49
+ await testRunner.ThenAsync("the address should be \"/discover\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime

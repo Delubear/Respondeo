@@ -186,4 +186,53 @@ public sealed class NavigationSteps(PlaywrightContext context)
         var current = await Page.Locator(".breadcrumb__current").CountAsync();
         return crumbLinks + current;
     }
+
+    [Then("I should see the \"(.*)\" off-ramp")]
+    public async Task ThenIShouldSeeTheOffRamp(string lead)
+    {
+        var aside = Page.Locator(".reel__aside-lead");
+        await aside.WaitForAsync();
+        Assert.Equal(lead, (await aside.InnerTextAsync()).Trim());
+    }
+
+    [Then("I should see an off-ramp pill linking to \"(.*)\"")]
+    public async Task ThenIShouldSeeAnOffRampPillLinkingTo(string slug)
+    {
+        var pill = OffRampPill(slug);
+        Assert.True(await pill.IsVisibleAsync(), $"Expected an off-ramp pill linking to '{slug}'.");
+    }
+
+    [Then("the off-ramp pills should have the same width")]
+    public async Task ThenTheOffRampPillsShouldHaveTheSameWidth()
+    {
+        var pills = Page.Locator(".reel__pill");
+        await pills.First.WaitForAsync();
+        var count = await pills.CountAsync();
+        Assert.Equal(2, count);
+
+        var first = await pills.Nth(0).BoundingBoxAsync();
+        var second = await pills.Nth(1).BoundingBoxAsync();
+        Assert.NotNull(first);
+        Assert.NotNull(second);
+        // Equal-width grid columns should render identical pill widths (allow a sub-pixel rounding tolerance).
+        Assert.True(Math.Abs(first!.Width - second!.Width) <= 1,
+            $"Expected equal pill widths, found {first.Width} and {second.Width}.");
+    }
+
+    [When("I choose the off-ramp pill linking to \"(.*)\"")]
+    public async Task WhenIChooseTheOffRampPillLinkingTo(string slug)
+    {
+        await OffRampPill(slug).ClickAsync();
+    }
+
+    [Then("the address should be \"(.*)\"")]
+    public async Task ThenTheAddressShouldBe(string path)
+    {
+        // WaitForURLAsync throws if the client-side navigation does not land on the expected path.
+        await Page.WaitForURLAsync($"{context.BaseUrl}{path}");
+        Assert.Equal(path, new Uri(Page.Url).AbsolutePath);
+    }
+
+    // The off-ramp beneath the reel renders two .reel__pill links; match by the destination href.
+    private ILocator OffRampPill(string slug) => Page.Locator($".reel__pill[href='{slug}']");
 }

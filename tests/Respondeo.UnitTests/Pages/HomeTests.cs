@@ -1,11 +1,7 @@
-using System.Net;
-using System.Text;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Contracts;
-using Respondeo.Content.Infrastructure;
-using Respondeo.Content.Shared;
 using Respondeo.UnitTests.TestSupport;
 using Respondeo.Content.Inquiry;
 using Respondeo.Pages;
@@ -77,5 +73,49 @@ public class HomeTests : TestContext
         var cut = RenderComponent<Home>();
 
         Assert.Equal("One question leads to the next", cut.Find("h1.pillar__title").TextContent);
+    }
+
+    [Fact]
+    public void Renders_the_reel_prompt_above_the_reel()
+    {
+        var cut = RenderComponent<Home>();
+
+        Assert.Equal("What speaks to you?", cut.Find("p.reel__prompt").TextContent);
+    }
+
+    [Fact]
+    public void Renders_the_off_ramp_lead_in()
+    {
+        var cut = RenderComponent<Home>();
+
+        Assert.Equal("Already further along the path?", cut.Find(".reel__aside-lead").TextContent);
+    }
+
+    [Fact]
+    public void Renders_exactly_two_off_ramp_pills()
+    {
+        var cut = RenderComponent<Home>();
+
+        Assert.Equal(2, cut.FindAll("a.reel__pill").Count);
+    }
+
+    [Fact]
+    public void Off_ramp_pills_link_to_discover_and_the_summa()
+    {
+        var cut = RenderComponent<Home>();
+
+        var hrefs = cut.FindAll("a.reel__pill").Select(p => p.GetAttribute("href")).ToList();
+        Assert.Contains("discover", hrefs);
+        Assert.Contains("summa", hrefs);
+    }
+
+    [Fact]
+    public void Clears_the_visited_nodes_on_load()
+    {
+        var visited = Services.GetRequiredService<IVisitedNodes>();
+
+        RenderComponent<Home>();
+
+        visited.Received().ClearAsync();
     }
 }

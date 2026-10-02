@@ -32,3 +32,18 @@ Feature: Home page
 	Given I am viewing on a 700 pixel wide screen
 	And I open the start page
 	Then the "walk onward" control label should be hidden
+
+  Scenario: The off-ramp offers two further paths
+	Given I open the start page
+	Then I should see the "Already further along the path?" off-ramp
+	And I should see an off-ramp pill linking to "discover"
+	And I should see an off-ramp pill linking to "summa"
+
+  Scenario: The off-ramp pills are the same width
+	Given I open the start page
+	Then the off-ramp pills should have the same width
+
+  Scenario: Choosing the Discover off-ramp opens Discover Catholicism
+	Given I open the start page
+	When I choose the off-ramp pill linking to "discover"
+	Then the address should be "/discover"
