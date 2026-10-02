@@ -1,0 +1,138 @@
+/* The trigger is a plain link styled to blend into footer / prose text, not a heavy button.
+   It mirrors the global <a> style (accent, underline on hover only); the footer gives it its own
+   colophon treatment via a ::deep override in MainLayout. */
+.feedback__trigger {
+    appearance: none;
+    display: inline;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.feedback__trigger:hover {
+    text-decoration: underline;
+}
+
+.feedback__lede {
+    margin: 0 0 1.25rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+
+.feedback__choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Each option is a tappable action card echoing the app's .card language (parchment surface,
+   ink border, lift on hover, uppercase accent CTA). Used on both an <a> (GitHub, links out) and
+   a <button> (anonymous form, swaps in place), so the button defaults are reset to match. */
+.feedback__choice {
+    appearance: none;
+    width: 100%;
+    display: block;
+    position: relative;
+    padding: 1.1rem 1.25rem;
+    background: var(--parchment);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 1px 0 var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.feedback__choice:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--shadow);
+    background: var(--parchment-hover);
+}
+
+.feedback__choice:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.feedback__choice-icon {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--accent);
+}
+
+.feedback__choice-title {
+    display: block;
+    font-family: var(--display);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+}
+
+.feedback__choice-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+}
+
+.feedback__choice-cta {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--display);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* ---------- Embedded form ---------- */
+.feedback__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* A quiet text button to return to the two choices without closing the dialog. */
+.feedback__back {
+    appearance: none;
+    align-self: center;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.feedback__back:hover {
+    color: var(--accent);
+}
+
+.feedback__frame {
+    width: 100%;
+    height: 32rem;
+    max-height: 60vh;
+    border: 0;
+}
+
+@media (max-width: 40rem) {
+    /* The dialog is a bottom-sheet here; let the embedded form use the available sheet height so the
+       form's submit button is reachable without an internal scrollbar. */
+    .feedback__frame {
+        height: 67vh;
+        height: 67dvh;
+        max-height: none;
+    }
+}

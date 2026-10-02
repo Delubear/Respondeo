@@ -47,3 +47,14 @@ Feature: Home page
 	Given I open the start page
 	When I choose the off-ramp pill linking to "discover"
 	Then the address should be "/discover"
+
+  Scenario: The feedback link opens a choice of two routes
+	Given I open the start page
+	When I open the feedback dialog
+	Then I should see a feedback choice to open a GitHub issue
+	And I should see an anonymous feedback choice that needs no account
+
+  Scenario: The anonymous feedback route needs no sign-in
+	Given I open the start page
+	When I open the feedback dialog
+	Then the anonymous feedback choice should not link to GitHub

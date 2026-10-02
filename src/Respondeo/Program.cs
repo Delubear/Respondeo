@@ -76,5 +76,6 @@ builder.Services.AddScoped<ImmersiveInterop>();
 builder.Services.AddScoped<DialogInterop>();
 builder.Services.AddScoped<AccessibilityInterop>();
 builder.Services.AddScoped<InstallInterop>();
+builder.Services.AddScoped<TallyInterop>();
 
 await builder.Build().RunAsync();

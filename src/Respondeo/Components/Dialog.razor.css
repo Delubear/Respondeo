@@ -99,6 +99,13 @@
         max-height: 80dvh;
     }
 
+    /* The feedback dialog embeds a form whose submit button sits near the bottom; give it more of
+       the viewport so the whole form is reachable without the panel clipping it. */
+    .dialog--feedback .dialog__panel {
+        max-height: 92vh;
+        max-height: 92dvh;
+    }
+
     .dialog__head {
         padding: 1rem 1.25rem 0.85rem;
     }

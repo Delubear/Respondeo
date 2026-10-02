@@ -138,6 +138,43 @@ window.respondeoFocus = {
     }
 };
 
+// Listens for the embedded Tally feedback form's completion. Tally posts a window message whose
+// `data` is a JSON string carrying { event: "Tally.FormSubmitted", ... } once the visitor submits.
+// We relay just that moment back to the Feedback component (via its [JSInvokable] OnSubmitted) so it
+// can swap the "Back to options" control for a "Close" one. listen() returns a subscription id;
+// stopListening(id) removes the sole handler so we don't leak listeners across dialog opens.
+window.respondeoTally = {
+    _subscribers: new Map(), // id -> handler
+    _nextId: 1,
+    listen: function (ref) {
+        const id = this._nextId++;
+        const handler = (e) => {
+            if (typeof e.data !== 'string') {
+                return;
+            }
+            let payload;
+            try {
+                payload = JSON.parse(e.data);
+            } catch {
+                return;
+            }
+            if (payload && payload.event === 'Tally.FormSubmitted') {
+                ref.invokeMethodAsync('OnSubmitted');
+            }
+        };
+        this._subscribers.set(id, handler);
+        window.addEventListener('message', handler);
+        return id;
+    },
+    stopListening: function (id) {
+        const handler = this._subscribers.get(id);
+        if (handler) {
+            window.removeEventListener('message', handler);
+            this._subscribers.delete(id);
+        }
+    }
+};
+
 // Click-to-load for YouTube embeds. Author content renders a lightweight "façade" (thumbnail + play button);
 // the heavy YouTube player is only injected when the visitor actually clicks play, so opening an article makes no YouTube requests.
 // A single delegated listener covers all current and future façades (content is injected as raw HTML, so per-element Blazor handlers wouldn't bind).

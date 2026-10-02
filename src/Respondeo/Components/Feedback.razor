@@ -1,0 +1,140 @@
+@* A single feedback entry-point. Renders a link-styled trigger that opens a shared Dialog
+   (which is a bottom-sheet on mobile for free) letting the visitor choose how to reach us:
+   open a traceable GitHub issue, or send anonymous feedback through a hosted Tally form that
+   needs no account. The anonymous form is embedded inline in the dialog (no tab switch); the
+   two choice cards swap to the form in place. Drop it anywhere a "report an issue / share
+   feedback" link is wanted. *@
+
+@implements IAsyncDisposable
+@inject TallyInterop Tally
+
+<button type="button" class="feedback__trigger" @onclick="OpenAsync">@LinkText</button>
+
+<Dialog @ref="_dialog" Title="Share feedback" Eyebrow="Two ways to reach us" MaxWidth="34rem" Class="dialog--feedback">
+    @if (!_showForm)
+    {
+        <p class="feedback__lede">
+            Spotted a bug, a wrong citation, have a suggestion, or just want to share if you have been helped spiritually? Choose whichever is easiest &mdash;
+            no account is required for anonymous feedback.
+        </p>
+
+        <div class="feedback__choices">
+            <a class="feedback__choice"
+               href="https://github.com/Delubear/Respondeo/issues/new/choose"
+               target="_blank" rel="noopener noreferrer"
+               @onclick="CloseAsync">
+                <span class="feedback__choice-title">Open a GitHub issue</span>
+                <span class="feedback__choice-note">
+                    Best for bugs you want to track. Requires a free GitHub account.
+                </span>
+                <span class="feedback__choice-cta">Open on GitHub &rarr;</span>
+            </a>
+
+            <button type="button" class="feedback__choice" @onclick="ShowForm">
+                <span class="feedback__choice-title">Send anonymous feedback</span>
+                <span class="feedback__choice-note">
+                    A short form &mdash; no account, no sign-in, nothing to install.
+                </span>
+                <span class="feedback__choice-cta">Fill out the form &rarr;</span>
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="feedback__form">
+            <iframe class="feedback__frame"
+                    src="@TallyEmbedUrl"
+                    title="Anonymous feedback form"
+                    loading="lazy"></iframe>
+            @if (_submitted)
+            {
+                <button type="button" class="feedback__back" @onclick="CloseAsync">Close</button>
+            }
+            else
+            {
+                <button type="button" class="feedback__back" @onclick="ShowChoices">&larr; Back to options</button>
+            }
+        </div>
+    }
+</Dialog>
+
+@code {
+    private const string TallyFormId = "b5bJd1";
+
+    // Use Tally's dedicated /embed/ path (not /r/, which is the full-page form that vertically
+    // centers its content and leaves a gap inside a fixed iframe). alignLeft + hideTitle +
+    // transparentBackground keep the embedded form flush and top-aligned in our dialog.
+    private string TallyEmbedUrl =>
+        $"https://tally.so/embed/{TallyFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+
+    private Dialog _dialog = default!;
+    private bool _showForm;
+    private bool _submitted;
+
+    // Kept alive for the component's lifetime so the Tally window-message listener can call back in.
+    private DotNetObjectReference<Feedback>? _selfRef;
+    private int? _tallyListenerId;
+
+    /// <summary>The visible text of the trigger link (fits the surrounding prose).</summary>
+    [Parameter] public string LinkText { get; set; } = "Report an issue or share feedback";
+
+    private async Task OpenAsync()
+    {
+        // Always open on the choice screen, even if the form was last shown.
+        await StopListeningAsync();
+        _showForm = false;
+        _submitted = false;
+        await _dialog.Show();
+    }
+
+    private async Task ShowForm()
+    {
+        _showForm = true;
+        _submitted = false;
+        _selfRef ??= DotNetObjectReference.Create(this);
+        _tallyListenerId = await Tally.ListenAsync(_selfRef);
+    }
+
+    private async Task ShowChoices()
+    {
+        await StopListeningAsync();
+        _showForm = false;
+        _submitted = false;
+    }
+
+    /// <summary>Invoked from JS when the embedded Tally form reports a successful submission.</summary>
+    [JSInvokable]
+    public async Task OnSubmitted()
+    {
+        _submitted = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CloseAsync()
+    {
+        await StopListeningAsync();
+        await _dialog.Close();
+    }
+
+    private async Task StopListeningAsync()
+    {
+        if (_tallyListenerId is { } id)
+        {
+            _tallyListenerId = null;
+            try
+            {
+                await Tally.StopListeningAsync(id);
+            }
+            catch (JSDisconnectedException)
+            {
+                // The circuit/runtime is gone during teardown; nothing left to detach.
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await StopListeningAsync();
+        _selfRef?.Dispose();
+    }
+}

@@ -123,6 +123,20 @@
     text-underline-offset: 0.2em;
 }
 
+/* The Feedback trigger is a <button>, so it needs the colophon link treatment applied explicitly
+   to sit flush with the sibling anchors in the footer. */
+.colophon__meta ::deep .feedback__trigger {
+    color: inherit;
+    text-decoration: none;
+}
+
+.colophon__meta ::deep .feedback__trigger:hover,
+.colophon__meta ::deep .feedback__trigger:focus-visible {
+    color: var(--masthead-fg);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
 .colophon__sep {
     opacity: 0.6;
 }

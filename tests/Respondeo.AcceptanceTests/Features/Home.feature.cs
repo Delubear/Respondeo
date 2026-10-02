@@ -407,6 +407,71 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="The feedback link opens a choice of two routes")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "The feedback link opens a choice of two routes")]
+        public async global::System.Threading.Tasks.Task TheFeedbackLinkOpensAChoiceOfTwoRoutes()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The feedback link opens a choice of two routes", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 51
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 52
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 53
+ await testRunner.WhenAsync("I open the feedback dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 54
+ await testRunner.ThenAsync("I should see a feedback choice to open a GitHub issue", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 55
+ await testRunner.AndAsync("I should see an anonymous feedback choice that needs no account", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="The anonymous feedback route needs no sign-in")]
+        [Xunit.TraitAttribute("FeatureTitle", "Home page")]
+        [Xunit.TraitAttribute("Description", "The anonymous feedback route needs no sign-in")]
+        public async global::System.Threading.Tasks.Task TheAnonymousFeedbackRouteNeedsNoSign_In()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The anonymous feedback route needs no sign-in", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 57
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 58
+ await testRunner.GivenAsync("I open the start page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 59
+ await testRunner.WhenAsync("I open the feedback dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 60
+ await testRunner.ThenAsync("the anonymous feedback choice should not link to GitHub", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime
