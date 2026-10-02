@@ -120,11 +120,26 @@
     color: var(--accent);
 }
 
+/* The embedded Tally form is cross-origin, so we can't theme its (always-light) chrome. Rather than
+   let a raw white iframe bleed into a dark dialog, we frame it on a deliberate light "paper" card:
+   a fixed light surface, soft border and rounded corners read as an intentional inset in both themes.
+   The literal colours (not theme tokens) keep the card light even in dark mode, matching the form. */
+.feedback__surface {
+    background: #faf9f6;
+    border: 1px solid #d9d6cf;
+    border-radius: 0.6rem;
+    padding: 0.35rem;
+    overflow: hidden;
+}
+
 .feedback__frame {
+    display: block;
     width: 100%;
     height: 32rem;
     max-height: 60vh;
     border: 0;
+    border-radius: 0.4rem;
+    background: #faf9f6;
 }
 
 @media (max-width: 40rem) {

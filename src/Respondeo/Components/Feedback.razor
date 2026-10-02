@@ -10,52 +10,52 @@
 
 <button type="button" class="feedback__trigger" @onclick="OpenAsync">@LinkText</button>
 
-<Dialog @ref="_dialog" Title="Share feedback" Eyebrow="Two ways to reach us" MaxWidth="34rem" Class="dialog--feedback">
-    @if (!_showForm)
-    {
-        <p class="feedback__lede">
-            Spotted a bug, a wrong citation, have a suggestion, or just want to share if you have been helped spiritually? Choose whichever is easiest &mdash;
-            no account is required for anonymous feedback.
-        </p>
+<Dialog @ref="_dialog" Title="Share feedback" Eyebrow="Two ways to reach us" MaxWidth="34rem" Class="dialog--feedback" Footer="@SubmittedFooter">
+    <ChildContent>
+        @if (!_showForm)
+        {
+            <p class="feedback__lede">
+                Spotted a bug, a wrong citation, have a suggestion, or just want to share if you have been helped spiritually? Choose whichever is easiest &mdash;
+                no account is required for anonymous feedback.
+            </p>
 
-        <div class="feedback__choices">
-            <a class="feedback__choice"
-               href="https://github.com/Delubear/Respondeo/issues/new/choose"
-               target="_blank" rel="noopener noreferrer"
-               @onclick="CloseAsync">
-                <span class="feedback__choice-title">Open a GitHub issue</span>
-                <span class="feedback__choice-note">
-                    Best for bugs you want to track. Requires a free GitHub account.
-                </span>
-                <span class="feedback__choice-cta">Open on GitHub &rarr;</span>
-            </a>
+            <div class="feedback__choices">
+                <a class="feedback__choice"
+                   href="https://github.com/Delubear/Respondeo/issues/new/choose"
+                   target="_blank" rel="noopener noreferrer"
+                   @onclick="CloseAsync">
+                    <span class="feedback__choice-title">Open a GitHub issue</span>
+                    <span class="feedback__choice-note">
+                        Best for bugs you want to track. Requires a free GitHub account.
+                    </span>
+                    <span class="feedback__choice-cta">Open on GitHub &rarr;</span>
+                </a>
 
-            <button type="button" class="feedback__choice" @onclick="ShowForm">
-                <span class="feedback__choice-title">Send anonymous feedback</span>
-                <span class="feedback__choice-note">
-                    A short form &mdash; no account, no sign-in, nothing to install.
-                </span>
-                <span class="feedback__choice-cta">Fill out the form &rarr;</span>
-            </button>
-        </div>
-    }
-    else
-    {
-        <div class="feedback__form">
-            <iframe class="feedback__frame"
-                    src="@TallyEmbedUrl"
-                    title="Anonymous feedback form"
-                    loading="lazy"></iframe>
-            @if (_submitted)
-            {
-                <button type="button" class="feedback__back" @onclick="CloseAsync">Close</button>
-            }
-            else
-            {
-                <button type="button" class="feedback__back" @onclick="ShowChoices">&larr; Back to options</button>
-            }
-        </div>
-    }
+                <button type="button" class="feedback__choice" @onclick="ShowForm">
+                    <span class="feedback__choice-title">Send anonymous feedback</span>
+                    <span class="feedback__choice-note">
+                        A short form &mdash; no account, no sign-in, nothing to install.
+                    </span>
+                    <span class="feedback__choice-cta">Fill out the form &rarr;</span>
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="feedback__form">
+                <div class="feedback__surface">
+                    <iframe class="feedback__frame"
+                            src="@TallyEmbedUrl"
+                            title="Anonymous feedback form"
+                            loading="lazy"></iframe>
+                </div>
+                @if (!_submitted)
+                {
+                    <button type="button" class="feedback__back" @onclick="ShowChoices">&larr; Back to options</button>
+                }
+            </div>
+        }
+    </ChildContent>
 </Dialog>
 
 @code {
@@ -70,6 +70,13 @@
     private Dialog _dialog = default!;
     private bool _showForm;
     private bool _submitted;
+
+    // Only shown once the embedded form reports a submission: a real footer button to dismiss the
+    // dialog, replacing the quiet "Back to options" text link (there's nothing left to go back to).
+    // Null otherwise so the dialog renders no footer (and no divider) during the choice/form steps.
+    private RenderFragment? SubmittedFooter => _showForm && _submitted
+        ? @<button type="button" class="btn feedback__close" @onclick="CloseAsync">Close</button>
+        : null;
 
     // Kept alive for the component's lifetime so the Tally window-message listener can call back in.
     private DotNetObjectReference<Feedback>? _selfRef;

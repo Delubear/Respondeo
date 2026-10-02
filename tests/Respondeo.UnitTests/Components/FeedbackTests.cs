@@ -107,7 +107,9 @@ public class FeedbackTests : TestContext
         // Tally relays the submission to the component's [JSInvokable] OnSubmitted via JS.
         await cut.InvokeAsync(() => cut.Instance.OnSubmitted());
 
-        Assert.Equal("Close", cut.Find("button.feedback__back").TextContent);
+        // The quiet "Back to options" text link gives way to a real footer Close button.
+        Assert.Empty(cut.FindAll("button.feedback__back"));
+        Assert.Equal("Close", cut.Find("button.feedback__close").TextContent);
     }
 
     [Fact]
