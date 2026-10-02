@@ -32,6 +32,9 @@ builder.Services.AddScoped<SummaQuestionPresenter>();
 // Pure title/treatise search over the Summa index, kept out of the Summa browse page so it is unit-testable.
 builder.Services.AddScoped<SummaSearch>();
 
+// Pure facet/search/sort logic for the prayer treasury, kept out of the Prayers browse page so it is unit-testable.
+builder.Services.AddScoped<PrayerBrowse>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 

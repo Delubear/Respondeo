@@ -1,5 +1,6 @@
 @page "/discover/prayers"
 @inject IPrayerService PrayerService
+@inject PrayerBrowse Browser
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
@@ -58,7 +59,7 @@
                         {
                             <Card Href="@($"discover/prayers/{p.Id}")"
                                   Title="@p.Title"
-                                  Pill="@FormatCategory(p.Category)"
+                                  Pill="@Browser.FormatCategory(p.Category)"
                                   Summary="@p.Summary"
                                   Cta="Pray &rarr;"
                                   Level="2" />
@@ -104,17 +105,9 @@
         var prayers = await PrayerService.GetIndexAsync();
         _prayers = prayers;
 
-        _categories = _prayers.Select(p => p.Category)
-            .Where(c => !string.IsNullOrWhiteSpace(c) && c != "other")
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(c => c, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
-        _categoryLabels = [.. _categories.Select(c => FormatCategory(c) ?? c)];
-
-        _tags = _prayers.SelectMany(p => p.Tags)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+        _categories = Browser.Categories(_prayers);
+        _categoryLabels = Browser.CategoryLabels(_categories);
+        _tags = Browser.Tags(_prayers);
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position (the helper
@@ -157,54 +150,13 @@
         _browse.SetFilter("tags", _selectedTags);
     }
 
-    // Turns a category slug (e.g. "marian") into a display tag (e.g. "Marian").
-    private static string? FormatCategory(string category)
-    {
-        if (string.IsNullOrWhiteSpace(category) || category == "other")
-        {
-            return null;
-        }
-
-        return char.ToUpperInvariant(category[0]) + category[1..];
-    }
-
-    private IReadOnlyList<PrayerSummary> Filtered
-    {
-        get
-        {
-            if (_prayers is null)
-            {
-                return [];
-            }
-
-            IEnumerable<PrayerSummary> results = _prayers;
-
-            // Categories are chosen by their display label; match back to the underlying slug.
-            if (_selectedCategories.Count > 0)
-            {
-                results = results.Where(p => _selectedCategories.Contains(FormatCategory(p.Category) ?? p.Category));
-            }
-
-            // Tags: OR within the facet (match any selected tag), consistent with the articles browse.
-            if (_selectedTags.Count > 0)
-            {
-                results = results.Where(p => p.Tags.Any(t => _selectedTags.Contains(t)));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_query))
-            {
-                var q = _query.Trim();
-                results = results.Where(p =>
-                    p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase))
-                    || (FormatCategory(p.Category)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
-            }
-
-            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
-            results = sort.Apply(results);
-
-            return [.. results];
-        }
-    }
+    private IReadOnlyList<PrayerSummary> Filtered =>
+        _prayers is null
+            ? []
+            : Browser.Filter(
+                _prayers,
+                _query,
+                _selectedCategories,
+                _selectedTags,
+                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }

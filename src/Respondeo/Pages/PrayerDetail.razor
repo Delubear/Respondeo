@@ -9,10 +9,7 @@
     <SeoHead Title="@_prayer.Title" Description="@_prayer.Summary" Article="true" />
 }
 
-<Breadcrumb CurrentTitle="@(_prayer?.Title ?? "Prayer")"
-            StageHref="discover"
-            StageLabel="Discover"
-            Crumbs="_crumbs" />
+<Breadcrumb CurrentTitle="@(_prayer?.Title ?? "Prayer")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
 
 @if (_loading)
 {
@@ -60,8 +57,7 @@ else
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private static readonly Breadcrumb.Crumb[] _crumbs =
-        [new("prayers", "Prayers", Href: "discover/prayers")];
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("prayers", "Prayers", Href: "discover/prayers")];
 
     private Prayer? _prayer;
     private bool _loading = true;

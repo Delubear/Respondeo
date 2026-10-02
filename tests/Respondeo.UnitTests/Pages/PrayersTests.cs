@@ -23,6 +23,7 @@ public class PrayersTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
+        Services.AddScoped<PrayerBrowse>();
     }
 
     private static IReadOnlyList<PrayerSummary> SampleIndex() =>
