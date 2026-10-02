@@ -13,23 +13,58 @@
 
 /* ---------- Reel aside ----------
    A gentle off-ramp beneath the journey reel for readers who are already
-   practicing Catholics: point them to Discover and the Summa. */
+   practicing Catholics: a hairline divider with a centered label, then two
+   quiet pill links to Discover and the Summa. */
 .reel__aside {
-    text-align: center;
     max-width: 44rem;
     margin: 3rem auto 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    text-align: center;
     color: var(--ink-soft);
 }
 
-.reel__aside a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
+/* Float the label up onto the hairline so the rule reads as a labeled divider. */
+.reel__aside-lead {
+    display: inline-block;
+    margin: -2.4rem auto 0;
+    padding: 0 1rem;
+    background: var(--paper);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.05rem;
 }
 
-.reel__aside a:hover {
+.reel__aside-paths {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* Quiet filled pills: a subtle parchment surface with a defined edge so they
+   read clearly as tappable, without the heavy weight of the solid .btn. */
+.reel__pill {
+    padding: 0.5rem 1.3rem;
+    background: var(--parchment);
+    border: 1px solid var(--ink-soft);
+    border-radius: 999px;
+    font-family: var(--display);
+    letter-spacing: 0.06em;
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.reel__pill:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--parchment);
     text-decoration: none;
 }
 
@@ -40,7 +75,19 @@
     }
 
     .reel__aside {
-        font-size: 0.9rem;
         margin-top: 2rem;
+    }
+
+    .reel__aside-lead {
+        font-size: 0.95rem;
+    }
+
+    .reel__aside-paths {
+        grid-auto-flow: row;
+        max-width: 100%;
+    }
+
+    .reel__pill {
+        width: auto;
     }
 }
