@@ -411,6 +411,7 @@ details.accordion__item[open] > .accordion__trigger {
     text-transform: uppercase;
     font-size: 0.85rem;
     border: 1px solid var(--ink);
+    cursor: pointer;
 }
 
 .btn:hover {
