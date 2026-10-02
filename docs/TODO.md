@@ -29,70 +29,67 @@ Bridges the gap from "a God" (natural theology) to "the personal, covenant God o
 Structured as an ordered path (flow wired; nodes still stubs), with one optional detour:
 monotheism → personal → can reveal → (other faiths, optional) → God of Israel → *Why Jesus?*
 
-- [~] Landing page (reads as an ordered path, not a menu)
-- [~] Why one God, not many? (monotheism vs. polytheism/dualism) — path start
-- [~] Is the first cause personal? (mind & will vs. blind principle)
-- [~] Could God speak to us? (possibility of revelation, motives of credibility)
-- [~] What about other faiths? (Islam, deism, Eastern conceptions) — optional detour
-- [~] Why the God of Israel? (covenant, prophets, ethical monotheism) — hands off to *Why Jesus?*
-- [ ] Consider: The Trinity as a later revealed refinement (forward pointer)
+- [x] Landing page (reads as an ordered path, not a menu)
+- [x] Why one God, not many? (monotheism vs. polytheism/dualism) — path start
+- [x] Is the first cause personal? (mind & will vs. blind principle)
+- [x] Could God speak to us? (possibility of revelation, motives of credibility)
+- [x] What about other faiths? (Islam, deism, Eastern conceptions) — optional detour
+- [x] Why the God of Israel? (covenant, prophets, ethical monotheism) — hands off to *Why Jesus?*
+- [x] Consider: The Trinity as a later revealed refinement (forward pointer)
 
 ## Stage: Why Jesus?
 
 Structured as an ordered path (flow wired):
 who was Jesus → trust the Gospels → claimed to be God → (OT prophecy, optional) → the Resurrection → (objections, optional) → founded a Church → *Why the Church?*
 
-- [~] Landing page (reads as an ordered path, not a menu)
-- [~] Who was Jesus? (historical man + the Incarnation claim) — path start
-- [~] Can we trust the Gospels? (dating, eyewitness roots, manuscripts)
-- [~] Jesus' divine claims
-- [~] Did Jesus fulfill prophecy? (messianic expectation) — optional detour
-- [~] The Resurrection (historical case)
-- [~] Objections to Jesus (accordion: legend theory, resurrection alternatives, gospel contradictions) — optional detour
-- [~] Jesus founded a Church — hands off to *Why the Church?*
-- [ ] Consider: The "Liar, Lunatic, Lord, or Legend" trilemma in full
-- [ ] Consider: Resurrection minimal-facts sub-pages (empty tomb, appearances, origin of belief)
+- [x] Landing page (reads as an ordered path, not a menu)
+- [x] Who was Jesus? (historical man + the Incarnation claim) — path start
+- [x] Can we trust the Gospels? (dating, eyewitness roots, manuscripts)
+- [x] Jesus' divine claims
+- [x] Did Jesus fulfill prophecy? (messianic expectation) — optional detour
+- [x] The Resurrection (historical case)
+- [x] Objections to Jesus (accordion: legend theory, resurrection alternatives, gospel contradictions) — optional detour
+- [x] Jesus founded a Church (slimmed to a bridge: the risen Christ left a *community*, not just a memory; full case now lives in *Why the Church?*) — hands off to *Why the Church?*
+- [x] Summa citations integrated into the why-Jesus spine (Incarnation III Q.1 A.1; Resurrection III Q.55 A.6; Head of the Church III Q.8 A.1)
+- [x] Consider: The "Liar, Lunatic, Lord, or Legend" trilemma in full
+- [x] Consider: Resurrection minimal-facts sub-pages (empty tomb, appearances, origin of belief)
 
 ## Stage: Why the Church?
 
 Structured as a single ordered spine with one optional detour:
 hub → founded by Christ → recognizing it → four marks → authority → (objections, optional) → where the path has led → *Coming Home*
 
-- [~] Landing page (single-entry hub)
-- [~] The Church founded by Christ
-- [~] Recognizing the true Church
-- [~] The four marks (one, holy, catholic, apostolic)
-- [~] Scripture, Tradition, and authority (Magisterium)
-- [~] Objections hub (accordion) — optional detour
-  - [~] Sola scriptura
-  - [~] Scandals / holiness
-  - [~] The Reformation
-  - [~] Papacy (rock & keys)
-  - [~] Eastern Orthodoxy (which apostolic church?)
-  - [~] The Blessed Virgin Mary (role in salvation, the New Ark)
-  - [~] Praying to the saints
-- [~] Where the path has led (consolidating terminus) — hands off to *Coming Home*
+- [x] Landing page (single-entry hub)
+- [x] The Church founded by Christ
+- [x] Recognizing the true Church
+- [x] The four marks (one, holy, catholic, apostolic)
+- [x] Scripture, Tradition, and authority (Magisterium)
+- [x] Objections hub (accordion) — optional detour
+  - [x] Sola scriptura
+  - [x] Scandals / holiness
+  - [x] The Reformation
+  - [x] Papacy (rock & keys)
+  - [x] Eastern Orthodoxy (which apostolic church?)
+  - [x] The Blessed Virgin Mary (role in salvation, the New Ark)
+  - [x] Praying to the saints
+- [x] Where the path has led (consolidating terminus) — hands off to *Coming Home*
 
 ## Stage: Coming Home
 
-Audience-based hub (not linear); entry paths converge on how-to-begin and the sacraments.
+Audience-based hub. Three persona entry paths converge on *What the Church offers*, which (with the
+returning-Catholic path) fans out to two optional, cross-linked detours — *Why practice* and *What holds
+people back* — both of which lead to *How to begin*, the stage terminus that hands off to Discover.
+Flow graph audited: no unreachable nodes, single intended terminus.
 
-- [~] Landing page (audience-based hub)
-- [~] If you're not yet Christian (entry path)
-- [~] If you're Christian but not Catholic (entry path)
-- [~] Returning to the faith (returning Catholic; formerly non-practicing) (entry path)
-- [~] What the Church offers
-- [~] Why practice, and why believe it for real
-- [~] How to begin (sections: returning Catholic, entering from outside, Eastern Orthodox)
-- [~] What holds people back (obstacles: shame, wounds, habit, doubt, cost)
-- [~] The sacraments: overview (hub branching to seven standalone sacrament articles)
-  - [~] Baptism
-  - [~] Confirmation
-  - [~] The Eucharist
-  - [~] Reconciliation (Confession)
-  - [~] Anointing of the Sick
-  - [~] Holy Orders
-  - [~] Matrimony
+- [x] Landing page (audience-based hub)
+- [x] If you're not yet Christian (entry path) → What the Church offers
+- [x] If you're Christian but not Catholic (entry path) → What the Church offers
+- [x] Returning to the faith (cradle Catholic or later-received, now non-practicing) (entry path)
+- [x] What the Church offers (convergence point → why practice / obstacles / how to begin)
+- [x] Why practice, and why believe it for real (optional detour, cross-linked with obstacles)
+- [~] What holds people back (obstacles: shame, wounds, habit, doubt, cost) (optional detour, cross-linked with why practice)
+- [~] How to begin (sections: returning Catholic, entering from outside, Eastern Orthodox) — hands off to *Discover*
+- [x] Sacraments content relocated out of Coming Home into the Discover pillar
 
 ---
 
