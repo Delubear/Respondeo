@@ -6,8 +6,6 @@ tags:
   - the catholic church
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 It is worth pausing to see how far the path has come, because each step was quietly building toward this one.
 What began as a question — *why the Church at all?* — has become a claim with a definite shape, and the shape is worth holding in view all at once.
 
@@ -26,10 +24,12 @@ What began as a question — *why the Church at all?* — has become a claim wit
    Those four marks converge on a single visible communion.
 
 4. **It hands on His revelation with authority.**
-   Scripture, Tradition, and a living teaching office carry the one deposit of faith together, so that the Church can speak with one voice where private reading alone fragments into many.
+   Scripture, Tradition, and a living teaching office carry the one deposit of faith together, 
+   so that the Church can speak with one voice where private reading alone fragments into many.
 
 Taken singly, any one of these could be argued over.
-Taken together, they point in one direction — and for anyone who has also weighed the hardest objections and found the claim still standing, the argument has quietly stopped being abstract.
+Taken together, they point in one direction — and for anyone who has also weighed the hardest objections 
+and found the claim still standing, the argument has quietly stopped being abstract.
 
 ## The question changes
 
@@ -43,4 +43,4 @@ A conclusion accepted but never acted on is a door recognized and left shut.
 
 **Where this leads.** So the path does not end in a verdict filed away.
 It ends at a threshold.
-For those who have followed it this far and found it sound — and even for those still weighing it — the next step is not another proof but an invitation: to come home.
+For those who have followed it this far and found it sound — and even for those still weighing it — the next step is not another proof but an invitation: ***to come home***.
