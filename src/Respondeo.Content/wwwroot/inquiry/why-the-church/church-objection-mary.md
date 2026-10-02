@@ -7,11 +7,12 @@ tags:
   - divine revelation
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 **The objection, at its strongest:**
 
-Catholic devotion to Mary seems to cross a line no creature should cross. Catholics call her "Queen of Heaven," claim she was conceived without sin and assumed bodily into glory, ask for her intercession, and give her a place that looks dangerously close to divine. Scripture says little about her — so why does she loom so large? Is this not honor stolen from Christ and given to His mother?
+Catholic devotion to Mary seems to cross a line no creature should cross. 
+Catholics call her "Queen of Heaven," claim she was conceived without sin and assumed bodily into glory, ask for her intercession, 
+and give her a place that looks dangerously close to divine. 
+Scripture says little about her — so why does she loom so large? Is this not honor stolen from Christ and given to His mother?
 
 **The response:**
 
@@ -43,13 +44,17 @@ Salvation does not begin with a doctrine but with a *yes*.
 
 ## Mary, the New Ark of the Covenant
 
-The deepest key to Mary is one the objection overlooks: Scripture presents her as **the Ark of the New Covenant**, and once this is seen, the doctrines that seem excessive suddenly appear *fitting*.
+The deepest key to Mary is one the objection overlooks: Scripture presents her as **the Ark of the New Covenant**, 
+and once this is seen, the doctrines that seem excessive suddenly appear *fitting*.
 
-The old Ark was a wooden chest overlaid with pure gold, and it was holy for one reason: it *contained* the presence of God — the tablets of the Word, the manna, the priestly rod.
-Precisely because of what it carried, God commanded that it be made spotless, treated with the utmost reverence, and never touched by profane hands; when a man reached out carelessly to steady it, he died.
+The old Ark was a wooden chest overlaid with pure gold, and it was holy for one reason: 
+it *contained* the presence of God — the tablets of the Word, the manna, the priestly rod.
+Precisely because of what it carried, God commanded that it be made spotless, treated with the utmost reverence, 
+and never touched by profane hands; when a man reached out carelessly to steady it, he died.
 The Ark was set apart *because of its contents.*
 
-Mary is the Ark of the New Covenant, and her contents are infinitely greater — not tablets of stone but the living Word; not manna but the Bread of Life; not a priestly rod but the eternal High Priest.
+Mary is the Ark of the New Covenant, and her contents are infinitely greater — not tablets of stone but the living Word; 
+not manna but the Bread of Life; not a priestly rod but the eternal High Priest.
 Luke tells her story in language that deliberately echoes the Ark:
 
 - The power of the Most High "**overshadows**" Mary, the same word used for the glory-cloud that overshadowed the Ark and the Tabernacle.
@@ -62,21 +67,27 @@ The parallel is too dense to be accidental.
 And it reframes everything the objection resists:
 
 1. **The Immaculate Conception.**
-   If the old Ark, which held only shadows of Christ, had to be pure gold and untouched by corruption, how much more fitting that the living Ark, who held God Himself in her very body, should be preserved from the corruption of sin.
-   The Immaculate Conception is not a claim that Mary saved herself; it is the claim that Christ's grace reached her *first and most completely* — He preserved His own Mother from sin by the merits of the Cross applied to her in advance.
+   If the old Ark, which held only shadows of Christ, had to be pure gold and untouched by corruption, 
+   how much more fitting that the living Ark, who held God Himself in her very body, should be preserved from the corruption of sin.
+   The Immaculate Conception is not a claim that Mary saved herself; 
+   it is the claim that Christ's grace reached her *first and most completely* — He preserved His own Mother from sin by the merits of the Cross applied to her in advance.
    She is the supreme trophy of His redemption, not an exception to it.
 
 2. **The Assumption.**
    The Ark was never abandoned to decay.
-   It is fitting that the living Ark, who gave her flesh to the incorruptible Word and never fell under the reign of sin, should not be left to the corruption of the grave, but be taken up body and soul to be with her Son — the first to share fully in the resurrection He won.
+   It is fitting that the living Ark, who gave her flesh to the incorruptible Word and never fell under the reign of sin, 
+   should not be left to the corruption of the grave, but be taken up body and soul to be with her Son — the first to share fully in the resurrection He won.
 
 3. **Queen Mother.**
-   In the kingdom of David, the queen was not the king's wife but the king's *mother* — the *Gebirah* — who sat at his right hand and brought the petitions of the people to him.
+   In the kingdom of David, the queen was not the king's wife but the king's *mother* — the *Gebirah* — who 
+   sat at his right hand and brought the petitions of the people to him.
    Mary is Queen of Heaven in exactly this sense: not a goddess, but the Mother of the King, seated in His kingdom, carrying our requests to the throne of her Son.
    Her queenship is entirely derived from His kingship.
 
 **Why it belongs to the Catholic claim.**
-Honor for Mary is not a late medieval excess; it is woven into the New Testament itself, where she declares "all generations will call me blessed," and it is visible in the oldest Christian prayer and art.
+Honor for Mary is not a late medieval excess; it is woven into the New Testament itself, 
+where she declares "all generations will call me blessed," and it is visible in the oldest Christian prayer and art.
 None of it competes with Christ.
-Every Marian doctrine is a statement about what God did *in* and *through* her for our salvation — the New Eve whose yes opened the way, the God-bearer who guards the Incarnation, and the living Ark whose whole holiness is the holiness of the One she carried.
+Every Marian doctrine is a statement about what God did *in* and *through* her for our salvation — the New Eve whose yes opened the way, 
+the God-bearer who guards the Incarnation, and the living Ark whose whole holiness is the holiness of the One she carried.
 To honor the Mother rightly is simply to take with full seriousness the God who chose to be her Son.
