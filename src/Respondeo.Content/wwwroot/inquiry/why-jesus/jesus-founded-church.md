@@ -35,6 +35,9 @@ but that He founded a **visible** one at all — a society with structure and te
    elders, sacraments, and councils that settled disputes with authority.
    The Church we see in the historical record is the one Jesus is described as founding.
 
+> "As the whole Church is termed one mystic body from its likeness to the natural body of a man... so likewise Christ is called the Head of the Church... He has the power of bestowing grace on all the members of the Church."
+> — [*Summa Theologiae* III, Q. 8, A. 1](summa/tertia-q008#article-1)
+
 ## See it today: what actually outlasts a founder
 
 A feeling dies with the person who felt it; a movement rarely survives the generation that started it.

@@ -52,6 +52,10 @@ Here is where Christianity says something no historian is forced to say, but whi
    A God who becomes man has closed that distance himself — shown his face, spoken in a human voice, and entered his own creation.
    That is the difference between concluding that God exists and meeting him.
 
+> "It belongs to the essence of the highest good to communicate itself in the highest manner to the creature, 
+> and this is brought about chiefly by *His so joining created nature to Himself that one Person is made up of these three — the Word, a soul and flesh*."
+> — [*Summa Theologiae* III, Q. 1, A. 1](summa/tertia-q001#article-1)
+
 ## Why this has to be tested, not just admired
 
 Precisely because the claim is so large, it cannot rest on sentiment.
