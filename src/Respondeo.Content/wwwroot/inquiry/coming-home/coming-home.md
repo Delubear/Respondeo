@@ -7,8 +7,6 @@ tags:
   - conversion
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 The question has changed.
 It is no longer whether the Church is true, but what you will do now that you see she is.
 The reasoning has done its work; what remains is a step — and steps are taken from wherever a person happens to be standing.
@@ -20,7 +18,8 @@ Wherever you are starting from, there is a way in:
 - **If you are Christian but not Catholic** — already in Christ, and now drawn toward full communion.
 - **If you were Catholic and drifted away** — baptized long ago, and always welcome home.
 
-And whatever your starting point, the same questions follow — what the Church offers, why the faith must be *lived* and not merely admired, what the sacraments are, how to begin, and what tends to hold people back.
+And whatever your starting point, the same questions follow — what the Church offers, 
+why the faith must be *lived* and not merely admired, how to begin, and what tends to hold people back.
 You will meet each of them as you follow the path from where you stand.
 
 Choose where you are below to begin.
