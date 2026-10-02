@@ -6,11 +6,11 @@ tags:
   - the catholic church
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 **The objection, at its strongest:**
 
-The Catholic Church claims to be *holy*, yet its history is stained with corruption, war, inquisitions, worldly and immoral popes, and the abuse of the vulnerable — including in our own time. An institution capable of such things cannot be the spotless Church of Christ. If anything, its record is evidence *against* the claim, not for it.
+The Catholic Church claims to be *holy*, yet its history is stained with corruption, war, inquisitions, 
+worldly and immoral popes, and the abuse of the vulnerable — including in our own time. 
+An institution capable of such things cannot be the spotless Church of Christ. If anything, its record is evidence *against* the claim, not for it.
 
 **The response:**
 
@@ -29,9 +29,12 @@ He compared the kingdom to a field where wheat and weeds grow together until the
 He chose twelve apostles, and one betrayed Him while their leader denied Him.
 A Church that produced no sinners in its ranks would actually contradict the picture Christ drew of it.
 
-And the same history that records the scandals records something the objection quietly omits: an unbroken stream of **saints** — Francis, Vincent de Paul, the martyrs, the founders of hospitals and schools and orphanages, the reformers who cleaned the Church from within rather than leaving it.
+And the same history that records the scandals records something the objection quietly omits: 
+an unbroken stream of **saints** — Francis, Vincent de Paul, the martyrs, the founders of hospitals and schools and orphanages, 
+the reformers who cleaned the Church from within rather than leaving it.
 A merely human institution that had produced only the crimes would have collapsed under them.
-That the Church has survived its own worst members for two thousand years, and kept producing holiness through them, is closer to evidence *for* a divine guarantee than against it.
+That the Church has survived its own worst members for two thousand years, 
+and kept producing holiness through them, is closer to evidence *for* a divine guarantee than against it.
 
 The mark of holiness, then, is not the claim that Catholics are better than others.
 It is the claim that here, despite everyone's sins, the *means* of holiness are found intact — and the saints are the proof that those means work.
