@@ -5,7 +5,7 @@
 @inject IBreadcrumbTrail Trail
 @inject IDevotionProgressService Progress
 @inject NavigationInterop Navigation
-@inject IJSRuntime JS
+@inject ImmersiveInterop Immersive
 
 <PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
 
@@ -412,7 +412,7 @@ else
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoImmersive.enter");
+            await Immersive.EnterAsync();
         }
         catch (JSDisconnectedException)
         {
@@ -424,7 +424,7 @@ else
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoImmersive.leave");
+            await Immersive.LeaveAsync();
         }
         catch (JSDisconnectedException)
         {
@@ -500,7 +500,7 @@ else
                 await _prayerDialog.Close();
             }
 
-            await JS.InvokeVoidAsync("respondeoImmersive.leave");
+            await Immersive.LeaveAsync();
         }
         catch (JSDisconnectedException)
         {

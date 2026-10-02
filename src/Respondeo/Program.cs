@@ -38,6 +38,12 @@ builder.Services.AddScoped<PrayerBrowse>();
 // Pure facet/search/sort logic plus card presentation for the miracles catalog, kept out of the Miracles browse page so it is unit-testable.
 builder.Services.AddScoped<MiracleBrowse>();
 
+// Pure facet/search/sort logic for the devotions index, kept out of the Devotions browse page so it is unit-testable.
+builder.Services.AddScoped<DevotionBrowse>();
+
+// Pure row projection, tag facet, and search/sort for the Discover articles index, kept out of the Articles browse page so it is unit-testable.
+builder.Services.AddScoped<ArticleBrowse>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
@@ -66,5 +72,6 @@ builder.Services.AddScoped<BrowseStateInterop>();
 // Summa cross-reference module, so pages call strongly-typed methods instead of raw JS interop strings.
 builder.Services.AddScoped<NavigationInterop>();
 builder.Services.AddScoped<SummaRefInterop>();
+builder.Services.AddScoped<ImmersiveInterop>();
 
 await builder.Build().RunAsync();

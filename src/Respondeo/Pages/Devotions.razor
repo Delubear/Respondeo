@@ -1,5 +1,6 @@
 @page "/discover/devotions"
 @inject IDevotionService DevotionService
+@inject DevotionBrowse Browser
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
@@ -55,7 +56,7 @@
                         {
                             <Card Href="@($"discover/devotions/{d.Id}")"
                                   Title="@d.Title"
-                                  Pill="@FormatKind(d.Kind)"
+                                  Pill="@Browser.FormatKind(d.Kind)"
                                   Summary="@d.Summary"
                                   Cta="Begin &rarr;"
                                   Level="2" />
@@ -96,12 +97,8 @@
         var devotions = await DevotionService.GetIndexAsync();
         _devotions = devotions;
 
-        _kinds = _devotions.Select(d => d.Kind)
-            .Where(k => !string.IsNullOrWhiteSpace(k) && k != "devotion")
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(k => k, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
-        _kindLabels = [.. _kinds.Select(k => FormatKind(k) ?? k)];
+        _kinds = Browser.Kinds(_devotions);
+        _kindLabels = Browser.KindLabels(_kinds);
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -134,45 +131,12 @@
     }
 
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
-    private static string? FormatKind(string kind)
-    {
-        if (string.IsNullOrWhiteSpace(kind) || kind == "devotion")
-        {
-            return null;
-        }
-
-        return char.ToUpperInvariant(kind[0]) + kind[1..];
-    }
-
-    private IReadOnlyList<DevotionSummary> Filtered
-    {
-        get
-        {
-            if (_devotions is null)
-            {
-                return [];
-            }
-
-            IEnumerable<DevotionSummary> results = _devotions;
-
-            if (_selectedKinds.Count > 0)
-            {
-                results = results.Where(d => _selectedKinds.Contains(FormatKind(d.Kind) ?? d.Kind));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_query))
-            {
-                var q = _query.Trim();
-                results = results.Where(d =>
-                    d.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || d.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || (FormatKind(d.Kind)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
-            }
-
-            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
-            results = sort.Apply(results);
-
-            return [.. results];
-        }
-    }
+    private IReadOnlyList<DevotionSummary> Filtered =>
+        _devotions is null
+            ? []
+            : Browser.Filter(
+                _devotions,
+                _query,
+                _selectedKinds,
+                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }

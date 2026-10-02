@@ -1,5 +1,6 @@
 @page "/discover/articles"
 @inject IArticleService ArticleService
+@inject ArticleBrowse Browser
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
@@ -72,9 +73,6 @@
 </section>
 
 @code {
-    // A searchable, filterable row for a Discover article. Pill is a precomputed display-only kicker (the article's topic).
-    private sealed record ArticleRow(string Id, string Title, string SortValue, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href);
-
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
 
@@ -91,13 +89,7 @@
     private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private BrowseSection _browse = default!;
 
-    private IReadOnlyList<string> _tags =>
-        (_articles ?? [])
-            .SelectMany(a => a.Tags)
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+    private IReadOnlyList<string> _tags => Browser.Tags(_articles ?? []);
 
     protected override async Task OnInitializedAsync()
     {
@@ -107,10 +99,7 @@
         _selectedTags = new HashSet<string>(_browse.GetFilter("tag"), StringComparer.OrdinalIgnoreCase);
 
         var articles = await ArticleService.GetIndexAsync();
-        _articles = articles
-            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"))
-            .OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+        _articles = Browser.BuildRows(articles);
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -144,44 +133,12 @@
         _browse.SetFilter("tag", _selectedTags);
     }
 
-    // Display-only pill for a Discover article: capitalizes the topic slug, or shows nothing for the
-    // neutral "general"/blank bucket so unlabelled articles simply carry no pill.
-    private static string? FormatPill(string topic) =>
-        string.IsNullOrWhiteSpace(topic) || topic == "general"
-            ? null
-            : char.ToUpperInvariant(topic[0]) + topic[1..];
-
-    private IReadOnlyList<ArticleRow> Filtered
-    {
-        get
-        {
-            if (_articles is null)
-            {
-                return [];
-            }
-
-            IEnumerable<ArticleRow> results = _articles;
-
-            // Tags: OR within the facet (match any selected tag), AND with the other facets.
-            if (_selectedTags.Count > 0)
-            {
-                results = results.Where(a => a.Tags.Any(t => _selectedTags.Contains(t)));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_query))
-            {
-                var q = _query.Trim();
-                results = results.Where(a =>
-                    a.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || a.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
-                    || a.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase))
-                    || (a.Pill?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
-            }
-
-            var sort = _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
-            results = sort.Apply(results);
-
-            return [.. results];
-        }
-    }
+    private IReadOnlyList<ArticleRow> Filtered =>
+        _articles is null
+            ? []
+            : Browser.Filter(
+                _articles,
+                _query,
+                _selectedTags,
+                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }
