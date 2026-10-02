@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 @inject NavigationManager Nav
-@inject IJSRuntime JS
+@inject AccessibilityInterop Accessibility
 @inject Respondeo.Services.FeatureFlags Features
 
 <div class="page">
@@ -73,7 +73,7 @@
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoA11y.announce");
+            await Accessibility.AnnounceAsync();
         }
         catch (JSDisconnectedException)
         {

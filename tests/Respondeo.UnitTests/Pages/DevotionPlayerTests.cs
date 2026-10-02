@@ -25,6 +25,7 @@ public class DevotionPlayerTests : TestContext
         Services.AddSingleton(Substitute.For<IThemeService>());
         Services.AddScoped<NavigationInterop>();
         Services.AddScoped<ImmersiveInterop>();
+        Services.AddScoped<DialogInterop>();
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
         JSInterop.Mode = JSRuntimeMode.Loose;

@@ -73,5 +73,8 @@ builder.Services.AddScoped<BrowseStateInterop>();
 builder.Services.AddScoped<NavigationInterop>();
 builder.Services.AddScoped<SummaRefInterop>();
 builder.Services.AddScoped<ImmersiveInterop>();
+builder.Services.AddScoped<DialogInterop>();
+builder.Services.AddScoped<AccessibilityInterop>();
+builder.Services.AddScoped<InstallInterop>();
 
 await builder.Build().RunAsync();

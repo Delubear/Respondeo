@@ -1,5 +1,7 @@
 using Bunit;
+using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Components;
+using Respondeo.Services;
 
 namespace Respondeo.UnitTests.Components;
 
@@ -7,6 +9,7 @@ public class DialogTests : TestContext
 {
     public DialogTests()
     {
+        Services.AddScoped<DialogInterop>();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 

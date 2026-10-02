@@ -17,7 +17,7 @@ window.respondeoUrl = {
 // post the new page name to a live region. We own a single visually-hidden polite live region and
 // write the new document.title into it after navigation. The short delay lets the routed page's
 // <PageTitle> update document.title first so we announce the destination, not the previous page.
-window.respondeoA11y = {
+window.respondeoAccessibility = {
     announce: function () {
         var region = document.getElementById('route-announcer');
         if (!region) {

@@ -1,4 +1,4 @@
-@inject IJSRuntime JS
+@inject DialogInterop Dialogs
 
 @* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog
    interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free). Callers supply a
@@ -55,8 +55,8 @@
     private string? WidthStyle => string.IsNullOrWhiteSpace(MaxWidth) ? null : $"--dialog-max-width: {MaxWidth};";
 
     /// <summary>Opens the dialog as a modal.</summary>
-    public async Task Show() => await JS.InvokeVoidAsync("respondeoDialog.show", _dialog);
+    public async Task Show() => await Dialogs.ShowAsync(_dialog);
 
     /// <summary>Closes the dialog if it is open.</summary>
-    public async Task Close() => await JS.InvokeVoidAsync("respondeoDialog.close", _dialog);
+    public async Task Close() => await Dialogs.CloseAsync(_dialog);
 }

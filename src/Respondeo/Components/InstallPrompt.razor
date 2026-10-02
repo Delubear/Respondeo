@@ -1,5 +1,5 @@
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject InstallInterop Install
 
 @if (_visible)
 {
@@ -34,7 +34,7 @@
         if (firstRender)
         {
             _ref = DotNetObjectReference.Create(this);
-            _available = await JS.InvokeAsync<bool>("respondeoInstall.register", _ref);
+            _available = await Install.RegisterAsync(_ref);
             if (_available)
             {
                 StateHasChanged();
@@ -53,7 +53,7 @@
 
     private async Task InstallAsync()
     {
-        var accepted = await JS.InvokeAsync<bool>("respondeoInstall.prompt");
+        var accepted = await Install.PromptAsync();
         if (accepted)
         {
             _available = false;
@@ -64,14 +64,14 @@
     private async Task Dismiss()
     {
         _dismissed = true;
-        await JS.InvokeVoidAsync("respondeoInstall.dismiss");
+        await Install.DismissAsync();
     }
 
     public async ValueTask DisposeAsync()
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoInstall.unregister");
+            await Install.UnregisterAsync();
         }
         catch (JSDisconnectedException)
         {
