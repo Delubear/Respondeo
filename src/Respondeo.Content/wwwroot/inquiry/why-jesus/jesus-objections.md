@@ -13,9 +13,8 @@ sections:
   - jesus-objection-gospel-contradictions
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
-The case for Jesus deserves to be tested against its strongest challengers, not its weakest. Each objection here is stated in its most forceful form *before* any reply is given.
+The case for Jesus deserves to be tested against its strongest challengers, not its weakest. 
+Each objection here is stated in its most forceful form *before* any reply is given.
 
 The aim is not to "win," but to show that the Christian claim about Jesus is reasonable *with the difficulties in full view*.
 
