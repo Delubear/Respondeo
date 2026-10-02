@@ -61,12 +61,18 @@ export function jumpToTop() {
 }
 
 export function jumpToContent() {
-    // Used for card/node navigation: settle the viewport at the top of the content region (which
-    // begins with the breadcrumb) rather than the very top of the page, so the masthead stays
-    // out of view and the reader lands on their breadcrumb trail.
+    // Used for card/node navigation: settle the viewport at the top of the content region rather
+    // than the very top of the page, so the masthead stays out of view and the reader lands on
+    // their breadcrumb trail.
+    //
+    // The breadcrumb is position:sticky; top:0 but sits INSIDE .content__inner, which has a
+    // padding-top. Scrolling to .content's top therefore lands a padding's-worth ABOVE the
+    // breadcrumb, leaving a gap that only closes once the reader scrolls far enough for the sticky
+    // breadcrumb to pin. Prefer the breadcrumb's own offset so it starts flush at the top; fall
+    // back to .content (then the page top) on surfaces that have no breadcrumb.
     const scrollToContent = () => {
-        const content = document.querySelector('.content');
-        const top = content ? content.getBoundingClientRect().top + window.pageYOffset : 0;
+        const target = document.querySelector('.breadcrumb') || document.querySelector('.content');
+        const top = target ? target.getBoundingClientRect().top + window.pageYOffset : 0;
         window.scrollTo(0, top);
     };
 
