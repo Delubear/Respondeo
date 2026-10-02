@@ -166,28 +166,27 @@
           { "to": "home-returning-catholic", "label": "I was Catholic and drifted away", "prompt": "You are Catholic but have been away — and you are being waited for." }
         ],
         "home-not-yet-catholic": [
-          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "What full communion actually adds — above all, the Eucharist and the sacraments." },
-          { "to": "home-obstacles", "label": "What holds people back", "prompt": "The particular hesitations that come with leaving a tradition you have loved." },
-          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The concrete path into full communion for the already-baptized." }
+          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "What full communion actually adds — above all, the Eucharist and the sacraments." }
         ],
         "home-not-yet-christian": [
-          { "to": "home-why-practice", "label": "Why believe and practice?", "prompt": "Belief is not the finish line — it asks to be lived. Here is why that step is worth taking." },
-          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The concrete first step for someone entering the Church from outside." },
           { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "Before deciding, it is worth seeing what is actually being held out to you." }
         ],
         "home-obstacles": [
-          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "When the obstacle loses its grip, here is the first concrete step." },
-          { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "The obstacles are only half the picture — weigh them against what is actually held out to you." }
+          { "to": "home-why-practice", "label": "Why believe and practice?", "prompt": "The other half of the picture — not what holds you back, but why the step is worth taking at all." },
+          { "to": "home-how-to-begin", "label": "How to begin", "prompt": "When the obstacle loses its grip, here is the first concrete step." }
         ],
         "home-returning-catholic": [
+          { "to": "home-why-practice", "label": "Why believe and practice?", "prompt": "Coming back is not just resuming a habit — the faith asks to be lived for real. Here is why that is worth it." },
           { "to": "home-obstacles", "label": "What holds people back", "prompt": "If something specific is keeping you away, it is worth naming it and meeting it honestly." },
           { "to": "home-how-to-begin", "label": "How to begin again", "prompt": "When you are ready, the way back is simpler and gentler than you may fear." }
         ],
         "home-what-church-offers": [
+          { "to": "home-why-practice", "label": "Why believe and practice?", "prompt": "If this is what is offered, here is why it asks to be lived and not merely admired." },
           { "to": "home-obstacles", "label": "What holds people back", "prompt": "If this is what is offered, what keeps people from it — and how each hesitation is met." },
           { "to": "home-how-to-begin", "label": "How to begin", "prompt": "The practical first step toward receiving what is described here." }
         ],
         "home-why-practice": [
+          { "to": "home-obstacles", "label": "What holds people back", "prompt": "The other half of the picture — the particular hesitations that keep people from taking the step." },
           { "to": "home-how-to-begin", "label": "How to begin", "prompt": "If belief is meant to be lived, here is where the living starts." }
         ]
       },

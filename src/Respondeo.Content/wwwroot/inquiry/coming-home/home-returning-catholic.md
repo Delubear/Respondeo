@@ -40,5 +40,6 @@ That is the posture you are returning to.
 Not a ledger to be settled, but a father already running down the road.
 
 **Where to go from here.** If a particular thing is keeping you away — shame, an old wound, a hard question, a habit — it is worth naming it and meeting it head-on.
-If you are simply ready, the practical way back is gentler than you may fear.
+If you are wondering why the return is worth making at all, it helps to see why the faith asks to be lived and not just resumed.
+And if you are simply ready, the practical way back is gentler than you may fear.
 And it is worth remembering what you are returning *to*: not merely an institution, but the sacraments that carry God's own life.

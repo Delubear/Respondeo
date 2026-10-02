@@ -44,6 +44,7 @@ The house is meant to be *entered*, and only those who cross the threshold ever 
 You have examined the house carefully.
 The invitation now is not to study it further but to come inside.
 
-**Where to go from here.** If you want to understand why belief asks to be *lived* and not merely held, that is worth seeing next.
-If you are ready to take the concrete step, there is a clear and welcoming way in — usually through a parish's process for those entering the Church.
+**Where to go from here.** Before taking the step, 
+it is worth seeing clearly what is actually being held out to you — the life the Church exists to give.
+That is where the path turns next.
 Either way, you are no longer a spectator to the case; you are being invited into it.

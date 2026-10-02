@@ -40,6 +40,6 @@ What the body needs is not information about food but food.
 The Church is often mistaken for the manual: a set of teachings to accept.
 But her deepest offer is the *meal* — grace really given, Christ really received.
 
-**Where to go from here.** If you want to see how this grace actually reaches you, look at the sacraments, which are its concrete channels.
+**Where to go from here.** If this is what is offered, the next question is why it asks to be *lived* and not merely admired.
 If something in you hesitates in front of all this, it is worth naming what tends to hold people back.
 And when you are ready to receive what is described here, there is a clear first step.

@@ -47,6 +47,5 @@ They stop being a cherished guest and take their place as a son or daughter.
 That is the character of this step.
 Not a repudiation of where you have been, but an arrival at what you were always close to.
 
-**Where to go from here.** If you want to weigh what full communion actually offers, that is worth seeing next.
-If the hesitation is more personal — grief at leaving, family, a community you love — it is worth naming those obstacles plainly.
-And when you are ready, the path into full communion for the already-baptized is well-worn and welcoming.
+**Where to go from here.** If you want to weigh what full communion actually offers — the grace, the sacraments, 
+the belonging held out to you — that is where the path turns next.
