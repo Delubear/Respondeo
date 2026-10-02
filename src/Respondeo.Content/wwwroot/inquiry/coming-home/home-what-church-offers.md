@@ -7,8 +7,6 @@ tags:
   - the christian life
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 It is easy to picture the Church as an institution one *joins* — an organization with rules, membership, and obligations.
 That picture is not false, but it is thin.
 Underneath the visible structure, the Church exists to give one thing, and everything else serves it: **the life of God, shared with human beings.**
@@ -17,7 +15,8 @@ This is what is actually held out to you.
 **What is genuinely on offer:**
 
 1. **Grace — God's own life in you.**
-   Grace is not a metaphor for feeling better; it is a real participation in the life of God, given freely, that heals what sin has broken and raises the soul beyond its natural reach.
+   Grace is not a metaphor for feeling better; it is a real participation in the life of God, given freely, 
+   that heals what sin has broken and raises the soul beyond its natural reach.
    The Church exists first of all to be the ordinary place where this life is poured out.
 
 2. **The sacraments — grace made tangible.**

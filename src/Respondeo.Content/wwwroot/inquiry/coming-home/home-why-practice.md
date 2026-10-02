@@ -7,9 +7,8 @@ tags:
   - the christian life
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
-There is a way of holding the faith at arm's length — granting that it is probably true, respecting it, even defending it — while never letting it make a claim on how you actually live.
+There is a way of holding the faith at arm's length — granting that it is probably true, 
+respecting it, even defending it — while never letting it make a claim on how you actually live.
 It becomes a settled opinion filed alongside other settled opinions.
 This article is about why that posture cannot hold, and why the faith, if it is true at all, asks for everything.
 
@@ -45,11 +44,13 @@ And if the case has brought you this far, the risk of living *as if it is true* 
 ## See it today: the doctor's orders
 
 Suppose you trust a physician completely and receive a clear diagnosis with a clear treatment.
-To say "I believe every word, and I will change nothing" would not be belief — it would expose that you never really believed you were sick, or never really trusted the cure.
+To say "I believe every word, and I will change nothing" would not be belief — it would 
+expose that you never really believed you were sick, or never really trusted the cure.
 Genuine trust picks up the prescription.
 
 The faith is like that.
 Belief that stays in the head and never reaches the hands was never quite belief in the first place.
 
-**Where to go from here.** If you are ready to start living it, there is a plain first step.
-And if you want to see what practice concretely looks like, the sacraments are where it becomes real.
+**Where to go from here.** If something still holds you back from living it, 
+it is worth naming that hesitation and meeting it honestly.
+And if you are ready to start living it, there is a plain first step.
