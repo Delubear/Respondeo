@@ -163,7 +163,7 @@
         "coming-home": [
           { "to": "home-not-yet-christian", "label": "I\u0027m not yet Christian", "prompt": "The case is persuasive, but you have not yet believed or been baptized." },
           { "to": "home-not-yet-catholic", "label": "I\u0027m Christian but not Catholic", "prompt": "You love Christ in another tradition and have come to see the Catholic claim." },
-          { "to": "home-returning-catholic", "label": "I was Catholic and drifted away", "prompt": "You were baptized Catholic and have been away — and you are being waited for." }
+          { "to": "home-returning-catholic", "label": "I was Catholic and drifted away", "prompt": "You are Catholic but have been away — and you are being waited for." }
         ],
         "home-not-yet-catholic": [
           { "to": "home-what-church-offers", "label": "What the Church offers", "prompt": "What full communion actually adds — above all, the Eucharist and the sacraments." },

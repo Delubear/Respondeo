@@ -1,15 +1,14 @@
 ---
 id: home-returning-catholic
 title: "Returning to the Faith"
-summary: For the baptized Catholic who drifted away — why and how to come back.
+summary: For the Catholic who drifted away — why and how to come back.
 tags:
   - the catholic church
   - conversion
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
-If you were baptized Catholic and have drifted from the faith, this is the most important thing to hear first: you are not starting from nothing.
+If you once belonged to the Catholic Church — whether you were baptized Catholic or came into full communion later — and 
+have since drifted from the faith, this is the most important thing to hear first: you are not starting from nothing.
 By baptism you were already made a member of Christ's body, and that mark is never erased.
 The Church does not see you as a stranger applying for entry, but as a son or daughter who has been away — and who is being waited for.
 

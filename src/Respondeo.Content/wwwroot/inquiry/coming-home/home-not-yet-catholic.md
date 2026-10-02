@@ -7,9 +7,8 @@ tags:
   - conversion
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
-Perhaps you already love Christ and have followed Him for years within another Christian tradition — and you have come to see that the Catholic Church's claim about herself is true.
+Perhaps you already love Christ and have followed Him for years within another Christian 
+tradition — and you have come to see that the Catholic Church's claim about herself is true.
 This is often the hardest crossing of all, because it does not feel like coming *to* Christ; you are already His.
 It feels like leaving something good.
 That instinct deserves to be honored, not dismissed.
@@ -34,18 +33,20 @@ Entering the Catholic Church is not renouncing that; it is *completing* it.
 
 **A note if you are Eastern Orthodox.**
 Your situation is distinct, and the Catholic Church treats it so.
-Because Orthodoxy has valid sacraments and true apostolic succession, entering full communion is not starting over — you are received by a profession of faith, not re-baptized, and you may even keep your own Eastern rite by joining an Eastern Catholic Church in communion with Rome.
+Because Orthodoxy has valid sacraments and true apostolic succession, entering full communion is not starting over — you 
+are received by a profession of faith, not re-baptized, and you may even keep your own Eastern rite by joining an Eastern Catholic Church in communion with Rome.
 The practical path is spelled out separately under "How to begin."
 
 ## See it today: the family you were already near
 
-Imagine someone raised near a large family — welcomed at their table, loved by them, sharing much of their life — who one day learns that they are in fact a member of that family by blood, and always were.
+Imagine someone raised near a large family — welcomed at their table, loved by them, sharing much of their life — who 
+one day learns that they are in fact a member of that family by blood, and always were.
 Being formally received does not erase the years of nearness; it names and completes them.
-They stop being a cherished guest and take their place as a son.
+They stop being a cherished guest and take their place as a son or daughter.
 
 That is the character of this step.
 Not a repudiation of where you have been, but an arrival at what you were always close to.
 
-**Where to go from here.** If you want to weigh what full communion actually offers, look first at the Eucharist and the sacraments.
+**Where to go from here.** If you want to weigh what full communion actually offers, that is worth seeing next.
 If the hesitation is more personal — grief at leaving, family, a community you love — it is worth naming those obstacles plainly.
 And when you are ready, the path into full communion for the already-baptized is well-worn and welcoming.
