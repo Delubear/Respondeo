@@ -7,10 +7,9 @@ tags:
   - conversion
 ---
 
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
-
 Most people who keep their distance — whether they have never come, or once belonged and drifted away — are not held back by an argument.
-The reasons are rarely intellectual and almost always human — a wound, a shame, a habit, a fear of what it would cost, or simply the strangeness of a step never taken.
+The reasons are rarely intellectual and almost always human — a wound, a shame, a habit, 
+a fear of what it would cost, or simply the strangeness of a step never taken.
 These deserve to be taken seriously, not brushed aside, because pretending they are not there is exactly what keeps them powerful.
 Named plainly, most of them lose their grip.
 
@@ -29,11 +28,13 @@ Named plainly, most of them lose their grip.
 
 3. **Habit and inertia — "It's just not part of my life anymore."**
    Absence becomes a groove, and the longer it runs the more natural it feels to keep drifting.
-   This obstacle is not overcome by feeling differently but by a single concrete act — one confession, one Mass — after which the groove begins to reverse.
+   This obstacle is not overcome by feeling differently 
+   but by a single concrete act — one confession, one Mass — after which the groove begins to reverse.
 
 4. **Doubt — "I'm not sure I believe all of it."**
    You do not have to have every question resolved to take a step.
-   Faith often grows by practice rather than before it; many find their belief steadied not by waiting for certainty but by returning and letting the life of grace do its work.
+   Faith often grows by practice rather than before it; 
+   many find their belief steadied not by waiting for certainty but by practicing and letting the life of grace do its work.
    "I want to believe; help my unbelief" is enough to begin.
 
 5. **Cost — "It would change too much, or ask too much of me."**
@@ -46,7 +47,7 @@ Named plainly, most of them lose their grip.
 People often imagine the way back as a locked door they must somehow force — as though they have to earn re-entry, or prove themselves first.
 But the door was never locked from the inside.
 It was held shut only by the assumption that it was.
-The father in the parable is not waiting to be convinced; he is already watching the road.
+The father in the parable of the prodigal son is not waiting to be convinced; he is already watching the road.
 
 **Where to go from here.** When the obstacle loses its grip — or even before it fully does — there is a small, concrete first step you can take.
 And if the hesitation needs an answer rather than only naming, it helps to weigh it against what the Church actually offers.
