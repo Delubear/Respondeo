@@ -31,7 +31,7 @@ else if (_devotion is null)
         </p>
     </section>
 }
-else if (_beads is null)
+else if (!_started)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
     <section class="content-article">
@@ -101,11 +101,11 @@ else
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
         <ol class="devotion__list">
-            @for (var i = 0; i < _beads.Count; i++)
+            @for (var i = 0; i < _session.Beads.Count; i++)
             {
-                var step = _beads[i];
-                var itemDone = IsItemDone(i);
-                var itemCurrent = step.IsPrayer && step.PrayerOrdinal == _completedCount;
+                var step = _session.Beads[i];
+                var itemDone = _session.IsItemDone(i);
+                var itemCurrent = step.IsPrayer && step.PrayerOrdinal == _session.CompletedCount;
                 <li class="devotion__step @(itemDone ? "is-done" : null) @(itemCurrent ? "is-current" : null)">
                     <span class="devotion__marker devotion__marker--@(step.BeadType ?? "none")" aria-hidden="true">
                         @if (step.BeadType == "cross")
@@ -147,9 +147,9 @@ else
                         }
                         else if (step.IsPrayer)
                         {
-                            var done = step.PrayerOrdinal < _completedCount;
-                            var current = step.PrayerOrdinal == _completedCount;
-                            var clickable = current || step.PrayerOrdinal == _completedCount - 1;
+                            var done = step.PrayerOrdinal < _session.CompletedCount;
+                            var current = step.PrayerOrdinal == _session.CompletedCount;
+                            var clickable = current || step.PrayerOrdinal == _session.CompletedCount - 1;
                             <div class="devotion__prayer-row @(done ? "is-done" : null) @(current ? "is-current" : null) @(!done && !current ? "is-upcoming" : null)">
                                 <button type="button"
                                         id="@(current ? "devotion-current-step" : null)"
@@ -157,7 +157,7 @@ else
                                         @onclick="() => ToggleComplete(step.PrayerOrdinal)"
                                         disabled="@(!clickable)"
                                         aria-current="@(current ? "step" : null)"
-                                        aria-label="@PrayerStepLabel(step, done, current)"
+                                        aria-label="@_session.PrayerStepLabel(step, done, current)"
                                         aria-pressed="@done">
                                     <span class="devotion__prayer-name">
                                         @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
@@ -222,9 +222,10 @@ else
 
     private readonly Dictionary<string, Prayer> _prayers = new(StringComparer.OrdinalIgnoreCase);
 
-    private List<Bead>? _beads;
-    private int _prayerCount;
-    private int _completedCount;
+    // The live praying session: the expanded thread and in-order completion state. Null until the
+    // devotion has loaded; _started switches the intro / set chooser for the praying view.
+    private DevotionSession? _session;
+    private bool _started;
 
     // Set when a step is marked prayed so the next render moves keyboard focus onto the new current
     // step (see ToggleComplete / OnAfterRenderAsync). Cleared once the focus has been handed over.
@@ -257,7 +258,7 @@ else
 
             var setName = _devotion.MysterySets.FirstOrDefault(s => s.Id == saved.SetId)?.Name;
 
-            var total = CountPrayers(saved.SetId);
+            var total = _session?.CountPrayers(saved.SetId) ?? 0;
             var done = Math.Clamp(saved.CompletedCount, 0, total);
 
             // Set names already read as full titles ("The Sorrowful Mysteries").
@@ -271,30 +272,11 @@ else
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
 
-    // A single row in the devotion: either a mystery announcement (with its reflection) or a prayer the reader taps to mark prayed.
-    // Repeated prayers each get their own row (their own bead).
-    private sealed class Bead
-    {
-        public string? Heading { get; init; }
-        public string? MysteryTitle { get; init; }
-        public string? MysteryReflectionHtml { get; init; }
-        public string? PrayerTitle { get; init; }
-        public string? PrayerHtml { get; init; }
-        public string? BeadType { get; init; }
-        public string? Note { get; init; }
-
-        // Index of this row among prayer rows (for in-order completion); -1 for mystery announcements.
-        public int PrayerOrdinal { get; set; } = -1;
-
-        public bool IsPrayer => PrayerHtml is not null;
-    }
-
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
-        _beads = null;
-        _completedCount = 0;
-        _prayerCount = 0;
+        _session = null;
+        _started = false;
         _savedProgress = null;
         _devotion = await Devotions.GetDevotionAsync(Id);
 
@@ -305,6 +287,10 @@ else
         {
             _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
             await LoadPrayersAsync(_devotion);
+
+            // The session owns the thread and completion rules; create it once the prayers are loaded
+            // so the intro screen can already count a set's prayers for the resume banner.
+            _session = new DevotionSession(_devotion, _prayers);
 
             // Surface any un-finished progress so the intro screen can offer Resume / Start over.
             _savedProgress = await Progress.LoadAsync(Id);
@@ -385,40 +371,16 @@ else
         await Begin();
     }
 
-    // Counts how many prayer rows a given set expands to, so the resume banner can show a total
-    // without disturbing the live praying state. Mirrors the ordinal numbering done in Begin.
-    private int CountPrayers(string? setId)
-    {
-        if (_devotion is null)
-        {
-            return 0;
-        }
-
-        return BuildBeads(_devotion, setId).Count(b => b.IsPrayer);
-    }
-
     // Starts (or resumes) praying the currently selected set. A non-zero startCompleted restores an
     // earlier place in the thread; the value is clamped so a saved count can never exceed the rows.
     private async Task Begin(int startCompleted = 0)
     {
-        _beads = BuildBeads(_devotion!, _selectedSetId);
-
-        // Number the prayer rows so completion can advance through them strictly in order.
-        var ordinal = 0;
-        foreach (var bead in _beads)
-        {
-            if (bead.IsPrayer)
-            {
-                bead.PrayerOrdinal = ordinal++;
-            }
-        }
-
-        _prayerCount = ordinal;
-        _completedCount = Math.Clamp(startCompleted, 0, _prayerCount);
+        _session!.Start(_selectedSetId, startCompleted);
+        _started = true;
 
         // Resuming mid-thread: scroll the current step into view on the next render so the reader
         // lands on their place rather than the top of a long devotion.
-        if (_completedCount > 0 && _completedCount < _prayerCount)
+        if (_session.CompletedCount > 0 && !_session.IsComplete)
         {
             _scrollToCurrentStep = true;
         }
@@ -443,7 +405,7 @@ else
         await Begin(_savedProgress.CompletedCount);
     }
 
-    private async Task SaveProgressAsync() => await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _completedCount));
+    private async Task SaveProgressAsync() => await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _session!.CompletedCount));
 
     private async Task EnterImmersiveAsync()
     {
@@ -474,75 +436,36 @@ else
     // so leaving mid-devotion can be resumed; finishing the devotion clears the saved slot.
     private async Task ToggleComplete(int ordinal)
     {
-        if (ordinal == _completedCount)
-        {
-            _completedCount++;
-            // Keyboard focus is still on the step just prayed. Move it forward to the new current step
-            // after this render so Space/Enter advances the thread rather than un-marking the same step.
-            _focusCurrentStep = true;
-        }
-        else if (ordinal == _completedCount - 1)
-        {
-            _completedCount--;
-        }
-        else
-        {
-            return;
-        }
+        var result = _session!.Toggle(ordinal);
 
-        if (_completedCount >= _prayerCount)
+        switch (result)
         {
-            // The devotion is finished; nothing left to resume.
-            _announcement = "Devotion complete.";
-            await Progress.ClearAsync(Id);
-        }
-        else
-        {
-            AnnounceCurrentStep();
-            await SaveProgressAsync();
+            case DevotionToggleResult.NoChange:
+                return;
+
+            case DevotionToggleResult.Advanced:
+                // Keyboard focus is still on the step just prayed. Move it forward to the new current
+                // step after this render so Space/Enter advances the thread rather than un-marking it.
+                _focusCurrentStep = true;
+                _announcement = _session.DescribeCurrentStep();
+                await SaveProgressAsync();
+                break;
+
+            case DevotionToggleResult.SteppedBack:
+                _announcement = _session.DescribeCurrentStep();
+                await SaveProgressAsync();
+                break;
+
+            case DevotionToggleResult.Completed:
+                // The devotion is finished; nothing left to resume.
+                _focusCurrentStep = true;
+                _announcement = "Devotion complete.";
+                await Progress.ClearAsync(Id);
+                break;
         }
     }
 
-    // Announces the step now to be prayed (title and position) so screen-reader users get spoken
-    // feedback after each mark, mirroring the visual "current" highlight.
-    private void AnnounceCurrentStep()
-    {
-        var current = _beads?.FirstOrDefault(b => b.IsPrayer && b.PrayerOrdinal == _completedCount);
-        _announcement = current is null ? null : $"Step {_completedCount + 1} of {_prayerCount}: {current.PrayerTitle}.";
-    }
-
-    // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a
-    // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary".
-    private string PrayerStepLabel(Bead step, bool done, bool current)
-    {
-        var position = $"step {step.PrayerOrdinal + 1} of {_prayerCount}";
-        var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
-        var note = string.IsNullOrWhiteSpace(step.Note) ? null : $", {step.Note}";
-        return $"{step.PrayerTitle}{note}, {position}, {state}";
-    }
-
-    // A row is "done" once completion has passed it. A mystery announcement is treated as done once
-    // the pointer reaches the first prayer of the decade it introduces.
-    private bool IsItemDone(int index)
-    {
-        var beads = _beads!;
-        if (beads[index].IsPrayer)
-        {
-            return beads[index].PrayerOrdinal < _completedCount;
-        }
-
-        for (var j = index + 1; j < beads.Count; j++)
-        {
-            if (beads[j].IsPrayer)
-            {
-                return beads[j].PrayerOrdinal < _completedCount;
-            }
-        }
-
-        return _completedCount >= _prayerCount;
-    }
-
-    private async Task OpenPrayer(Bead bead)
+    private async Task OpenPrayer(DevotionBead bead)
     {
         _openPrayerTitle = bead.PrayerTitle;
         _openPrayerHtml = bead.PrayerHtml;
@@ -553,7 +476,7 @@ else
 
         // Reading the words of the current step counts as praying it: mark it complete so opening the
         // book keeps the thread moving without a separate tap on the step itself.
-        if (bead.IsPrayer && bead.PrayerOrdinal == _completedCount)
+        if (bead.IsPrayer && bead.PrayerOrdinal == _session!.CompletedCount)
         {
             await ToggleComplete(bead.PrayerOrdinal);
         }
@@ -564,66 +487,6 @@ else
         if (_prayerDialog is not null)
         {
             await _prayerDialog.Close();
-        }
-    }
-
-    // Expands the data-driven sequence into the flat list of rows. A "mysteries" step iterates the
-    // chosen set, emitting an announcement row for each mystery followed by its per-mystery prayers.
-    private List<Bead> BuildBeads(Devotion devotion, string? selectedSetId)
-    {
-        var beads = new List<Bead>();
-        var set = devotion.MysterySets.FirstOrDefault(s => s.Id == selectedSetId)
-                  ?? devotion.MysterySets.FirstOrDefault();
-
-        foreach (var step in devotion.Sequence)
-        {
-            if (step.Kind == "mysteries" && set is not null)
-            {
-                foreach (var mystery in set.Mysteries)
-                {
-                    beads.Add(new Bead
-                    {
-                        Heading = step.Title,
-                        MysteryTitle = mystery.Title,
-                        MysteryReflectionHtml = mystery.ReflectionHtml,
-                    });
-
-                    foreach (var sub in step.PerMystery)
-                    {
-                        AddPrayerRow(beads, sub, null);
-                    }
-                }
-            }
-            else
-            {
-                AddPrayerRow(beads, step, step.Title);
-            }
-        }
-
-        return beads;
-    }
-
-    // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its
-    // own bead on the thread and its own step to mark complete.
-    private void AddPrayerRow(List<Bead> beads, DevotionStep step, string? heading)
-    {
-        if (string.IsNullOrWhiteSpace(step.PrayerId) || !_prayers.TryGetValue(step.PrayerId, out var prayer))
-        {
-            return;
-        }
-
-        var count = Math.Max(1, step.Repeat);
-        for (var i = 0; i < count; i++)
-        {
-            beads.Add(new Bead
-            {
-                // Only label the first of a repeated group so the heading is not shouted many times.
-                Heading = i == 0 ? (heading ?? step.Title) : null,
-                PrayerTitle = prayer.Title,
-                PrayerHtml = prayer.Html,
-                BeadType = step.Bead,
-                Note = i == 0 ? step.Note : null,
-            });
         }
     }
 
