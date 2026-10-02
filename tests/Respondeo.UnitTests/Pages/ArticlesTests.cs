@@ -69,6 +69,7 @@ public class ArticlesTests : TestContext
         Services.AddSingleton<IContentService>(new InquiryService(http, new InquiryParser(ContentRendering.Renderer)));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>()));
+        Services.AddScoped<BrowseStateInterop>();
     }
 
     [Fact]

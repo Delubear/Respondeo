@@ -2,14 +2,14 @@
 @inject IPrayerService PrayerService
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
-@inject IJSRuntime JS
+@inject BrowseStateInterop BrowseJs
 
 <PageTitle>Prayers &mdash; Discover &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Catholic Prayers"
          Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
 
-<section class="pillar browse" data-discover-browse="prayers">
+<section class="pillar browse" data-browse-scroll="prayers">
     <PillarHeader Eyebrow="Words for God" Title="Prayers">
         <Lede>
             The Church's own words, learned by heart and prayed across the centuries.
@@ -96,7 +96,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("discover/prayers", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "prayers"));
+        _browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
         _query = _browse.Query;
         _selectedCategories = new HashSet<string>(_browse.GetFilter("category"), StringComparer.OrdinalIgnoreCase);
         _selectedTags = new HashSet<string>(_browse.GetFilter("tags"), StringComparer.OrdinalIgnoreCase);
@@ -123,7 +123,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoDiscoverBrowse.restoreScroll", "prayers");
+            await BrowseJs.RestoreScrollAsync("prayers");
         }
     }
 

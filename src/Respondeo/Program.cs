@@ -45,4 +45,8 @@ builder.Services.AddScoped<NavigationIntent>();
 // Devotions, Miracles, Summa) resets just that section rather than all areas together.
 builder.Services.AddScoped<BrowseState>();
 
+// Typed wrapper over the window.respondeoBrowseState JS module (scroll + accordion memory) so the
+// browse pages call strongly-typed methods instead of raw JS interop strings.
+builder.Services.AddScoped<BrowseStateInterop>();
+
 await builder.Build().RunAsync();

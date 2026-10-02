@@ -137,18 +137,23 @@
     private Dialog? _dialog;
     private bool _stacked;
     private DotNetObjectReference<SummaGuide>? _ref;
+    private IJSObjectReference? _module;
+    private int _subscription;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
             _ref = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("respondeoScrollWatch.register", _ref);
+            _subscription = await _module.InvokeAsync<int>("register", _ref);
         }
     }
 
+    // The guide only needs the back-to-top reveal threshold so its button can stack above that
+    // control; the progress value is shared by the same scroll tracker but ignored here.
     [JSInvokable]
-    public void OnScrolled(bool backToTopVisible)
+    public void OnScroll(double progress, bool backToTopVisible)
     {
         if (_stacked != backToTopVisible)
         {
@@ -177,7 +182,11 @@
     {
         try
         {
-            await JS.InvokeVoidAsync("respondeoScrollWatch.unregister");
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("unregister", _subscription);
+                await _module.DisposeAsync();
+            }
         }
         catch (JSDisconnectedException)
         {

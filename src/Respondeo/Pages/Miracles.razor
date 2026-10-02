@@ -2,13 +2,14 @@
 @inject IMiracleService MiracleService
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
+@inject BrowseStateInterop BrowseJs
 
 <PageTitle>Catholic Miracles &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Catholic Miracles"
          Description="A growing catalog of reported and recognized Catholic miracles — Eucharistic miracles, Marian apparitions, and healings — with the Church's judgment on each." />
 
-<section class="pillar browse">
+<section class="pillar browse" data-browse-scroll="miracles">
     <PillarHeader Eyebrow="Signs and wonders" Title="Catholic Miracles">
         <Lede>
             A growing catalog of reported and recognized miracles &mdash; Eucharistic miracles, Marian
@@ -105,7 +106,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("discover/miracles");
+        _browse = Browse.Section("discover/miracles", () => BrowseJs.ClearAsync("miracles"));
         _selectedTypes = new HashSet<string>(_browse.GetFilter("type"), StringComparer.OrdinalIgnoreCase);
         _selectedApprovals = new HashSet<string>(_browse.GetFilter("approval"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
@@ -118,6 +119,15 @@
         _types = _all.SelectMany(m => m.Types).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Category, StringComparer.CurrentCultureIgnoreCase).ToList();
         _approvals = _all.Select(m => m.Approval).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Approval, StringComparer.CurrentCultureIgnoreCase).ToList();
         _regions = _all.Select(m => m.Region).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(_facets.Region, StringComparer.CurrentCultureIgnoreCase).ToList();
+    }
+
+    // After the list first renders, ask JS to restore the remembered scroll position.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowseJs.RestoreScrollAsync("miracles");
+        }
     }
 
     private void OnSearchChanged(string value) => _browse.Query = value;

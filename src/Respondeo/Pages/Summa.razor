@@ -3,7 +3,7 @@
 @inject ISummaPartCatalog Parts
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
-@inject IJSRuntime JS
+@inject BrowseStateInterop BrowseJs
 
 <PageTitle>Summa Theologiae — Respondeo</PageTitle>
 
@@ -77,11 +77,11 @@
         }
         else
         {
-            <div class="summa__browse">
+            <div class="summa__browse" data-browse-scroll="summa">
                 @foreach (var part in BrowseParts())
                 {
                     var partInfo = Parts.ByStorageKey(part.Id);
-                    <details class="summa__part" data-summa-section="@part.Id" open="@IsPartOpen(part)">
+                    <details class="summa__part" data-browse-section="@part.Id" open="@IsPartOpen(part)">
                         <summary class="summa__part-summary">
                             <span class="summa__part-heading">
                                 <span class="summa__part-title">@part.Title</span>
@@ -124,7 +124,7 @@
                             }
                             else
                             {
-                                <details class="summa__treatise" data-summa-section="@TreatiseKey(part, group.Treatise)" open="@IsTreatiseOpen(part, group.Treatise)">
+                                <details class="summa__treatise" data-browse-section="@TreatiseKey(part, group.Treatise)" open="@IsTreatiseOpen(part, group.Treatise)">
                                     <summary class="summa__treatise-summary">
                                         <span class="summa__treatise-marker" aria-hidden="true"></span>
                                         <span class="summa__treatise-title">@group.Treatise</span>
@@ -187,15 +187,15 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("summa", () => JS.InvokeVoidAsync("respondeoSummaBrowse.clear"));
+        _browse = Browse.Section("summa", () => BrowseJs.ClearAsync("summa"));
         _index = await SummaService.GetIndexAsync();
         _entries = BuildEntries(_index);
 
         // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open`
         // attributes. Blazor never writes `open` again after this render and never handles `toggle`
-        // (the browser and summa-browse.js own that entirely), so there is no re-render/re-apply
+        // (the browser and browse-state.js own that entirely), so there is no re-render/re-apply
         // feedback loop - the cause of the earlier "endless jump" on Back.
-        var open = await JS.InvokeAsync<string[]>("respondeoSummaBrowse.getOpen");
+        var open = await BrowseJs.GetOpenAsync("summa");
         foreach (var id in open ?? Array.Empty<string>())
         {
             _openOnMount.Add(id);
@@ -216,7 +216,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoSummaBrowse.restoreScroll");
+            await BrowseJs.RestoreScrollAsync("summa");
         }
     }
 
@@ -231,7 +231,7 @@
 
     // A part is expanded when the mount-time snapshot (read from the JS store) says so. This value
     // must stay constant for the component's lifetime: the browser owns the element's visual state
-    // after mount, and summa-browse.js records subsequent toggles for the NEXT restore. Blazor never
+    // after mount, and browse-state.js records subsequent toggles for the NEXT restore. Blazor never
     // re-renders on a toggle, so `open` is never re-applied mid-session (the "endless jump" fix).
     private bool IsPartOpen(SummaPartEntry part) => _openOnMount.Contains(part.Id);
 

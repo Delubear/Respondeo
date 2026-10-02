@@ -18,6 +18,7 @@
     private bool _showBackToTop;
     private DotNetObjectReference<ScrollAffordances>? _ref;
     private IJSObjectReference? _module;
+    private int _subscription;
 
     private string ProgressStyle => _progress.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "%";
 
@@ -32,7 +33,7 @@
         {
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
             _ref = DotNetObjectReference.Create(this);
-            await _module.InvokeVoidAsync("register", _ref);
+            _subscription = await _module.InvokeAsync<int>("register", _ref);
         }
     }
 
@@ -75,7 +76,7 @@
         {
             try
             {
-                await _module.InvokeVoidAsync("unregister");
+                await _module.InvokeVoidAsync("unregister", _subscription);
                 await _module.DisposeAsync();
             }
             catch (JSDisconnectedException)

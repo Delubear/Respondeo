@@ -38,35 +38,44 @@ window.respondeoA11y = {
     }
 };
 
-// Smoothly brings an element into view by its id.
-// Used to reveal a freshly opened accordion section (or a deep-linked one on load) when it sits below the fold.
-// We offset by the sticky breadcrumb's height so the section header isn't left hidden underneath it (scrollIntoView block:'start' would tuck it behind the bar).
-// Respects prefers - reduced - motion.
+// Brings an element into view. Both helpers wait for layout to settle before measuring: on long
+// pages a freshly opened (or deep-linked) section has its body injected as raw HTML, so its final
+// height/position isn't known on the first frame - a double rAF lets the browser finish laying it
+// out first. Both also respect prefers-reduced-motion.
 window.respondeoScroll = {
-    intoView: function (id) {
-        var el = document.getElementById(id);
-        if (!el) {
-            return;
-        }
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        // Defer until after layout has settled. On long pages the target section may not have its
-        // final height/position on the first frame (its body is injected as raw HTML), so measuring
-        // immediately can scroll short of the anchor. A double rAF waits for the browser to finish
-        // laying out the content before we measure and scroll.
+    // Run `apply(el, reduce)` for element `id` once layout has settled.
+    _afterLayout: function (id, apply) {
         requestAnimationFrame(function () {
             requestAnimationFrame(function () {
-                var target = document.getElementById(id);
-                if (!target) {
-                    return;
+                var el = document.getElementById(id);
+                if (el) {
+                    apply(el, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
                 }
-                var breadcrumb = document.querySelector('.breadcrumb');
-                // Leave the sticky breadcrumb's height plus a small breathing gap above the target so
-                // its header (and the first line or two of content) stays visible rather than landing
-                // flush against - or tucked just under - the sticky bar.
-                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
             });
+        });
+    },
+    // Smoothly scrolls the WINDOW to reveal a section, offsetting the sticky breadcrumb so the
+    // header isn't left hidden underneath it. Used to reveal a freshly opened accordion section (or
+    // a deep-linked one on load) when it sits below the fold.
+    intoView: function (id) {
+        this._afterLayout(id, function (el, reduce) {
+            var breadcrumb = document.querySelector('.breadcrumb');
+            // Leave the sticky breadcrumb's height above the target so its header (and the first
+            // line or two of content) stays visible rather than landing flush against - or tucked
+            // just under - the sticky bar.
+            var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
+            var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+        });
+    },
+    // Centres an element within its nearest scrollable ancestor via native scrollIntoView. Unlike
+    // intoView (which moves the window), this also works inside an inner scroll container such as
+    // the devotion player's .devotion__list in immersive mode.
+    centreInParent: function (id) {
+        this._afterLayout(id, function (el, reduce) {
+            if (typeof el.scrollIntoView === 'function') {
+                el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+            }
         });
     }
 };
@@ -118,50 +127,14 @@ window.respondeoImmersive = {
 
 // Focuses an element by id, keeping it in view. Used by the devotion player to move keyboard
 // focus onto the next step after one is marked prayed, so pressing Space/Enter walks the thread
-// forward instead of toggling the same step off and on again.
+// forward instead of toggling the same step off and on again. (Scrolling an element into view lives
+// in respondeoScroll; this object is purely about focus.)
 window.respondeoFocus = {
     byId: function (id) {
         const el = document.getElementById(id);
         if (el && typeof el.focus === 'function') {
             el.focus({ preventScroll: false });
         }
-    },
-    // Scrolls an element by id to the centre of its nearest scrollable ancestor. Unlike
-    // respondeoScroll.intoView (which moves the window), this uses the native scrollIntoView so it
-    // also works inside the devotion player's inner scroll container (.devotion__list) in immersive
-    // mode. Deferred with a double rAF so the immersive layout has settled before we measure.
-    centreInScrollParent: function (id) {
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                const el = document.getElementById(id);
-                if (el && typeof el.scrollIntoView === 'function') {
-                    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
-                }
-            });
-        });
-    }
-};
-
-// Reports scroll position to a .NET component so a floating control can mirror the back-to-top
-// button's reveal threshold (kept in sync with js/scroll.js: shows once scrolled past 400px).
-window.respondeoScrollWatch = {
-    register: function (ref) {
-        const handler = () => {
-            const top = document.documentElement.scrollTop || document.body.scrollTop || 0;
-            ref.invokeMethodAsync('OnScrolled', top > 400);
-        };
-        this._handler = handler;
-        this._ref = ref;
-        window.addEventListener('scroll', handler, { passive: true });
-        handler();
-    },
-    unregister: function () {
-        if (this._handler) {
-            window.removeEventListener('scroll', this._handler);
-            this._handler = null;
-        }
-        this._ref = null;
     }
 };
 

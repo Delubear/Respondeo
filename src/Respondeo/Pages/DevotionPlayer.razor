@@ -214,8 +214,7 @@ else
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private static readonly Breadcrumb.Crumb[] _crumbs =
-        [new("devotions", "Devotions", Href: "discover/devotions")];
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("devotions", "Devotions", Href: "discover/devotions")];
 
     private Devotion? _devotion;
     private bool _loading = true;
@@ -256,8 +255,7 @@ else
                 return "Pick up where you left off.";
             }
 
-            var setName = _devotion.MysterySets
-                .FirstOrDefault(s => s.Id == saved.SetId)?.Name;
+            var setName = _devotion.MysterySets.FirstOrDefault(s => s.Id == saved.SetId)?.Name;
 
             var total = CountPrayers(saved.SetId);
             var done = Math.Clamp(saved.CompletedCount, 0, total);
@@ -265,9 +263,7 @@ else
             // Set names already read as full titles ("The Sorrowful Mysteries").
             var progress = total > 0 ? $"{done} of {total} prayers complete." : "in progress.";
 
-            return string.IsNullOrWhiteSpace(setName)
-                ? $"You've prayed {progress}"
-                : $"{setName} \u2014 {progress}";
+            return string.IsNullOrWhiteSpace(setName) ? $"You've prayed {progress}" : $"{setName} \u2014 {progress}";
         }
     }
 
@@ -275,8 +271,8 @@ else
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
 
-    // A single row in the devotion: either a mystery announcement (with its reflection) or a prayer
-    // the reader taps to mark prayed. Repeated prayers each get their own row (their own bead).
+    // A single row in the devotion: either a mystery announcement (with its reflection) or a prayer the reader taps to mark prayed.
+    // Repeated prayers each get their own row (their own bead).
     private sealed class Bead
     {
         public string? Heading { get; init; }
@@ -328,7 +324,7 @@ else
 
             try
             {
-                await JS.InvokeVoidAsync("respondeoFocus.centreInScrollParent", "devotion-current-step");
+                await JS.InvokeVoidAsync("respondeoScroll.centreInParent", "devotion-current-step");
             }
             catch (JSDisconnectedException)
             {
@@ -447,8 +443,7 @@ else
         await Begin(_savedProgress.CompletedCount);
     }
 
-    private async Task SaveProgressAsync() =>
-        await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _completedCount));
+    private async Task SaveProgressAsync() => await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _completedCount));
 
     private async Task EnterImmersiveAsync()
     {
@@ -513,9 +508,7 @@ else
     private void AnnounceCurrentStep()
     {
         var current = _beads?.FirstOrDefault(b => b.IsPrayer && b.PrayerOrdinal == _completedCount);
-        _announcement = current is null
-            ? null
-            : $"Step {_completedCount + 1} of {_prayerCount}: {current.PrayerTitle}.";
+        _announcement = current is null ? null : $"Step {_completedCount + 1} of {_prayerCount}: {current.PrayerTitle}.";
     }
 
     // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a

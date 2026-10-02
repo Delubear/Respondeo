@@ -2,14 +2,14 @@
 @inject IArticleService ArticleService
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
-@inject IJSRuntime JS
+@inject BrowseStateInterop BrowseJs
 
 <PageTitle>Articles &mdash; Discover &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Living the Faith — Articles"
          Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
-<section class="pillar browse" data-discover-browse="articles">
+<section class="pillar browse" data-browse-scroll="articles">
     <PillarHeader Eyebrow="Beneath the practice" Title="Articles">
         <Lede>
             Once you are living the faith, questions deepen rather than disappear. These articles dig
@@ -102,7 +102,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("discover/articles", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "articles"));
+        _browse = Browse.Section("discover/articles", () => BrowseJs.ClearAsync("articles"));
         _query = _browse.Query;
         _selectedTags = new HashSet<string>(_browse.GetFilter("tag"), StringComparer.OrdinalIgnoreCase);
 
@@ -118,7 +118,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoDiscoverBrowse.restoreScroll", "articles");
+            await BrowseJs.RestoreScrollAsync("articles");
         }
     }
 

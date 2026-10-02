@@ -2,14 +2,14 @@
 @inject IDevotionService DevotionService
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
-@inject IJSRuntime JS
+@inject BrowseStateInterop BrowseJs
 
 <PageTitle>Devotions &mdash; Discover &mdash; Respondeo</PageTitle>
 
 <SeoHead Title="Catholic Devotions"
          Description="Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery." />
 
-<section class="pillar browse" data-discover-browse="devotions">
+<section class="pillar browse" data-browse-scroll="devotions">
     <PillarHeader Eyebrow="Pray, bead by bead" Title="Devotions">
         <Lede>
             Choose a devotion and pray it bead by bead. The guide keeps your place, announces each
@@ -89,7 +89,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("discover/devotions", () => JS.InvokeVoidAsync("respondeoDiscoverBrowse.clear", "devotions"));
+        _browse = Browse.Section("discover/devotions", () => BrowseJs.ClearAsync("devotions"));
         _query = _browse.Query;
         _selectedKinds = new HashSet<string>(_browse.GetFilter("kind"), StringComparer.OrdinalIgnoreCase);
 
@@ -109,7 +109,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("respondeoDiscoverBrowse.restoreScroll", "devotions");
+            await BrowseJs.RestoreScrollAsync("devotions");
         }
     }
 
