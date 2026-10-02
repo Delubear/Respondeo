@@ -3,6 +3,7 @@
 @inject ISummaService Summa
 @inject ISummaPartCatalog Parts
 @inject ISummaReferenceRenderer References
+@inject SummaQuestionPresenter Presenter
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
 @inject IJSRuntime JS
@@ -11,7 +12,7 @@
 
 @if (_question is not null)
 {
-    <SeoHead Title="@_question.Title" Description="@SeoDescription" Article="true" />
+    <SeoHead Title="@_question.Title" Description="@_seoDescription" Article="true" />
 }
 
 <Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")"
@@ -115,28 +116,9 @@ else
     private bool _loading = true;
     private bool _scrolledToFragment;
 
-    // A concise meta description built from the question's articles, so search results summarize the
-    // specific points Aquinas treats rather than repeating the generic Summa description.
-    private string SeoDescription
-    {
-        get
-        {
-            if (_question is null)
-            {
-                return SiteMeta.DefaultDescription;
-            }
-
-            var articles = string.Join("; ", _question.Articles.Select(a => a.Title));
-            if (_question.IsPrologue)
-            {
-                return $"{PartTitle} · Prologue: {_question.Title}. From St. Thomas Aquinas's Summa Theologiae.";
-            }
-
-            return string.IsNullOrWhiteSpace(articles)
-                ? $"{PartTitle} · Question {_question.Number}: {_question.Title}. From St. Thomas Aquinas's Summa Theologiae."
-                : $"{_question.Title} — St. Thomas Aquinas asks: {articles}.";
-        }
-    }
+    // Concise meta description for this question, assembled by the presenter from the question's
+    // articles so search results summarize the specific points Aquinas treats.
+    private string _seoDescription = SiteMeta.DefaultDescription;
 
     // The ancestor crumbs shown between the Summa root and this question. Currently a single Part
     // crumb (e.g. "First Part") linking to that part's landing page, so the Summa breadcrumb mirrors
@@ -173,7 +155,7 @@ else
     {
         await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
 
-        if (TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
+        if (SummaFragment.TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
         {
             StateHasChanged();
         }
@@ -191,22 +173,6 @@ else
         _ = OpenFragmentTargetAsync();
     }
 
-    // Extracts the owning article number from a fragment, whether bare ("article-3") or a sub-anchor
-    // such as "article-3-reply-2" / "article-3-objection-1" / "article-3-contra".
-    private static bool TryGetArticleNumber(string fragment, out int articleNumber)
-    {
-        articleNumber = 0;
-        if (!fragment.StartsWith("article-", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        var rest = fragment["article-".Length..];
-        var end = rest.IndexOf('-');
-        var digits = end < 0 ? rest : rest[..end];
-        return int.TryParse(digits, out articleNumber);
-    }
-
     // Opens the article named by the current fragment (if any) and scrolls it into view.
     // Safe to call repeatedly: it only rerenders when the article wasn't already open.
     private async Task OpenFragmentTargetAsync()
@@ -217,7 +183,7 @@ else
             return;
         }
 
-        if (TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
+        if (SummaFragment.TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
         {
             StateHasChanged();
         }
@@ -248,60 +214,41 @@ else
         _scrolledToFragment = false;
         _openArticles.Clear();
         _question = await Summa.GetQuestionAsync(Parts.ToStorageId(Id));
-        await ResolvePartContextAsync();
-        _crumbs = BuildPartCrumbs(_question);
+
+        // The presenter assembles the part context, SEO description, and ancestor part in one pass.
+        var view = await Presenter.BuildAsync(_question);
+        PartTitle = view.PartTitle;
+        _treatise = view.Treatise;
+        _seoDescription = view.SeoDescription;
+        _crumbs = BuildPartCrumbs(view.Part);
+
         await ResolveReferenceOriginAsync();
         _loading = false;
     }
 
-    // Builds the Part ancestor crumb from the question's part id as plain, non-linked text (there is
-    // no dedicated part landing page). Falls back to no crumb when the question or its part is unknown.
-    private IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaQuestionContent? question)
+    // Maps the presenter's Part ancestor into a plain (non-linked) breadcrumb crumb; there is no
+    // dedicated part landing page. Falls back to no crumb when the part is unknown.
+    private static IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaPart? part)
     {
-        if (question is null)
-        {
-            return Array.Empty<Breadcrumb.Crumb>();
-        }
-
-        var part = Parts.ByStorageKey(question.PartId);
-        if (part is null)
-        {
-            return Array.Empty<Breadcrumb.Crumb>();
-        }
-
-        return [new Breadcrumb.Crumb(part.Key, part.Title, Plain: true)];
+        return part is null
+            ? Array.Empty<Breadcrumb.Crumb>()
+            : [new Breadcrumb.Crumb(part.Key, part.Title, Plain: true)];
     }
 
-    // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked. If
-    // present and it points at a different question than the one now shown, it becomes a back crumb
-    // deep-linking to the origin article so the reader returns to where they were.
+    // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked, then
+    // asks the presenter to map it into a back crumb deep-linking to the origin article.
     private async Task ResolveReferenceOriginAsync()
     {
-        _backHref = null;
-        _backLabel = null;
-
         var origin = await JS.InvokeAsync<ReferenceOrigin?>("respondeoSummaRef.read");
-        if (origin is null || string.IsNullOrEmpty(origin.QuestionId))
-        {
-            return;
-        }
 
         // Consume it so a later refresh or normal browse doesn't keep showing the back crumb.
-        await JS.InvokeVoidAsync("respondeoSummaRef.clear");
-
-        // A self-reference (shouldn't happen since site.js filters it) offers nothing to go back to.
-        if (string.Equals(origin.QuestionId, Id, StringComparison.OrdinalIgnoreCase))
+        if (origin is not null)
         {
-            return;
+            await JS.InvokeVoidAsync("respondeoSummaRef.clear");
         }
 
-        _backHref = origin.ArticleNumber is int articleNumber
-            ? $"summa/{origin.QuestionId}#article-{articleNumber}"
-            : $"summa/{origin.QuestionId}";
-        _backLabel = $"\u2190 {origin.Label}";
+        (_backHref, _backLabel) = Presenter.BuildBackCrumb(origin, Id);
     }
-
-    private sealed record ReferenceOrigin(string QuestionId, int? ArticleNumber, string Label);
 
     // Toggles a panel open/closed from its own summary. Prevents the native <details> toggle so our
     // set stays the single source of truth for the open/closed marker.
@@ -318,7 +265,7 @@ else
     private async Task OpenArticleAsync(int articleNumber)
     {
         _openArticles.Add(articleNumber);
-        var fragment = $"article-{articleNumber}";
+        var fragment = SummaFragment.ArticleAnchor(articleNumber);
         await JS.InvokeVoidAsync("respondeoUrl.replace", $"summa/{Id}#{fragment}");
         StateHasChanged();
         await JS.InvokeVoidAsync("respondeoScroll.intoView", fragment);
@@ -342,26 +289,5 @@ else
 
         _scrolledToFragment = true;
         await OpenFragmentTargetAsync();
-    }
-
-    // The question content stores only the part id; look up the display title and treatise from the index.
-    private async Task ResolvePartContextAsync()
-    {
-        _treatise = null;
-
-        if (_question is null)
-        {
-            PartTitle = string.Empty;
-            return;
-        }
-
-        var index = await Summa.GetIndexAsync();
-        var part = index.Parts.FirstOrDefault(p =>
-            string.Equals(p.Id, _question.PartId, StringComparison.OrdinalIgnoreCase));
-        PartTitle = part?.Title ?? string.Empty;
-
-        _treatise = part?.Questions
-            .FirstOrDefault(q => string.Equals(q.Id, _question.Id, StringComparison.OrdinalIgnoreCase))
-            ?.Treatise;
     }
 }

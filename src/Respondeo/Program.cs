@@ -25,6 +25,10 @@ builder.Services.AddRespondeoContent();
 // The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa; the app depends only on ISummaService.
 builder.Services.AddRespondeoSumma();
 
+// Assembles the Summa question page's display data (part context, SEO description, back-crumb) from
+// the content services, keeping that orchestration out of the component.
+builder.Services.AddScoped<SummaQuestionPresenter>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 

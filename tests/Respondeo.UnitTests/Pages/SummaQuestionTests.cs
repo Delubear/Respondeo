@@ -61,6 +61,7 @@ public class SummaQuestionTests : TestContext
         Services.AddSingleton<ISummaService>(new SummaService(http, new SummaPartCatalog()));
         Services.AddSingleton<ISummaReferenceRenderer>(new SummaReferenceRenderer(new SummaPartMap(new SummaPartCatalog())));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddScoped<SummaQuestionPresenter>();
     }
 
     [Fact]
