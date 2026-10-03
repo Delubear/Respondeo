@@ -189,7 +189,12 @@ document.addEventListener('click', function (e) {
     }
     facade.dataset.loaded = 'true';
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1';
+    var src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1';
+    var start = facade.getAttribute('data-start');
+    if (start) {
+        src += '&start=' + encodeURIComponent(start);
+    }
+    iframe.src = src;
     iframe.title = 'Embedded YouTube video';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';

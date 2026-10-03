@@ -13,6 +13,8 @@ namespace Respondeo.Content.Rendering;
 /// Usage in Markdown (custom-container syntax, enabled by UseAdvancedExtensions):
 ///   ::: youtube aqz-KE-bpKQ
 ///   :::
+///   ::: youtube aqz-KE-bpKQ | 26073
+///   :::
 ///   ::: pdf content/assets/sample.pdf
 ///   :::
 ///   ::: button content/assets/sample.pdf | Open PDF in new tab
@@ -72,15 +74,28 @@ internal sealed class ContentContainerRenderer : HtmlObjectRenderer<CustomContai
         }
     }
 
-    private static void WriteYouTube(HtmlRenderer renderer, string videoId)
+    private static void WriteYouTube(HtmlRenderer renderer, string argument)
     {
         // Render a lightweight "façade" instead of an eager iframe: a lazy thumbnail plus a play button.
         // The heavy YouTube player (and its many requests) is only loaded when the visitor clicks play — see the delegated click handler in index.html.
         // This keeps article loads fast and private (no YouTube requests until the user opts in).
+        // An optional start time (in seconds) may follow the video ID after a pipe, e.g. "::: youtube ID | 26073".
+        var parts = argument.Split('|', 2);
+        var videoId = parts[0].Trim();
+        var start = parts.Length > 1 ? parts[1].Trim() : string.Empty;
+
         renderer.EnsureLine();
         renderer.Write("<div class=\"video-embed video-facade\" data-youtube=\"");
         renderer.WriteEscape(videoId);
-        renderer.Write("\">");
+        renderer.Write("\"");
+        if (!string.IsNullOrEmpty(start))
+        {
+            renderer.Write(" data-start=\"");
+            renderer.WriteEscape(start);
+            renderer.Write("\"");
+        }
+
+        renderer.Write(">");
         renderer.Write("<button type=\"button\" class=\"video-facade__play\" aria-label=\"Play video\">");
         renderer.Write("<img class=\"video-facade__thumb\" src=\"https://i.ytimg.com/vi/");
         renderer.WriteEscapeUrl(videoId);

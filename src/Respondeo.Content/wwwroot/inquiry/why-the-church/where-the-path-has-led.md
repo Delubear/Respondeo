@@ -4,6 +4,8 @@ title: "Where the Path Has Led"
 summary: Drawing the whole case together — from Christ's Church to the threshold of coming home.
 tags:
   - the catholic church
+sections:
+  - where-the-path-challenge
 ---
 
 It is worth pausing to see how far the path has come, because each step was quietly building toward this one.
@@ -44,3 +46,4 @@ A conclusion accepted but never acted on is a door recognized and left shut.
 **Where this leads.** So the path does not end in a verdict filed away.
 It ends at a threshold.
 For those who have followed it this far and found it sound — and even for those still weighing it — the next step is not another proof but an invitation: ***to come home***.
+

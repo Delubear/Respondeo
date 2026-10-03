@@ -33,6 +33,23 @@ public class ContentContainerExtensionTests
     }
 
     [Fact]
+    public void Youtube_directive_with_start_time_adds_data_start_attribute()
+    {
+        var html = Render("::: youtube aqz-KE-bpKQ | 26073\n:::");
+
+        Assert.Contains("data-youtube=\"aqz-KE-bpKQ\"", html);
+        Assert.Contains("data-start=\"26073\"", html);
+    }
+
+    [Fact]
+    public void Youtube_directive_without_start_time_omits_data_start_attribute()
+    {
+        var html = Render("::: youtube aqz-KE-bpKQ\n:::");
+
+        Assert.DoesNotContain("data-start", html);
+    }
+
+    [Fact]
     public void Pdf_directive_renders_pdf_embed()
     {
         var html = Render("::: pdf content/assets/sample.pdf\n:::");
