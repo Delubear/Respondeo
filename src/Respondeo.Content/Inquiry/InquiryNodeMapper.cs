@@ -17,6 +17,7 @@ internal static class InquiryNodeMapper
         Summary = document.Summary,
         BodyHtml = document.BodyHtml,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
         Sections = document.Sections,
         Stage = document.Stage,
     };

@@ -8,9 +8,8 @@ tags:
   - sacraments
   - eucharist
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 The Eucharist is the heart of the entire faith.

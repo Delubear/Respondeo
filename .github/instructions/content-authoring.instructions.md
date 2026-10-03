@@ -34,10 +34,10 @@ contract. Ready-to-copy templates live under `docs/templates/`.
 | `sortKey` | No | Filing key when the title should sort differently (e.g. drop a leading "The"). |
 | `tags` | No | Free-text tags for search/filter. |
 
-**Review status (articles and miracles only):** these two types may carry `reviewStatus: unvetted`
-in their front-matter to flag AI-drafted or not-yet-reviewed content; the detail page renders a
-standard notice. Do **not** hand-write an inline HTML note in the body. Prayers and devotions are
-short, fixed traditional texts and do not use this flag.
+**Review status (articles, miracles, and inquiry nodes only):** these types may carry
+`reviewStatus: unvetted` in their front-matter to flag AI-drafted or not-yet-reviewed content; the
+page renders a standard notice. Do **not** hand-write an inline HTML note in the body. Prayers and
+devotions are short, fixed traditional texts and do not use this flag.
 
 ## Prayers (`prayers/*.md`)
 

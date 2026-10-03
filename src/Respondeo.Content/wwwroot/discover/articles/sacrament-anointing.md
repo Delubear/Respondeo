@@ -7,9 +7,8 @@ tags:
   - sacraments
   - anointing of the sick
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 In the Anointing of the Sick, a priest anoints the seriously ill or aging with blessed oil and prays over them, uniting their suffering to Christ's.

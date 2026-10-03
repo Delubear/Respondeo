@@ -7,9 +7,8 @@ tags:
   - sacraments
   - confirmation
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 Confirmation completes what Baptism begins.

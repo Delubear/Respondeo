@@ -10,6 +10,14 @@
 <article class="node" @key="Node.Id">
     <PillarHeader Eyebrow="@Kicker" Title="@Node.Title" LedeText="@Node.Summary" />
 
+    @if (Node.IsUnvetted)
+    {
+        <ConstructionNotice>
+            <strong>Unvetted content.</strong>
+            <span>This article is a work in progress and has not yet been reviewed; it may contain errors.</span>
+        </ConstructionNotice>
+    }
+
     <div class="content-body" @ref="_body">
         @((MarkupString)Node.BodyHtml)
     </div>

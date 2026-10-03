@@ -26,6 +26,9 @@ public sealed class InquiryNode
     /// <summary>Free-text tags this node belongs to, used to group and filter articles.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    /// <summary>True when the node is flagged as not yet reviewed; the page shows a notice.</summary>
+    public bool IsUnvetted { get; init; }
+
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
 

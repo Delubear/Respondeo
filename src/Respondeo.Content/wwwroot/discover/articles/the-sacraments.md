@@ -7,9 +7,8 @@ topic: sacraments
 tags:
   - sacraments
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 Everything the Church offers converges here.
 When we speak of grace, communion, and the life of God given to human beings, we are finally speaking of the **sacraments** — the concrete acts by which Christ touches a person through the Church.

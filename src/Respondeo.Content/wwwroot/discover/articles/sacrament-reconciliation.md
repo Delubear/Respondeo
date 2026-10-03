@@ -13,9 +13,8 @@ sources:
   - label: "Catechism of the Catholic Church, 1420–1498"
     url: "https://www.vatican.va/archive/ENG0015/__P4C.HTM"
   - label: "Council of Trent, Session 14 (1551)"
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 In Reconciliation — also called Confession or Penance — the risen Christ exercises the power He gave His apostles: "Whose sins you forgive are forgiven them."

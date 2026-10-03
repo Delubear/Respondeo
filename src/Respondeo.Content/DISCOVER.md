@@ -30,9 +30,9 @@ type (`add-prayer`, `add-miracle`, `add-devotion`, `add-article`). The schema/ru
 automatically to this folder via
 [`.github/instructions/content-authoring.instructions.md`](../../.github/instructions/content-authoring.instructions.md).
 
-**Review status:** articles and miracles may carry `reviewStatus: unvetted` in their front-matter
-to mark AI-drafted or not-yet-reviewed content; the detail page renders a standard notice. Prefer
-this flag over hand-written inline HTML notes in the body. Prayers and devotions are fixed
+**Review status:** articles, miracles, and inquiry nodes may carry `reviewStatus: unvetted` in their
+front-matter to mark AI-drafted or not-yet-reviewed content; the page renders a standard notice.
+Prefer this flag over hand-written inline HTML notes in the body. Prayers and devotions are fixed
 traditional/structured content and are not marked unvetted.
 
 > **Copyright care:** only catalogue prayers that are public-domain or traditional. Where a

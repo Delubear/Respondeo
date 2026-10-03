@@ -29,6 +29,7 @@ internal sealed class InquiryParser(IContentHtmlRenderer html)
         Summary = meta.Summary,
         BodyHtml = html.ToHtml(body),
         Tags = meta.Tags,
+        IsUnvetted = meta.IsUnvetted,
         Sections = meta.Sections,
         Stage = stage,
     };

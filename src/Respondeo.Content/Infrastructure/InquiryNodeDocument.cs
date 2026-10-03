@@ -21,6 +21,9 @@ internal sealed class InquiryNodeDocument
     /// <summary>Free-text tags this node belongs to, used to group and filter articles (e.g. "Existence of God", "St. Thomas Aquinas").</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    /// <summary>True when the front-matter marks this node as not yet reviewed.</summary>
+    public bool IsUnvetted { get; init; }
+
     /// <summary>Ordered ids of child nodes to present as collapsible sections on this page.</summary>
     public IReadOnlyList<string> Sections { get; init; } = [];
 

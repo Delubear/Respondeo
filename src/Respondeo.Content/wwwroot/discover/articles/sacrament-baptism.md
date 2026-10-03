@@ -7,9 +7,8 @@ tags:
   - sacraments
   - baptism
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 Baptism is the doorway into the whole sacramental life.

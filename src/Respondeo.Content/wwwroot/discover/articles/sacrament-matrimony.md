@@ -7,9 +7,8 @@ tags:
   - sacraments
   - matrimony
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 In Matrimony, a baptized man and woman give themselves to each other in a permanent, faithful, life-giving covenant.

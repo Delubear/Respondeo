@@ -7,9 +7,8 @@ tags:
   - sacraments
   - holy orders
   - the catholic church
+reviewStatus: unvetted
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 **What it is.**
 Through Holy Orders, the mission Christ entrusted to His apostles is handed on.
