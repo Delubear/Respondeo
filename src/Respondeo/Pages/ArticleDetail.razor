@@ -32,6 +32,14 @@ else
     <article class="content-article">
         <PillarHeader Title="@_article.Title" LedeText="@_article.Summary" />
 
+        @if (_article.IsUnvetted)
+        {
+            <ConstructionNotice>
+                <strong>Unvetted content.</strong>
+                <span>This article is a work in progress and has not yet been reviewed; it may contain errors.</span>
+            </ConstructionNotice>
+        }
+
         <div class="content-body">
             @((MarkupString)_article.BodyHtml)
         </div>

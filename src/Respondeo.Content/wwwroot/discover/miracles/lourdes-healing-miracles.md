@@ -9,6 +9,7 @@ region: europe
 country: France
 year: 1858
 feastDay: "February 11"
+reviewStatus: unvetted
 tags:
   - healing
   - medical bureau
@@ -17,8 +18,6 @@ sources:
   - label: "Lourdes Office of Medical Observations (Bureau des Constatations Médicales)"
   - label: "International Medical Committee of Lourdes (CMIL)"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 Lourdes, in southern France, is the site of the 1858 apparitions of the Virgin Mary to St. Bernadette
 Soubirous, and has since become one of the most visited pilgrimage shrines in the world, known

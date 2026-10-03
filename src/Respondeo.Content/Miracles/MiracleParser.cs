@@ -37,6 +37,7 @@ internal sealed class MiracleParser(IContentHtmlRenderer html)
         Year = meta.Year,
         FeastDay = meta.FeastDay,
         Tags = meta.Tags,
+        IsUnvetted = meta.IsUnvetted,
         BodyHtml = html.ToHtml(body),
         Sources = [.. meta.Sources.Select(s => new MiracleSourceDocument { Label = s.Label, Url = s.Url })],
     };

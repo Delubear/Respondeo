@@ -8,6 +8,7 @@ approval: under-investigation
 region: latin-america
 country: Argentina
 year: 1996
+reviewStatus: unvetted
 tags:
   - bleeding host
   - cardiac tissue
@@ -17,8 +18,6 @@ sources:
   - label: "Vatican International Exhibition of Eucharistic Miracles of the World"
     url: "http://www.miracolieucaristici.org/"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 The Buenos Aires case is a modern reported Eucharistic miracle, often discussed alongside Lanciano
 because of the claimed similarity of the tissue analysed.

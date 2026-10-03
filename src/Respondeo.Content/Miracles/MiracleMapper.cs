@@ -22,6 +22,7 @@ internal static class MiracleMapper
         Year = document.Year,
         FeastDay = document.FeastDay,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
         BodyHtml = document.BodyHtml,
         Sources = [.. document.Sources.Select(s => new MiracleSource { Label = s.Label, Url = s.Url })],
     };

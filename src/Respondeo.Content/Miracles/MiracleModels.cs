@@ -63,6 +63,9 @@ internal sealed class MiracleRecordDocument
 
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    /// <summary>True when the front-matter marks this miracle as not yet reviewed.</summary>
+    public bool IsUnvetted { get; init; }
+
     public string BodyHtml { get; init; } = string.Empty;
 
     public IReadOnlyList<MiracleSourceDocument> Sources { get; init; } = [];

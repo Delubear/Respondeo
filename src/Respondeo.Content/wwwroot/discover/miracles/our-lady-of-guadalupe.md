@@ -8,6 +8,7 @@ region: latin-america
 country: Mexico
 year: 1531
 feastDay: "December 12"
+reviewStatus: unvetted
 tags:
   - apparition
   - tilma
@@ -16,8 +17,6 @@ sources:
   - label: "Nican Mopohua (16th-century Nahuatl account)"
   - label: "Basilica of Our Lady of Guadalupe, Mexico City"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 Our Lady of Guadalupe is one of the most widely venerated Marian apparitions, formally recognized by
 the Church and profoundly significant to the evangelization of the Americas.

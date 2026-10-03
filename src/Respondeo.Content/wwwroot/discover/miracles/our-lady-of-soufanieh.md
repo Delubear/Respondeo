@@ -7,6 +7,7 @@ approval: under-investigation
 region: middle-east
 country: Syria
 year: 1982
+reviewStatus: unvetted
 tags:
   - apparition
   - weeping icon
@@ -18,8 +19,6 @@ sources:
     url: "https://www.youtube.com/watch?v=c7LuK9UsQ78"
   - label: "Soufanieh — Greek Melkite Catholic Patriarchate of Antioch"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 Our Lady of Soufanieh refers to a series of reported phenomena in the Soufanieh district of Damascus,
 Syria, centered on Myrna Nazzour (also spelled Mirna), a young Greek Melkite Catholic woman, beginning

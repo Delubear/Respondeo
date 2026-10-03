@@ -17,6 +17,7 @@ internal static class ArticleMapper
         Summary = document.Summary,
         Topic = document.Topic,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
         BodyHtml = document.BodyHtml,
         Sources = [.. document.Sources.Select(s => new ArticleSource { Label = s.Label, Url = s.Url })],
     };

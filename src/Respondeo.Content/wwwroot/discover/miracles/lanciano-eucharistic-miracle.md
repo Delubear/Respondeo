@@ -9,6 +9,7 @@ region: europe
 country: Italy
 year: 750
 feastDay: "Corpus Christi"
+reviewStatus: unvetted
 tags:
   - bleeding host
   - flesh and blood
@@ -18,8 +19,6 @@ sources:
     url: "http://www.miracolieucaristici.org/"
   - label: "Odoardo Linoli, study of the relics (1971)"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 The Eucharistic Miracle of Lanciano is among the oldest and best known of the reported Eucharistic
 miracles of the Catholic Church. According to the tradition, it occurred in the city of Lanciano,

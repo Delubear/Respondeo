@@ -29,6 +29,7 @@ internal sealed class ArticleParser(IContentHtmlRenderer html)
             Summary = meta.Summary,
             Topic = NormalizeSlug(meta.Topic, "general"),
             Tags = meta.Tags,
+            IsUnvetted = meta.IsUnvetted,
             BodyHtml = html.ToHtml(body),
             Sources = [.. meta.Sources.Select(s => new ArticleSourceDocument { Label = s.Label, Url = s.Url })],
         };

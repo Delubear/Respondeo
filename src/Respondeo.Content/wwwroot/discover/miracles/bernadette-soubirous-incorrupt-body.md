@@ -9,6 +9,7 @@ region: europe
 country: France
 year: 1879
 feastDay: "April 16"
+reviewStatus: unvetted
 tags:
   - incorruptible
   - saint
@@ -17,8 +18,6 @@ sources:
   - label: "Convent of Saint-Gildard, Nevers (Sisters of Charity of Nevers)"
   - label: "Records of the 1909, 1919, and 1925 exhumations"
 ---
-
-<b>NOTE: This is unvetted content. It is a work in progress and may contain errors.</b>
 
 St. Bernadette Soubirous, the visionary of Lourdes, died in 1879 at the convent of Nevers. Her body is
 among the well-known cases of an incorrupt body venerated in the Catholic tradition.

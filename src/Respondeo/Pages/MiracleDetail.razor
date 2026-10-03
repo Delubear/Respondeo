@@ -31,6 +31,14 @@ else
     <article class="content-article">
         <PillarHeader Eyebrow="@string.Join(" · ", _miracle.Types.Select(_facets.Category))" Title="@_miracle.Title" LedeText="@_miracle.Summary" />
 
+        @if (_miracle.IsUnvetted)
+        {
+            <ConstructionNotice>
+                <strong>Unvetted content.</strong>
+                <span>This account is a work in progress and has not yet been reviewed; it may contain errors.</span>
+            </ConstructionNotice>
+        }
+
         <dl class="miracle__facts">
             <div class="miracle__fact">
                 <dt>Church&rsquo;s judgment</dt>

@@ -22,6 +22,9 @@ internal sealed class ArticleDocument
 
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    /// <summary>True when the front-matter marks this article as not yet reviewed.</summary>
+    public bool IsUnvetted { get; init; }
+
     public string BodyHtml { get; init; } = string.Empty;
 
     public IReadOnlyList<ArticleSourceDocument> Sources { get; init; } = [];

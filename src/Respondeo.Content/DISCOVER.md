@@ -24,6 +24,17 @@ Ready-to-copy templates live under [`docs/templates/`](../../docs/templates):
 [`example-article.md`](../../docs/templates/example-article.md), and
 [`example-miracle.md`](../../docs/templates/example-miracle.md).
 
+**AI-assisted authoring:** reusable prompt files under
+[`.github/prompts/`](../../.github/prompts) encode the full create-and-register-and-build checklist per
+type (`add-prayer`, `add-miracle`, `add-devotion`, `add-article`). The schema/rules are also applied
+automatically to this folder via
+[`.github/instructions/content-authoring.instructions.md`](../../.github/instructions/content-authoring.instructions.md).
+
+**Review status:** articles and miracles may carry `reviewStatus: unvetted` in their front-matter
+to mark AI-drafted or not-yet-reviewed content; the detail page renders a standard notice. Prefer
+this flag over hand-written inline HTML notes in the body. Prayers and devotions are fixed
+traditional/structured content and are not marked unvetted.
+
 > **Copyright care:** only catalogue prayers that are public-domain or traditional. Where a
 > translation credit is required, add an `attribution` line (see below).
 
@@ -191,6 +202,7 @@ The first titled section…
 | `topic` | No | Topic slug used for the Topic browse filter (e.g. `sacraments`, `practice`, `apologetics`). Defaults to `general` (hidden from the filter). |
 | `tags` | No | Free-text tags used for search. |
 | `sources` | No | Citations / further reading; each entry has a `label` and an optional `url`. |
+| `reviewStatus` | No | `unvetted` flags a not-yet-reviewed draft; the detail page shows a notice. Defaults to vetted. |
 
 Sections are formed by `## ` headings in the body; write normal Markdown beneath each.
 
@@ -245,6 +257,7 @@ The first titled section…
 | `feastDay` | No | Associated feast day shown in the facts panel. |
 | `tags` | No | Free-text tags used for search and shown on the detail page. |
 | `sources` | No | Citations / further reading; each entry has a `label` and an optional `url`. |
+| `reviewStatus` | No | `unvetted` flags a not-yet-reviewed account; the detail page shows a notice. Defaults to vetted. |
 
 Sections are formed by `## ` headings in the body; write normal Markdown beneath each.
 

@@ -88,6 +88,9 @@ public sealed class MiracleRecord
     /// <summary>Free-text tags.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    /// <summary>True when the miracle is flagged as not yet reviewed; the detail page shows a notice.</summary>
+    public bool IsUnvetted { get; init; }
+
     /// <summary>Rendered HTML of the full Markdown body (safe, author-curated).</summary>
     public string BodyHtml { get; init; } = string.Empty;
 
