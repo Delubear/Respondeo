@@ -21,6 +21,8 @@ internal sealed class DevotionDocument
 
     public string? IntroHtml { get; init; }
 
+    public bool LatinAvailable { get; init; }
+
     public IReadOnlyList<MysterySetDocument> MysterySets { get; init; } = [];
 
     public required IReadOnlyList<DevotionStepDocument> Sequence { get; init; }

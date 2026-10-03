@@ -18,6 +18,9 @@ internal sealed class DevotionDto
     /// <summary>Markdown introduction, rendered to HTML by the parser.</summary>
     public string? Intro { get; set; }
 
+    /// <summary>True when the referenced prayers have Latin translations, so the player can offer a Latin toggle.</summary>
+    public bool LatinAvailable { get; set; }
+
     public List<MysterySetDto> MysterySets { get; set; } = [];
     public List<DevotionStepDto> Sequence { get; set; } = [];
 }

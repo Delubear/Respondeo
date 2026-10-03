@@ -16,6 +16,7 @@ internal static class DevotionMapper
         Summary = document.Summary,
         Kind = document.Kind,
         IntroHtml = document.IntroHtml,
+        LatinAvailable = document.LatinAvailable,
         MysterySets = [.. document.MysterySets.Select(ToContract)],
         Sequence = [.. document.Sequence.Select(ToContract)],
     };

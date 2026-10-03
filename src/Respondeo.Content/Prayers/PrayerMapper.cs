@@ -12,6 +12,7 @@ internal static class PrayerMapper
     {
         Id = document.Id,
         Title = document.Title,
+        LatinTitle = document.LatinTitle,
         SortValue = document.SortValue,
         Summary = document.Summary,
         Category = document.Category,

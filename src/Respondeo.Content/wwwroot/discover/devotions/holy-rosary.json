@@ -4,6 +4,7 @@
   "sortKey": "Holy Rosary",
   "summary": "The great Marian devotion: meditating the mysteries of Christ's life through the beads.",
   "kind": "rosary",
+  "latinAvailable": true,
   "intro": "The Rosary weaves vocal prayer and meditation together. Choose a set of mysteries — traditionally the Joyful on Mondays and Saturdays, the Sorrowful on Tuesdays and Fridays, the Glorious on Wednesdays and Sundays, and the Luminous on Thursdays — and let each decade carry you into a scene from the Gospel.",
   "mysterySets": [
     {

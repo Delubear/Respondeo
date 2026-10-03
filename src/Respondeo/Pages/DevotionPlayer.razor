@@ -98,6 +98,24 @@ else
     <section class="reading-wide devotion--praying">
         <p class="devotion__hint">Select each step to mark it prayed, in order. Open the book to read a prayer's words.</p>
 
+        @if (_devotion.LatinAvailable)
+        {
+            <div class="devotion__lang" role="group" aria-label="Prayer language">
+                <button type="button"
+                        class="devotion__lang-btn @(!_showLatin ? "is-active" : null)"
+                        @onclick="() => SetLatin(false)"
+                        aria-pressed="@(!_showLatin)">
+                    English
+                </button>
+                <button type="button"
+                        class="devotion__lang-btn @(_showLatin ? "is-active" : null)"
+                        @onclick="() => SetLatin(true)"
+                        aria-pressed="@_showLatin">
+                    Latin
+                </button>
+            </div>
+        }
+
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
@@ -165,7 +183,7 @@ else
                                         {
                                             <span class="devotion__prayer-lead">@step.Heading</span>
                                         }
-                                        @step.PrayerTitle
+                                        @PrayerName(step)
                                     </span>
                                     @if (!string.IsNullOrWhiteSpace(step.Note))
                                     {
@@ -272,6 +290,17 @@ else
     private Dialog? _prayerDialog;
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
+
+    // When true, the thread shows each prayer's Latin name (and the book opens its Latin text).
+    // Only offered when the devotion declares LatinAvailable.
+    private bool _showLatin;
+
+    // The prayer's name in the active language: the Latin name when the Latin view is on and one
+    // exists, otherwise the vernacular title.
+    private string? PrayerName(DevotionBead step) =>
+        _showLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
+
+    private void SetLatin(bool latin) => _showLatin = latin;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -468,8 +497,9 @@ else
 
     private async Task OpenPrayer(DevotionBead bead)
     {
-        _openPrayerTitle = bead.PrayerTitle;
-        _openPrayerHtml = bead.PrayerHtml;
+        var useLatin = _showLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinHtml);
+        _openPrayerTitle = useLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinTitle) ? bead.PrayerLatinTitle : bead.PrayerTitle;
+        _openPrayerHtml = useLatin ? bead.PrayerLatinHtml : bead.PrayerHtml;
         if (_prayerDialog is not null)
         {
             await _prayerDialog.Show();

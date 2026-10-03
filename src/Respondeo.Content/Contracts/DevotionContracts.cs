@@ -48,6 +48,9 @@ public sealed class Devotion
     /// <summary>Optional rendered HTML introduction shown before the reader begins.</summary>
     public string? IntroHtml { get; init; }
 
+    /// <summary>True when the devotion's prayers have Latin translations, so the player can offer a Latin toggle.</summary>
+    public bool LatinAvailable { get; init; }
+
     /// <summary>The selectable mystery / meditation sets. Empty for devotions that have no per-mystery meditation.</summary>
     public IReadOnlyList<MysterySet> MysterySets { get; init; } = [];
 

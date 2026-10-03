@@ -44,6 +44,9 @@ public sealed class Prayer
     /// <summary>Display title.</summary>
     public required string Title { get; init; }
 
+    /// <summary>Optional Latin name of the prayer (e.g. "Ave Maria"), from the linked Latin translation.</summary>
+    public string? LatinTitle { get; init; }
+
     /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
     public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
 

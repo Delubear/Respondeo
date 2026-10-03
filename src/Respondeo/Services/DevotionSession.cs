@@ -11,6 +11,8 @@ public sealed class DevotionBead
     public string? MysteryReflectionHtml { get; init; }
     public string? PrayerTitle { get; init; }
     public string? PrayerHtml { get; init; }
+    public string? PrayerLatinTitle { get; init; }
+    public string? PrayerLatinHtml { get; init; }
     public string? BeadType { get; init; }
     public string? Note { get; init; }
 
@@ -207,6 +209,8 @@ public sealed class DevotionSession
                 Heading = i == 0 ? (heading ?? step.Title) : null,
                 PrayerTitle = prayer.Title,
                 PrayerHtml = prayer.Html,
+                PrayerLatinTitle = prayer.LatinTitle,
+                PrayerLatinHtml = prayer.LatinHtml,
                 BeadType = step.Bead,
                 Note = i == 0 ? step.Note : null,
             });

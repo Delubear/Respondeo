@@ -48,6 +48,36 @@
     flex: 0 0 auto;
 }
 
+/* Vernacular / Latin switch for the prayer thread, shown only when the devotion has Latin available. */
+.devotion__lang {
+    display: inline-flex;
+    gap: 0;
+    margin: 0 auto 0.85rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    align-self: center;
+}
+
+.devotion__lang-btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: var(--display, inherit);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    cursor: pointer;
+}
+
+.devotion__lang-btn.is-active {
+    background: var(--accent);
+    color: var(--on-accent, #fff);
+}
+
 /* The step list scrolls within the space the flex column leaves it, so a long devotion (e.g. a full
    Rosary) never stretches the page while a short one still fills down to the exit link. */
 .devotion__list {
