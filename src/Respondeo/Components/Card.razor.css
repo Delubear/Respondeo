@@ -37,6 +37,13 @@ button.card {
     font-size: 1.2rem;
 }
 
+.card__subtitle {
+    margin: -0.35rem 0 0.6rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}
+
 .card__pill {
     display: inline-block;
     margin-left: 0.5rem;

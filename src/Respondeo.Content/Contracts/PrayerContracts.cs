@@ -17,6 +17,9 @@ public sealed class PrayerSummary
     /// <summary>Display title (e.g. "Hail Mary").</summary>
     public required string Title { get; init; }
 
+    /// <summary>Optional Latin name of the prayer (e.g. "Ave Maria"), shown alongside the title when present.</summary>
+    public string? LatinTitle { get; init; }
+
     /// <summary>Value used for alphabetical sorting; the front-matter sortKey when set, otherwise the title.</summary>
     public string SortValue { get => string.IsNullOrWhiteSpace(field) ? Title : field; init; } = string.Empty;
 

@@ -61,6 +61,7 @@
                         {
                             <Card Href="@($"discover/prayers/{p.Id}")"
                                   Title="@p.Title"
+                                  Subtitle="@p.LatinTitle"
                                   Pill="@Browser.FormatCategory(p.Category)"
                                   Summary="@p.Summary"
                                   Cta="Pray &rarr;"

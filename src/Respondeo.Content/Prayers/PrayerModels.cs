@@ -30,6 +30,9 @@ internal sealed class PrayerDocument
     /// <summary>Optional Latin rendered HTML, populated by the service from the linked Latin file.</summary>
     public string? LatinHtml { get; set; }
 
+    /// <summary>Optional Latin title, populated by the service from the linked Latin file.</summary>
+    public string? LatinTitle { get; set; }
+
     public IReadOnlyList<string> Tags { get; init; } = [];
 
     public string? Attribution { get; init; }

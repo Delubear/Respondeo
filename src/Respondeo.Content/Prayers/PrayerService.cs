@@ -87,6 +87,7 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
                 && latinByKey.TryGetValue(prayer.TranslationKey, out var latin))
             {
                 prayer.LatinHtml = latin.Html;
+                prayer.LatinTitle = latin.Title;
             }
         }
     }

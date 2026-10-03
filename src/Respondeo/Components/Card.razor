@@ -22,6 +22,9 @@ else
 
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
 
+    /// <summary>Optional secondary title (e.g. a prayer's Latin name) shown beneath the title.</summary>
+    [Parameter] public string? Subtitle { get; set; }
+
     [Parameter] public string? Summary { get; set; }
 
     /// <summary>Optional short meta tag (e.g. a category or kind) shown beside the title.</summary>
@@ -60,6 +63,10 @@ else
         else
         {
             <h3 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
+        }
+        @if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <p class="card__subtitle">@Subtitle</p>
         }
         @if (!string.IsNullOrWhiteSpace(Summary))
         {
