@@ -101,17 +101,9 @@ else
 
         @if (_devotion.LatinAvailable)
         {
-            <label class="devotion__lang">
-                <span class="devotion__lang-text">Latin</span>
-                <button type="button"
-                        class="devotion__lang-switch @(_showLatin ? "is-on" : null)"
-                        role="switch"
-                        aria-checked="@(_showLatin ? "true" : "false")"
-                        aria-label="Show prayers by their Latin names"
-                        @onclick="() => SetLatin(!_showLatin)">
-                    <span class="devotion__lang-thumb" aria-hidden="true"></span>
-                </button>
-            </label>
+            <div class="devotion__lang devotion__lang--inline">
+                @LanguageToggle
+            </div>
         }
 
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
@@ -209,6 +201,18 @@ else
             @* Only reachable in immersive mode, where the masthead (and its theme toggle) is hidden;
                kept beside the exit link so it stays out of the prayer flow. Hidden by CSS elsewhere. *@
             <span class="devotion__exit-theme">
+                @if (_devotion.LatinAvailable)
+                {
+                    <button type="button"
+                            class="devotion__lang-mini @(_showLatin ? "is-latin" : null)"
+                            role="switch"
+                            aria-checked="@(_showLatin ? "true" : "false")"
+                            aria-label="@(_showLatin ? "Showing Latin prayer names. Switch to English." : "Showing English prayer names. Switch to Latin.")"
+                            title="@(_showLatin ? "Latin" : "English")"
+                            @onclick="() => SetLatin(!_showLatin)">
+                        <span class="devotion__lang-mini-text" aria-hidden="true">@(_showLatin ? "LA" : "EN")</span>
+                    </button>
+                }
                 <ThemeToggle />
             </span>
         </div>
@@ -308,6 +312,26 @@ else
         _showLatin = latin;
         await PrayerLanguage.SetAsync(latin);
     }
+
+    // The English / Latin language picker, shared between the desktop (above the list) and mobile
+    // (beside the theme toggle in the immersive exit row) placements so the two stay in sync.
+    private RenderFragment LanguageToggle => __builder =>
+    {
+        <div class="devotion__lang-group" role="group" aria-label="Prayer language">
+            <button type="button"
+                    class="devotion__lang-btn @(!_showLatin ? "is-active" : null)"
+                    @onclick="() => SetLatin(false)"
+                    aria-pressed="@(!_showLatin)">
+                English
+            </button>
+            <button type="button"
+                    class="devotion__lang-btn @(_showLatin ? "is-active" : null)"
+                    @onclick="() => SetLatin(true)"
+                    aria-pressed="@_showLatin">
+                Latin
+            </button>
+        </div>
+    };
 
     protected override async Task OnParametersSetAsync()
     {

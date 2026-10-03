@@ -852,10 +852,13 @@ input[type="search"]::-webkit-search-cancel-button {
 
     body.is-immersive .devotion__exit-theme {
         display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         position: absolute;
         right: 0;
         top: 50%;
         transform: translateY(-50%);
+        margin-top: 0.25rem;
     }
 
     /* Reset the shared toggle from its masthead-corner absolute positioning/colors to sit in the exit

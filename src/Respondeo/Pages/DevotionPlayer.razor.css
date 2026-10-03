@@ -48,65 +48,101 @@
     flex: 0 0 auto;
 }
 
-/* Vernacular / Latin switch for the prayer thread, shown only when the devotion has Latin available.
-   A single on/off switch reads as a reading preference rather than a mode selector. */
+/* English / Latin segmented toggle for the prayer thread, shown only when Latin is available.
+   The same control appears above the list on desktop and beside the theme toggle on mobile. */
 .devotion__lang {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0 auto 0.85rem;
     flex: 0 0 auto;
     align-self: center;
-    cursor: pointer;
 }
 
-.devotion__lang-text {
+/* Desktop placement: centered above the scrolling prayer list. */
+.devotion__lang--inline {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 0.85rem;
+}
+
+/* Mobile placement is a compact EN/LA button mirroring the theme toggle; hidden on desktop. */
+.devotion__lang-mini {
+    display: none;
+}
+
+.devotion__lang-group {
+    display: inline-flex;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.devotion__lang-btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
     color: var(--ink-soft);
     font-family: var(--display, inherit);
     font-size: 0.8rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-}
-
-.devotion__lang-switch {
-    appearance: none;
-    border: 1px solid var(--rule);
-    background: var(--surface-sunken, transparent);
-    width: 2.6rem;
-    height: 1.4rem;
-    border-radius: 999px;
-    padding: 0;
-    position: relative;
+    padding: 0.35rem 1rem;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-    flex: 0 0 auto;
 }
 
-.devotion__lang-switch.is-on {
+.devotion__lang-btn.is-active {
     background: var(--accent);
-    border-color: var(--accent);
+    color: var(--on-accent, #fff);
 }
 
-.devotion__lang-switch:focus-visible {
+.devotion__lang-btn:focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline-offset: -2px;
 }
 
-.devotion__lang-thumb {
-    position: absolute;
-    top: 50%;
-    left: 0.15rem;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    background: var(--on-accent, #fff);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    transform: translateY(-50%);
-    transition: left 0.15s ease;
-}
+/* On mobile the immersive exit row carries a compact EN/LA button beside the theme toggle, so the
+   above-the-list segmented toggle is hidden and the mini button is shown. */
+@media (max-width: 640px) {
+    .devotion__lang--inline {
+        display: none;
+    }
 
-.devotion__lang-switch.is-on .devotion__lang-thumb {
-    left: calc(100% - 1.15rem);
+    /* Mirror the ThemeToggle's shape so the two controls read as a matched pair. */
+    .devotion__lang-mini {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        color: var(--ink-soft);
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .devotion__lang-mini:hover {
+        color: var(--accent);
+        border-color: var(--rule);
+        background: var(--parchment);
+    }
+
+    .devotion__lang-mini:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .devotion__lang-mini.is-latin {
+        color: var(--accent);
+    }
+
+    .devotion__lang-mini-text {
+        font-family: var(--display, inherit);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+    }
 }
 
 /* The step list scrolls within the space the flex column leaves it, so a long devotion (e.g. a full
