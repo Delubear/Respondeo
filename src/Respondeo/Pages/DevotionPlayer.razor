@@ -4,6 +4,7 @@
 @inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 @inject IDevotionProgressService Progress
+@inject IPrayerLanguageService PrayerLanguage
 @inject NavigationInterop Navigation
 @inject ImmersiveInterop Immersive
 
@@ -100,20 +101,17 @@ else
 
         @if (_devotion.LatinAvailable)
         {
-            <div class="devotion__lang" role="group" aria-label="Prayer language">
+            <label class="devotion__lang">
+                <span class="devotion__lang-text">Latin</span>
                 <button type="button"
-                        class="devotion__lang-btn @(!_showLatin ? "is-active" : null)"
-                        @onclick="() => SetLatin(false)"
-                        aria-pressed="@(!_showLatin)">
-                    English
+                        class="devotion__lang-switch @(_showLatin ? "is-on" : null)"
+                        role="switch"
+                        aria-checked="@(_showLatin ? "true" : "false")"
+                        aria-label="Show prayers by their Latin names"
+                        @onclick="() => SetLatin(!_showLatin)">
+                    <span class="devotion__lang-thumb" aria-hidden="true"></span>
                 </button>
-                <button type="button"
-                        class="devotion__lang-btn @(_showLatin ? "is-active" : null)"
-                        @onclick="() => SetLatin(true)"
-                        aria-pressed="@_showLatin">
-                    Latin
-                </button>
-            </div>
+            </label>
         }
 
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
@@ -176,7 +174,7 @@ else
                                         @onclick="() => ToggleComplete(step.PrayerOrdinal)"
                                         disabled="@(!clickable)"
                                         aria-current="@(current ? "step" : null)"
-                                        aria-label="@_session.PrayerStepLabel(step, done, current)"
+                                        aria-label="@_session.PrayerStepLabel(step, done, current, PrayerName(step))"
                                         aria-pressed="@done">
                                     <span class="devotion__prayer-name">
                                         @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
@@ -193,7 +191,7 @@ else
                                 <button type="button"
                                         class="devotion__prayer-book"
                                         @onclick="() => OpenPrayer(step)"
-                                        aria-label="@($"Read the words of {step.PrayerTitle}")"
+                                        aria-label="@($"Read the words of {PrayerName(step)}")"
                                         title="Read the prayer">
                                     <svg viewBox="0 0 24 24" aria-hidden="true">
                                         <path d="M12 6.5C10.6 5.4 8.6 4.75 6.25 4.75c-1 0-1.95.12-2.75.32v12.6c.8-.2 1.75-.32 2.75-.32 2.35 0 4.35.65 5.75 1.75 1.4-1.1 3.4-1.75 5.75-1.75 1 0 1.95.12 2.75.32V5.07c-.8-.2-1.75-.32-2.75-.32C15.4 4.75 13.4 5.4 12 6.5zm0 0v11.5" />
@@ -300,7 +298,11 @@ else
     private string? PrayerName(DevotionBead step) =>
         _showLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
 
-    private void SetLatin(bool latin) => _showLatin = latin;
+    private async Task SetLatin(bool latin)
+    {
+        _showLatin = latin;
+        await PrayerLanguage.SetAsync(latin);
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -309,6 +311,10 @@ else
         _started = false;
         _savedProgress = null;
         _devotion = await Devotions.GetDevotionAsync(Id);
+
+        // Restore the reader's remembered Latin/vernacular preference before the thread renders.
+        await PrayerLanguage.InitializeAsync();
+        _showLatin = PrayerLanguage.ShowLatin;
 
         // Reset chrome in case we arrived here directly from another devotion's praying view.
         await LeaveImmersiveAsync();

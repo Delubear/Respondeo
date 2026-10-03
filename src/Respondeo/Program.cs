@@ -53,6 +53,9 @@ builder.Services.AddScoped<IVisitedNodes, VisitedNodes>();
 // Applies and persists the visitor's preferred light/dark theme.
 builder.Services.AddScoped<IThemeService, ThemeService>();
 
+// Remembers whether the reader prefers Latin prayer names in devotions (localStorage).
+builder.Services.AddScoped<IPrayerLanguageService, PrayerLanguageService>();
+
 // Persists the reader's place in a devotion (localStorage) so it can be resumed after leaving.
 builder.Services.AddScoped<IDevotionProgressService, DevotionProgressService>();
 

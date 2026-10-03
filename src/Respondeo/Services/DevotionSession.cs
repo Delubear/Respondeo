@@ -147,13 +147,15 @@ public sealed class DevotionSession
     }
 
     // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a
-    // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary".
-    public string PrayerStepLabel(DevotionBead step, bool done, bool current)
+    // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary". The
+    // displayed title is passed in so the spoken name matches the visible language (e.g. "Ave Maria").
+    public string PrayerStepLabel(DevotionBead step, bool done, bool current, string? displayTitle = null)
     {
+        var title = string.IsNullOrWhiteSpace(displayTitle) ? step.PrayerTitle : displayTitle;
         var position = $"step {step.PrayerOrdinal + 1} of {PrayerCount}";
         var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
         var note = string.IsNullOrWhiteSpace(step.Note) ? null : $", {step.Note}";
-        return $"{step.PrayerTitle}{note}, {position}, {state}";
+        return $"{title}{note}, {position}, {state}";
     }
 
     // Expands the data-driven sequence into the flat list of rows. A "mysteries" step iterates the
