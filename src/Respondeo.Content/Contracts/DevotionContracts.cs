@@ -111,6 +111,9 @@ public sealed class DevotionStep
     /// <summary>Optional short rubric shown beside the step.</summary>
     public string? Note { get; init; }
 
+    /// <summary>Optional Latin form of <see cref="Note"/>, shown when the Latin view is active.</summary>
+    public string? NoteLatin { get; init; }
+
     /// <summary>The per-mystery sub-steps for a "mysteries" step. Run once for each mystery of the selected set.</summary>
     public IReadOnlyList<DevotionStep> PerMystery { get; init; } = [];
 }

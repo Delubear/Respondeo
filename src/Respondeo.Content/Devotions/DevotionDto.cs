@@ -50,5 +50,6 @@ internal sealed class DevotionStepDto
     public int Repeat { get; set; } = 1;
     public string? Bead { get; set; }
     public string? Note { get; set; }
+    public string? NoteLatin { get; set; }
     public List<DevotionStepDto> PerMystery { get; set; } = [];
 }

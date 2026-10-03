@@ -174,7 +174,7 @@ else
                                         @onclick="() => ToggleComplete(step.PrayerOrdinal)"
                                         disabled="@(!clickable)"
                                         aria-current="@(current ? "step" : null)"
-                                        aria-label="@_session.PrayerStepLabel(step, done, current, PrayerName(step))"
+                                        aria-label="@_session.PrayerStepLabel(step, done, current, PrayerName(step), PrayerNote(step))"
                                         aria-pressed="@done">
                                     <span class="devotion__prayer-name">
                                         @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
@@ -183,9 +183,9 @@ else
                                         }
                                         @PrayerName(step)
                                     </span>
-                                    @if (!string.IsNullOrWhiteSpace(step.Note))
+                                    @if (!string.IsNullOrWhiteSpace(PrayerNote(step)))
                                     {
-                                        <span class="devotion__prayer-note">@step.Note</span>
+                                        <span class="devotion__prayer-note">@PrayerNote(step)</span>
                                     }
                                 </button>
                                 <button type="button"
@@ -297,6 +297,11 @@ else
     // exists, otherwise the vernacular title.
     private string? PrayerName(DevotionBead step) =>
         _showLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
+
+    // The step's rubric in the active language: the Latin note when the Latin view is on and one
+    // exists, otherwise the vernacular note.
+    private string? PrayerNote(DevotionBead step) =>
+        _showLatin && !string.IsNullOrWhiteSpace(step.NoteLatin) ? step.NoteLatin : step.Note;
 
     private async Task SetLatin(bool latin)
     {

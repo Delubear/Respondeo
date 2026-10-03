@@ -65,5 +65,7 @@ internal sealed class DevotionStepDocument
 
     public string? Note { get; init; }
 
+    public string? NoteLatin { get; init; }
+
     public IReadOnlyList<DevotionStepDocument> PerMystery { get; init; } = [];
 }

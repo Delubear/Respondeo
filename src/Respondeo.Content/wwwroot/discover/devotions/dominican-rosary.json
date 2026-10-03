@@ -66,7 +66,7 @@
     { "kind": "prayer", "prayerId": "dominican-versicle-lips", "bead": "small" },
     { "kind": "prayer", "prayerId": "dominican-versicle-assistance", "bead": "small" },
     { "kind": "prayer", "prayerId": "glory-be", "bead": "small" },
-    { "kind": "prayer", "prayerId": "dominican-alleluia", "bead": "between", "note": "In Lent, \u201cPraise to Thee, O Lord, King of eternal Glory\u201d" },
+    { "kind": "prayer", "prayerId": "dominican-alleluia", "bead": "between", "note": "In Lent, \u201cPraise to Thee, O Lord, King of eternal Glory\u201d", "noteLatin": "In Lent, \u201cLaus tibi, D\u00f3mine, Rex aet\u00e9rnae gl\u00f3riae\u201d" },
     {
       "kind": "mysteries",
       "title": "The Decades",

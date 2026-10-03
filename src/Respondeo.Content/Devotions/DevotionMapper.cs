@@ -47,6 +47,7 @@ internal static class DevotionMapper
         Repeat = step.Repeat,
         Bead = step.Bead,
         Note = step.Note,
+        NoteLatin = step.NoteLatin,
         PerMystery = [.. step.PerMystery.Select(ToContract)],
     };
 }

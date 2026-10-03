@@ -53,6 +53,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         Repeat = step.Repeat < 1 ? 1 : step.Repeat,
         Bead = string.IsNullOrWhiteSpace(step.Bead) ? null : step.Bead.Trim().ToLowerInvariant(),
         Note = string.IsNullOrWhiteSpace(step.Note) ? null : step.Note.Trim(),
+        NoteLatin = string.IsNullOrWhiteSpace(step.NoteLatin) ? null : step.NoteLatin.Trim(),
         PerMystery = [.. step.PerMystery.Select(MapStep)],
     };
 

@@ -15,6 +15,7 @@ public sealed class DevotionBead
     public string? PrayerLatinHtml { get; init; }
     public string? BeadType { get; init; }
     public string? Note { get; init; }
+    public string? NoteLatin { get; init; }
 
     // Index of this row among prayer rows (for in-order completion); -1 for mystery announcements.
     public int PrayerOrdinal { get; set; } = -1;
@@ -148,13 +149,14 @@ public sealed class DevotionSession
 
     // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a
     // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary". The
-    // displayed title is passed in so the spoken name matches the visible language (e.g. "Ave Maria").
-    public string PrayerStepLabel(DevotionBead step, bool done, bool current, string? displayTitle = null)
+    // displayed title and note are passed in so the spoken text matches the visible language.
+    public string PrayerStepLabel(DevotionBead step, bool done, bool current, string? displayTitle = null, string? displayNote = null)
     {
         var title = string.IsNullOrWhiteSpace(displayTitle) ? step.PrayerTitle : displayTitle;
         var position = $"step {step.PrayerOrdinal + 1} of {PrayerCount}";
         var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
-        var note = string.IsNullOrWhiteSpace(step.Note) ? null : $", {step.Note}";
+        var noteText = string.IsNullOrWhiteSpace(displayNote) ? step.Note : displayNote;
+        var note = string.IsNullOrWhiteSpace(noteText) ? null : $", {noteText}";
         return $"{title}{note}, {position}, {state}";
     }
 
@@ -215,6 +217,7 @@ public sealed class DevotionSession
                 PrayerLatinHtml = prayer.LatinHtml,
                 BeadType = step.Bead,
                 Note = i == 0 ? step.Note : null,
+                NoteLatin = i == 0 ? step.NoteLatin : null,
             });
         }
     }
