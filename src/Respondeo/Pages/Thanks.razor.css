@@ -1,14 +1,22 @@
 /* ---------- Thanks & Sources ---------- */
 
+.thanks__support {
+    margin: 0 0 1.25rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--gold, #c8a24a);
+    background: var(--surface-raised, rgba(200, 162, 74, 0.08));
+    border-radius: 0 6px 6px 0;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+
 .thanks__list {
     margin: 0;
     padding-left: 1.4rem;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
-}
-
-.thanks__list li {
+}.thanks__list li {
     line-height: 1.6;
     color: var(--ink-soft);
 }
