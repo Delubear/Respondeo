@@ -47,7 +47,7 @@ public sealed class PrayerBrowse
     /// <summary>
     /// Applies the active facets, free-text query, and sort to the index. Categories are selected by
     /// their display label (matched back to the slug); tags OR within the facet and AND across facets;
-    /// the query matches title, summary, tags, and category label.
+    /// the query matches title, Latin title, summary, tags, and category label.
     /// </summary>
     public IReadOnlyList<PrayerSummary> Filter(
         IReadOnlyList<PrayerSummary> prayers,
@@ -75,6 +75,7 @@ public sealed class PrayerBrowse
             var q = query.Trim();
             results = results.Where(p =>
                 p.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+                || (p.LatinTitle?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false)
                 || p.Summary.Contains(q, StringComparison.OrdinalIgnoreCase)
                 || p.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase))
                 || (FormatCategory(p.Category)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));

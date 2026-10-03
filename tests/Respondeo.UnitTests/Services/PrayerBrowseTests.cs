@@ -17,6 +17,7 @@ public class PrayerBrowseTests
         {
             Id = "hail-mary",
             Title = "Hail Mary",
+            LatinTitle = "Ave Maria",
             Summary = "The angelic salutation.",
             Category = "marian",
             Tags = ["rosary", "marian"],
@@ -108,6 +109,12 @@ public class PrayerBrowseTests
         Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "angelic", Empty(), Empty(), SortAsc).Select(p => p.Id));
         Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "rosary", Empty(), Empty(), SortAsc).Select(p => p.Id));
         Assert.Equal(["our-father"], _browse.Filter(SampleIndex(), "basic", Empty(), Empty(), SortAsc).Select(p => p.Id));
+    }
+
+    [Fact]
+    public void Filter_by_query_matches_the_latin_title()
+    {
+        Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "Ave Maria", Empty(), Empty(), SortAsc).Select(p => p.Id));
     }
 
     [Fact]
