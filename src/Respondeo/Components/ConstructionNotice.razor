@@ -1,0 +1,27 @@
+@* Dismissible-free "work in progress" banner shown on sections of the site that are still being
+   built out. Keep the copy gentle and honest: the area is live but growing. Pass custom copy via
+   ChildContent, or rely on the default message. *@
+
+<div class="construction" role="note">
+    <span class="construction__icon" aria-hidden="true">&#9874;</span>
+    <p class="construction__text">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            <strong>Under construction.</strong>
+            @(" ")
+            <span>This part of @Area is still being written and will keep growing. Thank you for your patience.</span>
+        }
+    </p>
+</div>
+
+@code {
+    /// <summary>Name of the area under construction, woven into the default message.</summary>
+    [Parameter] public string Area { get; set; } = "Discover Catholicism";
+
+    /// <summary>Optional custom notice copy; overrides the default message when provided.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
