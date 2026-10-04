@@ -1,11 +1,11 @@
 ---
-description: Schemas and rules for authoring Respondeo Discover content (prayers, devotions, articles, miracles)
+description: Schemas and rules for authoring Respondeo Discover content (prayers, devotions, articles, miracles, saints)
 applyTo: "src/Respondeo.Content/wwwroot/discover/**"
 ---
 
 # Discover Content Authoring Rules
 
-When creating or editing a prayer, devotion, article, or miracle under
+When creating or editing a prayer, devotion, article, miracle, or saint under
 `src/Respondeo.Content/wwwroot/discover/`, follow these rules exactly. The authoritative long-form
 guide is [`DISCOVER.md`](../../src/Respondeo.Content/DISCOVER.md); this file is the quick, enforceable
 contract. Ready-to-copy templates live under `docs/templates/`.
@@ -19,6 +19,7 @@ contract. Ready-to-copy templates live under `docs/templates/`.
    - devotions -> `devotions/devotions-manifest.json`
    - articles -> `articles/articles-manifest.json`
    - miracles -> `miracles/miracles-manifest.json`
+   - saints -> `saints/saints-manifest.json`
 3. **Copyright care:** only catalogue prayers/texts that are public-domain or traditional. When a
    translation credit is required, add an `attribution` line.
 4. **`id` / slug:** lowercase, hyphenated, stable.
@@ -80,3 +81,24 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
   - `approval`: `approved`, `under-investigation`, `not-approved`, `historical`
   - `region`: `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
 - Prefer `sources` with reputable references. Set `reviewStatus: unvetted` for unverified accounts.
+
+## Saints (`saints/*.md`)
+
+Markdown with front-matter carrying typed **facet** metadata, then `## `-sectioned body.
+
+- Extra fields: `era`, `region`, `patronages` (free-text list), `statesOfLife` (list),
+  `canonizations` (list), `dates`, `feastDay`, `sources`.
+- **Facet slugs must exist in `saints/facets.json`** — enforced by test. Allowed values:
+  - `era` (single): `early-church`, `medieval`, `early-modern`, `modern`
+  - `region` (single): `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
+  - `statesOfLife` (list): `religious`, `priest`, `bishop`, `lay`, `martyr`, `virgin`, `widow`
+  - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`, `doctor-of-the-church`
+- **`statesOfLife` and `canonizations` are multi-valued and required** (at least one each) — enforced
+  by test. A saint may hold several (e.g. `[priest, martyr]`, `[canonized, doctor-of-the-church]`).
+- **List only the highest holy order, not the ones it implies** — a `bishop` is already a `priest`
+  (and a pope is already a `bishop`), so use `[bishop]`, not `[bishop, priest]`. Add other, non-implied
+  states as needed (e.g. `[bishop, martyr]`).
+- `patronages` is **free-text display values** (e.g. `["Missions", "The poor"]`), not facet slugs — it
+  is searched and shown on cards/detail but is **not** a filter facet, so it is not listed in
+  `facets.json`. Reuse existing wording/casing for consistency.
+- Prefer `sources` with reputable references. Set `reviewStatus: unvetted` for unverified profiles.

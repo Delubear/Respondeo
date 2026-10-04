@@ -11,22 +11,25 @@ kinds of content:
 | **Devotions** | JSON (`.json`) | `wwwroot/discover/devotions/` | A data-driven prayer sequence (Rosary, chaplet, …). |
 | **Articles** | Markdown (`.md`) | `wwwroot/discover/articles/` | A deeper dive on a practice or teaching. |
 | **Miracles** | Markdown (`.md`) | `wwwroot/discover/miracles/` | A reported miracle with typed facet metadata. |
+| **Saints** | Markdown (`.md`) | `wwwroot/discover/saints/` | A saint profile with typed facet metadata. |
 
 Every new file must be registered in its per-type manifest
 ([`wwwroot/discover/prayers/prayers-manifest.json`](wwwroot/discover/prayers/prayers-manifest.json),
 [`wwwroot/discover/devotions/devotions-manifest.json`](wwwroot/discover/devotions/devotions-manifest.json),
 [`wwwroot/discover/articles/articles-manifest.json`](wwwroot/discover/articles/articles-manifest.json),
-[`wwwroot/discover/miracles/miracles-manifest.json`](wwwroot/discover/miracles/miracles-manifest.json)) to be loaded.
+[`wwwroot/discover/miracles/miracles-manifest.json`](wwwroot/discover/miracles/miracles-manifest.json),
+[`wwwroot/discover/saints/saints-manifest.json`](wwwroot/discover/saints/saints-manifest.json)) to be loaded.
 
 Ready-to-copy templates live under [`docs/templates/`](../../docs/templates):
 [`example-prayer.md`](../../docs/templates/example-prayer.md),
 [`example-devotion.json`](../../docs/templates/example-devotion.json),
-[`example-article.md`](../../docs/templates/example-article.md), and
-[`example-miracle.md`](../../docs/templates/example-miracle.md).
+[`example-article.md`](../../docs/templates/example-article.md),
+[`example-miracle.md`](../../docs/templates/example-miracle.md), and
+[`example-saint.md`](../../docs/templates/example-saint.md).
 
 **AI-assisted authoring:** reusable prompt files under
 [`.github/prompts/`](../../.github/prompts) encode the full create-and-register-and-build checklist per
-type (`add-prayer`, `add-miracle`, `add-devotion`, `add-article`). The schema/rules are also applied
+type (`add-prayer`, `add-miracle`, `add-devotion`, `add-article`, `add-saint`). The schema/rules are also applied
 automatically to this folder via
 [`.github/instructions/content-authoring.instructions.md`](../../.github/instructions/content-authoring.instructions.md).
 

@@ -122,6 +122,22 @@ model and browsable by facet + free-text search.
 - [ ] Consider: more approved apparitions (Lourdes 1858, Fatima, Knock, Akita)
 - [ ] Consider: canonization miracles / more incorruptibles
 
+## Discover area: Saints
+
+An area within the Discover pillar (reached from the Discover sub-navigation, routes under
+`/discover/saints/`), gated by the `SaintsFeature` flag. Each saint is a hand-authored Markdown file
+with typed facet front-matter (era, region, patronages, states of life, canonizations, dates, feast
+day, tags), parsed into a typed model and browsable by facet + free-text search.
+
+- [~] Saints area scaffolding (models, service, browse state, pages, Discover sub-nav link, feature flag)
+- [~] Browse page: facet filters (era / region / state of life / canonization) + search + sort by title
+- [~] Detail page: facts panel (with era description), prose sections, patronages, tags, sources
+- [~] St. Augustine of Hippo
+- [~] St. Francis of Assisi
+- [~] St. Thérèse of Lisieux
+- [ ] Consider: more Doctors of the Church and broader regional/era coverage
+- [ ] Consider: patronage grouping once the corpus is large enough to warrant it
+
 ## Pillar: Discover
 
 The "living the faith" pillar (label/route `Discover` / `/discover/`), reached from the masthead and from the
@@ -130,7 +146,7 @@ hand-authored Markdown; devotions are data-driven JSON so an interactive Rosary/
 the visitor bead by bead without code changes.
 
 - [~] Discover pillar scaffolding (project, models, parser, services, manifests, DI, masthead link, feature flags)
-- [~] Hub page (`/discover`) linking Miracles, Prayers, Devotions, Articles
+- [~] Hub page (`/discover`) linking Miracles, Saints, Prayers, Devotions, Articles
 - [~] Prayers: searchable index (`/discover/prayers`) + detail with optional Latin (`/discover/prayers/{id}`)
 - [~] Devotions: index (`/discover/devotions`) + interactive data-driven player (`/discover/devotions/{id}`)
 - [~] Articles: index (`/discover/articles`) + sectioned detail with sources (`/discover/articles/{id}`)
@@ -144,7 +160,7 @@ the visitor bead by bead without code changes.
 
 Additional standalone, searchable pillars (like the Summa, or the Miracles/Saints browse areas) that
 would fit the same browse-by-facet + Summa-style reading layout. Not being pursued for now; captured
-here as editorial intent. The Saints is the most likely next Discover area if any is revisited.
+here as editorial intent.
 
 - [ ] **The Bible** — a browsable Scripture pillar (books → chapters → verses) with cross-references,
   mapping naturally onto the Summa-style navigation. Would need a public-domain translation
@@ -154,8 +170,6 @@ here as editorial intent. The Saints is the most likely next Discover area if an
   onto the Summa-style layout very well. *Not now:* the current English translation is still under
   copyright and cannot be shipped in this repository; revisit if a suitably licensed or public-domain
   text becomes available.
-- [ ] **The Saints** — a searchable pillar of saints with typed facets (era, region, feast day,
-  patronage, state of life) and hand-authored profiles, close in shape to the Miracles area.
 
 ## Housekeeping
 

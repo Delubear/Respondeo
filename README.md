@@ -8,7 +8,7 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | --- | --- |
 | `Respondeo` | The Blazor WebAssembly front end (pages, components, styling). |
 | `Respondeo.Content.Shared` | Shared content contracts and rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
-| `Respondeo.Content` | Hand-authored content: the Discover pillar (miracles, prayers, devotions, articles) and the Inquiry pillar (Markdown/YAML nodes), with their parsers and services. |
+| `Respondeo.Content` | Hand-authored content: the Discover pillar (miracles, saints, prayers, devotions, articles) and the Inquiry pillar (Markdown/YAML nodes), with their parsers and services. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
 | `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
@@ -134,6 +134,7 @@ change. The flags live in the **`FeatureFlags`** section of
 | `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
 | `DiscoverPillar` | Hides the entire Discover pill in the pillar switcher (supersedes the per-feature flags). |
 | `MiraclesFeature` | Hides the Miracles area within Discover. |
+| `SaintsFeature` | Hides the Saints area within Discover. |
 | `PrayerFeature` | Hides the Prayers area within Discover. |
 | `DevotionsFeature` | Hides the Devotions area within Discover. |
 | `ArticlesFeature` | Hides the Articles area within Discover. |
@@ -213,8 +214,10 @@ sitemap agree on the canonical origin, name, and default description.
   [`Articles.razor`](src/Respondeo/Pages/Articles.razor),
   [`Summa.razor`](src/Respondeo/Pages/Summa.razor),
   [`Miracles.razor`](src/Respondeo/Pages/Miracles.razor),
+  [`Saints.razor`](src/Respondeo/Pages/Saints.razor),
   [`SummaQuestion.razor`](src/Respondeo/Pages/SummaQuestion.razor),
-  [`MiracleDetail.razor`](src/Respondeo/Pages/MiracleDetail.razor), and
+  [`MiracleDetail.razor`](src/Respondeo/Pages/MiracleDetail.razor),
+  [`SaintDetail.razor`](src/Respondeo/Pages/SaintDetail.razor), and
   [`Node.razor`](src/Respondeo/Pages/Node.razor).
 - **Structured data (JSON-LD).** `SeoHead` also emits schema.org JSON-LD: a `WebSite` node on the
   home page and an `Article` node on content detail pages (set `Article="true"`), built from
