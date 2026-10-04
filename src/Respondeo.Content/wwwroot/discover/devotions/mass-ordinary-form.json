@@ -30,7 +30,7 @@
     {
       "kind": "prayer",
       "title": "The Penitential Act",
-      "text": "I confess to almighty God and to you, my brothers and sisters, that I have greatly sinned, in my thoughts and in my words, in what I have done and in what I have failed to do, through my fault, through my fault, through my most grievous fault; therefore I ask blessed Mary ever-Virgin, all the Angels and Saints, and you, my brothers and sisters, to pray for me to the Lord our God.",
+      "prayerId": "confiteor",
       "role": "all",
       "explanation": "Before approaching holy things, we pause to acknowledge our sins and ask for God's mercy. In the Confiteor we confess together that we have sinned in thought and word, in what we have done and failed to do, and we beg the prayers of Our Lady, the angels and saints, and one another."
     },
@@ -44,7 +44,7 @@
     {
       "kind": "prayer",
       "title": "The Gloria",
-      "text": "Glory to God in the highest, and on earth peace to people of good will. We praise you, we bless you, we adore you, we glorify you, we give you thanks for your great glory, Lord God, heavenly King, O God, almighty Father. Lord Jesus Christ, Only Begotten Son, Lord God, Lamb of God, Son of the Father, you take away the sins of the world, have mercy on us; you take away the sins of the world, receive our prayer; you are seated at the right hand of the Father, have mercy on us. For you alone are the Holy One, you alone are the Lord, you alone are the Most High, Jesus Christ, with the Holy Spirit, in the glory of God the Father. Amen.",
+      "prayerId": "gloria",
       "role": "all",
       "explanation": "On Sundays (outside Advent and Lent) and feasts, the Church takes up the song of the angels at Bethlehem and pours out praise to the Father and to the Lamb. It is a hymn of pure adoration before we turn to listen to God's word."
     },
@@ -173,7 +173,7 @@
     {
       "kind": "prayer",
       "title": "Lamb of God (Agnus Dei)",
-      "text": "Lamb of God, you take away the sins of the world, have mercy on us. Lamb of God, you take away the sins of the world, have mercy on us. Lamb of God, you take away the sins of the world, grant us peace.",
+      "prayerId": "lamb-of-god",
       "role": "all",
       "explanation": "As the priest breaks the host, we acclaim Christ the Lamb of God, sacrificed for our sins, and beg his mercy and peace \u2014 echoing John the Baptist's words at the Jordan."
     },
