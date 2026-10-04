@@ -174,8 +174,8 @@ internal static class SitemapGenerator
 
     // 5. Discover detail pages: prayers, devotions, and articles.
     // Each content type ships its own manifest with a single "files" list.
-    // Prayer ids come from the markdown front matter, but only primary-language (non-Latin) prayers get their own browse/detail route;
-    // Latin translations are shown inline on the English prayer's page, so they are excluded here.
+    // Prayer ids come from the markdown front matter, but only primary-language (non-Latin), listed prayers get their own browse/detail route;
+    // Latin translations are shown inline on the English prayer's page, and unlisted contextual prayers are hidden, so both are excluded here.
     // Devotion ids come from the JSON "id" field, article ids from the markdown front matter.
     private static void CollectDiscoverRoutes(
         RouteSet routes,
@@ -209,6 +209,12 @@ internal static class SitemapGenerator
             if (string.Equals(language, "la", StringComparison.OrdinalIgnoreCase))
             {
                 continue; // Latin translations render inline on the English page, not their own route.
+            }
+
+            var unlisted = ReadFrontMatterValue(fullPath, "unlisted");
+            if (string.Equals(unlisted, "true", StringComparison.OrdinalIgnoreCase))
+            {
+                continue; // Contextual prayers (e.g. Dominican versicles) are hidden from the catalog and crawlers.
             }
 
             var id = ReadFrontMatterId(fullPath);
