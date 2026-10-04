@@ -69,6 +69,7 @@ public sealed class MiracleBrowse
             || (m.Country?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
             || m.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase))
             || m.Types.Select(facets.Category).Any(k => k.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || facets.Approval(m.Approval).Contains(query, StringComparison.OrdinalIgnoreCase)
             || facets.Region(m.Region).Contains(query, StringComparison.OrdinalIgnoreCase);
     }
 

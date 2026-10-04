@@ -39,6 +39,7 @@ internal static class SitemapGenerator
         CollectStaticRoutes(routes);
         CollectSummaRoutes(routes, paths.SummaIndex);
         CollectMiracleRoutes(routes, paths.DiscoverRoot, paths.MiraclesManifest);
+        CollectSaintRoutes(routes, paths.SaintsManifest);
         CollectJourneyRoutes(routes, paths.ContentRoot, paths.ContentManifest);
         CollectDiscoverRoutes(routes, paths.DiscoverRoot, paths.PrayersManifest, paths.DevotionsManifest, paths.ArticlesManifest);
 
@@ -52,6 +53,7 @@ internal static class SitemapGenerator
         routes.Add("summa");
         routes.Add("discover");
         routes.Add("discover/miracles");
+        routes.Add("discover/saints");
         routes.Add("discover/prayers");
         routes.Add("discover/devotions");
         routes.Add("discover/articles");
@@ -107,6 +109,22 @@ internal static class SitemapGenerator
         foreach (var file in ReadManifestFiles(miraclesManifestPath))
         {
             routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}");
+        }
+    }
+
+    // 3b. Saint detail pages. The id is the file name without its .md extension.
+    // Saints are listed in saints/saints-manifest.json under a "files" array.
+    private static void CollectSaintRoutes(RouteSet routes, string saintsManifestPath)
+    {
+        if (!File.Exists(saintsManifestPath))
+        {
+            Console.Error.WriteLine($"warning: Saints manifest not found at {saintsManifestPath}; skipping saint routes.");
+            return;
+        }
+
+        foreach (var file in ReadManifestFiles(saintsManifestPath))
+        {
+            routes.Add($"discover/saints/{Path.GetFileNameWithoutExtension(file)}");
         }
     }
 
@@ -368,7 +386,8 @@ internal readonly record struct ContentPaths(
     string PrayersManifest,
     string DevotionsManifest,
     string ArticlesManifest,
-    string MiraclesManifest)
+    string MiraclesManifest,
+    string SaintsManifest)
 {
     public static ContentPaths ForRepo(string repoRoot)
     {
@@ -383,7 +402,8 @@ internal readonly record struct ContentPaths(
             PrayersManifest: Path.Combine(discoverRoot, "prayers", "prayers-manifest.json"),
             DevotionsManifest: Path.Combine(discoverRoot, "devotions", "devotions-manifest.json"),
             ArticlesManifest: Path.Combine(discoverRoot, "articles", "articles-manifest.json"),
-            MiraclesManifest: Path.Combine(discoverRoot, "miracles", "miracles-manifest.json"));
+            MiraclesManifest: Path.Combine(discoverRoot, "miracles", "miracles-manifest.json"),
+            SaintsManifest: Path.Combine(discoverRoot, "saints", "saints-manifest.json"));
     }
 }
 

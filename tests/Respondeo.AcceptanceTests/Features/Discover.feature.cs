@@ -154,12 +154,15 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.ThenAsync("I should see a link to \"discover/miracles\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 9
- await testRunner.AndAsync("I should see a link to \"discover/prayers\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+ await testRunner.AndAsync("I should see a link to \"discover/saints\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 10
- await testRunner.AndAsync("I should see a link to \"discover/devotions\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+ await testRunner.AndAsync("I should see a link to \"discover/prayers\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 11
+ await testRunner.AndAsync("I should see a link to \"discover/devotions\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 12
  await testRunner.AndAsync("I should see a link to \"discover/articles\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -174,7 +177,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The Discover sub-navigation is shown while browsing the pillar", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 13
+#line 14
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -184,10 +187,10 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 14
+#line 15
  await testRunner.GivenAsync("I open the Discover landing page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 16
  await testRunner.ThenAsync("the Discover sub-navigation should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -202,7 +205,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Opening a prayer from the prayers browser", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 17
+#line 18
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -212,13 +215,13 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 18
+#line 19
  await testRunner.GivenAsync("I open the prayers browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 20
  await testRunner.WhenAsync("I choose the first prayer", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 21
  await testRunner.ThenAsync("the prayer text should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -233,7 +236,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Opening an article from the articles browser", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+#line 23
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -243,13 +246,13 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 23
+#line 24
  await testRunner.GivenAsync("I open the articles browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 24
+#line 25
  await testRunner.WhenAsync("I choose the first article", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 26
  await testRunner.ThenAsync("the article body should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

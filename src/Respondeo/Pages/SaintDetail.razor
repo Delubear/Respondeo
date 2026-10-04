@@ -1,0 +1,132 @@
+@page "/discover/saints/{Id}"
+@inject ISaintService Saints
+@inject IBreadcrumbTrail Trail
+
+<PageTitle>@(_saint is null ? "Saint" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
+
+@if (_saint is not null)
+{
+    <SeoHead Title="@_saint.Title" Description="@_saint.Summary" Article="true" />
+}
+
+<Breadcrumb CurrentTitle="@(_saint?.Title ?? "Saint")"
+            StageHref="discover/saints"
+            StageLabel="Saints" />
+
+@if (_loading)
+{
+    <Loading>Opening the life&hellip;</Loading>
+}
+else if (_saint is null)
+{
+    <section class="content-article">
+        <h1 class="pillar__title">Saint not found</h1>
+        <p class="empty-state">
+            There is no saint with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/saints">Return to the gallery</a>.
+        </p>
+    </section>
+}
+else
+{
+    <article class="content-article">
+        <PillarHeader Eyebrow="@string.Join(" \u00B7 ", _saint.Patronages)" Title="@_saint.Title" LedeText="@_saint.Summary" />
+
+        @if (_saint.IsUnvetted)
+        {
+            <ConstructionNotice>
+                <strong>Unvetted content.</strong>
+                <span>This profile is a work in progress and has not yet been reviewed; it may contain errors.</span>
+            </ConstructionNotice>
+        }
+
+        <dl class="saint__facts">
+            @if (!string.IsNullOrWhiteSpace(_saint.FeastDay))
+            {
+                <div class="saint__fact">
+                    <dt>Feast day</dt>
+                    <dd>@_saint.FeastDay</dd>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(_saint.Dates))
+            {
+                <div class="saint__fact">
+                    <dt>Lived</dt>
+                    <dd>@_saint.Dates</dd>
+                </div>
+            }
+            <div class="saint__fact">
+                <dt>Era</dt>
+                <dd>
+                    @if (string.IsNullOrWhiteSpace(_facets.EraDescription(_saint.Era)))
+                    {
+                        @_facets.Era(_saint.Era)
+                    }
+                    else
+                    {
+                        <span class="saint__era">
+                            <button type="button" class="saint__era-toggle" popovertarget="@_eraNoteId" aria-label="@($"About the {_facets.Era(_saint.Era)} era")">@_facets.Era(_saint.Era)</button>
+                            <span class="saint__fact-note" id="@_eraNoteId" popover>@_facets.EraDescription(_saint.Era)</span>
+                        </span>
+                    }
+                </dd>
+            </div>
+            @if (!string.Equals(_saint.Region, "unknown", StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="saint__fact">
+                    <dt>Region</dt>
+                    <dd>@_facets.Region(_saint.Region)</dd>
+                </div>
+            }
+            @if (_saint.StatesOfLife.Count > 0)
+            {
+                <div class="saint__fact">
+                    <dt>State of life</dt>
+                    <dd>@string.Join(", ", _saint.StatesOfLife.Select(_facets.StateOfLife))</dd>
+                </div>
+            }
+            @if (_saint.Patronages.Count > 0)
+            {
+                <div class="saint__fact saint__fact--wide">
+                    <dt>Patronage</dt>
+                    <dd>@string.Join(", ", _saint.Patronages)</dd>
+                </div>
+            }
+            @if (_saint.Canonizations.Count > 0)
+            {
+                <div class="saint__fact saint__fact--wide">
+                    <dt>Canonization</dt>
+                    <dd>@string.Join(", ", _saint.Canonizations.Select(_facets.Canonization))</dd>
+                </div>
+            }
+        </dl>
+
+        <div class="content-body">
+            @((MarkupString)_saint.BodyHtml)
+        </div>
+
+        <TagList Tags="_saint.Tags" />
+
+        <SourcesList Sources="_saint.Sources" />
+
+        <BackLink Href="discover/saints" Label="Back to all saints" />
+    </article>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    private SaintRecord? _saint;
+    private bool _loading = true;
+    private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
+
+    // Stable id linking the era button to its popover note (the HTML Popover API pairs them by id).
+    private readonly string _eraNoteId = $"era-note-{Guid.NewGuid():N}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _facets = await Saints.GetFacetsAsync();
+        _saint = await Saints.GetByIdAsync(Id);
+        _loading = false;
+    }
+}

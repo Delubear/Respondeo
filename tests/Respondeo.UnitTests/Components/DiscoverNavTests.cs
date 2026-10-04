@@ -38,7 +38,7 @@ public class DiscoverNavTests : TestContext
         var cut = RenderComponent<DiscoverNav>();
 
         var labels = cut.FindAll(".mastnav__link").Select(l => l.TextContent.Trim()).ToList();
-        Assert.Equal(new[] { "Overview", "Miracles", "Prayers", "Devotions", "Articles" }, labels);
+        Assert.Equal(new[] { "Overview", "Miracles", "Saints", "Prayers", "Devotions", "Articles" }, labels);
     }
 
     [Fact]
@@ -70,6 +70,7 @@ public class DiscoverNavTests : TestContext
         RegisterServices(new FeatureFlags
         {
             MiraclesFeature = false,
+            SaintsFeature = false,
             PrayerFeature = false,
             DevotionsFeature = false,
             ArticlesFeature = false,

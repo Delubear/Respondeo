@@ -6,6 +6,7 @@ Feature: Discover Catholicism
   Scenario: The Discover landing page lists its sub-areas
 	Given I open the Discover landing page
 	Then I should see a link to "discover/miracles"
+	And I should see a link to "discover/saints"
 	And I should see a link to "discover/prayers"
 	And I should see a link to "discover/devotions"
 	And I should see a link to "discover/articles"

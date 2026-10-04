@@ -134,6 +134,8 @@ public class MiracleBrowseTests
         Assert.Equal(["guadalupe"], _browse.Filter(SampleIndex(), Facets, "apparition", Empty(), Empty(), Empty(), SortTitleAsc).Select(m => m.Id));
         Assert.Equal(["lanciano"], _browse.Filter(SampleIndex(), Facets, "Eucharistic", Empty(), Empty(), Empty(), SortTitleAsc).Select(m => m.Id));
         Assert.Equal(["guadalupe"], _browse.Filter(SampleIndex(), Facets, "Latin America", Empty(), Empty(), Empty(), SortTitleAsc).Select(m => m.Id));
+        Assert.Equal(["guadalupe"], _browse.Filter(SampleIndex(), Facets, "Church-approved", Empty(), Empty(), Empty(), SortTitleAsc).Select(m => m.Id));
+        Assert.Equal(["lanciano"], _browse.Filter(SampleIndex(), Facets, "Historical", Empty(), Empty(), Empty(), SortTitleAsc).Select(m => m.Id));
     }
 
     [Fact]

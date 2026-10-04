@@ -1,0 +1,195 @@
+@page "/discover/saints"
+@inject ISaintService SaintService
+@inject SaintBrowse Browser
+@inject IBreadcrumbTrail Trail
+@inject BrowseState Browse
+@inject BrowseStateInterop BrowseJs
+
+<PageTitle>Catholic Saints &mdash; Respondeo</PageTitle>
+
+<SeoHead Title="Catholic Saints"
+         Description="A growing gallery of the saints &mdash; their lives, patronages, state of life, and the Church's recognition of their holiness, from the early Church to our own day." />
+
+<section class="pillar browse" data-browse-scroll="saints">
+    <PillarHeader Eyebrow="A cloud of witnesses" Title="Catholic Saints">
+        <Lede>
+            A growing gallery of the saints &mdash; the holy men and women the Church holds up as examples
+            and intercessors. Each profile tells their story, their patronage, and how the Church recognizes them.
+        </Lede>
+    </PillarHeader>
+
+    <ConstructionNotice Area="the saints gallery" />
+
+    @if (_all is null)
+    {
+        <Loading>Gathering the saints&hellip;</Loading>
+    }
+    else
+    {
+        <SearchBox Id="saints-search"
+                           Label="Search saints"
+                           Placeholder="e.g. Francis, missions, Africa..."
+                           Value="@_browse.Query"
+                           ValueChanged="OnSearchChanged" />
+
+        <div class="filter-layout">
+            <aside class="filter-rail">
+                <TopicFilter Title="Era"
+                             Topics="_eras"
+                             Selected="_selectedEras"
+                             SelectedChanged="OnErasChanged"
+                             DisplayLabel="_facets.Era" />
+
+                <TopicFilter Title="Region"
+                             Topics="_regions"
+                             Selected="_selectedRegions"
+                             SelectedChanged="OnRegionsChanged"
+                             DisplayLabel="_facets.Region" />
+
+                <TopicFilter Title="State of life"
+                             Topics="_statesOfLife"
+                             Selected="_selectedStatesOfLife"
+                             SelectedChanged="OnStatesOfLifeChanged"
+                             DisplayLabel="_facets.StateOfLife" />
+
+                <TopicFilter Title="Canonization"
+                             Topics="_canonizations"
+                             Selected="_selectedCanonizations"
+                             SelectedChanged="OnCanonizationsChanged"
+                             DisplayLabel="_facets.Canonization" />
+
+                <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
+            </aside>
+
+            <div class="filter-results">
+                <div class="toolbar">
+                    <p class="results-count">@Filtered.Count of @_all.Count saints</p>
+                    <SortSelect T="SaintIndexEntry" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
+                </div>
+
+                @if (Filtered.Count == 0)
+                {
+                    <p class="empty-state">No saints match the current filters.</p>
+                }
+                else
+                {
+                    <CardGrid SingleColumn="true">
+                        @foreach (var s in Filtered)
+                        {
+                            <Card Href="@($"discover/saints/{s.Id}")"
+                                  Title="@s.Title"
+                                  Pills="@Browser.Pills(s, _facets)"
+                                  Summary="@Browser.CardSummary(s, _facets)"
+                                  Cta="Read &rarr;"
+                                  Level="2" />
+                        }
+                    </CardGrid>
+                }
+            </div>
+        </div>
+    }
+</section>
+
+@code {
+    private IReadOnlyList<SaintIndexEntry>? _all;
+    private IReadOnlyList<string> _eras = [];
+    private IReadOnlyList<string> _regions = [];
+    private IReadOnlyList<string> _statesOfLife = [];
+    private IReadOnlyList<string> _canonizations = [];
+    private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
+    private string _sortKey = _sortOptions[0].Key;
+    private BrowseSection _browse = default!;
+    private IReadOnlySet<string> _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    // Each sort option carries its own ordering, so the modes are declared once here and the
+    // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
+    private static readonly SortOption<SaintIndexEntry>[] _sortOptions =
+    [
+        new("title-asc", "Name (A\u2013Z)", rows => rows.OrderBy(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("title-desc", "Name (Z\u2013A)", rows => rows.OrderByDescending(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Trail.ClearAsync();
+        _browse = Browse.Section("discover/saints", () => BrowseJs.ClearAsync("saints"));
+        _selectedEras = new HashSet<string>(_browse.GetFilter("era"), StringComparer.OrdinalIgnoreCase);
+        _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
+        _selectedStatesOfLife = new HashSet<string>(_browse.GetFilter("state"), StringComparer.OrdinalIgnoreCase);
+        _selectedCanonizations = new HashSet<string>(_browse.GetFilter("canonization"), StringComparer.OrdinalIgnoreCase);
+
+        _facets = await SaintService.GetFacetsAsync();
+        var index = await SaintService.GetIndexAsync();
+        _all = index.Entries;
+
+        // Only surface facet options that actually occur in the catalog, in a stable display order.
+        _eras = Browser.Eras(_all, _facets);
+        _regions = Browser.Regions(_all, _facets);
+        _statesOfLife = Browser.StatesOfLife(_all, _facets);
+        _canonizations = Browser.Canonizations(_all, _facets);
+    }
+
+    // After the list first renders, ask JS to restore the remembered scroll position.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowseJs.RestoreScrollAsync("saints");
+        }
+    }
+
+    private void OnSearchChanged(string value) => _browse.Query = value;
+
+    private void OnSortChanged(string value) => _sortKey = value;
+
+    private void OnErasChanged(IReadOnlySet<string> selected)
+    {
+        _selectedEras = selected;
+        _browse.SetFilter("era", selected);
+    }
+
+    private void OnRegionsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedRegions = selected;
+        _browse.SetFilter("region", selected);
+    }
+
+    private void OnStatesOfLifeChanged(IReadOnlySet<string> selected)
+    {
+        _selectedStatesOfLife = selected;
+        _browse.SetFilter("state", selected);
+    }
+
+    private void OnCanonizationsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedCanonizations = selected;
+        _browse.SetFilter("canonization", selected);
+    }
+
+    private void ClearFilters()
+    {
+        _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _browse.Clear();
+    }
+
+    // A saint matches when it satisfies every active facet group (intersection across groups, union
+    // within a group) and its title/summary/dates/tags contain the search query.
+    private IReadOnlyList<SaintIndexEntry> Filtered =>
+        _all is null
+            ? Array.Empty<SaintIndexEntry>()
+            : Browser.Filter(
+                _all,
+                _facets,
+                _browse.Query,
+                _selectedEras,
+                _selectedRegions,
+                _selectedStatesOfLife,
+                _selectedCanonizations,
+                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+}

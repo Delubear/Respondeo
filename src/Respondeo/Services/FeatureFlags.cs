@@ -26,6 +26,9 @@ public sealed class FeatureFlags
     /// <summary>Shows the Miracles sub-area within the Discover pillar when enabled.</summary>
     public bool MiraclesFeature { get; set; } = true;
 
+    /// <summary>Shows the Saints sub-area within the Discover pillar when enabled.</summary>
+    public bool SaintsFeature { get; set; } = true;
+
     /// <summary>Shows the Prayers sub-area within the Discover pillar when enabled.</summary>
     public bool PrayerFeature { get; set; } = true;
 

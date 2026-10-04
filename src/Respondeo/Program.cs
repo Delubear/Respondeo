@@ -38,6 +38,9 @@ builder.Services.AddScoped<PrayerBrowse>();
 // Pure facet/search/sort logic plus card presentation for the miracles catalog, kept out of the Miracles browse page so it is unit-testable.
 builder.Services.AddScoped<MiracleBrowse>();
 
+// Pure facet/search/sort logic plus card presentation for the saints catalog, kept out of the Saints browse page so it is unit-testable.
+builder.Services.AddScoped<SaintBrowse>();
+
 // Pure facet/search/sort logic for the devotions index, kept out of the Devotions browse page so it is unit-testable.
 builder.Services.AddScoped<DevotionBrowse>();
 

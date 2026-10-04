@@ -7,6 +7,7 @@ using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Prayers;
+using Respondeo.Content.Saints;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
 
@@ -37,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDevotionService, DevotionService>();
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IMiracleService, MiracleService>();
+        services.AddScoped<ISaintService, SaintService>();
         services.AddScoped<IDiscoverOverview, DiscoverOverview>();
 
         // Inquiry pillar

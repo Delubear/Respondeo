@@ -1,0 +1,104 @@
+
+.saint__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.75rem 2rem;
+    margin: 0 0 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.6rem;
+    background: var(--parchment);
+}
+
+.saint__fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+/* Facts whose value can be long (patronage, state of life, canonization) span the
+   full row so they get the room they need and stay left-aligned under the first
+   column, instead of being squeezed into one narrow grid track and wrapping. */
+.saint__fact--wide {
+    grid-column: 1 / -1;
+}
+
+.saint__fact dt {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+}
+
+.saint__fact dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+.saint__fact-note {
+    font-weight: 400;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+/* The era value is a native HTML popover: the label is a toggle button and the
+   longer description opens in the browser's top layer, so it gets built-in
+   light-dismiss (click-outside + Escape) with no JS and can never reflow the
+   facts panel or cause a scrollbar. */
+.saint__era {
+    display: inline-block;
+}
+
+.saint__era-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    color: inherit;
+    text-align: left;
+    anchor-name: --saint-era-toggle;
+}
+
+.saint__era-toggle::after {
+    content: "\2113"; /* info-style marker */
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    width: 1.05rem;
+    height: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.saint__fact-note[popover] {
+    margin: 0;
+    width: max-content;
+    max-width: min(22rem, 90vw);
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--parchment);
+    color: var(--ink-soft);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.12);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    /* Pin the top-layer popover to the toggle button via CSS anchor positioning,
+       otherwise it defaults to the viewport corner. position-area opens it just
+       below the button, and position-try flips it above / to the side if there
+       isn't room, so it stays on-screen. */
+    position: absolute;
+    position-anchor: --saint-era-toggle;
+    position-area: bottom span-right;
+    margin-top: 0.4rem;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+}
