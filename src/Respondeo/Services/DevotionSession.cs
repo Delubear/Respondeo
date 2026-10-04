@@ -163,7 +163,7 @@ public sealed class DevotionSession
     {
         var title = string.IsNullOrWhiteSpace(displayTitle) ? step.PrayerTitle : displayTitle;
         var position = $"step {step.PrayerOrdinal + 1} of {PrayerCount}";
-        var state = done ? "prayed" : current ? "current, press to mark prayed" : "not yet prayed";
+        var state = done ? "done" : current ? "current, press to mark done" : "not yet done";
         var noteText = string.IsNullOrWhiteSpace(displayNote) ? step.Note : displayNote;
         var note = string.IsNullOrWhiteSpace(noteText) ? null : $", {noteText}";
         return $"{title}{note}, {position}, {state}";

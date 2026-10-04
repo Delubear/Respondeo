@@ -205,7 +205,7 @@ public class DevotionSessionTests
 
         var label = session.PrayerStepLabel(opening, done: false, current: true);
 
-        Assert.Equal("Our Father, Slowly, step 1 of 4, current, press to mark prayed", label);
+        Assert.Equal("Our Father, Slowly, step 1 of 4, current, press to mark done", label);
     }
 
     [Fact]
