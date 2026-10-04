@@ -1,7 +1,6 @@
 ---
 id: hail-mary
-title: "The Hail Mary"
-sortKey: "Hail Mary"
+title: "Hail Mary"
 summary: The angelic salutation joined to the Church's petition to the Mother of God.
 category: marian
 language: en

@@ -50,7 +50,7 @@ A prayer is a Markdown file: YAML front-matter between `---` lines, then the pra
 ```markdown
 ---
 id: hail-mary
-title: "The Hail Mary"
+title: "Hail Mary"
 summary: The angelic salutation joined to the Church's petition to the Mother of God.
 category: marian
 language: en
@@ -73,7 +73,7 @@ death. Amen.
 |---|---|---|
 | `id` | Yes | Stable id / URL slug (lowercase, hyphens). Must match the file name stem. |
 | `title` | Yes | Display title shown on cards and the prayer page. |
-| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. a title leading with an article: `title: "The Hail Mary"` with `sortKey: "Hail Mary"`). Defaults to `title`. |
+| `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. a title leading with an article: `title: "The Angelus"` with `sortKey: "Angelus"`). Defaults to `title`. |
 | `summary` | No | One-line description used on cards and previews. |
 | `category` | No | Category slug used for browse filtering (e.g. `marian`, `daily`, `mass`). Defaults to `other` (hidden from the filter). |
 | `language` | No | Language of this text (`en`, `la`, …). Defaults to `en`. |
