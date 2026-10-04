@@ -1,7 +1,7 @@
 ---
 id: why-god
 title: "Why God?"
-summary: Start here if you hold that there is no God, that the material world is all there is, if you think the question may be unanswerable, or you simply haven't decided.
+summary: Before anything else, the oldest question of all — is there a God at all, or is the material world all there is? Where reason can take us on its own.
 tags:
   - getting started
   - existence of god

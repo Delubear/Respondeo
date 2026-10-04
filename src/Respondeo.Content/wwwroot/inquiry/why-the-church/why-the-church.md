@@ -1,7 +1,7 @@
 ---
 id: why-the-church
 title: "Why the Church?"
-summary: For Christians who follow Christ, but not yet His Church — why the Catholic Church is the Church He founded.
+summary: From the Christ who rose to the community He left behind — did He found a Church, and is the Catholic Church that Church?
 tags:
   - getting started
   - the catholic church

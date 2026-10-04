@@ -1,7 +1,7 @@
 ---
 id: coming-home
 title: "Coming Home"
-summary: For those who know the Church is true, but have kept their distance — an invitation to come home.
+summary: From seeing the case to crossing the threshold — what it takes to actually come home, and how to begin.
 tags:
   - getting started
   - conversion
