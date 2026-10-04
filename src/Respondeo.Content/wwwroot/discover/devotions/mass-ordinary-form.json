@@ -145,9 +145,9 @@
     {
       "kind": "prayer",
       "title": "The Consecration",
-      "text": "(Kneel and adore. The Memorial Acclamation follows: We proclaim your Death, O Lord, and profess your Resurrection until you come again.)",
+      "text": "(Kneel and adore. The priest then sings or says: The mystery of faith. The people respond with one of the following acclamations:)\n\nWe proclaim your Death, O Lord, and profess your Resurrection until you come again.\n\n*or*\n\nWhen we eat this Bread and drink this Cup, we proclaim your Death, O Lord, until you come again.\n\n*or*\n\nSave us, Saviour of the world, for by your Cross and Resurrection you have set us free.",
       "role": "all",
-      "explanation": "Repeating the words and actions of Christ at the Last Supper, the priest consecrates the bread and wine, which become truly the Body and Blood of the Lord. This is the heart of the Mass. We adore in silence, then proclaim the mystery of faith in the Memorial Acclamation."
+      "explanation": "Repeating the words and actions of Christ at the Last Supper, the priest consecrates the bread and wine, which become truly the Body and Blood of the Lord. This is the heart of the Mass. We adore in silence, then proclaim the mystery of faith in the Memorial Acclamation. The Roman Missal provides three approved acclamations, and any one of them may be used."
     },
     {
       "kind": "prayer",
