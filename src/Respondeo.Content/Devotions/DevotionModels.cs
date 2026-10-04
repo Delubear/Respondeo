@@ -67,5 +67,17 @@ internal sealed class DevotionStepDocument
 
     public string? NoteLatin { get; init; }
 
+    /// <summary>Optional rendered HTML explanation of this step, shown in the info dialog.</summary>
+    public string? ExplanationHtml { get; init; }
+
+    /// <summary>Optional rendered HTML inline words for a step with no catalogued prayer.</summary>
+    public string? TextHtml { get; init; }
+
+    /// <summary>Optional rendered HTML Latin form of <see cref="TextHtml"/>.</summary>
+    public string? TextLatinHtml { get; init; }
+
+    /// <summary>Optional "who says this" role: "priest", "people", "all", or "reader".</summary>
+    public string? Role { get; init; }
+
     public IReadOnlyList<DevotionStepDocument> PerMystery { get; init; } = [];
 }

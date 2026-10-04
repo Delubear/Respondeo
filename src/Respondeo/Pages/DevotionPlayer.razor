@@ -138,7 +138,25 @@ else
                     </span>
 
                     <div class="devotion__step-body">
-                        @if (step.MysteryTitle is not null)
+                        @if (step.IsSection)
+                        {
+                            <div class="devotion__section">
+                                <h2 class="devotion__section-title">@step.Heading</h2>
+                                @if (!string.IsNullOrWhiteSpace(step.ExplanationHtml))
+                                {
+                                    <button type="button"
+                                            class="devotion__section-info"
+                                            @onclick="() => OpenInfo(step)"
+                                            aria-label="@($"About {step.Heading}")"
+                                            title="About this part">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 11h2v6h-2z" />
+                                        </svg>
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else if (step.MysteryTitle is not null)
                         {
                             <div class="devotion__mystery">
                                 @if (!string.IsNullOrWhiteSpace(step.Heading))
@@ -169,6 +187,10 @@ else
                                         aria-label="@_session.PrayerStepLabel(step, done, current, PrayerName(step), PrayerNote(step))"
                                         aria-pressed="@done">
                                     <span class="devotion__prayer-name">
+                                        @if (!string.IsNullOrWhiteSpace(step.Role))
+                                        {
+                                            <span class="devotion__role devotion__role--@step.Role" aria-hidden="true">@RoleLabel(step.Role)</span>
+                                        }
                                         @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
                                         {
                                             <span class="devotion__prayer-lead">@step.Heading</span>
@@ -220,8 +242,18 @@ else
 
     <Dialog @ref="_prayerDialog" Title="@_openPrayerTitle" Class="dialog--roomy" MaxWidth="38rem">
         <ChildContent>
+            @if (!string.IsNullOrWhiteSpace(_openExplanationHtml))
+            {
+                <div class="devotion__explanation">
+                    @((MarkupString)_openExplanationHtml)
+                </div>
+            }
             @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
             {
+                @if (!string.IsNullOrWhiteSpace(_openExplanationHtml))
+                {
+                    <p class="devotion__explanation-words-label eyebrow">The words</p>
+                }
                 @((MarkupString)_openPrayerHtml)
             }
         </ChildContent>
@@ -292,6 +324,7 @@ else
     private Dialog? _prayerDialog;
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
+    private string? _openExplanationHtml;
 
     // When true, the thread shows each prayer's Latin name (and the book opens its Latin text).
     // Only offered when the devotion declares LatinAvailable.
@@ -306,6 +339,17 @@ else
     // exists, otherwise the vernacular note.
     private string? PrayerNote(DevotionBead step) =>
         _showLatin && !string.IsNullOrWhiteSpace(step.NoteLatin) ? step.NoteLatin : step.Note;
+
+    // A short "who says this" badge for liturgical steps: the versicle/response marks for priest and
+    // people, or a readable word for the rest.
+    private static string RoleLabel(string? role) => role switch
+    {
+        "priest" => "\u2123",   // ℣ — versicle
+        "people" => "\u211F",   // ℟ — response
+        "all" => "All",
+        "reader" => "Reader",
+        _ => string.Empty,
+    };
 
     private async Task SetLatin(bool latin)
     {
@@ -535,6 +579,7 @@ else
         var useLatin = _showLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinHtml);
         _openPrayerTitle = useLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinTitle) ? bead.PrayerLatinTitle : bead.PrayerTitle;
         _openPrayerHtml = useLatin ? bead.PrayerLatinHtml : bead.PrayerHtml;
+        _openExplanationHtml = bead.ExplanationHtml;
         if (_prayerDialog is not null)
         {
             await _prayerDialog.Show();
@@ -545,6 +590,19 @@ else
         if (bead.IsPrayer && bead.PrayerOrdinal == _session!.CompletedCount)
         {
             await ToggleComplete(bead.PrayerOrdinal);
+        }
+    }
+
+    // Opens the info dialog for a section banner: an explanation only, with no words to pray and no
+    // completion side effect (a section is not a step the reader marks).
+    private async Task OpenInfo(DevotionBead bead)
+    {
+        _openPrayerTitle = bead.Heading;
+        _openPrayerHtml = null;
+        _openExplanationHtml = bead.ExplanationHtml;
+        if (_prayerDialog is not null)
+        {
+            await _prayerDialog.Show();
         }
     }
 

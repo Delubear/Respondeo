@@ -17,6 +17,15 @@ public sealed class DevotionBead
     public string? Note { get; init; }
     public string? NoteLatin { get; init; }
 
+    // Catechetical explanation (HTML) shown in the info dialog above the words; null for the Rosary.
+    public string? ExplanationHtml { get; init; }
+
+    // "Who says this" role for liturgical steps ("priest", "people", "all", "reader"); null otherwise.
+    public string? Role { get; init; }
+
+    // True when this row is a section banner (a heading with no prayer and no mystery reflection).
+    public bool IsSection { get; init; }
+
     // Index of this row among prayer rows (for in-order completion); -1 for mystery announcements.
     public int PrayerOrdinal { get; set; } = -1;
 
@@ -186,6 +195,16 @@ public sealed class DevotionSession
                     }
                 }
             }
+            else if (step.Kind == "section")
+            {
+                // A section banner: a heading-only row that introduces a movement of the liturgy.
+                beads.Add(new DevotionBead
+                {
+                    Heading = step.Title,
+                    ExplanationHtml = step.ExplanationHtml,
+                    IsSection = true,
+                });
+            }
             else
             {
                 AddPrayerRow(beads, step, step.Title);
@@ -196,11 +215,33 @@ public sealed class DevotionSession
     }
 
     // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its
-    // own bead on the thread and its own step to mark complete.
+    // own bead on the thread and its own step to mark complete. The words come from the catalogued
+    // prayer referenced by PrayerId, or, when there is none, from the step's inline Text (Mass responses).
     private void AddPrayerRow(List<DevotionBead> beads, DevotionStep step, string? heading)
     {
-        if (string.IsNullOrWhiteSpace(step.PrayerId) || !_prayers.TryGetValue(step.PrayerId, out var prayer))
+        string title;
+        string html;
+        string? latinTitle;
+        string? latinHtml;
+
+        if (!string.IsNullOrWhiteSpace(step.PrayerId) && _prayers.TryGetValue(step.PrayerId, out var prayer))
         {
+            title = prayer.Title;
+            html = prayer.Html;
+            latinTitle = prayer.LatinTitle;
+            latinHtml = prayer.LatinHtml;
+        }
+        else if (step.TextHtml is not null)
+        {
+            // An inline step (no catalogued prayer): its Title is the label and Text supplies the words.
+            title = string.IsNullOrWhiteSpace(step.Title) ? "Response" : step.Title!;
+            html = step.TextHtml;
+            latinTitle = string.IsNullOrWhiteSpace(step.Title) ? null : step.Title;
+            latinHtml = step.TextLatinHtml;
+        }
+        else
+        {
+            // Nothing to pray (no resolvable prayer and no inline text): skip this step.
             return;
         }
 
@@ -211,13 +252,15 @@ public sealed class DevotionSession
             {
                 // Only label the first of a repeated group so the heading is not shouted many times.
                 Heading = i == 0 ? (heading ?? step.Title) : null,
-                PrayerTitle = prayer.Title,
-                PrayerHtml = prayer.Html,
-                PrayerLatinTitle = prayer.LatinTitle,
-                PrayerLatinHtml = prayer.LatinHtml,
+                PrayerTitle = title,
+                PrayerHtml = html,
+                PrayerLatinTitle = latinTitle,
+                PrayerLatinHtml = latinHtml,
                 BeadType = step.Bead,
                 Note = i == 0 ? step.Note : null,
                 NoteLatin = i == 0 ? step.NoteLatin : null,
+                ExplanationHtml = i == 0 ? step.ExplanationHtml : null,
+                Role = step.Role,
             });
         }
     }

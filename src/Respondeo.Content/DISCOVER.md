@@ -137,7 +137,7 @@ devotion is added purely as data — no code change.
 | `title` | Yes | Display title. |
 | `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. `"title": "The Holy Rosary"` with `"sortKey": "Holy Rosary"`). Defaults to `title`. |
 | `summary` | No | One-line description for cards. |
-| `kind` | No | Kind slug used for grouping, iconography, and the Kind browse filter (e.g. `rosary`, `chaplet`, `litany`). Defaults to `devotion` (hidden from the filter). |
+| `kind` | No | Kind slug used for grouping, iconography, and the Kind browse filter (e.g. `rosary`, `chaplet`, `litany`, `mass`). Defaults to `devotion` (hidden from the filter). |
 | `intro` | No | Markdown introduction shown before the reader begins. |
 | `mysterySets` | No | Selectable meditation sets (see below). Empty for devotions with no per-mystery meditation. |
 | `sequence` | Yes | The ordered steps of the devotion. |
@@ -157,13 +157,20 @@ devotion is added purely as data — no code change.
 | Field | Required | Description |
 |---|---|---|
 | `kind` | No | `prayer` (default) prays a single prayer; `mysteries` iterates the chosen mystery set. |
-| `title` | No | Optional heading for the step (e.g. `Begin`, `Closing prayers`). |
-| `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/discover/prayers/`. |
+| `kind` | No | `prayer` (default) prays a single prayer; `mysteries` iterates the chosen mystery set; `section` draws a banner that introduces a movement of a liturgical walkthrough (e.g. the Mass). |
+| `title` | No | Optional heading for the step (e.g. `Begin`, `Closing prayers`). For a `section` step this is the banner title. |
+| `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/discover/prayers/`. A `prayer` step must have either a `prayerId` or inline `text`. |
+| `text` | No | Inline words (Markdown) for a `prayer` step that has no catalogued `prayerId` — e.g. a short Mass response. Rendered to HTML and shown in the info dialog. |
+| `textLatin` | No | Latin form of `text`, shown when the Latin view is active. |
+| `explanation` | No | Plain-language explanation (Markdown) of what happens at this step and why. Shown in the info dialog above the words (and is the only content for a `section` banner's info button). Used by catechetical walkthroughs such as the Mass. |
+| `role` | No | "Who says this" for a liturgical step: `priest` (℣), `people` (℟), `all`, or `reader`. Purely presentational. |
 | `repeat` | No | How many times to pray the step (e.g. `10` for a decade). Defaults to `1`. Each repetition is its own row/bead. |
 | `bead` | No | Marker drawn on the left-hand rosary "thread" beside the step. One of `cross` (Sign of the Cross), `medal` (centerpiece medal), `large` (Our Father bead), `small` (Hail Mary bead), or `between` (prayed between beads, drawn as three small pips). Omit for spoken steps that are not prayed on a bead. |
 | `perMystery` | For `mysteries` steps | The step template run once per mystery of the chosen set (a list of `prayer` steps). |
 
-Every `prayerId` must refer to an existing prayer file, or the player has nothing to render.
+Every `prayer` step must resolve to something to render: either a `prayerId` that refers to an existing prayer file, or inline `text`. Steps with neither are skipped.
+
+The `mass` kind plus `section`, `explanation`, `text`, and `role` are used by the Ordinary Form Mass walkthrough (`mass-ordinary-form.json`): an interactive, step-by-step guide where each step's info icon opens a dialog explaining the part and showing the people's responses. Avoid reproducing copyrighted presidential prayer translations verbatim — represent those as an `explanation` plus the public response the faithful make.
 
 ---
 

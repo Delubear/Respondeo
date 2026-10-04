@@ -237,4 +237,79 @@ public class DevotionSessionTests
         Assert.True(session.IsItemDone(1));  // its prayer
         Assert.False(session.IsItemDone(2)); // the second mystery's announcement
     }
+
+    // A liturgical walkthrough (e.g. the Mass): a section banner followed by an inline-text response
+    // that has no catalogued prayer, carrying an explanation and a role.
+    private static DevotionSession MassSession()
+    {
+        var devotion = new Devotion
+        {
+            Id = "mass-ordinary-form",
+            Title = "Walkthrough of the Mass",
+            Kind = "mass",
+            Sequence =
+            [
+                new DevotionStep { Kind = "section", Title = "The Introductory Rites", ExplanationHtml = "<p>We gather.</p>" },
+                new DevotionStep
+                {
+                    Kind = "prayer",
+                    Title = "The Greeting",
+                    TextHtml = "<p>And with your spirit.</p>",
+                    Role = "people",
+                    ExplanationHtml = "<p>The priest greets us.</p>",
+                },
+            ],
+        };
+
+        return new DevotionSession(devotion, new Dictionary<string, Prayer>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void Start_emits_a_section_banner_row_that_is_not_a_prayer()
+    {
+        var session = MassSession();
+
+        session.Start(null);
+
+        var banner = session.Beads[0];
+        Assert.True(banner.IsSection);
+        Assert.False(banner.IsPrayer);
+        Assert.Equal("The Introductory Rites", banner.Heading);
+        Assert.Equal("<p>We gather.</p>", banner.ExplanationHtml);
+    }
+
+    [Fact]
+    public void Start_builds_a_prayer_row_from_inline_text_when_there_is_no_catalogued_prayer()
+    {
+        var session = MassSession();
+
+        session.Start(null);
+
+        // Only the inline response is a prayer row; the section banner is not counted.
+        Assert.Equal(1, session.PrayerCount);
+
+        var response = session.Beads[1];
+        Assert.True(response.IsPrayer);
+        Assert.Equal("The Greeting", response.PrayerTitle);
+        Assert.Equal("<p>And with your spirit.</p>", response.PrayerHtml);
+        Assert.Equal("people", response.Role);
+        Assert.Equal("<p>The priest greets us.</p>", response.ExplanationHtml);
+    }
+
+    [Fact]
+    public void Start_skips_a_prayer_step_with_neither_prayer_nor_inline_text()
+    {
+        var devotion = new Devotion
+        {
+            Id = "empty",
+            Title = "Empty",
+            Sequence = [new DevotionStep { Kind = "prayer", Title = "Nothing here" }],
+        };
+        var session = new DevotionSession(devotion, new Dictionary<string, Prayer>(StringComparer.OrdinalIgnoreCase));
+
+        session.Start(null);
+
+        Assert.Empty(session.Beads);
+        Assert.Equal(0, session.PrayerCount);
+    }
 }

@@ -51,5 +51,27 @@ internal sealed class DevotionStepDto
     public string? Bead { get; set; }
     public string? Note { get; set; }
     public string? NoteLatin { get; set; }
+
+    /// <summary>
+    /// Optional plain-language explanation (Markdown) of what happens at this step and why, rendered
+    /// to HTML by the parser and shown in the info dialog above the words. Used by the Mass walkthrough.
+    /// </summary>
+    public string? Explanation { get; set; }
+
+    /// <summary>
+    /// Optional inline words (Markdown) for a step that has no catalogued <see cref="PrayerId"/> — e.g.
+    /// a short Mass response. Rendered to HTML and shown in the info dialog in place of a looked-up prayer.
+    /// </summary>
+    public string? Text { get; set; }
+
+    /// <summary>Optional Latin form of <see cref="Text"/>, shown when the Latin view is active.</summary>
+    public string? TextLatin { get; set; }
+
+    /// <summary>
+    /// Optional "who says this" role for liturgical steps: "priest", "people", "all", or "reader".
+    /// Purely presentational; ignored by devotions that do not set it.
+    /// </summary>
+    public string? Role { get; set; }
+
     public List<DevotionStepDto> PerMystery { get; set; } = [];
 }

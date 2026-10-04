@@ -114,6 +114,27 @@ public sealed class DevotionStep
     /// <summary>Optional Latin form of <see cref="Note"/>, shown when the Latin view is active.</summary>
     public string? NoteLatin { get; init; }
 
+    /// <summary>
+    /// Optional rendered HTML explanation of what happens at this step and why. Shown in the info
+    /// dialog above the words. Set by catechetical walkthroughs such as the Mass; null for the Rosary.
+    /// </summary>
+    public string? ExplanationHtml { get; init; }
+
+    /// <summary>
+    /// Optional rendered HTML inline words for a step that has no catalogued <see cref="PrayerId"/>
+    /// (e.g. a short Mass response). Shown in the info dialog in place of a looked-up prayer.
+    /// </summary>
+    public string? TextHtml { get; init; }
+
+    /// <summary>Optional rendered HTML Latin form of <see cref="TextHtml"/>.</summary>
+    public string? TextLatinHtml { get; init; }
+
+    /// <summary>
+    /// Optional "who says this" role for liturgical steps: "priest", "people", "all", or "reader".
+    /// Purely presentational; null for devotions that do not use it.
+    /// </summary>
+    public string? Role { get; init; }
+
     /// <summary>The per-mystery sub-steps for a "mysteries" step. Run once for each mystery of the selected set.</summary>
     public IReadOnlyList<DevotionStep> PerMystery { get; init; } = [];
 }

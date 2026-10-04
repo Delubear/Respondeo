@@ -54,6 +54,10 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         Bead = string.IsNullOrWhiteSpace(step.Bead) ? null : step.Bead.Trim().ToLowerInvariant(),
         Note = string.IsNullOrWhiteSpace(step.Note) ? null : step.Note.Trim(),
         NoteLatin = string.IsNullOrWhiteSpace(step.NoteLatin) ? null : step.NoteLatin.Trim(),
+        ExplanationHtml = string.IsNullOrWhiteSpace(step.Explanation) ? null : html.ToHtml(step.Explanation),
+        TextHtml = string.IsNullOrWhiteSpace(step.Text) ? null : html.ToHtml(step.Text),
+        TextLatinHtml = string.IsNullOrWhiteSpace(step.TextLatin) ? null : html.ToHtml(step.TextLatin),
+        Role = string.IsNullOrWhiteSpace(step.Role) ? null : step.Role.Trim().ToLowerInvariant(),
         PerMystery = [.. step.PerMystery.Select(MapStep)],
     };
 

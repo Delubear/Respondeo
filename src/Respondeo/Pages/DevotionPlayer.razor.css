@@ -319,6 +319,72 @@
     max-width: 40rem;
 }
 
+/* A section banner introducing a movement of the liturgy (e.g. Liturgy of the Word). */
+.devotion__section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--accent);
+}
+
+.devotion__section-title {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin: 0;
+}
+
+/* The info button beside a section banner that opens its explanation dialog. */
+.devotion__section-info {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+}
+
+.devotion__section-info svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+}
+
+/* A small "who says this" badge on a liturgical prayer row (℣ priest, ℟ people, All, Reader). */
+.devotion__role {
+    display: inline-block;
+    margin-right: 0.4rem;
+    font-family: var(--body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.devotion__role--all,
+.devotion__role--reader {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* The catechetical explanation shown above the words in the info dialog. */
+.devotion__explanation {
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.devotion__explanation + .devotion__explanation-words-label {
+    margin-top: 1rem;
+}
+
 /* A prayer row: a completion button plus a book button to read the words. */
 .devotion__prayer-row {
     display: flex;

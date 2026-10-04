@@ -1,0 +1,206 @@
+{
+  "id": "mass-ordinary-form",
+  "title": "Walkthrough of the Mass",
+  "sortKey": "Mass Walkthrough",
+  "summary": "A step-by-step guide through the Ordinary Form of the Mass, with the people's responses and a plain-language explanation of each part.",
+  "kind": "mass",
+  "latinAvailable": false,
+  "intro": "The Mass is the source and summit of the Christian life \u2014 the one Sacrifice of Christ made present on the altar. This walkthrough carries you through the Ordinary Form (the Mass celebrated in most parishes today) part by part. Advance through each moment, tap the information icon to learn what is happening and why, and read the responses the faithful make. Scripture readings change each day, so those steps point you to listen rather than printing a fixed text.",
+  "sequence": [
+    {
+      "kind": "section",
+      "title": "The Introductory Rites",
+      "explanation": "The opening rites gather the assembly into one body and prepare us to hear God's word and celebrate the Eucharist worthily. They move us from the street into the mystery: we make the sign of the cross, acknowledge our sins, and praise God before turning to the readings."
+    },
+    {
+      "kind": "prayer",
+      "title": "Entrance and Sign of the Cross",
+      "prayerId": "sign-of-the-cross",
+      "role": "all",
+      "explanation": "As the priest and ministers enter, we sing the entrance chant. Reaching the altar, the priest venerates it and, with the whole assembly, begins by signing himself with the cross \u2014 marking the Mass, and ourselves, as belonging to the Father, Son, and Holy Spirit."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Greeting",
+      "text": "And with your spirit.",
+      "role": "people",
+      "explanation": "The priest greets the people in the name of Christ \u2014 for example, *The Lord be with you.* The response *And with your spirit* is more than a hello: it acknowledges the Holy Spirit at work through the priest's ordination, and asks the Lord to be present to the whole gathering."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Penitential Act",
+      "text": "I confess to almighty God and to you, my brothers and sisters, that I have greatly sinned... through my fault, through my fault, through my most grievous fault.",
+      "role": "all",
+      "explanation": "Before approaching holy things, we pause to acknowledge our sins and ask for God's mercy. In the Confiteor we confess together that we have sinned in thought and word, in what we have done and failed to do, and we beg the prayers of Our Lady, the angels and saints, and one another."
+    },
+    {
+      "kind": "prayer",
+      "title": "Lord, have mercy (Kyrie)",
+      "text": "Lord, have mercy. Christ, have mercy. Lord, have mercy.",
+      "role": "all",
+      "explanation": "The Kyrie is one of the oldest prayers of the Church, a simple cry for mercy addressed to Christ the Lord. It flows naturally from the Penitential Act \u2014 having named our need, we call on the one who alone can heal it."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Gloria",
+      "text": "Glory to God in the highest, and on earth peace to people of good will...",
+      "role": "all",
+      "explanation": "On Sundays (outside Advent and Lent) and feasts, the Church takes up the song of the angels at Bethlehem and pours out praise to the Father and to the Lamb. It is a hymn of pure adoration before we turn to listen to God's word."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Collect",
+      "text": "Amen.",
+      "role": "people",
+      "explanation": "The priest invites us to pray, and after a brief silence 'collects' the prayers of all into a single opening prayer proper to the day. Our *Amen* makes that prayer our own \u2014 it means 'so be it, let it be done.'"
+    },
+    {
+      "kind": "section",
+      "title": "The Liturgy of the Word",
+      "explanation": "God himself speaks to us through the Scriptures proclaimed here. We listen to the Old Testament, the Psalms, the apostles, and finally the Gospel of Christ, then respond with faith in the Creed and with prayers of intercession for the whole world."
+    },
+    {
+      "kind": "prayer",
+      "title": "The First Reading",
+      "text": "Thanks be to God.",
+      "role": "people",
+      "explanation": "Usually drawn from the Old Testament, the first reading shows how God prepared his people for Christ. At its close the reader says, *The word of the Lord,* and we answer *Thanks be to God* \u2014 grateful that God has spoken to us."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Responsorial Psalm",
+      "text": "(Sing or say the repeated response to each verse of the psalm.)",
+      "role": "all",
+      "explanation": "We respond to God's word with God's own words, singing a psalm together. The psalm is the assembly's meditation on the reading, carrying the Scripture into prayer."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Second Reading",
+      "text": "Thanks be to God.",
+      "role": "people",
+      "explanation": "On Sundays and solemnities a second reading is proclaimed, usually from the letters of the apostles. Like the first, it ends with *The word of the Lord* and our grateful *Thanks be to God.*"
+    },
+    {
+      "kind": "prayer",
+      "title": "The Gospel Acclamation",
+      "text": "Alleluia, alleluia, alleluia.",
+      "role": "all",
+      "explanation": "We rise and greet Christ, about to speak to us in the Gospel, with the *Alleluia* (replaced by a different acclamation in Lent). Standing is itself a sign of respect for the Lord's own words."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Gospel",
+      "text": "Glory to you, O Lord. ... Praise to you, Lord Jesus Christ.",
+      "role": "people",
+      "explanation": "The deacon or priest proclaims the Gospel \u2014 the high point of the Liturgy of the Word, for here Christ himself addresses his people. We answer his announcement with *Glory to you, O Lord,* and at the end *Praise to you, Lord Jesus Christ.*"
+    },
+    {
+      "kind": "prayer",
+      "title": "The Homily",
+      "text": "(Listen as the priest or deacon breaks open the word of God.)",
+      "role": "all",
+      "explanation": "The priest or deacon explains the Scriptures and applies them to our lives, so that the word just heard may bear fruit. The homily is part of the liturgy itself, not an interruption of it."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Profession of Faith (Creed)",
+      "prayerId": "nicene-creed",
+      "role": "all",
+      "explanation": "Having heard God's word, we respond by professing our faith. At Sunday Mass and on solemnities we proclaim the Nicene Creed, the Church's fuller profession of belief in the Father, Son, and Holy Spirit; the Apostles' Creed may also be used, especially in Masses with children."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Prayer of the Faithful",
+      "text": "Lord, hear our prayer.",
+      "role": "people",
+      "explanation": "Strengthened by God's word, we pray as a priestly people for the Church, the world, the suffering, and our local community. To each petition we answer *Lord, hear our prayer,* exercising the intercession that belongs to the baptized."
+    },
+    {
+      "kind": "section",
+      "title": "The Liturgy of the Eucharist",
+      "explanation": "Now the Church does what the Lord commanded at the Last Supper: *Do this in memory of me.* Bread and wine are offered, the great Eucharistic Prayer gives thanks and consecrates them into the Body and Blood of Christ, and the faithful are nourished in Holy Communion."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Offertory",
+      "text": "Blessed be God for ever.",
+      "role": "people",
+      "explanation": "Bread and wine \u2014 'the work of human hands' \u2014 are brought to the altar, often with a collection for the Church and the poor. As the priest blesses God for these gifts, we answer *Blessed be God for ever.*"
+    },
+    {
+      "kind": "prayer",
+      "title": "Pray, brethren",
+      "text": "May the Lord accept the sacrifice at your hands, for the praise and glory of his name, for our good and the good of all his holy Church.",
+      "role": "people",
+      "explanation": "The priest invites us to pray that our common sacrifice be acceptable to God. Our response makes clear that the sacrifice is offered through the priest by the whole Church, for God's glory and the good of all."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Preface and Holy, Holy, Holy (Sanctus)",
+      "text": "Holy, Holy, Holy Lord God of hosts. Heaven and earth are full of your glory. Hosanna in the highest. Blessed is he who comes in the name of the Lord. Hosanna in the highest.",
+      "role": "all",
+      "explanation": "The Eucharistic Prayer opens with the Preface, giving thanks for God's saving work. We join the song of the angels and saints in heaven \u2014 the *Sanctus* \u2014 confessing God thrice-holy as we stand at the threshold of the great mystery."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Consecration",
+      "text": "(Kneel and adore. The Memorial Acclamation follows: We proclaim your Death, O Lord, and profess your Resurrection until you come again.)",
+      "role": "all",
+      "explanation": "Repeating the words and actions of Christ at the Last Supper, the priest consecrates the bread and wine, which become truly the Body and Blood of the Lord. This is the heart of the Mass. We adore in silence, then proclaim the mystery of faith in the Memorial Acclamation."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Great Amen",
+      "text": "Amen.",
+      "role": "people",
+      "explanation": "The Eucharistic Prayer ends with the priest giving all glory to the Father through, with, and in Christ. Our *Amen* \u2014 called the Great Amen \u2014 is our wholehearted assent to the entire prayer and sacrifice just offered."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Lord's Prayer",
+      "prayerId": "our-father",
+      "role": "all",
+      "explanation": "Before receiving Communion we pray as Christ taught us, asking for our daily bread \u2014 which is also the Bread of Life \u2014 and for the forgiveness that prepares us to approach the altar."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Sign of Peace",
+      "text": "And with your spirit. (Peace be with you.)",
+      "role": "all",
+      "explanation": "Having asked forgiveness, we offer one another a sign of Christ's peace \u2014 a gesture of reconciliation and charity before we share in the one Bread."
+    },
+    {
+      "kind": "prayer",
+      "title": "Lamb of God (Agnus Dei)",
+      "text": "Lamb of God, you take away the sins of the world, have mercy on us. ... grant us peace.",
+      "role": "all",
+      "explanation": "As the priest breaks the host, we acclaim Christ the Lamb of God, sacrificed for our sins, and beg his mercy and peace \u2014 echoing John the Baptist's words at the Jordan."
+    },
+    {
+      "kind": "prayer",
+      "title": "Holy Communion",
+      "text": "Lord, I am not worthy that you should enter under my roof, but only say the word and my soul shall be healed. ... Amen.",
+      "role": "all",
+      "explanation": "Invited to the Supper of the Lamb, we confess our unworthiness in the words of the centurion, then come forward to receive the Body and Blood of Christ, answering *Amen* \u2014 'I believe' \u2014 as the Lord is placed within us. A time of silent thanksgiving follows."
+    },
+    {
+      "kind": "section",
+      "title": "The Concluding Rites",
+      "explanation": "Having been fed at the altar, we are blessed and sent out. The word 'Mass' itself comes from the sending \u2014 *Ite, missa est* \u2014 for the fruit of what we have received is to carry Christ into the world."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Final Blessing",
+      "prayerId": "sign-of-the-cross",
+      "role": "all",
+      "explanation": "The priest blesses the people in the name of the Holy Trinity, and we sign ourselves once more with the cross \u2014 sealing the graces of the Mass as we prepare to depart."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Dismissal",
+      "text": "Thanks be to God.",
+      "role": "people",
+      "explanation": "The deacon or priest sends us forth \u2014 for example, *Go in peace, glorifying the Lord by your life.* Our *Thanks be to God* is both gratitude for the gift received and a commission to live it. The Mass has ended; now the mission begins."
+    }
+  ]
+}

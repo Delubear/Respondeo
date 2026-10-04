@@ -2,6 +2,7 @@
   "files": [
     "holy-rosary.json",
     "dominican-rosary.json",
-    "divine-mercy-chaplet.json"
+    "divine-mercy-chaplet.json",
+    "mass-ordinary-form.json"
   ]
 }
