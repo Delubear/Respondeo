@@ -1,0 +1,114 @@
+@* The devotion intro screen shown before praying begins: an optional draft notice, a resume prompt
+   for an un-finished visit, the intro prose, and the mystery-set chooser (or a single Begin card). *@
+
+<section class="content-article">
+    <PillarHeader Title="@Devotion.Title" LedeText="@Devotion.Summary" />
+
+    @if (Devotion.Draft)
+    {
+        @* This devotion is still being authored and vetted; warn the reader before they rely on it. *@
+        <div class="devotion__draft-notice" role="note">
+            <p class="devotion__draft-title">In progress &mdash; not yet vetted</p>
+            <p>
+                This walkthrough is still being written and reviewed for accuracy. Texts and
+                explanations may be incomplete or change, so please don&rsquo;t rely on it as a
+                definitive guide just yet.
+            </p>
+        </div>
+    }
+
+    @if (SavedProgress is { CompletedCount: > 0 })
+    {
+        @* A previous visit was left un-finished; offer to pick up where they left off. Beginning
+           any set below already starts fresh, so a single Resume action is all that's needed. *@
+        <div class="devotion__resume" role="status">
+            <Card Title="Resume where you left off"
+                  Pill="In progress"
+                  Summary="@ResumeText"
+                  Cta="Resume &rarr;"
+                  Level="2"
+                  OnClick="OnResume" />
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Devotion.IntroHtml))
+    {
+        <div class="devotion__intro-body">
+            @((MarkupString)Devotion.IntroHtml)
+        </div>
+    }
+
+    @if (Devotion.MysterySets.Count > 0)
+    {
+        <div class="devotion__sets">
+            @if (Devotion.MysterySets.Count > 1)
+            {
+                <h2 class="devotion__sets-title">Choose today's mysteries</h2>
+            }
+            <div class="devotion__set-options">
+                @foreach (var set in Devotion.MysterySets)
+                {
+                    <Card Title="@set.Name"
+                          Pill="@set.When"
+                          Summary="@set.Summary"
+                          Cta="Begin praying &rarr;"
+                          Level="3"
+                          OnClick="() => OnBegin.InvokeAsync(set.Id)" />
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="devotion__set-options">
+            <Card Title="Begin"
+                  Summary="@Devotion.Summary"
+                  Cta="Begin praying &rarr;"
+                  Level="3"
+                  OnClick="() => OnBegin.InvokeAsync(null)" />
+        </div>
+    }
+
+    <BackLink Href="discover/devotions" Label="Back to all devotions" />
+</section>
+
+@code {
+    /// <summary>The devotion being introduced.</summary>
+    [Parameter, EditorRequired] public Devotion Devotion { get; set; } = default!;
+
+    /// <summary>Saved progress from a prior, un-finished visit (drives the resume prompt).</summary>
+    [Parameter] public DevotionProgress? SavedProgress { get; set; }
+
+    /// <summary>Total prayers in the saved set, used to phrase the resume summary.</summary>
+    [Parameter] public int ResumeTotal { get; set; }
+
+    /// <summary>Raised when the reader resumes the saved slot.</summary>
+    [Parameter] public EventCallback OnResume { get; set; }
+
+    /// <summary>Raised when the reader begins a set (null id for a single-set devotion).</summary>
+    [Parameter] public EventCallback<string?> OnBegin { get; set; }
+
+    // Summary line for the resume card, naming the saved mystery set (when there is one) and how far
+    // along the reader was (e.g. "The Sorrowful Mysteries — 12 of 59 prayers complete."). The card's
+    // title and "In progress" pill carry the rest of the meaning, so this stays purely descriptive.
+    private string ResumeText
+    {
+        get
+        {
+            var saved = SavedProgress;
+            if (saved is null)
+            {
+                return "Pick up where you left off.";
+            }
+
+            var setName = Devotion.MysterySets.FirstOrDefault(s => s.Id == saved.SetId)?.Name;
+
+            var done = Math.Clamp(saved.CompletedCount, 0, ResumeTotal);
+
+            // Set names already read as full titles ("The Sorrowful Mysteries").
+            var progress = ResumeTotal > 0 ? $"{done} of {ResumeTotal} prayers complete." : "in progress.";
+
+            return string.IsNullOrWhiteSpace(setName) ? $"You've prayed {progress}" : $"{setName} \u2014 {progress}";
+        }
+    }
+}

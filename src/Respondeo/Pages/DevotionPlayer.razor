@@ -36,76 +36,11 @@ else if (_devotion is null)
 else if (!_started)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
-    <section class="content-article">
-        <PillarHeader Title="@_devotion.Title" LedeText="@_devotion.Summary" />
-
-        @if (_devotion.Draft)
-        {
-            @* This devotion is still being authored and vetted; warn the reader before they rely on it. *@
-            <div class="devotion__draft-notice" role="note">
-                <p class="devotion__draft-title">In progress &mdash; not yet vetted</p>
-                <p>
-                    This walkthrough is still being written and reviewed for accuracy. Texts and
-                    explanations may be incomplete or change, so please don&rsquo;t rely on it as a
-                    definitive guide just yet.
-                </p>
-            </div>
-        }
-
-        @if (_savedProgress is { CompletedCount: > 0 })
-        {
-            @* A previous visit was left un-finished; offer to pick up where they left off. Beginning
-               any set below already starts fresh, so a single Resume action is all that's needed. *@
-            <div class="devotion__resume" role="status">
-                <Card Title="Resume where you left off"
-                      Pill="In progress"
-                      Summary="@ResumeText"
-                      Cta="Resume &rarr;"
-                      Level="2"
-                      OnClick="Resume" />
-            </div>
-        }
-
-        @if (!string.IsNullOrWhiteSpace(_devotion.IntroHtml))
-        {
-            <div class="devotion__intro-body">
-                @((MarkupString)_devotion.IntroHtml)
-            </div>
-        }
-
-        @if (_devotion.MysterySets.Count > 0)
-        {
-            <div class="devotion__sets">
-                @if (_devotion.MysterySets.Count > 1)
-                {
-                    <h2 class="devotion__sets-title">Choose today's mysteries</h2>
-                }
-                <div class="devotion__set-options">
-                    @foreach (var set in _devotion.MysterySets)
-                    {
-                        <Card Title="@set.Name"
-                              Pill="@set.When"
-                              Summary="@set.Summary"
-                              Cta="Begin praying &rarr;"
-                              Level="3"
-                              OnClick="() => SelectAndBegin(set.Id)" />
-                    }
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="devotion__set-options">
-                <Card Title="Begin"
-                      Summary="@_devotion.Summary"
-                      Cta="Begin praying &rarr;"
-                      Level="3"
-                      OnClick="() => Begin()" />
-            </div>
-        }
-
-        <BackLink Href="discover/devotions" Label="Back to all devotions" />
-    </section>
+    <DevotionIntro Devotion="_devotion"
+                   SavedProgress="_savedProgress"
+                   ResumeTotal="_session?.CountPrayers(_savedProgress?.SetId) ?? 0"
+                   OnResume="Resume"
+                   OnBegin="BeginFromIntro" />
 }
 else
 {
@@ -115,121 +50,18 @@ else
         @if (_devotion.LatinAvailable)
         {
             <div class="devotion__lang devotion__lang--inline">
-                @LanguageToggle
+                <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" />
             </div>
         }
 
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
-        <ol class="devotion__list">
-            @for (var i = 0; i < _session.Beads.Count; i++)
-            {
-                var step = _session.Beads[i];
-                var itemDone = _session.IsItemDone(i);
-                var itemCurrent = step.IsPrayer && step.PrayerOrdinal == _session.CompletedCount;
-                <li class="devotion__step @(itemDone ? "is-done" : null) @(itemCurrent ? "is-current" : null)">
-                    <span class="devotion__marker devotion__marker--@(step.BeadType ?? "none")" aria-hidden="true">
-                        @if (step.BeadType == "cross")
-                        {
-                            <svg class="devotion__cross" viewBox="0 0 24 24">
-                                <path d="M10.5 2h3v5h5v3h-5v12h-3V10h-5V7h5z" />
-                            </svg>
-                        }
-                        else if (step.BeadType == "medal")
-                        {
-                            <svg class="devotion__medal" viewBox="0 0 24 24">
-                                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zm-.9 2.6v2.4H8.7v1.8h2.4v4.6h1.8v-4.6h2.4V9.5h-2.4V7.1z" />
-                            </svg>
-                        }
-                        else if (step.BeadType == "between")
-                        {
-                            <span class="devotion__pip"></span>
-                            <span class="devotion__pip"></span>
-                            <span class="devotion__pip"></span>
-                        }
-                    </span>
-
-                    <div class="devotion__step-body">
-                        @if (step.IsSection)
-                        {
-                            <div class="devotion__section">
-                                <h2 class="devotion__section-title">@step.Heading</h2>
-                                @if (!string.IsNullOrWhiteSpace(step.ExplanationHtml))
-                                {
-                                    <button type="button"
-                                            class="devotion__section-info"
-                                            @onclick="() => OpenInfo(step)"
-                                            aria-label="@($"About {step.Heading}")"
-                                            title="About this part">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 11h2v6h-2z" />
-                                        </svg>
-                                    </button>
-                                }
-                            </div>
-                        }
-                        else if (step.MysteryTitle is not null)
-                        {
-                            <div class="devotion__mystery">
-                                @if (!string.IsNullOrWhiteSpace(step.Heading))
-                                {
-                                    <p class="eyebrow">@step.Heading</p>
-                                }
-                                <h2 class="devotion__mystery-title">@step.MysteryTitle</h2>
-                                @if (!string.IsNullOrWhiteSpace(step.MysteryReflectionHtml))
-                                {
-                                    <div class="devotion__reflection">
-                                        @((MarkupString)step.MysteryReflectionHtml)
-                                    </div>
-                                }
-                            </div>
-                        }
-                        else if (step.IsPrayer)
-                        {
-                            var done = step.PrayerOrdinal < _session.CompletedCount;
-                            var current = step.PrayerOrdinal == _session.CompletedCount;
-                            var clickable = current || step.PrayerOrdinal == _session.CompletedCount - 1;
-                            <div class="devotion__prayer-row @(done ? "is-done" : null) @(current ? "is-current" : null) @(!done && !current ? "is-upcoming" : null)">
-                                <button type="button"
-                                        id="@(current ? "devotion-current-step" : null)"
-                                        class="devotion__prayer-main"
-                                        @onclick="() => ToggleComplete(step.PrayerOrdinal)"
-                                        disabled="@(!clickable)"
-                                        aria-current="@(current ? "step" : null)"
-                                        aria-label="@_session.PrayerStepLabel(step, done, current, PrayerName(step), PrayerNote(step))"
-                                        aria-pressed="@done">
-                                    <span class="devotion__prayer-name">
-                                        @if (!string.IsNullOrWhiteSpace(step.Role))
-                                        {
-                                            <span class="devotion__role devotion__role--@step.Role" aria-hidden="true">@RoleLabel(step.Role)</span>
-                                        }
-                                        @if (!string.IsNullOrWhiteSpace(step.Heading) && step.Heading != step.PrayerTitle)
-                                        {
-                                            <span class="devotion__prayer-lead">@step.Heading</span>
-                                        }
-                                        @PrayerName(step)
-                                    </span>
-                                    @if (!string.IsNullOrWhiteSpace(PrayerNote(step)))
-                                    {
-                                        <span class="devotion__prayer-note">@PrayerNote(step)</span>
-                                    }
-                                </button>
-                                <button type="button"
-                                        class="devotion__prayer-book"
-                                        @onclick="() => OpenPrayer(step)"
-                                        aria-label="@($"Read the words of {PrayerName(step)}")"
-                                        title="Read the prayer">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="M12 6.5C10.6 5.4 8.6 4.75 6.25 4.75c-1 0-1.95.12-2.75.32v12.6c.8-.2 1.75-.32 2.75-.32 2.35 0 4.35.65 5.75 1.75 1.4-1.1 3.4-1.75 5.75-1.75 1 0 1.95.12 2.75.32V5.07c-.8-.2-1.75-.32-2.75-.32C15.4 4.75 13.4 5.4 12 6.5zm0 0v11.5" />
-                                    </svg>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </li>
-            }
-        </ol>
+        <DevotionStepList Session="_session"
+                          ShowLatin="_showLatin"
+                          OnToggle="ToggleComplete"
+                          OnOpenPrayer="OpenPrayer"
+                          OnOpenInfo="OpenInfo" />
 
         <div class="devotion__exit">
             <a href="discover/devotions">Leave the devotion</a>
@@ -238,43 +70,17 @@ else
             <span class="devotion__exit-theme">
                 @if (_devotion.LatinAvailable)
                 {
-                    <button type="button"
-                            class="devotion__lang-mini @(_showLatin ? "is-latin" : null)"
-                            role="switch"
-                            aria-checked="@(_showLatin ? "true" : "false")"
-                            aria-label="@(_showLatin ? "Showing Latin prayer names. Switch to English." : "Showing English prayer names. Switch to Latin.")"
-                            title="@(_showLatin ? "Latin" : "English")"
-                            @onclick="() => SetLatin(!_showLatin)">
-                        <span class="devotion__lang-mini-text" aria-hidden="true">@(_showLatin ? "LA" : "EN")</span>
-                    </button>
+                    <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
                 }
                 <ThemeToggle />
             </span>
         </div>
     </section>
 
-    <Dialog @ref="_prayerDialog" Title="@_openPrayerTitle" Class="dialog--roomy" MaxWidth="38rem">
-        <ChildContent>
-            @if (!string.IsNullOrWhiteSpace(_openExplanationHtml))
-            {
-                <div class="devotion__explanation">
-                    @((MarkupString)_openExplanationHtml)
-                </div>
-            }
-            @if (!string.IsNullOrWhiteSpace(_openPrayerHtml))
-            {
-                @if (!string.IsNullOrWhiteSpace(_openExplanationHtml))
-                {
-                    <p class="devotion__explanation-words-label eyebrow">The words</p>
-                }
-                @((MarkupString)_openPrayerHtml)
-            }
-        </ChildContent>
-        <Footer>
-            @* A footer Close button so long prayers can be dismissed without scrolling back up to the X. *@
-            <button type="button" class="btn" @onclick="ClosePrayer">Close</button>
-        </Footer>
-    </Dialog>
+    <DevotionPrayerDialog @ref="_prayerDialog"
+                          Title="@_openPrayerTitle"
+                          ExplanationHtml="@_openExplanationHtml"
+                          PrayerHtml="@_openPrayerHtml" />
 }
 
 @code {
@@ -309,32 +115,7 @@ else
     // Resume / Start over choice on the intro screen.
     private DevotionProgress? _savedProgress;
 
-    // Summary line for the resume card, naming the saved mystery set (when there is one) and how far
-    // along the reader was (e.g. "The Sorrowful Mysteries — 12 of 59 prayers complete."). The card's
-    // title and "In progress" pill carry the rest of the meaning, so this stays purely descriptive.
-    private string ResumeText
-    {
-        get
-        {
-            var saved = _savedProgress;
-            if (saved is null || _devotion is null)
-            {
-                return "Pick up where you left off.";
-            }
-
-            var setName = _devotion.MysterySets.FirstOrDefault(s => s.Id == saved.SetId)?.Name;
-
-            var total = _session?.CountPrayers(saved.SetId) ?? 0;
-            var done = Math.Clamp(saved.CompletedCount, 0, total);
-
-            // Set names already read as full titles ("The Sorrowful Mysteries").
-            var progress = total > 0 ? $"{done} of {total} prayers complete." : "in progress.";
-
-            return string.IsNullOrWhiteSpace(setName) ? $"You've prayed {progress}" : $"{setName} \u2014 {progress}";
-        }
-    }
-
-    private Dialog? _prayerDialog;
+    private DevotionPrayerDialog? _prayerDialog;
     private string? _openPrayerTitle;
     private string? _openPrayerHtml;
     private string? _openExplanationHtml;
@@ -343,52 +124,11 @@ else
     // Only offered when the devotion declares LatinAvailable.
     private bool _showLatin;
 
-    // The prayer's name in the active language: the Latin name when the Latin view is on and one
-    // exists, otherwise the vernacular title.
-    private string? PrayerName(DevotionBead step) =>
-        _showLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
-
-    // The step's rubric in the active language: the Latin note when the Latin view is on and one
-    // exists, otherwise the vernacular note.
-    private string? PrayerNote(DevotionBead step) =>
-        _showLatin && !string.IsNullOrWhiteSpace(step.NoteLatin) ? step.NoteLatin : step.Note;
-
-    // A short "who says this" badge for liturgical steps: the versicle/response marks for priest and
-    // people, or a readable word for the rest.
-    private static string RoleLabel(string? role) => role switch
-    {
-        "priest" => "\u2123",   // ℣ — versicle
-        "people" => "\u211F",   // ℟ — response
-        "all" => "All",
-        "reader" => "Reader",
-        _ => string.Empty,
-    };
-
     private async Task SetLatin(bool latin)
     {
         _showLatin = latin;
         await PrayerLanguage.SetAsync(latin);
     }
-
-    // The English / Latin language picker, shared between the desktop (above the list) and mobile
-    // (beside the theme toggle in the immersive exit row) placements so the two stay in sync.
-    private RenderFragment LanguageToggle => __builder =>
-    {
-        <div class="devotion__lang-group" role="group" aria-label="Prayer language">
-            <button type="button"
-                    class="devotion__lang-btn @(!_showLatin ? "is-active" : null)"
-                    @onclick="() => SetLatin(false)"
-                    aria-pressed="@(!_showLatin)">
-                English
-            </button>
-            <button type="button"
-                    class="devotion__lang-btn @(_showLatin ? "is-active" : null)"
-                    @onclick="() => SetLatin(true)"
-                    aria-pressed="@_showLatin">
-                Latin
-            </button>
-        </div>
-    };
 
     protected override async Task OnParametersSetAsync()
     {
@@ -495,9 +235,15 @@ else
         }
     }
 
-    private async Task SelectAndBegin(string setId)
+    // Begins from the intro screen: a non-null setId selects that mystery set first (multi-set
+    // devotions), while null keeps the default single set.
+    private async Task BeginFromIntro(string? setId)
     {
-        _selectedSetId = setId;
+        if (setId is not null)
+        {
+            _selectedSetId = setId;
+        }
+
         await Begin();
     }
 
@@ -603,7 +349,7 @@ else
         _openExplanationHtml = bead.ExplanationHtml;
         if (_prayerDialog is not null)
         {
-            await _prayerDialog.Show();
+            await _prayerDialog.ShowAsync();
         }
 
         // Reading the words of the current step counts as praying it: mark it complete so opening the
@@ -623,7 +369,7 @@ else
         _openExplanationHtml = bead.ExplanationHtml;
         if (_prayerDialog is not null)
         {
-            await _prayerDialog.Show();
+            await _prayerDialog.ShowAsync();
         }
     }
 
@@ -631,7 +377,7 @@ else
     {
         if (_prayerDialog is not null)
         {
-            await _prayerDialog.Close();
+            await _prayerDialog.CloseAsync();
         }
     }
 
@@ -641,7 +387,7 @@ else
         {
             if (_prayerDialog is not null)
             {
-                await _prayerDialog.Close();
+                await _prayerDialog.CloseAsync();
             }
 
             await Immersive.LeaveAsync();

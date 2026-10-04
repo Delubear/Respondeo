@@ -1,0 +1,10 @@
+/* The catechetical explanation shown above the words in the info dialog. */
+.devotion__explanation {
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.devotion__explanation + .devotion__explanation-words-label {
+    margin-top: 1rem;
+}

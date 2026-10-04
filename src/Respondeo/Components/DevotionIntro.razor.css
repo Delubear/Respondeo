@@ -1,0 +1,52 @@
+/* Devotion intro + mystery-set chooser */
+.devotion__intro-body {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 42rem;
+    margin-bottom: 1.5rem;
+}
+
+.devotion__sets {
+    margin-bottom: 1.5rem;
+}
+
+/* Resume prompt shown on the intro when an un-finished devotion is saved. It's a single Card (the
+   same component as the set choices below), so it just needs spacing beneath it. */
+.devotion__resume {
+    margin: 0 0 1.5rem;
+}
+
+.devotion__sets-title {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+}
+
+.devotion__set-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 0.75rem;
+}
+
+/* A notice on the intro screen warning that this devotion is still being authored and vetted. */
+.devotion__draft-notice {
+    margin: 1rem 0 1.5rem;
+    padding: 0.9rem 1.1rem;
+    border-left: 4px solid var(--accent);
+    border-radius: 0.4rem;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.devotion__draft-notice p {
+    margin: 0;
+}
+
+.devotion__draft-notice p + p {
+    margin-top: 0.4rem;
+}
+
+.devotion__draft-title {
+    font-family: var(--display);
+    font-weight: 600;
+    color: var(--accent);
+}

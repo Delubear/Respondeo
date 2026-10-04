@@ -1,0 +1,54 @@
+@* The reading dialog for the devotion player: shows a step's catechetical explanation and/or the
+   words of a prayer. The parent drives it through Show/Close and sets the content parameters. *@
+
+<Dialog @ref="_dialog" Title="@Title" Class="dialog--roomy" MaxWidth="38rem">
+    <ChildContent>
+        @if (!string.IsNullOrWhiteSpace(ExplanationHtml))
+        {
+            <div class="devotion__explanation">
+                @((MarkupString)ExplanationHtml)
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(PrayerHtml))
+        {
+            @if (!string.IsNullOrWhiteSpace(ExplanationHtml))
+            {
+                <p class="devotion__explanation-words-label eyebrow">The words</p>
+            }
+            @((MarkupString)PrayerHtml)
+        }
+    </ChildContent>
+    <Footer>
+        @* A footer Close button so long prayers can be dismissed without scrolling back up to the X. *@
+        <button type="button" class="btn" @onclick="CloseAsync">Close</button>
+    </Footer>
+</Dialog>
+
+@code {
+    private Dialog? _dialog;
+
+    /// <summary>Dialog heading: a section name or the prayer's title in the active language.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Optional catechetical explanation shown above the words.</summary>
+    [Parameter] public string? ExplanationHtml { get; set; }
+
+    /// <summary>Optional prayer text; absent for a section-info dialog.</summary>
+    [Parameter] public string? PrayerHtml { get; set; }
+
+    public async Task ShowAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Show();
+        }
+    }
+
+    public async Task CloseAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Close();
+        }
+    }
+}

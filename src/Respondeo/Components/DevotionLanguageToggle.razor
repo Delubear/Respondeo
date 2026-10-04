@@ -1,0 +1,46 @@
+@* English / Latin prayer-language picker for the devotion player. Two placements share this one
+   component so they stay in sync: a segmented group above the list on desktop, and a compact EN/LA
+   button beside the theme toggle in the immersive exit row on mobile (Mini="true"). *@
+
+@if (Mini)
+{
+    <button type="button"
+            class="devotion__lang-mini @(ShowLatin ? "is-latin" : null)"
+            role="switch"
+            aria-checked="@(ShowLatin ? "true" : "false")"
+            aria-label="@(ShowLatin ? "Showing Latin prayer names. Switch to English." : "Showing English prayer names. Switch to Latin.")"
+            title="@(ShowLatin ? "Latin" : "English")"
+            @onclick="() => Set(!ShowLatin)">
+        <span class="devotion__lang-mini-text" aria-hidden="true">@(ShowLatin ? "LA" : "EN")</span>
+    </button>
+}
+else
+{
+    <div class="devotion__lang-group" role="group" aria-label="Prayer language">
+        <button type="button"
+                class="devotion__lang-btn @(!ShowLatin ? "is-active" : null)"
+                @onclick="() => Set(false)"
+                aria-pressed="@(!ShowLatin)">
+            English
+        </button>
+        <button type="button"
+                class="devotion__lang-btn @(ShowLatin ? "is-active" : null)"
+                @onclick="() => Set(true)"
+                aria-pressed="@ShowLatin">
+            Latin
+        </button>
+    </div>
+}
+
+@code {
+    /// <summary>Whether the Latin view is currently selected.</summary>
+    [Parameter] public bool ShowLatin { get; set; }
+
+    /// <summary>Renders the compact mobile EN/LA button instead of the segmented group.</summary>
+    [Parameter] public bool Mini { get; set; }
+
+    /// <summary>Raised with the newly chosen value when the reader switches language.</summary>
+    [Parameter] public EventCallback<bool> OnChange { get; set; }
+
+    private Task Set(bool latin) => OnChange.InvokeAsync(latin);
+}
