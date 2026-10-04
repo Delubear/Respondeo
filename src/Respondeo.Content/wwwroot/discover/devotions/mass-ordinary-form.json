@@ -5,6 +5,7 @@
   "summary": "A step-by-step guide through the Ordinary Form of the Mass, with the people's responses and a plain-language explanation of each part.",
   "kind": "mass",
   "latinAvailable": false,
+  "draft": true,
   "intro": "The Mass is the source and summit of the Christian life \u2014 the one Sacrifice of Christ made present on the altar. This walkthrough carries you through the Ordinary Form (the Mass celebrated in most parishes today) part by part. Advance through each moment, tap the information icon to learn what is happening and why, and read the responses the faithful make. Scripture readings change each day, so those steps point you to listen rather than printing a fixed text.",
   "sequence": [
     {
@@ -29,21 +30,21 @@
     {
       "kind": "prayer",
       "title": "The Penitential Act",
-      "text": "I confess to almighty God and to you, my brothers and sisters, that I have greatly sinned... through my fault, through my fault, through my most grievous fault.",
+      "text": "I confess to almighty God and to you, my brothers and sisters, that I have greatly sinned, in my thoughts and in my words, in what I have done and in what I have failed to do, through my fault, through my fault, through my most grievous fault; therefore I ask blessed Mary ever-Virgin, all the Angels and Saints, and you, my brothers and sisters, to pray for me to the Lord our God.",
       "role": "all",
       "explanation": "Before approaching holy things, we pause to acknowledge our sins and ask for God's mercy. In the Confiteor we confess together that we have sinned in thought and word, in what we have done and failed to do, and we beg the prayers of Our Lady, the angels and saints, and one another."
     },
     {
       "kind": "prayer",
       "title": "Lord, have mercy (Kyrie)",
-      "text": "Lord, have mercy. Christ, have mercy. Lord, have mercy.",
+      "text": "Lord, have mercy. Christ, have mercy. Lord, have mercy.\n\nIn the original Greek: *Kýrie, eléison. Christe, eléison. Kýrie, eléison.*",
       "role": "all",
       "explanation": "The Kyrie is one of the oldest prayers of the Church, a simple cry for mercy addressed to Christ the Lord. It flows naturally from the Penitential Act \u2014 having named our need, we call on the one who alone can heal it."
     },
     {
       "kind": "prayer",
       "title": "The Gloria",
-      "text": "Glory to God in the highest, and on earth peace to people of good will...",
+      "text": "Glory to God in the highest, and on earth peace to people of good will. We praise you, we bless you, we adore you, we glorify you, we give you thanks for your great glory, Lord God, heavenly King, O God, almighty Father. Lord Jesus Christ, Only Begotten Son, Lord God, Lamb of God, Son of the Father, you take away the sins of the world, have mercy on us; you take away the sins of the world, receive our prayer; you are seated at the right hand of the Father, have mercy on us. For you alone are the Holy One, you alone are the Lord, you alone are the Most High, Jesus Christ, with the Holy Spirit, in the glory of God the Father. Amen.",
       "role": "all",
       "explanation": "On Sundays (outside Advent and Lent) and feasts, the Church takes up the song of the angels at Bethlehem and pours out praise to the Father and to the Lamb. It is a hymn of pure adoration before we turn to listen to God's word."
     },
@@ -90,9 +91,9 @@
     {
       "kind": "prayer",
       "title": "The Gospel",
-      "text": "Glory to you, O Lord. ... Praise to you, Lord Jesus Christ.",
+      "text": "At the announcement of the Gospel we answer *Glory to you, O Lord,* and with the thumb trace a small cross on our forehead, lips, and heart \u2014 asking that the Gospel be in our mind, on our lips, and in our heart. After the Gospel we respond *Praise to you, Lord Jesus Christ.*",
       "role": "people",
-      "explanation": "The deacon or priest proclaims the Gospel \u2014 the high point of the Liturgy of the Word, for here Christ himself addresses his people. We answer his announcement with *Glory to you, O Lord,* and at the end *Praise to you, Lord Jesus Christ.*"
+      "explanation": "The deacon or priest proclaims the Gospel \u2014 the high point of the Liturgy of the Word, for here Christ himself addresses his people. As it is announced we sign ourselves three times with a small cross \u2014 on the forehead, the lips, and the breast \u2014 praying that God's word may fill our thoughts, our speech, and our love. We answer *Glory to you, O Lord,* and at the end *Praise to you, Lord Jesus Christ.*"
     },
     {
       "kind": "prayer",
@@ -172,14 +173,14 @@
     {
       "kind": "prayer",
       "title": "Lamb of God (Agnus Dei)",
-      "text": "Lamb of God, you take away the sins of the world, have mercy on us. ... grant us peace.",
+      "text": "Lamb of God, you take away the sins of the world, have mercy on us. Lamb of God, you take away the sins of the world, have mercy on us. Lamb of God, you take away the sins of the world, grant us peace.",
       "role": "all",
       "explanation": "As the priest breaks the host, we acclaim Christ the Lamb of God, sacrificed for our sins, and beg his mercy and peace \u2014 echoing John the Baptist's words at the Jordan."
     },
     {
       "kind": "prayer",
       "title": "Holy Communion",
-      "text": "Lord, I am not worthy that you should enter under my roof, but only say the word and my soul shall be healed. ... Amen.",
+      "text": "Lord, I am not worthy that you should enter under my roof, but only say the word and my soul shall be healed. (As you receive, the priest says *The Body of Christ,* and you answer:) Amen.",
       "role": "all",
       "explanation": "Invited to the Supper of the Lamb, we confess our unworthiness in the words of the centurion, then come forward to receive the Body and Blood of Christ, answering *Amen* \u2014 'I believe' \u2014 as the Lord is placed within us. A time of silent thanksgiving follows."
     },

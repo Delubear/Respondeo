@@ -27,6 +27,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
             Kind = NormalizeSlug(dto.Kind, "devotion"),
             IntroHtml = string.IsNullOrWhiteSpace(dto.Intro) ? null : html.ToHtml(dto.Intro),
             LatinAvailable = dto.LatinAvailable,
+            Draft = dto.Draft,
             MysterySets = [.. dto.MysterySets.Select(MapSet)],
             Sequence = [.. dto.Sequence.Select(MapStep)],
         };

@@ -17,6 +17,7 @@ internal static class DevotionMapper
         Kind = document.Kind,
         IntroHtml = document.IntroHtml,
         LatinAvailable = document.LatinAvailable,
+        Draft = document.Draft,
         MysterySets = [.. document.MysterySets.Select(ToContract)],
         Sequence = [.. document.Sequence.Select(ToContract)],
     };
@@ -28,6 +29,7 @@ internal static class DevotionMapper
         SortValue = document.SortValue,
         Summary = document.Summary,
         Kind = document.Kind,
+        Draft = document.Draft,
     };
 
     private static MysterySet ToContract(MysterySetDocument set) => new()

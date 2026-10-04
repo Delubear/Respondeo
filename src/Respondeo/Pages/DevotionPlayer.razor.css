@@ -580,3 +580,26 @@
         width: 3.25rem;
     }
 }
+
+/* A notice on the intro screen warning that this devotion is still being authored and vetted. */
+.devotion__draft-notice {
+    margin: 1rem 0 1.5rem;
+    padding: 0.9rem 1.1rem;
+    border-left: 4px solid var(--accent);
+    border-radius: 0.4rem;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.devotion__draft-notice p {
+    margin: 0;
+}
+
+.devotion__draft-notice p + p {
+    margin-top: 0.4rem;
+}
+
+.devotion__draft-title {
+    font-family: var(--display);
+    font-weight: 600;
+    color: var(--accent);
+}

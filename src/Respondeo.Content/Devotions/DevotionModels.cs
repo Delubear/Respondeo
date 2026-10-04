@@ -23,6 +23,8 @@ internal sealed class DevotionDocument
 
     public bool LatinAvailable { get; init; }
 
+    public bool Draft { get; init; }
+
     public IReadOnlyList<MysterySetDocument> MysterySets { get; init; } = [];
 
     public required IReadOnlyList<DevotionStepDocument> Sequence { get; init; }

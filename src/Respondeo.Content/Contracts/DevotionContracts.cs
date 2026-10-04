@@ -23,6 +23,9 @@ public sealed class DevotionSummary
 
     /// <summary>The kind slug (e.g. "rosary", "chaplet", "litany") used for grouping and iconography.</summary>
     public string Kind { get; init; } = "devotion";
+
+    /// <summary>True while this devotion is still being authored and vetted; the browse card flags it as in progress.</summary>
+    public bool Draft { get; init; }
 }
 
 /// <summary>
@@ -50,6 +53,9 @@ public sealed class Devotion
 
     /// <summary>True when the devotion's prayers have Latin translations, so the player can offer a Latin toggle.</summary>
     public bool LatinAvailable { get; init; }
+
+    /// <summary>True while this devotion is still being authored and vetted; the player shows an "in progress" notice.</summary>
+    public bool Draft { get; init; }
 
     /// <summary>The selectable mystery / meditation sets. Empty for devotions that have no per-mystery meditation.</summary>
     public IReadOnlyList<MysterySet> MysterySets { get; init; } = [];

@@ -21,6 +21,12 @@ internal sealed class DevotionDto
     /// <summary>True when the referenced prayers have Latin translations, so the player can offer a Latin toggle.</summary>
     public bool LatinAvailable { get; set; }
 
+    /// <summary>
+    /// True while this devotion is still being authored and vetted. Draft devotions are flagged in the UI
+    /// (a badge on the card and a notice before praying) so readers know the content is not yet verified.
+    /// </summary>
+    public bool Draft { get; set; }
+
     public List<MysterySetDto> MysterySets { get; set; } = [];
     public List<DevotionStepDto> Sequence { get; set; } = [];
 }

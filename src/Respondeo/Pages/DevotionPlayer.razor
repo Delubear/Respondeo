@@ -39,6 +39,19 @@ else if (!_started)
     <section class="content-article">
         <PillarHeader Title="@_devotion.Title" LedeText="@_devotion.Summary" />
 
+        @if (_devotion.Draft)
+        {
+            @* This devotion is still being authored and vetted; warn the reader before they rely on it. *@
+            <div class="devotion__draft-notice" role="note">
+                <p class="devotion__draft-title">In progress &mdash; not yet vetted</p>
+                <p>
+                    This walkthrough is still being written and reviewed for accuracy. Texts and
+                    explanations may be incomplete or change, so please don&rsquo;t rely on it as a
+                    definitive guide just yet.
+                </p>
+            </div>
+        }
+
         @if (_savedProgress is { CompletedCount: > 0 })
         {
             @* A previous visit was left un-finished; offer to pick up where they left off. Beginning
@@ -394,6 +407,14 @@ else
 
         if (_devotion is not null)
         {
+            // A devotion that does not offer Latin must never render it, even if the reader's global
+            // preference (remembered from, say, the Rosary) is Latin: otherwise individual prayers
+            // that happen to have a Latin translation would show in Latin with no way to switch back.
+            if (!_devotion.LatinAvailable)
+            {
+                _showLatin = false;
+            }
+
             _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
             await LoadPrayersAsync(_devotion);
 

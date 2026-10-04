@@ -139,6 +139,7 @@ devotion is added purely as data — no code change.
 | `summary` | No | One-line description for cards. |
 | `kind` | No | Kind slug used for grouping, iconography, and the Kind browse filter (e.g. `rosary`, `chaplet`, `litany`, `mass`). Defaults to `devotion` (hidden from the filter). |
 | `intro` | No | Markdown introduction shown before the reader begins. |
+| `draft` | No | When `true`, the devotion is still being authored and vetted: the browse card shows an "In progress" pill and the player shows an "in progress — not yet vetted" notice before praying. Defaults to `false`. |
 | `mysterySets` | No | Selectable meditation sets (see below). Empty for devotions with no per-mystery meditation. |
 | `sequence` | Yes | The ordered steps of the devotion. |
 

@@ -58,7 +58,7 @@
                         {
                             <Card Href="@($"discover/devotions/{d.Id}")"
                                   Title="@d.Title"
-                                  Pill="@Browser.FormatKind(d.Kind)"
+                                  Pills="@KindPills(d)"
                                   Summary="@d.Summary"
                                   Cta="Begin &rarr;"
                                   Level="2" />
@@ -141,4 +141,22 @@
                 _query,
                 _selectedKinds,
                 _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+
+    // The card's meta pills: the kind tag, plus an "In progress" flag for drafts still being vetted.
+    private IReadOnlyList<string> KindPills(DevotionSummary d)
+    {
+        var pills = new List<string>();
+        var kind = Browser.FormatKind(d.Kind);
+        if (!string.IsNullOrWhiteSpace(kind))
+        {
+            pills.Add(kind);
+        }
+
+        if (d.Draft)
+        {
+            pills.Add("In progress");
+        }
+
+        return pills;
+    }
 }
