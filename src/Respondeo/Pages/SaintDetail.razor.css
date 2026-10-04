@@ -66,18 +66,17 @@
 }
 
 .saint__era-toggle::after {
-    content: "\2113"; /* info-style marker */
-    font-size: 0.72rem;
-    font-weight: 400;
-    color: var(--ink-soft);
-    border: 1px solid var(--rule);
-    border-radius: 999px;
+    /* The same circle-"i" info icon used by the Mass walkthrough section headings. */
+    content: "";
+    background-color: var(--ink-soft);
+    -webkit-mask: var(--info-mask) center / contain no-repeat;
+    mask: var(--info-mask) center / contain no-repeat;
+    --info-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 11h2v6h-2z'/%3E%3C/svg%3E");
     width: 1.05rem;
     height: 1.05rem;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
+    flex: 0 0 auto;
+    vertical-align: -0.15rem;
 }
 
 .saint__fact-note[popover] {
