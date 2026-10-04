@@ -110,6 +110,8 @@
     [
         new("title-asc", "Name (A\u2013Z)", rows => rows.OrderBy(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
         new("title-desc", "Name (Z\u2013A)", rows => rows.OrderByDescending(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("era-asc", "Era (earliest first)", rows => rows.OrderBy(s => SaintBrowse.EraRank(s.Era)).ThenBy(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+        new("era-desc", "Era (latest first)", rows => rows.OrderByDescending(s => SaintBrowse.EraRank(s.Era)).ThenBy(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
     ];
 
     protected override async Task OnInitializedAsync()

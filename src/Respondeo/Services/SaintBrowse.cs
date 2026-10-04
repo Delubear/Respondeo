@@ -11,6 +11,21 @@ namespace Respondeo.Services;
 /// </summary>
 public sealed class SaintBrowse
 {
+    // The historical order of the era facet, oldest first. Era slugs are a small fixed vocabulary
+    // (see saints/facets.json), so chronological sorting ranks by this order; any unknown slug sorts
+    // last. This is the single source of era chronology used by the "Chronological" sort options.
+    private static readonly string[] _eraOrder = ["early-church", "medieval", "early-modern", "modern"];
+
+    /// <summary>
+    /// The chronological rank of an era slug (0 = oldest). Unmapped slugs rank after all known eras so
+    /// they sort to the end, keeping the ordering deterministic.
+    /// </summary>
+    public static int EraRank(string? era)
+    {
+        var index = Array.FindIndex(_eraOrder, e => string.Equals(e, era?.Trim(), StringComparison.OrdinalIgnoreCase));
+        return index < 0 ? _eraOrder.Length : index;
+    }
+
     /// <summary>The distinct era slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Eras(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
         entries.Select(s => s.Era)
