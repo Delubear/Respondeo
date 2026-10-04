@@ -148,7 +148,8 @@ here as editorial intent. The Saints is the most likely next Discover area if an
 
 - [ ] **The Bible** — a browsable Scripture pillar (books → chapters → verses) with cross-references,
   mapping naturally onto the Summa-style navigation. Would need a public-domain translation
-  (e.g. Douay–Rheims / Vulgate) to ship freely.
+  (e.g. Douay–Rheims / Vulgate) to ship freely. *Note:* the Douay–Rheims Bible is in the public
+  domain, so it can be shipped freely.
 - [ ] **The Catechism of the Catholic Church** — its numbered, cross-referenced paragraphs would map
   onto the Summa-style layout very well. *Not now:* the current English translation is still under
   copyright and cannot be shipped in this repository; revisit if a suitably licensed or public-domain
