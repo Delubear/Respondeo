@@ -5,6 +5,7 @@ summary: The versicle and response prayed after the Hail Holy Queen in the Domin
 category: marian
 language: en
 translationKey: dominican-versicle-queen
+unlisted: true
 tags:
   - rosary
   - marian

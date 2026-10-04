@@ -5,6 +5,7 @@ summary: The Latin of the second versicle that opens the Dominican Rosary.
 category: marian
 language: la
 translationKey: dominican-versicle-assistance
+unlisted: true
 tags:
   - rosary
   - marian

@@ -5,6 +5,7 @@ summary: The petition prayed on the Hail Mary beads of the Chaplet of Divine Mer
 category: chaplet
 language: en
 translationKey: divine-mercy-for-the-sake
+unlisted: true
 tags:
   - divine-mercy
   - chaplet

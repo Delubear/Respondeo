@@ -5,6 +5,7 @@ summary: The first versicle that opens the Dominican Rosary, prayed on the first
 category: marian
 language: en
 translationKey: dominican-versicle-lips
+unlisted: true
 tags:
   - rosary
   - marian

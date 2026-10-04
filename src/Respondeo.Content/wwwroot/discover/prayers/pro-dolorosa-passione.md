@@ -5,6 +5,7 @@ summary: The Latin of the petition prayed on the Hail Mary beads of the Chaplet 
 category: chaplet
 language: la
 translationKey: divine-mercy-for-the-sake
+unlisted: true
 tags:
   - divine-mercy
   - chaplet

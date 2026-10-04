@@ -5,6 +5,7 @@ summary: The concluding versicle and response of the Dominican Rosary, prayed af
 category: marian
 language: en
 translationKey: dominican-versicle-assistance-departed
+unlisted: true
 tags:
   - rosary
   - marian

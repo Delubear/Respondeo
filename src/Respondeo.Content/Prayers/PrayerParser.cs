@@ -34,6 +34,7 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
             Html = html.ToHtmlPreservingLineBreaks(body.Trim()),
             Tags = meta.Tags,
             Attribution = meta.Attribution,
+            Unlisted = meta.Unlisted,
         };
     }
 

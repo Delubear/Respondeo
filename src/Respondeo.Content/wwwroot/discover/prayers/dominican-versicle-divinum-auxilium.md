@@ -5,6 +5,7 @@ summary: The Latin of the concluding versicle of the Dominican Rosary.
 category: marian
 language: la
 translationKey: dominican-versicle-assistance-departed
+unlisted: true
 tags:
   - rosary
   - marian

@@ -7,7 +7,7 @@ namespace Respondeo.UnitTests.Services;
 public class PrayerServiceTests
 {
     private const string ManifestJson = """
-        { "files": [ "hail-mary.md", "ave-maria.md" ] }
+        { "files": [ "hail-mary.md", "ave-maria.md", "dominican-versicle.md" ] }
         """;
 
     private const string HailMaryMd = """
@@ -41,9 +41,26 @@ public class PrayerServiceTests
         Ave Maria, gratia plena, Dominus tecum.
         """;
 
+    private const string UnlistedMd = """
+        ---
+        id: dominican-versicle
+        title: "O God, Come to My Assistance"
+        summary: A contextual versicle.
+        category: Marian
+        language: en
+        translationKey: dominican-versicle
+        unlisted: true
+        tags:
+          - marian
+        ---
+
+        V. O God, come to my assistance.
+        """;
+
     private const string ManifestPath = "_content/Respondeo.Content/discover/prayers/prayers-manifest.json";
     private const string HailMaryPath = "_content/Respondeo.Content/discover/prayers/hail-mary.md";
     private const string HailMaryLatinPath = "_content/Respondeo.Content/discover/prayers/ave-maria.md";
+    private const string UnlistedPath = "_content/Respondeo.Content/discover/prayers/dominican-versicle.md";
 
     private static PrayerService CreateService()
     {
@@ -52,6 +69,7 @@ public class PrayerServiceTests
             [ManifestPath] = ManifestJson,
             [HailMaryPath] = HailMaryMd,
             [HailMaryLatinPath] = HailMaryLatinMd,
+            [UnlistedPath] = UnlistedMd,
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
@@ -65,10 +83,22 @@ public class PrayerServiceTests
 
         var index = await service.GetIndexAsync();
 
-        // Only the primary-language (English) prayer is listed; the Latin file is not a separate row.
+        // Only the primary-language (English) prayer is listed; the Latin file is not a separate row
+        // and the unlisted versicle is excluded from the browse index.
         var prayer = Assert.Single(index);
         Assert.Equal("hail-mary", prayer.Id);
         Assert.Equal("marian", prayer.Category);
+    }
+
+    [Fact]
+    public async Task GetPrayer_returns_unlisted_prayer_by_id()
+    {
+        var service = CreateService();
+
+        var prayer = await service.GetPrayerAsync("dominican-versicle");
+
+        Assert.NotNull(prayer);
+        Assert.Contains("come to my assistance", prayer!.Html);
     }
 
     [Fact]

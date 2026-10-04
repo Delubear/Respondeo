@@ -5,6 +5,7 @@ summary: The Latin of the concluding threefold acclamation of the Chaplet of Div
 category: chaplet
 language: la
 translationKey: divine-mercy-holy-god
+unlisted: true
 tags:
   - divine-mercy
   - chaplet

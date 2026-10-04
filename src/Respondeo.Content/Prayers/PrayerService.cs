@@ -43,11 +43,13 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         var loaded = prayers.Where(p => p is not null).Cast<PrayerDocument>().ToList();
         PairTranslations(loaded);
 
-        // Every prayer (including Latin) stays addressable by id, but only the primary-language
-        // prayers appear in the browse index so translations are not listed as separate rows.
+        // Every prayer (including Latin) stays addressable by id, but only the primary-language,
+        // listed prayers appear in the browse index so translations and contextual fragments
+        // (e.g. Dominican versicles) are not shown as standalone catalog rows.
         var map = loaded.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
         var summaries = loaded
             .Where(IsPrimaryLanguage)
+            .Where(p => !p.Unlisted)
             .Select(p => p.ToSummaryContract())
             .ToList();
 

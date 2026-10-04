@@ -5,6 +5,7 @@ summary: The acclamation added after the opening Glory Be of the Dominican Rosar
 category: marian
 language: en
 translationKey: dominican-alleluia
+unlisted: true
 tags:
   - rosary
   - marian

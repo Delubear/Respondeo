@@ -5,6 +5,7 @@ summary: The Latin of the versicle prayed after the Salve Regina in the Dominica
 category: marian
 language: la
 translationKey: dominican-versicle-queen
+unlisted: true
 tags:
   - rosary
   - marian

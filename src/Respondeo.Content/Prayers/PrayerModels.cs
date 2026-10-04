@@ -36,4 +36,9 @@ internal sealed class PrayerDocument
     public IReadOnlyList<string> Tags { get; init; } = [];
 
     public string? Attribution { get; init; }
+
+    /// <summary>
+    /// When true, the prayer stays addressable by id but is excluded from the standalone browse index.
+    /// </summary>
+    public bool Unlisted { get; init; }
 }

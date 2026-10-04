@@ -5,6 +5,7 @@ summary: The versicle and response prayed after the Hail Holy Queen in the Rosar
 category: marian
 language: en
 translationKey: rosary-versicle-pray-for-us
+unlisted: true
 tags:
   - rosary
   - marian

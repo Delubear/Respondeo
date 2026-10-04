@@ -5,6 +5,7 @@ summary: The Latin of the opening versicle of the Dominican Rosary.
 category: marian
 language: la
 translationKey: dominican-versicle-lips
+unlisted: true
 tags:
   - rosary
   - marian

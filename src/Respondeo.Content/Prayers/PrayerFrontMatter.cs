@@ -21,4 +21,12 @@ internal sealed class PrayerFrontMatter : ContentFrontMatterBase
 
     [YamlMember(Alias = "attribution")]
     public string? Attribution { get; set; }
+
+    /// <summary>
+    /// When true, the prayer stays addressable by id (so devotions can reference it) but is hidden
+    /// from the standalone prayer browse catalog. Used for contextual fragments like Dominican versicles
+    /// that do not make sense as solo prayers.
+    /// </summary>
+    [YamlMember(Alias = "unlisted")]
+    public bool Unlisted { get; set; }
 }

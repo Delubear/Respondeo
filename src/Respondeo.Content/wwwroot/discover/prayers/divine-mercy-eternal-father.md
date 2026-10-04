@@ -5,6 +5,7 @@ summary: The offering prayed on the Our Father beads of the Chaplet of Divine Me
 category: chaplet
 language: en
 translationKey: divine-mercy-eternal-father
+unlisted: true
 tags:
   - divine-mercy
   - chaplet

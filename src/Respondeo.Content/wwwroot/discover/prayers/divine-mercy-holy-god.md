@@ -5,6 +5,7 @@ summary: The concluding threefold acclamation of the Chaplet of Divine Mercy.
 category: chaplet
 language: en
 translationKey: divine-mercy-holy-god
+unlisted: true
 tags:
   - divine-mercy
   - chaplet

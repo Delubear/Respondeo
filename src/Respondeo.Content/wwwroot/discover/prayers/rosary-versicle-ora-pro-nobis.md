@@ -5,6 +5,7 @@ summary: The Latin of the versicle prayed after the Salve Regina in the Rosary.
 category: marian
 language: la
 translationKey: rosary-versicle-pray-for-us
+unlisted: true
 tags:
   - rosary
   - marian
