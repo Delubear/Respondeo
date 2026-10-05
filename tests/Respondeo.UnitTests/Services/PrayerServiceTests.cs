@@ -7,7 +7,7 @@ namespace Respondeo.UnitTests.Services;
 public class PrayerServiceTests
 {
     private const string ManifestJson = """
-        { "files": [ "hail-mary.md", "ave-maria.md", "dominican-versicle.md" ] }
+        { "files": [ "hail-mary.md", "ave-maria.md", "dominican-versicle.md", "novena.md" ] }
         """;
 
     private const string HailMaryMd = """
@@ -57,10 +57,28 @@ public class PrayerServiceTests
         V. O God, come to my assistance.
         """;
 
+    private const string NovenaMd = """
+        ---
+        id: novena
+        title: "A Novena"
+        summary: A nine-day prayer that references the Hail Mary.
+        category: novena
+        language: en
+        unlisted: true
+        ---
+
+        Pray with confidence:
+
+        [Hail Mary](prayer:hail-mary)
+
+        [Unknown Prayer](prayer:missing)
+        """;
+
     private const string ManifestPath = "_content/Respondeo.Content/discover/prayers/prayers-manifest.json";
     private const string HailMaryPath = "_content/Respondeo.Content/discover/prayers/hail-mary.md";
     private const string HailMaryLatinPath = "_content/Respondeo.Content/discover/prayers/ave-maria.md";
     private const string UnlistedPath = "_content/Respondeo.Content/discover/prayers/dominican-versicle.md";
+    private const string NovenaPath = "_content/Respondeo.Content/discover/prayers/novena.md";
 
     private static PrayerService CreateService()
     {
@@ -70,6 +88,7 @@ public class PrayerServiceTests
             [HailMaryPath] = HailMaryMd,
             [HailMaryLatinPath] = HailMaryLatinMd,
             [UnlistedPath] = UnlistedMd,
+            [NovenaPath] = NovenaMd,
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
@@ -138,5 +157,22 @@ public class PrayerServiceTests
         var prayer = await service.GetPrayerAsync("does-not-exist");
 
         Assert.Null(prayer);
+    }
+
+    [Fact]
+    public async Task GetPrayer_expands_prayer_references_into_embedded_blocks()
+    {
+        var service = CreateService();
+
+        var prayer = await service.GetPrayerAsync("novena");
+
+        Assert.NotNull(prayer);
+        // The [Hail Mary](prayer:hail-mary) link is replaced by the referenced prayer's full text,
+        // wrapped in a labelled embed block.
+        Assert.Contains("prayer-embed", prayer!.Html);
+        Assert.Contains("full of grace", prayer.Html);
+        Assert.DoesNotContain("prayer:hail-mary", prayer.Html);
+        // An unknown reference falls back to a plain link to the prayer page.
+        Assert.Contains("discover/prayers/missing", prayer.Html);
     }
 }

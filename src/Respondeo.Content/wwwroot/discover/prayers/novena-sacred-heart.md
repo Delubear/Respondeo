@@ -16,7 +16,11 @@ seek and you will find, knock and it will be opened to you."
 Behold, I knock, I seek, and I ask for the grace of...
 *(here mention your request)*
 
-Our Father... Hail Mary... Glory Be...
+[Our Father](prayer:our-father)
+
+[Hail Mary](prayer:hail-mary)
+
+[Glory Be](prayer:glory-be)
 
 Sacred Heart of Jesus, I place all my trust in you.
 
@@ -26,7 +30,11 @@ he will give it to you."
 Behold, in your name I ask the Father for the grace of...
 *(here mention your request)*
 
-Our Father... Hail Mary... Glory Be...
+[Our Father](prayer:our-father)
+
+[Hail Mary](prayer:hail-mary)
+
+[Glory Be](prayer:glory-be)
 
 Sacred Heart of Jesus, I place all my trust in you.
 
@@ -37,7 +45,11 @@ Encouraged by your infallible words,
 I now ask for the grace of...
 *(here mention your request)*
 
-Our Father... Hail Mary... Glory Be...
+[Our Father](prayer:our-father)
+
+[Hail Mary](prayer:hail-mary)
+
+[Glory Be](prayer:glory-be)
 
 Sacred Heart of Jesus, I place all my trust in you.
 

@@ -1113,3 +1113,29 @@ input[type="search"]::-webkit-search-cancel-button {
         border-right: 2px solid var(--accent);
     }
 }
+
+/* ------------------------------------------------------------
+   Embedded prayer references
+   A devotion (e.g. a novena) can link to another prayer with
+   [Our Father](prayer:our-father); PrayerService expands that link
+   into a .prayer-embed holding the referenced prayer's full text.
+   It is styled to read as part of the devotion's natural flow, not
+   as a boxed callout. These rules are global because the markup is
+   injected as a raw MarkupString and scoped component CSS cannot
+   reach it.
+   ------------------------------------------------------------ */
+.prayer-embed {
+    margin: 1.25rem 0;
+}
+
+.prayer-embed__label {
+    margin: 0 0 0.25rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.prayer-embed__text > p:last-child {
+    margin-bottom: 0;
+}
+

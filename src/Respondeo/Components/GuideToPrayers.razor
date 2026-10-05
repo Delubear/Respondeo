@@ -26,8 +26,8 @@
             Many prayers are built as a call and answer. Two small labels mark who says what:
         </p>
         <ul class="prayer-guide__key">
-            <li><span class="prayer-guide__cue">V.</span> the <strong>versicle</strong> &mdash; the line said by the leader (the one who begins).</li>
-            <li><span class="prayer-guide__cue">R.</span> the <strong>response</strong> &mdash; the line said by everyone in reply.</li>
+            <li><strong>V.</strong> &mdash; the versicle, the line said by the leader (the one who begins).</li>
+            <li><strong>R.</strong> &mdash; the response, the line said by everyone in reply.</li>
         </ul>
         <p>
             Praying alone, simply say both lines yourself. The letters come from the Latin
@@ -84,12 +84,11 @@
                 over the nine days.
             </li>
         </ol>
-        <p class="prayer-guide__note">
-            A good place to start is the <a href="discover/prayers/novena-sacred-heart">Novena to the
-            Sacred Heart</a> and the <a href="discover/prayers/litany-sacred-heart">Litany of the
-            Sacred Heart</a>.
-        </p>
     </ChildContent>
+
+    <Footer>
+        <button type="button" class="btn" @onclick="CloseAsync">Begin praying</button>
+    </Footer>
 </Dialog>
 
 @code {
@@ -126,6 +125,14 @@
         if (_dialog is not null)
         {
             await _dialog.Show();
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Close();
         }
     }
 

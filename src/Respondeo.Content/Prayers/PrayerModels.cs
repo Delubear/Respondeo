@@ -25,7 +25,7 @@ internal sealed class PrayerDocument
     /// <summary>Optional key shared with the prayer's translations.</summary>
     public string? TranslationKey { get; init; }
 
-    public required string Html { get; init; }
+    public required string Html { get; set; }
 
     /// <summary>Optional Latin rendered HTML, populated by the service from the linked Latin file.</summary>
     public string? LatinHtml { get; set; }
