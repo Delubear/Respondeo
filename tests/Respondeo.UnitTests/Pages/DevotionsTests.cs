@@ -58,6 +58,8 @@ public class DevotionsTests : TestContext
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<DevotionBrowse>();
+
+        this.AddLiturgicalOrbStubs();
     }
 
     [Fact]

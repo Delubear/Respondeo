@@ -77,6 +77,8 @@ public class MiraclesTests : TestContext
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<MiracleBrowse>();
         JSInterop.Mode = JSRuntimeMode.Loose;
+
+        this.AddLiturgicalOrbStubs();
     }
 
     [Fact]

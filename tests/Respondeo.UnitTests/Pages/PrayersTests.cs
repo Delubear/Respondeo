@@ -5,6 +5,7 @@ using NSubstitute;
 using Respondeo.Content.Contracts;
 using Respondeo.Pages;
 using Respondeo.Services;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Pages;
 
@@ -25,6 +26,8 @@ public class PrayersTests : TestContext
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<PrayerBrowse>();
         Services.AddScoped<DialogInterop>();
+
+        this.AddLiturgicalOrbStubs();
     }
 
     private static IReadOnlyList<PrayerSummary> SampleIndex() =>

@@ -25,6 +25,8 @@ public class StageTests : TestContext
         var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
         tableModule.SetupVoid("enhance", _ => true);
         tableModule.SetupVoid("dispose", _ => true);
+
+        this.AddLiturgicalOrbStubs();
     }
 
     private void RegisterContent(params (string Path, string Body)[] extra)
@@ -99,6 +101,6 @@ public class StageTests : TestContext
 
         Assert.Empty(cut.FindAll("article.node"));
         Assert.Empty(cut.FindAll("section.landing"));
-        Assert.Contains("Not Found", cut.Find("h3").TextContent);
+        Assert.Contains("Page Not Found", cut.Markup);
     }
 }

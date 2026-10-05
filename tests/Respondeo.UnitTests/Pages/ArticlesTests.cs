@@ -71,6 +71,8 @@ public class ArticlesTests : TestContext
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<ArticleBrowse>();
+
+        this.AddLiturgicalOrbStubs();
     }
 
     [Fact]
