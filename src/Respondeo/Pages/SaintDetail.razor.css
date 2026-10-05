@@ -26,9 +26,10 @@
 
 .saint__fact dt {
     font-size: 0.78rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    color: var(--accent);
 }
 
 .saint__fact dd {
