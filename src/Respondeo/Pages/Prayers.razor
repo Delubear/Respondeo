@@ -25,11 +25,7 @@
     }
     else
     {
-        <SearchBox Id="prayer-search"
-                           Label="Search prayers"
-                           Placeholder="e.g. Hail Mary, Creed, mercy..."
-                           Value="@_query"
-                           ValueChanged="OnSearchChanged" />
+        <SearchBox Id="prayer-search" Label="Search prayers" Placeholder="e.g. Hail Mary, Creed, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
 
         <div class="filter-layout">
             <aside class="filter-rail">
@@ -59,13 +55,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var p in Filtered)
                         {
-                            <Card Href="@($"discover/prayers/{p.Id}")"
-                                  Title="@p.Title"
-                                  Subtitle="@p.LatinTitle"
-                                  Pill="@Browser.FormatCategory(p.Category)"
-                                  Summary="@p.Summary"
-                                  Cta="Pray &rarr;"
-                                  Level="2" />
+                            <Card Href="@($"discover/prayers/{p.Id}")" Title="@p.Title" Subtitle="@p.LatinTitle" Pill="@Browser.FormatCategory(p.Category)" Summary="@p.Summary" Cta="Pray &rarr;" Level="2" />
                         }
                     </CardGrid>
                 }
@@ -84,8 +74,7 @@
 
     private string _sortKey = _sortOptions[0].Key;
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the
-    // dropdown, current selection, and Filtered logic all stay in sync.
+    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<PrayerSummary>[] _sortOptions =
     [
         new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
@@ -117,8 +106,7 @@
         _tags = Browser.Tags(_prayers);
     }
 
-    // After the list first renders, ask JS to restore the remembered scroll position (the helper
-    // polls across frames until the async content is tall enough to honor the target).
+    // After the list first renders, ask JS to restore the remembered scroll position (the helper polls across frames until the async content is tall enough to honor the target).
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

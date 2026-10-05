@@ -32,8 +32,7 @@ else
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    // Captured from the nested "/{Stage}/node/{Id}" route. Not used for lookup (the id is the key);
-    // it is present only so the stage-scoped URL resolves to this same page.
+    // Captured from the nested "/{Stage}/node/{Id}" route. Not used for lookup (the id is the key); it is present only so the stage-scoped URL resolves to this same page.
     [Parameter] public string? Stage { get; set; }
 
     private InquiryNode? _node;
@@ -43,15 +42,13 @@ else
     protected override async Task OnParametersSetAsync()
     {
         // Resolve everything into locals before touching the fields the UI binds to.
-        // Content is typically cached, so swapping atomically at the end keeps the
-        // current node on screen during the load instead of blanking to the spinner,
+        // Content is typically cached, so swapping atomically at the end keeps the current node on screen during the load instead of blanking to the spinner,
         // which removes the flash/flicker when moving between nodes.
         var node = await Content.GetByIdAsync(Id);
 
-        // Keep URLs canonical: the stage segment is cosmetic, so a mismatched (or missing) stage
-        // in the URL would show the wrong breadcrumb root. When the URL's stage doesn't match the
-        // node's real stage, redirect to the node's canonical URL, preserving any query string
-        // (e.g. ?section=...) so deep links keep working across the redirect.
+        // Keep URLs canonical: the stage segment is cosmetic, so a mismatched (or missing) stage in the URL would show the wrong breadcrumb root.
+        // When the URL's stage doesn't match the node's real stage, redirect to the node's canonical URL,
+        // preserving any query string (e.g. ?section=...) so deep links keep working across the redirect.
         if (node is not null && !string.Equals(Stage ?? string.Empty, node.Stage ?? string.Empty, StringComparison.OrdinalIgnoreCase))
         {
             var query = new Uri(Nav.Uri).Query;
@@ -69,8 +66,7 @@ else
 
         _node = node;
 
-        // When the node belongs to a stage, root the breadcrumb at that stage's landing page
-        // instead of Home so it reflects the section.
+        // When the node belongs to a stage, root the breadcrumb at that stage's landing page instead of Home so it reflects the section.
         string? stageHref = null;
         string? stageLabel = null;
         if (node?.Stage is { Length: > 0 } stage)

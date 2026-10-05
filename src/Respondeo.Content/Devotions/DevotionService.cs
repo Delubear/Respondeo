@@ -11,7 +11,7 @@ namespace Respondeo.Content.Devotions;
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="DevotionParser"/>,
 /// and caches the parsed devotions and derived index in memory for the app's lifetime.
 /// </summary>
-internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html) : IDevotionService
+internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html, IPrayerService prayers) : IDevotionService
 {
     private const string DevotionsRoot = "_content/Respondeo.Content/discover/devotions";
     private const string ManifestPath = DevotionsRoot + "/devotions-manifest.json";
@@ -33,6 +33,43 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
 
         var catalog = await Load();
         return catalog.Devotions.TryGetValue(id, out var devotion) ? devotion.ToContract() : null;
+    }
+
+    /// <summary>
+    /// Fetches every distinct prayer referenced in the devotion's sequence (including per-mystery
+    /// steps), keyed by id; ids that resolve to no prayer are omitted.
+    /// </summary>
+    public async Task<IReadOnlyDictionary<string, Prayer>> GetPrayersForAsync(Devotion devotion)
+    {
+        ArgumentNullException.ThrowIfNull(devotion);
+
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        void Collect(IEnumerable<DevotionStep> steps)
+        {
+            foreach (var step in steps)
+            {
+                if (!string.IsNullOrWhiteSpace(step.PrayerId))
+                {
+                    ids.Add(step.PrayerId);
+                }
+
+                Collect(step.PerMystery);
+            }
+        }
+
+        Collect(devotion.Sequence);
+
+        var map = new Dictionary<string, Prayer>(StringComparer.OrdinalIgnoreCase);
+        foreach (var id in ids)
+        {
+            var prayer = await prayers.GetPrayerAsync(id);
+            if (prayer is not null)
+            {
+                map[id] = prayer;
+            }
+        }
+
+        return map;
     }
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>

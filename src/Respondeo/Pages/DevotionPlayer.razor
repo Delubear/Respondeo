@@ -1,7 +1,6 @@
 @page "/discover/devotions/{Id}"
 @implements IAsyncDisposable
 @inject IDevotionService Devotions
-@inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 @inject IDevotionProgressService Progress
 @inject IPrayerLanguageService PrayerLanguage
@@ -134,7 +133,10 @@ else
             }
 
             _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
-            await LoadPrayersAsync(_devotion);
+            foreach (var (id, prayer) in await Devotions.GetPrayersForAsync(_devotion))
+            {
+                _prayers[id] = prayer;
+            }
 
             // The session owns the thread and completion rules; create it once the prayers are loaded so the intro screen can already count a set's prayers for the resume banner.
             _session = new DevotionSession(_devotion, _prayers);
@@ -178,35 +180,6 @@ else
         catch (JSDisconnectedException)
         {
             // Circuit going away during teardown; nothing to focus.
-        }
-    }
-
-    // Fetch every distinct prayer referenced anywhere in the sequence once, so the player can render each bead's text without further round trips.
-    private async Task LoadPrayersAsync(Devotion devotion)
-    {
-        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        void Collect(IEnumerable<DevotionStep> steps)
-        {
-            foreach (var step in steps)
-            {
-                if (!string.IsNullOrWhiteSpace(step.PrayerId))
-                {
-                    ids.Add(step.PrayerId);
-                }
-
-                Collect(step.PerMystery);
-            }
-        }
-
-        Collect(devotion.Sequence);
-
-        foreach (var id in ids)
-        {
-            var prayer = await Prayers.GetPrayerAsync(id);
-            if (prayer is not null)
-            {
-                _prayers[id] = prayer;
-            }
         }
     }
 
@@ -310,10 +283,10 @@ else
 
     private async Task OpenPrayer(DevotionBead bead)
     {
-        var useLatin = _showLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinHtml);
-        _openPrayerTitle = useLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinTitle) ? bead.PrayerLatinTitle : bead.PrayerTitle;
-        _openPrayerHtml = useLatin ? bead.PrayerLatinHtml : bead.PrayerHtml;
-        _openExplanationHtml = bead.ExplanationHtml;
+        var view = DevotionPrayerView.ForPrayer(bead, _showLatin);
+        _openPrayerTitle = view.Title;
+        _openPrayerHtml = view.PrayerHtml;
+        _openExplanationHtml = view.ExplanationHtml;
         if (_prayerDialog is not null)
         {
             await _prayerDialog.ShowAsync();
@@ -329,9 +302,10 @@ else
     // Opens the info dialog for a section banner: an explanation only, with no words to pray and no completion side effect (a section is not a step the reader marks).
     private async Task OpenInfo(DevotionBead bead)
     {
-        _openPrayerTitle = bead.Heading;
-        _openPrayerHtml = null;
-        _openExplanationHtml = bead.ExplanationHtml;
+        var view = DevotionPrayerView.ForInfo(bead);
+        _openPrayerTitle = view.Title;
+        _openPrayerHtml = view.PrayerHtml;
+        _openExplanationHtml = view.ExplanationHtml;
         if (_prayerDialog is not null)
         {
             await _prayerDialog.ShowAsync();

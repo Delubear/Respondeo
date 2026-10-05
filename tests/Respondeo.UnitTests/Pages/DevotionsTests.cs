@@ -53,7 +53,7 @@ public class DevotionsTests : TestContext
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
-        Services.AddSingleton<IDevotionService>(new DevotionService(http, ContentRendering.Renderer));
+        Services.AddSingleton<IDevotionService>(new DevotionService(http, ContentRendering.Renderer, Substitute.For<IPrayerService>()));
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();

@@ -9,9 +9,7 @@
     <SeoHead Title="@_miracle.Title" Description="@_miracle.Summary" Article="true" />
 }
 
-<Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")"
-            StageHref="discover/miracles"
-            StageLabel="Miracles" />
+<Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")" StageHref="discover/miracles" StageLabel="Miracles" />
 
 @if (_loading)
 {
@@ -72,9 +70,7 @@ else
         </div>
 
         <TagList Tags="_miracle.Tags" />
-
         <SourcesList Sources="_miracle.Sources" />
-
         <BackLink Href="discover/miracles" Label="Back to all miracles" />
     </article>
 }

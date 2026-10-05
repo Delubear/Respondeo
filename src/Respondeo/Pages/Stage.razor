@@ -28,8 +28,7 @@ else
 }
 
 @code {
-    // Stage landing pages share one route (/{Slug}). The slug is matched against SiteNavigation,
-    // the single source of truth, so adding a stage is a content + navigation change only.
+    // Stage landing pages share one route (/{Slug}). The slug is matched against SiteNavigation, the single source of truth, so adding a stage is a content + navigation change only.
     [Parameter] public string Slug { get; set; } = string.Empty;
 
     private InquiryNode? _node;

@@ -29,7 +29,44 @@ public class DevotionPlayerTests : TestContext
         Services.AddScoped<DialogInterop>();
 
         _prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
+
+        // Mirror DevotionService.GetPrayersForAsync so the player still loads its prayers from the
+        // _prayers substitute that each test arranges via SetPrayer.
+        _devotions.GetPrayersForAsync(Arg.Any<Devotion>())
+            .Returns(call => ResolvePrayersAsync(call.Arg<Devotion>()));
+
         JSInterop.Mode = JSRuntimeMode.Loose;
+    }
+
+    private async Task<IReadOnlyDictionary<string, Prayer>> ResolvePrayersAsync(Devotion devotion)
+    {
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        void Collect(IEnumerable<DevotionStep> steps)
+        {
+            foreach (var step in steps)
+            {
+                if (!string.IsNullOrWhiteSpace(step.PrayerId))
+                {
+                    ids.Add(step.PrayerId);
+                }
+
+                Collect(step.PerMystery);
+            }
+        }
+
+        Collect(devotion.Sequence);
+
+        var map = new Dictionary<string, Prayer>(StringComparer.OrdinalIgnoreCase);
+        foreach (var id in ids)
+        {
+            var prayer = await _prayers.GetPrayerAsync(id);
+            if (prayer is not null)
+            {
+                map[id] = prayer;
+            }
+        }
+
+        return map;
     }
 
     private void SetPrayer(string id, string title, string html)

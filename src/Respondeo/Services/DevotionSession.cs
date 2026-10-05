@@ -32,6 +32,30 @@ public sealed class DevotionBead
     public bool IsPrayer => PrayerHtml is not null;
 }
 
+// The content shown in the prayer/info dialog for a single bead: which title, words, and explanation
+// to display. Pure view-model mapping so the player view need not re-decide Latin vs. vernacular.
+public sealed record DevotionPrayerView(string? Title, string? PrayerHtml, string? ExplanationHtml)
+{
+    // The words of a prayer step. Latin is used only when requested and the bead actually has a Latin
+    // text; the Latin name is used only when it too is present, otherwise the vernacular title stands.
+    public static DevotionPrayerView ForPrayer(DevotionBead bead, bool showLatin)
+    {
+        ArgumentNullException.ThrowIfNull(bead);
+
+        var useLatin = showLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinHtml);
+        var title = useLatin && !string.IsNullOrWhiteSpace(bead.PrayerLatinTitle) ? bead.PrayerLatinTitle : bead.PrayerTitle;
+        var prayerHtml = useLatin ? bead.PrayerLatinHtml : bead.PrayerHtml;
+        return new DevotionPrayerView(title, prayerHtml, bead.ExplanationHtml);
+    }
+
+    // A section banner's info dialog: an explanation only, with no words to pray.
+    public static DevotionPrayerView ForInfo(DevotionBead bead)
+    {
+        ArgumentNullException.ThrowIfNull(bead);
+        return new DevotionPrayerView(bead.Heading, null, bead.ExplanationHtml);
+    }
+}
+
 // The outcome of a completion toggle, so the hosting view can react (persist, announce, move focus)
 // without re-implementing the ordering rules.
 public enum DevotionToggleResult

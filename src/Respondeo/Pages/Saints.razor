@@ -27,38 +27,14 @@
     }
     else
     {
-        <SearchBox Id="saints-search"
-                           Label="Search saints"
-                           Placeholder="e.g. Francis, missions, Africa..."
-                           Value="@_browse.Query"
-                           ValueChanged="OnSearchChanged" />
+        <SearchBox Id="saints-search" Label="Search saints" Placeholder="e.g. Francis, missions, Africa..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
 
         <div class="filter-layout">
             <aside class="filter-rail">
-                <TopicFilter Title="Era"
-                             Topics="_eras"
-                             Selected="_selectedEras"
-                             SelectedChanged="OnErasChanged"
-                             DisplayLabel="_facets.Era" />
-
-                <TopicFilter Title="Region"
-                             Topics="_regions"
-                             Selected="_selectedRegions"
-                             SelectedChanged="OnRegionsChanged"
-                             DisplayLabel="_facets.Region" />
-
-                <TopicFilter Title="State of life"
-                             Topics="_statesOfLife"
-                             Selected="_selectedStatesOfLife"
-                             SelectedChanged="OnStatesOfLifeChanged"
-                             DisplayLabel="_facets.StateOfLife" />
-
-                <TopicFilter Title="Canonization"
-                             Topics="_canonizations"
-                             Selected="_selectedCanonizations"
-                             SelectedChanged="OnCanonizationsChanged"
-                             DisplayLabel="_facets.Canonization" />
-
+                <TopicFilter Title="Era" Topics="_eras" Selected="_selectedEras" SelectedChanged="OnErasChanged" DisplayLabel="_facets.Era" />
+                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
+                <TopicFilter Title="State of life" Topics="_statesOfLife" Selected="_selectedStatesOfLife" SelectedChanged="OnStatesOfLifeChanged" DisplayLabel="_facets.StateOfLife" />
+                <TopicFilter Title="Canonization" Topics="_canonizations" Selected="_selectedCanonizations" SelectedChanged="OnCanonizationsChanged" DisplayLabel="_facets.Canonization" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
@@ -109,8 +85,7 @@
     private IReadOnlySet<string> _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the
-    // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
+    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
     private static readonly SortOption<SaintIndexEntry>[] _sortOptions =
     [
         new("title-asc", "Name (A\u2013Z)", rows => rows.OrderBy(s => s.SortValue, StringComparer.CurrentCultureIgnoreCase)),
@@ -188,8 +163,7 @@
         _browse.Clear();
     }
 
-    // A saint matches when it satisfies every active facet group (intersection across groups, union
-    // within a group) and its title/summary/dates/tags contain the search query.
+    // A saint matches when it satisfies every active facet group (intersection across groups, union within a group) and its title/summary/dates/tags contain the search query.
     private IReadOnlyList<SaintIndexEntry> Filtered =>
         _all is null
             ? Array.Empty<SaintIndexEntry>()

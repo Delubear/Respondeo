@@ -1,3 +1,5 @@
+using NSubstitute;
+using Respondeo.Content.Contracts;
 using Respondeo.Content.Devotions;
 using Respondeo.UnitTests.TestSupport;
 
@@ -41,7 +43,7 @@ public class DevotionServiceTests
     private const string ManifestPath = "_content/Respondeo.Content/discover/devotions/devotions-manifest.json";
     private const string RosaryPath = "_content/Respondeo.Content/discover/devotions/holy-rosary.json";
 
-    private static DevotionService CreateService()
+    private static DevotionService CreateService(IPrayerService? prayers = null)
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
@@ -50,7 +52,7 @@ public class DevotionServiceTests
         });
 
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
-        return new DevotionService(http, ContentRendering.Renderer);
+        return new DevotionService(http, ContentRendering.Renderer, prayers ?? Substitute.For<IPrayerService>());
     }
 
     [Fact]
@@ -84,5 +86,37 @@ public class DevotionServiceTests
         Assert.Equal("mysteries", devotion.Sequence[1].Kind);
         var perMystery = Assert.Single(devotion.Sequence[1].PerMystery);
         Assert.Equal(10, perMystery.Repeat);
+    }
+
+    [Fact]
+    public async Task GetPrayersFor_fetches_each_distinct_referenced_prayer_once()
+    {
+        var prayers = Substitute.For<IPrayerService>();
+        prayers.GetPrayerAsync("hail-mary")
+            .Returns(new Prayer { Id = "hail-mary", Title = "Hail Mary", Html = "<p>Hail Mary...</p>" });
+
+        var service = CreateService(prayers);
+        var devotion = await service.GetDevotionAsync("holy-rosary");
+
+        var map = await service.GetPrayersForAsync(devotion!);
+
+        // hail-mary appears in both the opening step and the per-mystery step; it must be fetched once.
+        var prayer = Assert.Single(map);
+        Assert.Equal("hail-mary", prayer.Key);
+        await prayers.Received(1).GetPrayerAsync("hail-mary");
+    }
+
+    [Fact]
+    public async Task GetPrayersFor_omits_ids_that_resolve_to_no_prayer()
+    {
+        var prayers = Substitute.For<IPrayerService>();
+        prayers.GetPrayerAsync(Arg.Any<string>()).Returns((Prayer?)null);
+
+        var service = CreateService(prayers);
+        var devotion = await service.GetDevotionAsync("holy-rosary");
+
+        var map = await service.GetPrayersForAsync(devotion!);
+
+        Assert.Empty(map);
     }
 }

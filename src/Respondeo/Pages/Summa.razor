@@ -25,11 +25,7 @@
     }
     else
     {
-        <SearchBox Id="summa-search"
-                           Label="Search questions &amp; articles"
-                           Placeholder="e.g. existence of God, virtue, grace..."
-                           Value="@_query"
-                           ValueChanged="OnSearchChanged" />
+        <SearchBox Id="summa-search" Label="Search questions &amp; articles" Placeholder="e.g. existence of God, virtue, grace..." Value="@_query" ValueChanged="OnSearchChanged" />
 
         @if (IsSearching)
         {
@@ -48,8 +44,7 @@
     private SummaIndex? _index;
     private IReadOnlyList<SummaSearchEntry> _matches = Array.Empty<SummaSearchEntry>();
 
-    // The search text lives in the scoped browse state so it survives leaving the page and pressing
-    // Back; this property is just a convenient proxy.
+    // The search text lives in the scoped browse state so it survives leaving the page and pressing Back; this property is just a convenient proxy.
     private string _query
     {
         get => _browse.Query;
@@ -58,8 +53,8 @@
 
     private BrowseSection _browse = default!;
 
-    // Flattened, pre-computed view of every searchable entry (questions + articles) built once when
-    // the index loads, so each keystroke only scans a plain list instead of walking the nested index.
+    // Flattened, pre-computed view of every searchable entry (questions + articles) built once when the index loads,
+    // so each keystroke only scans a plain list instead of walking the nested index.
     private SummaSearchEntry[] _entries = Array.Empty<SummaSearchEntry>();
 
     private bool _truncated;
@@ -73,27 +68,24 @@
         _index = await SummaService.GetIndexAsync();
         _entries = Search.BuildEntries(_index);
 
-        // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open`
-        // attributes. Blazor never writes `open` again after this render and never handles `toggle`
-        // (the browser and browse-state.js own that entirely), so there is no re-render/re-apply
-        // feedback loop - the cause of the earlier "endless jump" on Back.
+        // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open` attributes.
+        // Blazor never writes `open` again after this render and never handles `toggle` (the browser and browse-state.js own that entirely),
+        // so there is no re-render/re-apply feedback loop - the cause of the earlier "endless jump" on Back.
         var open = await BrowseJs.GetOpenAsync("summa");
         foreach (var id in open ?? Array.Empty<string>())
         {
             _openOnMount.Add(id);
         }
 
-        // Restore any remembered search
-        // the visitor returns to the results they left rather than a reset page.
+        // Restore any remembered search the visitor returns to the results they left rather than a reset page.
         if (_query.Trim().Length > 0)
         {
             RunSearch();
         }
     }
 
-    // After the browse markup first renders
-    // helper polls across animation frames until the async content is tall enough to honor the
-    // target, so it works despite the index loading (and the accordion expanding) after remount.
+    // After the browse markup first renders helper polls across animation frames until the async content is tall enough to honor the target,
+    // so it works despite the index loading (and the accordion expanding) after remount.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -108,8 +100,7 @@
         RunSearch();
     }
 
-    // Snapshot of which sections were open when this page mounted; drives the initial `open`
-    // attributes passed to SummaBrowseList and never changes afterward.
+    // Snapshot of which sections were open when this page mounted; drives the initial `open` attributes passed to SummaBrowseList and never changes afterward.
     private readonly HashSet<string> _openOnMount = new(StringComparer.Ordinal);
 
     // Delegates to the pure SummaSearch service, then stores the matches/truncation for rendering.

@@ -12,4 +12,11 @@ public interface IDevotionService
 
     /// <summary>Returns the full, data-driven definition of a single devotion by id, or null if it does not exist.</summary>
     Task<Devotion?> GetDevotionAsync(string id);
+
+    /// <summary>
+    /// Fetches every distinct prayer referenced anywhere in the devotion's sequence (including its
+    /// per-mystery steps), keyed by prayer id, so a caller can render each step's text without
+    /// further round trips. Ids that resolve to no prayer are omitted.
+    /// </summary>
+    Task<IReadOnlyDictionary<string, Prayer>> GetPrayersForAsync(Devotion devotion);
 }

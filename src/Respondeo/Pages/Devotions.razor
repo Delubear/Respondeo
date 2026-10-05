@@ -56,12 +56,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var d in Filtered)
                         {
-                            <Card Href="@($"discover/devotions/{d.Id}")"
-                                  Title="@d.Title"
-                                  Pills="@KindPills(d)"
-                                  Summary="@d.Summary"
-                                  Cta="Begin &rarr;"
-                                  Level="2" />
+                            <Card Href="@($"discover/devotions/{d.Id}")" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" />
                         }
                     </CardGrid>
                 }
@@ -78,8 +73,7 @@
 
     private string _sortKey = _sortOptions[0].Key;
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the
-    // dropdown, current selection, and Filtered logic all stay in sync.
+    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<DevotionSummary>[] _sortOptions =
     [
         new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
@@ -136,13 +130,7 @@
 
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
     private IReadOnlyList<DevotionSummary> Filtered =>
-        _devotions is null
-            ? []
-            : Browser.Filter(
-                _devotions,
-                _query,
-                _selectedKinds,
-                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+        _devotions is null ? [] : Browser.Filter(_devotions, _query, _selectedKinds, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 
     // The card's meta pills: the kind tag, plus an "In progress" flag for drafts still being vetted.
     private IReadOnlyList<string> KindPills(DevotionSummary d)

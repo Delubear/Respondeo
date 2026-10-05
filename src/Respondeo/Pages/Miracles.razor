@@ -26,32 +26,13 @@
     }
     else
     {
-        <SearchBox Id="miracles-search"
-                           Label="Search miracles"
-                           Placeholder="e.g. Lanciano, healing, Italy..."
-                           Value="@_browse.Query"
-                           ValueChanged="OnSearchChanged" />
+        <SearchBox Id="miracles-search" Label="Search miracles" Placeholder="e.g. Lanciano, healing, Italy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
 
         <div class="filter-layout">
             <aside class="filter-rail">
-                <TopicFilter Title="Kind"
-                             Topics="_types"
-                             Selected="_selectedTypes"
-                             SelectedChanged="OnTypesChanged"
-                             DisplayLabel="_facets.Category" />
-
-                <TopicFilter Title="Church&rsquo;s judgment"
-                             Topics="_approvals"
-                             Selected="_selectedApprovals"
-                             SelectedChanged="OnApprovalsChanged"
-                             DisplayLabel="_facets.Approval" />
-
-                <TopicFilter Title="Region"
-                             Topics="_regions"
-                             Selected="_selectedRegions"
-                             SelectedChanged="OnRegionsChanged"
-                             DisplayLabel="_facets.Region" />
-
+                <TopicFilter Title="Kind" Topics="_types" Selected="_selectedTypes" SelectedChanged="OnTypesChanged" DisplayLabel="_facets.Category" />
+                <TopicFilter Title="Church&rsquo;s judgment" Topics="_approvals" Selected="_selectedApprovals" SelectedChanged="OnApprovalsChanged" DisplayLabel="_facets.Approval" />
+                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
@@ -70,12 +51,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var m in Filtered)
                         {
-                            <Card Href="@($"discover/miracles/{m.Id}")"
-                                  Title="@m.Title"
-                                  Pills="@Browser.Pills(m, _facets)"
-                                  Summary="@Browser.CardSummary(m, _facets)"
-                                  Cta="Read &rarr;"
-                                  Level="2" />
+                            <Card Href="@($"discover/miracles/{m.Id}")" Title="@m.Title" Pills="@Browser.Pills(m, _facets)" Summary="@Browser.CardSummary(m, _facets)" Cta="Read &rarr;" Level="2" />
                         }
                     </CardGrid>
                 }
@@ -98,8 +74,7 @@
     private IReadOnlySet<string> _selectedApprovals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the
-    // dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
+    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
     private static readonly SortOption<MiracleIndexEntry>[] _sortOptions =
     [
         new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(m => m.SortValue, StringComparer.CurrentCultureIgnoreCase)),
@@ -165,8 +140,7 @@
         _browse.Clear();
     }
 
-    // A miracle matches when it satisfies every active facet group (intersection across groups, union
-    // within a group) and its title/summary/country/tags contain the search query.
+    // A miracle matches when it satisfies every active facet group (intersection across groups, union within a group) and its title/summary/country/tags contain the search query.
     private IReadOnlyList<MiracleIndexEntry> Filtered =>
         _all is null
             ? Array.Empty<MiracleIndexEntry>()
