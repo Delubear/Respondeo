@@ -70,6 +70,11 @@ builder.Services.AddScoped<NavigationIntent>();
 // Devotions, Miracles, Summa) resets just that section rather than all areas together.
 builder.Services.AddScoped<BrowseState>();
 
+// Finds the saint whose fixed-date feast falls today, so the 404 page can turn a dead end into a
+// gentle moment of discovery. The current date is injected to keep the matching logic testable.
+builder.Services.AddScoped<Func<DateOnly>>(_ => () => DateOnly.FromDateTime(DateTime.Now));
+builder.Services.AddScoped<IFeastOfTheDay, FeastOfTheDay>();
+
 // Typed wrapper over the window.respondeoBrowseState JS module (scroll + accordion memory) so the
 // browse pages call strongly-typed methods instead of raw JS interop strings.
 builder.Services.AddScoped<BrowseStateInterop>();

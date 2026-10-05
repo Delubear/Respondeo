@@ -1,7 +1,58 @@
 @page "/not-found"
 @layout MainLayout
+@inject IFeastOfTheDay FeastOfTheDay
 
 <PageTitle>Not Found &mdash; Respondeo</PageTitle>
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<section class="content-article">
+    <PillarHeader Eyebrow="Page Not Found" Title="Lost, but not forsaken">
+        <Lede>
+            The page you were looking for could not be found. A link may have aged, or the path
+            mistyped &mdash; but you are always welcome to begin again.
+        </Lede>
+    </PillarHeader>
+
+    <div class="content-section">
+        <div class="notfound__flourish" role="img" aria-label="A radiant sun">
+            @* Radiant sun flourish — CC0, by SVG Repo: https://www.svgrepo.com — echoes the site's "divine light" motif. *@
+            <svg class="notfound__lamp" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+                <g>
+                    <path style="fill:#FFD670;" d="M359.448,418.112L167.332,85.356c-2.356-4.082-7.574-5.477-11.657-3.123 c-4.081,2.356-5.48,7.575-3.123,11.657l192.117,332.756c2.356,4.082,7.574,5.477,11.657,3.123 C360.407,427.412,361.805,422.193,359.448,418.112z" />
+                    <path style="fill:#FFD670;" d="M426.644,344.667L93.889,152.552c-4.081-2.356-9.3-0.959-11.657,3.123 c-2.356,4.081-0.958,9.3,3.123,11.657l332.755,192.115c4.081,2.356,9.3,0.959,11.657-3.123 C432.125,352.242,430.726,347.023,426.644,344.667z" />
+                    <path style="fill:#FFD670;" d="M429.768,155.675c-2.357-4.082-7.575-5.478-11.657-3.123L85.356,344.668 c-4.081,2.356-5.48,7.575-3.123,11.657c2.357,4.082,7.575,5.478,11.657,3.123l332.755-192.116 C430.726,164.976,432.125,159.757,429.768,155.675z" />
+                    <path style="fill:#FFD670;" d="M356.325,82.232c-4.082-2.355-9.3-0.959-11.657,3.123L152.552,418.111 c-2.356,4.081-0.958,9.3,3.123,11.657c4.082,2.355,9.3,0.959,11.657-3.123L359.448,93.889 C361.805,89.808,360.407,84.589,356.325,82.232z" />
+                </g>
+                <polygon style="fill:#FFBA12;" points="276.355,144.401 285.31,0 226.69,0 235.645,144.401 235.645,367.599 226.69,512 285.31,512 276.355,367.599 " />
+                <polygon style="fill:#FFD670;" points="367.6,235.645 144.4,235.645 0,226.69 0,285.31 144.399,276.355 367.6,276.355 512,285.31 512,226.69 " />
+                <circle style="fill:#FF8227;" cx="256" cy="256" r="113.391" />
+            </svg>
+        </div>
+
+        <p class="notfound__verse">
+            &ldquo;I will seek that which was lost, and bring again that which was driven away.&rdquo;
+            <span class="notfound__verse-ref">&mdash; Ezekiel 34:16</span>
+        </p>
+
+        @if (_feast is not null)
+        {
+            <aside class="notfound__feast" aria-label="Feast of the day">
+                <span class="notfound__feast-eyebrow">On this day, the Church celebrates</span>
+                <a class="notfound__feast-name" href="discover/saints/@_feast.Id">@_feast.Title</a>
+            </aside>
+        }
+
+        <p class="notfound__actions">
+            <a class="btn" href="">Return home</a>
+            <a class="notfound__link" href="discover">Explore the discovery pages</a>
+        </p>
+    </div>
+</section>
+
+@code {
+    private FeastHighlight? _feast;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _feast = await FeastOfTheDay.GetTodayAsync();
+    }
+}
