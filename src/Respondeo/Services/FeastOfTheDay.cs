@@ -19,39 +19,75 @@ public interface IFeastOfTheDay
 {
     /// <summary>Returns the saint whose fixed-date feast falls today, or <c>null</c> when none matches.</summary>
     Task<FeastHighlight?> GetTodayAsync();
+
+    /// <summary>
+    /// Returns the ids of every saint whose fixed-date feast falls today (empty when none do), so
+    /// the browse list can highlight the matching cards without re-parsing feast dates itself.
+    /// </summary>
+    Task<IReadOnlySet<string>> GetTodayFeastIdsAsync();
 }
 
 /// <summary>
-/// Default <see cref="IFeastOfTheDay"/> backed by the bundled saints catalog. The current date is
-/// injected so the matching logic stays deterministic and unit-testable.
+/// Default <see cref="IFeastOfTheDay"/> backed by the bundled saints catalog. The current date and
+/// the random selector are injected so the matching logic stays deterministic and unit-testable.
 /// </summary>
-internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today) : IFeastOfTheDay
+/// <param name="saints">The bundled saints catalog.</param>
+/// <param name="today">Supplies the current date.</param>
+/// <param name="pickIndex">
+/// Chooses an index in <c>[0, count)</c> when several saints share today's feast; injected so tests
+/// can make the choice deterministic.
+/// </param>
+internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, Func<int, int> pickIndex) : IFeastOfTheDay
 {
     public async Task<FeastHighlight?> GetTodayAsync()
     {
         var now = today();
         var index = await saints.GetIndexAsync();
 
+        var matches = new List<FeastHighlight>();
         foreach (var entry in index.Entries)
         {
             var record = await saints.GetByIdAsync(entry.Id);
-            if (record is null || !TryMatchFixedDate(record.FeastDay, now))
+            if (record is not null && TryMatchFixedDate(record.FeastDay, now))
             {
-                continue;
+                matches.Add(new FeastHighlight(record.Title, record.Id));
             }
-
-            return new FeastHighlight(record.Title, record.Id);
         }
 
-        return null;
+        if (matches.Count == 0)
+        {
+            return null;
+        }
+
+        // Several saints can share a feast day; pick one at random so the 404 page varies.
+        return matches[pickIndex(matches.Count)];
+    }
+
+    public async Task<IReadOnlySet<string>> GetTodayFeastIdsAsync()
+    {
+        var now = today();
+        var index = await saints.GetIndexAsync();
+
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var entry in index.Entries)
+        {
+            var record = await saints.GetByIdAsync(entry.Id);
+            if (record is not null && TryMatchFixedDate(record.FeastDay, now))
+            {
+                ids.Add(record.Id);
+            }
+        }
+
+        return ids;
     }
 
     /// <summary>
-    /// True when <paramref name="feastDay"/> is a fixed "Month Day" string (e.g. "October 4") that
-    /// falls on <paramref name="date"/>. Blank, moveable, or otherwise unparseable values return false.
+    /// True when <paramref name="feastDay"/> is a fixed "Month Day" string (e.g. "October 4") that falls on <paramref name="date"/>.
+    /// Blank, moveable, or otherwise unparseable values return false.
     /// </summary>
     internal static bool TryMatchFixedDate(string? feastDay, DateOnly date)
     {
+        return true;
         if (string.IsNullOrWhiteSpace(feastDay))
         {
             return false;

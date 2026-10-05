@@ -3,13 +3,13 @@
 
 @if (OnClick.HasDelegate)
 {
-    <button type="button" class="card@(Visited ? " card--visited" : "")" @onclick="OnClick">
+    <button type="button" class="@CssClass" @onclick="OnClick">
         @CardBody
     </button>
 }
 else
 {
-    <a class="card@(Visited ? " card--visited" : "")" href="@Href">
+    <a class="@CssClass" href="@Href">
         @CardBody
     </a>
 }
@@ -41,6 +41,15 @@ else
 
     /// <summary>When true, the card renders a faded "visited" treatment with a checkmark badge.</summary>
     [Parameter] public bool Visited { get; set; }
+
+    /// <summary>When true, the card renders a subtle golden shimmer (e.g. a saint's feast day is today).</summary>
+    [Parameter] public bool Shimmer { get; set; }
+
+    private string CssClass =>
+        string.Concat(
+            "card",
+            Visited ? " card--visited" : "",
+            Shimmer ? " card--feast" : "");
 
     private IReadOnlyList<string> AllPills =>
         (Pills ?? [])

@@ -94,3 +94,42 @@ button.card {
     box-shadow: 0 1px 0 var(--shadow);
 }
 
+/* ---------- Feast-day glow ---------- */
+/* A saint whose fixed-date feast is today: a warm golden border and a soft light that radiates from
+   within the card, gently breathing brighter and dimmer, so it feels celebratory without shouting. */
+.card--feast {
+    border-color: var(--gold, #c8a24a);
+    box-shadow: 0 1px 0 var(--shadow), 0 0 0 1px rgba(200, 162, 74, 0.35);
+    overflow: hidden;
+}
+
+.card--feast::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Light gathered at the rim: transparent through the middle, warming toward the edges. */
+    background: radial-gradient(
+        130% 110% at 50% 50%,
+        transparent 45%,
+        rgba(255, 223, 128, 0.28) 72%,
+        rgba(255, 245, 214, 0.55) 100%);
+    opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .card--feast::after {
+        animation: card-feast-glow 4.5s ease-in-out infinite;
+    }
+}
+
+@keyframes card-feast-glow {
+    0%, 100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+

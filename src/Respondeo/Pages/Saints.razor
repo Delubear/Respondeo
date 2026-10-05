@@ -4,6 +4,7 @@
 @inject IBreadcrumbTrail Trail
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
+@inject IFeastOfTheDay FeastOfTheDay
 
 <PageTitle>Catholic Saints &mdash; Respondeo</PageTitle>
 
@@ -81,6 +82,7 @@
                                   Pills="@Browser.Pills(s, _facets)"
                                   Summary="@Browser.CardSummary(s, _facets)"
                                   Cta="Read &rarr;"
+                                  Shimmer="@_feastIds.Contains(s.Id)"
                                   Level="2" />
                         }
                     </CardGrid>
@@ -96,6 +98,7 @@
     private IReadOnlyList<string> _regions = [];
     private IReadOnlyList<string> _statesOfLife = [];
     private IReadOnlyList<string> _canonizations = [];
+    private IReadOnlySet<string> _feastIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
     private string _sortKey = _sortOptions[0].Key;
     private BrowseSection _browse = default!;
@@ -126,6 +129,9 @@
         _facets = await SaintService.GetFacetsAsync();
         var index = await SaintService.GetIndexAsync();
         _all = index.Entries;
+
+        // Cards whose saint's fixed-date feast is today get a subtle golden shimmer.
+        _feastIds = await FeastOfTheDay.GetTodayFeastIdsAsync();
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.
         _eras = Browser.Eras(_all, _facets);

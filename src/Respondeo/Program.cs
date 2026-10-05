@@ -73,6 +73,7 @@ builder.Services.AddScoped<BrowseState>();
 // Finds the saint whose fixed-date feast falls today, so the 404 page can turn a dead end into a
 // gentle moment of discovery. The current date is injected to keep the matching logic testable.
 builder.Services.AddScoped<Func<DateOnly>>(_ => () => DateOnly.FromDateTime(DateTime.Now));
+builder.Services.AddScoped<Func<int, int>>(_ => Random.Shared.Next);
 builder.Services.AddScoped<IFeastOfTheDay, FeastOfTheDay>();
 
 // Typed wrapper over the window.respondeoBrowseState JS module (scroll + accordion memory) so the
