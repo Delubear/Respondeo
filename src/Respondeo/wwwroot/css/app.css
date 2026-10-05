@@ -431,22 +431,22 @@ details.accordion__item[open] > .accordion__trigger {
 }
 
 /* On small screens the virtual keyboard shrinks the viewport, which pins any position:fixed
-   control (the Summa guide button and back-to-top arrow) to a strip just above the keyboard where
+   control (the floating guide circles and back-to-top arrow) to a strip just above the keyboard where
    it reads as a stray colored block. Hide those floating controls while a text field is focused. */
 @media (max-width: 640px) {
     body:has(input:focus, textarea:focus) .back-to-top,
-    body:has(input:focus, textarea:focus) .summa-guide__trigger {
+    body:has(input:focus, textarea:focus) .float-circle {
         display: none;
     }
 }
 
 /* On phones the install prompt is a near full-width bar pinned to the bottom, so the floating
-   circle controls (back-to-top arrow and Summa guide button) overlap and block its action
+   circle controls (back-to-top arrow and the guide circles) overlap and block its action
    buttons. While the prompt is visible, hide those controls so the prompt is fully tappable;
    they reappear once the prompt is installed or dismissed. */
 @media (max-width: 640px) {
     body:has(.install-prompt) .back-to-top,
-    body:has(.install-prompt) .summa-guide__trigger {
+    body:has(.install-prompt) .float-circle {
         display: none;
     }
 }
@@ -544,12 +544,26 @@ details.accordion__item[open] > .accordion__trigger {
     overflow: hidden;
 }
 
+/* Phase 1 (download): a real progress fill driven by --blazor-load-percentage, which the Blazor
+   bootstrapper updates as the framework/assemblies download. */
 .app-loading__fill {
     position: absolute;
-    inset: 0 auto 0 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
     width: var(--blazor-load-percentage, 0%);
     background: var(--accent);
     transition: width 0.1s ease-in-out;
+}
+
+/* Phase 2 (startup): once download reaches 100% the runtime still has to boot and render, which the
+   download percentage can't measure. Rather than reset the bar, we hold it full and pulse it so it
+   keeps reading as "still working" without the jump-to-empty a sweep would cause. */
+.app-loading__bar.is-starting .app-loading__fill {
+    left: 0;
+    width: 100%;
+    transition: none;
+    animation: app-loading-pulse 1.1s ease-in-out infinite;
 }
 
 @keyframes app-loading-pulse {
@@ -569,6 +583,14 @@ details.accordion__item[open] > .accordion__trigger {
 
     .app-loading__fill {
         transition: none;
+    }
+
+    /* Keep phase 2 static for reduced motion: a dimmed full bar instead of the looping pulse. */
+    .app-loading__bar.is-starting .app-loading__fill {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.4;
     }
 }
 

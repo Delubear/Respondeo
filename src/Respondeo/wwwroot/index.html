@@ -93,6 +93,32 @@
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script>
+        // Two-phase loading bar. Phase 1 is a real download progress fill driven by
+        // --blazor-load-percentage (set by the Blazor bootstrapper as the framework/assemblies
+        // download). That value reaches 100% well before the .NET runtime has booted and rendered,
+        // so once it hits 100% we switch the bar to an indeterminate "starting up" sweep by adding
+        // .is-starting. The whole splash is removed by Blazor when the app renders, so no teardown
+        // is needed here.
+        (function () {
+            var root = document.documentElement;
+            var bar = document.querySelector('.app-loading__bar');
+            if (!bar) return;
+            var timer = setInterval(function () {
+                var raw = getComputedStyle(root).getPropertyValue('--blazor-load-percentage');
+                var pct = parseFloat(raw);
+                if (!isNaN(pct) && pct >= 100) {
+                    bar.classList.add('is-starting');
+                    clearInterval(timer);
+                }
+            }, 100);
+            // Safety net: if the variable is never reported (cached start), sweep after a moment.
+            setTimeout(function () {
+                bar.classList.add('is-starting');
+                clearInterval(timer);
+            }, 4000);
+        })();
+    </script>
     <!-- Cloudflare Web Analytics (cookieless, privacy-friendly). The beacon auto-tracks SPA route
          changes via the History API, so no manual per-navigation call is needed. The site token
          comes from Cloudflare -> Web Analytics. It is cross-origin/online-only and no-ops offline. -->
