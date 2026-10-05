@@ -119,3 +119,13 @@
         animation: none;
     }
 }
+
+/* ---------- A discreet dedication ---------- */
+.thanks__gunther {
+    margin: 2.5rem 0 0;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint, var(--ink-soft));
+    opacity: 0.45;
+}
