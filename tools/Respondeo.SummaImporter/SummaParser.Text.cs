@@ -7,8 +7,8 @@ namespace Respondeo.SummaImporter;
 internal static partial class SummaParser
 {
     // Turns the indented, hard-wrapped source lines into Markdown paragraphs.
-    // Blank lines separate paragraphs; the recognised inner markers (Objection, On the contrary, I answer that, Reply)
-    // are emphasised so the article structure survives into the rendered HTML.
+    // Blank lines separate paragraphs; the recognized inner markers (Objection, On the contrary, I answer that, Reply)
+    // are emphasized so the article structure survives into the rendered HTML.
     private static string ExtractText(string[] lines, int start, int end)
     {
         var paragraphs = new List<string>();

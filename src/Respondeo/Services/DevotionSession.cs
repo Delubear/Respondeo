@@ -215,7 +215,7 @@ public sealed class DevotionSession
     }
 
     // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its
-    // own bead on the thread and its own step to mark complete. The words come from the catalogued
+    // own bead on the thread and its own step to mark complete. The words come from the cataloged
     // prayer referenced by PrayerId, or, when there is none, from the step's inline Text (Mass responses).
     private void AddPrayerRow(List<DevotionBead> beads, DevotionStep step, string? heading)
     {
@@ -233,7 +233,7 @@ public sealed class DevotionSession
         }
         else if (step.TextHtml is not null)
         {
-            // An inline step (no catalogued prayer): its Title is the label and Text supplies the words.
+            // An inline step (no cataloged prayer): its Title is the label and Text supplies the words.
             title = string.IsNullOrWhiteSpace(step.Title) ? "Response" : step.Title!;
             html = step.TextHtml;
             latinTitle = string.IsNullOrWhiteSpace(step.Title) ? null : step.Title;

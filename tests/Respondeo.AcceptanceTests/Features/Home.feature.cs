@@ -277,7 +277,7 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.WhenAsync("I scroll the wheel forward over the reel", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 29
- await testRunner.ThenAsync("the second stage card should be centred", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the second stage card should be centered", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

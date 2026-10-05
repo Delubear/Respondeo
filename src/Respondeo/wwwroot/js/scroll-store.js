@@ -21,7 +21,7 @@ window.respondeoScrollRestore = (function () {
     }
 
     // Restores the window to `target`, polling across animation frames until the async content is
-    // tall enough to honour it, then enforcing it for a short settle window. No-op for target <= 0.
+    // tall enough to honor it, then enforcing it for a short settle window. No-op for target <= 0.
     return function respondeoScrollRestore(target) {
         if (!(target > 0)) {
             return;
@@ -58,7 +58,7 @@ window.respondeoScrollRestore = (function () {
             window.scrollTo(0, clamped);
             frame++;
 
-            // Once the page is tall enough to honour the target, keep enforcing for a settle window
+            // Once the page is tall enough to honor the target, keep enforcing for a settle window
             // to override the post-navigation focus reset, then stop.
             if (maxScroll >= target) {
                 reached++;

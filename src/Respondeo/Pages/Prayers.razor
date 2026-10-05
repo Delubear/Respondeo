@@ -76,6 +76,8 @@
 
 <GuideToPrayers />
 
+<LiturgicalOrb Raised="true" />
+
 @code {
     private IReadOnlyList<PrayerSummary>? _prayers;
     private string _query = string.Empty;
@@ -116,7 +118,7 @@
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position (the helper
-    // polls across frames until the async content is tall enough to honour the target).
+    // polls across frames until the async content is tall enough to honor the target).
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

@@ -62,7 +62,7 @@
 @code {
     [Parameter, EditorRequired] public InquiryNode Node { get; set; } = default!;
 
-    /// <summary>Optional short kicker shown above the title (the accent-coloured line), e.g. a stage's journey label.</summary>
+    /// <summary>Optional short kicker shown above the title (the accent-colored line), e.g. a stage's journey label.</summary>
     [Parameter] public string? Kicker { get; set; }
 
     private readonly List<ResolvedBranch> _branches = new();

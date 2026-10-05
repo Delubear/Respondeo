@@ -24,8 +24,8 @@ namespace Respondeo.AcceptanceTests.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en"), "Features", "Saints", "  As a visitor exploring the faith\r\n  I want to browse the saints catalogue and o" +
-                "pen a saint\'s profile\r\n  So that I can read about the lives of the saints", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en"), "Features", "Saints", "  As a visitor exploring the faith\r\n  I want to browse the saints catalog and ope" +
+                "n a saint\'s profile\r\n  So that I can read about the lives of the saints", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         

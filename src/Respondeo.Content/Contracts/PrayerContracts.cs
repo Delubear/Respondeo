@@ -7,7 +7,7 @@ namespace Respondeo.Content.Contracts;
 
 /// <summary>
 /// A single prayer as it appears in the browse index: enough to render a card without fetching the full text.
-/// Only traditional / public-domain prayers are catalogued; each carries an optional attribution so the source can be shown where one is required.
+/// Only traditional / public-domain prayers are cataloged; each carries an optional attribution so the source can be shown where one is required.
 /// </summary>
 public sealed class PrayerSummary
 {

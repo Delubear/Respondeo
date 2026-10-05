@@ -239,7 +239,7 @@ public class DevotionSessionTests
     }
 
     // A liturgical walkthrough (e.g. the Mass): a section banner followed by an inline-text response
-    // that has no catalogued prayer, carrying an explanation and a role.
+    // that has no cataloged prayer, carrying an explanation and a role.
     private static DevotionSession MassSession()
     {
         var devotion = new Devotion

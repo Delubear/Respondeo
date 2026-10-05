@@ -27,7 +27,7 @@ public enum LiturgicalSeason
     OrdinaryTime,
 }
 
-/// <summary>The liturgical colour customarily worn for a day or season.</summary>
+/// <summary>The liturgical color customarily worn for a day or season.</summary>
 public enum LiturgicalColor
 {
     /// <summary>Green: Ordinary Time.</summary>
@@ -62,16 +62,16 @@ public enum CelebrationRank
 /// <summary>A named celebration falling on a given day (fixed or moveable).</summary>
 /// <param name="Name">The display name, e.g. "The Nativity of the Lord".</param>
 /// <param name="Rank">The liturgical rank.</param>
-/// <param name="Color">The liturgical colour proper to the celebration.</param>
+/// <param name="Color">The liturgical color proper to the celebration.</param>
 public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, LiturgicalColor Color);
 
 /// <summary>
-/// What the Church keeps on a particular day: the season it falls in, the colour of the day, and the
+/// What the Church keeps on a particular day: the season it falls in, the color of the day, and the
 /// principal named celebration if there is one.
 /// </summary>
 /// <param name="Date">The date this describes.</param>
 /// <param name="Season">The liturgical season the date falls in.</param>
-/// <param name="Color">The colour of the day (the celebration's colour when present, else the season's).</param>
+/// <param name="Color">The color of the day (the celebration's color when present, else the season's).</param>
 /// <param name="Celebration">The principal named celebration on this day, or <c>null</c> for a ferial day.</param>
 public sealed record LiturgicalDay(DateOnly Date, LiturgicalSeason Season, LiturgicalColor Color, LiturgicalCelebration? Celebration);
 
@@ -81,6 +81,6 @@ public sealed record LiturgicalDay(DateOnly Date, LiturgicalSeason Season, Litur
 /// </summary>
 public interface ILiturgicalCalendar
 {
-    /// <summary>Returns the season, colour, and principal celebration (if any) for the given date.</summary>
+    /// <summary>Returns the season, color, and principal celebration (if any) for the given date.</summary>
     LiturgicalDay ForDate(DateOnly date);
 }

@@ -1,15 +1,15 @@
-// Home "journey reel" behaviour.
+// Home "journey reel" behavior.
 //
 // The reel renders Stage 1 at the LEFT and the final stage at the RIGHT so the
 // journey reads as walking a path forward. This module:
 //   1. Starts the reader at the left (Stage 1) on load.
-//   2. Tracks the centred step and, from a single notify path, updates the prev/next
-//      hint visibility, per-step "centred" classes, and the progress-dot rail.
+//   2. Tracks the centered step and, from a single notify path, updates the prev/next
+//      hint visibility, per-step "centered" classes, and the progress-dot rail.
 //   3. Provides a fallback "turning"/emphasis effect via IntersectionObserver for
 //      browsers without scroll-driven CSS animations (animation-timeline).
 //   4. Adds guided interactions: click the hint buttons, use the keyboard (arrows /
 //      page keys / home / end), flick the mouse wheel one card at a time, click a
-//      peeking neighbour to centre it, or click a progress dot to jump.
+//      peeking neighbor to center it, or click a progress dot to jump.
 
 const state = new WeakMap();
 
@@ -27,13 +27,13 @@ function stepsOf(reel) {
     return Array.from(reel.querySelectorAll('.reel__step'));
 }
 
-// Index of the step whose centre is nearest the reel's current viewport centre.
+// Index of the step whose center is nearest the reel's current viewport center.
 function nearestStepIndex(reel, steps) {
-    const centre = reel.scrollLeft + (reel.clientWidth / 2);
+    const center = reel.scrollLeft + (reel.clientWidth / 2);
     let nearest = 0;
     let bestDist = Infinity;
     steps.forEach((step, i) => {
-        const dist = Math.abs((step.offsetLeft + step.offsetWidth / 2) - centre);
+        const dist = Math.abs((step.offsetLeft + step.offsetWidth / 2) - center);
         if (dist < bestDist) {
             bestDist = dist;
             nearest = i;
@@ -42,14 +42,14 @@ function nearestStepIndex(reel, steps) {
     return nearest;
 }
 
-// Scroll position (within the reel's scroll space) that centres a given step.
+// Scroll position (within the reel's scroll space) that centers a given step.
 function centreOf(reel, step) {
     return step.offsetLeft + (step.offsetWidth / 2) - (reel.clientWidth / 2);
 }
 
-// Smoothly (or instantly under reduced motion) centre the step at the given index.
+// Smoothly (or instantly under reduced motion) center the step at the given index.
 // When moveFocus is true (keyboard navigation), move DOM focus onto the newly
-// centred card so its highlight follows the active card instead of lingering on
+// centered card so its highlight follows the active card instead of lingering on
 // the previously focused one.
 function goToIndex(reel, index, moveFocus = false) {
     const steps = stepsOf(reel);
@@ -65,8 +65,8 @@ function goToIndex(reel, index, moveFocus = false) {
     }
 }
 
-// The single source of truth for "which card is centred": updates hints, the
-// per-step centred class (used by the JS fallback + emblem glow), and the dot rail.
+// The single source of truth for "which card is centered": updates hints, the
+// per-step centered class (used by the JS fallback + emblem glow), and the dot rail.
 function notify(reel) {
     const entry = state.get(reel);
     const steps = stepsOf(reel);
@@ -78,7 +78,7 @@ function notify(reel) {
         entry.centered = nearest;
     }
 
-    // Mark the centred step so CSS can emphasise it (fallback turn + emblem glow).
+    // Mark the centered step so CSS can emphasize it (fallback turn + emblem glow).
     steps.forEach((step, i) => step.classList.toggle('is-centered', i === nearest));
 
     // Hint visibility. The reel renders left-to-right as Stage 1 … final stage, so index 0
@@ -94,7 +94,7 @@ function notify(reel) {
             next.classList.toggle('is-hidden', nearest === steps.length - 1);
         }
 
-        // Progress dots: one per step, in DOM order (left → right). Mark the centred one.
+        // Progress dots: one per step, in DOM order (left → right). Mark the centered one.
         const dots = wrap.querySelectorAll('.reel-dots__dot');
         dots.forEach((dot, i) => {
             dot.classList.toggle('is-active', i === nearest);
@@ -155,7 +155,7 @@ export function init(reel) {
         reel.classList.add('is-ready');
     });
 
-    // --- Scroll: keep the centred state in sync (throttled to animation frames). ---
+    // --- Scroll: keep the centered state in sync (throttled to animation frames). ---
     let scrollScheduled = false;
     const onScroll = () => {
         if (scrollScheduled) {
@@ -232,12 +232,12 @@ export function init(reel) {
     // fall through to the page naturally (giving end-of-list page scroll for free) while
     // horizontal swipes drive the path via native scroll-snap.
 
-    // --- Click a far-off-centre peeking neighbour to nudge the reel one stage toward it. ---
+    // --- Click a far-off-center peeking neighbor to nudge the reel one stage toward it. ---
     // Navigation is the DEFAULT: a click on the card the user is looking at always follows its
     // link. Only a card that is genuinely near the reel's edge — more than FAR_THRESHOLD of the
-    // viewport away from centre — is intercepted. Rather than jumping straight to it, the click
+    // viewport away from center — is intercepted. Rather than jumping straight to it, the click
     // mirrors the hint buttons: it advances exactly one stage in that card's direction (back if it
-    // sits left of centre, forward if right). The distance is measured synchronously from scroll
+    // sits left of center, forward if right). The distance is measured synchronously from scroll
     // geometry (not the async `is-centered` class), so the outcome is deterministic and never
     // races the browser auto-scrolling a card into view before the click.
     const FAR_THRESHOLD = 0.4; // Fraction of the reel viewport width.
@@ -246,16 +246,16 @@ export function init(reel) {
         if (!step || !reel.contains(step)) {
             return;
         }
-        const centre = reel.scrollLeft + (reel.clientWidth / 2);
+        const center = reel.scrollLeft + (reel.clientWidth / 2);
         const stepCentre = step.offsetLeft + (step.offsetWidth / 2);
-        const distance = Math.abs(stepCentre - centre);
+        const distance = Math.abs(stepCentre - center);
         if (distance <= reel.clientWidth * FAR_THRESHOLD) {
-            return; // Near centre: follow its link.
+            return; // Near center: follow its link.
         }
-        // A far-off-centre peeking neighbour was clicked: nudge one stage toward it, exactly like
+        // A far-off-center peeking neighbor was clicked: nudge one stage toward it, exactly like
         // the hint buttons (left = back toward the start, right = forward along the path).
         e.preventDefault();
-        const direction = stepCentre < centre ? -1 : 1;
+        const direction = stepCentre < center ? -1 : 1;
         scrollByStep(reel, direction);
     };
     // Capture phase so we can intercept before the anchor's default navigation.

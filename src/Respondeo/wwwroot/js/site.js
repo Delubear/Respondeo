@@ -68,7 +68,7 @@ window.respondeoScroll = {
             window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
         });
     },
-    // Centres an element within its nearest scrollable ancestor via native scrollIntoView. Unlike
+    // Centers an element within its nearest scrollable ancestor via native scrollIntoView. Unlike
     // intoView (which moves the window), this also works inside an inner scroll container such as
     // the devotion player's .devotion__list in immersive mode.
     centreInParent: function (id) {

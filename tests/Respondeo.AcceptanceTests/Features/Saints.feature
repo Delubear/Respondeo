@@ -1,6 +1,6 @@
 Feature: Saints
   As a visitor exploring the faith
-  I want to browse the saints catalogue and open a saint's profile
+  I want to browse the saints catalog and open a saint's profile
   So that I can read about the lives of the saints
 
   Scenario: The saints browser lists saint cards

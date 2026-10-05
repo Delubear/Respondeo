@@ -106,7 +106,7 @@
     private static string ResolveHref(string slug) => slug.TrimStart('/');
 
     // The reel is a self-locating guide: instead of naming each stage, we ask a second-person
-    // question so a reader can recognise where they honestly stand and step in there. These are
+    // question so a reader can recognize where they honestly stand and step in there. These are
     // intentionally hand-authored here (not drawn from content front matter) so the invitation can
     // be tuned independently of the stage articles' own titles and summaries.
     private static readonly IReadOnlyDictionary<string, StagePrompt> Prompts =

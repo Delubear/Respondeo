@@ -1,4 +1,4 @@
-// Breadcrumb horizontal-scroll behaviour.
+// Breadcrumb horizontal-scroll behavior.
 //
 // The trail renders the stage root at the LEFT and the current node at the RIGHT. On
 // narrow screens a long trail would wrap onto several rows, so instead we keep it on a

@@ -94,7 +94,7 @@
 
     private Task ToggleAsync(string id)
     {
-        // Accordion behaviour: opening a section closes the others; clicking the open one closes it.
+        // Accordion behavior: opening a section closes the others; clicking the open one closes it.
         _openId = _openId == id ? null : id;
         // Compute the shareable URL and update it silently after render (see OnAfterRenderAsync).
         _pendingUrl = Nav.GetUriWithQueryParameter(QueryKey, _openId);

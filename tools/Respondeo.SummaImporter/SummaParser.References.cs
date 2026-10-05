@@ -130,7 +130,7 @@ internal static partial class SummaParser
     // and carries an objection/reply citation.
     // The whole "Q. 13, A. 1, ad 2" style phrase then renders as one deep link straight to the objection/reply,
     // instead of an article link followed by a separate objection link.
-    // Returns null when the citation has no objection/reply, or when multiple articles are cited (which keeps the existing per-article link behaviour so no link is dropped).
+    // Returns null when the citation has no objection/reply, or when multiple articles are cited (which keeps the existing per-article link behavior so no link is dropped).
     //   {{scite|<labelKind>|<partId>|<q>|<article>|<kind>|<n>}}
     // where <labelKind> is "qp" (show part + Q + A), "q" (Q + A) or "a" (article only).
     private static string? TryBuildCombined(Match match, string partId, int questionNumber, bool questionShown, bool hasPart)

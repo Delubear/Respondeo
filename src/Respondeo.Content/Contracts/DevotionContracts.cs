@@ -127,7 +127,7 @@ public sealed class DevotionStep
     public string? ExplanationHtml { get; init; }
 
     /// <summary>
-    /// Optional rendered HTML inline words for a step that has no catalogued <see cref="PrayerId"/>
+    /// Optional rendered HTML inline words for a step that has no cataloged <see cref="PrayerId"/>
     /// (e.g. a short Mass response). Shown in the info dialog in place of a looked-up prayer.
     /// </summary>
     public string? TextHtml { get; init; }

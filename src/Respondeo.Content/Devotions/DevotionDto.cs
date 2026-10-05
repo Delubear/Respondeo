@@ -65,7 +65,7 @@ internal sealed class DevotionStepDto
     public string? Explanation { get; set; }
 
     /// <summary>
-    /// Optional inline words (Markdown) for a step that has no catalogued <see cref="PrayerId"/> — e.g.
+    /// Optional inline words (Markdown) for a step that has no cataloged <see cref="PrayerId"/> — e.g.
     /// a short Mass response. Rendered to HTML and shown in the info dialog in place of a looked-up prayer.
     /// </summary>
     public string? Text { get; set; }

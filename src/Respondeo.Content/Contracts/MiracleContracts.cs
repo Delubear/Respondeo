@@ -10,7 +10,7 @@ namespace Respondeo.Content.Contracts;
 /// </summary>
 public sealed class MiracleIndex
 {
-    /// <summary>Every catalogued miracle, in load order.</summary>
+    /// <summary>Every cataloged miracle, in load order.</summary>
     public IReadOnlyList<MiracleIndexEntry> Entries { get; init; } = [];
 }
 

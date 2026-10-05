@@ -10,7 +10,7 @@ namespace Respondeo.Content.Contracts;
 /// </summary>
 public sealed class SaintIndex
 {
-    /// <summary>Every catalogued saint, in load order.</summary>
+    /// <summary>Every cataloged saint, in load order.</summary>
     public IReadOnlyList<SaintIndexEntry> Entries { get; init; } = [];
 }
 

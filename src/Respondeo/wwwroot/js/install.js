@@ -22,7 +22,7 @@ window.respondeoInstall = (function () {
 
     // A prompt is only "available" to show if the browser has one captured AND the user is not
     // already running the installed app AND they have not previously dismissed the banner. Both the
-    // initial register() call and the beforeinstallprompt notification must honour this, otherwise a
+    // initial register() call and the beforeinstallprompt notification must honor this, otherwise a
     // fresh beforeinstallprompt (fired on every refresh in Chromium) would re-show a dismissed banner.
     function isAvailable() {
         return deferredPrompt !== null && !isStandalone() && !isDismissed();

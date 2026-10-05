@@ -26,7 +26,7 @@ Feature: Home page
   Scenario: Scrolling the wheel over the reel advances one stage
 	Given I open the start page
 	When I scroll the wheel forward over the reel
-	Then the second stage card should be centred
+	Then the second stage card should be centered
 
   Scenario: The hint controls collapse to icon-only on a narrow viewport
 	Given I am viewing on a 700 pixel wide screen

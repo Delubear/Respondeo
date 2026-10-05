@@ -72,7 +72,7 @@ internal sealed class DevotionStepDocument
     /// <summary>Optional rendered HTML explanation of this step, shown in the info dialog.</summary>
     public string? ExplanationHtml { get; init; }
 
-    /// <summary>Optional rendered HTML inline words for a step with no catalogued prayer.</summary>
+    /// <summary>Optional rendered HTML inline words for a step with no cataloged prayer.</summary>
     public string? TextHtml { get; init; }
 
     /// <summary>Optional rendered HTML Latin form of <see cref="TextHtml"/>.</summary>

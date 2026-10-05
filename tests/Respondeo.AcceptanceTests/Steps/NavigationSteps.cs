@@ -21,13 +21,13 @@ public sealed class NavigationSteps(PlaywrightContext context)
     public async Task WhenIChooseTheFirstStageCard()
     {
         // The home reel renders the journey with Stage 1 at the LEFT (walking rightward) and scrolls to it on init.
-        // Stage 1 is the FIRST `.reel__step`, so we wait for the left-most question specifically to become centred (and thus unmasked) before clicking.
+        // Stage 1 is the FIRST `.reel__step`, so we wait for the left-most question specifically to become centered (and thus unmasked) before clicking.
         var stageOne = Page.Locator(".reel__step:first-child.is-centered");
         await stageOne.WaitForAsync();
 
-        // Clicking a question at (or near) centre always follows its link — the reel only intercepts clicks on steps that are far off-centre.
-        // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-centre the question
-        // past the interception threshold and turn the click into a one-stage nudge instead of navigation. The centred anchor navigates deterministically.
+        // Clicking a question at (or near) center always follows its link — the reel only intercepts clicks on steps that are far off-center.
+        // Dispatch the click straight to the DOM so Playwright does NOT auto-scroll the reel first: that scroll could un-center the question
+        // past the interception threshold and turn the click into a one-stage nudge instead of navigation. The centered anchor navigates deterministically.
         await stageOne.Locator(".reel__q").DispatchEventAsync("click");
         // Confirm we left Home and the destination stage page rendered: `.card` are the branch cards on a stage/node
         // page (NOT the Home reel's `.reel__q`). Waiting here syncs before the next step clicks a branch card.
@@ -142,10 +142,10 @@ public sealed class NavigationSteps(PlaywrightContext context)
         await Page.Mouse.WheelAsync(0, 240);
     }
 
-    [Then(@"the second stage card should be centred")]
+    [Then(@"the second stage card should be centered")]
     public async Task ThenTheSecondStageCardShouldBeCentred()
     {
-        // Stage 2 is the second `.reel__step`; wait for it to gain the centred marker.
+        // Stage 2 is the second `.reel__step`; wait for it to gain the centered marker.
         await Page.WaitForSelectorAsync(".reel__step:nth-child(2).is-centered");
     }
 

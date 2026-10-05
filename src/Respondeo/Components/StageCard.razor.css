@@ -127,8 +127,8 @@
         justify-content: center;
     }
 
-    /* Drop the inline label arrow and use a dedicated centred "Begin ->" line instead,
-       so a long stage name never shares a line with (and off-centres) the arrow. */
+    /* Drop the inline label arrow and use a dedicated centered "Begin ->" line instead,
+       so a long stage name never shares a line with (and off-centers) the arrow. */
     .stage-card__label .stage-card__arrow {
         display: none;
     }
@@ -148,7 +148,7 @@
         color: var(--accent);
     }
 
-    /* Position the arrow just past the end of "Begin" so the word stays optically centred;
+    /* Position the arrow just past the end of "Begin" so the word stays optically centered;
        the arrow no longer contributes to the group's width/centring. */
     .stage-card__cta .stage-card__arrow {
         position: absolute;

@@ -33,13 +33,13 @@ public interface ISummaPartCatalog
 
     /// <summary>
     /// Translates a storage question id (<c>p1-q002</c>) into its public URL id (<c>prima-q002</c>).
-    /// Returns the input unchanged when the part prefix is not recognised.
+    /// Returns the input unchanged when the part prefix is not recognized.
     /// </summary>
     string ToUrlId(string storageId);
 
     /// <summary>
     /// Translates a public URL id (<c>prima-q002</c>) back into its storage question id (<c>p1-q002</c>).
-    /// Returns the input unchanged when the slug prefix is not recognised.
+    /// Returns the input unchanged when the slug prefix is not recognized.
     /// </summary>
     string ToStorageId(string urlId);
 

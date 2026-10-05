@@ -1,8 +1,8 @@
 /* ---------- Journey reel ----------
-   A horizontal scroll-snap "reel": one stage is centred at a time while its
-   neighbours peek left and right. Stage 1 sits at the LEFT and the final stage at
+   A horizontal scroll-snap "reel": one stage is centered at a time while its
+   neighbors peek left and right. Stage 1 sits at the LEFT and the final stage at
    the RIGHT, so scrolling the journey walks forward along the path. As you flick /
-   drag / scroll, each card turns toward centre using a scroll-driven animation (view
+   drag / scroll, each card turns toward center using a scroll-driven animation (view
    timeline), with an IntersectionObserver fallback where that isn't supported. */
 .reel-wrap {
     position: relative;
@@ -20,17 +20,17 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    /* Room left/right so the first and last cards can still centre. */
+    /* Room left/right so the first and last cards can still center. */
     padding: 0.5rem 40%;
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */
     touch-action: pan-y;
 }
 
-/* Edge vignette: fade peeking neighbours by painting the page background over the left and
+/* Edge vignette: fade peeking neighbors by painting the page background over the left and
    right edges. This replaces a mask on the reel itself, which would make the questions
-   translucent. They stay fully opaque; only the empty gutters and off-centre neighbours
-   dissolve toward the page colour. */
+   translucent. They stay fully opaque; only the empty gutters and off-center neighbors
+   dissolve toward the page color. */
 .reel-wrap::after {
     content: "";
     position: absolute;
@@ -46,9 +46,9 @@
     outline: none;
 }
 
-/* Highlight the centred question whenever keyboard focus is anywhere in the reel:
+/* Highlight the centered question whenever keyboard focus is anywhere in the reel:
    on the reel container itself (initial Tab), or on a question link (after arrow-key
-   navigation moves focus to the centred step). The outline sits on the link (not the
+   navigation moves focus to the centered step). The outline sits on the link (not the
    full-width step) so its edges aren't clipped by the reel's overflow. */
 .reel:focus-visible .reel__step.is-centered .reel__q,
 .reel:has(:focus-visible) .reel__step.is-centered .reel__q {
@@ -58,7 +58,7 @@
 }
 
 /* Suppress the browser's default ring on the focused question link so only the
-   single centred outline above shows (no double ring). */
+   single centered outline above shows (no double ring). */
 .reel__q:focus-visible {
     outline: none;
 }
@@ -80,7 +80,7 @@
     cursor: pointer;
 }
 
-/* The centred card behaves as a normal link; only peeking neighbours are "tap to centre". */
+/* The centered card behaves as a normal link; only peeking neighbors are "tap to center". */
 .reel__step.is-centered {
     cursor: default;
 }
@@ -99,7 +99,7 @@
     text-align: center;
     text-decoration: none;
     color: inherit;
-    /* Peeking neighbours read as quieter until they reach centre (reinforced by the turn/JS rules). */
+    /* Peeking neighbors read as quieter until they reach center (reinforced by the turn/JS rules). */
     transition: color 0.3s ease;
 }
 
@@ -120,14 +120,14 @@
     text-wrap: pretty;
 }
 
-/* The centred question warms to the accent on hover/focus as a "tap to centre" cue. */
+/* The centered question warms to the accent on hover/focus as a "tap to center" cue. */
 .reel__q:hover .reel__q-text,
 .reel__q:focus-visible .reel__q-text {
     color: var(--accent);
 }
 
 /* Click affordance: a small "Step in →" cue that makes the pointer explicit. It stays
-   quiet (dimmed, tucked up) until the question reaches centre or the reader hovers/focuses,
+   quiet (dimmed, tucked up) until the question reaches center or the reader hovers/focuses,
    then it settles into view and the arrow nudges forward on hover to signal it's actionable. */
 .reel__q-cue {
     display: inline-flex;
@@ -200,7 +200,7 @@
     }
 }
 
-/* Native scroll-driven turn: each card leans as it enters and settles at centre. */
+/* Native scroll-driven turn: each card leans as it enters and settles at center. */
 .reel--native .reel__step {
     animation: reel-turn linear both;
     animation-timeline: view(inline);
@@ -222,7 +222,7 @@
     }
 }
 
-/* JS fallback: dim every step, then emphasise whichever is centred. */
+/* JS fallback: dim every step, then emphasize whichever is centered. */
 .reel--js .reel__step {
     opacity: 0.3;
     transform: scale(0.9);
@@ -326,9 +326,9 @@
     pointer-events: none;
 }
 
-/* Anchor each hint's INNER edge a fixed gap outside the centred card and grow it OUTWARD toward
+/* Anchor each hint's INNER edge a fixed gap outside the centered card and grow it OUTWARD toward
    the reel edge. This guarantees the pill never touches the focal card and fills the gap toward its
-   neighbour. The card is 30rem and centred, so its edge sits (100% - 30rem)/2 from the reel edge;
+   neighbor. The card is 30rem and centered, so its edge sits (100% - 30rem)/2 from the reel edge;
    we place the pill's near edge 0.75rem before that. Overflow past the reel edge is prevented by
    only showing the labelled pills at wide viewports (see the collapse rule below). */
 .reel__hint {
@@ -386,7 +386,7 @@
     50%      { transform: rotate(-45deg) translate(-0.15rem, -0.15rem); }
 }
 
-/* Honour reduced-motion: drop the turning, bobbing, entrance and glow transitions,
+/* Honor reduced-motion: drop the turning, bobbing, entrance and glow transitions,
    keep the snap reel + affordances so navigation still works. */
 @media (prefers-reduced-motion: reduce) {
     .reel--native .reel__step {
@@ -410,7 +410,7 @@
 /* ---------- Responsive ---------- */
 
 /* Desktop enhancement: on wide viewports the reel can feel a touch bare, so give it more presence.
-   Widen the reel viewport, enlarge the centred question card, and lift the headline ceiling. Scoped
+   Widen the reel viewport, enlarge the centered question card, and lift the headline ceiling. Scoped
    to >=58rem (the same point the labelled hint pills appear) so the finely-tuned mobile/tablet
    layouts below are untouched. */
 @media (min-width: 58rem) {
@@ -438,7 +438,7 @@
     }
 
     .reel {
-        /* Centre the fixed-width card exactly: half the viewport minus half the card.
+        /* Center the fixed-width card exactly: half the viewport minus half the card.
            A percentage here drifts out of sync with the fixed card width and lets it
            touch the edge in the 481-640px range. */
         padding: 0.5rem max(1rem, calc(50% - 9rem));

@@ -275,7 +275,7 @@ internal static partial class SummaParser
     }
 
     // Whether the first non-blank line at or after 'from' opens an article body ("Objection 1").
-    // Used to recognise the handful of articles whose title is a declarative statement rather than a "Whether ...?" question.
+    // Used to recognize the handful of articles whose title is a declarative statement rather than a "Whether ...?" question.
     private static bool StartsArticleBody(string[] lines, int from, int end)
     {
         for (var i = from; i < end; i++)
