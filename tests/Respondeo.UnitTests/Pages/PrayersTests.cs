@@ -24,6 +24,7 @@ public class PrayersTests : TestContext
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<PrayerBrowse>();
+        Services.AddScoped<DialogInterop>();
     }
 
     private static IReadOnlyList<PrayerSummary> SampleIndex() =>

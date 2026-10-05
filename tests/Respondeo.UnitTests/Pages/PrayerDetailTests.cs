@@ -18,6 +18,7 @@ public class PrayerDetailTests : TestContext
         _prayers = Substitute.For<IPrayerService>();
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddScoped<DialogInterop>();
     }
 
     private static Prayer SamplePrayer(string? latinHtml = null, string? attribution = null) => new()

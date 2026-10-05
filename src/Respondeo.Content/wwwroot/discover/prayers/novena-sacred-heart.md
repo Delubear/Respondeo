@@ -4,6 +4,7 @@ title: "Novena to the Sacred Heart"
 summary: A nine-day prayer to the Sacred Heart of Jesus, asking with confidence through His boundless love.
 category: novena
 language: en
+translationKey: novena-sacred-heart
 tags:
   - novena
   - sacred-heart
