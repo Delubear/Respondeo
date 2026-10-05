@@ -12,7 +12,6 @@
 }
 
 .prayer__latin .prayer__text {
-    font-style: italic;
     color: var(--ink-soft);
 }
 
