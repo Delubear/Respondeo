@@ -4,21 +4,19 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Pure, stateless browse logic for the saints catalog: facet-option derivation, the combined
-/// facet/search/sort, and the card presentation helpers (pills and summary). All of it depends only
-/// on the entries plus the loaded <see cref="SaintFacetCatalog"/>, so it is kept out of
-/// <see cref="Pages.Saints"/> and unit-testable, mirroring <see cref="MiracleBrowse"/>.
+/// Pure, stateless browse logic for the saints catalog: facet-option derivation, the combined facet/search/sort, and the card presentation helpers (pills and summary).
+/// All of it depends only on the entries plus the loaded <see cref="SaintFacetCatalog"/>,
+/// so it is kept out of <see cref="Pages.Saints"/> and unit-testable, mirroring <see cref="MiracleBrowse"/>.
 /// </summary>
 public sealed class SaintBrowse
 {
-    // The historical order of the era facet, oldest first. Era slugs are a small fixed vocabulary
-    // (see saints/facets.json), so chronological sorting ranks by this order; any unknown slug sorts
-    // last. This is the single source of era chronology used by the "Chronological" sort options.
+    // The historical order of the era facet, oldest first.
+    // Era slugs are a small fixed vocabulary (see saints/facets.json), so chronological sorting ranks by this order; any unknown slug sorts last.
+    // This is the single source of era chronology used by the "Chronological" sort options.
     private static readonly string[] _eraOrder = ["early-church", "medieval", "early-modern", "modern"];
 
     /// <summary>
-    /// The chronological rank of an era slug (0 = oldest). Unmapped slugs rank after all known eras so
-    /// they sort to the end, keeping the ordering deterministic.
+    /// The chronological rank of an era slug (0 = oldest). Unmapped slugs rank after all known eras so they sort to the end, keeping the ordering deterministic.
     /// </summary>
     public static int EraRank(string? era)
     {
@@ -28,37 +26,33 @@ public sealed class SaintBrowse
 
     /// <summary>The distinct era slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Eras(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        entries.Select(s => s.Era)
+        [.. entries.Select(s => s.Era)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Era, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Era, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct region slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Regions(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        entries.Select(s => s.Region)
+        [.. entries.Select(s => s.Region)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct state-of-life slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> StatesOfLife(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        entries.SelectMany(s => s.StatesOfLife)
+        [.. entries.SelectMany(s => s.StatesOfLife)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.StateOfLife, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.StateOfLife, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct canonization slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Canonizations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        entries.SelectMany(s => s.Canonizations)
+        [.. entries.SelectMany(s => s.Canonizations)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Canonization, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Canonization, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>
-    /// Applies the active facets, free-text query, and sort to the catalog. A saint matches when it
-    /// satisfies every active facet group (intersection across groups, union within a group) and its
-    /// title/summary/dates/tags/facet-labels contain the search query. Patronage is deliberately not a
-    /// filter facet (it is high-cardinality and sparse), but it is still searched and shown on cards.
+    /// Applies the active facets, free-text query, and sort to the catalog.
+    /// A saint matches when it satisfies every active facet group (intersection across groups, union within a group)
+    /// and its title/summary/dates/tags/facet-labels contain the search query.
+    /// Patronage is deliberately not a filter facet (it is high-cardinality and sparse), but it is still searched and shown on cards.
     /// </summary>
     public IReadOnlyList<SaintIndexEntry> Filter(
         IReadOnlyList<SaintIndexEntry> entries,
@@ -101,8 +95,7 @@ public sealed class SaintBrowse
     }
 
     /// <summary>
-    /// The card summary line: the saint's summary followed by its canonization label(s), era, dates, and
-    /// region (whichever are known), joined as a middot-separated facet trail.
+    /// The card summary line: the saint's summary followed by its canonization label(s), era, dates, and region (whichever are known), joined as a middot-separated facet trail.
     /// </summary>
     public string CardSummary(SaintIndexEntry s, SaintFacetCatalog facets)
     {
@@ -123,6 +116,5 @@ public sealed class SaintBrowse
     }
 
     /// <summary>One pill per patronage, mirroring the category/kind pill on the Discover lists.</summary>
-    public IReadOnlyList<string> Pills(SaintIndexEntry s, SaintFacetCatalog facets) =>
-        [.. s.Patronages.Where(p => !string.IsNullOrWhiteSpace(p))];
+    public IReadOnlyList<string> Pills(SaintIndexEntry s) => [.. s.Patronages.Where(p => !string.IsNullOrWhiteSpace(p))];
 }

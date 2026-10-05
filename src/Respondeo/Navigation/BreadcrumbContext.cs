@@ -24,11 +24,7 @@ public interface INavigable
 /// <param name="Ancestors">Ordered ancestor crumbs leading up to (but excluding) the current item.</param>
 /// <param name="RootHref">Optional section landing route that replaces Home as the trail root.</param>
 /// <param name="RootLabel">Label for the section root crumb.</param>
-public sealed record BreadcrumbContext(
-    string? CurrentTitle,
-    IReadOnlyList<Breadcrumb.Crumb> Ancestors,
-    string? RootHref = null,
-    string? RootLabel = null)
+public sealed record BreadcrumbContext(string? CurrentTitle, IReadOnlyList<Breadcrumb.Crumb> Ancestors, string? RootHref = null, string? RootLabel = null)
 {
     /// <summary>An empty trail with just the supplied current title and no ancestors or section root.</summary>
     public static BreadcrumbContext ForCurrent(string? currentTitle) => new(currentTitle, []);

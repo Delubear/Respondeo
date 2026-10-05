@@ -18,9 +18,7 @@ public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
         // Each stage is its own journey: when the visitor crosses into a different stage,
         // start the trail over so breadcrumbs don't carry nodes from the previous section.
         var previousStage = await js.InvokeAsync<string?>("sessionStorage.getItem", StageKey);
-        var trail = string.Equals(previousStage ?? string.Empty, stage ?? string.Empty, StringComparison.OrdinalIgnoreCase)
-            ? await LoadAsync()
-            : [];
+        var trail = string.Equals(previousStage ?? string.Empty, stage ?? string.Empty, StringComparison.OrdinalIgnoreCase) ? await LoadAsync() : [];
 
         var index = trail.IndexOf(nodeId);
         if (index >= 0)

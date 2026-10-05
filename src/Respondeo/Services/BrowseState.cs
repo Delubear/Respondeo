@@ -6,17 +6,16 @@ namespace Respondeo.Services;
 
 /// <summary>
 /// One generic store for every browse page's transient view state (search text and facet filters).
-/// Each list page owns a <see cref="BrowseSection"/> keyed by its own area path (e.g. <c>discover/prayers</c>
-/// or <c>summa</c>). On every navigation this store resets only the sections whose area the visitor has
-/// left, so each sub-area (Articles, Prayers, Devotions, Miracles, Summa) clears independently rather than
-/// all of Discover resetting together. A section may carry an optional <c>onExit</c> callback to forget its
-/// matching JS-owned store (scroll snapshot, accordion state) when it resets.
+/// Each list page owns a <see cref="BrowseSection"/> keyed by its own area path (e.g. <c>discover/prayers</c> or <c>summa</c>).
+/// On every navigation this store resets only the sections whose area the visitor has left,
+/// so each sub-area (Articles, Prayers, Devotions, Miracles, Summa) clears independently rather than all of Discover resetting together.
+/// A section may carry an optional <c>onExit</c> callback to forget its matching JS-owned store (scroll snapshot, accordion state) when it resets.
 /// </summary>
 /// <remarks>
-/// Registered as a scoped service, which in Blazor WebAssembly lives for the whole app session, so the state
-/// outlives the browse-page remounts that happen when drilling into a detail page and pressing Back. The
-/// per-section area lifecycle replaces the former per-instance <c>AreaBrowseState</c> base class, moving the
-/// reset boundary from the service to the individual section so one store can serve every area at once.
+/// Registered as a scoped service, which in Blazor WebAssembly lives for the whole app session,
+/// so the state outlives the browse-page remounts that happen when drilling into a detail page and pressing Back.
+/// The per-section area lifecycle replaces the former per-instance <c>AreaBrowseState</c> base class,
+/// moving the reset boundary from the service to the individual section so one store can serve every area at once.
 /// </remarks>
 public sealed class BrowseState : IDisposable
 {
@@ -30,14 +29,14 @@ public sealed class BrowseState : IDisposable
     }
 
     /// <summary>
-    /// Returns the (lazily created) browse section for <paramref name="area"/>. A route counts as "in the
-    /// section" when it equals <paramref name="area"/> or begins with it followed by "/", so drilling into a
-    /// detail page keeps the state while leaving the sub-area clears it.
+    /// Returns the (lazily created) browse section for <paramref name="area"/>.
+    /// A route counts as "in the section" when it equals <paramref name="area"/> or begins with it followed by "/",
+    /// so drilling into a detail page keeps the state while leaving the sub-area clears it.
     /// </summary>
     /// <param name="area">The path that scopes the section, e.g. <c>discover/prayers</c> or <c>summa</c>.</param>
     /// <param name="onExit">
-    /// Optional callback invoked when the section resets on area exit; used to forget the section's JS-owned
-    /// store. Fired fire-and-forget by the synchronous navigation handler.
+    /// Optional callback invoked when the section resets on area exit; used to forget the section's JS-owned store.
+    /// Fired fire-and-forget by the synchronous navigation handler.
     /// </param>
     public BrowseSection Section(string area, Func<ValueTask>? onExit = null)
     {
@@ -59,8 +58,7 @@ public sealed class BrowseState : IDisposable
         var path = new Uri(e.Location).AbsolutePath.Trim('/');
         foreach (var section in _sections)
         {
-            var inArea = path.Equals(section.Area, StringComparison.OrdinalIgnoreCase)
-                || path.StartsWith(section.Area + "/", StringComparison.OrdinalIgnoreCase);
+            var inArea = path.Equals(section.Area, StringComparison.OrdinalIgnoreCase) || path.StartsWith(section.Area + "/", StringComparison.OrdinalIgnoreCase);
 
             if (!inArea)
             {
@@ -76,9 +74,9 @@ public sealed class BrowseState : IDisposable
 }
 
 /// <summary>
-/// The remembered browse view state for a single area: one free-text query plus any number of independent
-/// facet filter selections keyed by a facet name (e.g. <c>tag</c>, <c>category</c>, <c>type</c>). Created and
-/// owned by <see cref="BrowseState"/>; pages read and write it so their search survives remounts.
+/// The remembered browse view state for a single area:
+/// one free-text query plus any number of independent facet filter selections keyed by a facet name (e.g. <c>tag</c>, <c>category</c>, <c>type</c>).
+/// Created and owned by <see cref="BrowseState"/>; pages read and write it so their search survives remounts.
 /// </summary>
 public sealed class BrowseSection
 {
@@ -98,8 +96,8 @@ public sealed class BrowseSection
     public string Query { get; set; } = string.Empty;
 
     /// <summary>
-    /// The remembered set of selected values for <paramref name="facet"/> (e.g. the chosen prayer
-    /// categories), or an empty set if none. Several facets can be kept independently within one section.
+    /// The remembered set of selected values for <paramref name="facet"/> (e.g. the chosen prayer categories), or an empty set if none.
+    /// Several facets can be kept independently within one section.
     /// </summary>
     public IReadOnlySet<string> GetFilter(string facet) => _filters.TryGetValue(facet, out var set) ? set : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -116,8 +114,7 @@ public sealed class BrowseSection
         _filters.Clear();
     }
 
-    // Called by BrowseState when the visitor leaves this section's area: clear the in-memory state and
-    // fire the optional JS cleanup so a later return starts fresh.
+    // Called by BrowseState when the visitor leaves this section's area: clear the in-memory state and fire the optional JS cleanup so a later return starts fresh.
     internal void Reset()
     {
         Clear();

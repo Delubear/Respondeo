@@ -3,8 +3,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// An <see cref="IPrayerLanguageService"/> that persists the reader's Latin/vernacular choice in the
-/// browser's <c>localStorage</c> (so it survives across sessions), modeled on <see cref="ThemeService"/>.
+/// An <see cref="IPrayerLanguageService"/> that persists the reader's Latin/vernacular choice in the browser's <c>localStorage</c> (so it survives across sessions),
+/// modeled on <see cref="ThemeService"/>.
 /// </summary>
 public sealed class PrayerLanguageService(IJSRuntime js) : IPrayerLanguageService
 {

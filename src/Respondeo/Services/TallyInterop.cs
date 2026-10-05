@@ -3,8 +3,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Typed wrapper over the <c>window.respondeoTally</c> JS helper (see <c>wwwroot/js/site.js</c>) that
-/// relays the embedded Tally feedback form's <c>Tally.FormSubmitted</c> window message back to Blazor.
+/// Typed wrapper over the <c>window.respondeoTally</c> JS helper (see <c>wwwroot/js/site.js</c>)
+/// that relays the embedded Tally feedback form's <c>Tally.FormSubmitted</c> window message back to Blazor.
 /// </summary>
 /// <remarks>
 /// Centralising these calls keeps the JS method names in one place instead of scattering magic strings across component code,
@@ -17,8 +17,7 @@ public sealed class TallyInterop(IJSRuntime js)
     /// Starts listening for the embedded Tally form's submission, invoking <paramref name="callback"/>'s
     /// <c>[JSInvokable]</c> <c>OnSubmitted</c> when it fires. Returns a subscription id for <see cref="StopListeningAsync"/>.
     /// </summary>
-    public ValueTask<int> ListenAsync<T>(DotNetObjectReference<T> callback) where T : class =>
-        js.InvokeAsync<int>("respondeoTally.listen", callback);
+    public ValueTask<int> ListenAsync<T>(DotNetObjectReference<T> callback) where T : class => js.InvokeAsync<int>("respondeoTally.listen", callback);
 
     /// <summary>Stops the subscription created by <see cref="ListenAsync{T}"/> so the window listener is removed.</summary>
     public ValueTask StopListeningAsync(int id) => js.InvokeVoidAsync("respondeoTally.stopListening", id);

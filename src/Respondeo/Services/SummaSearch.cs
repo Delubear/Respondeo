@@ -51,7 +51,7 @@ public sealed class SummaSearch
             }
         }
 
-        return entries.ToArray();
+        return [.. entries];
     }
 
     /// <summary>

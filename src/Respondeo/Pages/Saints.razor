@@ -55,7 +55,7 @@
                         {
                             <Card Href="@($"discover/saints/{s.Id}")"
                                   Title="@s.Title"
-                                  Pills="@Browser.Pills(s, _facets)"
+                                  Pills="@Browser.Pills(s)"
                                   Summary="@Browser.CardSummary(s, _facets)"
                                   Cta="Read &rarr;"
                                   Shimmer="@_feastIds.Contains(s.Id)"

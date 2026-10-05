@@ -3,8 +3,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Typed wrapper over the window-level immersive-mode helper (see <c>wwwroot/js/site.js</c>) that
-/// toggles the <c>is-immersive</c> body class so a full-screen praying view can hide the surrounding chrome.
+/// Typed wrapper over the window-level immersive-mode helper (see <c>wwwroot/js/site.js</c>) that toggles the <c>is-immersive</c>
+/// body class so a full-screen praying view can hide the surrounding chrome.
 /// </summary>
 /// <remarks>
 /// Centralising these calls keeps the JS method names in one place instead of scattering magic strings across page code,

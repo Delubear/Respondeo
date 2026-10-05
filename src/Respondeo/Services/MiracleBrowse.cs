@@ -4,38 +4,34 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Pure, stateless browse logic for the miracles catalog: facet-option derivation, the combined
-/// facet/search/sort, and the card presentation helpers (pills and summary). All of it depends only
-/// on the entries plus the loaded <see cref="MiracleFacetCatalog"/>, so it is kept out of
-/// <see cref="Pages.Miracles"/> and unit-testable, mirroring <see cref="PrayerBrowse"/>.
+/// Pure, stateless browse logic for the miracles catalog: facet-option derivation, the combined facet/search/sort, and the card presentation helpers (pills and summary).
+/// All of it depends only on the entries plus the loaded <see cref="MiracleFacetCatalog"/>,
+/// so it is kept out of <see cref="Pages.Miracles"/> and unit-testable, mirroring <see cref="PrayerBrowse"/>.
 /// </summary>
 public sealed class MiracleBrowse
 {
     /// <summary>The distinct category (kind) slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Types(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        entries.SelectMany(m => m.Types)
+        [.. entries.SelectMany(m => m.Types)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Category, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Category, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct approval slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Approvals(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        entries.Select(m => m.Approval)
+        [.. entries.Select(m => m.Approval)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Approval, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Approval, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct region slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Regions(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        entries.Select(m => m.Region)
+        [.. entries.Select(m => m.Region)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>
-    /// Applies the active facets, free-text query, and sort to the catalog. A miracle matches when it
-    /// satisfies every active facet group (intersection across groups, union within a group) and its
-    /// title/summary/country/tags/facet-labels contain the search query.
+    /// Applies the active facets, free-text query, and sort to the catalog.
+    /// A miracle matches when it satisfies every active facet group (intersection across groups, union within a group)
+    /// and its title/summary/country/tags/facet-labels contain the search query.
     /// </summary>
     public IReadOnlyList<MiracleIndexEntry> Filter(
         IReadOnlyList<MiracleIndexEntry> entries,
@@ -74,8 +70,7 @@ public sealed class MiracleBrowse
     }
 
     /// <summary>
-    /// The card summary line: the miracle's summary followed by its approval label, century, and country
-    /// (whichever are known), joined as a middot-separated facet trail.
+    /// The card summary line: the miracle's summary followed by its approval label, century, and country (whichever are known), joined as a middot-separated facet trail.
     /// </summary>
     public string CardSummary(MiracleIndexEntry m, MiracleFacetCatalog facets)
     {
@@ -95,6 +90,5 @@ public sealed class MiracleBrowse
     }
 
     /// <summary>One pill per kind, mirroring the category/kind pill on the Discover lists.</summary>
-    public IReadOnlyList<string> Pills(MiracleIndexEntry m, MiracleFacetCatalog facets) =>
-        [.. m.Types.Select(facets.Category).Where(k => !string.IsNullOrWhiteSpace(k))];
+    public IReadOnlyList<string> Pills(MiracleIndexEntry m, MiracleFacetCatalog facets) => [.. m.Types.Select(facets.Category).Where(k => !string.IsNullOrWhiteSpace(k))];
 }

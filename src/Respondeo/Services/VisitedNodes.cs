@@ -5,8 +5,8 @@ namespace Respondeo.Services;
 
 /// <summary>
 /// An <see cref="IVisitedNodes"/> that persists the visited set in the browser's <c>sessionStorage</c>.
-/// This mirrors <see cref="BreadcrumbTrail"/>'s storage choice: it survives accidental refreshes within the
-/// same tab and keeps URLs clean, while a shared or deep-linked URL naturally starts a fresh journey.
+/// This mirrors <see cref="BreadcrumbTrail"/>'s storage choice: it survives accidental refreshes within the same tab and keeps URLs clean,
+/// while a shared or deep-linked URL naturally starts a fresh journey.
 /// </summary>
 public sealed class VisitedNodes(IJSRuntime js) : IVisitedNodes
 {
@@ -21,15 +21,9 @@ public sealed class VisitedNodes(IJSRuntime js) : IVisitedNodes
         }
     }
 
-    public async Task<IReadOnlySet<string>> GetVisitedAsync()
-    {
-        return await LoadAsync();
-    }
+    public async Task<IReadOnlySet<string>> GetVisitedAsync() => await LoadAsync();
 
-    public async Task ClearAsync()
-    {
-        await js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
-    }
+    public async Task ClearAsync() => await js.InvokeVoidAsync("sessionStorage.removeItem", StorageKey);
 
     private async Task<HashSet<string>> LoadAsync()
     {

@@ -176,7 +176,7 @@ public class SaintBrowseTests
     [Fact]
     public void Pills_render_one_per_patronage()
     {
-        Assert.Equal(["Animals", "Ecology"], _browse.Pills(SampleIndex()[0], Facets));
-        Assert.Empty(_browse.Pills(SampleIndex()[1], Facets));
+        Assert.Equal(["Animals", "Ecology"], _browse.Pills(SampleIndex()[0]));
+        Assert.Empty(_browse.Pills(SampleIndex()[1]));
     }
 }

@@ -19,15 +19,13 @@ public sealed class BrowseStateInterop(IJSRuntime js)
     public ValueTask RestoreScrollAsync(string key) => js.InvokeVoidAsync("respondeoBrowseState.restoreScroll", key);
 
     /// <summary>
-    /// Returns the ids of every currently-expanded accordion section for the <paramref name="key"/>
-    /// list, used at mount to seed the initial <c>open</c> attributes.
+    /// Returns the ids of every currently-expanded accordion section for the <paramref name="key"/> list, used at mount to seed the initial <c>open</c> attributes.
     /// </summary>
     public ValueTask<string[]> GetOpenAsync(string key) => js.InvokeAsync<string[]>("respondeoBrowseState.getOpen", key);
 
     /// <summary>
-    /// Forgets all remembered state (scroll and accordion) for the <paramref name="key"/> list. Pass
-    /// this as a <see cref="BrowseSection"/> exit callback so the JS store resets when the visitor
-    /// leaves the area.
+    /// Forgets all remembered state (scroll and accordion) for the <paramref name="key"/> list.
+    /// Pass this as a <see cref="BrowseSection"/> exit callback so the JS store resets when the visitor leaves the area.
     /// </summary>
     public ValueTask ClearAsync(string key) => js.InvokeVoidAsync("respondeoBrowseState.clear", key);
 }

@@ -37,9 +37,7 @@ public sealed class SummaQuestionPresenter(ISummaService summa, ISummaPartCatalo
         var part = index.Parts.FirstOrDefault(p => string.Equals(p.Id, question.PartId, StringComparison.OrdinalIgnoreCase));
 
         var partTitle = part?.Title ?? string.Empty;
-        var treatise = part?.Questions
-            .FirstOrDefault(q => string.Equals(q.Id, question.Id, StringComparison.OrdinalIgnoreCase))
-            ?.Treatise;
+        var treatise = part?.Questions.FirstOrDefault(q => string.Equals(q.Id, question.Id, StringComparison.OrdinalIgnoreCase))?.Treatise;
 
         var crumbPart = parts.ByStorageKey(question.PartId);
         var seo = BuildSeoDescription(question, partTitle);

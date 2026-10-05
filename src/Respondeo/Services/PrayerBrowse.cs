@@ -4,9 +4,8 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Pure, stateless browse logic for the prayer treasury: category formatting, facet derivation, and
-/// the combined search/filter/sort. Kept out of <see cref="Pages.Prayers"/> so it can be unit-tested,
-/// mirroring <see cref="SummaSearch"/>.
+/// Pure, stateless browse logic for the prayer treasury: category formatting, facet derivation, and the combined search/filter/sort.
+/// Kept out of <see cref="Pages.Prayers"/> so it can be unit-tested, mirroring <see cref="SummaSearch"/>.
 /// </summary>
 public sealed class PrayerBrowse
 {
@@ -14,39 +13,31 @@ public sealed class PrayerBrowse
     private const string OtherCategory = "other";
 
     /// <summary>
-    /// Turns a category slug (e.g. "marian") into a display label (e.g. "Marian"), or null for the
-    /// blank / "other" bucket so those prayers simply carry no pill.
+    /// Turns a category slug (e.g. "marian") into a display label (e.g. "Marian"), or null for the blank / "other" bucket so those prayers simply carry no pill.
     /// </summary>
-    public string? FormatCategory(string category) =>
-        string.IsNullOrWhiteSpace(category) || category == OtherCategory
-            ? null
-            : char.ToUpperInvariant(category[0]) + category[1..];
+    public string? FormatCategory(string category) => string.IsNullOrWhiteSpace(category) || category == OtherCategory ? null : char.ToUpperInvariant(category[0]) + category[1..];
 
     /// <summary>
-    /// The distinct, alphabetically ordered category slugs that actually occur in the index, excluding
-    /// the neutral "other" bucket so only meaningful facets are offered.
+    /// The distinct, alphabetically ordered category slugs that actually occur in the index, excluding the neutral "other" bucket so only meaningful facets are offered.
     /// </summary>
     public IReadOnlyList<string> Categories(IEnumerable<PrayerSummary> prayers) =>
-        prayers.Select(p => p.Category)
+        [.. prayers.Select(p => p.Category)
             .Where(c => !string.IsNullOrWhiteSpace(c) && c != OtherCategory)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(c => c, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(c => c, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The display labels for <see cref="Categories"/>, in the same order.</summary>
-    public IReadOnlyList<string> CategoryLabels(IEnumerable<string> categories) =>
-        [.. categories.Select(c => FormatCategory(c) ?? c)];
+    public IReadOnlyList<string> CategoryLabels(IEnumerable<string> categories) => [.. categories.Select(c => FormatCategory(c) ?? c)];
 
     /// <summary>The distinct, alphabetically ordered tags that occur across the index.</summary>
     public IReadOnlyList<string> Tags(IEnumerable<PrayerSummary> prayers) =>
-        prayers.SelectMany(p => p.Tags)
+        [.. prayers.SelectMany(p => p.Tags)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>
-    /// Applies the active facets, free-text query, and sort to the index. Categories are selected by
-    /// their display label (matched back to the slug); tags OR within the facet and AND across facets;
+    /// Applies the active facets, free-text query, and sort to the index.
+    /// Categories are selected by their display label (matched back to the slug); tags OR within the facet and AND across facets;
     /// the query matches title, Latin title, summary, tags, and category label.
     /// </summary>
     public IReadOnlyList<PrayerSummary> Filter(

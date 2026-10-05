@@ -1,8 +1,7 @@
 namespace Respondeo.Services;
 
 /// <summary>
-/// Tracks the set of content nodes a visitor has opened during the current journey, so the UI can mark
-/// "where to go next" cards that lead to a node already read.
+/// Tracks the set of content nodes a visitor has opened during the current journey, so the UI can mark "where to go next" cards that lead to a node already read.
 /// Unlike <see cref="IBreadcrumbTrail"/>, which reflects the current route and truncates on back-navigation,
 /// this accumulates every node seen and only resets when the journey does (returning to the Start page).
 /// </summary>

@@ -13,12 +13,7 @@
         <ThemeToggle />
         @if (Features.AquinasPortrait)
         {
-            <img class="masthead__portrait"
-                 src="images/aquinas.jpg"
-                 alt="St. Thomas Aquinas, after Sandro Botticelli"
-                 width="144"
-                 height="144"
-                 loading="lazy" />
+            <img class="masthead__portrait" src="images/aquinas.jpg" alt="St. Thomas Aquinas, after Sandro Botticelli" width="144" height="144" loading="lazy" />
         }
         <a class="masthead__brand" href="">
             <span class="masthead__mark" aria-hidden="true">&#10013;</span>
@@ -56,9 +51,8 @@
 </div>
 
 @code {
-    // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History
-    // API, so no manual pageview call is needed here. We still hook LocationChanged to announce the
-    // new page to assistive technology on every in-app navigation.
+    // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
+    // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
     protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
 
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -66,9 +60,8 @@
         await AnnounceAsync();
     }
 
-    // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is
-    // otherwise silent to screen readers. Post the new page title to a polite live region so
-    // assistive technology announces the destination page.
+    // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is otherwise silent to screen readers.
+    // Post the new page title to a polite live region so assistive technology announces the destination page.
     private async Task AnnounceAsync()
     {
         try

@@ -4,8 +4,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Typed wrapper over the <c>window.respondeoDialog</c> JS helper (see <c>wwwroot/js/site.js</c>) that
-/// opens and closes the native <c>&lt;dialog&gt;</c> element as a modal (focus trapping, Esc-to-close, body scroll lock).
+/// Typed wrapper over the <c>window.respondeoDialog</c> JS helper (see <c>wwwroot/js/site.js</c>) that opens and closes the native <c>&lt;dialog&gt;</c>
+/// element as a modal (focus trapping, Esc-to-close, body scroll lock).
 /// </summary>
 /// <remarks>
 /// Centralising these calls keeps the JS method names in one place instead of scattering magic strings across component code,

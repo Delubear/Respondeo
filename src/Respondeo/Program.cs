@@ -12,21 +12,16 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 // Deploy-time feature toggles, bound from the "FeatureFlags" section of wwwroot/appsettings.json.
-// Registered as a singleton so a flag can be flipped per-deploy (or per-environment) without a code change.
 var featureFlags = builder.Configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags();
 builder.Services.AddSingleton(featureFlags);
 
-// The hand-authored content library ships both pillars as static assets: the Inquiry pillar
-// (author-curated Markdown nodes behind IContentService) and the Discover pillar (prayers,
-// devotions, articles, and the catalog of Catholic miracles). The app depends only on the
-// public content interfaces; the parser and loader implementations stay internal.
+// The hand-authored content library ships as static assets.
 builder.Services.AddRespondeoContent();
 
-// The bundled Summa Theologica corpus is shipped as static assets by Respondeo.Content.Summa; the app depends only on ISummaService.
+// The bundled Summa Theologica corpus is shipped as static assets..
 builder.Services.AddRespondeoSumma();
 
-// Assembles the Summa question page's display data (part context, SEO description, back-crumb) from
-// the content services, keeping that orchestration out of the component.
+// Assembles the Summa question page's display data (part context, SEO description, back-crumb) from the content services, keeping that orchestration out of the component.
 builder.Services.AddScoped<SummaQuestionPresenter>();
 
 // Pure title/treatise search over the Summa index, kept out of the Summa browse page so it is unit-testable.

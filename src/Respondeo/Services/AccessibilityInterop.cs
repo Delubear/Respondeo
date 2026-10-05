@@ -3,8 +3,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Typed wrapper over the <c>window.respondeoAccessibility</c> JS helper (see <c>wwwroot/js/site.js</c>) that
-/// posts the current page title to a polite live region so assistive technology announces SPA route changes.
+/// Typed wrapper over the <c>window.respondeoAccessibility</c> JS helper (see <c>wwwroot/js/site.js</c>)
+/// that posts the current page title to a polite live region so assistive technology announces SPA route changes.
 /// </summary>
 /// <remarks>
 /// Centralising this call keeps the JS method name in one place instead of scattering magic strings across layout code,

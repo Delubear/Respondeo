@@ -15,15 +15,12 @@ namespace Respondeo.Services;
 /// The <paramref name="onScroll"/> callback receives the shared metrics: reading progress (0-100) and
 /// whether the page has scrolled past the back-to-top reveal threshold.
 /// </remarks>
-public sealed class ScrollSubscription : IAsyncDisposable
+public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
 {
-    private readonly IJSRuntime _js;
     private DotNetObjectReference<ScrollSubscription>? _ref;
     private IJSObjectReference? _module;
     private int _subscription;
     private Action<double, bool>? _onScroll;
-
-    public ScrollSubscription(IJSRuntime js) => _js = js;
 
     /// <summary>
     /// Imports <c>scroll.js</c> and subscribes to window scroll.
@@ -32,7 +29,7 @@ public sealed class ScrollSubscription : IAsyncDisposable
     public async Task StartAsync(Action<double, bool> onScroll)
     {
         _onScroll = onScroll;
-        _module = await _js.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
+        _module = await js.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
         _ref = DotNetObjectReference.Create(this);
         _subscription = await _module.InvokeAsync<int>("register", _ref);
     }

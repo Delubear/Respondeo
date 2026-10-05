@@ -2,8 +2,8 @@ using Respondeo.Content.Contracts;
 
 namespace Respondeo.Services;
 
-// A single row on the devotion thread: either a mystery announcement (with its reflection) or a
-// prayer the reader taps to mark prayed. Repeated prayers each get their own row (their own bead).
+// A single row on the devotion thread: either a mystery announcement (with its reflection) or a prayer the reader taps to mark prayed.
+// Repeated prayers each get their own row (their own bead).
 public sealed class DevotionBead
 {
     public string? Heading { get; init; }
@@ -32,12 +32,12 @@ public sealed class DevotionBead
     public bool IsPrayer => PrayerHtml is not null;
 }
 
-// The content shown in the prayer/info dialog for a single bead: which title, words, and explanation
-// to display. Pure view-model mapping so the player view need not re-decide Latin vs. vernacular.
+// The content shown in the prayer/info dialog for a single bead: which title, words, and explanation to display.
+// Pure view-model mapping so the player view need not re-decide Latin vs. vernacular.
 public sealed record DevotionPrayerView(string? Title, string? PrayerHtml, string? ExplanationHtml)
 {
-    // The words of a prayer step. Latin is used only when requested and the bead actually has a Latin
-    // text; the Latin name is used only when it too is present, otherwise the vernacular title stands.
+    // The words of a prayer step. Latin is used only when requested and the bead actually has a Latin text;
+    // the Latin name is used only when it too is present, otherwise the vernacular title stands.
     public static DevotionPrayerView ForPrayer(DevotionBead bead, bool showLatin)
     {
         ArgumentNullException.ThrowIfNull(bead);
@@ -56,8 +56,7 @@ public sealed record DevotionPrayerView(string? Title, string? PrayerHtml, strin
     }
 }
 
-// The outcome of a completion toggle, so the hosting view can react (persist, announce, move focus)
-// without re-implementing the ordering rules.
+// The outcome of a completion toggle, so the hosting view can react (persist, announce, move focus) without re-implementing the ordering rules.
 public enum DevotionToggleResult
 {
     // The ordinal was neither the current nor the just-completed step; nothing changed.
@@ -74,21 +73,11 @@ public enum DevotionToggleResult
 }
 
 /// <summary>
-/// The in-memory state and rules of a single devotion praying session: expanding the data-driven
-/// sequence into a flat thread of beads, numbering the prayer rows, and advancing completion strictly
-/// in order. Persistence, rendering and JS interop are the caller's concern; this type is pure logic.
+/// The in-memory state and rules of a single devotion praying session: expanding the data-driven sequence into a flat thread of beads,
+/// numbering the prayer rows, and advancing completion strictly in order. Persistence, rendering and JS interop are the caller's concern; this type is pure logic.
 /// </summary>
-public sealed class DevotionSession
+public sealed class DevotionSession(Devotion devotion, IReadOnlyDictionary<string, Prayer> prayers)
 {
-    private readonly Devotion _devotion;
-    private readonly IReadOnlyDictionary<string, Prayer> _prayers;
-
-    public DevotionSession(Devotion devotion, IReadOnlyDictionary<string, Prayer> prayers)
-    {
-        _devotion = devotion;
-        _prayers = prayers;
-    }
-
     /// <summary>The flat thread of rows for the current set. Empty until <see cref="Start"/> is called.</summary>
     public IReadOnlyList<DevotionBead> Beads { get; private set; } = [];
 
@@ -104,8 +93,8 @@ public sealed class DevotionSession
     /// <summary>True once every prayer row has been prayed.</summary>
     public bool IsComplete => CompletedCount >= PrayerCount;
 
-    // Builds (or rebuilds) the thread for the given set and restores a place in it. A non-zero
-    // startCompleted resumes an earlier spot; the value is clamped so it can never exceed the rows.
+    // Builds (or rebuilds) the thread for the given set and restores a place in it.
+    // A non-zero startCompleted resumes an earlier spot; the value is clamped so it can never exceed the rows.
     public void Start(string? selectedSetId, int startCompleted = 0)
     {
         SelectedSetId = selectedSetId;
@@ -125,12 +114,10 @@ public sealed class DevotionSession
         CompletedCount = Math.Clamp(startCompleted, 0, PrayerCount);
     }
 
-    // Counts how many prayer rows a given set expands to, without disturbing the live thread, so a
-    // resume banner can show a total. Mirrors the ordinal numbering done in Start.
+    // Counts how many prayer rows a given set expands to, without disturbing the live thread, so a resume banner can show a total. Mirrors the ordinal numbering done in Start.
     public int CountPrayers(string? selectedSetId) => BuildBeads(selectedSetId).Count(b => b.IsPrayer);
 
-    // Marks the next prayer complete, or un-marks the most recently completed one. Completion can only
-    // move forward one step at a time, so nothing can be marked out of order.
+    // Marks the next prayer complete, or un-marks the most recently completed one. Completion can only move forward one step at a time, so nothing can be marked out of order.
     public DevotionToggleResult Toggle(int ordinal)
     {
         if (ordinal == CompletedCount)
@@ -148,8 +135,7 @@ public sealed class DevotionSession
         return DevotionToggleResult.NoChange;
     }
 
-    // A row is "done" once completion has passed it. A mystery announcement is treated as done once
-    // the pointer reaches the first prayer of the decade it introduces.
+    // A row is "done" once completion has passed it. A mystery announcement is treated as done once the pointer reaches the first prayer of the decade it introduces.
     public bool IsItemDone(int index)
     {
         var beads = Beads;
@@ -180,9 +166,9 @@ public sealed class DevotionSession
         return current is null ? null : $"Step {CompletedCount + 1} of {PrayerCount}: {current.PrayerTitle}.";
     }
 
-    // Spoken label for a prayer step: its title plus where it sits in the thread and its state, so a
-    // non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary". The
-    // displayed title and note are passed in so the spoken text matches the visible language.
+    // Spoken label for a prayer step: its title plus where it sits in the thread and its state,
+    // so a non-visual user hears "Hail Mary, step 12 of 59, current" rather than just "Hail Mary".
+    // The displayed title and note are passed in so the spoken text matches the visible language.
     public string PrayerStepLabel(DevotionBead step, bool done, bool current, string? displayTitle = null, string? displayNote = null)
     {
         var title = string.IsNullOrWhiteSpace(displayTitle) ? step.PrayerTitle : displayTitle;
@@ -193,14 +179,14 @@ public sealed class DevotionSession
         return $"{title}{note}, {position}, {state}";
     }
 
-    // Expands the data-driven sequence into the flat list of rows. A "mysteries" step iterates the
-    // chosen set, emitting an announcement row for each mystery followed by its per-mystery prayers.
+    // Expands the data-driven sequence into the flat list of rows.
+    // A "mysteries" step iterates the chosen set, emitting an announcement row for each mystery followed by its per-mystery prayers.
     private List<DevotionBead> BuildBeads(string? selectedSetId)
     {
         var beads = new List<DevotionBead>();
-        var set = _devotion.MysterySets.FirstOrDefault(s => s.Id == selectedSetId) ?? _devotion.MysterySets.FirstOrDefault();
+        var set = devotion.MysterySets.FirstOrDefault(s => s.Id == selectedSetId) ?? devotion.MysterySets.FirstOrDefault();
 
-        foreach (var step in _devotion.Sequence)
+        foreach (var step in devotion.Sequence)
         {
             if (step.Kind == "mysteries" && set is not null)
             {
@@ -238,9 +224,8 @@ public sealed class DevotionSession
         return beads;
     }
 
-    // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its
-    // own bead on the thread and its own step to mark complete. The words come from the cataloged
-    // prayer referenced by PrayerId, or, when there is none, from the step's inline Text (Mass responses).
+    // Adds one row per repetition, so each repeated prayer (e.g. every Hail Mary of a decade) is its own bead on the thread and its own step to mark complete.
+    // The words come from the cataloged prayer referenced by PrayerId, or, when there is none, from the step's inline Text (Mass responses).
     private void AddPrayerRow(List<DevotionBead> beads, DevotionStep step, string? heading)
     {
         string title;
@@ -248,7 +233,7 @@ public sealed class DevotionSession
         string? latinTitle;
         string? latinHtml;
 
-        if (!string.IsNullOrWhiteSpace(step.PrayerId) && _prayers.TryGetValue(step.PrayerId, out var prayer))
+        if (!string.IsNullOrWhiteSpace(step.PrayerId) && prayers.TryGetValue(step.PrayerId, out var prayer))
         {
             title = prayer.Title;
             html = prayer.Html;

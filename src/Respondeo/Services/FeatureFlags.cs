@@ -18,8 +18,8 @@ public sealed class FeatureFlags
     public bool SummaPillar { get; set; } = true;
 
     /// <summary>
-    /// Master switch for the whole Discover Catholicism pillar. When disabled, the pillar and all of its
-    /// sub-areas are hidden regardless of the individual feature flags below (it supersedes them).
+    /// Master switch for the whole Discover Catholicism pillar.
+    /// When disabled, the pillar and all of its sub-areas are hidden regardless of the individual feature flags below (it supersedes them).
     /// </summary>
     public bool DiscoverPillar { get; set; } = true;
 
@@ -39,9 +39,8 @@ public sealed class FeatureFlags
     public bool ArticlesFeature { get; set; } = true;
 
     /// <summary>
-    /// When enabled, the feedback trigger opens the choice dialog (open a GitHub issue, or send
-    /// anonymous feedback via the hosted Tally form). When disabled, the trigger skips the dialog
-    /// entirely and goes straight to opening a GitHub issue.
+    /// When enabled, the feedback trigger opens the choice dialog (open a GitHub issue, or send anonymous feedback via the hosted Tally form).
+    /// When disabled, the trigger skips the dialog entirely and goes straight to opening a GitHub issue.
     /// </summary>
     public bool ExternalFeedback { get; set; } = true;
 }

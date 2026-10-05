@@ -4,10 +4,8 @@ using Microsoft.JSInterop;
 namespace Respondeo.Services;
 
 /// <summary>
-/// An <see cref="IDevotionProgressService"/> that keeps a single active-devotion slot in the browser's
-/// <c>localStorage</c> (so progress survives navigation, refreshes and sessions). The slot holds a
-/// JSON <see cref="DevotionProgress"/>; loading is scoped by devotion id so a saved slot for one
-/// devotion never leaks into another.
+/// An <see cref="IDevotionProgressService"/> that keeps a single active-devotion slot in the browser's <c>localStorage</c> (so progress survives navigation, refreshes and sessions).
+/// The slot holds a JSON <see cref="DevotionProgress"/>; loading is scoped by devotion id so a saved slot for one devotion never leaks into another.
 /// </summary>
 public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressService
 {
@@ -44,8 +42,7 @@ public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressSe
 
     public async Task ClearAsync(string devotionId)
     {
-        // Only clear the slot if it still belongs to this devotion, so we never wipe another
-        // devotion's in-progress state.
+        // Only clear the slot if it still belongs to this devotion, so we never wipe another devotion's in-progress state.
         var existing = await LoadAsync(devotionId);
         if (existing is not null)
         {

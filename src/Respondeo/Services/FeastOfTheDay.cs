@@ -4,8 +4,7 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// A saint whose fixed-date feast falls on the day being asked about: enough to render a gentle
-/// "today the Church celebrates…" highlight that links back to the saint's profile.
+/// A saint whose fixed-date feast falls on the day being asked about: enough to render a gentle "today the Church celebrates…" highlight that links back to the saint's profile.
 /// </summary>
 /// <param name="Title">Display title, e.g. "St. Francis of Assisi".</param>
 /// <param name="Id">URL slug used to link to <c>discover/saints/{Id}</c>.</param>
@@ -15,8 +14,8 @@ namespace Respondeo.Services;
 public sealed record FeastHighlight(string Title, string Id, string? FeastDay = null, string? Summary = null, string? Dates = null);
 
 /// <summary>
-/// Finds the saint (if any) whose feast the Church keeps on a given day. v1 matches only fixed
-/// calendar dates such as "October 4"; moveable feasts (e.g. "Corpus Christi") are ignored.
+/// Finds the saint (if any) whose feast the Church keeps on a given day.
+/// v1 matches only fixed calendar dates such as "October 4"; moveable feasts (e.g. "Corpus Christi") are ignored.
 /// </summary>
 public interface IFeastOfTheDay
 {
@@ -24,27 +23,26 @@ public interface IFeastOfTheDay
     Task<FeastHighlight?> GetTodayAsync();
 
     /// <summary>
-    /// Returns the ids of every saint whose fixed-date feast falls today (empty when none do), so
-    /// the browse list can highlight the matching cards without re-parsing feast dates itself.
+    /// Returns the ids of every saint whose fixed-date feast falls today (empty when none do),
+    /// so the browse list can highlight the matching cards without re-parsing feast dates itself.
     /// </summary>
     Task<IReadOnlySet<string>> GetTodayFeastIdsAsync();
 
     /// <summary>
-    /// True when <paramref name="feastDay"/> is a fixed "Month Day" string that falls on today's
-    /// date, so a page can flag a single known feast day without fetching the whole catalog.
+    /// True when <paramref name="feastDay"/> is a fixed "Month Day" string that falls on today's date,
+    /// so a page can flag a single known feast day without fetching the whole catalog.
     /// </summary>
     bool IsToday(string? feastDay);
 }
 
 /// <summary>
-/// Default <see cref="IFeastOfTheDay"/> backed by the bundled saints catalog. The current date and
-/// the random selector are injected so the matching logic stays deterministic and unit-testable.
+/// Default <see cref="IFeastOfTheDay"/> backed by the bundled saints catalog.
+/// The current date and the random selector are injected so the matching logic stays deterministic and unit-testable.
 /// </summary>
 /// <param name="saints">The bundled saints catalog.</param>
 /// <param name="today">Supplies the current date.</param>
 /// <param name="pickIndex">
-/// Chooses an index in <c>[0, count)</c> when several saints share today's feast; injected so tests
-/// can make the choice deterministic.
+/// Chooses an index in <c>[0, count)</c> when several saints share today's feast; injected so tests can make the choice deterministic.
 /// </param>
 internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, Func<int, int> pickIndex) : IFeastOfTheDay
 {
@@ -103,16 +101,10 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
             return false;
         }
 
-        // Parse day-and-month only, independent of year, using a stable reference year so that
-        // feasts like "February 29" still fail gracefully in non-leap target years.
+        // Parse day-and-month only, independent of year, using a stable reference year so that feasts like "February 29" still fail gracefully in non-leap target years.
         var text = $"{feastDay.Trim()} {date.Year}";
 
-        if (!DateTime.TryParseExact(
-                text,
-                ["MMMM d yyyy", "MMM d yyyy"],
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out var parsed))
+        if (!DateTime.TryParseExact(text, ["MMMM d yyyy", "MMM d yyyy"], CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed))
         {
             return false;
         }

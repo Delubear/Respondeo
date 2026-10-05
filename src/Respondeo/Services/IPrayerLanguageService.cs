@@ -1,8 +1,8 @@
 namespace Respondeo.Services;
 
 /// <summary>
-/// Remembers whether the reader prefers to see devotion prayers by their Latin names, persisting the
-/// choice in the browser's <c>localStorage</c> so it survives navigation and future sessions.
+/// Remembers whether the reader prefers to see devotion prayers by their Latin names,
+/// persisting the choice in the browser's <c>localStorage</c> so it survives navigation and future sessions.
 /// </summary>
 public interface IPrayerLanguageService
 {
