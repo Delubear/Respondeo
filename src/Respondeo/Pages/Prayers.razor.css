@@ -1,8 +1,0 @@
-/* Tiny V./R. notation key in the filter rail. Uses the rail's spare vertical space so it never
-   pushes the prayer list down. Plain visible text, so it works on touch as well as desktop. */
-.prayer-notation-key {
-    margin-top: 1.5rem;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: var(--ink-soft);
-}

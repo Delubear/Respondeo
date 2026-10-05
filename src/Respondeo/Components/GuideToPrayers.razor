@@ -1,0 +1,149 @@
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@* A self-contained "Guide to Prayers" helper. Renders a floating circular button that stacks above
+   the back-to-top control, plus a native <dialog>, so it is reachable on the prayers home and on
+   every prayer page (covering shared links). It explains the versicle/response (V./R.) notation and
+   how to pray a litany and a novena. *@
+
+<button type="button"
+        class="prayer-guide__trigger @(_stacked ? "is-stacked" : string.Empty)"
+        @onclick="OpenAsync"
+        aria-label="Guide to prayers"
+        title="Guide to prayers">
+    <span class="prayer-guide__trigger-mark" aria-hidden="true">?</span>
+</button>
+
+<Dialog @ref="_dialog" Title="Guide to Prayers" Eyebrow="A short orientation" MaxWidth="52rem">
+    <ChildContent>
+        <p>
+            Many of the Church&rsquo;s prayers follow patterns that are centuries old. Once you can
+            read the little cues, you can pray any of them with confidence &mdash; alone or with others.
+        </p>
+
+        <h3 class="prayer-guide__subhead">Versicle and response <span class="prayer-guide__latin">V. and R.</span></h3>
+        <p>
+            Many prayers are built as a call and answer. Two small labels mark who says what:
+        </p>
+        <ul class="prayer-guide__key">
+            <li><span class="prayer-guide__cue">V.</span> the <strong>versicle</strong> &mdash; the line said by the leader (the one who begins).</li>
+            <li><span class="prayer-guide__cue">R.</span> the <strong>response</strong> &mdash; the line said by everyone in reply.</li>
+        </ul>
+        <p>
+            Praying alone, simply say both lines yourself. The letters come from the Latin
+            <em>versus</em> (verse) and <em>responsum</em> (response), and you will meet them
+            throughout the Rosary, the Divine Office, litanies, and novenas.
+        </p>
+
+        <h3 class="prayer-guide__subhead">Praying a Litany</h3>
+        <p>
+            A <strong>litany</strong> is a prayer of many short invocations, each answered by the same
+            repeated response. One voice names a title of the Lord, Our Lady, or a saint; everyone
+            answers together. It is a steady, rhythmic way to pray, and the repetition is the point:
+            it lets the heart rest on God while the words carry you along.
+        </p>
+        <ol class="prayer-guide__steps">
+            <li>
+                <span class="prayer-guide__cue">Begin with mercy</span>
+                Most litanies open with the <em>Kyrie</em> &mdash; &ldquo;Lord, have mercy. Christ, have
+                mercy. Lord, have mercy.&rdquo;
+            </li>
+            <li>
+                <span class="prayer-guide__cue">Keep the one response</span>
+                Through the long list of invocations the answer stays the same &mdash; often
+                &ldquo;have mercy on us&rdquo; or &ldquo;pray for us.&rdquo; You can pray the responses
+                in your heart if you are alone.
+            </li>
+            <li>
+                <span class="prayer-guide__cue">Close with the Lamb of God</span>
+                Litanies usually end with the threefold &ldquo;Lamb of God&rdquo; and a concluding
+                prayer that gathers up everything asked for.
+            </li>
+        </ol>
+
+        <h3 class="prayer-guide__subhead">Praying a Novena</h3>
+        <p>
+            A <strong>novena</strong> is a prayer repeated for <strong>nine days in a row</strong>. The
+            number recalls the nine days the Apostles and Our Lady spent in prayer between the
+            Ascension and Pentecost, waiting for the Holy Spirit. A novena is a way of asking
+            perseveringly &mdash; of knocking until the door is opened.
+        </p>
+        <ol class="prayer-guide__steps">
+            <li>
+                <span class="prayer-guide__cue">Choose an intention</span>
+                Bring one clear need to the prayer and hold it before God each day.
+            </li>
+            <li>
+                <span class="prayer-guide__cue">Pray the same prayer daily</span>
+                Say the novena prayer once a day for nine consecutive days &mdash; a fixed time, such
+                as morning or before bed, makes it easier to keep.
+            </li>
+            <li>
+                <span class="prayer-guide__cue">Persevere to the ninth day</span>
+                If you miss a day, simply resume; what matters is the faithful, trusting repetition
+                over the nine days.
+            </li>
+        </ol>
+        <p class="prayer-guide__note">
+            A good place to start is the <a href="discover/prayers/novena-sacred-heart">Novena to the
+            Sacred Heart</a> and the <a href="discover/prayers/litany-sacred-heart">Litany of the
+            Sacred Heart</a>.
+        </p>
+    </ChildContent>
+</Dialog>
+
+@code {
+    private Dialog? _dialog;
+    private bool _stacked;
+    private DotNetObjectReference<GuideToPrayers>? _ref;
+    private IJSObjectReference? _module;
+    private int _subscription;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
+            _ref = DotNetObjectReference.Create(this);
+            _subscription = await _module.InvokeAsync<int>("register", _ref);
+        }
+    }
+
+    // The guide only needs the back-to-top reveal threshold so its button can stack above that
+    // control; the progress value is shared by the same scroll tracker but ignored here.
+    [JSInvokable]
+    public void OnScroll(double progress, bool backToTopVisible)
+    {
+        if (_stacked != backToTopVisible)
+        {
+            _stacked = backToTopVisible;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenAsync()
+    {
+        if (_dialog is not null)
+        {
+            await _dialog.Show();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("unregister", _subscription);
+                await _module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit already gone during teardown; nothing to close.
+        }
+
+        _ref?.Dispose();
+    }
+}

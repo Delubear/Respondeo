@@ -1,0 +1,122 @@
+/* ---------- Trigger button ---------- */
+/* A circular control matching .back-to-top. When the back-to-top arrow is hidden (near the top of
+   the page) this occupies the bottom-right slot; once the arrow appears it slides up to stack above
+   it, keeping the two as a tidy vertical pair. */
+.prayer-guide__trigger {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--float-btn-bg);
+    color: var(--float-btn-fg);
+    cursor: pointer;
+    box-shadow: 0 0.35rem 0.9rem var(--shadow);
+    transition: bottom 0.15s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.prayer-guide__trigger.is-stacked {
+    bottom: 4.75rem;
+}
+
+.prayer-guide__trigger:hover {
+    background: var(--float-btn-bg-hover);
+    color: var(--float-btn-fg-hover);
+}
+
+.prayer-guide__trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.prayer-guide__trigger-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prayer-guide__trigger {
+        transition: background 0.12s ease, color 0.12s ease;
+    }
+}
+
+/* ---------- Guide content ---------- */
+.prayer-guide__note {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.prayer-guide__subhead {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+    color: var(--accent);
+}
+
+.prayer-guide__key {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+}
+
+.prayer-guide__key li {
+    margin-bottom: 0.35rem;
+}
+
+.prayer-guide__steps {
+    list-style: none;
+    counter-reset: guide-step;
+    margin: 0;
+    padding: 0;
+}
+
+.prayer-guide__steps > li {
+    counter-increment: guide-step;
+    position: relative;
+    padding: 0 0 1rem 2.2rem;
+}
+
+.prayer-guide__steps > li::before {
+    content: counter(guide-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.prayer-guide__cue {
+    display: block;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+}
+
+.prayer-guide__latin {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-left: 0.4rem;
+}
+
+.prayer-guide__latin::before {
+    content: "\00b7";
+    margin-right: 0.4rem;
+}
