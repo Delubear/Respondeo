@@ -7,8 +7,7 @@
 
 <PageTitle>Articles &mdash; Discover &mdash; Respondeo</PageTitle>
 
-<SeoHead Title="Living the Faith — Articles"
-         Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
+<SeoHead Title="Living the Faith — Articles" Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
 <section class="pillar browse" data-browse-scroll="articles">
     <PillarHeader Eyebrow="Beneath the practice" Title="Articles">
@@ -30,11 +29,7 @@
     }
     else
     {
-        <SearchBox Id="article-search"
-                           Label="Search articles"
-                           Placeholder="e.g. Confession, Eucharist, prayer..."
-                           Value="@_query"
-                           ValueChanged="OnSearchChanged" />
+        <SearchBox Id="article-search" Label="Search articles" Placeholder="e.g. Confession, Eucharist, prayer..." Value="@_query" ValueChanged="OnSearchChanged" />
 
         <div class="filter-layout">
             <aside class="filter-rail">
@@ -82,8 +77,7 @@
 
     private string _sortKey = _sortOptions[0].Key;
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the
-    // dropdown, current selection, and Filtered logic all stay in sync.
+    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
     private static readonly SortOption<ArticleRow>[] _sortOptions =
     [
         new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
@@ -138,11 +132,5 @@
     }
 
     private IReadOnlyList<ArticleRow> Filtered =>
-        _articles is null
-            ? []
-            : Browser.Filter(
-                _articles,
-                _query,
-                _selectedTags,
-                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+        _articles is null ? [] : Browser.Filter(_articles, _query, _selectedTags, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }

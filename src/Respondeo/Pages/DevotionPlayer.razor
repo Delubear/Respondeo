@@ -15,10 +15,7 @@
     <SeoHead Title="@_devotion.Title" Description="@_devotion.Summary" Article="true" />
 }
 
-<Breadcrumb CurrentTitle="@(_devotion?.Title ?? "Devotion")"
-            StageHref="discover"
-            StageLabel="Discover"
-            Crumbs="_crumbs" />
+<Breadcrumb CurrentTitle="@(_devotion?.Title ?? "Devotion")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
 
 @if (_loading)
 {
@@ -36,11 +33,7 @@ else if (_devotion is null)
 else if (!_started)
 {
     @* Intro + mystery-set chooser, shown before the reader begins. *@
-    <DevotionIntro Devotion="_devotion"
-                   SavedProgress="_savedProgress"
-                   ResumeTotal="_session?.CountPrayers(_savedProgress?.SetId) ?? 0"
-                   OnResume="Resume"
-                   OnBegin="BeginFromIntro" />
+    <DevotionIntro Devotion="_devotion" SavedProgress="_savedProgress" ResumeTotal="_session?.CountPrayers(_savedProgress?.SetId) ?? 0" OnResume="Resume" OnBegin="BeginFromIntro" />
 }
 else
 {
@@ -57,16 +50,11 @@ else
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
-        <DevotionStepList Session="_session"
-                          ShowLatin="_showLatin"
-                          OnToggle="ToggleComplete"
-                          OnOpenPrayer="OpenPrayer"
-                          OnOpenInfo="OpenInfo" />
+        <DevotionStepList Session="_session" ShowLatin="_showLatin" OnToggle="ToggleComplete" OnOpenPrayer="OpenPrayer" OnOpenInfo="OpenInfo" />
 
         <div class="devotion__exit">
             <a href="discover/devotions">Leave the devotion</a>
-            @* Only reachable in immersive mode, where the masthead (and its theme toggle) is hidden;
-               kept beside the exit link so it stays out of the prayer flow. Hidden by CSS elsewhere. *@
+            @* Only reachable in immersive mode, where the masthead (and its theme toggle) is hidden; kept beside the exit link so it stays out of the prayer flow. Hidden by CSS elsewhere. *@
             <span class="devotion__exit-theme">
                 @if (_devotion.LatinAvailable)
                 {
@@ -77,10 +65,7 @@ else
         </div>
     </section>
 
-    <DevotionPrayerDialog @ref="_prayerDialog"
-                          Title="@_openPrayerTitle"
-                          ExplanationHtml="@_openExplanationHtml"
-                          PrayerHtml="@_openPrayerHtml" />
+    <DevotionPrayerDialog @ref="_prayerDialog" Title="@_openPrayerTitle" ExplanationHtml="@_openExplanationHtml" PrayerHtml="@_openPrayerHtml" />
 }
 
 @code {
@@ -94,25 +79,20 @@ else
 
     private readonly Dictionary<string, Prayer> _prayers = new(StringComparer.OrdinalIgnoreCase);
 
-    // The live praying session: the expanded thread and in-order completion state. Null until the
-    // devotion has loaded; _started switches the intro / set chooser for the praying view.
+    // The live praying session: the expanded thread and in-order completion state. Null until the devotion has loaded; _started switches the intro / set chooser for the praying view.
     private DevotionSession? _session;
     private bool _started;
 
-    // Set when a step is marked prayed so the next render moves keyboard focus onto the new current
-    // step (see ToggleComplete / OnAfterRenderAsync). Cleared once the focus has been handed over.
+    // Set when a step is marked prayed so the next render moves keyboard focus onto the new current step (see ToggleComplete / OnAfterRenderAsync). Cleared once the focus has been handed over.
     private bool _focusCurrentStep;
 
-    // Set when resuming an in-progress devotion mid-thread so the next render scrolls the current step
-    // into view (the thread can be long, and the reader should land on their spot, not the top).
+    // Set when resuming an in-progress devotion mid-thread so the next render scrolls the current step into view (the thread can be long, and the reader should land on their spot, not the top).
     private bool _scrollToCurrentStep;
 
-    // Polite live-region text announcing progress to screen readers as steps are prayed. Non-visual
-    // users otherwise get no feedback that a step was marked, or that the devotion is complete.
+    // Polite live-region text announcing progress to screen readers as steps are prayed. Non-visual users otherwise get no feedback that a step was marked, or that the devotion is complete.
     private string? _announcement;
 
-    // Saved progress for this devotion (from a previous, un-finished visit), if any. Drives the
-    // Resume / Start over choice on the intro screen.
+    // Saved progress for this devotion (from a previous, un-finished visit), if any. Drives the Resume / Start over choice on the intro screen.
     private DevotionProgress? _savedProgress;
 
     private DevotionPrayerDialog? _prayerDialog;
@@ -120,8 +100,7 @@ else
     private string? _openPrayerHtml;
     private string? _openExplanationHtml;
 
-    // When true, the thread shows each prayer's Latin name (and the book opens its Latin text).
-    // Only offered when the devotion declares LatinAvailable.
+    // When true, the thread shows each prayer's Latin name (and the book opens its Latin text). Only offered when the devotion declares LatinAvailable.
     private bool _showLatin;
 
     private async Task SetLatin(bool latin)
@@ -147,9 +126,8 @@ else
 
         if (_devotion is not null)
         {
-            // A devotion that does not offer Latin must never render it, even if the reader's global
-            // preference (remembered from, say, the Rosary) is Latin: otherwise individual prayers
-            // that happen to have a Latin translation would show in Latin with no way to switch back.
+            // A devotion that does not offer Latin must never render it, even if the reader's global preference
+            // (remembered from, say, the Rosary) is Latin: otherwise individual prayers that happen to have a Latin translation would show in Latin with no way to switch back.
             if (!_devotion.LatinAvailable)
             {
                 _showLatin = false;
@@ -158,8 +136,7 @@ else
             _selectedSetId = _devotion.MysterySets.FirstOrDefault()?.Id;
             await LoadPrayersAsync(_devotion);
 
-            // The session owns the thread and completion rules; create it once the prayers are loaded
-            // so the intro screen can already count a set's prayers for the resume banner.
+            // The session owns the thread and completion rules; create it once the prayers are loaded so the intro screen can already count a set's prayers for the resume banner.
             _session = new DevotionSession(_devotion, _prayers);
 
             // Surface any un-finished progress so the intro screen can offer Resume / Start over.
@@ -169,9 +146,8 @@ else
         _loading = false;
     }
 
-    // After marking a step prayed, hand keyboard focus to the new current step so pressing Space or
-    // Enter walks forward through the thread instead of toggling the just-prayed step off again. When
-    // the last step is prayed there is no current step, so focus falls to the "Leave the devotion" link.
+    // After marking a step prayed, hand keyboard focus to the new current step so pressing Space or Enter walks forward through the thread instead of toggling the just-prayed step off again.
+    // When the last step is prayed there is no current step, so focus falls to the "Leave the devotion" link.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_scrollToCurrentStep)
@@ -205,8 +181,7 @@ else
         }
     }
 
-    // Fetch every distinct prayer referenced anywhere in the sequence once, so the player can render
-    // each bead's text without further round trips.
+    // Fetch every distinct prayer referenced anywhere in the sequence once, so the player can render each bead's text without further round trips.
     private async Task LoadPrayersAsync(Devotion devotion)
     {
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -235,8 +210,7 @@ else
         }
     }
 
-    // Begins from the intro screen: a non-null setId selects that mystery set first (multi-set
-    // devotions), while null keeps the default single set.
+    // Begins from the intro screen: a non-null setId selects that mystery set first (multi-set devotions), while null keeps the default single set.
     private async Task BeginFromIntro(string? setId)
     {
         if (setId is not null)
@@ -247,24 +221,19 @@ else
         await Begin();
     }
 
-    // Starts (or resumes) praying the currently selected set. A non-zero startCompleted restores an
-    // earlier place in the thread; the value is clamped so a saved count can never exceed the rows.
+    // Starts (or resumes) praying the currently selected set. A non-zero startCompleted restores an earlier place in the thread; the value is clamped so a saved count can never exceed the rows.
     private async Task Begin(int startCompleted = 0)
     {
         _session!.Start(_selectedSetId, startCompleted);
         _started = true;
 
-        // Resuming mid-thread: scroll the current step into view on the next render so the reader
-        // lands on their place rather than the top of a long devotion.
+        // Resuming mid-thread: scroll the current step into view on the next render so the reader lands on their place rather than the top of a long devotion.
         if (_session.CompletedCount > 0 && !_session.IsComplete)
         {
             _scrollToCurrentStep = true;
         }
 
-        // Persist the starting point so an immediate exit still leaves something to resume.
         await SaveProgressAsync();
-
-        // Enter immersive mode so the layout can hand the praying view the full screen on mobile.
         await EnterImmersiveAsync();
     }
 
@@ -307,9 +276,8 @@ else
         }
     }
 
-    // Marks the next prayer complete, or unmarks the most recently completed one. Completion can only
-    // move forward one step at a time, so nothing can be marked out of order. Each change is persisted
-    // so leaving mid-devotion can be resumed; finishing the devotion clears the saved slot.
+    // Marks the next prayer complete, or unmarks the most recently completed one. Completion can only move forward one step at a time, so nothing can be marked out of order.
+    // Each change is persisted so leaving mid-devotion can be resumed; finishing the devotion clears the saved slot.
     private async Task ToggleComplete(int ordinal)
     {
         var result = _session!.Toggle(ordinal);
@@ -320,8 +288,7 @@ else
                 return;
 
             case DevotionToggleResult.Advanced:
-                // Keyboard focus is still on the step just prayed. Move it forward to the new current
-                // step after this render so Space/Enter advances the thread rather than un-marking it.
+                // Keyboard focus is still on the step just prayed. Move it forward to the new current step after this render so Space/Enter advances the thread rather than un-marking it.
                 _focusCurrentStep = true;
                 _announcement = _session.DescribeCurrentStep();
                 await SaveProgressAsync();
@@ -352,16 +319,14 @@ else
             await _prayerDialog.ShowAsync();
         }
 
-        // Reading the words of the current step counts as praying it: mark it complete so opening the
-        // book keeps the thread moving without a separate tap on the step itself.
+        // Reading the words of the current step counts as praying it: mark it complete so opening the book keeps the thread moving without a separate tap on the step itself.
         if (bead.IsPrayer && bead.PrayerOrdinal == _session!.CompletedCount)
         {
             await ToggleComplete(bead.PrayerOrdinal);
         }
     }
 
-    // Opens the info dialog for a section banner: an explanation only, with no words to pray and no
-    // completion side effect (a section is not a step the reader marks).
+    // Opens the info dialog for a section banner: an explanation only, with no words to pray and no completion side effect (a section is not a step the reader marks).
     private async Task OpenInfo(DevotionBead bead)
     {
         _openPrayerTitle = bead.Heading;

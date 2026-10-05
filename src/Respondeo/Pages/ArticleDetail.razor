@@ -9,10 +9,7 @@
     <SeoHead Title="@_article.Title" Description="@_article.Summary" Article="true" />
 }
 
-<Breadcrumb CurrentTitle="@(_article?.Title ?? "Article")"
-            StageHref="discover"
-            StageLabel="Discover"
-            Crumbs="_crumbs" />
+<Breadcrumb CurrentTitle="@(_article?.Title ?? "Article")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
 
 @if (_loading)
 {
