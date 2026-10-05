@@ -7,7 +7,7 @@ description: Add a new prayer to the Respondeo Discover corpus (Markdown + manif
 
 Add a new prayer to `src/Respondeo.Content/wwwroot/discover/prayers/`.
 
-If the prayer subject, title, or text was not provided, ask for it before proceeding. Only catalogue
+If the prayer subject, title, or text was not provided, ask for it before proceeding. Only catalog
 public-domain or traditional texts.
 
 Follow [`content-authoring.instructions.md`](../instructions/content-authoring.instructions.md) and

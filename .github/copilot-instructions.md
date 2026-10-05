@@ -1,5 +1,8 @@
 # Copilot Instructions
 
+## General Guidelines
+- Use American English spelling (e.g., "color", "behavior", "catalog", "center") in all user-facing text, content, and documentation for the Respondeo project, not British spelling.
+
 ## Line wrapping
 - Keep lines under 200 characters, splitting them as necessary to stay within that limit.
 - When a line must be split, prefer a break in one of these positions:

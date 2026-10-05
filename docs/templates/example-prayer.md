@@ -6,7 +6,7 @@
 # body, and add the file name to prayers/prayers-manifest.json so PrayerService
 # will load it.
 #
-# Copyright care: only catalogue prayers that are public-domain or traditional.
+# Copyright care: only catalog prayers that are public-domain or traditional.
 # Where a translation credit is required, add an `attribution` line.
 # ────────────────────────────────────────────────────────────────────────────
 

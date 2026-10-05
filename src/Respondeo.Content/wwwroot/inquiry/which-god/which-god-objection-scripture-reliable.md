@@ -15,7 +15,7 @@ summary: If the case rests on old texts copied and recopied for millennia, how c
 - **Textual transmission is a solved, measurable question — not a mystery.** We do not have to guess whether the text drifted; we can check. 
   The Dead Sea Scrolls pushed our Hebrew manuscripts back roughly a thousand years, and when a scroll of Isaiah copied before Christ is laid beside the medieval text, 
   they match to a remarkable degree. Far from a game of telephone, the copying tradition — with its obsessive scribal safeguards — preserved the text with striking fidelity. 
-  Where variants exist, they are catalogued in the open and touch no major claim.
+  Where variants exist, they are cataloged in the open and touch no major claim.
 - **"We have no originals" proves too much.** We have no originals of Caesar, Tacitus, or Plato either, yet no one doubts they wrote. 
   Judged by the ordinary standards of ancient history — number of manuscripts, closeness to the events, 
   agreement across copies — the biblical texts are the *best*-attested documents of the ancient world, not the worst. 

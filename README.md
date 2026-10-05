@@ -84,7 +84,7 @@ authoring guide: **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/IN
 > structure would map onto the Summa-style browsing layout very well and would make a great addition
 > as its own pillar. It is **not included today because the current English translation is still
 > under copyright**, so it cannot be shipped in this repository. If a public-domain or suitably
-> licensed text becomes available, it could be modelled after `Respondeo.Content.Summa`.
+> licensed text becomes available, it could be modeled after `Respondeo.Content.Summa`.
 
 ## Deployment
 
@@ -166,7 +166,7 @@ precache everything, so there is nothing left to fetch at runtime.
   `respondeoInstall` in [`js/site.js`](src/Respondeo/wwwroot/js/site.js)) and triggers the native
   install prompt on click. Dismissing it ("Not now") is remembered in `localStorage`, so it does not
   reappear on future visits. iOS Safari has no such API, so users there install via the Share sheet.
-  Installability metadata (name, icons, colours) is in
+  Installability metadata (name, icons, colors) is in
   [`wwwroot/manifest.webmanifest`](src/Respondeo/wwwroot/manifest.webmanifest).
 - **Online-only extras.** Analytics (Cloudflare Web Analytics) is cross-origin and not precached;
   offline it simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under
@@ -189,7 +189,7 @@ precache everything, so there is nothing left to fetch at runtime.
   resource mismatch"* and *"preloaded ... but not used within a few seconds"*. These are benign:
   Blazor emits `<link rel="preload">` hints for the cold-network load, but the service worker serves
   those files from cache instead, so the preloads go unused. They are informational only and do not
-  affect users or offline behaviour.
+  affect users or offline behavior.
 - **Note.** The offline install includes the full Summa corpus, so the first install downloads a
   larger payload in exchange for complete offline access.
 

@@ -69,7 +69,7 @@ Three classes of source irregularity are handled by the importer so that the cou
 - **Undivided articles** — a few articles run together in the source with no rule divider and no second
   title; the boundary is detected (a fresh `Objection 1` after a `Reply to Objection`) and the missing title
   is recovered from the question's inquiry list.
-- **Count-first appendix headings** — e.g. `TWO ARTICLES ON PURGATORY`, recognised as a question header so
+- **Count-first appendix headings** — e.g. `TWO ARTICLES ON PURGATORY`, recognized as a question header so
   the appendix content is not folded into the preceding question.
 
 ## Treatise grouping
@@ -77,8 +77,8 @@ Three classes of source irregularity are handled by the importer so that the cou
 Each question is grouped under a treatise for browsing. The four main parts use `TREATISE ...` heading lines
 in the source (e.g. `TREATISE ON THE ONE GOD (QQ[2]-26)`), which the importer detects case-sensitively.
 
-The Supplement is organised under the **sacraments** rather than `TREATISE ...` headings for its first four
-sections, so those headings are recognised by a dedicated pattern (all-caps words followed by a CCEL
+The Supplement is organized under the **sacraments** rather than `TREATISE ...` headings for its first four
+sections, so those headings are recognized by a dedicated pattern (all-caps words followed by a CCEL
 question-range, e.g. `MATRIMONY (QQ[41]-67)`). Penance has no heading line of its own in the source, so it is
 seeded at the part start. The Supplement's later sections revert to `TREATISE ...` headings. The resulting
 grouping is:

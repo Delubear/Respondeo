@@ -38,7 +38,7 @@ front-matter to mark AI-drafted or not-yet-reviewed content; the page renders a 
 Prefer this flag over hand-written inline HTML notes in the body. Prayers and devotions are fixed
 traditional/structured content and are not marked unvetted.
 
-> **Copyright care:** only catalogue prayers that are public-domain or traditional. Where a
+> **Copyright care:** only catalog prayers that are public-domain or traditional. Where a
 > translation credit is required, add an `attribution` line (see below).
 
 ---
@@ -161,7 +161,7 @@ devotion is added purely as data — no code change.
 | `kind` | No | `prayer` (default) prays a single prayer; `mysteries` iterates the chosen mystery set; `section` draws a banner that introduces a movement of a liturgical walkthrough (e.g. the Mass). |
 | `title` | No | Optional heading for the step (e.g. `Begin`, `Closing prayers`). For a `section` step this is the banner title. |
 | `prayerId` | For `prayer` steps | The `id` of a prayer in `wwwroot/discover/prayers/`. A `prayer` step must have either a `prayerId` or inline `text`. |
-| `text` | No | Inline words (Markdown) for a `prayer` step that has no catalogued `prayerId` — e.g. a short Mass response. Rendered to HTML and shown in the info dialog. |
+| `text` | No | Inline words (Markdown) for a `prayer` step that has no cataloged `prayerId` — e.g. a short Mass response. Rendered to HTML and shown in the info dialog. |
 | `textLatin` | No | Latin form of `text`, shown when the Latin view is active. |
 | `explanation` | No | Plain-language explanation (Markdown) of what happens at this step and why. Shown in the info dialog above the words (and is the only content for a `section` banner's info button). Used by catechetical walkthroughs such as the Mass. |
 | `role` | No | "Who says this" for a liturgical step: `priest` (℣), `people` (℟), `all`, or `reader`. Purely presentational. |

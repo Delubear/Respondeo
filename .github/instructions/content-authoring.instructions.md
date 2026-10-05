@@ -20,7 +20,7 @@ contract. Ready-to-copy templates live under `docs/templates/`.
    - articles -> `articles/articles-manifest.json`
    - miracles -> `miracles/miracles-manifest.json`
    - saints -> `saints/saints-manifest.json`
-3. **Copyright care:** only catalogue prayers/texts that are public-domain or traditional. When a
+3. **Copyright care:** only catalog prayers/texts that are public-domain or traditional. When a
    translation credit is required, add an `attribution` line.
 4. **`id` / slug:** lowercase, hyphenated, stable.
 5. After authoring, build and run the content unit tests (`Respondeo.UnitTests` → `Content` folder).
