@@ -95,7 +95,6 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
     /// </summary>
     internal static bool TryMatchFixedDate(string? feastDay, DateOnly date)
     {
-        return true;
         if (string.IsNullOrWhiteSpace(feastDay))
         {
             return false;
