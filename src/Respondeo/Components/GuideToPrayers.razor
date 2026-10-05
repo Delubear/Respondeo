@@ -1,5 +1,6 @@
 @inject IJSRuntime JS
 @implements IAsyncDisposable
+@using Respondeo.Services
 
 @* A self-contained "Guide to Prayers" helper. Renders a floating circular button that stacks above
    the back-to-top control, plus a native <dialog>, so it is reachable on the prayers home and on
@@ -94,24 +95,20 @@
 @code {
     private Dialog? _dialog;
     private bool _stacked;
-    private DotNetObjectReference<GuideToPrayers>? _ref;
-    private IJSObjectReference? _module;
-    private int _subscription;
+    private ScrollSubscription? _scroll;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
-            _ref = DotNetObjectReference.Create(this);
-            _subscription = await _module.InvokeAsync<int>("register", _ref);
+            _scroll = new ScrollSubscription(JS);
+            await _scroll.StartAsync(OnScroll);
         }
     }
 
     // The guide only needs the back-to-top reveal threshold so its button can stack above that
     // control; the progress value is shared by the same scroll tracker but ignored here.
-    [JSInvokable]
-    public void OnScroll(double progress, bool backToTopVisible)
+    private void OnScroll(double progress, bool backToTopVisible)
     {
         if (_stacked != backToTopVisible)
         {
@@ -138,19 +135,9 @@
 
     public async ValueTask DisposeAsync()
     {
-        try
+        if (_scroll is not null)
         {
-            if (_module is not null)
-            {
-                await _module.InvokeVoidAsync("unregister", _subscription);
-                await _module.DisposeAsync();
-            }
+            await _scroll.DisposeAsync();
         }
-        catch (JSDisconnectedException)
-        {
-            // Circuit already gone during teardown; nothing to close.
-        }
-
-        _ref?.Dispose();
     }
 }
