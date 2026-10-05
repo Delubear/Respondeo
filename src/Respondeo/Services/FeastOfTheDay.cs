@@ -9,7 +9,10 @@ namespace Respondeo.Services;
 /// </summary>
 /// <param name="Title">Display title, e.g. "St. Francis of Assisi".</param>
 /// <param name="Id">URL slug used to link to <c>discover/saints/{Id}</c>.</param>
-public sealed record FeastHighlight(string Title, string Id);
+/// <param name="FeastDay">The saint's feast-day label, e.g. "October 4".</param>
+/// <param name="Summary">A short one-line description, when available.</param>
+/// <param name="Dates">Free-text life dates, e.g. "1181–1226", when available.</param>
+public sealed record FeastHighlight(string Title, string Id, string? FeastDay = null, string? Summary = null, string? Dates = null);
 
 /// <summary>
 /// Finds the saint (if any) whose feast the Church keeps on a given day. v1 matches only fixed
@@ -56,7 +59,7 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
             var record = await saints.GetByIdAsync(entry.Id);
             if (record is not null && TryMatchFixedDate(record.FeastDay, now))
             {
-                matches.Add(new FeastHighlight(record.Title, record.Id));
+                matches.Add(new FeastHighlight(record.Title, record.Id, record.FeastDay, record.Summary, record.Dates));
             }
         }
 

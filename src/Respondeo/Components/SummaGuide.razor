@@ -1,28 +1,19 @@
-@inject IJSRuntime JS
-@implements IAsyncDisposable
-@using Respondeo.Services
-
 @* A self-contained "How to read the Summa" helper. Renders a floating circular button that stacks
    above the back-to-top control, plus a native <dialog>, so it is reachable on the Summa home and on
    every question page (covering shared links). It explains the classic article structure and the
    meaning of the project name. *@
 
-<button type="button"
-        class="summa-guide__trigger @(_stacked ? "is-stacked" : string.Empty)"
-        @onclick="OpenAsync"
-        aria-label="How to read the Summa"
-        title="How to read the Summa">
-    <span class="summa-guide__trigger-mark" aria-hidden="true">?</span>
-</button>
-
-<Dialog @ref="_dialog" Title="How to read the Summa" Eyebrow="A short orientation" MaxWidth="52rem">
+<FloatingGuide Title="How to read the Summa" Eyebrow="A short orientation"
+               AriaLabel="How to read the Summa"
+               TriggerClass="summa-guide__trigger">
+    <Icon>?</Icon>
     <ChildContent>
     <p>
                 The <em>Summa Theologiae</em> is built from thousands of small debates. Everything nests
                 in the same order, so once you can read one article you can read them all.
             </p>
 
-            <h3 class="summa-guide__subhead">The shape of the whole work</h3>
+            <h3 class="guide-subhead">The shape of the whole work</h3>
             <ul class="summa-guide__structure">
                 <li><strong>Parts</strong> &mdash; the five great divisions of the work.</li>
                 <li><strong>Treatises</strong> &mdash; themed groups of questions within a part (&ldquo;Treatise on the Passions&rdquo;).</li>
@@ -30,7 +21,7 @@
                 <li><strong>Articles</strong> &mdash; a single yes/no dispute (&ldquo;Whether God exists?&rdquo;).</li>
             </ul>
 
-            <h3 class="summa-guide__subhead">The shape of a single article</h3>
+            <h3 class="guide-subhead">The shape of a single article</h3>
             <p>Each article always moves through the same four steps:</p>
             <ol class="summa-guide__steps">
                 <li>
@@ -54,7 +45,7 @@
                 </li>
             </ol>
 
-            <h3 class="summa-guide__subhead">Following the references</h3>
+            <h3 class="guide-subhead">Following the references</h3>
             <p>
                 St. Thomas constantly points back to earlier arguments. Those blue links are his
                 cross-references, and they read like an address:
@@ -74,7 +65,7 @@
                 <strong>III</strong> (Third Part) and <strong>Suppl.</strong> (the Supplement).
             </p>
 
-            <h3 class="summa-guide__subhead">About the Supplement</h3>
+            <h3 class="guide-subhead">About the Supplement</h3>
             <p>
                 St. Thomas died before finishing the Third Part, breaking off partway through the
                 sacraments. The <strong>Supplement</strong> was compiled after his death by a companion,
@@ -87,7 +78,7 @@
                 list here as ordinary questions so nothing is hidden from view.
             </p>
 
-            <h3 class="summa-guide__subhead">Who&rsquo;s who</h3>
+            <h3 class="guide-subhead">Who&rsquo;s who</h3>
             <p>Following medieval custom, St. Thomas usually names his authorities by title rather than by name:</p>
             <ul class="summa-guide__who">
                 <li><strong>The Apostle</strong> &mdash; St. Paul (the author of the Epistles).</li>
@@ -98,7 +89,7 @@
                 <li><strong>Dionysius</strong> &mdash; the author of the mystical works then attributed to St. Paul&rsquo;s convert (now called Pseudo-Dionysius).</li>
             </ul>
 
-            <h3 class="summa-guide__subhead">The books he cites</h3>
+            <h3 class="guide-subhead">The books he cites</h3>
             <p>St. Thomas leans on a small library of works so constantly that he refers to them by short titles. The most common are:</p>
             <ul class="summa-guide__books">
                 <li>
@@ -121,7 +112,7 @@
                 Titles are often abbreviated in the citations (e.g. <em>Ethic.</em>, <em>De Civ. Dei</em>, <em>Sent.</em>), followed by a book and chapter number rather than a page.
             </p>
 
-            <h3 class="summa-guide__subhead">A few tips</h3>
+            <h3 class="guide-subhead">A few tips</h3>
             <ul class="summa-guide__tips">
                 <li>Articles start collapsed &mdash; open the ones you want and leave several open to compare.</li>
                 <li>Blue references like <span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> are links; follow them, then use the breadcrumb to return.</li>
@@ -130,56 +121,7 @@
     </ChildContent>
 
     <Footer>
-        <button type="button" class="btn" @onclick="CloseAsync">Begin reading</button>
+        <button type="button" class="btn" @onclick="context.CloseAsync">Begin reading</button>
     </Footer>
-</Dialog>
+</FloatingGuide>
 
-@code {
-    private Dialog? _dialog;
-    private bool _stacked;
-    private ScrollSubscription? _scroll;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _scroll = new ScrollSubscription(JS);
-            await _scroll.StartAsync(OnScroll);
-        }
-    }
-
-    // The guide only needs the back-to-top reveal threshold so its button can stack above that
-    // control; the progress value is shared by the same scroll tracker but ignored here.
-    private void OnScroll(double progress, bool backToTopVisible)
-    {
-        if (_stacked != backToTopVisible)
-        {
-            _stacked = backToTopVisible;
-            StateHasChanged();
-        }
-    }
-
-    private async Task OpenAsync()
-    {
-        if (_dialog is not null)
-        {
-            await _dialog.Show();
-        }
-    }
-
-    private async Task CloseAsync()
-    {
-        if (_dialog is not null)
-        {
-            await _dialog.Close();
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_scroll is not null)
-        {
-            await _scroll.DisposeAsync();
-        }
-    }
-}

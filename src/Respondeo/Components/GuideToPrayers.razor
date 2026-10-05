@@ -1,28 +1,19 @@
-@inject IJSRuntime JS
-@implements IAsyncDisposable
-@using Respondeo.Services
-
 @* A self-contained "Guide to Prayers" helper. Renders a floating circular button that stacks above
    the back-to-top control, plus a native <dialog>, so it is reachable on the prayers home and on
    every prayer page (covering shared links). It explains the versicle/response (V./R.) notation and
    how to pray a litany and a novena. *@
 
-<button type="button"
-        class="prayer-guide__trigger @(_stacked ? "is-stacked" : string.Empty)"
-        @onclick="OpenAsync"
-        aria-label="Guide to prayers"
-        title="Guide to prayers">
-    <span class="prayer-guide__trigger-mark" aria-hidden="true">?</span>
-</button>
-
-<Dialog @ref="_dialog" Title="Guide to Prayers" Eyebrow="A short orientation" MaxWidth="52rem">
+<FloatingGuide Title="Guide to Prayers" Eyebrow="A short orientation"
+               AriaLabel="Guide to prayers"
+               TriggerClass="prayer-guide__trigger">
+    <Icon>?</Icon>
     <ChildContent>
         <p>
             Many of the Church&rsquo;s prayers follow patterns that are centuries old. Once you can
             read the little cues, you can pray any of them with confidence &mdash; alone or with others.
         </p>
 
-        <h3 class="prayer-guide__subhead">Versicle and response <span class="prayer-guide__latin">V. and R.</span></h3>
+        <h3 class="guide-subhead">Versicle and response <span class="prayer-guide__latin">V. and R.</span></h3>
         <p>
             Many prayers are built as a call and answer. Two small labels mark who says what:
         </p>
@@ -36,7 +27,7 @@
             throughout the Rosary, the Divine Office, litanies, and novenas.
         </p>
 
-        <h3 class="prayer-guide__subhead">Praying a Litany</h3>
+        <h3 class="guide-subhead">Praying a Litany</h3>
         <p>
             A <strong>litany</strong> is a prayer of many short invocations, each answered by the same
             repeated response. One voice names a title of the Lord, Our Lady, or a saint; everyone
@@ -62,7 +53,7 @@
             </li>
         </ol>
 
-        <h3 class="prayer-guide__subhead">Praying a Novena</h3>
+        <h3 class="guide-subhead">Praying a Novena</h3>
         <p>
             A <strong>novena</strong> is a prayer repeated for <strong>nine days in a row</strong>. The
             number recalls the nine days the Apostles and Our Lady spent in prayer between the
@@ -88,56 +79,7 @@
     </ChildContent>
 
     <Footer>
-        <button type="button" class="btn" @onclick="CloseAsync">Begin praying</button>
+        <button type="button" class="btn" @onclick="context.CloseAsync">Begin praying</button>
     </Footer>
-</Dialog>
+</FloatingGuide>
 
-@code {
-    private Dialog? _dialog;
-    private bool _stacked;
-    private ScrollSubscription? _scroll;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _scroll = new ScrollSubscription(JS);
-            await _scroll.StartAsync(OnScroll);
-        }
-    }
-
-    // The guide only needs the back-to-top reveal threshold so its button can stack above that
-    // control; the progress value is shared by the same scroll tracker but ignored here.
-    private void OnScroll(double progress, bool backToTopVisible)
-    {
-        if (_stacked != backToTopVisible)
-        {
-            _stacked = backToTopVisible;
-            StateHasChanged();
-        }
-    }
-
-    private async Task OpenAsync()
-    {
-        if (_dialog is not null)
-        {
-            await _dialog.Show();
-        }
-    }
-
-    private async Task CloseAsync()
-    {
-        if (_dialog is not null)
-        {
-            await _dialog.Close();
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_scroll is not null)
-        {
-            await _scroll.DisposeAsync();
-        }
-    }
-}

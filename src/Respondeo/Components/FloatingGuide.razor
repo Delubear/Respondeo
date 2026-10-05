@@ -1,0 +1,93 @@
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+@using Respondeo.Services
+
+@* A reusable floating-circle control. Renders a fixed bottom-right circular button that slides up to
+   stack above the back-to-top arrow, plus a shared Dialog. Each use supplies its own icon, dialog
+   body, and footer; the trigger geometry, stacking, and scroll lifecycle live here so the Summa
+   guide, Prayer guide, and Today-in-the-Church orb stay visually identical. *@
+
+<button type="button"
+        class="float-circle @TriggerClass @(Raised ? "is-raised" : string.Empty) @(_stacked ? "is-stacked" : string.Empty)"
+        @onclick="OpenAsync"
+        aria-label="@AriaLabel"
+        title="@(Tooltip ?? AriaLabel)">
+    <span class="float-circle__mark" aria-hidden="true">@Icon</span>
+</button>
+
+<Dialog @ref="_dialog" Title="@Title" Eyebrow="@Eyebrow" MaxWidth="@MaxWidth" Class="@DialogClass">
+    <ChildContent>
+        @ChildContent(Context)
+    </ChildContent>
+    <Footer>
+        @if (Footer is not null)
+        {
+            @Footer(Context)
+        }
+    </Footer>
+</Dialog>
+
+@code {
+    private Dialog _dialog = default!;
+    private bool _stacked;
+    private ScrollSubscription? _scroll;
+
+    /// <summary>The icon markup shown inside the circular trigger.</summary>
+    [Parameter, EditorRequired] public RenderFragment Icon { get; set; } = default!;
+
+    /// <summary>The dialog body. Receives a context exposing a close callback.</summary>
+    [Parameter, EditorRequired] public RenderFragment<FloatingGuideContext> ChildContent { get; set; } = default!;
+
+    /// <summary>Optional dialog footer. Receives a context exposing a close callback.</summary>
+    [Parameter] public RenderFragment<FloatingGuideContext>? Footer { get; set; }
+
+    [Parameter, EditorRequired] public string Title { get; set; } = default!;
+    [Parameter] public string? Eyebrow { get; set; }
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = default!;
+    [Parameter] public string? Tooltip { get; set; }
+    [Parameter] public string MaxWidth { get; set; } = "52rem";
+    [Parameter] public string? DialogClass { get; set; }
+
+    /// <summary>An extra class on the trigger, e.g. a test/styling hook.</summary>
+    [Parameter] public string? TriggerClass { get; set; }
+
+    /// <summary>
+    /// When true, the control sits one slot higher than normal so it clears another floating control
+    /// that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// </summary>
+    [Parameter] public bool Raised { get; set; }
+
+    private FloatingGuideContext Context => new(CloseAsync);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _scroll = new ScrollSubscription(JS);
+            await _scroll.StartAsync(OnScroll);
+        }
+    }
+
+    // The guide only needs the back-to-top reveal threshold so its button can stack above that
+    // control; the progress value is shared by the same scroll tracker but ignored here.
+    private void OnScroll(double progress, bool backToTopVisible)
+    {
+        if (_stacked != backToTopVisible)
+        {
+            _stacked = backToTopVisible;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenAsync() => await _dialog.Show();
+
+    private async Task CloseAsync() => await _dialog.Close();
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_scroll is not null)
+        {
+            await _scroll.DisposeAsync();
+        }
+    }
+}

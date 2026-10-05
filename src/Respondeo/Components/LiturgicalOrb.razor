@@ -1,0 +1,153 @@
+@* A small floating "today in the Church" orb shown only on the Discover root pages. It matches the
+   shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that
+   slides up to stack above the back-to-top arrow. It is visually identical to the other circles and
+   differs only by its calendar icon. Tapping it opens a Dialog with today's season, color,
+   celebration, the saint of the day, and a short explanation of the liturgical year. *@
+
+@inject ILiturgicalCalendar Calendar
+@inject Func<DateOnly> Today
+@inject IFeastOfTheDay FeastOfTheDay
+
+<FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
+               AriaLabel="@($"Today in the Church: {SeasonName}")" Tooltip="Today in the Church"
+               DialogClass="dialog--liturgy" Raised="Raised"
+               TriggerClass="orb">
+    <Icon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4.5" width="18" height="16" rx="2" />
+            <path d="M3 9h18" />
+            <path d="M8 2.5v4" />
+            <path d="M16 2.5v4" />
+        </svg>
+    </Icon>
+    <ChildContent>
+        <div class="liturgy">
+            <div class="liturgy__status">
+                <div class="liturgy__today">
+                    <span class="liturgy__swatch liturgy__swatch--@ColorClass" aria-hidden="true"></span>
+                    <div class="liturgy__headline">
+                        <p class="liturgy__season">@SeasonName</p>
+                        @if (_day.Celebration is not null)
+                        {
+                            <p class="liturgy__celebration">@_day.Celebration.Name</p>
+                        }
+                        <p class="liturgy__color">Liturgical color: @ColorName</p>
+                    </div>
+                </div>
+
+                @if (_saint is not null)
+                {
+                    <div class="liturgy__saint">
+                        <p class="liturgy__saint-intro">The Church also remembers today</p>
+                        <a class="liturgy__saint-card" href="discover/saints/@_saint.Id" @onclick="context.CloseAsync">
+                            <span class="liturgy__saint-name">@_saint.Title</span>
+                            <span class="liturgy__saint-cta">Read the saint's life &rarr;</span>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <hr class="liturgy__rule" />            
+
+            <h3 class="guide-subhead">Colors and their meaning</h3>
+            <p>
+                The Church keeps time differently from the calendar on the wall. Her year turns through
+                seasons &mdash; each with its own color, mood, and mysteries to pray.
+            </p>
+            <ul class="liturgy__seasons">
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--violet" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Advent &amp; Lent</span>
+                        Violet &mdash; seasons of preparation and penance (rose on Gaudete and Laetare Sundays).
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--white" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Christmas &amp; Easter</span>
+                        White &mdash; the great seasons of joy and light.
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--red" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Feasts of the Lord's Passion &amp; the Martyrs</span>
+                        Red &mdash; Palm Sunday, Good Friday, Pentecost, and the witness of the martyrs.
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--green" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Ordinary Time</span>
+                        Green &mdash; the weeks of growth outside the festal seasons.
+                    </div>
+                </li>
+            </ul>
+
+            <h3 class="guide-subhead">Degrees of celebration</h3>
+            <p>
+                Not every day carries the same weight. The Church ranks her celebrations, and the higher
+                the rank, the more fully the day's prayers and readings give way to it.
+            </p>
+            <ul class="liturgy__ranks">
+                <li>
+                    <span class="liturgy__rank-name">Solemnity</span> &mdash;
+                    The highest rank &mdash; the greatest mysteries and saints (Easter, Christmas,
+                    Pentecost, the Immaculate Conception). A solemnity begins the evening before and,
+                    like a Sunday, outranks almost everything else.
+                </li>
+                <li>
+                    <span class="liturgy__rank-name">Feast</span> &mdash;
+                    A major celebration kept on its own day but without the evening-before beginning
+                    (the Transfiguration, the Apostles, the Baptism of the Lord).
+                </li>
+                <li>
+                    <span class="liturgy__rank-name">Memorial</span> &mdash;
+                    A remembrance of a saint, woven into the ordinary prayers of the day rather than
+                    replacing them. Some are obligatory; many are optional.
+                </li>
+                <li>
+                    <span class="liturgy__rank-name">Feria</span> &mdash;
+                    An ordinary weekday with no assigned celebration, taking the color and prayers of
+                    its season.
+                </li>
+            </ul>
+        </div>
+    </ChildContent>
+    <Footer>
+        <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+    </Footer>
+</FloatingGuide>
+
+@code {
+    private LiturgicalDay _day = default!;
+    private FeastHighlight? _saint;
+
+    /// <summary>
+    /// When true, the orb sits one slot higher than normal so it clears another floating control that
+    /// already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// </summary>
+    [Parameter] public bool Raised { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _day = Calendar.ForDate(Today());
+        _saint = await FeastOfTheDay.GetTodayAsync();
+    }
+
+    private string SeasonName => _day.Season switch
+    {
+        LiturgicalSeason.Advent => "Advent",
+        LiturgicalSeason.Christmas => "Christmas Time",
+        LiturgicalSeason.Lent => "Lent",
+        LiturgicalSeason.Triduum => "The Sacred Paschal Triduum",
+        LiturgicalSeason.Easter => "Easter Time",
+        _ => "Ordinary Time",
+    };
+
+    private string ColorName => _day.Color.ToString();
+
+    private string ColorClass => _day.Color.ToString().ToLowerInvariant();
+}

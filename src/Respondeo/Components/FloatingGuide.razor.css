@@ -1,0 +1,68 @@
+/* Trigger styling for the reusable FloatingGuide control (How to read the Summa, Guide to Prayers,
+   Today in the Church). Scoped here because the button and its mark are rendered by this component.
+   It occupies the bottom-right slot and slides up to stack above the back-to-top arrow when that
+   control appears, keeping them a tidy vertical pair. Every floating circle is byte-identical; each
+   use differs only by the icon supplied through the Icon fragment. */
+.float-circle {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--float-btn-bg);
+    color: var(--float-btn-fg);
+    cursor: pointer;
+    box-shadow: 0 0.35rem 0.9rem var(--shadow);
+    transition: bottom 0.15s ease, background 0.12s ease, color 0.12s ease;
+}
+
+/* Raised sits one slot higher than normal to clear another floating control already in the base slot;
+   when the back-to-top arrow is also visible it climbs one more slot. */
+.float-circle.is-raised {
+    bottom: 4.75rem;
+}
+
+.float-circle.is-stacked {
+    bottom: 4.75rem;
+}
+
+.float-circle.is-raised.is-stacked {
+    bottom: 8.25rem;
+}
+
+.float-circle:hover {
+    background: var(--float-btn-bg-hover);
+    color: var(--float-btn-fg-hover);
+}
+
+.float-circle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.float-circle__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* The glyph or icon comes from the consumer's Icon fragment, so reach it with ::deep. */
+.float-circle__mark ::deep svg {
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .float-circle {
+        transition: background 0.12s ease, color 0.12s ease;
+    }
+}

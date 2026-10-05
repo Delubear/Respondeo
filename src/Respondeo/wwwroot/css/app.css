@@ -181,7 +181,7 @@ html, body {
 
 /* On installed PWAs with viewport-fit=cover, the viewport extends into the device safe areas
    (Android gesture bar, iOS home indicator). The root shows through wherever a child box does not
-   reach the edge, so paint it with the page colour — matching the body and the full-screen loading
+   reach the edge, so paint it with the page color — matching the body and the full-screen loading
    state so the initial load looks normal. The dark footer paints into the bottom inset itself via
    its safe-area padding, so there is no mismatched strip once the app is loaded. */
 html {
@@ -229,7 +229,7 @@ h1, h2, h3 {
    caption that sits above a title or beside a value (meta labels, section numbers, latin titles,
    etc.). Previously each area reimplemented this with slightly drifted letter-spacing; it is now
    one source of truth. font-size and color stay locally overridable for the few contexts that need
-   a different scale or accent colour (e.g. .pillar__eyebrow uses the accent). */
+   a different scale or accent color (e.g. .pillar__eyebrow uses the accent). */
 .eyebrow {
     font-family: var(--display);
     text-transform: uppercase;
@@ -244,6 +244,16 @@ h1, h2, h3 {
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--rule);
+}
+
+/* .guide-subhead is the shared section heading used inside the floating guide/orb dialogs
+   (How to read the Summa, Guide to Prayers, Today in the Church). One source of truth so the
+   three dialogs stay visually identical. */
+.guide-subhead {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+    color: var(--accent);
 }
 
 /* Shared detail-article scaffolding: the centered reading column, the stacked content sections,
