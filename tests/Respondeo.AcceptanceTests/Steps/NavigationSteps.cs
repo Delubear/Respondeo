@@ -86,8 +86,8 @@ public sealed class NavigationSteps(PlaywrightContext context)
     [Then("I should see the not found page")]
     public async Task ThenIShouldSeeTheNotFoundPage()
     {
-        await Page.WaitForSelectorAsync("h3");
-        Assert.Contains("Not Found", await Page.Locator("h3").First.InnerTextAsync());
+        await Page.WaitForSelectorAsync(".pillar__eyebrow");
+        Assert.Contains("Page Not Found", await Page.Locator(".pillar__eyebrow").First.InnerTextAsync(), StringComparison.OrdinalIgnoreCase);
     }
 
     [Then("the breadcrumb root should not be \"(.*)\"")]
