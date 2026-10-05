@@ -1,6 +1,7 @@
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
+using System.Text.RegularExpressions;
 
 namespace Respondeo.Content.Prayers;
 
@@ -31,7 +32,7 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
             Category = NormalizeSlug(meta.Category, "other"),
             Language = NormalizeSlug(meta.Language, "en"),
             TranslationKey = string.IsNullOrWhiteSpace(meta.TranslationKey) ? null : meta.TranslationKey.Trim(),
-            Html = html.ToHtmlPreservingLineBreaks(body.Trim()),
+            Html = html.ToHtmlPreservingLineBreaks(AnnotateVersicleMarkers(body.Trim())),
             Tags = meta.Tags,
             Attribution = meta.Attribution,
             Unlisted = meta.Unlisted,
@@ -39,4 +40,11 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
     }
 
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
+
+    // Lines that open with a versicle/response marker ("V." / "R.") would otherwise be parsed by
+    // Markdig as ordered-list items (e.g. <ol type="I">), dropping the literal marker. Escaping the
+    // dot keeps "V." and "R." as plain text so the prayer reads as verse, not a numbered list.
+    private static readonly Regex VersicleMarker = new(@"(?m)^(\s*[VR])\.(\s)", RegexOptions.Compiled);
+
+    private static string AnnotateVersicleMarkers(string body) => VersicleMarker.Replace(body, "$1\\.$2");
 }
