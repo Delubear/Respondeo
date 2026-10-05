@@ -25,6 +25,12 @@ public interface IFeastOfTheDay
     /// the browse list can highlight the matching cards without re-parsing feast dates itself.
     /// </summary>
     Task<IReadOnlySet<string>> GetTodayFeastIdsAsync();
+
+    /// <summary>
+    /// True when <paramref name="feastDay"/> is a fixed "Month Day" string that falls on today's
+    /// date, so a page can flag a single known feast day without fetching the whole catalog.
+    /// </summary>
+    bool IsToday(string? feastDay);
 }
 
 /// <summary>
@@ -80,6 +86,8 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
 
         return ids;
     }
+
+    public bool IsToday(string? feastDay) => TryMatchFixedDate(feastDay, today());
 
     /// <summary>
     /// True when <paramref name="feastDay"/> is a fixed "Month Day" string (e.g. "October 4") that falls on <paramref name="date"/>.

@@ -1,6 +1,7 @@
 @page "/discover/saints/{Id}"
 @inject ISaintService Saints
 @inject IBreadcrumbTrail Trail
+@inject IFeastOfTheDay FeastOfTheDay
 
 <PageTitle>@(_saint is null ? "Saint" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
 
@@ -42,7 +43,15 @@ else
             {
                 <div class="saint__fact">
                     <dt>Feast day</dt>
-                    <dd>@_saint.FeastDay</dd>
+                    <dd>
+                        @_saint.FeastDay
+                        @if (FeastOfTheDay.IsToday(_saint.FeastDay))
+                        {
+                            <span class="saint__feast-today" title="Celebrated today">
+                                <span aria-hidden="true">&#10024;</span> Today
+                            </span>
+                        }
+                    </dd>
                 </div>
             }
             @if (!string.IsNullOrWhiteSpace(_saint.Dates))

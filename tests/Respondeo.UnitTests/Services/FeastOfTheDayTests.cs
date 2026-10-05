@@ -31,6 +31,16 @@ public class FeastOfTheDayTests
     }
 
     [Fact]
+    public void IsToday_is_true_when_the_feast_falls_on_the_injected_date()
+    {
+        var sut = Sut(Substitute.For<ISaintService>(), new DateOnly(2025, 10, 4));
+
+        Assert.True(sut.IsToday("October 4"));
+        Assert.False(sut.IsToday("October 5"));
+        Assert.False(sut.IsToday(null));
+    }
+
+    [Fact]
     public async Task GetTodayAsync_returns_the_saint_whose_feast_is_today()
     {
         var saints = StubbedSaints(
