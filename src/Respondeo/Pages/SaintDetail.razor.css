@@ -33,7 +33,7 @@
 
 .saint__fact dd {
     margin: 0;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .saint__fact-note {
@@ -59,7 +59,7 @@
     background: none;
     cursor: pointer;
     font: inherit;
-    font-weight: 600;
+    font-weight: 400;
     color: inherit;
     text-align: left;
     anchor-name: --saint-era-toggle;
