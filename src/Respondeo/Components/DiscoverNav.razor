@@ -14,29 +14,12 @@
 @code {
     private bool _isDiscover;
 
-    private sealed record Tab(string Href, string Label, bool Exact, Func<Respondeo.Services.FeatureFlags, bool> IsEnabled);
-
-    // The Discover landing plus one tab per sub-area, in display order. Miracles sits alongside the
-    // prayers/devotions/articles trio as a peer. The landing link is exact so it only highlights on /discover itself.
-    // Every tab is additionally gated by the DiscoverPillar master switch below.
-    private static readonly IReadOnlyList<Tab> Items =
-    [
-        new("discover", "Overview", true, _ => true),
-        new("discover/miracles", "Miracles", false, f => f.MiraclesFeature),
-        new("discover/saints", "Saints", false, f => f.SaintsFeature),
-        new("discover/prayers", "Prayers", false, f => f.PrayerFeature),
-        new("discover/devotions", "Devotions", false, f => f.DevotionsFeature),
-        new("discover/articles", "Articles", false, f => f.ArticlesFeature),
-    ];
-
     // Only the enabled tabs, mapped to MastNav items with the right active-match semantics.
     // The DiscoverPillar master switch supersedes the per-area flags, so nothing shows when it is off.
     private IReadOnlyList<MastNav.Item> VisibleItems =>
-        Features.DiscoverPillar
-            ? Items.Where(i => i.IsEnabled(Features))
+        Features.DiscoverPillar ? DiscoverNavigation.Items.Where(i => i.IsEnabled(Features))
                    .Select(i => new MastNav.Item(i.Href, i.Label, i.Exact ? NavLinkMatch.All : NavLinkMatch.Prefix))
-                   .ToList()
-            : [];
+                   .ToList() : [];
 
     protected override void OnInitialized()
     {
