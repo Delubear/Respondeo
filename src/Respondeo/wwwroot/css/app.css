@@ -1129,10 +1129,14 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .prayer-embed__label {
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.1rem;
     font-size: 0.85rem;
     font-style: italic;
     color: var(--ink-soft);
+}
+
+.prayer-embed__text > p:first-child {
+    margin-top: 0;
 }
 
 .prayer-embed__text > p:last-child {
