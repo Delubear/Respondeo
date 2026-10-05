@@ -5,7 +5,7 @@ namespace Respondeo.SummaImporter;
 // Title clean-up and title-casing helpers shared by the question- and article-header parsers.
 internal static partial class SummaParser
 {
-    private static string NormalizeTitle(string title)
+    internal static string NormalizeTitle(string title)
     {
         var cleaned = WhitespaceRegex().Replace(title, " ").Trim();
         // Strip stray CCEL cross-reference brackets like "[76]" that can appear in headers.
@@ -18,7 +18,7 @@ internal static partial class SummaParser
     }
 
     // Question titles arrive in ALL CAPS (e.g. "THE EXISTENCE OF GOD"). Convert to sentence-ish title case for display while keeping short function words lowercase.
-    private static string TitleCase(string upper)
+    internal static string TitleCase(string upper)
     {
         var words = upper.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var small = new HashSet<string>(StringComparer.OrdinalIgnoreCase)

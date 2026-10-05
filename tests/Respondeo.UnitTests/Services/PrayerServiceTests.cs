@@ -175,4 +175,73 @@ public class PrayerServiceTests
         // An unknown reference falls back to a plain link to the prayer page.
         Assert.Contains("discover/prayers/missing", prayer.Html);
     }
+
+    [Fact]
+    public async Task GetPrayer_embed_carries_the_referenced_prayer_title_as_label()
+    {
+        var service = CreateService();
+
+        var prayer = await service.GetPrayerAsync("novena");
+
+        Assert.NotNull(prayer);
+        Assert.Contains("prayer-embed__label", prayer!.Html);
+        // The embed label is the referenced prayer's own title, not the link text used in the source.
+        Assert.Contains("Hail Mary", prayer.Html);
+    }
+
+    [Fact]
+    public async Task GetPrayer_expands_multiple_references_and_references_to_unlisted_prayers()
+    {
+        const string multiRefMd = """
+            ---
+            id: multi
+            title: "A Compound Devotion"
+            summary: References several prayers, including an unlisted one.
+            category: devotion
+            language: en
+            unlisted: true
+            ---
+
+            [Hail Mary](prayer:hail-mary)
+
+            [Assistance](prayer:dominican-versicle)
+            """;
+
+        var handler = new StubHandler(new Dictionary<string, string>
+        {
+            [ManifestPath] = """
+                { "files": [ "hail-mary.md", "ave-maria.md", "dominican-versicle.md", "multi.md" ] }
+                """,
+            [HailMaryPath] = HailMaryMd,
+            [HailMaryLatinPath] = HailMaryLatinMd,
+            [UnlistedPath] = UnlistedMd,
+            ["_content/Respondeo.Content/discover/prayers/multi.md"] = multiRefMd,
+        });
+
+        var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
+        var service = new PrayerService(http, ContentRendering.Renderer);
+
+        var prayer = await service.GetPrayerAsync("multi");
+
+        Assert.NotNull(prayer);
+        // Both references are expanded into embed blocks.
+        Assert.Equal(2, CountOccurrences(prayer!.Html, "prayer-embed__text"));
+        Assert.Contains("full of grace", prayer.Html);
+        // A reference to an unlisted prayer is still expanded by id.
+        Assert.Contains("come to my assistance", prayer.Html);
+        Assert.DoesNotContain("prayer:", prayer.Html);
+    }
+
+    private static int CountOccurrences(string haystack, string needle)
+    {
+        var count = 0;
+        var index = 0;
+        while ((index = haystack.IndexOf(needle, index, StringComparison.Ordinal)) >= 0)
+        {
+            count++;
+            index += needle.Length;
+        }
+
+        return count;
+    }
 }
