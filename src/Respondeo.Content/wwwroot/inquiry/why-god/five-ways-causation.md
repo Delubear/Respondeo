@@ -4,15 +4,16 @@ title: "The Second Way — Efficient Causation"
 summary: From ordered efficient causes to a first cause.
 ---
 
-> "In the world of sense we find there is an order of efficient causes." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+> "In the world of sense we find there is an order of efficient causes."<br />&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The First Way looked at *change*; the Second Way looks at *existence* — at the causes that make things be and act.
-An **efficient cause** is that which brings something about: the sculptor of the statue, the fire that heats, the hand that moves the stick that moves the stone.
+An **efficient cause** is that which brings something about: the sculptor of the statue, the fire that heats, the signet ring that presses its shape into the wax.
 
 Aquinas observes that these causes come in *orders* — chains where one cause acts through another.
 And no such cause is the efficient cause of *itself*:
 
-> Nothing is the efficient cause of itself, for it would have to exist prior to itself, which is impossible.
+> "There is no case known (neither is it, indeed, possible) in which a thing is found to be the efficient cause of itself; 
+for so it would be prior to itself, which is impossible." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **The argument, step by step:**
 
@@ -29,8 +30,8 @@ That is an **accidentally ordered** series: once a cause has done its part, it i
 
 He means an **essentially ordered** series, where every member depends *at this very moment* on the one before it for its power to act:
 
-- A hand moves a stick, which moves a stone. The stick has no power to move the stone except as the hand moves it *at this moment*.
 - Links hold a chandelier: each link hangs only because the one above holds it right now.
+- A gear turns only while the gear meshed before it is turning; stop the first and the whole train halts at once.
 - A brush paints only as the painter guides it; take the painter away and the motion stops instantly.
 
 In such a series, the intermediate causes are *instruments* — they pass along a causal power they do not originate.
