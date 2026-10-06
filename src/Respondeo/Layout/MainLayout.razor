@@ -53,11 +53,26 @@
 </div>
 
 @code {
-    // During Christmas Time, Aquinas dons a festive hat; the rest of the year he keeps his usual portrait.
-    private string PortraitSrc =>
-        Calendar.ForDate(Today()).Season == Respondeo.LiturgicalCalendar.LiturgicalSeason.Christmas
-            ? "images/aquinas-christmas.jpg"
-            : "images/aquinas.jpg";
+    // Aquinas wears a festive hat during Christmas Time and bears ashes on Ash Wednesday; the rest of the year he keeps his usual portrait.
+    private string PortraitSrc
+    {
+        get
+        {
+            var day = Calendar.ForDate(Today());
+
+            if (day.Celebration?.Name == "Ash Wednesday")
+            {
+                return "images/aquinas-ash-wednesday.jpg";
+            }
+
+            if (day.Season == Respondeo.LiturgicalCalendar.LiturgicalSeason.Christmas)
+            {
+                return "images/aquinas-christmas.jpg";
+            }
+
+            return "images/aquinas.jpg";
+        }
+    }
 
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
