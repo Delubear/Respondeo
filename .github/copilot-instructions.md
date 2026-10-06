@@ -19,6 +19,7 @@
 - When writing a Summa Theologiae citation in content Markdown, match the visual style the app's `SummaReferenceRenderer` produces so hand-written citations read identically to the Summa's own cross-references.
 - Use `Q.` (capital) for a question, `A.` (capital) for an article, `ad` for a reply, and `obj.` for an objection.
 - Do not use lower-case `q.`/`a.` or the phrasing `reply to obj.`; write `ad N` for replies instead.
+- When a quotation is followed by its Summa citation, separate the quote from the citation with an em dash entity (`&mdash;`), never a plain hyphen (`-`). Example: `> "..."<br />&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)`.
 - Example: `[*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)`.
 
 ## Prayer line breaks
