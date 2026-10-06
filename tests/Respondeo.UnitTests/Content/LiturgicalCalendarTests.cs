@@ -1,15 +1,14 @@
-using Respondeo.Content.Contracts;
-using Respondeo.Content.Liturgy;
+using Respondeo.LiturgicalCalendar;
 
 namespace Respondeo.UnitTests.Content;
 
 /// <summary>
-/// Unit tests for the Ordinary Form liturgical calendar engine (<see cref="LiturgicalCalendar"/> and the
+/// Unit tests for the Ordinary Form liturgical calendar engine (<see cref="RomanCalendar"/> and the
 /// <see cref="Computus"/> Easter helper). Dates are checked against the published Roman calendar.
 /// </summary>
 public class LiturgicalCalendarTests
 {
-    private static readonly ILiturgicalCalendar Calendar = new LiturgicalCalendar();
+    private static readonly ILiturgicalCalendar Calendar = new RomanCalendar();
 
     [Theory]
     [InlineData(2023, 4, 9)]

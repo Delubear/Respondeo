@@ -1,14 +1,12 @@
-namespace Respondeo.Content.Liturgy;
+namespace Respondeo.LiturgicalCalendar;
 
 /// <summary>
-/// Computes the date of Easter Sunday, the anchor from which every moveable feast in the Western
-/// liturgical year is derived (Ash Wednesday, Pentecost, Corpus Christi, and the rest).
+/// Computes the date of Easter Sunday, the anchor from which every moveable feast in the Western liturgical year is derived (Ash Wednesday, Pentecost, Corpus Christi, and the rest).
 /// </summary>
 internal static class Computus
 {
     /// <summary>
-    /// Returns the date of Easter Sunday in the given <paramref name="year"/> for the Gregorian calendar,
-    /// using the Anonymous Gregorian algorithm ("Meeus/Jones/Butcher").
+    /// Returns the date of Easter Sunday in the given <paramref name="year"/> for the Gregorian calendar, using the Anonymous Gregorian algorithm ("Meeus/Jones/Butcher").
     /// </summary>
     public static DateOnly GregorianEaster(int year)
     {

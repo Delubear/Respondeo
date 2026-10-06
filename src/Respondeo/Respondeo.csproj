@@ -61,6 +61,7 @@
     <ProjectReference Include="..\Respondeo.Content.Shared\Respondeo.Content.Shared.csproj" />
     <ProjectReference Include="..\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
     <ProjectReference Include="..\Respondeo.Content\Respondeo.Content.csproj" />
+    <ProjectReference Include="..\Respondeo.LiturgicalCalendar\Respondeo.LiturgicalCalendar.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-namespace Respondeo.Content.Contracts;
+namespace Respondeo.LiturgicalCalendar;
 
 // ---------------------------------------------------------------------------
 // Liturgical calendar. Public contracts returned by ILiturgicalCalendar.
-// The computation lives internally in the Liturgy folder.
+// The computation lives internally in the engine (RomanCalendar).
 // ---------------------------------------------------------------------------
 
 /// <summary>The seasons of the Ordinary Form liturgical year.</summary>

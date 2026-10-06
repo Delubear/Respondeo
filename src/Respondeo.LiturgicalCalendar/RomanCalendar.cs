@@ -1,6 +1,4 @@
-using Respondeo.Content.Contracts;
-
-namespace Respondeo.Content.Liturgy;
+namespace Respondeo.LiturgicalCalendar;
 
 /// <summary>
 /// A pure liturgical-calendar engine for the Ordinary Form.
@@ -8,7 +6,7 @@ namespace Respondeo.Content.Liturgy;
 /// the fixed civil dates (Christmas is always 25 December) and Gregorian Easter (from which every moveable feast is an offset).
 /// No per-day data is stored; the whole year is computed on demand.
 /// </summary>
-internal sealed class LiturgicalCalendar : ILiturgicalCalendar
+internal sealed class RomanCalendar : ILiturgicalCalendar
 {
     public LiturgicalDay ForDate(DateOnly date)
     {
@@ -25,9 +23,8 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
     }
 
     // -----------------------------------------------------------------------
-    // Precedence resolution: choose the single principal celebration for the day
-    // and the optional memorials offered alongside it, following the Church's
-    // order of precedence.
+    // Precedence resolution: choose the single principal celebration for the day and the optional memorials offered alongside it,
+    // following the Church's order of precedence.
     // -----------------------------------------------------------------------
 
     /// <summary>A named celebration claiming a day, flagged when it is a celebration of the Lord.</summary>
@@ -46,8 +43,8 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
         var isSunday = date.DayOfWeek == DayOfWeek.Sunday;
         var sundayIsPrivileged = isSunday && season is LiturgicalSeason.Advent or LiturgicalSeason.Lent or LiturgicalSeason.Easter;
 
-        // A solemnity outranks everything except a privileged Sunday (Advent/Lent/Easter), onto which a
-        // non-dominical solemnity would be transferred rather than celebrated (transfer handled elsewhere).
+        // A solemnity outranks everything except a privileged Sunday (Advent/Lent/Easter),
+        // onto which a non-dominical solemnity would be transferred rather than celebrated (transfer handled elsewhere).
         if (solemnity is { } sol && !(sundayIsPrivileged && !sol.OfTheLord))
         {
             return new DayResolution(sol.Celebration, []);
@@ -66,8 +63,8 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
             return new DayResolution(f.Celebration, []);
         }
 
-        // Weekdays: an obligatory memorial is the principal unless the weekday is privileged (Lent, the
-        // Octaves, and the final Advent days), where every memorial is reduced to optional.
+        // Weekdays: an obligatory memorial is the principal unless the weekday is privileged
+        // (Lent, the Octaves, and the final Advent days), where every memorial is reduced to optional.
         var privilegedWeekday = IsPrivilegedWeekday(date, season);
         LiturgicalCelebration? principal = null;
         var optional = new List<LiturgicalCelebration>();
@@ -124,8 +121,7 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
 
         foreach (var fixedCelebration in GeneralRomanCalendarData.ForMonthDay(date.Month, date.Day))
         {
-            // A solemnity impeded by a Lenten Sunday, Holy Week, or the Octave of Easter is suppressed here
-            // and re-emitted on its transfer date below.
+            // A solemnity impeded by a Lenten Sunday, Holy Week, or the Octave of Easter is suppressed here and re-emitted on its transfer date below.
             if (IsTransferredAway(date))
             {
                 continue;

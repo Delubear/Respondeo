@@ -4,7 +4,6 @@ using Respondeo.Content.Contracts;
 using Respondeo.Content.Devotions;
 using Respondeo.Content.Discover;
 using Respondeo.Content.Inquiry;
-using Respondeo.Content.Liturgy;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Prayers;
 using Respondeo.Content.Saints;
@@ -44,9 +43,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<InquiryParser>();
         services.AddScoped<IContentService, InquiryService>();
         services.AddScoped<IInquiryFlow, InquiryFlowService>();
-
-        // Liturgical calendar (pure, deterministic engine shared across pillars)
-        services.AddSingleton<ILiturgicalCalendar, LiturgicalCalendar>();
 
         return services;
     }

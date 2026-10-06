@@ -4,6 +4,7 @@ using Respondeo;
 using Respondeo.Content.Summa;
 using Respondeo.Services;
 using Respondeo.Content;
+using Respondeo.LiturgicalCalendar;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -17,6 +18,9 @@ builder.Services.AddSingleton(featureFlags);
 
 // The hand-authored content library ships as static assets.
 builder.Services.AddRespondeoContent();
+
+// The liturgical calendar engine (pure, deterministic) is a standalone library.
+builder.Services.AddRespondeoLiturgy();
 
 // The bundled Summa Theologica corpus is shipped as static assets..
 builder.Services.AddRespondeoSumma();

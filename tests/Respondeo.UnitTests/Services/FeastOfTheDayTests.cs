@@ -1,6 +1,6 @@
 using NSubstitute;
 using Respondeo.Content.Contracts;
-using Respondeo.Content.Liturgy;
+using Respondeo.LiturgicalCalendar;
 using Respondeo.Services;
 
 namespace Respondeo.UnitTests.Services;
@@ -134,7 +134,7 @@ public class FeastOfTheDayTests
     // Builds the system under test with an injected fixed date. The real LiturgicalCalendar supplies the
     // day's celebrations, so GetTodayAsync is driven by the General Roman Calendar, not by catalog scanning.
     private static FeastOfTheDay Sut(ISaintService saints, DateOnly date) =>
-        new(saints, new LiturgicalCalendar(), () => date);
+        new(saints, new RomanCalendar(), () => date);
 
     private static ISaintService StubbedSaints(params (string Id, string Title, string? FeastDay)[] entries)
     {

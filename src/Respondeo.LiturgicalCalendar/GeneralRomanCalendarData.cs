@@ -1,15 +1,13 @@
-using Respondeo.Content.Contracts;
-
-namespace Respondeo.Content.Liturgy;
+namespace Respondeo.LiturgicalCalendar;
 
 /// <summary>
 /// Loads the bundled General Roman Calendar (fixed civil-date celebrations) from the embedded
-/// <c>GeneralRomanCalendar.txt</c> resource exactly once and exposes it as a month/day lookup. The
-/// parse is lazy and cached so the pure <see cref="LiturgicalCalendar"/> engine stays synchronous.
+/// <c>GeneralRomanCalendar.txt</c> resource exactly once and exposes it as a month/day lookup.
+/// The parse is lazy and cached so the pure <see cref="RomanCalendar"/> engine stays synchronous.
 /// </summary>
 internal static class GeneralRomanCalendarData
 {
-    private const string ResourceName = "Respondeo.Content.Liturgy.Data.GeneralRomanCalendar.txt";
+    private const string ResourceName = "Respondeo.LiturgicalCalendar.GeneralRomanCalendar.txt";
 
     private static readonly Lazy<IReadOnlyDictionary<(int Month, int Day), IReadOnlyList<LiturgicalCelebration>>> Entries = new(Parse);
 

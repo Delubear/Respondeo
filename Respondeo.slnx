@@ -16,6 +16,7 @@
   </Folder>
   <Project Path="src/Respondeo.Content.Summa/Respondeo.Content.Summa.csproj" />
   <Project Path="src/Respondeo.Content/Respondeo.Content.csproj" />
+  <Project Path="src/Respondeo.LiturgicalCalendar/Respondeo.LiturgicalCalendar.csproj" />
   <Project Path="src/Respondeo/Respondeo.csproj" />
   <Folder Name="/Tools/">
     <Project Path="tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj" />

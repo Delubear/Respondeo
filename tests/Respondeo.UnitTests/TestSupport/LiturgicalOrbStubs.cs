@@ -2,7 +2,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Respondeo.Content.Contracts;
-using Respondeo.Content.Liturgy;
+using Respondeo.LiturgicalCalendar;
 using Respondeo.Services;
 
 namespace Respondeo.UnitTests.TestSupport;
@@ -16,7 +16,7 @@ internal static class LiturgicalOrbStubs
 {
     public static void AddLiturgicalOrbStubs(this TestContext context)
     {
-        context.Services.AddSingleton<ILiturgicalCalendar>(new LiturgicalCalendar());
+        context.Services.AddSingleton<ILiturgicalCalendar>(new RomanCalendar());
         context.Services.AddSingleton<Func<DateOnly>>(() => new DateOnly(2025, 1, 1));
 
         if (!context.Services.Any(s => s.ServiceType == typeof(ISaintService)))
