@@ -20,8 +20,7 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
     }
 
     // -----------------------------------------------------------------------
-    // Named celebrations: the moveable feasts (Easter-relative) take precedence
-    // over the fixed-date solemnities when, rarely, they coincide.
+    // Named celebrations: the moveable feasts (Easter-relative) take precedence over the fixed-date solemnities when, rarely, they coincide.
     // -----------------------------------------------------------------------
 
     private static LiturgicalCelebration? PrincipalCelebration(DateOnly date) => MoveableCelebration(date) ?? FixedCelebration(date);
