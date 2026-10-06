@@ -52,33 +52,16 @@
 .notfound__feast {
     margin: 0 auto 1.75rem;
     max-width: 30rem;
-    padding: 1rem 1.25rem;
     text-align: center;
-    border: 1px solid var(--gold, #c8a24a);
-    border-radius: 8px;
-    background: var(--surface-raised, rgba(200, 162, 74, 0.08));
 }
 
 .notfound__feast-eyebrow {
     display: block;
+    margin-bottom: 0.6rem;
     font-size: 0.75rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-soft);
-}
-
-.notfound__feast-name {
-    display: inline-block;
-    margin-top: 0.4rem;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-}
-
-.notfound__feast-name:hover,
-.notfound__feast-name:focus-visible {
-    text-decoration: underline;
 }
 
 .notfound__actions {

@@ -5,16 +5,26 @@
 # not listed here. Regional/national propers are intentionally out of scope.
 #
 # Format (pipe-delimited), one celebration per line:
-#   MM-DD | Rank | Color | Name
+#   MM-DD | Rank | Color | Name [| SaintSlug] [| Summary]
 # Rank  : Solemnity | Feast | Memorial | OptionalMemorial
 # Color : White | Red | Green | Violet | Rose
+# SaintSlug : OPTIONAL fifth field linking the celebration to a saint profile at
+#             discover/saints/{slug}. Add it only when a profile exists; omit it otherwise.
+# Summary   : OPTIONAL sixth field, a short one-line description of the day. Author it for days with
+#             no linked saint profile (e.g. feasts of the Lord, Marian days, mysteries) so the dialog
+#             can still explain the day. When a SaintSlug is present the profile supplies the summary,
+#             so this field is usually left empty for saint days. To set a Summary without a SaintSlug,
+#             leave the fifth field empty: MM-DD | Rank | Color | Name |  | Summary
+# We may need further adjustment to support multiple saints on the same day, such as Saints Basil the Great and Gregory Nazianzen.
+# Though a different approach may need to be considered for items like 'Saints John de Brébeuf and Isaac Jogues, Priests, and Companions, Martyrs'.
+# 'Saints Simon and Jude, Apostles' also presents a challenge.
 # Lines beginning with '#' and blank lines are ignored. Several celebrations may share a date.
 
 # ----- January -----
-01-01 | Solemnity        | White  | Mary, the Holy Mother of God
+01-01 | Solemnity        | White  | Mary, the Holy Mother of God |  | The Octave Day of Christmas, honoring Mary's divine motherhood as she presents her newborn Son to the world.
 01-02 | Memorial         | White  | Saints Basil the Great and Gregory Nazianzen, Bishops and Doctors of the Church
-01-03 | OptionalMemorial | White  | The Most Holy Name of Jesus
-01-06 | Solemnity        | White  | The Epiphany of the Lord
+01-03 | OptionalMemorial | White  | The Most Holy Name of Jesus |  | A day to venerate the holy Name at which every knee should bend, in heaven and on earth and under the earth.
+01-06 | Solemnity        | White  | The Epiphany of the Lord |  | The manifestation of Christ to the nations, recalling the Magi who followed the star to adore the newborn King.
 01-07 | OptionalMemorial | White  | Saint Raymond of Penyafort, Priest
 01-13 | OptionalMemorial | White  | Saint Hilary, Bishop and Doctor of the Church
 01-17 | Memorial         | White  | Saint Anthony, Abbot
@@ -30,7 +40,7 @@
 01-31 | Memorial         | White  | Saint John Bosco, Priest
 
 # ----- February -----
-02-02 | Feast            | White  | The Presentation of the Lord
+02-02 | Feast            | White  | The Presentation of the Lord |  | Forty days after Christmas, the infant Jesus is presented in the Temple and Simeon hails him as a light to the nations.
 02-03 | OptionalMemorial | Red    | Saint Blaise, Bishop and Martyr
 02-03 | OptionalMemorial | White  | Saint Ansgar, Bishop
 02-05 | Memorial         | Red    | Saint Agatha, Virgin and Martyr
@@ -38,11 +48,11 @@
 02-08 | OptionalMemorial | White  | Saint Jerome Emiliani
 02-08 | OptionalMemorial | White  | Saint Josephine Bakhita, Virgin
 02-10 | Memorial         | White  | Saint Scholastica, Virgin
-02-11 | OptionalMemorial | White  | Our Lady of Lourdes
+02-11 | OptionalMemorial | White  | Our Lady of Lourdes |  | Commemorates Mary's 1858 apparitions to Saint Bernadette at Lourdes, a place of prayer and healing for the sick.
 02-14 | Memorial         | White  | Saints Cyril, Monk, and Methodius, Bishop
 02-17 | OptionalMemorial | White  | The Seven Holy Founders of the Servite Order
 02-21 | OptionalMemorial | White  | Saint Peter Damian, Bishop and Doctor of the Church
-02-22 | Feast            | White  | The Chair of Saint Peter the Apostle
+02-22 | Feast            | White  | The Chair of Saint Peter the Apostle |  | Honors the teaching authority Christ entrusted to Peter and his successors, the enduring sign of the Church's unity.
 02-23 | Memorial         | Red    | Saint Polycarp, Bishop and Martyr
 02-27 | OptionalMemorial | White  | Saint Gregory of Narek, Abbot and Doctor of the Church
 
@@ -55,7 +65,7 @@
 03-18 | OptionalMemorial | White  | Saint Cyril of Jerusalem, Bishop and Doctor of the Church
 03-19 | Solemnity        | White  | Saint Joseph, Spouse of the Blessed Virgin Mary
 03-23 | OptionalMemorial | White  | Saint Turibius of Mogrovejo, Bishop
-03-25 | Solemnity        | White  | The Annunciation of the Lord
+03-25 | Solemnity        | White  | The Annunciation of the Lord |  | The angel Gabriel greets Mary, who consents to become the Mother of God, and the Word is made flesh.
 
 # ----- April -----
 04-02 | OptionalMemorial | White  | Saint Francis of Paola, Hermit
@@ -81,7 +91,7 @@
 05-10 | OptionalMemorial | White  | Saint John of Ávila, Priest and Doctor of the Church
 05-12 | OptionalMemorial | Red    | Saints Nereus and Achilleus, Martyrs
 05-12 | OptionalMemorial | Red    | Saint Pancras, Martyr
-05-13 | OptionalMemorial | White  | Our Lady of Fátima
+05-13 | OptionalMemorial | White  | Our Lady of Fátima |  | Recalls Mary's 1917 apparitions at Fátima, where she called the world to prayer, penance, and the Rosary.
 05-14 | Feast            | Red    | Saint Matthias, Apostle
 05-18 | OptionalMemorial | Red    | Saint John I, Pope and Martyr
 05-20 | OptionalMemorial | White  | Saint Bernardine of Siena, Priest
@@ -93,7 +103,7 @@
 05-26 | Memorial         | White  | Saint Philip Neri, Priest
 05-27 | OptionalMemorial | White  | Saint Augustine of Canterbury, Bishop
 05-29 | OptionalMemorial | White  | Saint Paul VI, Pope
-05-31 | Feast            | White  | The Visitation of the Blessed Virgin Mary
+05-31 | Feast            | White  | The Visitation of the Blessed Virgin Mary |  | Mary visits Elizabeth, who proclaims her blessed, and Mary responds with the Magnificat, her song of praise.
 
 # ----- June -----
 06-01 | Memorial         | Red    | Saint Justin, Martyr
@@ -124,7 +134,7 @@
 07-13 | OptionalMemorial | White  | Saint Henry
 07-14 | OptionalMemorial | White  | Saint Camillus de Lellis, Priest
 07-15 | Memorial         | White  | Saint Bonaventure, Bishop and Doctor of the Church
-07-16 | OptionalMemorial | White  | Our Lady of Mount Carmel
+07-16 | OptionalMemorial | White  | Our Lady of Mount Carmel |  | Honors Mary under the title of the Carmelite order and the devotion of the brown scapular.
 07-20 | OptionalMemorial | Red    | Saint Apollinaris, Bishop and Martyr
 07-21 | OptionalMemorial | White  | Saint Lawrence of Brindisi, Priest and Doctor of the Church
 07-22 | Feast            | White  | Saint Mary Magdalene
@@ -141,8 +151,8 @@
 08-02 | OptionalMemorial | White  | Saint Eusebius of Vercelli, Bishop
 08-02 | OptionalMemorial | White  | Saint Peter Julian Eymard, Priest
 08-04 | Memorial         | White  | Saint John Vianney, Priest
-08-05 | OptionalMemorial | White  | The Dedication of the Basilica of Saint Mary Major
-08-06 | Feast            | White  | The Transfiguration of the Lord
+08-05 | OptionalMemorial | White  | The Dedication of the Basilica of Saint Mary Major |  | Commemorates the dedication of Rome's oldest church honoring Mary, the Mother of God.
+08-06 | Feast            | White  | The Transfiguration of the Lord |  | On Mount Tabor Jesus is transfigured in glory before Peter, James, and John, and the Father's voice is heard.
 08-07 | OptionalMemorial | Red    | Saint Sixtus II, Pope, and Companions, Martyrs
 08-07 | OptionalMemorial | White  | Saint Cajetan, Priest
 08-08 | Memorial         | White  | Saint Dominic, Priest
@@ -152,28 +162,28 @@
 08-12 | OptionalMemorial | White  | Saint Jane Frances de Chantal, Religious
 08-13 | OptionalMemorial | Red    | Saints Pontian, Pope, and Hippolytus, Priest, Martyrs
 08-14 | Memorial         | Red    | Saint Maximilian Mary Kolbe, Priest and Martyr
-08-15 | Solemnity        | White  | The Assumption of the Blessed Virgin Mary
+08-15 | Solemnity        | White  | The Assumption of the Blessed Virgin Mary |  | Celebrates Mary taken up body and soul into heavenly glory at the end of her earthly life.
 08-16 | OptionalMemorial | White  | Saint Stephen of Hungary
 08-19 | OptionalMemorial | White  | Saint John Eudes, Priest
 08-20 | Memorial         | White  | Saint Bernard, Abbot and Doctor of the Church
 08-21 | Memorial         | White  | Saint Pius X, Pope
-08-22 | Memorial         | White  | The Queenship of the Blessed Virgin Mary
+08-22 | Memorial         | White  | The Queenship of the Blessed Virgin Mary |  | Honors Mary crowned as Queen of heaven and earth, reigning beside her Son in glory.
 08-23 | OptionalMemorial | White  | Saint Rose of Lima, Virgin
 08-24 | Feast            | Red    | Saint Bartholomew, Apostle
 08-25 | OptionalMemorial | White  | Saint Louis
 08-25 | OptionalMemorial | White  | Saint Joseph of Calasanz, Priest
 08-27 | Memorial         | White  | Saint Monica
-08-28 | Memorial         | White  | Saint Augustine, Bishop and Doctor of the Church
+08-28 | Memorial         | White  | Saint Augustine, Bishop and Doctor of the Church | augustine-of-hippo
 08-29 | Memorial         | Red    | The Passion of Saint John the Baptist
 
 # ----- September -----
 09-03 | Memorial         | White  | Saint Gregory the Great, Pope and Doctor of the Church
-09-08 | Feast            | White  | The Nativity of the Blessed Virgin Mary
+09-08 | Feast            | White  | The Nativity of the Blessed Virgin Mary |  | Celebrates the birth of Mary, the dawn that heralds the coming of the Sun of Justice, Christ the Lord.
 09-09 | OptionalMemorial | White  | Saint Peter Claver, Priest
-09-12 | OptionalMemorial | White  | The Most Holy Name of Mary
+09-12 | OptionalMemorial | White  | The Most Holy Name of Mary |  | A day to venerate the name of the Virgin Mother, invoked with love and confidence by the faithful.
 09-13 | Memorial         | White  | Saint John Chrysostom, Bishop and Doctor of the Church
-09-14 | Feast            | Red    | The Exaltation of the Holy Cross
-09-15 | Memorial         | White  | Our Lady of Sorrows
+09-14 | Feast            | Red    | The Exaltation of the Holy Cross |  | Lifts high the Cross on which Christ won our salvation, the instrument of death become the tree of life.
+09-15 | Memorial         | White  | Our Lady of Sorrows |  | Contemplates Mary standing at the foot of the Cross, her heart pierced as she shares her Son's Passion.
 09-16 | Memorial         | Red    | Saints Cornelius, Pope, and Cyprian, Bishop, Martyrs
 09-17 | OptionalMemorial | White  | Saint Robert Bellarmine, Bishop and Doctor of the Church
 09-17 | OptionalMemorial | White  | Saint Hildegard of Bingen, Virgin and Doctor of the Church
@@ -189,12 +199,12 @@
 09-30 | Memorial         | White  | Saint Jerome, Priest and Doctor of the Church
 
 # ----- October -----
-10-01 | Memorial         | White  | Saint Thérèse of the Child Jesus, Virgin and Doctor of the Church
-10-02 | Memorial         | White  | The Holy Guardian Angels
-10-04 | Memorial         | White  | Saint Francis of Assisi
+10-01 | Memorial         | White  | Saint Thérèse of the Child Jesus, Virgin and Doctor of the Church | therese-of-lisieux
+10-02 | Memorial         | White  | The Holy Guardian Angels |  | Honors the angels God appoints to guard, guide, and protect each soul along the way to heaven.
+10-04 | Memorial         | White  | Saint Francis of Assisi | francis-of-assisi
 10-05 | OptionalMemorial | White  | Saint Faustina Kowalska, Virgin
 10-06 | OptionalMemorial | White  | Saint Bruno, Priest
-10-07 | Memorial         | White  | Our Lady of the Rosary
+10-07 | Memorial         | White  | Our Lady of the Rosary |  | Honors Mary through the Rosary, meditating on the mysteries of Christ's life through her eyes.
 10-09 | OptionalMemorial | Red    | Saints Denis, Bishop, and Companions, Martyrs
 10-09 | OptionalMemorial | White  | Saint John Leonardi, Priest
 10-11 | OptionalMemorial | White  | Saint John XXIII, Pope
@@ -212,11 +222,11 @@
 10-28 | Feast            | Red    | Saints Simon and Jude, Apostles
 
 # ----- November -----
-11-01 | Solemnity        | White  | All Saints
+11-01 | Solemnity        | White  | All Saints |  | Celebrates the whole company of the blessed in heaven, known and unknown, who now behold God face to face.
 11-02 | Feast            | Violet | The Commemoration of All the Faithful Departed
 11-03 | OptionalMemorial | White  | Saint Martin de Porres, Religious
 11-04 | Memorial         | White  | Saint Charles Borromeo, Bishop
-11-09 | Feast            | White  | The Dedication of the Lateran Basilica
+11-09 | Feast            | White  | The Dedication of the Lateran Basilica |  | Commemorates the dedication of the pope's cathedral in Rome, mother and head of all the churches of the city and the world.
 11-10 | Memorial         | White  | Saint Leo the Great, Pope and Doctor of the Church
 11-11 | Memorial         | White  | Saint Martin of Tours, Bishop
 11-12 | Memorial         | Red    | Saint Josaphat, Bishop and Martyr
@@ -224,7 +234,7 @@
 11-16 | OptionalMemorial | White  | Saint Margaret of Scotland
 11-16 | OptionalMemorial | White  | Saint Gertrude, Virgin
 11-17 | Memorial         | White  | Saint Elizabeth of Hungary, Religious
-11-18 | OptionalMemorial | White  | The Dedication of the Basilicas of Saints Peter and Paul, Apostles
+11-18 | OptionalMemorial | White  | The Dedication of the Basilicas of Saints Peter and Paul, Apostles |  | Commemorates the dedication of Rome's basilicas raised over the tombs of the apostles Peter and Paul.
 11-21 | Memorial         | White  | The Presentation of the Blessed Virgin Mary
 11-22 | Memorial         | Red    | Saint Cecilia, Virgin and Martyr
 11-23 | OptionalMemorial | Red    | Saint Clement I, Pope and Martyr
@@ -238,11 +248,11 @@
 12-04 | OptionalMemorial | White  | Saint John Damascene, Priest and Doctor of the Church
 12-06 | OptionalMemorial | White  | Saint Nicholas, Bishop
 12-07 | Memorial         | White  | Saint Ambrose, Bishop and Doctor of the Church
-12-08 | Solemnity        | White  | The Immaculate Conception of the Blessed Virgin Mary
+12-08 | Solemnity        | White  | The Immaculate Conception of the Blessed Virgin Mary |  | Celebrates Mary preserved free from original sin from the first moment of her conception, by the grace of Christ.
 12-09 | OptionalMemorial | White  | Saint Juan Diego Cuauhtlatoatzin
-12-10 | OptionalMemorial | White  | Our Lady of Loreto
+12-10 | OptionalMemorial | White  | Our Lady of Loreto |  | Honors Mary under the title of the Holy House of Loreto, revered as the home of the Holy Family at Nazareth.
 12-11 | OptionalMemorial | White  | Saint Damasus I, Pope
-12-12 | OptionalMemorial | White  | Our Lady of Guadalupe
+12-12 | OptionalMemorial | White  | Our Lady of Guadalupe |  | Recalls Mary's 1531 apparitions to Saint Juan Diego near Mexico City, patroness of the Americas.
 12-13 | Memorial         | Red    | Saint Lucy, Virgin and Martyr
 12-14 | Memorial         | White  | Saint John of the Cross, Priest and Doctor of the Church
 12-21 | OptionalMemorial | White  | Saint Peter Canisius, Priest and Doctor of the Church
@@ -250,6 +260,6 @@
 12-25 | Solemnity        | White  | The Nativity of the Lord
 12-26 | Feast            | Red    | Saint Stephen, the First Martyr
 12-27 | Feast            | White  | Saint John, Apostle and Evangelist
-12-28 | Feast            | Red    | The Holy Innocents, Martyrs
+12-28 | Feast            | Red    | The Holy Innocents, Martyrs |  | Remembers the children of Bethlehem slain by Herod, the first to die for Christ though they could not yet speak his name.
 12-29 | OptionalMemorial | White  | Saint Thomas Becket, Bishop and Martyr
 12-31 | OptionalMemorial | White  | Saint Sylvester I, Pope

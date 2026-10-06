@@ -42,11 +42,10 @@ public class FeastOfTheDayTests
     }
 
     [Fact]
-    public async Task GetTodayAsync_returns_the_saint_whose_feast_is_today()
+    public async Task GetTodayAsync_returns_the_saint_the_calendar_celebrates_today()
     {
-        var saints = StubbedSaints(
-            ("francis-of-assisi", "St. Francis of Assisi", "October 4"),
-            ("therese-of-lisieux", "St. Thérèse of Lisieux", "October 1"));
+        // 4 October 2025 is Saint Francis in the General Roman Calendar, wired to his profile slug.
+        var saints = StubbedSaints(("francis-of-assisi", "St. Francis of Assisi", "October 4"));
         var sut = Sut(saints, new DateOnly(2025, 10, 4));
 
         var feast = await sut.GetTodayAsync();
@@ -57,24 +56,23 @@ public class FeastOfTheDayTests
     }
 
     [Fact]
-    public async Task GetTodayAsync_labels_the_highlight_with_the_calendar_rank()
+    public async Task GetTodayAsync_falls_back_to_the_dataset_name_when_no_profile_exists()
     {
-        var saints = StubbedSaints(("francis-of-assisi", "St. Francis of Assisi", "October 4"));
-        var sut = Sut(saints, new DateOnly(2025, 10, 4));
+        // The slug is wired in the dataset but the catalog has no matching profile: use the dataset name.
+        var sut = Sut(Substitute.For<ISaintService>(), new DateOnly(2025, 10, 4));
 
         var feast = await sut.GetTodayAsync();
 
         Assert.NotNull(feast);
-        Assert.Equal(CelebrationRank.Memorial, feast!.Rank);
+        Assert.Equal("francis-of-assisi", feast!.Id);
+        Assert.Equal("Saint Francis of Assisi", feast.Title);
     }
 
     [Fact]
-    public async Task GetTodayAsync_returns_null_when_no_feast_matches()
+    public async Task GetTodayAsync_returns_null_when_todays_celebration_links_to_no_saint()
     {
-        var saints = StubbedSaints(
-            ("francis-of-assisi", "St. Francis of Assisi", "October 4"),
-            ("therese-of-lisieux", "St. Thérèse of Lisieux", "October 1"));
-        var sut = Sut(saints, new DateOnly(2025, 7, 15));
+        // 25 December is the Nativity: a solemnity with no linked saint profile.
+        var sut = Sut(Substitute.For<ISaintService>(), new DateOnly(2025, 12, 25));
 
         var feast = await sut.GetTodayAsync();
 
@@ -82,49 +80,14 @@ public class FeastOfTheDayTests
     }
 
     [Fact]
-    public async Task GetTodayAsync_ignores_saints_without_a_feast_day()
+    public async Task GetTodayAsync_returns_null_on_a_ferial_day()
     {
-        var saints = StubbedSaints(
-            ("no-feast", "A saint without a feast", null),
-            ("francis-of-assisi", "St. Francis of Assisi", "October 4"));
-        var sut = Sut(saints, new DateOnly(2025, 10, 4));
+        // 15 July 2025 carries an unlinked memorial over a ferial weekday: nothing to highlight.
+        var sut = Sut(Substitute.For<ISaintService>(), new DateOnly(2025, 7, 1));
 
         var feast = await sut.GetTodayAsync();
 
-        Assert.NotNull(feast);
-        Assert.Equal("francis-of-assisi", feast!.Id);
-    }
-
-    [Fact]
-    public async Task GetTodayAsync_picks_a_random_saint_when_several_share_the_feast()
-    {
-        var saints = StubbedSaints(
-            ("francis-of-assisi", "St. Francis of Assisi", "October 4"),
-            ("francis-borgia", "St. Francis Borgia", "October 4"),
-            ("petronius", "St. Petronius", "October 4"));
-
-        // pickIndex is driven deterministically to prove the chosen index is honored.
-        var byFirst = await Sut(saints, new DateOnly(2025, 10, 4), _ => 0).GetTodayAsync();
-        var bySecond = await Sut(saints, new DateOnly(2025, 10, 4), _ => 1).GetTodayAsync();
-        var byThird = await Sut(saints, new DateOnly(2025, 10, 4), _ => 2).GetTodayAsync();
-
-        Assert.Equal("francis-of-assisi", byFirst!.Id);
-        Assert.Equal("francis-borgia", bySecond!.Id);
-        Assert.Equal("petronius", byThird!.Id);
-    }
-
-    [Fact]
-    public async Task GetTodayAsync_asks_the_selector_for_an_index_within_range()
-    {
-        var saints = StubbedSaints(
-            ("francis-of-assisi", "St. Francis of Assisi", "October 4"),
-            ("francis-borgia", "St. Francis Borgia", "October 4"));
-        int? requestedCount = null;
-        var sut = Sut(saints, new DateOnly(2025, 10, 4), count => { requestedCount = count; return 0; });
-
-        await sut.GetTodayAsync();
-
-        Assert.Equal(2, requestedCount);
+        Assert.Null(feast);
     }
 
     [Fact]
@@ -168,10 +131,10 @@ public class FeastOfTheDayTests
         Assert.Contains("FRANCIS-OF-ASSISI", ids);
     }
 
-    // Builds the system under test with an injected fixed date and a deterministic index selector
-    // (first match by default) so tests never depend on real randomness.
-    private static FeastOfTheDay Sut(ISaintService saints, DateOnly date, Func<int, int>? pickIndex = null) =>
-        new(saints, new LiturgicalCalendar(), () => date, pickIndex ?? (_ => 0));
+    // Builds the system under test with an injected fixed date. The real LiturgicalCalendar supplies the
+    // day's celebrations, so GetTodayAsync is driven by the General Roman Calendar, not by catalog scanning.
+    private static FeastOfTheDay Sut(ISaintService saints, DateOnly date) =>
+        new(saints, new LiturgicalCalendar(), () => date);
 
     private static ISaintService StubbedSaints(params (string Id, string Title, string? FeastDay)[] entries)
     {

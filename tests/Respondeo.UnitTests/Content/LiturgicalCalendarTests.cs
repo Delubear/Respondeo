@@ -308,4 +308,23 @@ public class LiturgicalCalendarTests
         Assert.Equal("Saint Joseph, Spouse of the Blessed Virgin Mary", transferred.Celebration?.Name);
         Assert.Equal(CelebrationRank.Solemnity, transferred.Celebration?.Rank);
     }
+
+    [Fact]
+    public void A_wired_memorial_links_to_its_saint_profile()
+    {
+        // 4 October 2025 is a Saturday: Saint Francis is the principal celebration and links to his profile.
+        var day = Calendar.ForDate(new DateOnly(2025, 10, 4));
+
+        Assert.Equal("Saint Francis of Assisi", day.Celebration?.Name);
+        Assert.Equal("francis-of-assisi", day.Celebration?.Id);
+    }
+
+    [Fact]
+    public void An_unlinked_celebration_has_no_saint_profile_id()
+    {
+        // 25 December has no saint profile slug in the dataset.
+        var day = Calendar.ForDate(new DateOnly(2025, 12, 25));
+
+        Assert.Null(day.Celebration?.Id);
+    }
 }

@@ -34,15 +34,17 @@ internal static class GeneralRomanCalendarData
             }
 
             var parts = trimmed.Split('|', StringSplitOptions.TrimEntries);
-            if (parts.Length != 4)
+            if (parts.Length is not (4 or 5 or 6))
             {
-                throw new InvalidOperationException($"Malformed liturgical calendar line (expected 4 '|'-delimited fields): {trimmed}");
+                throw new InvalidOperationException($"Malformed liturgical calendar line (expected 4 to 6 '|'-delimited fields): {trimmed}");
             }
 
             var (month, day) = ParseMonthDay(parts[0]);
             var rank = Enum.Parse<CelebrationRank>(parts[1], ignoreCase: true);
             var color = Enum.Parse<LiturgicalColor>(parts[2], ignoreCase: true);
-            var celebration = new LiturgicalCelebration(parts[3], rank, color);
+            var slug = parts.Length >= 5 && parts[4].Length > 0 ? parts[4] : null;
+            var summary = parts.Length == 6 && parts[5].Length > 0 ? parts[5] : null;
+            var celebration = new LiturgicalCelebration(parts[3], rank, color) { Id = slug, Summary = summary };
 
             if (!map.TryGetValue((month, day), out var list))
             {

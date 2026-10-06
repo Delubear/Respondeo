@@ -1,0 +1,69 @@
+@* A gold "saint of the day" card shared by the liturgy dialog and the 404 page. When a slug is
+   supplied the whole card links to the saint's profile and shows a call to action; otherwise it
+   renders a static, non-interactive card that still names the celebration. Dates and summary are
+   shown only when provided. *@
+
+@if (Slug is not null)
+{
+    <a class="saint-card" href="discover/saints/@Slug" @onclick="OnNavigate">
+        <span class="saint-card__name">@Name</span>
+        @if (!string.IsNullOrWhiteSpace(Note))
+        {
+            <span class="saint-card__note">@Note</span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Dates))
+        {
+            <span class="saint-card__meta">
+                <span class="saint-card__dates">@Dates</span>
+            </span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Summary))
+        {
+            <span class="saint-card__summary">@Summary</span>
+        }
+        <span class="saint-card__cta">@Cta &rarr;</span>
+    </a>
+}
+else
+{
+    <div class="saint-card saint-card--static">
+        <span class="saint-card__name">@Name</span>
+        @if (!string.IsNullOrWhiteSpace(Note))
+        {
+            <span class="saint-card__note">@Note</span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Dates))
+        {
+            <span class="saint-card__meta">
+                <span class="saint-card__dates">@Dates</span>
+            </span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Summary))
+        {
+            <span class="saint-card__summary">@Summary</span>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>The celebration or saint's display name.</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = string.Empty;
+
+    /// <summary>The saint profile slug. When null the card is static (not a link).</summary>
+    [Parameter] public string? Slug { get; set; }
+
+    /// <summary>Optional small badge shown above the dates (e.g. "Optional memorial").</summary>
+    [Parameter] public string? Note { get; set; }
+
+    /// <summary>Optional free-text life dates (e.g. "1181–1226").</summary>
+    [Parameter] public string? Dates { get; set; }
+
+    /// <summary>Optional one-line summary of the saint.</summary>
+    [Parameter] public string? Summary { get; set; }
+
+    /// <summary>Call-to-action label shown on linked cards.</summary>
+    [Parameter] public string Cta { get; set; } = "Read the saint's life";
+
+    /// <summary>Invoked when a linked card is clicked (e.g. to close the hosting dialog).</summary>
+    [Parameter] public EventCallback OnNavigate { get; set; }
+}

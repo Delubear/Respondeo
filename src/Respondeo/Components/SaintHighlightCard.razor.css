@@ -1,0 +1,76 @@
+.saint-card {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.9rem 1.4rem;
+    border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--gold) 6%, var(--parchment));
+    color: var(--ink);
+    text-decoration: none;
+    text-align: center;
+    transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.saint-card:hover,
+.saint-card:focus-visible {
+    border-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 12%, var(--parchment));
+    outline: none;
+}
+
+/* A celebration with no saint profile: still named, but not an interactive link. */
+.saint-card--static:hover,
+.saint-card--static:focus-visible {
+    border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+    background: color-mix(in srgb, var(--gold) 6%, var(--parchment));
+}
+
+.saint-card__name {
+    display: block;
+    font-family: var(--display);
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+
+.saint-card__note {
+    display: inline-block;
+    margin-top: 0.3rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--gold) 16%, transparent);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.saint-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 0.75rem;
+    margin-top: 0.15rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+.saint-card__dates {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.saint-card__summary {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.saint-card__cta {
+    display: block;
+    margin-top: 0.55rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold);
+}

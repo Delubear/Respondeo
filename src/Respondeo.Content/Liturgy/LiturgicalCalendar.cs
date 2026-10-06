@@ -143,9 +143,8 @@ internal sealed class LiturgicalCalendar : ILiturgicalCalendar
     }
 
     // -----------------------------------------------------------------------
-    // Solemnity transfers: Saint Joseph (19 March) and the Annunciation (25 March)
-    // are moved when they collide with a Sunday of Lent, Holy Week, or the Octave
-    // of Easter, which always outrank them.
+    // Solemnity transfers:
+    // Saint Joseph (19 March) and the Annunciation (25 March) are moved when they collide with a Sunday of Lent, Holy Week, or the Octaveof Easter, which always outrank them.
     // -----------------------------------------------------------------------
 
     private static readonly (int Month, int Day, string Name)[] TransferableSolemnities =

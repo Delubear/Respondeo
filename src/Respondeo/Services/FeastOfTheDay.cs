@@ -4,23 +4,24 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// A saint whose fixed-date feast falls on the day being asked about: enough to render a gentle "today the Church celebrates…" highlight that links back to the saint's profile.
+/// A saint whose feast the Church keeps today: enough to render a gentle "today the Church celebrates…"
+/// highlight that links back to the saint's profile.
 /// </summary>
 /// <param name="Title">Display title, e.g. "St. Francis of Assisi".</param>
 /// <param name="Id">URL slug used to link to <c>discover/saints/{Id}</c>.</param>
-/// <param name="FeastDay">The saint's feast-day label, e.g. "October 4".</param>
-/// <param name="Summary">A short one-line description, when available.</param>
-/// <param name="Dates">Free-text life dates, e.g. "1181–1226", when available.</param>
-/// <param name="Rank">The celebration's liturgical rank from the General Roman Calendar, when the day corresponds to a dataset celebration.</param>
-public sealed record FeastHighlight(string Title, string Id, string? FeastDay = null, string? Summary = null, string? Dates = null, CelebrationRank? Rank = null);
+/// <param name="Dates">Free-text life dates (e.g. "1181–1226"), or null when unknown.</param>
+/// <param name="Summary">Short one-line description of the saint, or null when unavailable.</param>
+public sealed record FeastHighlight(string Title, string Id, string? Dates = null, string? Summary = null);
 
 /// <summary>
 /// Finds the saint (if any) whose feast the Church keeps on a given day.
-/// v1 matches only fixed calendar dates such as "October 4"; moveable feasts (e.g. "Corpus Christi") are ignored.
 /// </summary>
 public interface IFeastOfTheDay
 {
-    /// <summary>Returns the saint whose fixed-date feast falls today, or <c>null</c> when none matches.</summary>
+    /// <summary>
+    /// Returns the saint celebrated today whose General Roman Calendar celebration links to a profile,
+    /// or <c>null</c> when today's celebration honors no saint in the catalog.
+    /// </summary>
     Task<FeastHighlight?> GetTodayAsync();
 
     /// <summary>
@@ -37,40 +38,31 @@ public interface IFeastOfTheDay
 }
 
 /// <summary>
-/// Default <see cref="IFeastOfTheDay"/> backed by the bundled saints catalog.
-/// The current date and the random selector are injected so the matching logic stays deterministic and unit-testable.
+/// Default <see cref="IFeastOfTheDay"/> backed by the liturgical calendar and the bundled saints catalog.
+/// The calendar is the source of truth for which saint is celebrated today; the catalog supplies the
+/// canonical display title for the linked profile. The current date is injected so matching stays testable.
 /// </summary>
 /// <param name="saints">The bundled saints catalog.</param>
-/// <param name="calendar">The liturgical calendar, consulted to label each highlight with its rank from the General Roman Calendar dataset.</param>
+/// <param name="calendar">The liturgical calendar, which resolves the day's celebrations and their saint-profile links.</param>
 /// <param name="today">Supplies the current date.</param>
-/// <param name="pickIndex">
-/// Chooses an index in <c>[0, count)</c> when several saints share today's feast; injected so tests can make the choice deterministic.
-/// </param>
-internal sealed class FeastOfTheDay(ISaintService saints, ILiturgicalCalendar calendar, Func<DateOnly> today, Func<int, int> pickIndex) : IFeastOfTheDay
+internal sealed class FeastOfTheDay(ISaintService saints, ILiturgicalCalendar calendar, Func<DateOnly> today) : IFeastOfTheDay
 {
     public async Task<FeastHighlight?> GetTodayAsync()
     {
         var now = today();
-        var index = await saints.GetIndexAsync();
         var day = calendar.ForDate(now);
 
-        var matches = new List<FeastHighlight>();
-        foreach (var entry in index.Entries)
-        {
-            var record = await saints.GetByIdAsync(entry.Id);
-            if (record is not null && TryMatchFixedDate(record.FeastDay, now))
-            {
-                matches.Add(new FeastHighlight(record.Title, record.Id, record.FeastDay, record.Summary, record.Dates, RankFor(record.Title, day)));
-            }
-        }
-
-        if (matches.Count == 0)
+        // The calendar decides what is celebrated today and whether it honors a saint in the catalog.
+        // Prefer the principal celebration, then any optional memorial that links to a profile.
+        var linked = LinkedCelebrations(day).FirstOrDefault();
+        if (linked?.Id is not { } id)
         {
             return null;
         }
 
-        // Several saints can share a feast day; pick one at random so the 404 page varies.
-        return matches[pickIndex(matches.Count)];
+        // Use the catalog's canonical title when the profile exists, falling back to the dataset name.
+        var record = await saints.GetByIdAsync(id);
+        return new FeastHighlight(record?.Title ?? linked.Name, id, record?.Dates, record?.Summary);
     }
 
     public async Task<IReadOnlySet<string>> GetTodayFeastIdsAsync()
@@ -94,41 +86,21 @@ internal sealed class FeastOfTheDay(ISaintService saints, ILiturgicalCalendar ca
     public bool IsToday(string? feastDay) => TryMatchFixedDate(feastDay, today());
 
     /// <summary>
-    /// The liturgical rank of the General Roman Calendar celebration on <paramref name="day"/> that
-    /// corresponds to the saint named <paramref name="saintTitle"/>, or <c>null</c> when none matches.
-    /// The principal celebration and any optional memorials are compared by name, tolerating the common
-    /// "St."/"Saint" variation so a catalog title lines up with the dataset's spelling.
+    /// The celebrations claiming <paramref name="day"/> that link to a saint profile, principal first,
+    /// then the optional memorials, in calendar order.
     /// </summary>
-    private static CelebrationRank? RankFor(string saintTitle, LiturgicalDay day)
+    private static IEnumerable<LiturgicalCelebration> LinkedCelebrations(LiturgicalDay day)
     {
-        var normalizedTitle = NormalizeName(saintTitle);
-
-        var celebrations = new List<LiturgicalCelebration>();
-        if (day.Celebration is not null)
+        if (day.Celebration is { Id: not null } principal)
         {
-            celebrations.Add(day.Celebration);
+            yield return principal;
         }
 
-        celebrations.AddRange(day.OptionalMemorials);
-
-        foreach (var celebration in celebrations)
+        foreach (var memorial in day.OptionalMemorials.Where(m => m.Id is not null))
         {
-            var normalizedName = NormalizeName(celebration.Name);
-            if (normalizedName.Contains(normalizedTitle, StringComparison.Ordinal)
-                || normalizedTitle.Contains(normalizedName, StringComparison.Ordinal))
-            {
-                return celebration.Rank;
-            }
+            yield return memorial;
         }
-
-        return null;
     }
-
-    private static string NormalizeName(string value) => value
-        .Replace("St.", "Saint", StringComparison.OrdinalIgnoreCase)
-        .Replace("Sts.", "Saints", StringComparison.OrdinalIgnoreCase)
-        .Trim()
-        .ToLowerInvariant();
 
     /// <summary>
     /// True when <paramref name="feastDay"/> is a fixed "Month Day" string (e.g. "October 4") that falls on <paramref name="date"/>.

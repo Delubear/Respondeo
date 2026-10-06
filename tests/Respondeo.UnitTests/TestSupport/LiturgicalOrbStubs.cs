@@ -9,7 +9,7 @@ namespace Respondeo.UnitTests.TestSupport;
 
 /// <summary>
 /// Registers the services the floating <c>LiturgicalOrb</c> injects (<see cref="ILiturgicalCalendar"/>,
-/// the current-date delegate, and <see cref="IFeastOfTheDay"/>) so Discover root pages that host the orb
+/// <see cref="ISaintService"/>, and the current-date delegate) so Discover root pages that host the orb
 /// can render inside bUnit without wiring up the liturgical calendar in every page test.
 /// </summary>
 internal static class LiturgicalOrbStubs
@@ -19,10 +19,12 @@ internal static class LiturgicalOrbStubs
         context.Services.AddSingleton<ILiturgicalCalendar>(new LiturgicalCalendar());
         context.Services.AddSingleton<Func<DateOnly>>(() => new DateOnly(2025, 1, 1));
 
-        var feast = Substitute.For<IFeastOfTheDay>();
-        feast.GetTodayAsync().Returns((FeastHighlight?)null);
-        feast.GetTodayFeastIdsAsync().Returns((IReadOnlySet<string>)new HashSet<string>());
-        context.Services.AddSingleton(feast);
+        if (!context.Services.Any(s => s.ServiceType == typeof(ISaintService)))
+        {
+            var saints = Substitute.For<ISaintService>();
+            saints.GetByIdAsync(Arg.Any<string>()).Returns((SaintRecord?)null);
+            context.Services.AddSingleton(saints);
+        }
 
         // The orb's FloatingGuide hosts a Dialog, which injects DialogInterop.
         if (!context.Services.Any(s => s.ServiceType == typeof(DialogInterop)))

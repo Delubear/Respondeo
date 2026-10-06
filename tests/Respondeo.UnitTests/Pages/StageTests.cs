@@ -27,6 +27,11 @@ public class StageTests : TestContext
         tableModule.SetupVoid("dispose", _ => true);
 
         this.AddLiturgicalOrbStubs();
+
+        // An unknown slug renders the NotFound page, which injects IFeastOfTheDay for its feast highlight.
+        var feast = Substitute.For<IFeastOfTheDay>();
+        feast.GetTodayAsync().Returns((FeastHighlight?)null);
+        Services.AddSingleton(feast);
     }
 
     private void RegisterContent(params (string Path, string Body)[] extra)

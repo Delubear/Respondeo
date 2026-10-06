@@ -73,6 +73,13 @@ public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, Li
     /// day honors a saint in the catalog. Null for celebrations with no linked saint (e.g. feasts of the Lord).
     /// </summary>
     public string? Id { get; init; }
+
+    /// <summary>
+    /// Optional one-line description of the celebration, authored in the calendar dataset for days that
+    /// have no linked saint profile to borrow a summary from (e.g. feasts of the Lord, Marian days, mysteries).
+    /// Null when the day relies on a linked saint profile for its summary, or carries no summary at all.
+    /// </summary>
+    public string? Summary { get; init; }
 }
 
 /// <summary>
