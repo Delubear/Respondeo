@@ -26,7 +26,8 @@ Because a creature's nature does not contain its own existence, being is somethi
 Its existence has to be given to it by something else, and kept going for as long as the thing lasts.
 Here is the principle Aquinas draws from this:
 
-> In everything whose essence is other than its existence, existence must be caused by another. A thing cannot be the source of its own being, for then it would have to exist before it exists.
+> "Everything, then, which is such that its act of existing is other than its nature must needs have its act of existing from something else."
+> — St. Thomas Aquinas, *De Ente et Essentia*, ch. 4
 
 The dog does not account for its own being; its existence is derived, dependent, borrowed at every moment.
 
@@ -40,7 +41,7 @@ Several ways, especially the Third Way from **contingency**, are really argument
 
 *This being, whose very nature is to exist, Aquinas says, is what everyone understands to be God.*
 
-Keep this distinction in mind as you read the ways below: wherever you see "contingency," "dependence," or a thing that "might not have been," you are watching existence being received from another.
+Keep this distinction in mind as you read the ways below: wherever you see *"contingency,"* *"dependence,"* or a thing that *"might not have been,"* you are watching existence being received from another.
 
 ::: youtube 9twxzDealBY
 :::

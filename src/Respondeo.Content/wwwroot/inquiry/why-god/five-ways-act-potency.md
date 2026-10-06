@@ -22,7 +22,8 @@ The cold coffee is *potentially* hot; the acorn is *potentially* an oak; you are
 To change is for a real potential to be made actual.
 And here is the key principle Aquinas draws out:
 
-> Whatever is moved is moved by another. Nothing reduces itself from potency to act; it must be actualized by something already actual.
+> "Whatever is moved is moved by another … nothing can be reduced from potentiality to actuality, except by something in a state of actuality."
+> — [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The cold coffee does not warm itself — the hot stove, already actually hot, turns its potential warmth into real warmth.
 A potential cannot make itself actual, because then it would already have to possess the very thing it still lacks.
@@ -37,7 +38,7 @@ Each way, especially the First Way from **motion**, is really an argument about 
 
 *This being of Pure Actuality, Aquinas says, is what everyone understands to be God.*
 
-Keep this distinction in mind as you read the ways below: wherever you see "motion," "cause," or "dependence," you are watching potency being reduced to act.
+Keep this distinction in mind as you read the ways below: wherever you see *"motion,"* *"cause,"* or *"dependence,"* you are watching potency being reduced to act.
 
 ::: youtube 7AzrbXjDLiM
 :::
