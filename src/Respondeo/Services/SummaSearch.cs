@@ -3,16 +3,9 @@ using Respondeo.Content.Summa.Contracts;
 namespace Respondeo.Services;
 
 /// <summary>
-/// A single searchable Summa entry (a question or one of its articles) with its link metadata pre-resolved,
-/// so each keystroke scans a flat list instead of walking the nested index.
+/// A single searchable Summa entry (a question or one of its articles) with its link metadata pre-resolved, so each keystroke scans a flat list instead of walking the nested index.
 /// </summary>
-public sealed record SummaSearchEntry(
-    string PartTitle,
-    string QuestionId,
-    int QuestionNumber,
-    string Title,
-    int? ArticleNumber,
-    string? Treatise);
+public sealed record SummaSearchEntry(string PartTitle, string QuestionId, int QuestionNumber, string Title, int? ArticleNumber, string? Treatise);
 
 /// <summary>The outcome of a search: the (capped) matches and whether the cap was hit.</summary>
 public sealed record SummaSearchResult(IReadOnlyList<SummaSearchEntry> Matches, bool Truncated);
@@ -70,8 +63,7 @@ public sealed class SummaSearch
         var truncated = false;
         foreach (var entry in entries)
         {
-            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase)
-                && !(entry.Treatise?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false))
+            if (!entry.Title.Contains(term, StringComparison.OrdinalIgnoreCase) && !(entry.Treatise?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false))
             {
                 continue;
             }
