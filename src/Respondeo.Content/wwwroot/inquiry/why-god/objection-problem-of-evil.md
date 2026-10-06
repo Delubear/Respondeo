@@ -42,6 +42,19 @@ Aquinas's own reply turns the objection on its head: evil does not disprove God,
 > good even out of evil.' This is part of the infinite goodness of God, that He should allow
 > evil to exist, and out of it produce good." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
 
+**A closer look at freedom.** It is worth dwelling on the third point, because the free-will reply is often heard as a glib trade &mdash; 
+as if God weighed our comfort against our autonomy and simply chose autonomy. 
+That is not the claim. The claim is that a *will truly able to love* and a *will unable to do harm* are not two options God could pick between; 
+they are a contradiction, like a square that is also a circle. 
+Love, by its nature, is a gift that must be freely given, and a gift that cannot be withheld is not a gift at all. 
+To make a creature who could genuinely choose the good is to make one who could also refuse it &mdash; the very same power aimed the other way. 
+God could, of course, have made a world of creatures that never sin, but only by making creatures that never freely choose anything &mdash; 
+automatons running on rails, incapable of courage, mercy, or love. 
+The wrong such freedom makes possible is real, and its cost is terrible; but the alternative is not a better world with free beings in it &mdash; 
+it is a world with no one in it to love at all. 
+That God permits the misuse of freedom rather than abolishing freedom is not indifference to the harm; 
+it is the price of making persons rather than puppets, and of holding open the possibility that they will one day choose him back.
+
 ::: youtube Oo4hF3IYGp4
 :::
 

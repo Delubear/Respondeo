@@ -34,7 +34,7 @@ what is most knowable in itself can be least evident to minds like ours, so it m
 
 In plainer terms: that one line &mdash; *"the predicate is the same as the subject"* &mdash; is the key. 
 Aquinas is saying that for God, *to be* and *to exist* aren't two separate things: existence isn't something God has, it's what God *is*. 
-So "God exists" is a bit like saying "the existing one exists" &mdash; true by its very nature. 
+So *"God exists"* is a bit like saying *"the existing one exists"* &mdash; true by its very nature. 
 The catch is that we can't see God's nature directly, so this built-in truth doesn't feel obvious to us; we have to arrive at it the long way, through the things God has made.
 
 *On knowing God through his effects rather than face-to-face, see [The Five Ways](node/aquinas-five-ways).*

@@ -59,11 +59,12 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 ::: youtube 3j79qY0RqRw
 :::
 
-
 **The God of the philosophers — and beyond.**
-Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, 
+Reason, then, carries us further than *"some first cause."* It arrives at a being that is one, simple, eternal, 
 immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.
 
 But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, 
 yet it has not told us *which* God this is among the ones people actually worship — whether He is a distant abstraction or a personal God who knows and loves, 
-and whether He has ever *spoken*, entered history, and drawn near. That is a further question, and the beginning of a different road.
+and whether He has ever *spoken*, entered history, and drawn near. 
+
+That is a further question, and the beginning of a different road.
