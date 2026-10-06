@@ -6,10 +6,15 @@ tags:
   - existence of god
 ---
 
-Every argument on this site assumes something easy to overlook: that there *is* a truth about how things are, and that your mind can reach it.
+The arguments on this site assumes something easy to overlook: that there *is* a truth about how things are, and that your mind can reach it.
 
-For many people today that assumption is exactly what feels shaky. "That's true for you." "You can't really know anything." "Reason is just a tool of power." 
-If those slogans hold, then no argument for God — however tight — can even get started. So this is the honest first question, before the First Way or anything else.
+For many people today that assumption is exactly what feels shaky:
+- "That's true for you." 
+- "You can't really know anything." 
+- "Reason is just a tool of power." 
+
+If those slogans hold, then no argument for God — however tight — can even get started. 
+So this is the honest first question, before the First Way or anything else.
 
 **The objection, at its strongest:**
 
@@ -37,7 +42,7 @@ None of this claims your reasoning is infallible, or that truth is always easy t
 
 - **Truth exists** — there is a way things actually are, independent of what we prefer.
 - **The mind can reach it** — not perfectly, but really, through careful reasoning and honest attention.
-- **Some questions have real answers** — and "does anything explain the world's existence?" is one of them, not a matter of taste.
+- **Some questions have real answers** — and *"does anything explain the world's existence?"* is one of them, not a matter of taste.
 
 That is all the arguments ahead require. They do not ask you to be certain in advance; they ask you to accept that the question is *answerable*, and then to follow the reasoning honestly.
 
