@@ -7,7 +7,7 @@ summary: From degrees of perfection to a maximum that causes them.
 > "Among beings there are some more and some less good, true, noble and the like." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The earlier ways traced *change*, *causal dependence*, and *contingency*. The Fourth Way begins from something we do every day without noticing: we **rank** things. 
-We call one act kinder than another, one proof more rigorous, one landscape more beautiful. These "more" and "less" judgments are the starting point.
+We call one act kinder than another, one proof more rigorous, one landscape more beautiful. These *"more"* and *"less"* judgments are the starting point.
 
 Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
 

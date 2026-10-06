@@ -41,7 +41,8 @@ Several ways, especially the Third Way from **contingency**, are really argument
 
 *This being, whose very nature is to exist, Aquinas says, is what everyone understands to be God.*
 
-Keep this distinction in mind as you read the ways below: wherever you see *"contingency,"* *"dependence,"* or a thing that *"might not have been,"* you are watching existence being received from another.
+Keep this distinction in mind as you read the ways below: wherever you see *"contingency,"* *"dependence,"* 
+or a thing that *"might not have been,"* you are watching existence being received from another.
 
 ::: youtube 9twxzDealBY
 :::

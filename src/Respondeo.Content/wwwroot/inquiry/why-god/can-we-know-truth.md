@@ -25,7 +25,7 @@ So this is the honest first question, before the First Way or anything else.
 
 **In response:**
 
-- **Total relativism refutes itself.** The claim "there is no objective truth" is stated *as* an objective truth. If it's true, it's false. 
+- **Total relativism refutes itself.** The claim *"there is no objective truth"* is stated *as* an objective truth. If it's true, it's false. 
   The moment someone argues that you *shouldn't* believe in truth, they are appealing to a standard they've just denied. You cannot even deny truth without using it.
 - **Disagreement doesn't erase truth; it presupposes it.** Two people can only genuinely *disagree* if there's a fact of the matter they disagree about. 
   If everything were mere preference, we wouldn't argue — we'd just have tastes, like preferring tea to coffee. 

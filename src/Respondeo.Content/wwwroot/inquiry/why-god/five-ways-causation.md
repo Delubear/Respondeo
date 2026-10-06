@@ -35,12 +35,14 @@ He means an **essentially ordered** series, where every member depends *at this 
 - A brush paints only as the painter guides it; take the painter away and the motion stops instantly.
 
 In such a series, the intermediate causes are *instruments* — they pass along a causal power they do not originate.
-An infinite regress of instruments explains nothing: a chain of infinitely many links, with no ceiling to hang from, holds up no chandelier at all. Borrowed power with no original lender is no explanation.
+An infinite regress of instruments explains nothing: a chain of infinitely many links, with no ceiling to hang from, holds up no chandelier at all. 
+Borrowed power with no original lender is no explanation.
 
 **Why this connects to act and potency.**
 An efficient cause gives being or actuality to its effect.
 But nothing can give what it does not have.
-So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own — a cause that is not switched on by anything else, but is the unsourced source of the whole chain.
+So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own — a 
+cause that is not switched on by anything else, but is the unsourced source of the whole chain.
 
 > Therefore it is necessary to admit a first efficient cause, to which everyone gives the name of God. &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
@@ -72,7 +74,7 @@ And notice the tell-tale sign of an essential series: the instant any level fail
 Its very being is held, this moment, by what lies beneath it in the order of explanation.
 
 **Where the ladder points.** Physics can keep naming deeper rungs &mdash; quarks, fields, perhaps something below. 
-But each rung it names is another *borrower*: something whose "holding-together-now" is received and governed, never self-explaining. 
+But each rung it names is another *borrower*: something whose *"holding-together-now"* is received and governed, never self-explaining. 
 Descend as far as you like and you never reach a rung that **holds itself in being**.
 
 That is the whole point. An endless stack of borrowers is still nothing but borrowed &mdash; a chandelier of infinite links with no ceiling still hangs from nothing. 

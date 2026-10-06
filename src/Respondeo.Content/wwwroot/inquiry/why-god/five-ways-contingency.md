@@ -45,7 +45,7 @@ The flame never *owns* its existence; it holds it on lease, renewed instant by i
 Now widen the lens. The candle is contingent in exactly the same way, only slower &mdash; it was made, it will be consumed. 
 The intuition resists here: a candle flame obviously borrows its being, but a **rock** or a **planet** seems simply to *sit there*, self-standing. 
 Yet duration is not the same as self-sufficiency. The boulder endures only while its atoms hold together *now*; the planet coheres only while gravity binds it *now*. 
-They are not exempt from the lease &mdash; they simply hold a longer one. "Lasting a billion years" is still borrowing existence a moment at a time; it is just a very patient flame. 
+They are not exempt from the lease &mdash; they simply hold a longer one. *"Lasting a billion years"* is still borrowing existence a moment at a time; it is just a very patient flame. 
 So is the table, the room, the mountain, you. Each holds existence on lease. And here is the pivot: **a lease presupposes an owner.** 
 Borrowed existence, however long the chain of borrowers, must finally rest on something that does not borrow &mdash; whose existence is not leased, 
 received, or sustained from outside, because it simply *is* existence.

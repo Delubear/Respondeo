@@ -11,7 +11,7 @@ The Five Ways each conclude to a first term — an Unmoved Mover, a First Cause,
 A natural question follows: *are these five different things, or one?* And once we have arrived, *what must such a being actually be like?*
 
 Aquinas argues that the terminus of each way is one and the same being, and that its nature can be unfolded by reasoning carefully from what the arguments already established. 
-We do not first assume "God" and then list His traits; we read the attributes off the conclusions themselves.
+We do not first assume *"God"* and then list His traits; we read the attributes off the conclusions themselves.
 
 > "When the existence of a thing has been ascertained, there remains the further question of the manner of its existence, 
 > in order that we may know its essence." &mdash; [*Summa Theologiae* I, Q. 3, prologue](summa/prima-q003)
