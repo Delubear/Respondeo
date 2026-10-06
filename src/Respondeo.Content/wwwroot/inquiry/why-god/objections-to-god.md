@@ -18,6 +18,6 @@ A faith that cannot look its strongest challengers in the eye is not worth much 
 
 Chief among them is the problem of evil. It is taken seriously and addressed first, on its own terms, rather than passed over on the way to easier questions.
 
-The aim is not to *"win,"* but to show that belief in God is reasonable *with the difficulties in full view*.
+The aim is not to *win* but to show that belief in God is reasonable *with the difficulties in full view*.
 
 Expand a section below to sit with each objection and its response.

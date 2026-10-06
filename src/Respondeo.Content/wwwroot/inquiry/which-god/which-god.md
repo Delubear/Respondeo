@@ -16,11 +16,11 @@ and whether He has ever spoken to us.
 
 This is where many thoughtful people stall. 
 They grant that *something* must ground reality — a first cause, an unmoved mover, 
-*"the universe explaining itself"* — and then treat the word **God** as an unwarranted leap from that modest conclusion. 
-The suspicion is understandable: between *"some ultimate explanation"* and *"the God of Abraham, Isaac, and Jacob"* there seems to be an enormous, unbridgeable gap.
+*the universe explaining itself* — and then treat the word **God** as an unwarranted leap from that modest conclusion. 
+The suspicion is understandable: between *some ultimate explanation* and *the God of Abraham, Isaac, and Jacob* there seems to be an enormous, unbridgeable gap.
 
 The claim of this stage is that the gap is real but *crossable* — and that reason itself lays much of the bridge. 
-Step by step, the same arguments that reached a first cause turn out to carry more than a bare *"something."* 
+Step by step, the same arguments that reached a first cause turn out to carry more than a bare *something*. 
 They reach a being that must be **one**, that must be **personal**, and that therefore *could* speak. 
 Reason cannot prove that He has spoken — that turn belongs to history — but it can carry us right up to the threshold 
 and show that the last step is not a leap into the dark.
@@ -33,7 +33,7 @@ So this stage walks the ground as an ordered path, one question leading to the n
 - Of all the claimants to revelation, why the God of Israel?
 
 Along the way the path pauses to face the **hardest objections** to this God — that all religions really point to the same thing, 
-that the God of the Old Testament is immoral, that ancient scripture cannot be trusted, and that a *"personal"* God is merely wishful thinking. 
+that the God of the Old Testament is immoral, that ancient scripture cannot be trusted, and that a *personal* God is merely wishful thinking. 
 The aim is not to win but to show the path holds up with the difficulties in full view.
 
 ## See it today: from "an author exists" to "*this* author"

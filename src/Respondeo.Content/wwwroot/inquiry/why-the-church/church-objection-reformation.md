@@ -20,13 +20,13 @@ Reform was needed.
 The question is whether the *right* conclusion from that was to break away — and the objection's deeper premise is the vulnerable point.
 
 That premise is that Christ's Church could **completely fail** — teach error as truth, lose the gospel entirely, and require rescue from outside.
-But Christ promised the opposite: *"the gates of hell shall not prevail against it,"* and *"I am with you always, to the end of the age."* 
+But Christ promised the opposite: "the gates of hell shall not prevail against it," and "I am with you always, to the end of the age." 
 If the Church could defect wholesale for a thousand years, those promises are empty, 
 and there is no reason to trust that the reformers' new communities are any safer from the same fate.
 The objection saws off the branch it sits on: a Church that *can* totally fail gives no one solid ground, Catholic or Protestant.
 
 The historical claim also proves too much.
-*"Recovering the New Testament faith"* assumes we can see that faith clearly across the centuries — but 
+"Recovering the New Testament faith" assumes we can see that faith clearly across the centuries — but 
 when we look at the earliest Christians *outside* the New Testament, in the writings of the first few centuries, we do not find proto-Protestants.
 We find bishops in apostolic succession, a sacrificial Eucharist believed to be Christ's body, baptismal regeneration, prayer for the dead, and a Church centered on Rome.
 The faith the reformers meant to recover looks far more like the Catholic Church they left than the communities they founded.
@@ -35,7 +35,7 @@ What was presented as a return to antiquity was, on the evidence of antiquity it
 Finally, the fruit tells against the premise.
 Reform *within* the Church did happen — the Council of Trent, a wave of new saints and orders, a genuine renewal.
 Reform by *separation* produced not one restored Church but an ever-multiplying number of them, each appealing to the same Bible and reaching different conclusions.
-That fragmentation is exactly what one would expect if the authority to interpret had been discarded — and exactly what Christ's prayer *"that they may be one"* was meant to prevent.
+That fragmentation is exactly what one would expect if the authority to interpret had been discarded — and exactly what Christ's prayer "that they may be one" was meant to prevent.
 
 The needed reform was real.
 The claim that the Church had so failed that it had to be abandoned is what the promises of Christ, and the witness of the early centuries, will not support.

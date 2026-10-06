@@ -7,7 +7,7 @@ summary: From degrees of perfection to a maximum that causes them.
 > "Among beings there are some more and some less good, true, noble and the like." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The earlier ways traced *change*, *causal dependence*, and *contingency*. The Fourth Way begins from something we do every day without noticing: we **rank** things. 
-We call one act kinder than another, one proof more rigorous, one landscape more beautiful. These *"more"* and *"less"* judgments are the starting point.
+We call one act kinder than another, one proof more rigorous, one landscape more beautiful. These *more* and *less* judgments are the starting point.
 
 Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
 
@@ -25,7 +25,7 @@ Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
 
 - Aquinas is **not** talking about degrees on a measuring scale (like temperature in degrees, or height in inches). 
   Those are just quantities. He means qualities like **being, goodness, and truth** &mdash; things that come in degrees but are not tied to any one kind of object.
-- Nor is he arguing *"because some things are warmer, there must be a warmest thing somewhere."* 
+- Nor is he arguing "because some things are warmer, there must be a warmest thing somewhere." 
   His point in step 3 is that when something has a quality only *partly* and *by sharing in it*, that points back to something which *is* that quality fully and in its own right. 
   What has a quality partially and second-hand points to what has it completely and first-hand.
 
@@ -51,7 +51,7 @@ A perfection spread unevenly across many things that merely *have* it points to 
 That fullness of being and goodness itself, from which every lesser and partial good derives, is what we call God.
 
 **Where this leads.** The other ways ascend through chains of *causes*; the Fourth Way ascends through a ladder of *value and being*. 
-Every *"more good,"* *"more true,"* *"more real"* is a rung, and no rung explains itself &mdash; each borrows its perfection from higher up. 
+Every *more good*, *more true*, *more real* is a rung, and no rung explains itself &mdash; each borrows its perfection from higher up. 
 The ladder cannot climb forever on borrowed goodness; it must rest on Goodness that is unborrowed, Being that is unreceived &mdash; the maximum that causes all the rest.
 
 ::: youtube ufmYWfGTLus

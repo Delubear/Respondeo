@@ -18,7 +18,7 @@ This objection should not be softened, because the sins are real, grave, and in 
 Any honest answer has to begin by owning them rather than explaining them away.
 The Church's own members, including her leaders, have betrayed Christ in horrifying ways, and no appeal to doctrine lessens the wrong done to real victims.
 
-But the objection assumes that *"holy"* means *"made of holy people,"* and that is not what the mark claims.
+But the objection assumes that *holy* means *made of holy people*, and that is not what the mark claims.
 The Church's holiness is located in its **source and its means**, not in the moral average of its members.
 It is holy because its head is Christ, because it guards His true teaching, and because it dispenses the sacraments by which sinners are actually made holy.
 A hospital is not discredited by being full of the sick; it would be discredited only if its medicine were false.

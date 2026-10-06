@@ -29,7 +29,7 @@ tags:
   introduced death and disorder. To force that language into a stopwatch-and-ruler chronology is to misread the genre and
   miss the point the text is actually making.
 - **This is not a modern retreat.** Long before Darwin, the Fathers and Doctors warned against reading Genesis too literally.
-  St. Augustine held that the *"days"* of Genesis were not ordinary days and cautioned believers not to talk nonsense about
+  St. Augustine held that the *days* of Genesis were not ordinary days and cautioned believers not to talk nonsense about
   the natural world in the name of Scripture. St. Thomas taught that where a passage can be read in more than one way,
   the faith is not to be tied to a reading that observation might overturn. Reading Genesis for its theology rather than
   its geology is the older and more Catholic instinct.

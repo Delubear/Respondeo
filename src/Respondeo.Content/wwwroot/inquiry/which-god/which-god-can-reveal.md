@@ -23,7 +23,7 @@ If the truths about God matter for every person's life, not just for philosopher
 then it is fitting that God make them available more surely and more widely than unaided reason ever could. 
 Revelation completes reason; it does not compete with it.
 
-**How we would recognize it: the motives of credibility.** A genuine word from God would not arrive as a bare claim — *"trust me."* 
+**How we would recognize it: the motives of credibility.** A genuine word from God would not arrive as a bare claim — "trust me." 
 It would come with **signs** that no merely human source could counterfeit: 
 
 - **Fulfilled prophecy** — knowledge of events long before they occur, beyond any human forecast.
@@ -38,8 +38,8 @@ Anyone can *say* they speak for the king.
 What separates the true envoy from the impostor is credentials the impostor cannot fake — the royal seal, the king's own hand, actions only the crown could authorize. 
 You do not believe the messenger because he is loud; you believe him because he carries what only the sender could give.
 
-Revelation works the same way. The question is never merely *"does this text make grand claims?"* — anyone can. 
-It is *"does it carry the seal — the prophecy, the wonders, the fruit — that only God could stamp?"*
+Revelation works the same way. The question is never merely "does this text make grand claims?" — anyone can. 
+It is "does it carry the seal — the prophecy, the wonders, the fruit — that only God could stamp?"
 
 **Where this leads.** So a personal God *can* reveal Himself, and there are marks by which a real revelation could be known. 
 But many voices in history claim to carry that seal — Islam, deism, the great Eastern traditions, and the faith of Israel among them. 

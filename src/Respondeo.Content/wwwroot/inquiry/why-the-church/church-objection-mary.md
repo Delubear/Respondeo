@@ -10,7 +10,7 @@ tags:
 **The objection, at its strongest:**
 
 Catholic devotion to Mary seems to cross a line no creature should cross. 
-Catholics call her *"Queen of Heaven,"* claim she was conceived without sin and assumed bodily into glory, ask for her intercession, 
+Catholics call her "Queen of Heaven," claim she was conceived without sin and assumed bodily into glory, ask for her intercession, 
 and give her a place that looks dangerously close to divine. 
 Scripture says little about her — so why does she loom so large? Is this not honor stolen from Christ and given to His mother?
 
@@ -26,8 +26,8 @@ Take Christ away and there is nothing to say about Mary; hold Christ at the cent
 Salvation does not begin with a doctrine but with a *yes*.
 
 1. **The new Eve.**
-   The Fathers saw it from the earliest centuries: as sin entered the world through the *"no"* of the first woman, so redemption entered through the *"yes"* of the new woman.
-   Where Eve's disobedience helped unbind the human race, Mary's obedience — *"let it be done to me according to your word"* — helped bind it back to God.
+   The Fathers saw it from the earliest centuries: as sin entered the world through the "no" of the first woman, so redemption entered through the "yes" of the new woman.
+   Where Eve's disobedience helped unbind the human race, Mary's obedience — "let it be done to me according to your word" — helped bind it back to God.
    She is not the source of grace, but she is the door through which its Source consented to enter the world.
 
 2. **The God-bearer.**
@@ -40,7 +40,7 @@ Salvation does not begin with a doctrine but with a *yes*.
    Before anyone followed Christ, Mary carried Him.
    She heard the word of God and kept it perfectly; she stood at the foot of the Cross when the apostles fled; she was among the disciples at Pentecost.
    In her, the Church sees what she herself is called to be — the one who receives Christ wholly and bears Him to the world.
-   And from the Cross, Christ gave her to the beloved disciple — *"Behold your mother"* — giving her, the Church has always understood, as mother to all His disciples.
+   And from the Cross, Christ gave her to the beloved disciple — "Behold your mother" — giving her, the Church has always understood, as mother to all His disciples.
 
 ## Mary, the New Ark of the Covenant
 
@@ -57,11 +57,11 @@ Mary is the Ark of the New Covenant, and her contents are infinitely greater —
 not manna but the Bread of Life; not a priestly rod but the eternal High Priest.
 Luke tells her story in language that deliberately echoes the Ark:
 
-- The power of the Most High *"**overshadows**"* Mary, the same word used for the glory-cloud that overshadowed the Ark and the Tabernacle.
-- Mary *"**arose and went**"* to the hill country of Judah, just as David brought the Ark up to the same region.
-- David cries, *"**How can the Ark of the Lord come to me?**"* — and Elizabeth cries, *"**How is it that the mother of my Lord should come to me?**"*
-- The Ark remained in the house of Obed-edom *"**three months**"*; Mary remained with Elizabeth *"**about three months.**"*
-- David *"**leaped**"* before the Ark; the infant John *"**leaped**"* in Elizabeth's womb before Mary.
+- The power of the Most High **overshadows** Mary, the same word used for the glory-cloud that overshadowed the Ark and the Tabernacle.
+- Mary **arose and went** to the hill country of Judah, just as David brought the Ark up to the same region.
+- David cries, "**How can the Ark of the Lord come to me?**" — and Elizabeth cries, "**How is it that the mother of my Lord should come to me?**"
+- The Ark remained in the house of Obed-edom "**three months**"; Mary remained with Elizabeth "**about three months**."
+- David "**leaped**" before the Ark; the infant John "**leaped**" in Elizabeth's womb before Mary.
 
 The parallel is too dense to be accidental.
 And it reframes everything the objection resists:
@@ -86,7 +86,7 @@ And it reframes everything the objection resists:
 
 **Why it belongs to the Catholic claim.**
 Honor for Mary is not a late medieval excess; it is woven into the New Testament itself, 
-where she declares *"all generations will call me blessed,"* and it is visible in the oldest Christian prayer and art.
+where she declares "all generations will call me blessed," and it is visible in the oldest Christian prayer and art.
 None of it competes with Christ.
 Every Marian doctrine is a statement about what God did *in* and *through* her for our salvation — the New Eve whose yes opened the way, 
 the God-bearer who guards the Incarnation, and the living Ark whose whole holiness is the holiness of the One she carried.

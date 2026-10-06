@@ -35,7 +35,7 @@ Named plainly, most of them lose their grip.
    You do not have to have every question resolved to take a step.
    Faith often grows by practice rather than before it; 
    many find their belief steadied not by waiting for certainty but by practicing and letting the life of grace do its work.
-   *"I want to believe; help my unbelief"* is enough to begin.
+   "I want to believe; help my unbelief" is enough to begin.
 
 5. **Cost — "It would change too much, or ask too much of me."**
    Sometimes the real hesitation is that taking it seriously would genuinely reorder a life.

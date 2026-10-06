@@ -15,7 +15,7 @@ summary: How can the God of Israel be the good, just Creator reason reaches, giv
 > "What He does according to His will He does justly... But whereas law comes to us from some higher power, God is a law unto Himself." 
 &mdash; [*Summa Theologiae* I, Q. 21, A. 1, ad 2](summa/prima-q021#article-1-reply-2)
 
-- **The objection borrows the standard it uses to accuse.** To call these acts *"evil"* is to appeal to a real, binding moral law that stands over God and everyone. 
+- **The objection borrows the standard it uses to accuse.** To call these acts *evil* is to appeal to a real, binding moral law that stands over God and everyone. 
   But this stage argued that the Creator *is* the ground of that moral law. You cannot coherently use morality to indict the very source that makes morality more than preference. 
   The force of the objection quietly depends on the theism it attacks.
 - **Read the trajectory, not just the snapshot.** The Law of Israel is not presented as a timeless ideal but as a stage in a long pedagogy — God meeting a people where they were, 
@@ -23,10 +23,10 @@ summary: How can the God of Israel be the good, just Creator reason reaches, giv
   (limiting vengeance, regulating and humanizing servitude far beyond the surrounding cultures), not endorsements of them. 
   The Scriptures themselves press toward the prophets' fierce insistence on mercy and justice, and beyond.
 - **Genre and hyperbole matter.** Ancient Near Eastern conquest accounts use stock, exaggerated language 
-  (*"utterly destroyed,"* *"left none alive"*) that the same texts then contradict by describing survivors — a rhetorical convention, not a body count. 
+  ("utterly destroyed," "left none alive") that the same texts then contradict by describing survivors — a rhetorical convention, not a body count. 
   Reading such passages as flat modern reportage misreads what they are.
 - **The hard cases remain hard — and the tradition knows it.** No serious believer pretends every passage is easy; the Church has wrestled with these texts for two millennia, 
-  often reading them on multiple levels rather than flatly and literally. But *"this is difficult"* is a long way from *"this refutes a good God."* 
+  often reading them on multiple levels rather than flatly and literally. But "this is difficult" is a long way from "this refutes a good God." 
   A few genuinely puzzling episodes do not overturn a portrait that is, on the whole, the most morally *demanding* of the ancient world — a God who commands care for the widow, 
   the orphan, the stranger, and the poor, and who judges His own chosen people by that standard. 
   The deeper question of why a good God permits suffering at all is taken up separately in [The Problem of Evil](node/objection-problem-of-evil).

@@ -6,7 +6,7 @@ summary: From the fact of change to an unmoved mover.
 
 > "It is certain, and evident to our senses, that in the world some things are in motion." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
-Of all five ways, this is the one Aquinas calls *"the first and more manifest"* — the most obvious place to begin, 
+Of all five ways, this is the one Aquinas calls "the first and more manifest" — the most obvious place to begin, 
 because change is the plainest fact about the world around us.
 By **motion** he means something broader than movement from place to place: any change at all, 
 from cold coffee warming to a seed becoming a tree to a mind moving from not-knowing to knowing.
@@ -32,7 +32,7 @@ A series like this cannot have infinitely many members each borrowing its motion
 because then there would be no one actually *doing* the moving — nothing from which the motion originates — and so no motion at all. Yet motion plainly happens.
 
 **First in explanation, not first in time.**
-The point is not a *"first"* domino at the start of history, but a **first** in the order of explanation — something whose actuality is not borrowed from anything else.
+The point is not a *first* domino at the start of history, but a **first** in the order of explanation — something whose actuality is not borrowed from anything else.
 Change happening here and now needs a source of actuality that is not itself waiting to be actualized: 
 a mover that is **pure act**, with no unrealized potential to be moved by another.
 
@@ -41,7 +41,7 @@ a mover that is **pure act**, with no unrealized potential to be moved by anothe
 
 **"But what moves God, then?"**
 Nothing — and that is not special pleading.
-The argument does not conclude to *"something that just happens to be first"*; 
+The argument does not conclude to "something that just happens to be first"; 
 it concludes to something that *cannot* be moved, because it has no potential waiting to be actualized.
 To ask what changes the unmoved mover is to ask what actualizes pure actuality — which is like asking what warms a thing that is already warmth itself.
 The chain stops not because we grow tired of asking, but because at pure act there is nothing left to explain.

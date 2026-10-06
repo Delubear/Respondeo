@@ -74,7 +74,7 @@ And notice the tell-tale sign of an essential series: the instant any level fail
 Its very being is held, this moment, by what lies beneath it in the order of explanation.
 
 **Where the ladder points.** Physics can keep naming deeper rungs &mdash; quarks, fields, perhaps something below. 
-But each rung it names is another *borrower*: something whose *"holding-together-now"* is received and governed, never self-explaining. 
+But each rung it names is another *borrower*: something whose *holding-together-now* is received and governed, never self-explaining. 
 Descend as far as you like and you never reach a rung that **holds itself in being**.
 
 That is the whole point. An endless stack of borrowers is still nothing but borrowed &mdash; a chandelier of infinite links with no ceiling still hangs from nothing. 

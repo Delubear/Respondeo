@@ -34,11 +34,11 @@ Reason already left this picture behind when it reached a *single* first cause: 
 and a god who is merely the strongest thing around is not God at all, but one more creature. 
 What was true in these traditions — the sense that the world is charged with more than matter — points beyond them to the one they never quite named.
 
-**The modern "spiritual but not religious"** view is the newest version of an old instinct: that the ultimate is real but faceless — "the universe," an energy, 
+**The modern *spiritual but not religious*** view is the newest version of an old instinct: that the ultimate is real but faceless — *the universe*, an energy, 
 a ground you can sense but not meet. 
 It rightly resists a flat, godless materialism and reaches for something more. But it stops at the same place the Eastern traditions do: it keeps the *ground* and loses the *face*. 
 If reason has shown that the source of all being knows and loves, 
-then treating it as an impersonal "something" is not humility but a step backward — trading a Someone who could be known for a mood that never speaks.
+then treating it as an impersonal *something* is not humility but a step backward — trading a Someone who could be known for a mood that never speaks.
 
 **A note on tone.** Naming these differences is not dismissal. Each tradition preserves something true — the Creator's oneness, His transcendence, the reality of an ultimate ground. 
 The claim here is narrower: that only one of these keeps *every* thread reason has traced — one, personal, and self-revealing in verifiable history.

@@ -23,7 +23,7 @@ Aquinas asks what such fragile, borrowed existence ultimately depends on.
 1. so there must exist a being **necessary of itself**, not receiving existence from another &mdash; *this all men speak of as God.*
 
 **A clarification.** Step 2 is the famously debated one, so it is worth stating fairly. 
-Aquinas is not making a simple logical slip like *"if each thing can fail, then the whole must fail."* 
+Aquinas is not making a simple logical slip like "if each thing can fail, then the whole must fail." 
 His real point is that **things which merely *might* exist cannot be the whole story** — a world made up entirely of things that borrow their being, 
 with nothing to borrow it from, has no ultimate source of existence. 
 Whether you put it in terms of time (as the medieval text does) or in terms of a dependence happening right now, 
@@ -45,7 +45,7 @@ The flame never *owns* its existence; it holds it on lease, renewed instant by i
 Now widen the lens. The candle is contingent in exactly the same way, only slower &mdash; it was made, it will be consumed. 
 The intuition resists here: a candle flame obviously borrows its being, but a **rock** or a **planet** seems simply to *sit there*, self-standing. 
 Yet duration is not the same as self-sufficiency. The boulder endures only while its atoms hold together *now*; the planet coheres only while gravity binds it *now*. 
-They are not exempt from the lease &mdash; they simply hold a longer one. *"Lasting a billion years"* is still borrowing existence a moment at a time; it is just a very patient flame. 
+They are not exempt from the lease &mdash; they simply hold a longer one. "Lasting a billion years" is still borrowing existence a moment at a time; it is just a very patient flame. 
 So is the table, the room, the mountain, you. Each holds existence on lease. And here is the pivot: **a lease presupposes an owner.** 
 Borrowed existence, however long the chain of borrowers, must finally rest on something that does not borrow &mdash; whose existence is not leased, 
 received, or sustained from outside, because it simply *is* existence.

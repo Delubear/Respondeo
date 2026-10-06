@@ -15,17 +15,17 @@ The Resurrection is one more version of a tale the pagans had been telling for c
 
 The parallels look impressive at a distance and shrink the moment they are examined.
 
-First, the alleged *"resurrections"* are mostly nothing of the kind.
+First, the alleged *resurrections* are mostly nothing of the kind.
 Osiris is not restored to earthly life but reassembled to reign as lord of the underworld — he stays dead, in the realm of the dead.
 Others are seasonal fertility symbols, dying and returning with the crops year by year, 
 with no bodily rising of a real person at a particular time and place in history.
-And several of the closest-looking *"rising"* stories are attested in detail only in sources *later* than the New Testament, 
+And several of the closest-looking *rising* stories are attested in detail only in sources *later* than the New Testament, 
 too late to be where the Christian claim came from.
-Press the sources and the neat *"dying-and-rising God"* template, much of it assembled by nineteenth-century writers, 
+Press the sources and the neat *dying-and-rising God* template, much of it assembled by nineteenth-century writers, 
 does not survive contact with the actual myths.
 
 Second, the framework is wrong.
-Pagan myths are cyclical and timeless, located *"once upon a time"* in a mythic past.
+Pagan myths are cyclical and timeless, located *once upon a time* in a mythic past.
 The Christian claim is stubbornly historical: a particular man, under a named governor, 
 in a named city, witnessed by people who gave their names and their lives.
 It is offered not as a seasonal symbol but as an event you could in principle have investigated.

@@ -22,6 +22,14 @@
 - When a quotation is followed by its Summa citation, separate the quote from the citation with an em dash entity (`&mdash;`), never a plain hyphen (`-`). Example: `> "..."<br />&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)`.
 - Example: `[*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)`.
 
+## Quotations vs. word emphasis (Inquiry content)
+- Distinguish a *quotation* (a source's actual or imagined words) from a *mention* (a word or phrase discussed as a term). They must never share the same formatting.
+- **Quotations** use plain double quotes with no italics: `"the gates of hell shall not prevail against it."` This applies to Scripture, Christ's words, the Summa, creeds, cited authors, and invented or hypothetical speech (e.g. an imagined objector's line). Do not wrap quotations in `*...*`.
+- **Block quotations** stay as plain `> "..."` and are not italicized.
+- **Mentions / scare-quotes** (a word referred to as a word, such as *holy*, *days*, *rock*, *novelties*, *four marks*) use italics only, with no quotation marks: write `*holy*`, not `*"holy"*` or `"holy"`.
+- **Emphasis added inside a quotation** uses italics, not bold: `"by word of mouth *or* by letter."` Because quotations are no longer italic by default, italics are free to carry the emphasis.
+- Do not chain several double-quoted phrases together in one sentence; convert the ones that are mentions to italics so only true quotations keep their quotes.
+
 ## Prayer line breaks
 - Prayer bodies (files under `discover/prayers/`) render through the line-break-preserving Markdown pipeline (`IContentHtmlRenderer.ToHtmlPreservingLineBreaks`), so a single newline becomes a `<br />` and a blank line starts a new paragraph. Author line breaks deliberately.
 - Break prayers by *sense line*, the way missals and breviaries do: start a new line at each petition or clause, typically at semicolons, commas of direct address, and major phrase boundaries. Do not leave traditional prayers as a single run-on paragraph.

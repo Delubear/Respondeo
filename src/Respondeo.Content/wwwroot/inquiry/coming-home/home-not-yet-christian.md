@@ -24,7 +24,7 @@ Faith is stepping through it.
 
 2. **It is a gift, not only an achievement.**
    Christian faith is not merely a conclusion you reach but something God offers.
-   You can ask for it honestly — *"I want to believe; help me"* is a real prayer, and a good place to begin — without pretending to a certainty you do not yet feel.
+   You can ask for it honestly — "I want to believe; help me" is a real prayer, and a good place to begin — without pretending to a certainty you do not yet feel.
    Scripture itself gives you the words:
 
    > "Lord, I believe; help my unbelief."

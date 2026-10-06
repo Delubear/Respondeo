@@ -18,12 +18,12 @@ It is that Israel's God claims to be the **very same** first cause — one, pers
 
 ## What we mean by "the God of Israel"
 
-Before weighing the claim, it helps to be plain about what is being claimed — because *"the God of Israel"* is a specific identity, not a vague label.
+Before weighing the claim, it helps to be plain about what is being claimed — because *the God of Israel* is a specific identity, not a vague label.
 
 He is the God revealed in the **Hebrew Scriptures** (what Christians call the Old Testament) — the same texts revered by Jews and, in large part, by Christians and Muslims.
 In that story He introduces Himself not as an abstract principle but by relationship and name: **"the God of Abraham, of Isaac, and of Jacob,"** the God who calls a family, 
 forms it into a people, and binds Himself to them by **covenant** — a solemn, mutual pledge.
-To Moses He gives a personal name and declares Himself *"I AM WHO I AM"* — Being Itself, exactly the God reason reached, now speaking in the first person.
+To Moses He gives a personal name and declares Himself "I AM WHO I AM" — Being Itself, exactly the God reason reached, now speaking in the first person.
 
 So the claim on the table is precise: that the one, personal Creator whom argument arrives at is **identical** with this covenant God 
 who acts in the history of one people — giving them a law, sending them prophets, and making promises He undertakes to keep.
@@ -44,7 +44,7 @@ Does this revelation carry credentials no human source could forge?
 
 2. **Covenant history.** This God does not float above time; He *acts within it* — calling Abraham, delivering a people, binding Himself by promise.
    The claim is checkable in principle because it is planted in events, not in timeless abstraction.
-   This is exactly the kind of *"seal in history"* the motives of credibility looked for.
+   This is exactly the kind of *seal in history* the motives of credibility looked for.
 
 3. **The prophets.** A living tradition of voices who claimed to speak for God, who called even kings and the nation itself to account, and who staked their message on things to come.
    Prophecy is one of the credentials reason identified — and here it runs as a continuous thread, not a single episode.
@@ -73,7 +73,7 @@ The improbable candor is itself a kind of evidence.
 
 **Third: it answers the exact question the previous steps left open.** Reason reached a God who is one, personal, and *morally* the ground of the good.
 A credible revelation of *that* God should present Him as one, personal, and inseparably holy — not as a tribal favorite among many, nor as an amoral force, nor as an impersonal Absolute.
-This is precisely Israel's portrait: *"the Lord our God is one Lord,"* holy, just, and self-committing.
+This is precisely Israel's portrait: "the Lord our God is one Lord," holy, just, and self-committing.
 The revelation *fits the God philosophy had already found*, which is what we would expect if it were genuinely His — and not what we would expect from a merely human projection, 
 which tends to remake God in the image of its own nation or appetites.
 
@@ -102,7 +102,7 @@ Reason can show that this God is the most credible one who *claims* to speak.
 Whether He has in fact spoken — and kept His word — is no longer settled by philosophy alone but by looking at what He is said to have done in history.
 This is the threshold between *reason* and *faith*: not a leap away from evidence, but a turn toward a different kind of it.
 
-So the honest posture at the end of this stage is not *"case closed"* but *"case handed on."*
+So the honest posture at the end of this stage is not *case closed* but *case handed on*.
 The stages that follow take up exactly this: they build the historical evidence for whether the God of Israel 
 kept His promise — whether the expectation woven through His Scriptures actually landed on an identifiable person and event.
 The argument here is not replaced by what comes next; it is *continued* by it.
@@ -111,11 +111,11 @@ The argument here is not replaced by what comes next; it is *continued* by it.
 
 There is a difference between a public notice pinned to every door and a letter that arrives bearing *your* name, referring to *your* history, signed by a hand you recognize.
 The philosopher's God is the public notice — true, but addressed to no one in particular.
-The God of Israel arrives as the letter: *"I am the God of Abraham, of Isaac, of Jacob"* — a God who remembers, who promises, who calls people by name.
+The God of Israel arrives as the letter: "I am the God of Abraham, of Isaac, of Jacob" — a God who remembers, who promises, who calls people by name.
 
 You can infer a distant author from a public notice. You can only be *in a relationship* with the one who signs the letter.
 
-**Where this leads.** So the path of reason, followed honestly, does not end in a vague *"higher power."* 
+**Where this leads.** So the path of reason, followed honestly, does not end in a vague *higher power*. 
 It ends at the threshold of a particular covenant God who has spoken and who has promised *more*.
 And that promise raises the final, decisive question — the one the whole ascent has been leading toward: has this God done the unthinkable and **entered history Himself**?
 Has He become man?

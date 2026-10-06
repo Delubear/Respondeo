@@ -11,7 +11,7 @@ tags:
 Once we grant that Christ founded a Church with a teaching office, 
 a practical question follows: *how does His revelation actually reach us, and in what form?*
 Before weighing objections, it helps to set out plainly what the Catholic Church claims — because 
-the claim is often misunderstood as *"the Church versus the Bible,"* when in fact it is an account of how the two belong together.
+the claim is often misunderstood as *the Church versus the Bible*, when in fact it is an account of how the two belong together.
 
 The short answer is that God's revelation is handed on through **three** things that stand 
 or fall together: Sacred **Scripture**, Sacred **Tradition**, and the living **teaching office** that guards and interprets both.
@@ -26,7 +26,7 @@ None of the three is a rival to the others; each is meaningless without them.
 
 2. **Sacred Tradition — the same word, handed on living.**
    Before a single Gospel was written, the faith was already being *lived and preached* — in worship, in the sacraments, in how the apostles taught their communities.
-   Tradition (with a capital T) is not *"old customs"* or human add-ons; it is that same apostolic message carried forward in the life of the Church.
+   Tradition (with a capital T) is not *old customs* or human add-ons; it is that same apostolic message carried forward in the life of the Church.
    It is why we know things Scripture assumes but never spells out, such as which books belong in the Bible at all.
 
 3. **The Magisterium — the office that interprets.**

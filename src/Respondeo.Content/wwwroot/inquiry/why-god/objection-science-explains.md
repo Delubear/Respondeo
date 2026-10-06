@@ -26,9 +26,9 @@ This is essentially Aquinas's second objection &mdash; that natural and human ca
   and why is it ordered* that grounds the whole enterprise. 
   Explaining the mechanism of a kettle does not remove the person who wanted tea.
 - **This is not a gap that waits to be closed.** It is tempting to reply: 
-  *"Science couldn't explain lightning once either &mdash; give it time, and 'why is there anything at all' will fall too."* 
+  "Science couldn't explain lightning once either &mdash; give it time, and 'why is there anything at all' will fall too." 
   But this mistakes the kind of question it is. Science advances by finding *deeper mechanisms* &mdash; a prior cause, a finer law. 
-  *"Why is there any lawful, existing world for mechanisms to operate in?"* is not a missing mechanism further down the same road; it is a question about the road itself. 
+  "Why is there any lawful, existing world for mechanisms to operate in?" is not a missing mechanism further down the same road; it is a question about the road itself. 
   No amount of progress *along* the chain explains why there is a chain, so this is not a shrinking gap &mdash; it is a question science presupposes every time it succeeds.
 - **Science rests on assumptions it cannot prove.** That the universe is rational, that its order is stable and discoverable, 
   that our minds track truth &mdash; these are not results of science but conditions for it. 

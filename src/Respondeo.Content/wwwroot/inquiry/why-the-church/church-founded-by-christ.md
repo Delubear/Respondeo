@@ -19,15 +19,15 @@ If He left a Church with authority, then there is a *someone* charged to guard a
 **The case that Christ founded a visible, teaching Church:**
 
 1. **He built on a person, not just a principle.**
-   *"You are Peter, and on this rock I will build my church"* — He names an individual, gives him a new name, and makes him the foundation of a structure meant to stand.
+   "You are Peter, and on this rock I will build my church" — He names an individual, gives him a new name, and makes him the foundation of a structure meant to stand.
    You do not lay a foundation for something you intend to keep invisible.
 
 2. **He handed over real authority, not just a task.**
-   To Peter He gives *"the keys of the kingdom"*; to the apostles the power to *"bind and loose,"* to forgive sins, to teach in His own voice: *"whoever hears you hears me."* 
+   To Peter He gives "the keys of the kingdom"; to the apostles the power to "bind and loose," to forgive sins, to teach in His own voice: "whoever hears you hears me." 
    These are grants of *jurisdiction* — the language of an office, not merely a mission.
 
 3. **He meant it to endure and to be provided for.**
-   *"The gates of hell shall not prevail against it,"* and *"I am with you always, to the end of the age."* 
+   "The gates of hell shall not prevail against it," and "I am with you always, to the end of the age." 
    A body promised protection until the end of time must have a form that lasts that long — which 
    means the authority He gave was meant to be *handed on*, not to die with the first generation.
 

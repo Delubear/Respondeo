@@ -12,7 +12,7 @@ Many communities claim His name, and they teach contradictory things about bapti
 They cannot all be the Church He founded, since He founded *one*.
 So we need a way to tell the original from the later branchings.
 
-The test is not *"which community feels most alive"* or *"which reads Scripture as I do."* 
+The test is not "which community feels most alive" or "which reads Scripture as I do." 
 It is historical and concrete: which body can be traced, without a break, to the Church of the apostles — in leadership, teaching, and worship?
 
 **How to identify the Church Christ founded:**

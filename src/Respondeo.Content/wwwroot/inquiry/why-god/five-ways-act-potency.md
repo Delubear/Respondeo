@@ -9,7 +9,7 @@ Aristotle introduced it to solve an ancient puzzle about change; Aquinas made it
 
 **The puzzle of change.**
 The early Greeks asked how anything can change at all. If a thing becomes what it *is not* yet, where does the new state come from — out of nothing? 
-One thinker, Parmenides, concluded that change must be an illusion. Aristotle solved the puzzle by finding a middle ground between plain *"being"* and *"non-being."*
+One thinker, Parmenides, concluded that change must be an illusion. Aristotle solved the puzzle by finding a middle ground between plain *being* and *non-being*.
 
 **The distinction, in plain terms:**
 
@@ -39,7 +39,7 @@ Each way, especially the First Way from **motion**, is really an argument about 
 
 *This being of Pure Actuality, Aquinas says, is what everyone understands to be God.*
 
-Keep this distinction in mind as you read the ways below: wherever you see *"motion,"* *"cause,"* or *"dependence,"* you are watching potency being reduced to act.
+Keep this distinction in mind as you read the ways below: wherever you see *motion*, *cause*, or *dependence*, you are watching potency being reduced to act.
 
 ::: youtube 7AzrbXjDLiM
 :::

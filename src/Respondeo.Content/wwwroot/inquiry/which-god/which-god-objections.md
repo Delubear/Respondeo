@@ -16,9 +16,9 @@ Each of those steps invites its own objection, and the strong ones deserve to be
 
 These are not the objections to God's *existence* — those are weighed in [Objections to God](node/objections-to-god) back at the first stage. 
 Here the challenges are aimed at *which* God: whether picking one tradition is arrogant, 
-whether the God of Israel is even good, whether the texts can be trusted, and whether a "personal" God is anything more than a comforting projection.
+whether the God of Israel is even good, whether the texts can be trusted, and whether a *personal* God is anything more than a comforting projection.
 
 As before, each objection is stated in its most forceful form *before* any reply is given. 
-The aim is not to *"win,"* but to show that the path to the God of Israel is reasonable *with the difficulties in full view*.
+The aim is not to *win* but to show that the path to the God of Israel is reasonable *with the difficulties in full view*.
 
 Expand a section below to sit with each objection and its response.
