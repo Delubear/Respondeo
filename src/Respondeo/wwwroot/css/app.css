@@ -893,7 +893,7 @@ input[type="search"]::-webkit-search-cancel-button {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    margin: 1.5rem 0 2.5rem;
+    margin: 1.5rem 0;
     border: 1px solid var(--rule);
     background: #000;
 }

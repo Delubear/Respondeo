@@ -16,18 +16,21 @@ sections:
 ---
 
 St. Thomas offered *Five Ways* to demonstrate God's existence.
+
 They do not rest on faith or Scripture; each starts from a plain feature of the world and reasons its way to the source that must lie behind it.
 
 ::: youtube 42Eg6UUBqqo
 :::
 
+Two simple ideas carry all five ways.
+The first is the difference between **act and potency** — what a thing actually is now, versus what it has the potential to become.
+The second is the difference between **essence and existence** — what a thing is, versus the fact that it exists at all.
+Act and potency underlie every way; essence and existence come into their own in the last three.
 
-Start with one simple idea that every way depends on — the difference between **act and potency** (what a thing actually is now, versus what it has the potential to become) — then walk the ways themselves. Each has the same shape:
+With those two distinctions in hand, the ways themselves all share the same shape:
 
 1. Notice a feature of reality (things change, or depend on something else to exist).
 2. Show that this feature cannot go on explaining itself in an endless chain.
 3. Conclude to a first source — and identify it with God.
-
-Then add a second idea, the difference between **essence and existence** (what a thing is, versus the fact that it exists at all), which supports the last three ways.
 
 Expand a section below to walk through each way.
