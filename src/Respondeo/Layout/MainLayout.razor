@@ -3,6 +3,8 @@
 @inject NavigationManager Nav
 @inject AccessibilityInterop Accessibility
 @inject Respondeo.Services.FeatureFlags Features
+@inject Respondeo.LiturgicalCalendar.ILiturgicalCalendar Calendar
+@inject Func<DateOnly> Today
 
 <div class="page">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -13,7 +15,7 @@
         <ThemeToggle />
         @if (Features.AquinasPortrait)
         {
-            <img class="masthead__portrait" src="images/aquinas.jpg" alt="St. Thomas Aquinas, after Sandro Botticelli" width="144" height="144" loading="lazy" />
+            <img class="masthead__portrait" src="@PortraitSrc" alt="St. Thomas Aquinas, after Sandro Botticelli" width="144" height="144" loading="lazy" />
         }
         <a class="masthead__brand" href="">
             <span class="masthead__mark" aria-hidden="true">&#10013;</span>
@@ -51,6 +53,12 @@
 </div>
 
 @code {
+    // During Christmas Time, Aquinas dons a festive hat; the rest of the year he keeps his usual portrait.
+    private string PortraitSrc =>
+        Calendar.ForDate(Today()).Season == Respondeo.LiturgicalCalendar.LiturgicalSeason.Christmas
+            ? "images/aquinas-christmas.jpg"
+            : "images/aquinas.jpg";
+
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
     protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
