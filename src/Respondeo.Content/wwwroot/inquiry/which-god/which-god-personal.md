@@ -11,8 +11,8 @@ tags:
 &mdash; [*Summa Theologiae* I, Q. 14, A. 1](summa/prima-q014#article-1)
 
 We have reached one unlimited source of all being. 
-Here many people stop and picture something like a force — gravity, or "the universe," or an impersonal ground of existence. 
-The word "God" then feels like an overreach. But the arguments that got us here already carry more than a force.
+Here many people stop and picture something like a force — gravity, or *"the universe,"* or an impersonal ground of existence. 
+The word *"God"* then feels like an overreach. But the arguments that got us here already carry more than a force.
 
 The real question is whether this first cause has 
 **intellect and will** — whether it *knows* and *chooses* — or whether it is a blind principle that simply operates, like a law of physics.
@@ -37,13 +37,13 @@ but in possessing — infinitely — the mind and will that personhood names.
 
 **A caution about the word "personal."** This does not mean God is a large human, with a body, moods, and a location. 
 It means the opposite of impersonal: the source of all knowing and loving cannot itself be mindless. 
-To call God personal is to deny that the ground of reality is indifferent.
+To call God personal is to say that the source of everything is not indifferent to us.
 
 ## See it today: reading a note left on the table
 
 Walk into a kitchen and find salt spilled on the counter. You wonder how it happened — a bump, a breeze, a careless hand. 
-You look for a *cause*, not a *message*. Now find the same salt arranged to spell "BACK AT SIX." 
-Instantly you stop asking "what happened?" and start asking "*who* did this, and what do they mean?"
+You look for a *cause*, not a *message*. Now find the same salt arranged to spell *"BACK AT SIX."* 
+Instantly you stop asking *"what happened?"* and start asking "*who* did this, and what do they mean?"
 
 Nothing about the salt changed — same grains, same counter. What changed is that the arrangement reveals **intelligence and intention** behind it. 
 The order points past itself to a mind.

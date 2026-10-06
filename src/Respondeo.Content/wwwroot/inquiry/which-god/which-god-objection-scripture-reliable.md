@@ -6,7 +6,7 @@ summary: If the case rests on old texts copied and recopied for millennia, how c
 
 **The objection, at its strongest:**
 
-1. The claim that the God of Israel has "spoken" rests on texts written, copied, and recopied by hand for thousands of years.
+1. The claim that the God of Israel has *"spoken"* rests on texts written, copied, and recopied by hand for thousands of years.
 2. Along the way they could have been altered, mistranslated, or invented outright — we have no originals.
 3. So even if a personal God *could* speak, we have no reliable record of what He supposedly said. The whole case rests on unverifiable ancient documents.
 
@@ -22,7 +22,8 @@ summary: If the case rests on old texts copied and recopied for millennia, how c
   If their transmission is too shaky to trust, then all of ancient history collapses with them.
 - **Recognizing a revelation never rested on a perfect manuscript.** This stage argued that a genuine word from God comes with *credentials* — prophecy, checkable events, 
   moral fruit, inner coherence across ages. Those signs do not hang on whether every letter survived unchanged; they operate at the level of the events 
-  and the enduring witness of a whole people, which no scribal slip could erase. The argument was never "trust the text because it is old," but "weigh the marks that only God could stamp."
+  and the enduring witness of a whole people, which no scribal slip could erase. 
+  The argument was never *"trust the text because it is old,"* but *"weigh the marks that only God could stamp."*
 - **Translation is not a veil but a discipline.** We are not at the mercy of one rendering. 
   Scholars work from the original languages, compare thousands of witnesses, and expose their reasoning to public scrutiny. 
   Difficulties in translation are real and openly debated — which is the opposite of a hidden corruption no one can check.

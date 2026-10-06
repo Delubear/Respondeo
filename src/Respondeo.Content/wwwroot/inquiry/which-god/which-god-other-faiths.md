@@ -52,4 +52,4 @@ The world's God-ward traditions are like these partial maps.
 The task is not to pretend the maps are identical, nor to sneer at the incomplete ones, but to ask which one charts the whole climb — including the final stretch the others leave blank.
 
 **Where this leads.** Weighing the claimants keeps returning us to one covenant story — a particular God who acts in a particular history, with a particular people. 
-So the last question of this stage is the sharpest: of all who claim to speak, why the God of **Israel** — the God of Abraham, the prophets, and the Shema?
+So the last question of this stage is the sharpest: of all who claim to speak, why the God of **Israel** &mdash; the God of Abraham, Moses, and the prophets?

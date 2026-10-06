@@ -19,6 +19,6 @@ Here the challenges are aimed at *which* God: whether picking one tradition is a
 whether the God of Israel is even good, whether the texts can be trusted, and whether a "personal" God is anything more than a comforting projection.
 
 As before, each objection is stated in its most forceful form *before* any reply is given. 
-The aim is not to "win," but to show that the path to the God of Israel is reasonable *with the difficulties in full view*.
+The aim is not to *"win,"* but to show that the path to the God of Israel is reasonable *with the difficulties in full view*.
 
 Expand a section below to sit with each objection and its response.
