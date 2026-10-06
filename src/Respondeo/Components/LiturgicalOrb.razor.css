@@ -117,6 +117,15 @@
     color: var(--ink);
 }
 
+.liturgy__disclaimer {
+    margin: 1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
 /* Big color circles mirror the Summa Guide's step markers, filled with the season's own color. */
 .liturgy__swatch {
     flex: none;
