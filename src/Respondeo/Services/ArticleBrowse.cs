@@ -1,4 +1,3 @@
-using Respondeo.Components;
 using Respondeo.Content.Contracts;
 
 namespace Respondeo.Services;
@@ -22,7 +21,7 @@ public sealed class ArticleBrowse
     /// </summary>
     public IReadOnlyList<ArticleRow> BuildRows(IEnumerable<ArticleSummary> articles) =>
         [.. articles
-            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, $"discover/articles/{a.Id}"))
+            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, ContentRoutes.ArticleHref(a.Id)))
             .OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct, alphabetically ordered tags that occur across the rows.</summary>

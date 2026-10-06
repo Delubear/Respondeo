@@ -5,7 +5,7 @@
 
 @if (Slug is not null)
 {
-    <a class="saint-card" href="discover/saints/@Slug" @onclick="OnNavigate">
+    <a class="saint-card" href="@ContentRoutes.SaintHref(Slug)" @onclick="OnNavigate">
         <span class="saint-card__name">@Name</span>
         @if (!string.IsNullOrWhiteSpace(Note))
         {

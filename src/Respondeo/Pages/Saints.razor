@@ -53,7 +53,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var s in Filtered)
                         {
-                            <Card Href="@($"discover/saints/{s.Id}")"
+                            <Card Href="@ContentRoutes.SaintHref(s.Id)"
                                   Title="@s.Title"
                                   Pills="@Browser.Pills(s)"
                                   Summary="@Browser.CardSummary(s, _facets)"

@@ -55,7 +55,7 @@
                     <CardGrid SingleColumn="true">
                         @foreach (var p in Filtered)
                         {
-                            <Card Href="@($"discover/prayers/{p.Id}")" Title="@p.Title" Subtitle="@p.LatinTitle" Pill="@Browser.FormatCategory(p.Category)" Summary="@p.Summary" Cta="Pray &rarr;" Level="2" />
+                            <Card Href="@ContentRoutes.PrayerHref(p.Id)" Title="@p.Title" Subtitle="@p.LatinTitle" Pill="@Browser.FormatCategory(p.Category)" Summary="@p.Summary" Cta="Pray &rarr;" Level="2" />
                         }
                     </CardGrid>
                 }

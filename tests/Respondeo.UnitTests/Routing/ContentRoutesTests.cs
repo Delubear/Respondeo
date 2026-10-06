@@ -40,4 +40,14 @@ public class ContentRoutesTests
 
         Assert.Equal("why-god/node/what-is-god-like", ContentRoutes.NodeHref(node));
     }
+
+    [Fact]
+    public void Discover_detail_routes_sit_under_their_catalog()
+    {
+        Assert.Equal("discover/prayers/hail-mary", ContentRoutes.PrayerHref("hail-mary"));
+        Assert.Equal("discover/saints/augustine", ContentRoutes.SaintHref("augustine"));
+        Assert.Equal("discover/miracles/lanciano", ContentRoutes.MiracleHref("lanciano"));
+        Assert.Equal("discover/devotions/rosary", ContentRoutes.DevotionHref("rosary"));
+        Assert.Equal("discover/articles/what-is-grace", ContentRoutes.ArticleHref("what-is-grace"));
+    }
 }
