@@ -3,9 +3,10 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Content.Liturgy;
 
 /// <summary>
-/// A pure liturgical-calendar engine for the Ordinary Form. Everything is derived from two anchors:
-/// the fixed civil dates (Christmas is always 25 December) and Gregorian Easter (from which every
-/// moveable feast is an offset). No per-day data is stored; the whole year is computed on demand.
+/// A pure liturgical-calendar engine for the Ordinary Form.
+/// Everything is derived from two anchors:
+/// the fixed civil dates (Christmas is always 25 December) and Gregorian Easter (from which every moveable feast is an offset).
+/// No per-day data is stored; the whole year is computed on demand.
 /// </summary>
 internal sealed class LiturgicalCalendar : ILiturgicalCalendar
 {
