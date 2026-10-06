@@ -19,15 +19,17 @@
 - When writing a Summa Theologiae citation in content Markdown, match the visual style the app's `SummaReferenceRenderer` produces so hand-written citations read identically to the Summa's own cross-references.
 - Use `Q.` (capital) for a question, `A.` (capital) for an article, `ad` for a reply, and `obj.` for an objection.
 - Do not use lower-case `q.`/`a.` or the phrasing `reply to obj.`; write `ad N` for replies instead.
-- When a quotation is followed by its Summa citation, separate the quote from the citation with an em dash entity (`&mdash;`), never a plain hyphen (`-`). Example: `> "..."<br />&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)`.
 - Example: `[*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)`.
+- When a quotation is followed by its Summa citation, separate the quote from the citation with an em dash entity (`&mdash;`), never a plain hyphen (`-`). Example: `> "..."<br />&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)`.
 
 ## Quotations vs. word emphasis (Inquiry content)
 - Distinguish a *quotation* (a source's actual or imagined words) from a *mention* (a word or phrase discussed as a term). They must never share the same formatting.
 - **Quotations** use plain double quotes with no italics: `"the gates of hell shall not prevail against it."` This applies to Scripture, Christ's words, the Summa, creeds, cited authors, and invented or hypothetical speech (e.g. an imagined objector's line). Do not wrap quotations in `*...*`.
 - **Block quotations** stay as plain `> "..."` and are not italicized.
 - **Mentions / scare-quotes** (a word referred to as a word, such as *holy*, *days*, *rock*, *novelties*, *four marks*) use italics only, with no quotation marks: write `*holy*`, not `*"holy"*` or `"holy"`.
-- **Emphasis added inside a quotation** uses italics, not bold: `"by word of mouth *or* by letter."` Because quotations are no longer italic by default, italics are free to carry the emphasis.
+- **Emphasis added inside a quotation** normally uses italics, not bold: `"by word of mouth *or* by letter."` Because quotations are no longer italic by default, italics are free to carry the emphasis.
+- **Bold is allowed for deliberate rhetorical emphasis**, even on a quoted phrase, when the author is making a point or driving home a parallel (for example, the Scripture phrases that establish the Ark/Mary parallel in `church-objection-mary.md`). Use this sparingly and intentionally; do not convert such bold back to italics during a cleanup pass.
+- **A bold leading statement or heading may contain italics** where italics fit convention — e.g. a bold lead sentence with an italic emphasis word or an italic word-mention (`***Hidden* is not *absent*.**`, `**The modern *spiritual but not religious*** view...`). Bold and italics may combine; italics still mark the mention or emphasis within the bolded span.
 - Do not chain several double-quoted phrases together in one sentence; convert the ones that are mentions to italics so only true quotations keep their quotes.
 
 ## Prayer line breaks
