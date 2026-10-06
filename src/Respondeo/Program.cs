@@ -74,6 +74,10 @@ builder.Services.AddScoped<BrowseState>();
 builder.Services.AddScoped<Func<DateOnly>>(_ => () => DateOnly.FromDateTime(DateTime.Now));
 builder.Services.AddScoped<IFeastOfTheDay, FeastOfTheDay>();
 
+// Picks the masthead portrait of Aquinas proper to the day (Christmas hat, Ash Wednesday ashes, or
+// his usual likeness). The selection logic is a pure service so it stays out of the layout and is unit-testable.
+builder.Services.AddScoped<ISeasonalPortrait, SeasonalPortrait>();
+
 // Typed wrapper over the window.respondeoBrowseState JS module (scroll + accordion memory) so the
 // browse pages call strongly-typed methods instead of raw JS interop strings.
 builder.Services.AddScoped<BrowseStateInterop>();
