@@ -19,7 +19,7 @@ There is no coherent third option in which it is true but unimportant.
 **Why belief must become practice:**
 
 1. **Because half-belief is not belief in what is claimed.**
-   To say "Christ is risen and it changes nothing about my week" is not a moderate version of the faith; it is a quiet denial of it.
+   To say *"Christ is risen and it changes nothing about my week"* is not a moderate version of the faith; it is a quiet denial of it.
    Real assent to an infinite claim shows itself in a rearranged life, the way real trust in a diagnosis shows itself in taking the medicine.
 
 2. **Because grace is received, not merely acknowledged.**
@@ -44,7 +44,7 @@ And if the case has brought you this far, the risk of living *as if it is true* 
 ## See it today: the doctor's orders
 
 Suppose you trust a physician completely and receive a clear diagnosis with a clear treatment.
-To say "I believe every word, and I will change nothing" would not be belief — it would 
+To say *"I believe every word, and I will change nothing"* would not be belief — it would 
 expose that you never really believed you were sick, or never really trusted the cure.
 Genuine trust picks up the prescription.
 

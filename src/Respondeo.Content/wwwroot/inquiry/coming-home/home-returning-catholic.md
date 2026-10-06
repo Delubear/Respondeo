@@ -33,7 +33,7 @@ None of that is beyond repair, and none of it puts you past return.
 ## See it today: the father on the road
 
 In Christ's own parable, the son who squandered everything rehearses a careful speech on the way home — and never gets to finish it.
-The father sees him "while he was yet at a distance," runs to him, and throws a feast.
+The father sees him *"while he was yet at a distance,"* runs to him, and throws a feast.
 The story is not about how far the son fell but about how eagerly the father waited.
 
 That is the posture you are returning to.

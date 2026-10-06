@@ -35,7 +35,7 @@ Entering the Catholic Church is not renouncing that; it is *completing* it.
 Your situation is distinct, and the Catholic Church treats it so.
 Because Orthodoxy has valid sacraments and true apostolic succession, entering full communion is not starting over — you 
 are received by a profession of faith, not re-baptized, and you may even keep your own Eastern rite by joining an Eastern Catholic Church in communion with Rome.
-The practical path is spelled out separately under "How to begin."
+The practical path is spelled out separately under *"How to begin."*
 
 ## See it today: the family you were already near
 
