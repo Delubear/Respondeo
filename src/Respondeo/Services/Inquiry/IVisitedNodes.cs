@@ -1,4 +1,4 @@
-namespace Respondeo.Services;
+namespace Respondeo.Services.Inquiry;
 
 /// <summary>
 /// Tracks the set of content nodes a visitor has opened during the current journey, so the UI can mark "where to go next" cards that lead to a node already read.

@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Prayers;
 
 /// <summary>
 /// An <see cref="IPrayerLanguageService"/> that persists the reader's Latin/vernacular choice in the browser's <c>localStorage</c> (so it survives across sessions),

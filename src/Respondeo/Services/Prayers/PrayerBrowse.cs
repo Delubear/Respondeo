@@ -1,6 +1,6 @@
 using Respondeo.Content.Contracts;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Prayers;
 
 /// <summary>
 /// Pure, stateless browse logic for the prayer treasury: category formatting, facet derivation, and the combined search/filter/sort.

@@ -1,4 +1,4 @@
-namespace Respondeo.Services;
+namespace Respondeo.Services.Prayers;
 
 /// <summary>
 /// Remembers whether the reader prefers to see devotion prayers by their Latin names,

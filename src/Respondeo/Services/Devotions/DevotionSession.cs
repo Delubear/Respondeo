@@ -1,6 +1,6 @@
 using Respondeo.Content.Contracts;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Devotions;
 
 // A single row on the devotion thread: either a mystery announcement (with its reflection) or a prayer the reader taps to mark prayed.
 // Repeated prayers each get their own row (their own bead).

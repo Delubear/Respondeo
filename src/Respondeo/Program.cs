@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
 using Respondeo.Content.Summa;
 using Respondeo.Services;
+using Respondeo.Services.Devotions;
+using Respondeo.Services.Summa;
+using Respondeo.Services.Inquiry;
+using Respondeo.Services.Prayers;
 using Respondeo.Content;
 using Respondeo.LiturgicalCalendar;
 

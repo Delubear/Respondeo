@@ -1,6 +1,6 @@
 using Respondeo.Content.Summa.Contracts;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Summa;
 
 /// <summary>
 /// The cross-reference origin recorded client-side when a <c>summa-ref</c> link is clicked,

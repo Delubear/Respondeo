@@ -1,6 +1,6 @@
 using Respondeo.Content.Contracts;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Devotions;
 
 /// <summary>
 /// Pure, stateless browse logic for the devotions index: kind formatting, facet derivation, and the combined search/filter/sort.

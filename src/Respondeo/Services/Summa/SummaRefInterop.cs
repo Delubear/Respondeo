@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Summa;
 
 /// <summary>
 /// Typed wrapper over the <c>window.respondeoSummaRef</c> JS module (see <c>wwwroot/js/summa-refs.js</c>),

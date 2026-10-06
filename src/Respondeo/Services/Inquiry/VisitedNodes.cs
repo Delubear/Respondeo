@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Inquiry;
 
 /// <summary>
 /// An <see cref="IVisitedNodes"/> that persists the visited set in the browser's <c>sessionStorage</c>.

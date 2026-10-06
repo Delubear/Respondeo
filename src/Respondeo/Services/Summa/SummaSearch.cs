@@ -1,6 +1,6 @@
 using Respondeo.Content.Summa.Contracts;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Summa;
 
 /// <summary>
 /// A single searchable Summa entry (a question or one of its articles) with its link metadata pre-resolved, so each keystroke scans a flat list instead of walking the nested index.

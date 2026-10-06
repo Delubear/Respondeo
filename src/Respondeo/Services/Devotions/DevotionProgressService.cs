@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace Respondeo.Services;
+namespace Respondeo.Services.Devotions;
 
 /// <summary>
 /// An <see cref="IDevotionProgressService"/> that keeps a single active-devotion slot in the browser's <c>localStorage</c> (so progress survives navigation, refreshes and sessions).

@@ -1,4 +1,4 @@
-namespace Respondeo.Services;
+namespace Respondeo.Services.Summa;
 
 /// <summary>
 /// Pure parsing helpers for Summa article URL fragments.

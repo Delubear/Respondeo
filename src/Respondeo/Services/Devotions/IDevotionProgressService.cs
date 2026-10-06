@@ -1,4 +1,4 @@
-namespace Respondeo.Services;
+namespace Respondeo.Services.Devotions;
 
 /// <summary>
 /// A saved snapshot of an in-progress devotion: which devotion and mystery set the reader chose and how many prayer rows they had completed.
