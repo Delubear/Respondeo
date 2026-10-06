@@ -156,11 +156,13 @@ public class LiturgicalCalendarTests
     [Fact]
     public void Ordinary_weekday_has_no_celebration()
     {
-        var day = Calendar.ForDate(new DateOnly(2025, 7, 15));
+        // 1 July 2025 (Tuesday) carries no celebration in the general calendar.
+        var day = Calendar.ForDate(new DateOnly(2025, 7, 1));
 
         Assert.Null(day.Celebration);
         Assert.Equal(LiturgicalSeason.OrdinaryTime, day.Season);
         Assert.Equal(LiturgicalColor.Green, day.Color);
+        Assert.Equal("Tuesday of the Thirteenth Week in Ordinary Time", day.FerialName);
     }
 
     [Fact]
@@ -170,5 +172,140 @@ public class LiturgicalCalendarTests
 
         Assert.Equal("The Assumption of the Blessed Virgin Mary", day.Celebration?.Name);
         Assert.Equal(LiturgicalColor.White, day.Color);
+    }
+
+    [Fact]
+    public void Obligatory_memorial_is_the_principal_on_an_ordinary_weekday()
+    {
+        // 15 July 2025 (Tuesday) is the Memorial of Saint Bonaventure.
+        var day = Calendar.ForDate(new DateOnly(2025, 7, 15));
+
+        Assert.Equal("Saint Bonaventure, Bishop and Doctor of the Church", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Memorial, day.Celebration?.Rank);
+        Assert.Equal(LiturgicalColor.White, day.Color);
+    }
+
+    [Fact]
+    public void Optional_memorial_is_offered_but_not_the_principal()
+    {
+        // 13 January 2025 (Monday) is the optional Memorial of Saint Hilary.
+        var day = Calendar.ForDate(new DateOnly(2025, 1, 13));
+
+        Assert.Null(day.Celebration);
+        var memorial = Assert.Single(day.OptionalMemorials);
+        Assert.Equal("Saint Hilary, Bishop and Doctor of the Church", memorial.Name);
+    }
+
+    [Fact]
+    public void Feast_of_the_Lord_replaces_an_Ordinary_Time_Sunday()
+    {
+        // 2 February 2025 is a Sunday; the Presentation of the Lord outranks it.
+        var day = Calendar.ForDate(new DateOnly(2025, 2, 2));
+
+        Assert.Equal("The Presentation of the Lord", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Feast, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void A_saints_feast_yields_to_a_Sunday_of_Advent()
+    {
+        // 30 November 2025 is both Saint Andrew (a feast) and the First Sunday of Advent; the Sunday wins.
+        var day = Calendar.ForDate(new DateOnly(2025, 11, 30));
+
+        Assert.Null(day.Celebration);
+        Assert.Equal(LiturgicalSeason.Advent, day.Season);
+        Assert.Equal("First Sunday of Advent", day.FerialName);
+    }
+
+    [Fact]
+    public void An_obligatory_memorial_is_reduced_to_optional_on_a_Lenten_weekday()
+    {
+        // 7 March 2025 (Friday of Lent) is the Memorial of Saints Perpetua and Felicity, made optional.
+        var day = Calendar.ForDate(new DateOnly(2025, 3, 7));
+
+        Assert.Null(day.Celebration);
+        var memorial = Assert.Single(day.OptionalMemorials);
+        Assert.Equal("Saints Perpetua and Felicity, Martyrs", memorial.Name);
+    }
+
+    [Fact]
+    public void Christ_the_King_is_the_last_Sunday_before_Advent()
+    {
+        // Advent 2025 begins 30 November, so Christ the King is 23 November.
+        var day = Calendar.ForDate(new DateOnly(2025, 11, 23));
+
+        Assert.Equal("Our Lord Jesus Christ, King of the Universe", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Solemnity, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void Holy_Family_is_the_Sunday_within_the_Christmas_Octave()
+    {
+        // Christmas 2025 is a Thursday, so the Holy Family falls on Sunday 28 December.
+        var day = Calendar.ForDate(new DateOnly(2025, 12, 28));
+
+        Assert.Equal("The Holy Family of Jesus, Mary and Joseph", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Feast, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void Baptism_of_the_Lord_is_a_named_feast()
+    {
+        // Epiphany 6 Jan 2025 (Monday); Baptism = following Sunday = 12 Jan.
+        var day = Calendar.ForDate(new DateOnly(2025, 1, 12));
+
+        Assert.Equal("The Baptism of the Lord", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Feast, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void Lenten_weekday_carries_a_ferial_name()
+    {
+        // 10 March 2025 is the Monday of the First Week of Lent.
+        var day = Calendar.ForDate(new DateOnly(2025, 3, 10));
+
+        Assert.Null(day.Celebration);
+        Assert.Equal("Monday of the First Week of Lent", day.FerialName);
+    }
+
+    [Fact]
+    public void Annunciation_falls_on_its_ordinary_date_when_free()
+    {
+        // 25 March 2025 is a Tuesday in Lent, unimpeded.
+        var day = Calendar.ForDate(new DateOnly(2025, 3, 25));
+
+        Assert.Equal("The Annunciation of the Lord", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Solemnity, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void Annunciation_impeded_by_Holy_Week_is_suppressed_on_its_ordinary_date()
+    {
+        // Easter 2024 is 31 March, so 25 March 2024 is Monday of Holy Week.
+        var day = Calendar.ForDate(new DateOnly(2024, 3, 25));
+
+        Assert.NotEqual("The Annunciation of the Lord", day.Celebration?.Name);
+    }
+
+    [Fact]
+    public void Annunciation_impeded_by_Holy_Week_transfers_after_the_Octave_of_Easter()
+    {
+        // Monday after the Second Sunday of Easter 2024 = 8 April 2024.
+        var day = Calendar.ForDate(new DateOnly(2024, 4, 8));
+
+        Assert.Equal("The Annunciation of the Lord", day.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Solemnity, day.Celebration?.Rank);
+    }
+
+    [Fact]
+    public void Saint_Joseph_impeded_by_a_Lenten_Sunday_transfers_to_the_following_Monday()
+    {
+        // 19 March 2017 is the Third Sunday of Lent, so Saint Joseph moves to Monday 20 March 2017.
+        var impeded = Calendar.ForDate(new DateOnly(2017, 3, 19));
+        Assert.NotEqual("Saint Joseph, Spouse of the Blessed Virgin Mary", impeded.Celebration?.Name);
+
+        var transferred = Calendar.ForDate(new DateOnly(2017, 3, 20));
+        Assert.Equal("Saint Joseph, Spouse of the Blessed Virgin Mary", transferred.Celebration?.Name);
+        Assert.Equal(CelebrationRank.Solemnity, transferred.Celebration?.Rank);
     }
 }

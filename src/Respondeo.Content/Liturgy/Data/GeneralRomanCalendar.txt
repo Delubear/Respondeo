@@ -1,0 +1,255 @@
+# General Roman Calendar - fixed civil-date celebrations (universal/general calendar, Ordinary Form).
+#
+# This dataset is the single source of truth for every FIXED-date solemnity, feast, and memorial.
+# Moveable (Easter-relative) celebrations and Sunday-based feasts of the Lord are computed in code,
+# not listed here. Regional/national propers are intentionally out of scope.
+#
+# Format (pipe-delimited), one celebration per line:
+#   MM-DD | Rank | Color | Name
+# Rank  : Solemnity | Feast | Memorial | OptionalMemorial
+# Color : White | Red | Green | Violet | Rose
+# Lines beginning with '#' and blank lines are ignored. Several celebrations may share a date.
+
+# ----- January -----
+01-01 | Solemnity        | White  | Mary, the Holy Mother of God
+01-02 | Memorial         | White  | Saints Basil the Great and Gregory Nazianzen, Bishops and Doctors of the Church
+01-03 | OptionalMemorial | White  | The Most Holy Name of Jesus
+01-06 | Solemnity        | White  | The Epiphany of the Lord
+01-07 | OptionalMemorial | White  | Saint Raymond of Penyafort, Priest
+01-13 | OptionalMemorial | White  | Saint Hilary, Bishop and Doctor of the Church
+01-17 | Memorial         | White  | Saint Anthony, Abbot
+01-20 | OptionalMemorial | Red    | Saint Fabian, Pope and Martyr
+01-20 | OptionalMemorial | Red    | Saint Sebastian, Martyr
+01-21 | Memorial         | Red    | Saint Agnes, Virgin and Martyr
+01-22 | OptionalMemorial | Red    | Saint Vincent, Deacon and Martyr
+01-24 | Memorial         | White  | Saint Francis de Sales, Bishop and Doctor of the Church
+01-25 | Feast            | White  | The Conversion of Saint Paul the Apostle
+01-26 | Memorial         | White  | Saints Timothy and Titus, Bishops
+01-27 | OptionalMemorial | White  | Saint Angela Merici, Virgin
+01-28 | Memorial         | White  | Saint Thomas Aquinas, Priest and Doctor of the Church
+01-31 | Memorial         | White  | Saint John Bosco, Priest
+
+# ----- February -----
+02-02 | Feast            | White  | The Presentation of the Lord
+02-03 | OptionalMemorial | Red    | Saint Blaise, Bishop and Martyr
+02-03 | OptionalMemorial | White  | Saint Ansgar, Bishop
+02-05 | Memorial         | Red    | Saint Agatha, Virgin and Martyr
+02-06 | Memorial         | Red    | Saint Paul Miki and Companions, Martyrs
+02-08 | OptionalMemorial | White  | Saint Jerome Emiliani
+02-08 | OptionalMemorial | White  | Saint Josephine Bakhita, Virgin
+02-10 | Memorial         | White  | Saint Scholastica, Virgin
+02-11 | OptionalMemorial | White  | Our Lady of Lourdes
+02-14 | Memorial         | White  | Saints Cyril, Monk, and Methodius, Bishop
+02-17 | OptionalMemorial | White  | The Seven Holy Founders of the Servite Order
+02-21 | OptionalMemorial | White  | Saint Peter Damian, Bishop and Doctor of the Church
+02-22 | Feast            | White  | The Chair of Saint Peter the Apostle
+02-23 | Memorial         | Red    | Saint Polycarp, Bishop and Martyr
+02-27 | OptionalMemorial | White  | Saint Gregory of Narek, Abbot and Doctor of the Church
+
+# ----- March -----
+03-04 | OptionalMemorial | White  | Saint Casimir
+03-07 | Memorial         | Red    | Saints Perpetua and Felicity, Martyrs
+03-08 | OptionalMemorial | White  | Saint John of God, Religious
+03-09 | OptionalMemorial | White  | Saint Frances of Rome, Religious
+03-17 | OptionalMemorial | White  | Saint Patrick, Bishop
+03-18 | OptionalMemorial | White  | Saint Cyril of Jerusalem, Bishop and Doctor of the Church
+03-19 | Solemnity        | White  | Saint Joseph, Spouse of the Blessed Virgin Mary
+03-23 | OptionalMemorial | White  | Saint Turibius of Mogrovejo, Bishop
+03-25 | Solemnity        | White  | The Annunciation of the Lord
+
+# ----- April -----
+04-02 | OptionalMemorial | White  | Saint Francis of Paola, Hermit
+04-04 | OptionalMemorial | White  | Saint Isidore, Bishop and Doctor of the Church
+04-05 | OptionalMemorial | White  | Saint Vincent Ferrer, Priest
+04-07 | Memorial         | White  | Saint John Baptist de la Salle, Priest
+04-11 | Memorial         | Red    | Saint Stanislaus, Bishop and Martyr
+04-13 | OptionalMemorial | Red    | Saint Martin I, Pope and Martyr
+04-21 | OptionalMemorial | White  | Saint Anselm, Bishop and Doctor of the Church
+04-23 | OptionalMemorial | Red    | Saint George, Martyr
+04-23 | OptionalMemorial | Red    | Saint Adalbert, Bishop and Martyr
+04-24 | OptionalMemorial | Red    | Saint Fidelis of Sigmaringen, Priest and Martyr
+04-25 | Feast            | Red    | Saint Mark, Evangelist
+04-28 | OptionalMemorial | Red    | Saint Peter Chanel, Priest and Martyr
+04-28 | OptionalMemorial | White  | Saint Louis Grignion de Montfort, Priest
+04-29 | Memorial         | White  | Saint Catherine of Siena, Virgin and Doctor of the Church
+04-30 | OptionalMemorial | White  | Saint Pius V, Pope
+
+# ----- May -----
+05-01 | OptionalMemorial | White  | Saint Joseph the Worker
+05-02 | Memorial         | White  | Saint Athanasius, Bishop and Doctor of the Church
+05-03 | Feast            | Red    | Saints Philip and James, Apostles
+05-10 | OptionalMemorial | White  | Saint John of Ávila, Priest and Doctor of the Church
+05-12 | OptionalMemorial | Red    | Saints Nereus and Achilleus, Martyrs
+05-12 | OptionalMemorial | Red    | Saint Pancras, Martyr
+05-13 | OptionalMemorial | White  | Our Lady of Fátima
+05-14 | Feast            | Red    | Saint Matthias, Apostle
+05-18 | OptionalMemorial | Red    | Saint John I, Pope and Martyr
+05-20 | OptionalMemorial | White  | Saint Bernardine of Siena, Priest
+05-21 | OptionalMemorial | Red    | Saint Christopher Magallanes, Priest, and Companions, Martyrs
+05-22 | OptionalMemorial | White  | Saint Rita of Cascia, Religious
+05-25 | OptionalMemorial | White  | Saint Bede the Venerable, Priest and Doctor of the Church
+05-25 | OptionalMemorial | White  | Saint Gregory VII, Pope
+05-25 | OptionalMemorial | White  | Saint Mary Magdalene de' Pazzi, Virgin
+05-26 | Memorial         | White  | Saint Philip Neri, Priest
+05-27 | OptionalMemorial | White  | Saint Augustine of Canterbury, Bishop
+05-29 | OptionalMemorial | White  | Saint Paul VI, Pope
+05-31 | Feast            | White  | The Visitation of the Blessed Virgin Mary
+
+# ----- June -----
+06-01 | Memorial         | Red    | Saint Justin, Martyr
+06-02 | OptionalMemorial | Red    | Saints Marcellinus and Peter, Martyrs
+06-03 | Memorial         | Red    | Saint Charles Lwanga and Companions, Martyrs
+06-05 | Memorial         | Red    | Saint Boniface, Bishop and Martyr
+06-06 | OptionalMemorial | White  | Saint Norbert, Bishop
+06-09 | OptionalMemorial | White  | Saint Ephrem, Deacon and Doctor of the Church
+06-11 | Memorial         | Red    | Saint Barnabas, Apostle
+06-13 | Memorial         | White  | Saint Anthony of Padua, Priest and Doctor of the Church
+06-19 | OptionalMemorial | White  | Saint Romuald, Abbot
+06-21 | Memorial         | White  | Saint Aloysius Gonzaga, Religious
+06-22 | OptionalMemorial | Red    | Saint Paulinus of Nola, Bishop
+06-22 | OptionalMemorial | Red    | Saints John Fisher, Bishop, and Thomas More, Martyrs
+06-24 | Solemnity        | White  | The Nativity of Saint John the Baptist
+06-27 | OptionalMemorial | White  | Saint Cyril of Alexandria, Bishop and Doctor of the Church
+06-28 | Memorial         | Red    | Saint Irenaeus, Bishop, Martyr and Doctor of the Church
+06-29 | Solemnity        | Red    | Saints Peter and Paul, Apostles
+06-30 | OptionalMemorial | Red    | The First Martyrs of the Holy Roman Church
+
+# ----- July -----
+07-03 | Feast            | Red    | Saint Thomas, Apostle
+07-04 | OptionalMemorial | White  | Saint Elizabeth of Portugal
+07-05 | OptionalMemorial | White  | Saint Anthony Zaccaria, Priest
+07-06 | OptionalMemorial | Red    | Saint Maria Goretti, Virgin and Martyr
+07-09 | OptionalMemorial | Red    | Saint Augustine Zhao Rong, Priest, and Companions, Martyrs
+07-11 | Memorial         | White  | Saint Benedict, Abbot
+07-13 | OptionalMemorial | White  | Saint Henry
+07-14 | OptionalMemorial | White  | Saint Camillus de Lellis, Priest
+07-15 | Memorial         | White  | Saint Bonaventure, Bishop and Doctor of the Church
+07-16 | OptionalMemorial | White  | Our Lady of Mount Carmel
+07-20 | OptionalMemorial | Red    | Saint Apollinaris, Bishop and Martyr
+07-21 | OptionalMemorial | White  | Saint Lawrence of Brindisi, Priest and Doctor of the Church
+07-22 | Feast            | White  | Saint Mary Magdalene
+07-23 | OptionalMemorial | White  | Saint Bridget of Sweden, Religious
+07-24 | OptionalMemorial | White  | Saint Sharbel Makhlūf, Priest
+07-25 | Feast            | Red    | Saint James, Apostle
+07-26 | Memorial         | White  | Saints Joachim and Anne, Parents of the Blessed Virgin Mary
+07-29 | Memorial         | White  | Saints Martha, Mary and Lazarus
+07-30 | OptionalMemorial | White  | Saint Peter Chrysologus, Bishop and Doctor of the Church
+07-31 | Memorial         | White  | Saint Ignatius of Loyola, Priest
+
+# ----- August -----
+08-01 | Memorial         | White  | Saint Alphonsus Maria de' Liguori, Bishop and Doctor of the Church
+08-02 | OptionalMemorial | White  | Saint Eusebius of Vercelli, Bishop
+08-02 | OptionalMemorial | White  | Saint Peter Julian Eymard, Priest
+08-04 | Memorial         | White  | Saint John Vianney, Priest
+08-05 | OptionalMemorial | White  | The Dedication of the Basilica of Saint Mary Major
+08-06 | Feast            | White  | The Transfiguration of the Lord
+08-07 | OptionalMemorial | Red    | Saint Sixtus II, Pope, and Companions, Martyrs
+08-07 | OptionalMemorial | White  | Saint Cajetan, Priest
+08-08 | Memorial         | White  | Saint Dominic, Priest
+08-09 | OptionalMemorial | Red    | Saint Teresa Benedicta of the Cross, Virgin and Martyr
+08-10 | Feast            | Red    | Saint Lawrence, Deacon and Martyr
+08-11 | Memorial         | White  | Saint Clare, Virgin
+08-12 | OptionalMemorial | White  | Saint Jane Frances de Chantal, Religious
+08-13 | OptionalMemorial | Red    | Saints Pontian, Pope, and Hippolytus, Priest, Martyrs
+08-14 | Memorial         | Red    | Saint Maximilian Mary Kolbe, Priest and Martyr
+08-15 | Solemnity        | White  | The Assumption of the Blessed Virgin Mary
+08-16 | OptionalMemorial | White  | Saint Stephen of Hungary
+08-19 | OptionalMemorial | White  | Saint John Eudes, Priest
+08-20 | Memorial         | White  | Saint Bernard, Abbot and Doctor of the Church
+08-21 | Memorial         | White  | Saint Pius X, Pope
+08-22 | Memorial         | White  | The Queenship of the Blessed Virgin Mary
+08-23 | OptionalMemorial | White  | Saint Rose of Lima, Virgin
+08-24 | Feast            | Red    | Saint Bartholomew, Apostle
+08-25 | OptionalMemorial | White  | Saint Louis
+08-25 | OptionalMemorial | White  | Saint Joseph of Calasanz, Priest
+08-27 | Memorial         | White  | Saint Monica
+08-28 | Memorial         | White  | Saint Augustine, Bishop and Doctor of the Church
+08-29 | Memorial         | Red    | The Passion of Saint John the Baptist
+
+# ----- September -----
+09-03 | Memorial         | White  | Saint Gregory the Great, Pope and Doctor of the Church
+09-08 | Feast            | White  | The Nativity of the Blessed Virgin Mary
+09-09 | OptionalMemorial | White  | Saint Peter Claver, Priest
+09-12 | OptionalMemorial | White  | The Most Holy Name of Mary
+09-13 | Memorial         | White  | Saint John Chrysostom, Bishop and Doctor of the Church
+09-14 | Feast            | Red    | The Exaltation of the Holy Cross
+09-15 | Memorial         | White  | Our Lady of Sorrows
+09-16 | Memorial         | Red    | Saints Cornelius, Pope, and Cyprian, Bishop, Martyrs
+09-17 | OptionalMemorial | White  | Saint Robert Bellarmine, Bishop and Doctor of the Church
+09-17 | OptionalMemorial | White  | Saint Hildegard of Bingen, Virgin and Doctor of the Church
+09-19 | OptionalMemorial | Red    | Saint Januarius, Bishop and Martyr
+09-20 | Memorial         | Red    | Saints Andrew Kim Tae-gŏn, Priest, and Paul Chŏng Ha-sang, and Companions, Martyrs
+09-21 | Feast            | Red    | Saint Matthew, Apostle and Evangelist
+09-23 | Memorial         | White  | Saint Pius of Pietrelcina, Priest
+09-26 | OptionalMemorial | Red    | Saints Cosmas and Damian, Martyrs
+09-27 | Memorial         | White  | Saint Vincent de Paul, Priest
+09-28 | OptionalMemorial | Red    | Saint Wenceslaus, Martyr
+09-28 | OptionalMemorial | Red    | Saint Lawrence Ruiz and Companions, Martyrs
+09-29 | Feast            | White  | Saints Michael, Gabriel and Raphael, Archangels
+09-30 | Memorial         | White  | Saint Jerome, Priest and Doctor of the Church
+
+# ----- October -----
+10-01 | Memorial         | White  | Saint Thérèse of the Child Jesus, Virgin and Doctor of the Church
+10-02 | Memorial         | White  | The Holy Guardian Angels
+10-04 | Memorial         | White  | Saint Francis of Assisi
+10-05 | OptionalMemorial | White  | Saint Faustina Kowalska, Virgin
+10-06 | OptionalMemorial | White  | Saint Bruno, Priest
+10-07 | Memorial         | White  | Our Lady of the Rosary
+10-09 | OptionalMemorial | Red    | Saints Denis, Bishop, and Companions, Martyrs
+10-09 | OptionalMemorial | White  | Saint John Leonardi, Priest
+10-11 | OptionalMemorial | White  | Saint John XXIII, Pope
+10-14 | OptionalMemorial | Red    | Saint Callistus I, Pope and Martyr
+10-15 | Memorial         | White  | Saint Teresa of Jesus, Virgin and Doctor of the Church
+10-16 | OptionalMemorial | White  | Saint Hedwig, Religious
+10-16 | OptionalMemorial | White  | Saint Margaret Mary Alacoque, Virgin
+10-17 | Memorial         | Red    | Saint Ignatius of Antioch, Bishop and Martyr
+10-18 | Feast            | Red    | Saint Luke, Evangelist
+10-19 | OptionalMemorial | Red    | Saints John de Brébeuf and Isaac Jogues, Priests, and Companions, Martyrs
+10-19 | OptionalMemorial | White  | Saint Paul of the Cross, Priest
+10-22 | OptionalMemorial | White  | Saint John Paul II, Pope
+10-23 | OptionalMemorial | White  | Saint John of Capistrano, Priest
+10-24 | OptionalMemorial | White  | Saint Anthony Mary Claret, Bishop
+10-28 | Feast            | Red    | Saints Simon and Jude, Apostles
+
+# ----- November -----
+11-01 | Solemnity        | White  | All Saints
+11-02 | Feast            | Violet | The Commemoration of All the Faithful Departed
+11-03 | OptionalMemorial | White  | Saint Martin de Porres, Religious
+11-04 | Memorial         | White  | Saint Charles Borromeo, Bishop
+11-09 | Feast            | White  | The Dedication of the Lateran Basilica
+11-10 | Memorial         | White  | Saint Leo the Great, Pope and Doctor of the Church
+11-11 | Memorial         | White  | Saint Martin of Tours, Bishop
+11-12 | Memorial         | Red    | Saint Josaphat, Bishop and Martyr
+11-15 | OptionalMemorial | White  | Saint Albert the Great, Bishop and Doctor of the Church
+11-16 | OptionalMemorial | White  | Saint Margaret of Scotland
+11-16 | OptionalMemorial | White  | Saint Gertrude, Virgin
+11-17 | Memorial         | White  | Saint Elizabeth of Hungary, Religious
+11-18 | OptionalMemorial | White  | The Dedication of the Basilicas of Saints Peter and Paul, Apostles
+11-21 | Memorial         | White  | The Presentation of the Blessed Virgin Mary
+11-22 | Memorial         | Red    | Saint Cecilia, Virgin and Martyr
+11-23 | OptionalMemorial | Red    | Saint Clement I, Pope and Martyr
+11-23 | OptionalMemorial | White  | Saint Columban, Abbot
+11-24 | Memorial         | Red    | Saint Andrew Dũng-Lạc, Priest, and Companions, Martyrs
+11-25 | OptionalMemorial | Red    | Saint Catherine of Alexandria, Virgin and Martyr
+11-30 | Feast            | Red    | Saint Andrew, Apostle
+
+# ----- December -----
+12-03 | Memorial         | White  | Saint Francis Xavier, Priest
+12-04 | OptionalMemorial | White  | Saint John Damascene, Priest and Doctor of the Church
+12-06 | OptionalMemorial | White  | Saint Nicholas, Bishop
+12-07 | Memorial         | White  | Saint Ambrose, Bishop and Doctor of the Church
+12-08 | Solemnity        | White  | The Immaculate Conception of the Blessed Virgin Mary
+12-09 | OptionalMemorial | White  | Saint Juan Diego Cuauhtlatoatzin
+12-10 | OptionalMemorial | White  | Our Lady of Loreto
+12-11 | OptionalMemorial | White  | Saint Damasus I, Pope
+12-12 | OptionalMemorial | White  | Our Lady of Guadalupe
+12-13 | Memorial         | Red    | Saint Lucy, Virgin and Martyr
+12-14 | Memorial         | White  | Saint John of the Cross, Priest and Doctor of the Church
+12-21 | OptionalMemorial | White  | Saint Peter Canisius, Priest and Doctor of the Church
+12-23 | OptionalMemorial | White  | Saint John of Kęty, Priest
+12-25 | Solemnity        | White  | The Nativity of the Lord
+12-26 | Feast            | Red    | Saint Stephen, the First Martyr
+12-27 | Feast            | White  | Saint John, Apostle and Evangelist
+12-28 | Feast            | Red    | The Holy Innocents, Martyrs
+12-29 | OptionalMemorial | White  | Saint Thomas Becket, Bishop and Martyr
+12-31 | OptionalMemorial | White  | Saint Sylvester I, Pope

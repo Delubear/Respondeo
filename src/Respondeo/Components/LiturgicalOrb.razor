@@ -29,6 +29,10 @@
                         {
                             <p class="liturgy__celebration">@_day.Celebration.Name</p>
                         }
+                        else if (_day.FerialName is not null)
+                        {
+                            <p class="liturgy__celebration liturgy__celebration--ferial">@_day.FerialName</p>
+                        }
                         <p class="liturgy__color">Liturgical color: @ColorName</p>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 using NSubstitute;
 using Respondeo.Content.Contracts;
+using Respondeo.Content.Liturgy;
 using Respondeo.Services;
 
 namespace Respondeo.UnitTests.Services;
@@ -53,6 +54,18 @@ public class FeastOfTheDayTests
         Assert.NotNull(feast);
         Assert.Equal("francis-of-assisi", feast!.Id);
         Assert.Equal("St. Francis of Assisi", feast.Title);
+    }
+
+    [Fact]
+    public async Task GetTodayAsync_labels_the_highlight_with_the_calendar_rank()
+    {
+        var saints = StubbedSaints(("francis-of-assisi", "St. Francis of Assisi", "October 4"));
+        var sut = Sut(saints, new DateOnly(2025, 10, 4));
+
+        var feast = await sut.GetTodayAsync();
+
+        Assert.NotNull(feast);
+        Assert.Equal(CelebrationRank.Memorial, feast!.Rank);
     }
 
     [Fact]
@@ -158,7 +171,7 @@ public class FeastOfTheDayTests
     // Builds the system under test with an injected fixed date and a deterministic index selector
     // (first match by default) so tests never depend on real randomness.
     private static FeastOfTheDay Sut(ISaintService saints, DateOnly date, Func<int, int>? pickIndex = null) =>
-        new(saints, () => date, pickIndex ?? (_ => 0));
+        new(saints, new LiturgicalCalendar(), () => date, pickIndex ?? (_ => 0));
 
     private static ISaintService StubbedSaints(params (string Id, string Title, string? FeastDay)[] entries)
     {

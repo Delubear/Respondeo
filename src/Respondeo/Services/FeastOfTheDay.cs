@@ -11,7 +11,8 @@ namespace Respondeo.Services;
 /// <param name="FeastDay">The saint's feast-day label, e.g. "October 4".</param>
 /// <param name="Summary">A short one-line description, when available.</param>
 /// <param name="Dates">Free-text life dates, e.g. "1181–1226", when available.</param>
-public sealed record FeastHighlight(string Title, string Id, string? FeastDay = null, string? Summary = null, string? Dates = null);
+/// <param name="Rank">The celebration's liturgical rank from the General Roman Calendar, when the day corresponds to a dataset celebration.</param>
+public sealed record FeastHighlight(string Title, string Id, string? FeastDay = null, string? Summary = null, string? Dates = null, CelebrationRank? Rank = null);
 
 /// <summary>
 /// Finds the saint (if any) whose feast the Church keeps on a given day.
@@ -40,16 +41,18 @@ public interface IFeastOfTheDay
 /// The current date and the random selector are injected so the matching logic stays deterministic and unit-testable.
 /// </summary>
 /// <param name="saints">The bundled saints catalog.</param>
+/// <param name="calendar">The liturgical calendar, consulted to label each highlight with its rank from the General Roman Calendar dataset.</param>
 /// <param name="today">Supplies the current date.</param>
 /// <param name="pickIndex">
 /// Chooses an index in <c>[0, count)</c> when several saints share today's feast; injected so tests can make the choice deterministic.
 /// </param>
-internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, Func<int, int> pickIndex) : IFeastOfTheDay
+internal sealed class FeastOfTheDay(ISaintService saints, ILiturgicalCalendar calendar, Func<DateOnly> today, Func<int, int> pickIndex) : IFeastOfTheDay
 {
     public async Task<FeastHighlight?> GetTodayAsync()
     {
         var now = today();
         var index = await saints.GetIndexAsync();
+        var day = calendar.ForDate(now);
 
         var matches = new List<FeastHighlight>();
         foreach (var entry in index.Entries)
@@ -57,7 +60,7 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
             var record = await saints.GetByIdAsync(entry.Id);
             if (record is not null && TryMatchFixedDate(record.FeastDay, now))
             {
-                matches.Add(new FeastHighlight(record.Title, record.Id, record.FeastDay, record.Summary, record.Dates));
+                matches.Add(new FeastHighlight(record.Title, record.Id, record.FeastDay, record.Summary, record.Dates, RankFor(record.Title, day)));
             }
         }
 
@@ -89,6 +92,43 @@ internal sealed class FeastOfTheDay(ISaintService saints, Func<DateOnly> today, 
     }
 
     public bool IsToday(string? feastDay) => TryMatchFixedDate(feastDay, today());
+
+    /// <summary>
+    /// The liturgical rank of the General Roman Calendar celebration on <paramref name="day"/> that
+    /// corresponds to the saint named <paramref name="saintTitle"/>, or <c>null</c> when none matches.
+    /// The principal celebration and any optional memorials are compared by name, tolerating the common
+    /// "St."/"Saint" variation so a catalog title lines up with the dataset's spelling.
+    /// </summary>
+    private static CelebrationRank? RankFor(string saintTitle, LiturgicalDay day)
+    {
+        var normalizedTitle = NormalizeName(saintTitle);
+
+        var celebrations = new List<LiturgicalCelebration>();
+        if (day.Celebration is not null)
+        {
+            celebrations.Add(day.Celebration);
+        }
+
+        celebrations.AddRange(day.OptionalMemorials);
+
+        foreach (var celebration in celebrations)
+        {
+            var normalizedName = NormalizeName(celebration.Name);
+            if (normalizedName.Contains(normalizedTitle, StringComparison.Ordinal)
+                || normalizedTitle.Contains(normalizedName, StringComparison.Ordinal))
+            {
+                return celebration.Rank;
+            }
+        }
+
+        return null;
+    }
+
+    private static string NormalizeName(string value) => value
+        .Replace("St.", "Saint", StringComparison.OrdinalIgnoreCase)
+        .Replace("Sts.", "Saints", StringComparison.OrdinalIgnoreCase)
+        .Trim()
+        .ToLowerInvariant();
 
     /// <summary>
     /// True when <paramref name="feastDay"/> is a fixed "Month Day" string (e.g. "October 4") that falls on <paramref name="date"/>.
