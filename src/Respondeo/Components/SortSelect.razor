@@ -1,8 +1,7 @@
-@* Toolbar-level sort dropdown shared by the Discover browse pages. It is purely presentational:
-   it renders the labelled <select> from a list of self-describing SortOption<T> values and reports
-   the chosen option's key back to the page, which owns its current-sort key and applies the option's
-   ordering. Pass whatever options a page needs (Title, Year, future Date, etc.) so the style and
-   behavior stay consistent everywhere. *@
+@* Toolbar-level sort dropdown shared by the Discover browse pages.
+    It is purely presentational: it renders the labelled <select> from a list of self-describing SortOption<T> values and reports the chosen option's key back to the page,
+        which owns its current-sort key and applies the option's ordering.
+        Pass whatever options a page needs (Title, Year, future Date, etc.) so the style and behavior stay consistent everywhere. *@
 @typeparam T
 
 <label class="sort-select">

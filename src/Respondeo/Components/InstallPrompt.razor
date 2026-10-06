@@ -12,10 +12,7 @@
             <button type="button" class="install-prompt__install" @onclick="InstallAsync">
                 Install
             </button>
-            <button type="button"
-                    class="install-prompt__dismiss"
-                    @onclick="Dismiss"
-                    aria-label="Dismiss install prompt">
+            <button type="button" class="install-prompt__dismiss" @onclick="Dismiss" aria-label="Dismiss install prompt">
                 Not now
             </button>
         </div>
@@ -42,8 +39,7 @@
         }
     }
 
-    // Called from site.js when the browser's install availability changes (prompt captured,
-    // or the app was installed elsewhere).
+    // Called from site.js when the browser's install availability changes (prompt captured, or the app was installed elsewhere).
     [JSInvokable]
     public void OnInstallAvailabilityChanged(bool available)
     {

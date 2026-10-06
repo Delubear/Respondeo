@@ -1,5 +1,4 @@
-@* Reusable card used for stage cards and branches. Renders as a link by default,
-   or as a button when an OnClick handler is supplied (e.g. an in-page action). *@
+@* Reusable card used for stage cards and branches. Renders as a link by default, or as a button when an OnClick handler is supplied (e.g. an in-page action). *@
 
 @if (OnClick.HasDelegate)
 {
@@ -45,11 +44,7 @@ else
     /// <summary>When true, the card renders a subtle golden shimmer (e.g. a saint's feast day is today).</summary>
     [Parameter] public bool Shimmer { get; set; }
 
-    private string CssClass =>
-        string.Concat(
-            "card",
-            Visited ? " card--visited" : "",
-            Shimmer ? " card--feast" : "");
+    private string CssClass => string.Concat("card", Visited ? " card--visited" : "", Shimmer ? " card--feast" : "");
 
     private IReadOnlyList<string> AllPills =>
         (Pills ?? [])

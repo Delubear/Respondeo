@@ -1,5 +1,4 @@
-@* Journey-stage sub-navigation: renders the primary stage tabs from SiteNavigation, but only
-   while the Journey pillar is active. Delegates all shell/markup/behavior to <MastNav>. *@
+@* Journey-stage sub-navigation: renders the primary stage tabs from SiteNavigation, but only while the Journey pillar is active. Delegates all shell/markup/behavior to <MastNav>. *@
 @implements IDisposable
 @inject NavigationManager Nav
 
@@ -11,12 +10,9 @@
 @code {
     private bool _isJourney = true;
 
-    // The journey stages, mapped to MastNav items. The Home link matches exactly so it only
-    // highlights on the home route; the rest match by prefix.
+    // The journey stages, mapped to MastNav items. The Home link matches exactly so it only highlights on the home route; the rest match by prefix.
     private static readonly IReadOnlyList<MastNav.Item> _items =
-        SiteNavigation.Items
-            .Select(i => new MastNav.Item(i.Href, i.Label, i.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix))
-            .ToList();
+        SiteNavigation.Items.Select(i => new MastNav.Item(i.Href, i.Label, i.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)).ToList();
 
     protected override void OnInitialized()
     {

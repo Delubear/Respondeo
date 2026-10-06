@@ -1,10 +1,9 @@
 @* Shared page/section header for every pillar: an optional accent-colored eyebrow (kicker),
-   the display title, and an optional lede. One source of truth so spacing, type, and markup
-   (pillar__header / pillar__eyebrow / pillar__title / pillar__lede) stay identical everywhere.
+   the display title, and an optional lede.
+   One source of truth so spacing, type, and markup (pillar__header / pillar__eyebrow / pillar__title / pillar__lede) stay identical everywhere.
 
-   Two lede shapes are supported: pass LedeText for a plain string (e.g. a content summary), or
-   Lede for rich markup (e.g. copy containing &mdash; or inline elements). ChildContent renders
-   extra header items (e.g. a Latin subtitle) between the title and the lede. *@
+   Two lede shapes are supported: pass LedeText for a plain string (e.g. a content summary), or Lede for rich markup (e.g. copy containing &mdash; or inline elements).
+   ChildContent renders extra header items (e.g. a Latin subtitle) between the title and the lede. *@
 
 <header class="pillar__header">
     @if (!string.IsNullOrWhiteSpace(Eyebrow))

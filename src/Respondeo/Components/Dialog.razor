@@ -1,10 +1,8 @@
 @inject DialogInterop Dialogs
 
-@* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog
-   interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free). Callers supply a
-   title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close()
-   methods through an @ref. The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css
-   so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
+@* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free).
+    Callers supply a title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close() methods through an @ref.
+    The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
 
 <dialog @ref="_dialog" class="dialog @Class" aria-labelledby="@_titleId" style="@WidthStyle">
     <div class="dialog__panel">

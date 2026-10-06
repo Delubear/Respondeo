@@ -76,10 +76,9 @@
     // The loaded Summa index whose parts/questions this list renders.
     [Parameter, EditorRequired] public SummaIndex Index { get; set; } = default!;
 
-    // Snapshot of which part/treatise sections were open when the page mounted (read from the JS
-    // browse-state store). Drives the initial `open` attributes and must stay constant for the
-    // component's lifetime: the browser owns visual state after mount and browse-state.js records
-    // subsequent toggles for the NEXT restore, so Blazor never re-applies `open` mid-session.
+    // Snapshot of which part/treatise sections were open when the page mounted (read from the JS browse-state store).
+    // Drives the initial `open` attributes and must stay constant for the component's lifetime:
+    // the browser owns visual state after mount and browse-state.js records subsequent toggles for the NEXT restore, so Blazor never re-applies `open` mid-session.
     [Parameter, EditorRequired] public IReadOnlySet<string> OpenOnMount { get; set; } = new HashSet<string>();
 
     // The parts shown in the browse list: every part in reading order.
@@ -91,9 +90,8 @@
 
     private bool IsTreatiseOpen(SummaPartEntry part, string treatise) => OpenOnMount.Contains(TreatiseKey(part, treatise));
 
-    // Groups a part's questions into consecutive runs sharing the same treatise heading, preserving
-    // reading order. Questions before the first treatise heading form a leading group with a null
-    // treatise so they render as a plain list rather than a sub-accordion.
+    // Groups a part's questions into consecutive runs sharing the same treatise heading, preservingreading order.
+    // Questions before the first treatise heading form a leading group with a null treatise so they render as a plain list rather than a sub-accordion.
     private static List<TreatiseGroup> GroupByTreatise(IReadOnlyList<SummaQuestionEntry> questions)
     {
         var groups = new List<TreatiseGroup>();
@@ -110,8 +108,7 @@
         return groups;
     }
 
-    // Builds the treatise summary label: a question-number range (or a single number when the treatise
-    // has one question) followed by a singular/plural question count.
+    // Builds the treatise summary label: a question-number range (or a single number when the treatise has one question) followed by a singular/plural question count.
     private static string FormatTreatiseRange(IReadOnlyList<SummaQuestionEntry> questions)
     {
         var first = questions[0].Number;

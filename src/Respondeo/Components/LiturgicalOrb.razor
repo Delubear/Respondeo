@@ -1,8 +1,7 @@
-@* A small floating "today in the Church" orb shown only on the Discover root pages. It matches the
-   shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that
-   slides up to stack above the back-to-top arrow. It is visually identical to the other circles and
-   differs only by its calendar icon. Tapping it opens a Dialog with today's season, color,
-   celebration, the saint of the day, and a short explanation of the liturgical year. *@
+@* A small floating "today in the Church" orb shown only on the Discover root pages.
+    It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that slides up to stack above the back-to-top arrow.
+    It is visually identical to the other circles and differs only by its calendar icon.
+    Tapping it opens a Dialog with today's season, color, celebration, the saint of the day, and a short explanation of the liturgical year. *@
 
 @inject ILiturgicalCalendar Calendar
 @inject ISaintService Saints
@@ -127,17 +126,14 @@
 @code {
     private LiturgicalDay _day = default!;
 
-    // Full saint profiles for the day's linked celebrations, keyed by slug, so the dialog can show
-    // each saint's dates and summary alongside the link without a second round-trip per render.
+    // Full saint profiles for the day's linked celebrations, keyed by slug, so the dialog can show each saint's dates and summary alongside the link without a second round-trip per render.
     private readonly Dictionary<string, SaintRecord> _profiles = new(StringComparer.Ordinal);
 
-    // The single optional memorial chosen for a ferial day, selected once per load (randomly when the
-    // day offers more than one) so it stays stable across re-renders.
+    // The single optional memorial chosen for a ferial day, selected once per load (randomly when the day offers more than one) so it stays stable across re-renders.
     private LiturgicalCelebration? _optionalMemorial;
 
     /// <summary>
-    /// When true, the orb sits one slot higher than normal so it clears another floating control that
-    /// already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// When true, the orb sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
     /// </summary>
     [Parameter] public bool Raised { get; set; }
 
@@ -145,8 +141,7 @@
     {
         _day = Calendar.ForDate(Today());
 
-        // On a ferial day with optional memorials, surface a single one. When several are available,
-        // pick at random so the dialog rotates through them rather than always favoring the first.
+        // On a ferial day with optional memorials, surface a single one. When several are available, pick at random so the dialog rotates through them rather than always favoring the first.
         if (_day.OptionalMemorials.Count > 0)
         {
             _optionalMemorial = _day.OptionalMemorials[Random.Shared.Next(_day.OptionalMemorials.Count)];
@@ -179,17 +174,15 @@
 
     private SaintRecord? ProfileFor(string id) => _profiles.GetValueOrDefault(id);
 
-    // The single celebration shown as a card: the principal celebration when there is one, otherwise the
-    // chosen optional memorial of a ferial day (the season/ferial blurb carries the day on the left instead).
+    // The single celebration shown as a card: the principal celebration when there is one, otherwise the chosen optional memorial of a ferial day
+    // (the season/ferial blurb carries the day on the left instead).
     // Only ever one card is shown, so a day's remaining optional memorials are intentionally not listed.
     private LiturgicalCelebration? SingleCelebration => _day.Celebration ?? _optionalMemorial;
 
-    // True when the single card is an optional memorial (no principal celebration), so the dialog can
-    // flag it as optional and introduce it with "The Church also remembers today".
+    // True when the single card is an optional memorial (no principal celebration), so the dialog can flag it as optional and introduce it with "The Church also remembers today".
     private bool IsOptionalMemorialCard => _day.Celebration is null && _optionalMemorial is not null;
 
-    // A short lead-in shown above the single card, phrased to fit whether the card is the day's principal
-    // celebration or an optional memorial the Church merely offers for remembrance.
+    // A short lead-in shown above the single card, phrased to fit whether the card is the day's principal celebration or an optional memorial the Church merely offers for remembrance.
     private string CelebrationIntro
     {
         get
@@ -208,8 +201,8 @@
         }
     }
 
-    // A short explanation shown only when the day's color departs from its season's usual color, so the
-    // reader understands why today looks different (e.g. white for a saint during green Ordinary Time).
+    // A short explanation shown only when the day's color departs from its season's usual color,
+    // so the reader understands why today looks different (e.g. white for a saint during green Ordinary Time).
     private string? ColorClue
     {
         get
@@ -256,9 +249,8 @@
 
     private string ColorClass => _day.Color.ToString().ToLowerInvariant();
 
-    // The label shown in the headline's second line. On a ferial day it is the "Monday of the Nth Week…"
-    // title; on a celebration day it names the day by rank, e.g. "The Feast of the Transfiguration" or
-    // "The Memorial of Saint Benedict".
+    // The label shown in the headline's second line.
+    // On a ferial day it is the "Monday of the Nth Week…" title; on a celebration day it names the day by rank, e.g. "The Feast of the Transfiguration" or "The Memorial of Saint Benedict".
     private string DayLabel
     {
         get
@@ -281,6 +273,5 @@
 
     // Lowercases a leading "The " so rank-prefixed labels read naturally: "The Feast of the Transfiguration"
     // and "The Memorial of the Passion of Saint John the Baptist", while plain "Saint Benedict" is untouched.
-    private static string LowerLeadingThe(string name) =>
-        name.StartsWith("The ", StringComparison.Ordinal) ? string.Concat("the ", name.AsSpan(4)) : name;
+    private static string LowerLeadingThe(string name) => name.StartsWith("The ", StringComparison.Ordinal) ? string.Concat("the ", name.AsSpan(4)) : name;
 }

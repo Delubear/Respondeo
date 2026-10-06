@@ -6,11 +6,7 @@
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
 
-<button type="button"
-        class="back-to-top @(_showBackToTop ? "is-visible" : string.Empty)"
-        @onclick="ScrollToTopAsync"
-        aria-label="Back to top"
-        title="Back to top">
+<button type="button" class="back-to-top @(_showBackToTop ? "is-visible" : string.Empty)" @onclick="ScrollToTopAsync" aria-label="Back to top" title="Back to top">
     ↑
 </button>
 
@@ -57,10 +53,9 @@
             return;
         }
 
-        // The masthead nav tabs and content cards can target the same route, so the destination
-        // URL alone cannot distinguish them. The masthead nav flags its clicks as top-level, which
-        // resets to the very top. Everything else — entry cards, node/article navigation — scrolls
-        // down to the content region so the reader lands on their breadcrumb trail.
+        // The masthead nav tabs and content cards can target the same route, so the destination URL alone cannot distinguish them.
+        // The masthead nav flags its clicks as top-level, which resets to the very top.
+        // Everything else — entry cards, node/article navigation — scrolls down to the content region so the reader lands on their breadcrumb trail.
         var resetToTop = NavIntent.ConsumeResetToTop();
         _ = _scroll.InvokeVoidAsync(resetToTop ? "jumpToTop" : "jumpToContent");
     }

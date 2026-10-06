@@ -1,7 +1,5 @@
-@* A gilded "enter a stage" call-to-action card: an emblem plate on the left and a
-   text column (optional eyebrow, label with arrow, optional prompt) on the right.
-   Shared by the in-article "Next Stage" transition and the Home reel so both present
-   identical styling. *@
+@* A gilded "enter a stage" call-to-action card: an emblem plate on the left and a text column (optional eyebrow, label with arrow, optional prompt) on the right.
+   Shared by the in-article "Next Stage" transition and the Home reel so both present identical styling. *@
 
 <a class="stage-card" href="@ResolvedHref">
     <span class="stage-card__emblem" aria-hidden="true">
@@ -50,14 +48,11 @@
     /// <summary>Optional small uppercase text above the label (e.g. "Stage 2 of 5").</summary>
     [Parameter] public string? Eyebrow { get; set; }
 
-    // Authored hrefs may include a leading slash (e.g. "/why-jesus"). A root-absolute href
-    // ignores <base href> and would escape the app's sub-path when hosted under one (e.g.
-    // GitHub Pages at /Respondeo/). Trim the leading slash so the link resolves relative to base.
+    // Authored hrefs may include a leading slash (e.g. "/why-jesus").
+    // A root-absolute href ignores <base href> and would escape the app's sub-path when hosted under one (e.g. GitHub Pages at /Respondeo/).
+    // Trim the leading slash so the link resolves relative to base.
     private string ResolvedHref => Href.TrimStart('/');
 
-    // Splits the prompt into its sentences so each renders on its own line, keeping the
-    // terminating punctuation attached to each sentence.
-    private static IEnumerable<string> SplitSentences(string prompt) => System.Text.RegularExpressions.Regex
-            .Split(prompt.Trim(), @"(?<=[.!?])\s+")
-            .Where(s => !string.IsNullOrWhiteSpace(s));
+    // Splits the prompt into its sentences so each renders on its own line, keeping the terminating punctuation attached to each sentence.
+    private static IEnumerable<string> SplitSentences(string prompt) => System.Text.RegularExpressions.Regex.Split(prompt.Trim(), @"(?<=[.!?])\s+").Where(s => !string.IsNullOrWhiteSpace(s));
 }

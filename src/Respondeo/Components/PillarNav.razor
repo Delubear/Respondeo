@@ -1,6 +1,6 @@
 @* Top-tier "pillar switcher": the site's areas (Journey, Summa, Discover Catholicism).
-   Sits above the per-pillar navigation (e.g. the journey stages, or the Discover sub-tabs). The active
-   pillar is derived from the current route so it stays highlighted while browsing within a pillar. *@
+   Sits above the per-pillar navigation (e.g. the journey stages, or the Discover sub-tabs).
+   The active pillar is derived from the current route so it stays highlighted while browsing within a pillar. *@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject Respondeo.Services.NavigationIntent NavIntent
@@ -28,15 +28,13 @@
 @code {
     private string _activeId = SitePillars.JourneyId;
 
-    // The Journey pillar is the site's spine and always shown; the Summa pill and the merged
-    // Discover Catholicism pill are each gated behind deploy-time feature flags. Discover is gated by
-    // its master DiscoverPillar switch and shows only when at least one of its sub-area features is
-    // also enabled, so the pillar hides when the master switch is off or every sub-area is turned off.
+    // The Journey pillar is the site's spine and always shown; the Summa pill and the merged Discover Catholicism pill are each gated behind deploy-time feature flags.
+    // Discover is gated by its master DiscoverPillar switch and shows only when at least one of its sub-area features is also enabled,
+    // so the pillar hides when the master switch is off or every sub-area is turned off.
     private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
     {
         SitePillars.SummaId => Features.SummaPillar,
-        SitePillars.DiscoverId => Features.DiscoverPillar
-            && (Features.MiraclesFeature || Features.PrayerFeature || Features.DevotionsFeature || Features.ArticlesFeature),
+        SitePillars.DiscoverId => Features.DiscoverPillar && (Features.MiraclesFeature || Features.PrayerFeature || Features.DevotionsFeature || Features.ArticlesFeature),
         _ => true,
     };
 

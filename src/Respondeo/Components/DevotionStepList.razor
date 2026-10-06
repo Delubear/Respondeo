@@ -128,18 +128,13 @@
     /// <summary>Raised when the reader opens a section banner's explanation.</summary>
     [Parameter] public EventCallback<DevotionBead> OnOpenInfo { get; set; }
 
-    // The prayer's name in the active language: the Latin name when the Latin view is on and one
-    // exists, otherwise the vernacular title.
-    private string? PrayerName(DevotionBead step) =>
-        ShowLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
+    // The prayer's name in the active language: the Latin name when the Latin view is on and one exists, otherwise the vernacular title.
+    private string? PrayerName(DevotionBead step) => ShowLatin && !string.IsNullOrWhiteSpace(step.PrayerLatinTitle) ? step.PrayerLatinTitle : step.PrayerTitle;
 
-    // The step's rubric in the active language: the Latin note when the Latin view is on and one
-    // exists, otherwise the vernacular note.
-    private string? PrayerNote(DevotionBead step) =>
-        ShowLatin && !string.IsNullOrWhiteSpace(step.NoteLatin) ? step.NoteLatin : step.Note;
+    // The step's rubric in the active language: the Latin note when the Latin view is on and one exists, otherwise the vernacular note.
+    private string? PrayerNote(DevotionBead step) => ShowLatin && !string.IsNullOrWhiteSpace(step.NoteLatin) ? step.NoteLatin : step.Note;
 
-    // A short "who says this" badge for liturgical steps: the versicle/response marks for priest and
-    // people, or a readable word for the rest.
+    // A short "who says this" badge for liturgical steps: the versicle/response marks for priest and people, or a readable word for the rest.
     private static string RoleLabel(string? role) => role switch
     {
         "priest" => "\u2123",   // ℣ — versicle

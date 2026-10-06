@@ -1,12 +1,7 @@
 @using Respondeo.Services
 @inject IThemeService Theme
 
-<button type="button"
-        class="theme-toggle"
-        @onclick="ToggleAsync"
-        title="@Label"
-        aria-label="@Label"
-        aria-pressed="@(_isDark ? "true" : "false")">
+<button type="button" class="theme-toggle" @onclick="ToggleAsync" title="@Label" aria-label="@Label" aria-pressed="@(_isDark ? "true" : "false")">
     <span class="theme-toggle__glyph" aria-hidden="true">@Glyph</span>
 </button>
 

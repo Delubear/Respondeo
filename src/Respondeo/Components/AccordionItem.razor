@@ -1,24 +1,19 @@
-@* Presentational collapsible row shared by every "sections" surface. It owns only the shell —
-   the trigger, the label (optional eyebrow, title, optional summary), the +/- marker, and the
-   panel — while each caller keeps its own data loading, open-model, and URL behavior.
+@* Presentational collapsible row shared by every "sections" surface.
+    It owns only the shell — the trigger, the label (optional eyebrow, title, optional summary),
+    the +/- marker, and the panel — while each caller keeps its own data loading, open-model, and URL behavior.
 
    Two trigger modes:
-   - Button:  an accessible <button> with aria-expanded/aria-controls; the panel renders only when
-              Open. Used by SectionAccordion (single-open, ?section= state).
-   - Details: a native <details>/<summary> so the row is deep-linkable without JS; the panel is
-              always in the DOM and the native open attribute drives visibility. Used by the Summa
-              question (multi-open, #article-N fragments).
+   - Button:  an accessible <button> with aria-expanded/aria-controls; the panel renders only when Open. Used by SectionAccordion (single-open, ?section= state).
+   - Details: a native <details>/<summary> so the row is deep-linkable without JS; the panel is always in the DOM and the native open attribute drives visibility.
+       Used by the Summa question (multi-open, #article-N fragments).
 
-   The open panel's ElementReference is surfaced through PanelRef so a parent can post-process the
-   injected HTML (e.g. SectionAccordion enhancing tables for mobile). PanelRef is a plain Action, not
-   an EventCallback, so reporting the element never triggers an extra render. *@
+   The open panel's ElementReference is surfaced through PanelRef so a parent can post-process the injected HTML (e.g. SectionAccordion enhancing tables for mobile).
+   PanelRef is a plain Action, not an EventCallback, so reporting the element never triggers an extra render. *@
 
 @if (Mode == AccordionTriggerMode.Details)
 {
     <details class="accordion__item" id="@Id" open="@Open">
-        <summary class="accordion__trigger"
-                 @onclick="OnToggle"
-                 @onclick:preventDefault="true">
+        <summary class="accordion__trigger" @onclick="OnToggle" @onclick:preventDefault="true">
             @Label
             <span class="accordion__marker" aria-hidden="true">@Marker</span>
         </summary>
@@ -31,23 +26,14 @@ else
 {
     <section class="accordion__item @(Open ? "accordion__item--open" : null)">
         <h3 class="accordion__heading">
-            <button type="button"
-                    id="@HeaderId"
-                    class="accordion__trigger"
-                    aria-expanded="@(Open ? "true" : "false")"
-                    aria-controls="@PanelId"
-                    @onclick="OnToggle">
+            <button type="button" id="@HeaderId" class="accordion__trigger" aria-expanded="@(Open ? "true" : "false")" aria-controls="@PanelId" @onclick="OnToggle">
                 @Label
                 <span class="accordion__marker" aria-hidden="true">@Marker</span>
             </button>
         </h3>
         @if (Open)
         {
-            <div id="@PanelId"
-                 role="region"
-                 aria-labelledby="@HeaderId"
-                 class="accordion__panel content-body"
-                 @ref="_panel">
+            <div id="@PanelId" role="region" aria-labelledby="@HeaderId" class="accordion__panel content-body" @ref="_panel">
                 @ChildContent
             </div>
         }
@@ -131,8 +117,8 @@ else
         builder.CloseElement();
     };
 
-    // Children's OnAfterRender runs before their parent's, so reporting the panel element here lets a
-    // parent read it during its own OnAfterRenderAsync. Only report while open (and thus rendered).
+    // Children's OnAfterRender runs before their parent's, so reporting the panel element here lets a parent read it during its own OnAfterRenderAsync.
+    // Only report while open (and thus rendered).
     protected override void OnAfterRender(bool firstRender)
     {
         if (Open)

@@ -2,10 +2,9 @@
 @implements IAsyncDisposable
 @using Respondeo.Services
 
-@* A reusable floating-circle control. Renders a fixed bottom-right circular button that slides up to
-   stack above the back-to-top arrow, plus a shared Dialog. Each use supplies its own icon, dialog
-   body, and footer; the trigger geometry, stacking, and scroll lifecycle live here so the Summa
-   guide, Prayer guide, and Today-in-the-Church orb stay visually identical. *@
+@* A reusable floating-circle control. Renders a fixed bottom-right circular button that slides up to stack above the back-to-top arrow, plus a shared Dialog.
+    Each use supplies its own icon, dialog body, and footer; the trigger geometry, stacking,
+    and scroll lifecycle live here so the Summa guide, Prayer guide, and Today-in-the-Church orb stay visually identical. *@
 
 <button type="button"
         class="float-circle @TriggerClass @(Raised ? "is-raised" : string.Empty) @(_stacked ? "is-stacked" : string.Empty)"
@@ -52,8 +51,7 @@
     [Parameter] public string? TriggerClass { get; set; }
 
     /// <summary>
-    /// When true, the control sits one slot higher than normal so it clears another floating control
-    /// that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// When true, the control sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
     /// </summary>
     [Parameter] public bool Raised { get; set; }
 
@@ -68,8 +66,7 @@
         }
     }
 
-    // The guide only needs the back-to-top reveal threshold so its button can stack above that
-    // control; the progress value is shared by the same scroll tracker but ignored here.
+    // The guide only needs the back-to-top reveal threshold so its button can stack above that control; the progress value is shared by the same scroll tracker but ignored here.
     private void OnScroll(double progress, bool backToTopVisible)
     {
         if (_stacked != backToTopVisible)

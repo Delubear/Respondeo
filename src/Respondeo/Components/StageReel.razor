@@ -2,10 +2,8 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-@* The Home "journey reel": a horizontal scroll-snap list of stage cards. Stage 1 sits
-   at the LEFT and the journey walks rightward along the path. Owns its JS interop
-   lifecycle (import / init / dispose) and the scroll-affordance controls. Callers pass
-   in the ordered list of stages; data loading stays with the page. *@
+@* The Home "journey reel": a horizontal scroll-snap list of stage cards. Stage 1 sits at the LEFT and the journey walks rightward along the path.
+    Owns its JS interop lifecycle (import / init / dispose) and the scroll-affordance controls. Callers pass in the ordered list of stages; data loading stays with the page. *@
 
 <div class="reel-wrap">
     <div class="reel" role="list" tabindex="0" aria-label="The journey, stage by stage. Use the arrow keys to move between stages." @ref="_reel">
@@ -50,10 +48,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // The reel renders Stage 1 (the starting point) at the LEFT so the journey walks
-        // rightward along the path. Start the reader there, and let the module apply an
-        // IntersectionObserver fallback for the turning effect where scroll-driven CSS
-        // animations aren't supported.
+        // The reel renders Stage 1 (the starting point) at the LEFT so the journey walks rightward along the path.
+        // Start the reader there, and let the module apply an IntersectionObserver fallback for the turning effect where scroll-driven CSS animations aren't supported.
         if (Stages.Count > 0 && _module is null)
         {
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/reel.js");
@@ -101,36 +97,20 @@
     /// <summary>An inquisitive, self-locating prompt for a stage: a headline question and optional subtext.</summary>
     private sealed record StagePrompt(string Question, string? Subtext);
 
-    // Authored hrefs may carry a leading slash; a root-absolute href ignores <base href> and would
-    // escape the app's sub-path when hosted under one. Trim it so the link resolves relative to base.
+    // Authored hrefs may carry a leading slash; a root-absolute href ignores <base href> and would escape the app's sub-path when hosted under one. Trim it so the link resolves relative to base.
     private static string ResolveHref(string slug) => slug.TrimStart('/');
 
-    // The reel is a self-locating guide: instead of naming each stage, we ask a second-person
-    // question so a reader can recognize where they honestly stand and step in there. These are
-    // intentionally hand-authored here (not drawn from content front matter) so the invitation can
-    // be tuned independently of the stage articles' own titles and summaries.
+    // The reel is a self-locating guide: instead of naming each stage, we ask a second-person question so a reader can recognize where they honestly stand and step in there.
+    // These are intentionally hand-authored here (not drawn from content front matter) so the invitation can be tuned independently of the stage articles' own titles and summaries.
     private static readonly IReadOnlyDictionary<string, StagePrompt> Prompts =
         new Dictionary<string, StagePrompt>(StringComparer.OrdinalIgnoreCase)
         {
-            ["why-god"] = new(
-                "Do you wonder whether God exists at all?",
-                "Maybe the material world seems like all there is — or you simply haven't decided."),
-            ["which-god"] = new(
-                "Convinced there's a God, but unsure which one?",
-                "You sense something is there, but not yet a face, a name, or a voice."),
-            ["why-jesus"] = new(
-                "You believe in God — but is Jesus really who He claimed?",
-                "A teacher, a prophet — or God stepping into history?"),
-            ["why-the-church"] = new(
-                "You follow Christ — but did He found a Church?",
-                "You believe in Jesus, yet the Catholic Church still gives you pause."),
-            ["coming-home"] = new(
-                "Ready to take a step toward home?",
-                "Whether arriving, returning, or crossing over — here is how to begin."),
+            ["why-god"] = new("Do you wonder whether God exists at all?", "Maybe the material world seems like all there is — or you simply haven't decided."),
+            ["which-god"] = new("Convinced there's a God, but unsure which one?", "You sense something is there, but not yet a face, a name, or a voice."),
+            ["why-jesus"] = new("You believe in God — but is Jesus really who He claimed?", "A teacher, a prophet — or God stepping into history?"),
+            ["why-the-church"] = new("You follow Christ — but did He found a Church?", "You believe in Jesus, yet the Catholic Church still gives you pause."),
+            ["coming-home"] = new("Ready to take a step toward home?", "Whether arriving, returning, or crossing over — here is how to begin."),
         };
 
-    private static StagePrompt PromptFor(string slug) =>
-        Prompts.TryGetValue(ResolveHref(slug), out var prompt)
-            ? prompt
-            : new StagePrompt(ResolveHref(slug), null);
+    private static StagePrompt PromptFor(string slug) => Prompts.TryGetValue(ResolveHref(slug), out var prompt) ? prompt : new StagePrompt(ResolveHref(slug), null);
 }

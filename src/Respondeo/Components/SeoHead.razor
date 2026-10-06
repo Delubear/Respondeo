@@ -2,10 +2,9 @@
 @inject NavigationManager Nav
 
 @*
-    Emits per-page SEO / social metadata into <head> via HeadContent. This overrides the STATIC
-    baseline tags in wwwroot/index.html for JS-capable crawlers (e.g. Googlebot), giving each route
-    its own description, canonical URL, Open Graph, and Twitter Card values. Non-JS scrapers still
-    only see the static index.html baseline; that trade-off is accepted (no prerendering).
+    Emits per-page SEO / social metadata into <head> via HeadContent.
+        This overrides the STATIC baseline tags in wwwroot/index.html for JS-capable crawlers (e.g. Googlebot), giving each route its own description,
+        canonical URL, Open Graph, and Twitter Card values. Non-JS scrapers still only see the static index.html baseline; that trade-off is accepted (no prerendering).
 
     Usage:
         <SeoHead Description="@node.Summary" />
@@ -54,14 +53,11 @@
     /// <summary>When true (and no explicit JsonLd is supplied), emits an Article structured-data node.</summary>
     [Parameter] public bool Article { get; set; }
 
-    private string Meta =>
-        string.IsNullOrWhiteSpace(Description) ? SiteMeta.DefaultDescription : Description!.Trim();
+    private string Meta => string.IsNullOrWhiteSpace(Description) ? SiteMeta.DefaultDescription : Description!.Trim();
 
-    private string FullTitle =>
-        string.IsNullOrWhiteSpace(Title) ? SiteMeta.DefaultTitle : $"{Title} — {SiteMeta.SiteName}";
+    private string FullTitle => string.IsNullOrWhiteSpace(Title) ? SiteMeta.DefaultTitle : $"{Title} — {SiteMeta.SiteName}";
 
-    // The canonical URL is the current route resolved against the production origin, so it stays
-    // correct regardless of the host the app is actually served from (localhost, preview, etc.).
+    // The canonical URL is the current route resolved against the production origin, so it stays correct regardless of the host the app is actually served from (localhost, preview, etc.).
     private string CanonicalUrl
     {
         get

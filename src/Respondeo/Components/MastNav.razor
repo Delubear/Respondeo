@@ -1,16 +1,14 @@
-@* Presentational pillar sub-navigation shell: the .mastnav bar with a mobile toggle, a
-   collapsing list, and the "top-level navigation" behavior (reset to top + fresh breadcrumb
-   trail on click, collapse after navigating). It owns no opinion about *which* items to show
-   or *when* to render \u2014 callers pass an item list and decide their own visibility, so both the
-   journey stages (MastheadNav) and the Discover sub-areas (DiscoverNav) reuse this one shell. *@
+@* Presentational pillar sub-navigation shell: the .mastnav bar with a mobile toggle, a collapsing list,
+    and the "top-level navigation" behavior (reset to top + fresh breadcrumb trail on click, collapse after navigating).
+    It owns no opinion about *which* items to show or *when* to render \u2014 callers pass an item list and decide their own visibility,
+    so both the journey stages (MastheadNav) and the Discover sub-areas (DiscoverNav) reuse this one shell. *@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject Respondeo.Services.NavigationIntent NavIntent
 @inject Respondeo.Services.IBreadcrumbTrail Trail
 
 <nav class="mastnav" aria-label="@AriaLabel">
-    <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="@ListId"
-            @onclick="Toggle">
+    <button type="button" class="mastnav__toggle" aria-expanded="@_open" aria-controls="@ListId" @onclick="Toggle">
         <span class="mastnav__toggle-icon" aria-hidden="true"></span>
         <span class="mastnav__toggle-label">Menu</span>
     </button>
@@ -18,8 +16,7 @@
         @foreach (var item in Items)
         {
             <li class="mastnav__item">
-                <NavLink class="mastnav__link" href="@item.Href" Match="@item.Match"
-                         @onclick="MarkTopLevel">
+                <NavLink class="mastnav__link" href="@item.Href" Match="@item.Match" @onclick="MarkTopLevel">
                     @item.Label
                 </NavLink>
             </li>

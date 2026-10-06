@@ -1,6 +1,5 @@
-@* Renders a content node's article body: title, summary, body HTML, optional
-   sections accordion, and branch cards. Shared by the Node page and the stage
-   landing pages so they present identical styling. *@
+@* Renders a content node's article body: title, summary, body HTML, optional sections accordion, and branch cards.
+    Shared by the Node page and the stage landing pages so they present identical styling. *@
 @inject IContentService Content
 @inject IInquiryFlow Flow
 @inject IVisitedNodes Visited
@@ -34,12 +33,7 @@
             <CardGrid>
                 @foreach (var branch in _branches)
                 {
-                    <Card Href="@branch.Href"
-                          Title="@branch.Label"
-                          Summary="@branch.Link.Prompt"
-                          Cta="Continue →"
-                          Visited="@_visited.Contains(branch.Link.To)"
-                          Level="3" />
+                    <Card Href="@branch.Href" Title="@branch.Label" Summary="@branch.Link.Prompt" Cta="Continue →" Visited="@_visited.Contains(branch.Link.To)" Level="3" />
                 }
             </CardGrid>
         </section>
@@ -50,10 +44,7 @@
         <section class="next-stage">
             <p class="next-stage__eyebrow"><span>The Next Stage</span></p>
             <div class="next-stage__plate">
-                <StageCard Href="@_nextStage.Href"
-                           Icon="@_nextStage.Icon"
-                           Label="@_nextStage.Label"
-                           Prompt="@_nextStage.Prompt" />
+                <StageCard Href="@_nextStage.Href" Icon="@_nextStage.Icon" Label="@_nextStage.Label" Prompt="@_nextStage.Prompt" />
             </div>
         </section>
     }
@@ -91,8 +82,7 @@
     }
 
     // The body HTML is injected as a MarkupString, so any tables only exist in the DOM after render.
-    // We give each one a transposed companion for the mobile layout; the module skips tables it has
-    // already processed, so running on every render is safe and cheap.
+    // We give each one a transposed companion for the mobile layout; the module skips tables it has already processed, so running on every render is safe and cheap.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try

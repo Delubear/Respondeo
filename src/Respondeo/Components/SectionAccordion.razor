@@ -110,9 +110,8 @@
             var url = _pendingUrl;
             _pendingUrl = null;
             // Update the address bar via the History API instead of NavigationManager.NavigateTo.
-            // In Blazor WASM, NavigateTo raises LocationChanged, which retriggers FocusOnNavigate and
-            // scrolls to the top. history.replaceState keeps the URL shareable without any navigation,
-            // focus shift, or scroll, so the visitor stays exactly where they are.
+            // In Blazor WASM, NavigateTo raises LocationChanged, which retriggers FocusOnNavigate and scrolls to the top.
+            // history.replaceState keeps the URL shareable without any navigation, focus shift, or scroll, so the visitor stays exactly where they are.
             await Navigation.ReplaceUrlAsync(url);
         }
 
@@ -120,14 +119,12 @@
         {
             var target = _scrollToId;
             _scrollToId = null;
-            // Smoothly bring the opened section into view (deep link on load or a normal open
-            // whose expanded content runs past the bottom of the viewport).
+            // Smoothly bring the opened section into view (deep link on load or a normal open whose expanded content runs past the bottom of the viewport).
             await Navigation.ScrollIntoViewAsync(target);
         }
 
-        // The open panel's body is injected as a MarkupString, so any tables only exist once it has
-        // rendered. Give them transposed companions for the mobile layout; the module skips tables it
-        // has already processed.
+        // The open panel's body is injected as a MarkupString, so any tables only exist once it has rendered.
+        // Give them transposed companions for the mobile layout; the module skips tables it has already processed.
         if (_openId is not null)
         {
             try

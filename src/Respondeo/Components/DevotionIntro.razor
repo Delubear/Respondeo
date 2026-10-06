@@ -1,5 +1,4 @@
-@* The devotion intro screen shown before praying begins: an optional draft notice, a resume prompt
-   for an un-finished visit, the intro prose, and the mystery-set chooser (or a single Begin card). *@
+@* The devotion intro screen shown before praying begins: an optional draft notice, a resume prompt for an un-finished visit, the intro prose, and the mystery-set chooser (or a single Begin card). *@
 
 <section class="content-article">
     <PillarHeader Title="@Devotion.Title" LedeText="@Devotion.Summary" />
@@ -19,15 +18,9 @@
 
     @if (SavedProgress is { CompletedCount: > 0 })
     {
-        @* A previous visit was left un-finished; offer to pick up where they left off. Beginning
-           any set below already starts fresh, so a single Resume action is all that's needed. *@
+        @* A previous visit was left un-finished; offer to pick up where they left off. Beginning any set below already starts fresh, so a single Resume action is all that's needed. *@
         <div class="devotion__resume" role="status">
-            <Card Title="Resume where you left off"
-                  Pill="In progress"
-                  Summary="@ResumeText"
-                  Cta="Resume &rarr;"
-                  Level="2"
-                  OnClick="OnResume" />
+            <Card Title="Resume where you left off" Pill="In progress" Summary="@ResumeText" Cta="Resume &rarr;" Level="2" OnClick="OnResume" />
         </div>
     }
 
@@ -48,12 +41,7 @@
             <div class="devotion__set-options">
                 @foreach (var set in Devotion.MysterySets)
                 {
-                    <Card Title="@set.Name"
-                          Pill="@set.When"
-                          Summary="@set.Summary"
-                          Cta="Begin praying &rarr;"
-                          Level="3"
-                          OnClick="() => OnBegin.InvokeAsync(set.Id)" />
+                    <Card Title="@set.Name" Pill="@set.When" Summary="@set.Summary" Cta="Begin praying &rarr;" Level="3" OnClick="() => OnBegin.InvokeAsync(set.Id)" />
                 }
             </div>
         </div>
@@ -61,11 +49,7 @@
     else
     {
         <div class="devotion__set-options">
-            <Card Title="Begin"
-                  Summary="@Devotion.Summary"
-                  Cta="Begin praying &rarr;"
-                  Level="3"
-                  OnClick="() => OnBegin.InvokeAsync(null)" />
+            <Card Title="Begin" Summary="@Devotion.Summary" Cta="Begin praying &rarr;" Level="3" OnClick="() => OnBegin.InvokeAsync(null)" />
         </div>
     }
 
@@ -88,9 +72,8 @@
     /// <summary>Raised when the reader begins a set (null id for a single-set devotion).</summary>
     [Parameter] public EventCallback<string?> OnBegin { get; set; }
 
-    // Summary line for the resume card, naming the saved mystery set (when there is one) and how far
-    // along the reader was (e.g. "The Sorrowful Mysteries — 12 of 59 prayers complete."). The card's
-    // title and "In progress" pill carry the rest of the meaning, so this stays purely descriptive.
+    // Summary line for the resume card, naming the saved mystery set (when there is one) and how far along the reader was (e.g. "The Sorrowful Mysteries — 12 of 59 prayers complete.").
+    // The card's title and "In progress" pill carry the rest of the meaning, so this stays purely descriptive.
     private string ResumeText
     {
         get

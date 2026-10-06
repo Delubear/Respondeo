@@ -1,9 +1,6 @@
-@* A single feedback entry-point. Renders a link-styled trigger that opens a shared Dialog
-   (which is a bottom-sheet on mobile for free) letting the visitor choose how to reach us:
-   open a traceable GitHub issue, or send anonymous feedback through a hosted Tally form that
-   needs no account. The anonymous form is embedded inline in the dialog (no tab switch); the
-   two choice cards swap to the form in place. Drop it anywhere a "report an issue / share
-   feedback" link is wanted. *@
+@* A single feedback entry-point. Renders a link-styled trigger that opens a shared Dialog (which is a bottom-sheet on mobile for free) letting the visitor choose how to reach us:
+   open a traceable GitHub issue, or send anonymous feedback through a hosted Tally form that needs no account.
+   The anonymous form is embedded inline in the dialog (no tab switch); the two choice cards swap to the form in place. Drop it anywhere a "report an issue / share feedback" link is wanted. *@
 
 @implements IAsyncDisposable
 @inject TallyInterop Tally
@@ -23,10 +20,7 @@
             </p>
 
             <div class="feedback__choices">
-                <a class="feedback__choice"
-                   href="@GitHubIssuesUrl"
-                   target="_blank" rel="noopener noreferrer"
-                   @onclick="CloseAsync">
+                <a class="feedback__choice" href="@GitHubIssuesUrl" target="_blank" rel="noopener noreferrer" @onclick="CloseAsync">
                     <span class="feedback__choice-title">Open a GitHub issue</span>
                     <span class="feedback__choice-note">
                         Best for bugs you want to track. Requires a free GitHub account.
@@ -47,10 +41,7 @@
         {
             <div class="feedback__form">
                 <div class="feedback__surface">
-                    <iframe class="feedback__frame"
-                            src="@TallyEmbedUrl"
-                            title="Anonymous feedback form"
-                            loading="lazy"></iframe>
+                    <iframe class="feedback__frame" src="@TallyEmbedUrl" title="Anonymous feedback form" loading="lazy"></iframe>
                 </div>
                 @if (!_submitted)
                 {
@@ -73,17 +64,15 @@ else
     /// <summary>Where the GitHub route sends visitors to file a tracked issue.</summary>
     private const string GitHubIssuesUrl = "https://github.com/Delubear/Respondeo/issues/new/choose";
 
-    // Use Tally's dedicated /embed/ path (not /r/, which is the full-page form that vertically
-    // centers its content and leaves a gap inside a fixed iframe). alignLeft + hideTitle +
-    // transparentBackground keep the embedded form flush and top-aligned in our dialog.
+    // Use Tally's dedicated /embed/ path (not /r/, which is the full-page form that vertically centers its content and leaves a gap inside a fixed iframe).
+    // alignLeft + hideTitle + transparentBackground keep the embedded form flush and top-aligned in our dialog.
     private string TallyEmbedUrl => $"https://tally.so/embed/{TallyFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
 
     private Dialog _dialog = default!;
     private bool _showForm;
     private bool _submitted;
 
-    // Only shown once the embedded form reports a submission: a real footer button to dismiss the
-    // dialog, replacing the quiet "Back to options" text link (there's nothing left to go back to).
+    // Only shown once the embedded form reports a submission: a real footer button to dismiss the dialog, replacing the quiet "Back to options" text link (there's nothing left to go back to).
     // Null otherwise so the dialog renders no footer (and no divider) during the choice/form steps.
     private RenderFragment? SubmittedFooter => _showForm && _submitted
         ? @<button type="button" class="btn feedback__close" @onclick="CloseAsync">Close</button>

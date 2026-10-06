@@ -73,10 +73,9 @@
     [Parameter] public string? BackLabel { get; set; }
 
     /// <summary>
-    /// A single ancestor step in the breadcrumb trail. When <see cref="Href"/> is null the crumb
-    /// links to a Markdown node route built from <see cref="Id"/>/<see cref="Stage"/>; when set it
-    /// links directly to that explicit href. When <see cref="Plain"/> is true the crumb renders as
-    /// non-linked text (e.g. a Summa part, which has no landing page).
+    /// A single ancestor step in the breadcrumb trail. When <see cref="Href"/> is null the crumb links to a Markdown node route built from <see cref="Id"/>/<see cref="Stage"/>;
+    // when set it links directly to that explicit href.
+    // When <see cref="Plain"/> is true the crumb renders as non-linked text (e.g. a Summa part, which has no landing page).
     /// </summary>
     public sealed record Crumb(string Id, string Title, string? Stage = null, string? Href = null, bool Plain = false);
 
@@ -86,26 +85,24 @@
     private IJSObjectReference? _module;
     private string? _lastTrailSignature;
 
-    // Identity of the rendered trail. We only want to re-anchor the scroll (jump back to the
-    // current crumb) when the trail itself actually changes — i.e. the visitor navigated to a
-    // new node. Re-rendering for any other reason (such as a chevron click, which is a normal
-    // component event) must NOT re-anchor, or the user's manual scroll gets snapped away.
+    // Identity of the rendered trail. We only want to re-anchor the scroll (jump back to the current crumb)
+    // when the trail itself actually changes — i.e. the visitor navigated to a new node.
+    // Re-rendering for any other reason (such as a chevron click, which is a normal component event) must NOT re-anchor, or the user's manual scroll gets snapped away.
     private string TrailSignature => string.Join('>', Crumbs.Select(c => c.Id)) + "#" + (CurrentTitle ?? string.Empty);
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // Keep the trail on one scrollable line: land on the current (right-most) crumb and
-            // show the edge chevrons whenever, and whichever way, it can scroll.
+            // Keep the trail on one scrollable line: land on the current (right-most) crumb and show the edge chevrons whenever, and whichever way, it can scroll.
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/breadcrumb.js");
             _lastTrailSignature = TrailSignature;
             await _module.InvokeVoidAsync("init", _root);
         }
         else if (_module is not null)
         {
-            // Only re-anchor when the crumbs genuinely changed (navigated to a new node). Skip
-            // re-renders triggered by chevron clicks or other UI events so manual scrolling sticks.
+            // Only re-anchor when the crumbs genuinely changed (navigated to a new node).
+            // Skip re-renders triggered by chevron clicks or other UI events so manual scrolling sticks.
             var signature = TrailSignature;
             if (signature != _lastTrailSignature)
             {

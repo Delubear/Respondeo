@@ -2,12 +2,7 @@
 
 <div class="search-box">
     <label class="search-box__label" for="@Id">@Label</label>
-    <input id="@Id"
-           class="search-box__input"
-           type="search"
-           placeholder="@Placeholder"
-           value="@_value"
-           @oninput="OnInput" />
+    <input id="@Id" class="search-box__input" type="search" placeholder="@Placeholder" value="@_value" @oninput="OnInput" />
 </div>
 
 @code {
@@ -30,8 +25,7 @@
     /// <summary>Debounce window in milliseconds; defaults to 150ms.</summary>
     [Parameter] public int DebounceMs { get; set; } = 150;
 
-    // Mirror the page-owned Value into the input whenever it changes externally (e.g. restored from
-    // saved browse state on mount), without clobbering in-flight typing.
+    // Mirror the page-owned Value into the input whenever it changes externally (e.g. restored from saved browse state on mount), without clobbering in-flight typing.
     protected override void OnParametersSet()
     {
         if (!string.Equals(Value, _value, StringComparison.Ordinal))

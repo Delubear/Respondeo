@@ -1,10 +1,8 @@
-@* A self-contained "How to read the Summa" helper. Renders a floating circular button that stacks
-   above the back-to-top control, plus a native <dialog>, so it is reachable on the Summa home and on
-   every question page (covering shared links). It explains the classic article structure and the
-   meaning of the project name. *@
+@* A self-contained "How to read the Summa" helper.
+    Renders a floating circular button that stacks above the back-to-top control, plus a native <dialog>, so it is reachable on the Summa home and on every question page (covering shared links).
+    It explains the classic article structure and the meaning of the project name. *@
 
-<FloatingGuide Title="How to read the Summa" Eyebrow="A short orientation"
-               AriaLabel="How to read the Summa">
+<FloatingGuide Title="How to read the Summa" Eyebrow="A short orientation" AriaLabel="How to read the Summa">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor"
              xmlns="http://www.w3.org/2000/svg">
@@ -12,116 +10,116 @@
         </svg>
     </Icon>
     <ChildContent>
-    <p>
-                The <em>Summa Theologiae</em> is built from thousands of small debates. Everything nests
-                in the same order, so once you can read one article you can read them all.
-            </p>
+        <p>
+            The <em>Summa Theologiae</em> is built from thousands of small debates. Everything nests
+            in the same order, so once you can read one article you can read them all.
+        </p>
 
-            <h3 class="guide-subhead">The shape of the whole work</h3>
-            <ul class="summa-guide__structure">
-                <li><strong>Parts</strong> &mdash; the five great divisions of the work.</li>
-                <li><strong>Treatises</strong> &mdash; themed groups of questions within a part (&ldquo;Treatise on the Passions&rdquo;).</li>
-                <li><strong>Questions</strong> &mdash; a topic (&ldquo;The existence of God&rdquo;).</li>
-                <li><strong>Articles</strong> &mdash; a single yes/no dispute (&ldquo;Whether God exists?&rdquo;).</li>
-            </ul>
+        <h3 class="guide-subhead">The shape of the whole work</h3>
+        <ul class="summa-guide__structure">
+            <li><strong>Parts</strong> &mdash; the five great divisions of the work.</li>
+            <li><strong>Treatises</strong> &mdash; themed groups of questions within a part (&ldquo;Treatise on the Passions&rdquo;).</li>
+            <li><strong>Questions</strong> &mdash; a topic (&ldquo;The existence of God&rdquo;).</li>
+            <li><strong>Articles</strong> &mdash; a single yes/no dispute (&ldquo;Whether God exists?&rdquo;).</li>
+        </ul>
 
-            <h3 class="guide-subhead">The shape of a single article</h3>
-            <p>Each article always moves through the same four steps:</p>
-            <ol class="summa-guide__steps">
-                <li>
-                    <span class="summa-guide__cue">Objections <span class="summa-guide__latin">Videtur quod</span></span>
-                    The strongest arguments <em>against</em> the position St. Thomas will take. He states
-                    the opposing case first, and as fairly as he can.
-                </li>
-                <li>
-                    <span class="summa-guide__cue">On the contrary <span class="summa-guide__latin">Sed Contra</span></span>
-                    A single authority (Scripture, a Council, a Father) pointing the other way &mdash; the
-                    hinge that turns the article.
-                </li>
-                <li>
-                    <span class="summa-guide__cue">I answer that <span class="summa-guide__latin">Respondeo dicendum quod</span></span>
-                    St. Thomas&rsquo;s own reasoned answer. This is the heart of the article; if you read
-                    only one part, read this.
-                </li>
-                <li>
-                    <span class="summa-guide__cue">Replies to the Objections <span class="summa-guide__latin">Ad Obiecta</span></span>
-                    He returns to each opening objection and shows precisely where it went wrong.
-                </li>
-            </ol>
+        <h3 class="guide-subhead">The shape of a single article</h3>
+        <p>Each article always moves through the same four steps:</p>
+        <ol class="summa-guide__steps">
+            <li>
+                <span class="summa-guide__cue">Objections <span class="summa-guide__latin">Videtur quod</span></span>
+                The strongest arguments <em>against</em> the position St. Thomas will take. He states
+                the opposing case first, and as fairly as he can.
+            </li>
+            <li>
+                <span class="summa-guide__cue">On the contrary <span class="summa-guide__latin">Sed Contra</span></span>
+                A single authority (Scripture, a Council, a Father) pointing the other way &mdash; the
+                hinge that turns the article.
+            </li>
+            <li>
+                <span class="summa-guide__cue">I answer that <span class="summa-guide__latin">Respondeo dicendum quod</span></span>
+                St. Thomas&rsquo;s own reasoned answer. This is the heart of the article; if you read
+                only one part, read this.
+            </li>
+            <li>
+                <span class="summa-guide__cue">Replies to the Objections <span class="summa-guide__latin">Ad Obiecta</span></span>
+                He returns to each opening objection and shows precisely where it went wrong.
+            </li>
+        </ol>
 
-            <h3 class="guide-subhead">Following the references</h3>
-            <p>
-                St. Thomas constantly points back to earlier arguments. Those blue links are his
-                cross-references, and they read like an address:
-            </p>
-            <ul class="summa-guide__refkey">
-                <li><span class="summa-guide__ref">Q.&nbsp;2</span> &mdash; Question 2 of the current part.</li>
-                <li><span class="summa-guide__ref">A.&nbsp;3</span> &mdash; Article 3 (a single dispute within a question).</li>
-                <li><span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> &mdash; Question 2, Article 3.</li>
-                <li><span class="summa-guide__ref">A.&nbsp;1, A.&nbsp;3</span> &mdash; two articles at once; each number is its own link.</li>
-                <li><span class="summa-guide__ref">I, Q.&nbsp;88, A.&nbsp;2</span> &mdash; a jump to another part (here the First Part).</li>
-                <li><span class="summa-guide__ref">Q.&nbsp;5, A.&nbsp;8, obj.&nbsp;3</span> &mdash; points at the 3rd objection inside that article.</li>
-                <li><span class="summa-guide__ref">Q.&nbsp;5, A.&nbsp;8, ad&nbsp;3</span> &mdash; points at the reply to that 3rd objection.</li>
-            </ul>
-            <p>
-                The part labels are <strong>I</strong> (First Part), <strong>I-II</strong> (First Part
-                of the Second Part), <strong>II-II</strong> (Second Part of the Second Part),
-                <strong>III</strong> (Third Part) and <strong>Suppl.</strong> (the Supplement).
-            </p>
+        <h3 class="guide-subhead">Following the references</h3>
+        <p>
+            St. Thomas constantly points back to earlier arguments. Those blue links are his
+            cross-references, and they read like an address:
+        </p>
+        <ul class="summa-guide__refkey">
+            <li><span class="summa-guide__ref">Q.&nbsp;2</span> &mdash; Question 2 of the current part.</li>
+            <li><span class="summa-guide__ref">A.&nbsp;3</span> &mdash; Article 3 (a single dispute within a question).</li>
+            <li><span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> &mdash; Question 2, Article 3.</li>
+            <li><span class="summa-guide__ref">A.&nbsp;1, A.&nbsp;3</span> &mdash; two articles at once; each number is its own link.</li>
+            <li><span class="summa-guide__ref">I, Q.&nbsp;88, A.&nbsp;2</span> &mdash; a jump to another part (here the First Part).</li>
+            <li><span class="summa-guide__ref">Q.&nbsp;5, A.&nbsp;8, obj.&nbsp;3</span> &mdash; points at the 3rd objection inside that article.</li>
+            <li><span class="summa-guide__ref">Q.&nbsp;5, A.&nbsp;8, ad&nbsp;3</span> &mdash; points at the reply to that 3rd objection.</li>
+        </ul>
+        <p>
+            The part labels are <strong>I</strong> (First Part), <strong>I-II</strong> (First Part
+            of the Second Part), <strong>II-II</strong> (Second Part of the Second Part),
+            <strong>III</strong> (Third Part) and <strong>Suppl.</strong> (the Supplement).
+        </p>
 
-            <h3 class="guide-subhead">About the Supplement</h3>
-            <p>
-                St. Thomas died before finishing the Third Part, breaking off partway through the
-                sacraments. The <strong>Supplement</strong> was compiled after his death by a companion,
-                who assembled it from St. Thomas&rsquo;s earlier commentary on Peter Lombard&rsquo;s
-                <em>Sentences</em> so the work could be completed. It picks up where the Third Part stops
-                and carries the sacraments through to the last things.
-            </p>
-            <p>
-                Its final questions are two short <strong>appendices</strong> on Purgatory, which we
-                list here as ordinary questions so nothing is hidden from view.
-            </p>
+        <h3 class="guide-subhead">About the Supplement</h3>
+        <p>
+            St. Thomas died before finishing the Third Part, breaking off partway through the
+            sacraments. The <strong>Supplement</strong> was compiled after his death by a companion,
+            who assembled it from St. Thomas&rsquo;s earlier commentary on Peter Lombard&rsquo;s
+            <em>Sentences</em> so the work could be completed. It picks up where the Third Part stops
+            and carries the sacraments through to the last things.
+        </p>
+        <p>
+            Its final questions are two short <strong>appendices</strong> on Purgatory, which we
+            list here as ordinary questions so nothing is hidden from view.
+        </p>
 
-            <h3 class="guide-subhead">Who&rsquo;s who</h3>
-            <p>Following medieval custom, St. Thomas usually names his authorities by title rather than by name:</p>
-            <ul class="summa-guide__who">
-                <li><strong>The Apostle</strong> &mdash; St. Paul (the author of the Epistles).</li>
-                <li><strong>The Philosopher</strong> &mdash; Aristotle, the supreme authority in reasoning.</li>
-                <li><strong>The Master</strong> &mdash; Peter Lombard, whose <em>Sentences</em> was the standard textbook.</li>
-                <li><strong>The Commentator</strong> &mdash; Averroes, the great commentator on Aristotle.</li>
-                <li><strong>The Theologian</strong> &mdash; St. Gregory of Nazianzus.</li>
-                <li><strong>Dionysius</strong> &mdash; the author of the mystical works then attributed to St. Paul&rsquo;s convert (now called Pseudo-Dionysius).</li>
-            </ul>
+        <h3 class="guide-subhead">Who&rsquo;s who</h3>
+        <p>Following medieval custom, St. Thomas usually names his authorities by title rather than by name:</p>
+        <ul class="summa-guide__who">
+            <li><strong>The Apostle</strong> &mdash; St. Paul (the author of the Epistles).</li>
+            <li><strong>The Philosopher</strong> &mdash; Aristotle, the supreme authority in reasoning.</li>
+            <li><strong>The Master</strong> &mdash; Peter Lombard, whose <em>Sentences</em> was the standard textbook.</li>
+            <li><strong>The Commentator</strong> &mdash; Averroes, the great commentator on Aristotle.</li>
+            <li><strong>The Theologian</strong> &mdash; St. Gregory of Nazianzus.</li>
+            <li><strong>Dionysius</strong> &mdash; the author of the mystical works then attributed to St. Paul&rsquo;s convert (now called Pseudo-Dionysius).</li>
+        </ul>
 
-            <h3 class="guide-subhead">The books he cites</h3>
-            <p>St. Thomas leans on a small library of works so constantly that he refers to them by short titles. The most common are:</p>
-            <ul class="summa-guide__books">
-                <li>
-                    <strong>Scripture</strong> &mdash; quoted throughout, usually by book (Genesis, the Psalms, the Gospels, St. Paul&rsquo;s Epistles). The wording follows the Latin <em>Vulgate</em>, so a verse&rsquo;s numbering or phrasing may differ slightly from a modern Bible.
-                </li>
-                <li>
-                    <strong>The <em>Sentences</em></strong> &mdash; Peter Lombard&rsquo;s <em>Four Books of Sentences</em>, the standard theology textbook of the age. The Supplement itself is drawn from St. Thomas&rsquo;s own commentary on it.
-                </li>
-                <li>
-                    <strong>Aristotle</strong> &mdash; cited by treatise: the <em>Ethics</em> (<em>Nicomachean Ethics</em>), <em>Physics</em>, <em>Metaphysics</em>, <em>De Anima</em> (&ldquo;On the Soul&rdquo;), <em>De Caelo</em> (&ldquo;On the Heavens&rdquo;) and the <em>Posterior Analytics</em>.
-                </li>
-                <li>
-                    <strong>St. Augustine</strong> &mdash; especially <em>The City of God</em> (<em>De Civitate Dei</em>), <em>On the Trinity</em> (<em>De Trinitate</em>) and <em>On Christian Doctrine</em>. <em>QQ. 83</em> is his <em>Eighty-Three Different Questions</em>.
-                </li>
-                <li>
-                    <strong>The Fathers &amp; the Gloss</strong> &mdash; John Damascene&rsquo;s <em>On the Orthodox Faith</em>, Gregory the Great&rsquo;s <em>Morals</em> (<em>Moralia</em>), Boethius&rsquo;s <em>Consolation</em>, and the <em>Gloss</em> &mdash; the standard running commentary printed alongside the Bible.
-                </li>
-            </ul>
-            <p class="summa-guide__note">
-                Titles are often abbreviated in the citations (e.g. <em>Ethic.</em>, <em>De Civ. Dei</em>, <em>Sent.</em>), followed by a book and chapter number rather than a page.
-            </p>
+        <h3 class="guide-subhead">The books he cites</h3>
+        <p>St. Thomas leans on a small library of works so constantly that he refers to them by short titles. The most common are:</p>
+        <ul class="summa-guide__books">
+            <li>
+                <strong>Scripture</strong> &mdash; quoted throughout, usually by book (Genesis, the Psalms, the Gospels, St. Paul&rsquo;s Epistles). The wording follows the Latin <em>Vulgate</em>, so a verse&rsquo;s numbering or phrasing may differ slightly from a modern Bible.
+            </li>
+            <li>
+                <strong>The <em>Sentences</em></strong> &mdash; Peter Lombard&rsquo;s <em>Four Books of Sentences</em>, the standard theology textbook of the age. The Supplement itself is drawn from St. Thomas&rsquo;s own commentary on it.
+            </li>
+            <li>
+                <strong>Aristotle</strong> &mdash; cited by treatise: the <em>Ethics</em> (<em>Nicomachean Ethics</em>), <em>Physics</em>, <em>Metaphysics</em>, <em>De Anima</em> (&ldquo;On the Soul&rdquo;), <em>De Caelo</em> (&ldquo;On the Heavens&rdquo;) and the <em>Posterior Analytics</em>.
+            </li>
+            <li>
+                <strong>St. Augustine</strong> &mdash; especially <em>The City of God</em> (<em>De Civitate Dei</em>), <em>On the Trinity</em> (<em>De Trinitate</em>) and <em>On Christian Doctrine</em>. <em>QQ. 83</em> is his <em>Eighty-Three Different Questions</em>.
+            </li>
+            <li>
+                <strong>The Fathers &amp; the Gloss</strong> &mdash; John Damascene&rsquo;s <em>On the Orthodox Faith</em>, Gregory the Great&rsquo;s <em>Morals</em> (<em>Moralia</em>), Boethius&rsquo;s <em>Consolation</em>, and the <em>Gloss</em> &mdash; the standard running commentary printed alongside the Bible.
+            </li>
+        </ul>
+        <p class="summa-guide__note">
+            Titles are often abbreviated in the citations (e.g. <em>Ethic.</em>, <em>De Civ. Dei</em>, <em>Sent.</em>), followed by a book and chapter number rather than a page.
+        </p>
 
-            <h3 class="guide-subhead">A few tips</h3>
-            <ul class="summa-guide__tips">
-                <li>Articles start collapsed &mdash; open the ones you want and leave several open to compare.</li>
-                <li>Blue references like <span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> are links; follow them, then use the breadcrumb to return.</li>
-                <li>Search matches both questions and articles, and jumps straight to the article.</li>
-            </ul>
+        <h3 class="guide-subhead">A few tips</h3>
+        <ul class="summa-guide__tips">
+            <li>Articles start collapsed &mdash; open the ones you want and leave several open to compare.</li>
+            <li>Blue references like <span class="summa-guide__ref">Q.&nbsp;2, A.&nbsp;3</span> are links; follow them, then use the breadcrumb to return.</li>
+            <li>Search matches both questions and articles, and jumps straight to the article.</li>
+        </ul>
     </ChildContent>
 
     <Footer>

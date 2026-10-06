@@ -10,10 +10,7 @@ else
     {
         <div class="topic-filter__header">
             <h2 class="filter-rail__title">@Title</h2>
-            <button type="button"
-                    class="topic-filter__clear"
-                    @onclick="ClearTopics"
-                    hidden="@(Selected.Count == 0)">
+            <button type="button" class="topic-filter__clear" @onclick="ClearTopics" hidden="@(Selected.Count == 0)">
                 Clear filters
             </button>
         </div>
@@ -22,9 +19,7 @@ else
         @foreach (var topic in Topics)
         {
             <label class="topic-filter__option">
-                <input type="checkbox"
-                       checked="@IsSelected(topic)"
-                       @onchange="() => ToggleTopic(topic)" />
+                <input type="checkbox" checked="@IsSelected(topic)" @onchange="() => ToggleTopic(topic)" />
                 <span>@Label(topic)</span>
             </label>
         }
