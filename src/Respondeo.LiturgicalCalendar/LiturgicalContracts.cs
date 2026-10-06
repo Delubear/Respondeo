@@ -69,22 +69,21 @@ public enum CelebrationRank
 public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, LiturgicalColor Color)
 {
     /// <summary>
-    /// Optional slug that links this celebration to a saint profile (<c>discover/saints/{Id}</c>) when the
-    /// day honors a saint in the catalog. Null for celebrations with no linked saint (e.g. feasts of the Lord).
+    /// Optional slug that links this celebration to a saint profile (<c>discover/saints/{Id}</c>) when the day honors a saint in the catalog.
+    /// Null for celebrations with no linked saint (e.g. feasts of the Lord).
     /// </summary>
     public string? Id { get; init; }
 
     /// <summary>
-    /// Optional one-line description of the celebration, authored in the calendar dataset for days that
-    /// have no linked saint profile to borrow a summary from (e.g. feasts of the Lord, Marian days, mysteries).
+    /// Optional one-line description of the celebration,
+    /// authored in the calendar dataset for days that have no linked saint profile to borrow a summary from (e.g. feasts of the Lord, Marian days, mysteries).
     /// Null when the day relies on a linked saint profile for its summary, or carries no summary at all.
     /// </summary>
     public string? Summary { get; init; }
 }
 
 /// <summary>
-/// What the Church keeps on a particular day: the season it falls in, the color of the day, the
-/// principal named celebration if there is one, and any optional memorials available that day.
+/// What the Church keeps on a particular day: the season it falls in, the color of the day, the principal named celebration if there is one, and any optional memorials available that day.
 /// </summary>
 /// <param name="Date">The date this describes.</param>
 /// <param name="Season">The liturgical season the date falls in.</param>
@@ -93,23 +92,21 @@ public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, Li
 public sealed record LiturgicalDay(DateOnly Date, LiturgicalSeason Season, LiturgicalColor Color, LiturgicalCelebration? Celebration)
 {
     /// <summary>
-    /// The ferial description of the day when there is no principal <see cref="Celebration"/>, e.g.
-    /// "Monday of the Third Week of Lent" or "Tuesday of the Twenty-first Week in Ordinary Time".
+    /// The ferial description of the day when there is no principal <see cref="Celebration"/>, e.g. "Monday of the Third Week of Lent" or "Tuesday of the Twenty-first Week in Ordinary Time".
     /// Null whenever <see cref="Celebration"/> is set.
     /// </summary>
     public string? FerialName { get; init; }
 
     /// <summary>
     /// Optional memorials available on this day that are not the principal celebration (empty on most days).
-    /// These are offered to the celebrant but may be omitted; they are suppressed entirely on Sundays,
-    /// solemnities, feasts, and privileged weekdays.
+    /// These are offered to the celebrant but may be omitted; they are suppressed entirely on Sundays, solemnities, feasts, and privileged weekdays.
     /// </summary>
     public IReadOnlyList<LiturgicalCelebration> OptionalMemorials { get; init; } = [];
 }
 
 /// <summary>
-/// A pure liturgical-calendar engine for the Ordinary Form (modern Roman general calendar). It is
-/// deterministic: the caller supplies the date, so there is no hidden clock.
+/// A pure liturgical-calendar engine for the Ordinary Form (modern Roman general calendar).
+/// It is deterministic: the caller supplies the date, so there is no hidden clock.
 /// </summary>
 public interface ILiturgicalCalendar
 {

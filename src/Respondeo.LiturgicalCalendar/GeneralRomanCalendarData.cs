@@ -1,8 +1,7 @@
 namespace Respondeo.LiturgicalCalendar;
 
 /// <summary>
-/// Loads the bundled General Roman Calendar (fixed civil-date celebrations) from the embedded
-/// <c>GeneralRomanCalendar.txt</c> resource exactly once and exposes it as a month/day lookup.
+/// Loads the bundled General Roman Calendar (fixed civil-date celebrations) from the embedded <c>GeneralRomanCalendar.txt</c> resource exactly once and exposes it as a month/day lookup.
 /// The parse is lazy and cached so the pure <see cref="RomanCalendar"/> engine stays synchronous.
 /// </summary>
 internal static class GeneralRomanCalendarData
@@ -12,7 +11,8 @@ internal static class GeneralRomanCalendarData
     private static readonly Lazy<IReadOnlyDictionary<(int Month, int Day), IReadOnlyList<LiturgicalCelebration>>> Entries = new(Parse);
 
     /// <summary>Returns the fixed-date celebrations for the given month and day, or an empty list when none.</summary>
-    public static IReadOnlyList<LiturgicalCelebration> ForMonthDay(int month, int day) => Entries.Value.TryGetValue((month, day), out var celebrations) ? celebrations : [];
+    public static IReadOnlyList<LiturgicalCelebration> ForMonthDay(int month, int day) =>
+        Entries.Value.TryGetValue((month, day), out var celebrations) ? celebrations : [];
 
     private static IReadOnlyDictionary<(int, int), IReadOnlyList<LiturgicalCelebration>> Parse()
     {
