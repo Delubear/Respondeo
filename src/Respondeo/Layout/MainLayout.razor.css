@@ -46,7 +46,7 @@
    right. Rather than a hard-edged medallion, the portrait dissolves into the masthead via a
    radial mask so it reads as a faint fresco bleeding through the background. It extends past
    the masthead so its base sits along the bottom edge of the pillar nav (both share the same
-   background, so the overlap is seamless). Hidden on narrow screens where there's no room. */
+   background, so the overlap is seamless). It shrinks and fades on narrow screens but stays visible. */
 .masthead__portrait {
     position: absolute;
     bottom: -2.6rem;
@@ -158,8 +158,15 @@
         font-size: 1.5rem;
     }
 
+    /* Keep Aquinas on phones, but as a small, faint fresco tucked into the bottom-left corner.
+       It stays absolutely positioned (out of flow) and the radial mask plus reduced opacity let it
+       read as background texture behind the centered brand rather than crowding the text. */
     .masthead__portrait {
-        display: none;
+        width: 4.5rem;
+        height: 4.5rem;
+        bottom: -1.25rem;
+        left: 0.5rem;
+        opacity: 0.5;
     }
 
     .content__inner {
