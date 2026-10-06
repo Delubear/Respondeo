@@ -158,15 +158,19 @@
         font-size: 1.5rem;
     }
 
-    /* Keep Aquinas on phones, but as a small, faint fresco tucked into the bottom-left corner.
-       It stays absolutely positioned (out of flow) and the radial mask plus reduced opacity let it
-       read as background texture behind the centered brand rather than crowding the text. */
+    /* On phones, Aquinas becomes a centered watermark behind the wordmark, like the illuminated
+       initial of a manuscript. Centering it removes the left/right crowding, and a negative z-index
+       keeps it behind the brand and tagline (the masthead's own background still sits beneath it, so
+       only the text reads over the portrait). */
     .masthead__portrait {
-        width: 4.5rem;
-        height: 4.5rem;
-        bottom: -1.25rem;
-        left: 0.5rem;
-        opacity: 0.85;
+        width: 12rem;
+        height: 12rem;
+        top: 50%;
+        bottom: auto;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.16;
+        z-index: -1;
     }
 
     .content__inner {
