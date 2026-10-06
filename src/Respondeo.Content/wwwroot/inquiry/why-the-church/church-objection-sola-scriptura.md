@@ -21,9 +21,9 @@ The instinct behind *sola scriptura* is a good one — a jealous reverence for G
 But the principle runs into three problems it cannot solve on its own terms.
 
 First, it is **self-refuting**: the Bible nowhere teaches that the Bible is the *sole* rule of faith.
-The verses usually cited (such as Paul telling Timothy that Scripture is "profitable" and makes one "complete") affirm 
-that Scripture is inspired and useful — which no Catholic denies — but "profitable" is not "sufficient by itself," 
-and the same Paul tells the Thessalonians to hold fast to what he taught "by word of mouth *or* by letter."
+The verses usually cited (such as Paul telling Timothy that Scripture is *"profitable"* and makes one *"complete"*) affirm 
+that Scripture is inspired and useful — which no Catholic denies — but *"profitable"* is not *"sufficient by itself,"* 
+and the same Paul tells the Thessalonians to hold fast to what he taught *"by word of mouth **or** by letter."*
 A rule of faith that its own pages do not teach cannot be the rule the apostles left.
 
 Second, it is **historically impossible for the early Church**.

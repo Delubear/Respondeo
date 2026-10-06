@@ -7,13 +7,13 @@ tags:
 ---
 
 Historical continuity shows *where* to trace the Church; the marks show *what* to look for.
-When the creed says "I believe in one, holy, catholic, and apostolic Church," it is naming four features Christ gave His Church so that it could be recognized in every age.
+When the creed says *"I believe in one, holy, catholic, and apostolic Church,"* it is naming four features Christ gave His Church so that it could be recognized in every age.
 They are not four boasts but four tests — and a genuine claimant must bear *all four together*, not merely one or two.
 
 **The four marks, and where they are found:**
 
 1. **One.**
-   Christ founded a single Church and prayed "that they may be one."
+   Christ founded a single Church and prayed *"that they may be one."* 
    Its unity is not merely a shared sentiment but a visible communion of faith, worship, and governance.
    A Church that is truly one holds the same essential doctrine across the world, 
    rather than fracturing into thousands of communities that contradict one another on essentials.
@@ -24,7 +24,7 @@ They are not four boasts but four tests — and a genuine claimant must bear *al
    The mark shows in the unbroken stream of saints it has formed across every century and culture.
 
 3. **Catholic.**
-   "Catholic" means *universal* — for all peoples, in all times, teaching the whole of what Christ revealed.
+   *"Catholic"* means *universal* — for all peoples, in all times, teaching the whole of what Christ revealed.
    The true Church is not bound to one nation or era but spans the globe and the ages, holding the fullness of the faith rather than a selection of it.
 
 4. **Apostolic.**

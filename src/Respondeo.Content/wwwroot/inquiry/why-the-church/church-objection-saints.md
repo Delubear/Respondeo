@@ -11,7 +11,7 @@ tags:
 
 Catholic devotion to the saints looks like the very thing Scripture forbids. 
 Catholics bow before statues and pray to dead human beings, seeming to give creatures honors that belong to God alone. 
-There is "one mediator between God and men, the man Christ Jesus" — so why pray to anyone else? 
+There is *"one mediator between God and men, the man Christ Jesus"* — so why pray to anyone else? 
 At best this is an unbiblical distraction; at worst it is idolatry dressed in piety.
 
 **The response:**
@@ -25,7 +25,7 @@ A statue or icon is not worshiped any more than a photograph of a loved one is;
 it is an aid to memory and affection, no different in kind from the images God Himself commanded for the Temple and the Ark.
 
 Praying *to* the saints is likewise not what it sounds like.
-To "pray to" a saint, in the old sense of the word, is simply to *ask* — to request their prayers, as you might ask a friend to pray for you.
+To *"pray to"* a saint, in the old sense of the word, is simply to *ask* — to request their prayers, as you might ask a friend to pray for you.
 
 1. **The one mediator is not diminished.**
    Christ is the sole mediator of *redemption* — no saint adds anything to His saving work.
@@ -33,7 +33,7 @@ To "pray to" a saint, in the old sense of the word, is simply to *ask* — to re
    Asking a saint is the same act, directed to a Christian who happens to be more alive than we are, not less.
 
 2. **The saints are alive in Christ.**
-   "God is not the God of the dead, but of the living."
+   *"God is not the God of the dead, but of the living."*
    Those in glory are not gone; they are more fully alive, and Scripture pictures them aware of and concerned with what 
    happens on earth — the saints in heaven offering the prayers of God's people before the throne.
    To ask their intercession is to take the communion of saints seriously as a real communion, unbroken by death.
