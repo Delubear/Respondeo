@@ -13,7 +13,7 @@ Why assume a real man stands behind the legend rather than a myth that later gen
 
 **The response:**
 
-The "Jesus never existed" thesis is held by almost no working historian, religious or secular — and not out of piety, 
+The *"Jesus never existed"* thesis is held by almost no working historian, religious or secular — and not out of piety, 
 but because the evidence for his existence is stronger than for most ordinary figures of antiquity.
 
 First, the sources are early and plural.
@@ -24,13 +24,13 @@ Paul even reports meeting Jesus' brother James and the apostle Peter in person (
 which is not the sort of thing one writes about a figure one knows to be fictional.
 
 Second, non-Christian writers confirm the outline.
-The Roman historian **Tacitus** records that "Christus" was executed under Pontius Pilate, 
+The Roman historian **Tacitus** records that *"Christus"* was executed under Pontius Pilate, 
 and the Jewish historian **Josephus** refers to Jesus and to the execution of his brother James.
 Hostile or indifferent sources had no motive to invent a founder for a movement they disliked.
 
 Third, the figure is stubbornly particular, not mythic.
 Mythical saviors float free of time and place; Jesus is nailed to a named governor, a named execution, 
-a named home town treated as an embarrassment ("can anything good come out of Nazareth?").
+a named home town treated as an embarrassment (*"can anything good come out of Nazareth?"*).
 Inventors locate their heroes in glorious origins, not in a backwater, 
 and they do not script the founder's death by the most shameful means the ancient world knew.
 

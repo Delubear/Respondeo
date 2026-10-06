@@ -14,7 +14,7 @@ So the question is not merely historical curiosity; it is about where His author
 
 Notice how the Resurrection narratives end.
 The risen Christ does not simply appear, reassure His friends, and depart.
-He gathers them, singles out leaders, and sends them out with His own authority: "whoever hears you hears me."
+He gathers them, singles out leaders, and sends them out with His own authority: *"whoever hears you hears me."* 
 Whatever else He meant to leave behind, He plainly meant to leave a *body* — people charged to carry His word, not merely remember it.
 
 That single observation is enough to close this stage.

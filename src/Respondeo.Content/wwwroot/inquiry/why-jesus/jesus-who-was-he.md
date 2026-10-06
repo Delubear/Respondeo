@@ -8,7 +8,7 @@ tags:
 ---
 
 Before asking whether Jesus rose from the dead or claimed to be God, it is worth being clear about *who* we are talking about and *what* exactly is being claimed.
-The question "Why Jesus?" is not vague admiration for a wise teacher.
+The question *"Why Jesus?"* is not vague admiration for a wise teacher.
 It is a claim about a particular man, in a particular time and place, and about something extraordinary said to be true of him.
 
 ## The man of history
@@ -54,7 +54,7 @@ Here is where Christianity says something no historian is forced to say, but whi
 
 > "It belongs to the essence of the highest good to communicate itself in the highest manner to the creature, 
 > and this is brought about chiefly by *His so joining created nature to Himself that one Person is made up of these three — the Word, a soul and flesh*."
-> — [*Summa Theologiae* III, Q. 1, A. 1](summa/tertia-q001#article-1)
+> &mdash; [*Summa Theologiae* III, Q. 1, A. 1](summa/tertia-q001#article-1)
 
 ## Why this has to be tested, not just admired
 
@@ -70,7 +70,7 @@ It does not ask you to assume the claim; it asks whether the historical record c
 - and whether the risen Christ founded a visible Church to carry it on.
 
 **Where this leads.** The whole case is historical, so it stands or falls on the sources.
-The first honest question is therefore not "did God become man?" but "*can we trust the documents that report all this?*" — which is where the path turns next.
+The first honest question is therefore not *"did God become man?"* but *"can we trust the documents that report all this?"* — which is where the path turns next.
 
 ::: youtube zKAAvgNKe60
 :::

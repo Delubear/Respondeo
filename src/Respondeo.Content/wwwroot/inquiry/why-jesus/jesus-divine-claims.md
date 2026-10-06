@@ -18,24 +18,24 @@ So everything turns on this: did Jesus claim an authority that belongs to God al
 **The case that Jesus claimed a divine authority:**
 
 1. **He forgave sins as one offended, not as a channel of pardon.**
-   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once — "Who can forgive sins but God alone?" (Mark 2:7).
+   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once — *"Who can forgive sins but God alone?"* (Mark 2:7).
    He does not correct the charge of blasphemy; He answers it with a healing.
 
 2. **He set His own word above the Law.**
-   "You have heard that it was said… but I say to you" (Matthew 5:21–22).
-   No prophet spoke like this; a prophet said "thus says the Lord."
+   *"You have heard that it was said… but I say to you"* (Matthew 5:21–22).
+   No prophet spoke like this; a prophet said *"thus says the Lord."* 
    Jesus places His own authority alongside — and above — the Torah given at Sinai, as though the Lawgiver were speaking in the first person.
 
 3. **He accepted worship and applied divine titles to Himself.**
-   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13–14), 
-   and answers "before Abraham was, I AM" (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
+   He receives worship without rebuke, calls Himself the *"Son of Man"* who comes on the clouds of heaven (Daniel 7:13–14), 
+   and answers *"before Abraham was, I AM"* (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
    The reaction of His opponents is the surest gauge of what they heard: not eccentricity, but blasphemy.
 
 4. **The claim is woven through the record, not stitched onto its edge.**
    These are not a handful of stray verses but a pattern running through every layer of the tradition — deeds, sayings, titles, and the charge at His trial.
    Remove the divine claim and the Gospels no longer make sense as stories.
 
-**The force of the dilemma.** This is why "Jesus was simply a great moral teacher" is the one option not open to us.
+**The force of the dilemma.** This is why *"Jesus was simply a great moral teacher"* is the one option not open to us.
 A man who says the things Jesus said is either telling the truth, or He is not.
 If He falsely claimed to be God, He was either lying or deluded — neither of which is compatible with the moral grandeur even skeptics grant Him.
 The honest choices narrow to two: either the claim is a fraud or madness, or it is true.
@@ -57,7 +57,6 @@ the Hebrew Scriptures' messianic expectation converges on Him — before turning
 
 ::: youtube xphsJLRF9v8
 :::
-
 
 ::: youtube -dwJ22MwnaE
 :::

@@ -11,7 +11,7 @@ tags:
 
 If the last step lands — if Jesus really claimed the authority and name of God — then an alarm should sound, and it is the right alarm to sound. 
 The whole path to this point insisted that God is **one**. [Why one God, not many?](node/which-god-monotheism) argued that the ultimate source is single, 
-undivided, and unrepeatable; and the God of Israel Himself declares, "Hear, O Israel: the Lord our God is one Lord." 
+undivided, and unrepeatable; and the God of Israel Himself declares, *"Hear, O Israel: the Lord our God is one Lord."* 
 So a reader who has followed the argument honestly should stop here and object:
 
 **The objection, at its strongest:**
@@ -26,8 +26,8 @@ So it has to be met head-on.
 
 ## The distinction that dissolves the objection
 
-The objection assumes that "the Father is God, the Son is God, the Spirit is God" means *three Gods*. 
-It would — **if** "God" named the same thing in each case that "person" does. The entire answer turns on seeing that it does not.
+The objection assumes that *"the Father is God, the Son is God, the Spirit is God"* means *three Gods*. 
+It would — **if** *"God"* named the same thing in each case that *"person"* does. The entire answer turns on seeing that it does not.
 
 Christianity confesses one God in three **persons**: one divine *what*, three *whos*.
 
@@ -59,11 +59,11 @@ Lay three things side by side and the counts come apart:
 | A human | one human nature | **1** — the ordinary case we know so well |
 | God | one divine nature | **3** — Father, Son, and Holy Spirit |
 
-The tree already proves the decisive point: a fully real nature can carry *zero* persons, so "nature" and "person" are plainly not the same count. 
-The human line is the case so familiar that we mistake it for a law — "one nature must mean exactly one person." 
+The tree already proves the decisive point: a fully real nature can carry *zero* persons, so *"nature"* and *"person"* are plainly not the same count. 
+The human line is the case so familiar that we mistake it for a law — *"one nature must mean exactly one person."* 
 But nothing forces that; it is simply the only ratio our everyday experience happens to show us.
 
-God is where the two counts diverge the most: one *what*, three *whos*. That is not "one God and three Gods" — the *what* stays firmly at one, 
+God is where the two counts diverge the most: one *what*, three *whos*. That is not *"one God and three Gods"* — the *what* stays firmly at one, 
 exactly as the monotheism argument required — but a single nature possessed wholly by three persons. 
 Unheard-of among creatures, yes; self-contradictory, no, because the count of *natures* and the count of *persons* were never obliged to match.
 
@@ -87,7 +87,7 @@ it hammered out the language (*nature*, *person*) over centuries precisely to ho
 ## A necessary honesty: mystery, not contradiction
 
 One caution keeps the claim honest. The Trinity is a **mystery** — a truth that exceeds what reason can derive or fully comprehend — but 
-a mystery is not the same as a contradiction. A contradiction would be "one God and three Gods," or "one person and three persons." 
+a mystery is not the same as a contradiction. A contradiction would be *"one God and three Gods,"* or *"one person and three persons."* 
 The Church asserts neither. One *nature*, three *persons* violates no law of logic; it simply describes a reality richer than anything in our experience, 
 which is exactly what we should expect the inner life of the infinite God to be.
 

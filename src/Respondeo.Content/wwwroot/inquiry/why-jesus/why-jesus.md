@@ -7,9 +7,9 @@ tags:
   - divine revelation
 ---
 
-Reason can reach *that* God exists and something of *what* He is.
-But reason alone cannot tell us whether this God has freely chosen to speak to us.
-That is a question of **history**, not only philosophy — of documents, witnesses, and events that either happened or did not.
+Reason brought us to a God who is one and personal, and the path narrowed to a covenant God who has already spoken &mdash; and promised *more*. 
+The question is no longer *whether* God speaks, but whether He has now spoken not through a prophet but in person, by entering history Himself.
+That is no longer a question of philosophy but of **history** &mdash; of documents, witnesses, and events that either happened or did not.
 
 The Christian claim is that God did not stay at a distance but entered history in Jesus of Nazareth — whose life, death, 
 and Resurrection are attested by witnesses who went to their deaths rather than take back what they claimed to have seen.

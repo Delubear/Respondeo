@@ -37,7 +37,7 @@ They never did.
 
 **The cumulative point.** Each theory can be stretched to cover a single fact.
 None covers the death, the empty tomb, the group appearances, the converted skeptics, *and* the willingness to die — all together.
-"Extraordinary claims require extraordinary evidence" is a sound principle, and it cuts both ways: the *ordinary* explanations 
+*"Extraordinary claims require extraordinary evidence"* is a sound principle, and it cuts both ways: the *ordinary* explanations 
 turn out to require extraordinary strain to hold the facts together.
 The Resurrection is not believed for lack of alternatives, but because it explains what the alternatives cannot.
 

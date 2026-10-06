@@ -6,7 +6,7 @@ summary: Did Jesus really claim to be God, or did the Church invent the claim de
 
 **The objection, at its strongest:**
 
-The "Liar, Lunatic, or Lord" trilemma quietly omits a fourth option — *Legend*. 
+The *"Liar, Lunatic, or Lord"* trilemma quietly omits a fourth option — *Legend*. 
 Perhaps the historical Jesus was a Jewish teacher who never claimed divinity, and his followers exalted him only gradually, 
 so that the high claims in the Gospels reflect later belief rather than his own words.
 

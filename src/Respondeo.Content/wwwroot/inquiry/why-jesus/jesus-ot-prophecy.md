@@ -17,8 +17,8 @@ The question here is whether that expectation lands on Jesus of Nazareth.
 **The case that the messianic expectation converges on Jesus:**
 
 1. **The portrait is composed from many hands over many centuries.**
-   A suffering servant "pierced for our transgressions" (Isaiah 53), a righteous one whose hands and feet are pierced and whose garments are gambled for (Psalm 22), 
-   a ruler born in Bethlehem (Micah), a "son of man" given everlasting dominion (Daniel).
+   A suffering servant *"pierced for our transgressions"* (Isaiah 53), a righteous one whose hands and feet are pierced and whose garments are gambled for (Psalm 22), 
+   a ruler born in Bethlehem (Micah), a *"son of man"* given everlasting dominion (Daniel).
    No single author could have coordinated these; their agreement is not by design.
 
 2. **The most striking texts are the hardest to have retrofitted.**
@@ -29,7 +29,7 @@ The question here is whether that expectation lands on Jesus of Nazareth.
    The Hebrew Scriptures were fixed, translated into Greek, and widely copied well before Jesus was born.
    Whatever one makes of the fit, no one can claim the prophecies were written after the fact.
 
-**The honest limits.** Some "fulfillments" are better read as typology or resonance than as prediction, and quotations are sometimes applied loosely by the Gospel writers.
+**The honest limits.** Some *"fulfillments"* are better read as typology or resonance than as prediction, and quotations are sometimes applied loosely by the Gospel writers.
 None of this is decisive on its own, and it should not be pressed as though it were.
 Its real force is *cumulative*: many streams, flowing from different centuries and authors, gathering unexpectedly into one life.
 

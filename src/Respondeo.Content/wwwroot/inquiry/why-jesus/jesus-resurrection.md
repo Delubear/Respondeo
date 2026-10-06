@@ -20,7 +20,7 @@ And crucially, it is offered as a *public, historical* event — the kind of thi
 
 1. **Jesus was crucified and died.**
    Attested by Christian and non-Christian sources alike, and the last thing a movement would invent about its founder.
-   Roman executioners were thorough; the "swoon" idea asks us to believe they failed at their one job.
+   Roman executioners were thorough; the *"swoon"* idea asks us to believe they failed at their one job.
 
 2. **The tomb was found empty.**
    The claim arose in Jerusalem, where the tomb could be checked, and the earliest counter-story — that the disciples 
