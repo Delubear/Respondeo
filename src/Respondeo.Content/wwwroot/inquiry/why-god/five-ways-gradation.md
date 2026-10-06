@@ -11,7 +11,8 @@ We call one act kinder than another, one proof more rigorous, one landscape more
 
 Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
 
-> But *more* and *less* are predicated of different things according as they resemble in their different ways something which is the maximum.
+> *More* and *less* are predicated of different things according as they resemble in their different ways something which is the maximum. 
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **The argument, step by step:**
 
@@ -43,7 +44,8 @@ Now shift from heat to the perfections Aquinas actually means:
 - You call one thing **more fully realized**, more richly *being*, than a fading or broken one. Against what? Existence held **completely**, without lack.
 
 Here is the pivot. In each case the things you rank **have** the perfection &mdash; goodness, truth, being &mdash; but they only *have* it; they are not the same as it. 
-Their goodness is partial, mixed, borrowed, and can be more or less. **What is had only in degrees, and only by sharing in it, cannot be its own source** &mdash; any more than warm objects make heat out of nothing. 
+Their goodness is partial, mixed, borrowed, and can be more or less. 
+**What is had only in degrees, and only by sharing in it, cannot be its own source** &mdash; any more than warm objects make heat out of nothing. 
 A perfection spread unevenly across many things that merely *have* it points to one that simply *is* it &mdash; and gives it to the rest.
 
 That fullness of being and goodness itself, from which every lesser and partial good derives, is what we call God.

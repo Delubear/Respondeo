@@ -25,8 +25,10 @@ St. Thomas takes it seriously enough to make it the *first* objection against Go
 
 - **The argument claims too much.** For it to work, it has to assume that an all-good God *could have no reason* to allow any evil. 
   But that is exactly what can't be shown. 
-  If God can bring a greater good out of an evil he allows &mdash; goods we may not be able to see from inside the story &mdash; then evil's existence and God's goodness don't actually contradict each other.
-- **Evil is not a "thing."** In the classical view evil is not a substance God created, but a *privation* &mdash; a lack of some good that ought to be present, as blindness is the absence of sight. 
+  If God can bring a greater good out of an evil he allows &mdash; goods we may not be able to see from inside the story &mdash; 
+  then evil's existence and God's goodness don't actually contradict each other.
+- **Evil is not a "thing."** In the classical view evil is not a substance God created, but a *privation* &mdash; 
+  a lack of some good that ought to be present, as blindness is the absence of sight. 
   God does not author evil; he permits the possibility of it as the shadow side of real goods like freedom and a lawful, causal world.
 - **Free will has a price.** Genuine love and virtue are impossible without the freedom to refuse them. 
   A world of puppets who could not do wrong would also be a world with no courage, forgiveness, or love freely given.

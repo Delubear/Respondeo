@@ -8,7 +8,8 @@ Before walking the Five Ways, it helps to grasp the single distinction they all 
 Aristotle introduced it to solve an ancient puzzle about change; Aquinas made it the backbone of his demonstrations.
 
 **The puzzle of change.**
-The early Greeks asked how anything can change at all. If a thing becomes what it *is not* yet, where does the new state come from — out of nothing? One thinker, Parmenides, concluded that change must be an illusion. Aristotle solved the puzzle by finding a middle ground between plain "being" and "non-being."
+The early Greeks asked how anything can change at all. If a thing becomes what it *is not* yet, where does the new state come from — out of nothing? 
+One thinker, Parmenides, concluded that change must be an illusion. Aristotle solved the puzzle by finding a middle ground between plain *"being"* and *"non-being."*
 
 **The distinction, in plain terms:**
 
@@ -23,7 +24,7 @@ To change is for a real potential to be made actual.
 And here is the key principle Aquinas draws out:
 
 > "Whatever is moved is moved by another … nothing can be reduced from potentiality to actuality, except by something in a state of actuality."
-> — [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The cold coffee does not warm itself — the hot stove, already actually hot, turns its potential warmth into real warmth.
 A potential cannot make itself actual, because then it would already have to possess the very thing it still lacks.

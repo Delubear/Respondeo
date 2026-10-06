@@ -30,7 +30,8 @@ summary: If everything needs a cause, doesn't God need one too?
   > plainly false. Therefore it is necessary to admit a first efficient cause, to which
   > everyone gives the name of God." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
-- **"Why not the universe?" is a fair question with an answer.** The universe is the very thing whose contingency we observe &mdash; it changes, it is composite, it could have been otherwise. 
+- **"Why not the universe?" is a fair question with an answer.** The universe is the very thing whose contingency we observe &mdash; 
+  it changes, it is composite, it could have been otherwise. 
   Those are exactly the marks of something that *does* need explaining, not the marks of a necessary ground.
 
 *This is exactly the reasoning of [the Second Way &mdash; Causation](node/aquinas-five-ways?section=five-ways-causation).*

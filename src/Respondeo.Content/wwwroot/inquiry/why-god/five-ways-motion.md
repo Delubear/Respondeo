@@ -4,7 +4,7 @@ title: "The First Way — Motion"
 summary: From the fact of change to an unmoved mover.
 ---
 
-> "It is certain, and evident to our senses, that in the world some things are in motion." — [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+> "It is certain, and evident to our senses, that in the world some things are in motion." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 Of all five ways, this is the one Aquinas calls *"the first and more manifest"* — the most obvious place to begin, 
 because change is the plainest fact about the world around us.
@@ -37,7 +37,7 @@ Change happening here and now needs a source of actuality that is not itself wai
 a mover that is **pure act**, with no unrealized potential to be moved by another.
 
 > "It is necessary to arrive at a first mover, put in motion by no other; and this everyone understands to be God." 
-&mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **"But what moves God, then?"**
 Nothing — and that is not special pleading.

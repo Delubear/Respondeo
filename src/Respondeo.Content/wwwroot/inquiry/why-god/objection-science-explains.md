@@ -31,7 +31,8 @@ This is essentially Aquinas's second objection &mdash; that natural and human ca
 - **The history cuts both ways.** Many founders of modern science pursued it *because* they expected a law-giver's ordered world. 
   The success of science is comfortable company for theism, not its refutation.
 
-Aquinas answers that nature and human reason are not the bottom of the explanation at all. Both of them *change* and can *fail*, so both are themselves caused &mdash; which means they point beyond themselves rather than settling the matter:
+Aquinas answers that nature and human reason are not the bottom of the explanation at all. Both of them *change* and can *fail*, 
+so both are themselves caused &mdash; which means they point beyond themselves rather than settling the matter:
 
 > "Since nature works for a determinate end under the direction of a higher agent, whatever
 > is done by nature must needs be traced back to God, as to its first cause. So also
@@ -43,10 +44,8 @@ Aquinas answers that nature and human reason are not the bottom of the explanati
 ::: youtube VPZfmpEkal4
 :::
 
-
 ::: youtube JAkj5P6IHUQ
 :::
-
 
 ::: youtube tNJbhQVVz8I
 :::

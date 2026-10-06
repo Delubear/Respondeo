@@ -15,7 +15,8 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
 
 - **The teapot is a bad analogy.** A teapot is a contingent physical object that *would* leave detectable traces &mdash; its absence of evidence really is evidence of absence. 
   God is not proposed as an object within the universe, but as the necessary ground of the universe. The two claims are in entirely different categories, so the intuition doesn't transfer.
-- **"Lack of belief" still owes an account.** If the question is "does an ultimate explanation of contingent reality exist?", then *both* answers are substantive positions about the way things are. 
+- **"Lack of belief" still owes an account.** If the question is "does an ultimate explanation of contingent reality exist?", 
+  then *both* answers are substantive positions about the way things are. 
   Saying "I simply lack belief" does not exempt one from explaining why contingent things exist at all.
 - **There is an argument, not a mere assertion.** The believer is not saying "prove me wrong." 
   Classical natural theology offers positive arguments &mdash; from contingency, causation, and order &mdash; that reason from features of the world to their necessary source. 

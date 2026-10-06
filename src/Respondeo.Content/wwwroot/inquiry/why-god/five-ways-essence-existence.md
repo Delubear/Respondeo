@@ -27,7 +27,7 @@ Its existence has to be given to it by something else, and kept going for as lon
 Here is the principle Aquinas draws from this:
 
 > "Everything, then, which is such that its act of existing is other than its nature must needs have its act of existing from something else."
-> — St. Thomas Aquinas, *De Ente et Essentia*, ch. 4
+> &mdash; St. Thomas Aquinas, *De Ente et Essentia*, ch. 4
 
 The dog does not account for its own being; its existence is derived, dependent, borrowed at every moment.
 

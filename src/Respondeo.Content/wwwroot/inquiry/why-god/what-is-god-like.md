@@ -13,11 +13,13 @@ A natural question follows: *are these five different things, or one?* And once 
 Aquinas argues that the terminus of each way is one and the same being, and that its nature can be unfolded by reasoning carefully from what the arguments already established. 
 We do not first assume "God" and then list His traits; we read the attributes off the conclusions themselves.
 
-> "When the existence of a thing has been ascertained, there remains the further question of the manner of its existence, in order that we may know its essence." &mdash; [*Summa Theologiae* I, Q. 3, prologue](summa/prima-q003)
+> "When the existence of a thing has been ascertained, there remains the further question of the manner of its existence, 
+> in order that we may know its essence." &mdash; [*Summa Theologiae* I, Q. 3, prologue](summa/prima-q003)
 
 **They all point to one being.**
 Each way ends in something that is first, uncaused, and not dependent on anything else. 
-But there cannot be two beings that are each utterly first and independent — to differ, one would have to lack something the other has, and a being that is Pure Act and Being Itself lacks nothing. 
+But there cannot be two beings that are each utterly first and independent — to differ, 
+one would have to lack something the other has, and a being that is Pure Act and Being Itself lacks nothing. 
 So the conclusions converge: there is one ultimate source.
 
 **Pure Act — no unrealized potential.**
@@ -32,12 +34,14 @@ The First Way ends in something that is actual through and through. From this si
 > "As God is supremely immutable, it supremely belongs to Him to be eternal." &mdash; [*Summa Theologiae* I, Q. 10, A. 2](summa/prima-q010#article-2)
 
 **Being Itself — existence without limit.**
-The Third Way ends in something whose very essence is to exist. Because its existence is not received into any limiting essence, it is unlimited — **infinite** and **perfect**, lacking no perfection of being.
+The Third Way ends in something whose very essence is to exist. Because its existence is not received into any limiting essence, 
+it is unlimited — **infinite** and **perfect**, lacking no perfection of being.
 
 - **Simple.** It has no parts to be composed — no body, no distinction between what it is and that it is. It does not *have* existence or goodness; it *is* them.
 - **One.** As argued above, there cannot be two unlimited beings, so this being is unique.
 
-> "There is neither composition of quantitative parts in God, since He is not a body; nor composition of matter and form; nor does His nature differ from His 'suppositum'; nor His essence from His existence... Therefore, it is clear that God is nowise composite, but is altogether simple." &mdash; [*Summa Theologiae* I, Q. 3, A. 7](summa/prima-q003#article-7)
+> "There is neither composition of quantitative parts in God, since He is not a body; 
+> nor composition of matter and form; nor does His nature differ from His 'suppositum'; nor His essence from His existence... Therefore, it is clear that God is nowise composite, but is altogether simple." &mdash; [*Summa Theologiae* I, Q. 3, A. 7](summa/prima-q003#article-7)
 
 > "Hence it is manifest that God is 'one' in the supreme degree." &mdash; [*Summa Theologiae* I, Q. 11, A. 4](summa/prima-q011#article-4)
 
@@ -57,6 +61,9 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 
 
 **The God of the philosophers — and beyond.**
-Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.
+Reason, then, carries us further than "some first cause." It arrives at a being that is one, simple, eternal, 
+immutable, infinite, perfect, good, all-knowing, and all-powerful — the God of classical theism.
 
-But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, yet it has not told us *which* God this is among the ones people actually worship — whether He is a distant abstraction or a personal God who knows and loves, and whether He has ever *spoken*, entered history, and drawn near. That is a further question, and the beginning of a different road.
+But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, 
+yet it has not told us *which* God this is among the ones people actually worship — whether He is a distant abstraction or a personal God who knows and loves, 
+and whether He has ever *spoken*, entered history, and drawn near. That is a further question, and the beginning of a different road.
