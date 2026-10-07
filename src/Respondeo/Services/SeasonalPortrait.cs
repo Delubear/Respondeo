@@ -24,13 +24,13 @@ internal sealed class SeasonalPortrait(ILiturgicalCalendar calendar, Func<DateOn
     internal const string AshWednesdayName = "Ash Wednesday";
 
     /// <summary>The ordinary, year-round portrait.</summary>
-    internal const string DefaultImagePath = "images/aquinas.jpg";
+    internal const string DefaultImagePath = "images/aquinas.webp";
 
     /// <summary>The festive portrait shown throughout Christmas Time.</summary>
-    internal const string ChristmasImagePath = "images/aquinas-christmas.jpg";
+    internal const string ChristmasImagePath = "images/aquinas-christmas.webp";
 
     /// <summary>The ashes portrait shown on Ash Wednesday.</summary>
-    internal const string AshWednesdayImagePath = "images/aquinas-ash-wednesday.jpg";
+    internal const string AshWednesdayImagePath = "images/aquinas-ash-wednesday.webp";
 
     public string CurrentImagePath => Resolve(calendar.ForDate(today()));
 
