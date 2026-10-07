@@ -1,7 +1,7 @@
 ---
 id: begin-returning-catholic
 title: "If You Are a Catholic Returning After Time Away"
-summary: The short way back for the baptized Catholic — Confession, Mass, and a parish.
+summary: The short way back for the baptized Catholic &mdash; Confession, Mass, and a parish.
 tags:
   - the catholic church
   - conversion
@@ -12,7 +12,7 @@ The way back is remarkably short.
 1. **Go to Confession.**
    This is the single door that reopens everything.
    You do not need to have it polished into a speech; the priest will help you.
-   Bring what you can honestly remember and name, however long it has been — this is exactly what the sacrament is for.
+   Bring what you can honestly remember and name, however long it has been &mdash; this is exactly what the sacrament is for.
    If it has been a long time, it may help to schedule a time with a priest to talk through your return and prepare for Confession.
 
 2. **Return to Mass.**

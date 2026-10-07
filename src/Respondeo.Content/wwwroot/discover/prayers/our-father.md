@@ -1,7 +1,7 @@
 ---
 id: our-father
 title: "Our Father"
-summary: The Lord's Prayer, given by Christ himself (Matthew 6:9–13).
+summary: The Lord's Prayer, given by Christ himself (Matthew 6:9&ndash;13).
 category: daily
 language: en
 translationKey: our-father

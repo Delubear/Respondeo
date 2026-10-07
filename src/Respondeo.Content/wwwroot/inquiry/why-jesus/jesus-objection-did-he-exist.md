@@ -13,14 +13,14 @@ Why assume a real man stands behind the legend rather than a myth that later gen
 
 **The response:**
 
-The "Jesus never existed" thesis is held by almost no working historian, religious or secular — and not out of piety, 
+The "Jesus never existed" thesis is held by almost no working historian, religious or secular &mdash; and not out of piety, 
 but because the evidence for his existence is stronger than for most ordinary figures of antiquity.
 
 First, the sources are early and plural.
-Within a generation of the crucifixion, multiple independent streams — the letters of Paul, 
-the separate Gospel traditions, and the oral creeds they quote — already treat Jesus as a real man who was born, 
+Within a generation of the crucifixion, multiple independent streams &mdash; the letters of Paul, 
+the separate Gospel traditions, and the oral creeds they quote &mdash; already treat Jesus as a real man who was born, 
 taught, gathered followers, and was crucified under Pilate.
-Paul even reports meeting Jesus' brother James and the apostle Peter in person (Galatians 1:18–19), 
+Paul even reports meeting Jesus' brother James and the apostle Peter in person (Galatians 1:18&ndash;19), 
 which is not the sort of thing one writes about a figure one knows to be fictional.
 
 Second, non-Christian writers confirm the outline.
@@ -34,5 +34,5 @@ a named home town treated as an embarrassment ("can anything good come out of Na
 Inventors locate their heroes in glorious origins, not in a backwater, 
 and they do not script the founder's death by the most shameful means the ancient world knew.
 
-The honest historical question was never *whether* Jesus existed, but *who* he was and *what* happened to him — which 
+The honest historical question was never *whether* Jesus existed, but *who* he was and *what* happened to him &mdash; which 
 is exactly where this path has been pressing all along.

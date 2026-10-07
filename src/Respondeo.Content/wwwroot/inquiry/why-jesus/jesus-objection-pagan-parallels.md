@@ -6,7 +6,7 @@ summary: Did Christianity copy its dying-and-rising God from Osiris, Mithras, an
 
 **The objection, at its strongest:**
 
-The story of a God who dies and rises again was already common in the ancient world — Osiris in Egypt, 
+The story of a God who dies and rises again was already common in the ancient world &mdash; Osiris in Egypt, 
 Dionysus and Adonis in Greece, Mithras in Rome. Christianity simply absorbed a familiar myth, 
 attached it to a Galilean preacher, and passed it off as history. 
 The Resurrection is one more version of a tale the pagans had been telling for centuries.
@@ -16,7 +16,7 @@ The Resurrection is one more version of a tale the pagans had been telling for c
 The parallels look impressive at a distance and shrink the moment they are examined.
 
 First, the alleged *resurrections* are mostly nothing of the kind.
-Osiris is not restored to earthly life but reassembled to reign as lord of the underworld — he stays dead, in the realm of the dead.
+Osiris is not restored to earthly life but reassembled to reign as lord of the underworld &mdash; he stays dead, in the realm of the dead.
 Others are seasonal fertility symbols, dying and returning with the crops year by year, 
 with no bodily rising of a real person at a particular time and place in history.
 And several of the closest-looking *rising* stories are attested in detail only in sources *later* than the New Testament, 

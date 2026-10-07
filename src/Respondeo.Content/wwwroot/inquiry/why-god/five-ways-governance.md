@@ -1,6 +1,6 @@
 ---
 id: five-ways-governance
-title: "The Fifth Way — Governance of the World"
+title: "The Fifth Way &mdash; Governance of the World"
 summary: From the purposeful order of nature to an intelligent designer.
 ---
 

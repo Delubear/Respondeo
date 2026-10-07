@@ -9,7 +9,7 @@ tags:
 
 If the Gospels are early, eyewitness-rooted sources, then the first thing they force on us is a decision about the man at their center.
 For they do not present Jesus as one more prophet relaying a message from God.
-They present Him as speaking and acting *in God's own place* — and that is a claim no mere teacher would dare to make.
+They present Him as speaking and acting *in God's own place* &mdash; and that is a claim no mere teacher would dare to make.
 
 The point matters because a merely human sage, however wise, could at most *point* to God.
 The whole path so far has been asking whether God has entered history to speak in person.
@@ -18,32 +18,32 @@ So everything turns on this: did Jesus claim an authority that belongs to God al
 **The case that Jesus claimed a divine authority:**
 
 1. **He forgave sins as one offended, not as a channel of pardon.**
-   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once — "Who can forgive sins but God alone?" (Mark 2:7).
+   A priest could announce God's forgiveness; Jesus forgives directly, and His hearers grasp the difference at once &mdash; "Who can forgive sins but God alone?" (Mark 2:7).
    He does not correct the charge of blasphemy; He answers it with a healing.
 
 2. **He set His own word above the Law.**
-   "You have heard that it was said… but I say to you" (Matthew 5:21–22).
+   "You have heard that it was said... but I say to you" (Matthew 5:21&ndash;22).
    No prophet spoke like this; a prophet said "thus says the Lord." 
-   Jesus places His own authority alongside — and above — the Torah given at Sinai, as though the Lawgiver were speaking in the first person.
+   Jesus places His own authority alongside &mdash; and above &mdash; the Torah given at Sinai, as though the Lawgiver were speaking in the first person.
 
 3. **He accepted worship and applied divine titles to Himself.**
-   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13–14), 
-   and answers "before Abraham was, I AM" (John 8:58) — the very name revealed to Moses (Exodus 3:14) — for which His hearers take up stones.
+   He receives worship without rebuke, calls Himself the "Son of Man" who comes on the clouds of heaven (Daniel 7:13&ndash;14), 
+   and answers "before Abraham was, I AM" (John 8:58) &mdash; the very name revealed to Moses (Exodus 3:14) &mdash; for which His hearers take up stones.
    The reaction of His opponents is the surest gauge of what they heard: not eccentricity, but blasphemy.
 
 4. **The claim is woven through the record, not stitched onto its edge.**
-   These are not a handful of stray verses but a pattern running through every layer of the tradition — deeds, sayings, titles, and the charge at His trial.
+   These are not a handful of stray verses but a pattern running through every layer of the tradition &mdash; deeds, sayings, titles, and the charge at His trial.
    Remove the divine claim and the Gospels no longer make sense as stories.
 
 **The force of the dilemma.** This is why "Jesus was simply a great moral teacher" is the one option not open to us.
 A man who says the things Jesus said is either telling the truth, or He is not.
-If He falsely claimed to be God, He was either lying or deluded — neither of which is compatible with the moral grandeur even skeptics grant Him.
+If He falsely claimed to be God, He was either lying or deluded &mdash; neither of which is compatible with the moral grandeur even skeptics grant Him.
 The honest choices narrow to two: either the claim is a fraud or madness, or it is true.
 
 ## See it today: the weight of who is speaking
 
 Imagine a stranger telling you your debts are cancelled.
-The words are meaningless — unless the speaker happens to be the one you owe.
+The words are meaningless &mdash; unless the speaker happens to be the one you owe.
 Then the very same sentence becomes either an outrage or the best news you have ever heard, depending entirely on *who* is saying it.
 
 That is the situation the Gospels stage.
@@ -51,9 +51,9 @@ Jesus keeps speaking words that are absurd, or blasphemous, on any lips but God'
 Which forces the question He clearly meant to force: who do you say that He is?
 
 **Where this leads.** A staggering claim raises two different questions.
-The first is whether it even *coheres* — if Jesus is God alongside the Father, has the one God reason reached quietly become two? That objection is sharp enough to pause on.
-The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh a line of evidence — whether 
-the Hebrew Scriptures' messianic expectation converges on Him — before turning to the decisive test of whether He rose from the dead.
+The first is whether it even *coheres* &mdash; if Jesus is God alongside the Father, has the one God reason reached quietly become two? That objection is sharp enough to pause on.
+The second is whether the claim is *vindicated*, for anyone can assert authority: here the path can weigh a line of evidence &mdash; whether 
+the Hebrew Scriptures' messianic expectation converges on Him &mdash; before turning to the decisive test of whether He rose from the dead.
 
 ::: youtube xphsJLRF9v8
 :::

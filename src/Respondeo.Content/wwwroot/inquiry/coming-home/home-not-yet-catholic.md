@@ -8,14 +8,14 @@ tags:
 ---
 
 Perhaps you already love Christ and have followed Him for years within another Christian 
-tradition — and you have come to see that the Catholic Church's claim about herself is true.
+tradition &mdash; and you have come to see that the Catholic Church's claim about herself is true.
 This is often the hardest crossing of all, because it does not feel like coming *to* Christ; you are already His.
 It feels like leaving something good.
 That instinct deserves to be honored, not dismissed.
 
 But notice what is actually being asked.
 You are not being told that the grace you have known was false, or that your love of Christ was counterfeit.
-The Church teaches the opposite: wherever people are baptized and believe in Christ, real grace is at work, and real communion — if imperfect — already exists.
+The Church teaches the opposite: wherever people are baptized and believe in Christ, real grace is at work, and real communion &mdash; if imperfect &mdash; already exists.
 Entering the Catholic Church is not renouncing that; it is *completing* it.
 
 **What full communion adds:**
@@ -25,21 +25,21 @@ Entering the Catholic Church is not renouncing that; it is *completing* it.
    This is not a symbol added to what you have; it is the substance the whole structure exists to give.
 
 2. **The sacraments in their fullness.**
-   Confession, Confirmation, Anointing — the whole sacramental economy Christ entrusted to His Church — are given here without gaps.
+   Confession, Confirmation, Anointing &mdash; the whole sacramental economy Christ entrusted to His Church &mdash; are given here without gaps.
    What you have known in part, you receive in full.
 
 3. **Visible unity with the whole Church across time.**
-   To enter is to be joined not to a denomination but to the one Church of the apostles, the martyrs, and the saints — the communion that has never been broken.
+   To enter is to be joined not to a denomination but to the one Church of the apostles, the martyrs, and the saints &mdash; the communion that has never been broken.
 
 **A note if you are Eastern Orthodox.**
 Your situation is distinct, and the Catholic Church treats it so.
-Because Orthodoxy has valid sacraments and true apostolic succession, entering full communion is not starting over — you 
+Because Orthodoxy has valid sacraments and true apostolic succession, entering full communion is not starting over &mdash; you 
 are received by a profession of faith, not re-baptized, and you may even keep your own Eastern rite by joining an Eastern Catholic Church in communion with Rome.
 The practical path is spelled out separately under *How to begin*.
 
 ## See it today: the family you were already near
 
-Imagine someone raised near a large family — welcomed at their table, loved by them, sharing much of their life — who 
+Imagine someone raised near a large family &mdash; welcomed at their table, loved by them, sharing much of their life &mdash; who 
 one day learns that they are in fact a member of that family by blood, and always were.
 Being formally received does not erase the years of nearness; it names and completes them.
 They stop being a cherished guest and take their place as a son or daughter.
@@ -47,5 +47,5 @@ They stop being a cherished guest and take their place as a son or daughter.
 That is the character of this step.
 Not a repudiation of where you have been, but an arrival at what you were always close to.
 
-**Where to go from here.** If you want to weigh what full communion actually offers — the grace, the sacraments, 
-the belonging held out to you — that is where the path turns next.
+**Where to go from here.** If you want to weigh what full communion actually offers &mdash; the grace, the sacraments, 
+the belonging held out to you &mdash; that is where the path turns next.

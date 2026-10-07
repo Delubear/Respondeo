@@ -1,7 +1,7 @@
 ---
 id: begin-eastern-orthodox
 title: "If You Are Eastern Orthodox"
-summary: The distinct path into full communion for the Orthodox — recognized sacraments, and the Eastern Catholic option.
+summary: The distinct path into full communion for the Orthodox &mdash; recognized sacraments, and the Eastern Catholic option.
 tags:
   - the catholic church
   - conversion
@@ -14,18 +14,18 @@ an Orthodox Christian entering full communion is **not** treated as someone comi
 
 1. **You are not re-baptized or re-confirmed.**
    Your Baptism and Chrismation are recognized as valid.
-   You are received by a **profession of faith** — professing communion with the Catholic Church — not by starting the sacraments over.
+   You are received by a **profession of faith** &mdash; professing communion with the Catholic Church &mdash; not by starting the sacraments over.
    Ordinarily you would make a good Confession and then be admitted to Communion; there is no need to repeat what Christ has already given you.
 
 2. **You may not need the full OCIA process.**
    Because you already hold most of the faith and the sacraments, 
    reception is often simpler and more personal than the formation path for someone entering from outside.
-   Speak with a priest — ideally one familiar with the Christian East — about what your particular situation requires.
+   Speak with a priest &mdash; ideally one familiar with the Christian East &mdash; about what your particular situation requires.
 
 3. **Consider the Eastern Catholic Churches.**
    You do not have to become *Latin* (Roman Rite) to become Catholic.
-   There are **Eastern Catholic Churches** — Byzantine, Melkite, Ukrainian, 
-   and others — in full communion with the Pope while keeping the Eastern liturgy, 
+   There are **Eastern Catholic Churches** &mdash; Byzantine, Melkite, Ukrainian, 
+   and others &mdash; in full communion with the Pope while keeping the Eastern liturgy, 
    spirituality, and traditions you already know and love.
    For many Orthodox, full communion means keeping their own rite, not exchanging it.
    Coming home need not mean leaving the East; it can mean the East reunited with Peter.

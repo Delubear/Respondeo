@@ -8,7 +8,7 @@ region: europe
 patronages: ["Animals & ecology", "The poor"]
 statesOfLife: [religious]
 canonizations: [pre-congregation]
-dates: "1181/82–1226"
+dates: "1181/82&ndash;1226"
 feastDay: "October 4"
 reviewStatus: unvetted
 tags:
@@ -21,13 +21,13 @@ sources:
     url: "https://www.vatican.va/"
 ---
 
-St. Francis of Assisi is among the most widely loved of all the saints — a figure of radical poverty,
+St. Francis of Assisi is among the most widely loved of all the saints &mdash; a figure of radical poverty,
 joy, and reverence for creation who reshaped the spiritual life of the medieval Church.
 
 ## His conversion
 
 Born into a prosperous cloth-merchant's family around 1181, Francis lived a carefree youth before a
-series of experiences — illness, captivity, and prayer — turned him toward Christ. Famously, he heard
+series of experiences &mdash; illness, captivity, and prayer &mdash; turned him toward Christ. Famously, he heard
 the crucifix at San Damiano tell him to "rebuild my Church," and renounced his inheritance to live in
 poverty.
 
@@ -41,5 +41,5 @@ inspired a parallel order for women. His movement renewed the Church from within
 
 Francis's *Canticle of the Creatures* praises God through "Brother Sun" and "Sister Moon," and he is
 the patron of ecology for his reverence toward all creation. Near the end of his life he is said to
-have received the stigmata — the wounds of Christ — on Mount La Verna. He died in 1226 and was
+have received the stigmata &mdash; the wounds of Christ &mdash; on Mount La Verna. He died in 1226 and was
 canonized just two years later.

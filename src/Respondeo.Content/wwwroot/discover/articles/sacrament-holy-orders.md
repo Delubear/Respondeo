@@ -12,7 +12,7 @@ reviewStatus: unvetted
 
 **What it is.**
 Through Holy Orders, the mission Christ entrusted to His apostles is handed on.
-By the laying on of hands and the prayer of consecration, a man is ordained a deacon, priest, or bishop, and configured to Christ to serve His people — above all by preaching the word and making the sacraments present.
+By the laying on of hands and the prayer of consecration, a man is ordained a deacon, priest, or bishop, and configured to Christ to serve His people &mdash; above all by preaching the word and making the sacraments present.
 This is the unbroken apostolic succession by which the Church is fed in every generation.
 
 **Why celebrate it.**

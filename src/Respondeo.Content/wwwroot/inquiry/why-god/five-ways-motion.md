@@ -1,6 +1,6 @@
 ---
 id: five-ways-motion
-title: "The First Way — Motion"
+title: "The First Way &mdash; Motion"
 summary: From the fact of change to an unmoved mover.
 ---
 
@@ -8,7 +8,7 @@ summary: From the fact of change to an unmoved mover.
 >
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
-Of all five ways, this is the one Aquinas calls "the first and more manifest" — the most obvious place to begin, 
+Of all five ways, this is the one Aquinas calls "the first and more manifest" &mdash; the most obvious place to begin, 
 because change is the plainest fact about the world around us.
 By **motion** he means something broader than movement from place to place: any change at all, 
 from cold coffee warming to a seed becoming a tree to a mind moving from not-knowing to knowing.
@@ -21,9 +21,9 @@ from cold coffee warming to a seed becoming a tree to a mind moving from not-kno
 4. Therefore there is a first mover, moved by nothing else &mdash; *and this everyone understands to be God.*
 
 **Why premise 2 holds.**
-To change is for a potential to be made actual — and nothing can give itself what it does not yet have.
+To change is for a potential to be made actual &mdash; and nothing can give itself what it does not yet have.
 The cold coffee cannot warm *itself*, because it is only potentially hot; something already actually hot (the stove) must bring that potential into act.
-A thing that could actualize its own potential would have to already possess the very actuality it still lacks — which is a contradiction.
+A thing that could actualize its own potential would have to already possess the very actuality it still lacks &mdash; which is a contradiction.
 So every change points beyond the changing thing to a cause already in act.
 
 **Why the chain cannot run forever.**
@@ -31,10 +31,10 @@ The regress Aquinas rules out is not a line of dominoes stretching back in time,
 Think of a hand moving a stick that moves a stone: the stick moves only because the hand moves it, here and this instant.
 Remove the hand and the whole series goes still, however many sticks you add in the middle.
 A series like this cannot have infinitely many members each borrowing its motion from the one before, 
-because then there would be no one actually *doing* the moving — nothing from which the motion originates — and so no motion at all. Yet motion plainly happens.
+because then there would be no one actually *doing* the moving &mdash; nothing from which the motion originates &mdash; and so no motion at all. Yet motion plainly happens.
 
 **First in explanation, not first in time.**
-The point is not a *first* domino at the start of history, but a **first** in the order of explanation — something whose actuality is not borrowed from anything else.
+The point is not a *first* domino at the start of history, but a **first** in the order of explanation &mdash; something whose actuality is not borrowed from anything else.
 Change happening here and now needs a source of actuality that is not itself waiting to be actualized: 
 a mover that is **pure act**, with no unrealized potential to be moved by another.
 
@@ -43,10 +43,10 @@ a mover that is **pure act**, with no unrealized potential to be moved by anothe
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **"But what moves God, then?"**
-Nothing — and that is not special pleading.
+Nothing &mdash; and that is not special pleading.
 The argument does not conclude to "something that just happens to be first"; 
 it concludes to something that *cannot* be moved, because it has no potential waiting to be actualized.
-To ask what changes the unmoved mover is to ask what actualizes pure actuality — which is like asking what warms a thing that is already warmth itself.
+To ask what changes the unmoved mover is to ask what actualizes pure actuality &mdash; which is like asking what warms a thing that is already warmth itself.
 The chain stops not because we grow tired of asking, but because at pure act there is nothing left to explain.
 
 ## See it today: the kettle on the stove

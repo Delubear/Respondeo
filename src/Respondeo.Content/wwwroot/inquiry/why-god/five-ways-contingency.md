@@ -1,6 +1,6 @@
 ---
 id: five-ways-contingency
-title: "The Third Way — Contingency and Necessity"
+title: "The Third Way &mdash; Contingency and Necessity"
 summary: From things that can fail to be, to a necessary being.
 ---
 
@@ -25,7 +25,7 @@ Aquinas asks what such fragile, borrowed existence ultimately depends on.
 
 **A clarification.** Step 2 is the famously debated one, so it is worth stating fairly. 
 Aquinas is not making a simple logical slip like "if each thing can fail, then the whole must fail." 
-His real point is that **things which merely *might* exist cannot be the whole story** — a world made up entirely of things that borrow their being, 
+His real point is that **things which merely *might* exist cannot be the whole story** &mdash; a world made up entirely of things that borrow their being, 
 with nothing to borrow it from, has no ultimate source of existence. 
 Whether you put it in terms of time (as the medieval text does) or in terms of a dependence happening right now, 
 the conclusion is the same: things that could have failed to exist point beyond themselves to something that cannot.

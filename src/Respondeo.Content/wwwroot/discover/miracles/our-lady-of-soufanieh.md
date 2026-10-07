@@ -17,7 +17,7 @@ tags:
 sources:
   - label: "Our Lady of Soufanieh (video account on YouTube)"
     url: "https://www.youtube.com/watch?v=c7LuK9UsQ78"
-  - label: "Soufanieh — Greek Melkite Catholic Patriarchate of Antioch"
+  - label: "Soufanieh &mdash; Greek Melkite Catholic Patriarchate of Antioch"
 ---
 
 Our Lady of Soufanieh refers to a series of reported phenomena in the Soufanieh district of Damascus,

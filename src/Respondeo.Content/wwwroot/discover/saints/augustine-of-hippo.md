@@ -8,7 +8,7 @@ region: africa
 patronages: [Theologians & scholars, Converts]
 statesOfLife: [bishop]
 canonizations: [pre-congregation, doctor-of-the-church]
-dates: "354–430"
+dates: "354&ndash;430"
 feastDay: "August 28"
 reviewStatus: unvetted
 tags:
@@ -20,7 +20,7 @@ sources:
   - label: "Augustine, City of God"
 ---
 
-St. Augustine of Hippo is one of the most important theologians in the history of the Church — a
+St. Augustine of Hippo is one of the most important theologians in the history of the Church &mdash; a
 convert whose searching intellect and restless heart found their rest in God, and whose writings
 became a foundation of Western Christian thought.
 
@@ -28,7 +28,7 @@ became a foundation of Western Christian thought.
 
 Born in 354 in Roman North Africa to a pagan father and his Christian mother St. Monica, Augustine
 pursued rhetoric, philosophy, and the Manichaean sect before a long interior struggle. Moved by the
-preaching of St. Ambrose in Milan and a sudden grace in a garden — *"take up and read"* — he was
+preaching of St. Ambrose in Milan and a sudden grace in a garden &mdash; *"take up and read"* &mdash; he was
 baptized in 387. He tells the story in his *Confessions*.
 
 ## Bishop and teacher

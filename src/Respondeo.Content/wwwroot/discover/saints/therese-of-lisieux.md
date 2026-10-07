@@ -8,7 +8,7 @@ region: europe
 patronages: [Missions, Youth]
 statesOfLife: [religious, virgin]
 canonizations: [canonized, doctor-of-the-church]
-dates: "1873–1897"
+dates: "1873&ndash;1897"
 feastDay: "October 1"
 reviewStatus: unvetted
 tags:
@@ -34,13 +34,13 @@ life, published after her death as *Story of a Soul*.
 
 ## The Little Way
 
-Thérèse is best known for her "Little Way" — a path to holiness founded not on great deeds but on
+Thérèse is best known for her "Little Way" &mdash; a path to holiness founded not on great deeds but on
 doing small, ordinary things with great love and complete trust in God's mercy, like a child in the
 arms of a father. This spirituality of confidence and littleness spread rapidly after her death.
 
 ## Why she matters
 
-Canonized in 1925 and declared a Doctor of the Church in 1997, Thérèse is a patron of the missions —
-though she never left her cloister — because of her conviction that love offered from any corner of
+Canonized in 1925 and declared a Doctor of the Church in 1997, Thérèse is a patron of the missions &mdash;
+though she never left her cloister &mdash; because of her conviction that love offered from any corner of
 the world sustains the whole Body of Christ. Her Little Way continues to shape Catholic spirituality
 today.

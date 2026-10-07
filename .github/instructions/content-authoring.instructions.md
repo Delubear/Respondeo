@@ -64,6 +64,26 @@ For any set-off Markdown block quote (a `>` block) in prose content, use one con
 - **Emphasis uses `*italics*`, never quotation marks.** Italicize an emphasized word or phrase
   (`the *public* claim`); do not use scare-quotes for emphasis.
 
+## Punctuation characters (all content Markdown)
+
+The only literal dash character allowed in content Markdown is the plain ASCII hyphen `-`. Every other
+dash or special typographic mark must be written as an HTML entity (or plain ASCII), never as the raw
+Unicode glyph. This keeps the source unambiguous in a monospace editor, diff-able, and grep-able.
+
+- **Hyphen** `-` (ASCII): the only literal dash. Use for compound words (`self-evident`), list bullets,
+  and YAML. Never paste a Unicode em/en dash as a bare `-` replacement.
+- **Em dash** &rarr; `&mdash;` (renders as the long dash). Use for breaks in thought within prose and for
+  block-quote attribution lines. Do **not** type a literal `—`.
+- **En dash** &rarr; `&ndash;` (renders as the medium dash). Use for numeric ranges only, e.g.
+  `Romans 6:3&ndash;4`, `CCC 1213&ndash;1284`. Do **not** type a literal `–`.
+- **Ellipsis** &rarr; three ASCII dots `...` (not the single `…` glyph and not `&hellip;`). Use for an
+  omission inside a quotation.
+- **Quotation marks** are straight ASCII `"` and `'`; do not paste curly/smart quotes.
+
+Rationale: the content renderer (`MarkdigContentHtmlRenderer`) does **not** enable SmartyPants, so no
+dash or quote auto-conversion happens &mdash; whatever glyph is authored is exactly what ships. Writing
+entities makes the intended mark explicit and reviewable.
+
 ## Prayers (`prayers/*.md`)
 
 Markdown: YAML front-matter, then the prayer text as the body.

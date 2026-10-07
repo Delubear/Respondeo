@@ -1,6 +1,6 @@
 ---
 id: five-ways-essence-existence
-title: "Essence & Existence — The Second Foundation"
+title: "Essence & Existence &mdash; The Second Foundation"
 summary: Aristotle's and Aquinas's distinction between essence and existence.
 ---
 
@@ -17,11 +17,11 @@ So in every ordinary thing there is a real gap between *what it is* and the plai
 
 **The distinction, in plain terms:**
 
-- **Essence:** *what* a thing is — the kind of thing it is, its nature or definition. The essence of a dog is to be a certain kind of living animal.
-- **Existence:** *that* a thing is — the sheer act of being, the fact that the thing is actually there rather than merely possible.
+- **Essence:** *what* a thing is &mdash; the kind of thing it is, its nature or definition. The essence of a dog is to be a certain kind of living animal.
+- **Existence:** *that* a thing is &mdash; the sheer act of being, the fact that the thing is actually there rather than merely possible.
 
 In everything we meet, essence and existence are genuinely two different things.
-A thing's nature does not include its own existence — which is why you can fully understand it and yet it may not exist, and why it can come into being and later pass away.
+A thing's nature does not include its own existence &mdash; which is why you can fully understand it and yet it may not exist, and why it can come into being and later pass away.
 
 **Existence is received, not owned.**
 Because a creature's nature does not contain its own existence, being is something it *has*, not something it *is*.
@@ -37,10 +37,10 @@ The dog does not account for its own being; its existence is derived, dependent,
 **Why this matters for the Five Ways.**
 Several ways, especially the Third Way from **contingency**, are really arguments about essence and existence:
 
-1. In every ordinary thing, essence and existence are distinct — such a thing *could* not exist.
+1. In every ordinary thing, essence and existence are distinct &mdash; such a thing *could* not exist.
 2. Whatever does not exist through its own essence has existence given to it by another.
 3. This cannot regress infinitely through things that are *themselves* composed of essence and existence, for the whole chain would then have no source of being.
-4. Therefore there must be something whose **essence just is existence** — Being Itself, existence with no potential for non-existence — the source of all being.
+4. Therefore there must be something whose **essence just is existence** &mdash; Being Itself, existence with no potential for non-existence &mdash; the source of all being.
 
 *This being, whose very nature is to exist, Aquinas says, is what everyone understands to be God.*
 

@@ -1,7 +1,7 @@
 ---
 id: home-how-to-begin
 title: "How to Begin Again"
-summary: The concrete first steps — for the returning Catholic, the enquirer, and the one seeking full communion.
+summary: The concrete first steps &mdash; for the returning Catholic, the enquirer, and the one seeking full communion.
 tags:
   - getting started
   - the catholic church
@@ -12,10 +12,10 @@ sections:
   - begin-eastern-orthodox
 ---
 
-Whatever brought you here — a return after years away, an entry from outside the faith, 
-or a crossing into full communion — the good news is the same: the first step is smaller and simpler than the weight of the decision suggests.
+Whatever brought you here &mdash; a return after years away, an entry from outside the faith, 
+or a crossing into full communion &mdash; the good news is the same: the first step is smaller and simpler than the weight of the decision suggests.
 You do not have to solve everything before you begin.
-You only have to take the first step — and it is closer at hand than the decision feels.
+You only have to take the first step &mdash; and it is closer at hand than the decision feels.
 
 The precise path depends on where you are starting from.
 Expand the section that fits your situation below.
@@ -24,10 +24,10 @@ Expand the section that fits your situation below.
 
 Almost everyone who has come back or come in describes the same threshold: 
 the hardest part was not the theology but picking up the phone, or walking through the door the first time.
-On the far side of that one small act, they nearly always found the same thing — not judgment, but relief and welcome.
+On the far side of that one small act, they nearly always found the same thing &mdash; not judgment, but relief and welcome.
 
 The step that feels enormous from the outside turns out, from the inside, to have been the easy part.
 
 **Where to go from here.** Coming home is not the end of the road but the start of a life. 
-Once you have taken that first step, the faith becomes something you live day by day — in prayer, in the sacraments, 
+Once you have taken that first step, the faith becomes something you live day by day &mdash; in prayer, in the sacraments, 
 and in an ever-deeper understanding of what you believe.

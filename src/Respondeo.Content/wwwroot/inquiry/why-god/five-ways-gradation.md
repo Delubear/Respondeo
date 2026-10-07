@@ -1,6 +1,6 @@
 ---
 id: five-ways-gradation
-title: "The Fourth Way — Gradation of Being"
+title: "The Fourth Way &mdash; Gradation of Being"
 summary: From degrees of perfection to a maximum that causes them.
 ---
 
