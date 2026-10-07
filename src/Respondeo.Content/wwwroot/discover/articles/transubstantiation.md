@@ -75,6 +75,9 @@ every particle. It is also why reception calls for preparation and a state of gr
 For the one coming home, transubstantiation is the reason the Eucharist is not a symbol to admire but
 a Person to receive.
 
+::: youtube 93lauv161ks
+:::
+
 ## A consideration: Eucharistic miracles
 
 The faith does not rest on signs and wonders — it rests on the word of Christ and the teaching of His
