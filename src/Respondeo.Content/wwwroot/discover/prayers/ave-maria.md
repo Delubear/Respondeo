@@ -1,7 +1,7 @@
 ---
 id: ave-maria
 title: "Ave Maria"
-summary: The Latin of the Hail Mary.
+summary: "The Latin of the Hail Mary."
 category: marian
 language: la
 translationKey: hail-mary

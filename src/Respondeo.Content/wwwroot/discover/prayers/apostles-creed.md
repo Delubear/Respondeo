@@ -2,7 +2,7 @@
 id: apostles-creed
 title: "The Apostles' Creed"
 sortKey: "Apostles' Creed"
-summary: The ancient baptismal profession of the Church's faith.
+summary: "The ancient baptismal profession of the Church's faith."
 category: daily
 language: en
 translationKey: apostles-creed

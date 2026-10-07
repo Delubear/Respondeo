@@ -1,7 +1,7 @@
 ---
 id: symbolum-nicaenum
 title: "Symbolum Nicaenum"
-summary: The Latin of the Nicene Creed.
+summary: "The Latin of the Nicene Creed."
 category: daily
 language: la
 translationKey: nicene-creed

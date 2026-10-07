@@ -2,7 +2,7 @@
 id: francis-of-assisi
 title: "St. Francis of Assisi"
 sortKey: "Francis of Assisi"
-summary: The merchant's son who embraced radical poverty, founded the Franciscan order, and is remembered as a herald of peace and love of creation.
+summary: "The merchant's son who embraced radical poverty, founded the Franciscan order, and is remembered as a herald of peace and love of creation."
 era: medieval
 region: europe
 patronages: ["Animals & ecology", "The poor"]
@@ -21,7 +21,7 @@ sources:
     url: "https://www.vatican.va/"
 ---
 
-St. Francis of Assisi is among the most widely loved of all the saints &mdash; a figure of radical poverty,
+St. Francis of Assisi is among the most widely loved of all the saints: a figure of radical poverty,
 joy, and reverence for creation who reshaped the spiritual life of the medieval Church.
 
 ## His conversion

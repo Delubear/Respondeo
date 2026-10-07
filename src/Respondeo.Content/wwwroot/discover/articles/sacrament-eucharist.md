@@ -2,7 +2,7 @@
 id: sacrament-eucharist
 title: "The Eucharist"
 sortKey: "Eucharist"
-summary: The sacrament of Christ's true presence &mdash; the source and summit of the Christian life.
+summary: "The sacrament of Christ's true presence: the source and summit of the Christian life."
 topic: sacraments
 tags:
   - sacraments
@@ -13,7 +13,7 @@ reviewStatus: unvetted
 
 **What it is.**
 The Eucharist is the heart of the entire faith.
-At Mass, through the words of Christ spoken by the priest, bread and wine become the true Body and Blood of Jesus Christ &mdash; not a symbol of Him, but Himself, given to be received.
+At Mass, through the words of Christ spoken by the priest, bread and wine become the true Body and Blood of Jesus Christ: not a symbol of Him, but Himself, given to be received.
 This is the sacrifice of Calvary made present and the meal by which the Church is fed.
 
 **Why celebrate it.**

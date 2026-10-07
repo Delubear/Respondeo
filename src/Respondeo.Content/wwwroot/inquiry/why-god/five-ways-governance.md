@@ -1,7 +1,7 @@
 ---
 id: five-ways-governance
 title: "The Fifth Way &mdash; Governance of the World"
-summary: From the purposeful order of nature to an intelligent designer.
+summary: "From the purposeful order of nature to an intelligent designer."
 ---
 
 > We see that things which lack intelligence, such as natural bodies, act for an end.

@@ -1,7 +1,7 @@
 ---
 id: our-lady-of-guadalupe
 title: "Our Lady of Guadalupe"
-summary: The 1531 apparitions to St. Juan Diego and the image on his tilma, venerated across the Americas.
+summary: "The 1531 apparitions to St. Juan Diego and the image on his tilma, venerated across the Americas."
 types: [marian, image]
 approval: approved
 region: latin-america

@@ -1,7 +1,7 @@
 ---
 id: confiteor-latin
 title: "Confiteor"
-summary: The Latin of the Penitential Act.
+summary: "The Latin of the Penitential Act."
 category: mass
 language: la
 translationKey: confiteor

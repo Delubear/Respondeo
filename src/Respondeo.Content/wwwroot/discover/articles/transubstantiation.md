@@ -1,7 +1,7 @@
 ---
 id: transubstantiation
 title: "Transubstantiation"
-summary: How bread and wine become Christ's Body and Blood &mdash; the substance changed, the appearances remaining.
+summary: "How bread and wine become Christ's Body and Blood: the substance changed, the appearances remaining."
 topic: sacraments
 tags:
   - sacraments
@@ -23,7 +23,7 @@ figure of speech but a real change, worked by God at the words of consecration.
 ## What the word means
 
 The word distinguishes two things everyday language usually keeps together: what a thing *is* (its
-substance) and how it *appears* (its accidents &mdash; color, shape, taste, weight). In ordinary change one
+substance) and how it *appears* (its accidents: color, shape, taste, weight). In ordinary change one
 accident replaces another: bread goes stale, wine warms. In the Eucharist the reverse happens. The
 accidents of bread and wine stay exactly as they were, but the underlying substance is wholly
 converted. 
@@ -53,7 +53,7 @@ transubstantiation.
 St. Thomas Aquinas gives the classic account. He argues that Christ is not present by the bread moving
 away or being destroyed, but by its whole substance being changed into Him
 ([*Summa Theologiae* III, Q. 75, A. 4](summa/tertia-q075#article-4)). Because only the substance
-changes, the accidents remain without their natural subject &mdash; God sustaining them directly
+changes, the accidents remain without their natural subject: God sustaining them directly
 ([*Summa Theologiae* III, Q. 75, A. 5](summa/tertia-q075#article-5)). This is why we see and taste
 bread yet receive Christ: the senses report the accidents, while faith receives the substance. Aquinas
 captures the same thought in his hymn *Adoro te devote*:
@@ -87,7 +87,7 @@ a Person to receive.
 
 ## A consideration: Eucharistic miracles
 
-The faith does not rest on signs and wonders &mdash; it rests on the word of Christ and the teaching of His
+The faith does not rest on signs and wonders: it rests on the word of Christ and the teaching of His
 Church. Transubstantiation is believed because He said so, not because it can be weighed or measured.
 Still, down the centuries the Church has recorded reported *Eucharistic miracles*, in which a
 consecrated host is said to have visibly become flesh or blood. These are offered not as proof but as

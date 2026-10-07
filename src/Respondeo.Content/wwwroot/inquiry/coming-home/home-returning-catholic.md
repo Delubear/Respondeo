@@ -1,7 +1,7 @@
 ---
 id: home-returning-catholic
 title: "Returning to the Faith"
-summary: For the Catholic who drifted away &mdash; why and how to come back.
+summary: "For the Catholic who drifted away &mdash; why and how to come back."
 tags:
   - the catholic church
   - conversion

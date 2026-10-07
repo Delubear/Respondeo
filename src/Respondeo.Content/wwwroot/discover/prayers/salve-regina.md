@@ -1,7 +1,7 @@
 ---
 id: salve-regina
 title: "Salve Regina"
-summary: The Latin of the Hail Holy Queen.
+summary: "The Latin of the Hail Holy Queen."
 category: marian
 language: la
 translationKey: hail-holy-queen

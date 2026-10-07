@@ -1,7 +1,7 @@
 ---
 id: home-why-practice
 title: "Why Practice, and Why Believe It for Real"
-summary: Why the faith must be lived, not merely admired &mdash; and why to take it seriously and actually believe.
+summary: "Why the faith must be lived, not merely admired, and why to take it seriously and actually believe."
 tags:
   - the catholic church
   - the christian life
@@ -13,7 +13,7 @@ It becomes a settled opinion filed alongside other settled opinions.
 This article is about why that posture cannot hold, and why the faith, if it is true at all, asks for everything.
 
 The reasoning is simple and uncomfortable: **if it is true, it is the most important thing that is true.**
-A God who exists, who became man, who died and rose, who founded a Church to carry His life to you &mdash; this is either false or it is the fact that reorders every other fact.
+A God who exists, who became man, who died and rose, who founded a Church to carry His life to you: this is either false or it is the fact that reorders every other fact.
 There is no coherent third option in which it is true but unimportant.
 
 **Why belief must become practice:**
@@ -23,7 +23,7 @@ There is no coherent third option in which it is true but unimportant.
    Real assent to an infinite claim shows itself in a rearranged life, the way real trust in a diagnosis shows itself in taking the medicine.
 
 2. **Because grace is received, not merely acknowledged.**
-   The life the Church offers is given through concrete acts &mdash; the Mass, the sacraments, prayer, the works of mercy.
+   The life the Church offers is given through concrete acts: the Mass, the sacraments, prayer, the works of mercy.
    To skip the practice is not to keep the faith while dropping the extras; it is to decline the very thing that was offered.
 
 3. **Because love is not an idea.**
@@ -33,7 +33,7 @@ There is no coherent third option in which it is true but unimportant.
 
 ## Taking it seriously: the wager you cannot avoid
 
-You might hope to stay neutral &mdash; to keep the question open indefinitely and commit to nothing.
+You might hope to stay neutral: to keep the question open indefinitely and commit to nothing.
 But neutrality here is an illusion.
 To live as though it does not matter *is already to live as though it is false.*
 The clock of a life runs whether or not you decide, and not-deciding is itself a way of answering.
@@ -44,7 +44,7 @@ And if the case has brought you this far, the risk of living *as if it is true* 
 ## See it today: the doctor's orders
 
 Suppose you trust a physician completely and receive a clear diagnosis with a clear treatment.
-To say "I believe every word, and I will change nothing" would not be belief &mdash; it would 
+To say "I believe every word, and I will change nothing" would not be belief; it would 
 expose that you never really believed you were sick, or never really trusted the cure.
 Genuine trust picks up the prescription.
 

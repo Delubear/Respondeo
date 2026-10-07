@@ -1,7 +1,7 @@
 ---
 id: signum-crucis
 title: "Signum Crucis"
-summary: The Latin of the Sign of the Cross.
+summary: "The Latin of the Sign of the Cross."
 category: daily
 language: la
 translationKey: sign-of-the-cross

@@ -1,7 +1,7 @@
 ---
 id: which-god-objection-ot-violence
 title: "Isn't the Old Testament God Immoral?"
-summary: How can the God of Israel be the good, just Creator reason reaches, given the violence and harsh laws of the Old Testament?
+summary: "How can the God of Israel be the good, just Creator reason reaches, given the violence and harsh laws of the Old Testament?"
 ---
 
 **The objection, at its strongest:**

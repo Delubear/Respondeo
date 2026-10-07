@@ -1,7 +1,7 @@
 ---
 id: five-ways-causation
 title: "The Second Way &mdash; Efficient Causation"
-summary: From ordered efficient causes to a first cause.
+summary: "From ordered efficient causes to a first cause."
 ---
 
 > In the world of sense we find there is an order of efficient causes.

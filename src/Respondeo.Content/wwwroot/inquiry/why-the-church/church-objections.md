@@ -1,7 +1,7 @@
 ---
 id: church-objections
 title: "Objections to the Church"
-summary: What are the strongest objections to the Catholic claim, and how do we respond?
+summary: "What are the strongest objections to the Catholic claim, and how do we respond?"
 tags:
   - the catholic church
   - divine revelation
@@ -17,12 +17,12 @@ sections:
 ---
 
 The claim that the Catholic Church is the Church Christ founded is not a small one, 
-and it deserves to be tested against its strongest challengers &mdash; not its weakest.
+and it deserves to be tested against its strongest challengers, not its weakest.
 Each objection here is stated in its most forceful form *before* any reply is given.
 
 These are not abstract puzzles.
 For many sincere Christians who already love Christ, 
-they are the real reasons for keeping their distance from the Catholic Church &mdash; the honest sticking points, not excuses.
+they are the real reasons for keeping their distance from the Catholic Church: the honest sticking points, not excuses.
 Some ask whether the Reformers or Rome kept the faith; one asks where the Eastern Orthodox stand, 
 since they share so much of the Catholic claim; one asks about the place the Church gives the Blessed Virgin Mary; 
 one asks whether praying to the saints is devotion or idolatry; 

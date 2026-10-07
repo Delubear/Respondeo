@@ -84,6 +84,24 @@ Rationale: the content renderer (`MarkdigContentHtmlRenderer`) does **not** enab
 dash or quote auto-conversion happens &mdash; whatever glyph is authored is exactly what ships. Writing
 entities makes the intended mark explicit and reviewable.
 
+### Don't overuse the em dash
+
+The em dash is for a *genuine* pause: a true parenthetical aside (one you could lift out and still have
+a whole sentence) or a deliberate dramatic break. It is **not** a general-purpose "insert a pause here"
+mark. Because it can stand in for a comma, colon, semicolon, or period all at once, it is easy to
+overuse until every sentence sounds the same and none of the dashes land.
+
+Before writing `&mdash;` in prose, check whether another mark does the job better:
+
+- Introduces or explains what follows &rarr; use a **colon** (`:`).
+- Joins two complete, independent thoughts &rarr; use a **period** (`.`) or **semicolon** (`;`).
+- Wraps a mild aside, appositive, or nonrestrictive clause &rarr; use **commas** (`,`).
+- Marks a real break in thought or a genuine parenthetical set-off from the sentence &rarr; keep the
+  **em dash**.
+
+Soft limit: aim for **at most one prose em dash per paragraph**. Block-quote attribution lines
+(`> &mdash; Source`) are a fixed convention and are exempt from this limit.
+
 ## Prayers (`prayers/*.md`)
 
 Markdown: YAML front-matter, then the prayer text as the body.

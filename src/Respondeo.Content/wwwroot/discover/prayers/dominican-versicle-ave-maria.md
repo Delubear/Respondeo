@@ -1,7 +1,7 @@
 ---
 id: dominican-versicle-ave-maria
 title: "Ave María, Grátia Plena"
-summary: The Latin of the first versicle that opens the Dominican Rosary.
+summary: "The Latin of the first versicle that opens the Dominican Rosary."
 category: marian
 language: la
 translationKey: dominican-versicle-hail

@@ -1,7 +1,7 @@
 ---
 id: jesus-objections
 title: "Objections to Jesus"
-summary: What are the strongest objections to the Christian claim about Jesus, and how do we respond?
+summary: "What are the strongest objections to the Christian claim about Jesus, and how do we respond?"
 tags:
   - jesus christ
   - divine revelation

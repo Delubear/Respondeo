@@ -1,7 +1,7 @@
 ---
 id: which-god-objection-scripture-reliable
 title: "Why Trust Ancient Scripture?"
-summary: If the case rests on old texts copied and recopied for millennia, how can we trust what they actually say?
+summary: "If the case rests on old texts copied and recopied for millennia, how can we trust what they actually say?"
 ---
 
 **The objection, at its strongest:**

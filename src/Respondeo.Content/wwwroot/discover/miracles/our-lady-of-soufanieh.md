@@ -1,7 +1,7 @@
 ---
 id: our-lady-of-soufanieh
 title: "Our Lady of Soufanieh"
-summary: The Damascus apparitions to Myrna Nazzour beginning in 1982, with an icon exuding olive oil, stigmata, and a message of Christian unity.
+summary: "The Damascus apparitions to Myrna Nazzour beginning in 1982, with an icon exuding olive oil, stigmata, and a message of Christian unity."
 types: [marian, image, stigmata]
 approval: under-investigation
 region: middle-east

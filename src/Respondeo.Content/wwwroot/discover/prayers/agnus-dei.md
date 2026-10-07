@@ -1,7 +1,7 @@
 ---
 id: agnus-dei
 title: "Agnus Dei"
-summary: The Latin of the Lamb of God.
+summary: "The Latin of the Lamb of God."
 category: mass
 language: la
 translationKey: lamb-of-god

@@ -1,7 +1,7 @@
 ---
 id: where-the-path-has-led
 title: "Where the Path Has Led"
-summary: Drawing the whole case together &mdash; from Christ's Church to the threshold of coming home.
+summary: "Drawing the whole case together: from Christ's Church to the threshold of coming home."
 tags:
   - the catholic church
 sections:
@@ -22,7 +22,7 @@ What began as a question &mdash; *why the Church at all?* &mdash; has become a c
    It is the community that traces an unbroken line &mdash; in leadership, teaching, and worship &mdash; back to the apostles, rather than one that began centuries later as a reform or a break.
 
 3. **It bears the marks Christ gave it.**
-   One, holy, catholic, and apostolic &mdash; held together and in full, not one or two in isolation.
+   One, holy, catholic, and apostolic: held together and in full, not one or two in isolation.
    Those four marks converge on a single visible communion.
 
 4. **It hands on His revelation with authority.**
@@ -36,7 +36,7 @@ and found the claim still standing, the argument has quietly stopped being abstr
 ## The question changes
 
 Notice what has happened to the question itself.
-We began by asking whether the Catholic Church *is* the Church Christ founded &mdash; a question of evidence and history.
+We began by asking whether the Catholic Church *is* the Church Christ founded: a question of evidence and history.
 If the path has held, that question has been answered, and a different one takes its place: not *is it true?* but *what will I do about it?*
 
 That is no longer a question reason can settle from the outside.

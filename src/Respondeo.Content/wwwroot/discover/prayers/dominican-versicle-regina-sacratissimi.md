@@ -1,7 +1,7 @@
 ---
 id: dominican-versicle-regina-sacratissimi
 title: "Regína Sacratíssimi Rosárii"
-summary: The Latin of the versicle prayed after the Salve Regina in the Dominican Rosary.
+summary: "The Latin of the versicle prayed after the Salve Regina in the Dominican Rosary."
 category: marian
 language: la
 translationKey: dominican-versicle-queen

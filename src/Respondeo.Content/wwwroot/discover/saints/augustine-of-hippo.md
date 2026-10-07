@@ -2,7 +2,7 @@
 id: augustine-of-hippo
 title: "St. Augustine of Hippo"
 sortKey: "Augustine of Hippo"
-summary: The restless seeker turned bishop whose Confessions and City of God shaped Western theology for a millennium and more.
+summary: "The restless seeker turned bishop whose Confessions and City of God shaped Western theology for a millennium and more."
 era: early-church
 region: africa
 patronages: [Theologians & scholars, Converts]
@@ -20,7 +20,7 @@ sources:
   - label: "Augustine, City of God"
 ---
 
-St. Augustine of Hippo is one of the most important theologians in the history of the Church &mdash; a
+St. Augustine of Hippo is one of the most important theologians in the history of the Church: a
 convert whose searching intellect and restless heart found their rest in God, and whose writings
 became a foundation of Western Christian thought.
 

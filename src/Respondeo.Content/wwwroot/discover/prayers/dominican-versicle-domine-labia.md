@@ -1,7 +1,7 @@
 ---
 id: dominican-versicle-domine-labia
 title: "Dómine, Lábia Mea Apéries"
-summary: The Latin of the opening versicle of the Dominican Rosary.
+summary: "The Latin of the opening versicle of the Dominican Rosary."
 category: marian
 language: la
 translationKey: dominican-versicle-lips

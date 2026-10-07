@@ -1,7 +1,7 @@
 ---
 id: begin-eastern-orthodox
 title: "If You Are Eastern Orthodox"
-summary: The distinct path into full communion for the Orthodox &mdash; recognized sacraments, and the Eastern Catholic option.
+summary: "The distinct path into full communion for the Orthodox: recognized sacraments, and the Eastern Catholic option."
 tags:
   - the catholic church
   - conversion
@@ -20,7 +20,7 @@ an Orthodox Christian entering full communion is **not** treated as someone comi
 2. **You may not need the full OCIA process.**
    Because you already hold most of the faith and the sacraments, 
    reception is often simpler and more personal than the formation path for someone entering from outside.
-   Speak with a priest &mdash; ideally one familiar with the Christian East &mdash; about what your particular situation requires.
+   Speak with a priest, ideally one familiar with the Christian East, about what your particular situation requires.
 
 3. **Consider the Eastern Catholic Churches.**
    You do not have to become *Latin* (Roman Rite) to become Catholic.

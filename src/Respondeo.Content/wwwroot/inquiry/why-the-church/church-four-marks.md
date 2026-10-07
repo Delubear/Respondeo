@@ -1,7 +1,7 @@
 ---
 id: church-four-marks
 title: "The Four Marks"
-summary: One, holy, catholic, and apostolic &mdash; and where these marks are found today.
+summary: "One, holy, catholic, and apostolic &mdash; and where these marks are found today."
 tags:
   - the catholic church
 ---

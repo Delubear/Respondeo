@@ -1,7 +1,7 @@
 ---
 id: five-ways-act-potency
 title: "Act & Potency &mdash; The Foundation"
-summary: Aristotle's and Aquinas's distinction between actuality and potentiality.
+summary: "Aristotle's and Aquinas's distinction between actuality and potentiality."
 ---
 
 Before walking the Five Ways, it helps to grasp the single distinction they all lean on: **act** and **potency**.

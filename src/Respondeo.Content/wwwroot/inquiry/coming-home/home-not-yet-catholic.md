@@ -1,7 +1,7 @@
 ---
 id: home-not-yet-catholic
 title: "If You're Christian but Not Catholic"
-summary: For the baptized Christian who has come to see the Catholic Church's claim but has not yet entered.
+summary: "For the baptized Christian who has come to see the Catholic Church's claim but has not yet entered."
 tags:
   - the catholic church
   - conversion

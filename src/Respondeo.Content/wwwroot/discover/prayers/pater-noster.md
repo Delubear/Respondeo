@@ -1,7 +1,7 @@
 ---
 id: pater-noster
 title: "Pater Noster"
-summary: The Latin of the Our Father.
+summary: "The Latin of the Our Father."
 category: daily
 language: la
 translationKey: our-father

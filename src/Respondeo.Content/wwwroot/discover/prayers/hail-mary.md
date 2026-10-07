@@ -1,7 +1,7 @@
 ---
 id: hail-mary
 title: "Hail Mary"
-summary: The angelic salutation joined to the Church's petition to the Mother of God.
+summary: "The angelic salutation joined to the Church's petition to the Mother of God."
 category: marian
 language: en
 translationKey: hail-mary

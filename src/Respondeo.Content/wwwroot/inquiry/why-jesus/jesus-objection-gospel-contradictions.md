@@ -1,12 +1,12 @@
 ---
 id: jesus-objection-gospel-contradictions
 title: "Don't the Gospels Contradict Each Other?"
-summary: Do differences between the Gospel accounts undermine their historical reliability?
+summary: "Do differences between the Gospel accounts undermine their historical reliability?"
 ---
 
 **The objection, at its strongest:**
 
-The four Gospels disagree on details &mdash; the hour of the crucifixion, who arrived at the tomb, the sequence of appearances. 
+The four Gospels disagree on details: the hour of the crucifixion, who arrived at the tomb, the sequence of appearances. 
 If the sources cannot keep their stories straight, why trust them on the central, and far more extraordinary, claim?
 
 **The response:**
@@ -15,7 +15,7 @@ The objection treats every *difference* between the accounts as if it were a *co
 A contradiction is when one account rules out another; a difference is when two accounts, told from different angles, can both be true.
 Most of the famous discrepancies are the second kind.
 
-That one Gospel names one woman at the tomb and another names several is not a contradiction &mdash; naming some does not deny the rest.
+That one Gospel names one woman at the tomb and another names several is not a contradiction: naming some does not deny the rest.
 Differences in sequence often reflect ancient writers arranging material thematically rather than strictly chronologically, 
 a convention their first readers understood and did not mistake for error.
 
@@ -39,7 +39,7 @@ Ask four bystanders to describe a crash and you will get four accounts that diff
 the order of events, and who shouted first.
 A detective does not conclude that no crash occurred; the divergence is what tells him the witnesses are independent rather than coached.
 
-The one thing that would make a detective suspicious is the opposite &mdash; four statements matching word for word, 
+The one thing that would make a detective suspicious is the opposite: four statements matching word for word, 
 which signals a story agreed on in advance.
 The Gospels fail that suspicious test and pass the honest one: they agree on the collision and differ on the details, 
 exactly as real testimony does.

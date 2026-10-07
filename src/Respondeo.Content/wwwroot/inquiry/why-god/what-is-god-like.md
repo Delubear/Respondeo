@@ -1,13 +1,13 @@
 ---
 id: what-is-god-like
 title: "What is God like?"
-summary: From the arguments to the God of classical theism &mdash; the divine attributes that follow.
+summary: "From the arguments to the God of classical theism &mdash; the divine attributes that follow."
 tags:
   - existence of god
   - st. thomas aquinas
 ---
 
-The Five Ways each conclude to a first term &mdash; an Unmoved Mover, a First Cause, a Necessary Being, a source of all perfection, an ordering Intellect.
+The Five Ways each conclude to a first term: an Unmoved Mover, a First Cause, a Necessary Being, a source of all perfection, an ordering Intellect.
 A natural question follows: *are these five different things, or one?* And once we have arrived, *what must such a being actually be like?*
 
 Aquinas argues that the terminus of each way is one and the same being, and that its nature can be unfolded by reasoning carefully from what the arguments already established. 
@@ -20,15 +20,15 @@ We do not first assume *God* and then list His traits; we read the attributes of
 
 **They all point to one being.**
 Each way ends in something that is first, uncaused, and not dependent on anything else. 
-But there cannot be two beings that are each utterly first and independent &mdash; to differ, 
+But there cannot be two beings that are each utterly first and independent: to differ, 
 one would have to lack something the other has, and a being that is Pure Act and Being Itself lacks nothing. 
 So the conclusions converge: there is one ultimate source.
 
-**Pure Act &mdash; no unrealized potential.**
+**Pure Act: no unrealized potential.**
 The First Way ends in something that is actual through and through. From this single point most of the classical attributes follow:
 
 - **Immutable.** To change is to move from potency to act; a being with no potency cannot change.
-- **Eternal.** Time measures change. What cannot change is not measured by time &mdash; it simply *is*, without before or after.
+- **Eternal.** Time measures change. What cannot change is not measured by time; it simply *is*, without before or after.
 - **Immaterial.** Matter is a principle of potentiality; Pure Act has no matter and so is not a body.
 
 > Hence it is evident that it is impossible for God to be in any way changeable.
@@ -39,11 +39,11 @@ The First Way ends in something that is actual through and through. From this si
 >
 > &mdash; [*Summa Theologiae* I, Q. 10, A. 2](summa/prima-q010#article-2)
 
-**Being Itself &mdash; existence without limit.**
+**Being Itself: existence without limit.**
 The Third Way ends in something whose very essence is to exist. Because its existence is not received into any limiting essence, 
-it is unlimited &mdash; **infinite** and **perfect**, lacking no perfection of being.
+it is unlimited: **infinite** and **perfect**, lacking no perfection of being.
 
-- **Simple.** It has no parts to be composed &mdash; no body, no distinction between what it is and that it is. It does not *have* existence or goodness; it *is* them.
+- **Simple.** It has no parts to be composed: no body, no distinction between what it is and that it is. It does not *have* existence or goodness; it *is* them.
 - **One.** As argued above, there cannot be two unlimited beings, so this being is unique.
 
 > There is neither composition of quantitative parts in God, since He is not a body; 
@@ -55,12 +55,12 @@ it is unlimited &mdash; **infinite** and **perfect**, lacking no perfection of b
 >
 > &mdash; [*Summa Theologiae* I, Q. 11, A. 4](summa/prima-q011#article-4)
 
-**Source of all perfection &mdash; goodness, intellect, will.**
+**Source of all perfection: goodness, intellect, will.**
 The Fourth and Fifth Ways end in the source of every perfection and the intelligence ordering things to their ends.
 
 - **Good.** Everything seeks its own perfection, and the source of all perfection is perfect goodness itself.
-- **Knowing.** The one who orders all things to their ends does so as an intellect; a being that is Pure Act possesses understanding without limit &mdash; **omniscient**.
-- **Powerful.** As the first cause on which all being depends, nothing lies outside its causal reach &mdash; **omnipotent**.
+- **Knowing.** The one who orders all things to their ends does so as an intellect; a being that is Pure Act possesses understanding without limit: **omniscient**.
+- **Powerful.** As the first cause on which all being depends, nothing lies outside its causal reach: **omnipotent**.
 
 > To be good belongs pre-eminently to God. For a thing is good according to its desirableness.
 >
@@ -75,10 +75,10 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 
 **The God of the philosophers &mdash; and beyond.**
 Reason, then, carries us further than *some first cause*. It arrives at a being that is one, simple, eternal, 
-immutable, infinite, perfect, good, all-knowing, and all-powerful &mdash; the God of classical theism.
+immutable, infinite, perfect, good, all-knowing, and all-powerful: the God of classical theism.
 
 But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, 
-yet it has not told us *which* God this is among the ones people actually worship &mdash; whether He is a distant abstraction or a personal God who knows and loves, 
+yet it has not told us *which* God this is among the ones people actually worship: whether He is a distant abstraction or a personal God who knows and loves, 
 and whether He has ever *spoken*, entered history, and drawn near. 
 
 That is a further question, and the beginning of a different road.

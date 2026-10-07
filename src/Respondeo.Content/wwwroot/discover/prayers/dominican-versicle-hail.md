@@ -1,7 +1,7 @@
 ---
 id: dominican-versicle-hail
 title: "Hail Mary, Full of Grace"
-summary: The first versicle that opens the Dominican Rosary, prayed on the first bead.
+summary: "The first versicle that opens the Dominican Rosary, prayed on the first bead."
 category: marian
 language: en
 translationKey: dominican-versicle-hail

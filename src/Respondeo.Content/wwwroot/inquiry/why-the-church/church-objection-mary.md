@@ -1,7 +1,7 @@
 ---
 id: church-objection-mary
 title: "The Blessed Virgin Mary"
-summary: Why the Church honors Mary so highly &mdash; her unique role in salvation, and why she is the New Ark of the Covenant.
+summary: "Why the Church honors Mary so highly: her unique role in salvation, and why she is the New Ark of the Covenant."
 tags:
   - the catholic church
   - divine revelation
@@ -12,7 +12,7 @@ tags:
 Catholic devotion to Mary seems to cross a line no creature should cross. 
 Catholics call her "Queen of Heaven," claim she was conceived without sin and assumed bodily into glory, ask for her intercession, 
 and give her a place that looks dangerously close to divine. 
-Scripture says little about her &mdash; so why does she loom so large? Is this not honor stolen from Christ and given to His mother?
+Scripture says little about her: so why does she loom so large? Is this not honor stolen from Christ and given to His mother?
 
 **The response:**
 
@@ -31,7 +31,7 @@ Salvation does not begin with a doctrine but with a *yes*.
    She is not the source of grace, but she is the door through which its Source consented to enter the world.
 
 2. **The God-bearer.**
-   The most ancient and central title is *Theotokos* &mdash; Mother of God.
+   The most ancient and central title is *Theotokos*: Mother of God.
    It is not a claim that Mary is older than God or the origin of His divinity; it is a claim about *Christ*: that the child she bore is one Person, truly God and truly man.
    To deny that Mary is the Mother of God is, in the end, to deny that the one she carried is God at all.
    Her motherhood guards the Incarnation itself.
@@ -39,7 +39,7 @@ Salvation does not begin with a doctrine but with a *yes*.
 3. **The first disciple, and the model of the Church.**
    Before anyone followed Christ, Mary carried Him.
    She heard the word of God and kept it perfectly; she stood at the foot of the Cross when the apostles fled; she was among the disciples at Pentecost.
-   In her, the Church sees what she herself is called to be &mdash; the one who receives Christ wholly and bears Him to the world.
+   In her, the Church sees what she herself is called to be: the one who receives Christ wholly and bears Him to the world.
    And from the Cross, Christ gave her to the beloved disciple &mdash; "Behold your mother" &mdash; giving her, the Church has always understood, as mother to all His disciples.
 
 ## Mary, the New Ark of the Covenant
@@ -48,12 +48,12 @@ The deepest key to Mary is one the objection overlooks: Scripture presents her a
 and once this is seen, the doctrines that seem excessive suddenly appear *fitting*.
 
 The old Ark was a wooden chest overlaid with pure gold, and it was holy for one reason: 
-it *contained* the presence of God &mdash; the tablets of the Word, the manna, the priestly rod.
+it *contained* the presence of God: the tablets of the Word, the manna, the priestly rod.
 Precisely because of what it carried, God commanded that it be made spotless, treated with the utmost reverence, 
 and never touched by profane hands; when a man reached out carelessly to steady it, he died.
 The Ark was set apart *because of its contents.*
 
-Mary is the Ark of the New Covenant, and her contents are infinitely greater &mdash; not tablets of stone but the living Word; 
+Mary is the Ark of the New Covenant, and her contents are infinitely greater: not tablets of stone but the living Word; 
 not manna but the Bread of Life; not a priestly rod but the eternal High Priest.
 Luke tells her story in language that deliberately echoes the Ark:
 
@@ -70,13 +70,13 @@ And it reframes everything the objection resists:
    If the old Ark, which held only shadows of Christ, had to be pure gold and untouched by corruption, 
    how much more fitting that the living Ark, who held God Himself in her very body, should be preserved from the corruption of sin.
    The Immaculate Conception is not a claim that Mary saved herself; 
-   it is the claim that Christ's grace reached her *first and most completely* &mdash; He preserved His own Mother from sin by the merits of the Cross applied to her in advance.
+   it is the claim that Christ's grace reached her *first and most completely*: He preserved His own Mother from sin by the merits of the Cross applied to her in advance.
    She is the supreme trophy of His redemption, not an exception to it.
 
 2. **The Assumption.**
    The Ark was never abandoned to decay.
    It is fitting that the living Ark, who gave her flesh to the incorruptible Word and never fell under the reign of sin, 
-   should not be left to the corruption of the grave, but be taken up body and soul to be with her Son &mdash; the first to share fully in the resurrection He won.
+   should not be left to the corruption of the grave, but be taken up body and soul to be with her Son: the first to share fully in the resurrection He won.
 
 3. **Queen Mother.**
    In the kingdom of David, the queen was not the king's wife but the king's *mother* &mdash; the *Gebirah* &mdash; who 
@@ -88,6 +88,6 @@ And it reframes everything the objection resists:
 Honor for Mary is not a late medieval excess; it is woven into the New Testament itself, 
 where she declares "all generations will call me blessed," and it is visible in the oldest Christian prayer and art.
 None of it competes with Christ.
-Every Marian doctrine is a statement about what God did *in* and *through* her for our salvation &mdash; the New Eve whose yes opened the way, 
+Every Marian doctrine is a statement about what God did *in* and *through* her for our salvation: the New Eve whose yes opened the way, 
 the God-bearer who guards the Incarnation, and the living Ark whose whole holiness is the holiness of the One she carried.
 To honor the Mother rightly is simply to take with full seriousness the God who chose to be her Son.

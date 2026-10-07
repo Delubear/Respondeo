@@ -1,7 +1,7 @@
 ---
 id: which-god-objection-projection
 title: "Isn't a Personal God Just Wishful Thinking?"
-summary: Doesn't a God who knows and loves us look exactly like a comforting projection of our own longings?
+summary: "Doesn't a God who knows and loves us look exactly like a comforting projection of our own longings?"
 ---
 
 **The objection, at its strongest:**
@@ -14,7 +14,7 @@ summary: Doesn't a God who knows and loves us look exactly like a comforting pro
 **In response:**
 
 - **A wish can motivate a belief without making it false.** That we *want* something to be true is, by itself, no evidence either way. 
-  A starving man wants food &mdash; and food is real. A child wants a parent &mdash; and parents exist. 
+  A starving man wants food, and food is real. A child wants a parent, and parents exist. 
   The origin of a desire tells you nothing about whether its object exists; to think otherwise is the *genetic fallacy*, 
   judging a claim by where it came from rather than whether it holds. 
   The projection story, even if true of *some* believers, leaves the actual question &mdash; *is there such a God?* &mdash; completely untouched.

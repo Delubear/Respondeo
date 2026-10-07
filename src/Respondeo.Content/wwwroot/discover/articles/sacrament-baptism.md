@@ -1,7 +1,7 @@
 ---
 id: sacrament-baptism
 title: "Baptism"
-summary: The sacrament of rebirth &mdash; dying and rising with Christ, washed and made a new creation.
+summary: "The sacrament of rebirth: dying and rising with Christ, washed and made a new creation."
 topic: sacraments
 tags:
   - sacraments
@@ -19,11 +19,11 @@ sources:
 Baptism is the doorway into the whole sacramental life.
 Through water and the words "I baptize you in the name of the Father, and of the Son, and of the Holy Spirit," 
 a person is joined to Christ's death and resurrection, cleansed of sin, filled with grace, and made a member of His body.
-It is not primarily something *we* do; it is something done *to* us &mdash; a rebirth we receive.
+It is not primarily something *we* do; it is something done *to* us: a rebirth we receive.
 
 ## The deep meaning: dying and rising with Christ
 
-Baptism is far more than a washing. The water signifies two things at once &mdash; death and life. Going down
+Baptism is far more than a washing. The water signifies two things at once: death and life. Going down
 into it, the old self is buried with Christ; coming up from it, a new self rises with Him. St. Paul
 makes the image explicit:
 
@@ -36,7 +36,7 @@ makes the image explicit:
 This is why the Church calls Baptism a *rebirth*. Jesus told Nicodemus, "unless one is born of water
 and the Spirit, he cannot enter the kingdom of God" (John 3:5). In it, original sin and every personal
 sin committed beforehand are wholly forgiven, the Holy Spirit comes to dwell in the soul, and the
-person becomes a true child of God and heir of heaven &mdash; not by metaphor, but in reality.
+person becomes a true child of God and heir of heaven: not by metaphor, but in reality.
 
 ## How it is done
 
@@ -85,7 +85,7 @@ indelible spiritual mark of his belonging to Christ... given once for all, Bapti
 
 Precisely because Baptism cannot be repeated, the Church is careful never to re-baptize someone who has
 already received it. Yet sometimes there is genuine, reasonable *doubt* about whether a valid Baptism
-ever took place &mdash; for example, when records are lost, when it is unclear whether water truly flowed, or
+ever took place: for example, when records are lost, when it is unclear whether water truly flowed, or
 when a convert's former community did not use the Trinitarian form. In those cases the Church may confer
 a *conditional* Baptism, using the form "If you are not baptized, I baptize you in the name of the
 Father, and of the Son, and of the Holy Spirit."
@@ -115,7 +115,7 @@ Everything begins here. In Baptism a person is made a new creation and a child o
 original sin and all personal sin is washed away, and the very life of God is planted in the soul. This
 is why the Church rejoices over a baptism the way a family rejoices over a birth: a new life has begun
 that death cannot end. For the one entering the faith from outside, this is the threshold the whole path
-has been leading toward &mdash; and, once crossed, it marks the soul forever.
+has been leading toward, and, once crossed, it marks the soul forever.
 
 ::: youtube Euxu36jVJpU
 :::

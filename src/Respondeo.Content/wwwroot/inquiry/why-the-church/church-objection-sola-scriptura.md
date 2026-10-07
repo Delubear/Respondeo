@@ -1,7 +1,7 @@
 ---
 id: church-objection-sola-scriptura
 title: "Isn't Scripture Alone Enough?"
-summary: Why appeal to a Church and Tradition when the Bible is the sufficient rule of faith?
+summary: "Why appeal to a Church and Tradition when the Bible is the sufficient rule of faith?"
 tags:
   - the catholic church
   - divine revelation
@@ -10,7 +10,7 @@ tags:
 
 **The objection, at its strongest:**
 
-Scripture is the inspired Word of God &mdash; sufficient, clear, and complete. 
+Scripture is the inspired Word of God: sufficient, clear, and complete. 
 Adding a Church and its Tradition as a second authority risks burying God's word under human invention. 
 If the Bible contains everything needed for salvation, why appeal to anything else? *Sola scriptura* keeps 
 the focus where it belongs: on God's word rather than man's.
@@ -38,6 +38,6 @@ prayerful readers of the same text have divided into thousands of communities co
 A rule meant to secure unity in the truth that instead multiplies division is not functioning as the sole sufficient rule.
 
 None of this demotes Scripture.
-The Catholic Church holds it to be inspired and inerrant &mdash; and reads more of it in her worship than most communities do.
+The Catholic Church holds it to be inspired and inerrant, and reads more of it in her worship than most communities do.
 The claim is only that Christ did not leave His word *orphaned*: He gave it a living interpreter, 
 so that the word and the Church that guards it stand together, exactly as they did in the first generation.

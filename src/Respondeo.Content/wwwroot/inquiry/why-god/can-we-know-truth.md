@@ -1,7 +1,7 @@
 ---
 id: can-we-know-truth
 title: "Can We Even Know the Truth?"
-summary: Before any argument for God can land, we have to answer whether truth exists and whether the mind can reach it.
+summary: "Before any argument for God can land, we have to answer whether truth exists and whether the mind can reach it."
 tags:
   - existence of god
 ---

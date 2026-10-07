@@ -1,7 +1,7 @@
 ---
 id: objections-to-god
 title: "Objections to God"
-summary: What are the strongest objections to the existence of God, and how do we respond?
+summary: "What are the strongest objections to the existence of God, and how do we respond?"
 tags:
   - existence of god
   - st. thomas aquinas
@@ -14,7 +14,7 @@ sections:
 ---
 
 Good arguments deserve to be tested against the hardest objections, not the weakest.
-A faith that cannot look its strongest challengers in the eye is not worth much &mdash; so here each objection is stated in its most forceful form *before* any reply is given.
+A faith that cannot look its strongest challengers in the eye is not worth much, so here each objection is stated in its most forceful form *before* any reply is given.
 
 Chief among them is the problem of evil. It is taken seriously and addressed first, on its own terms, rather than passed over on the way to easier questions.
 

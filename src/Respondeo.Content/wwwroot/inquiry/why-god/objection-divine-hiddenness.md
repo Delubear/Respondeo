@@ -1,7 +1,7 @@
 ---
 id: objection-divine-hiddenness
 title: "Divine Hiddenness"
-summary: If God wanted a relationship with us, why isn't his existence obvious?
+summary: "If God wanted a relationship with us, why isn't his existence obvious?"
 ---
 
 **The objection, at its strongest:**
@@ -13,10 +13,10 @@ summary: If God wanted a relationship with us, why isn't his existence obvious?
 
 **In response:**
 
-- **Overwhelming proof would coerce.** A God who blazed across the sky would compel assent the way a proof of arithmetic does &mdash; leaving no room for a *free* turning of the heart. 
+- **Overwhelming proof would coerce.** A God who blazed across the sky would compel assent the way a proof of arithmetic does, leaving no room for a *free* turning of the heart. 
   Love that cannot be declined is not love. A degree of hiddenness may be the necessary space in which a real "yes" becomes possible.
 - ***Hidden* is not *absent*.** The claim is not that there is *no* evidence, but that it does not force the will. 
-  Contingent existence, the intelligibility of nature, moral obligation, and conscience are all pointers &mdash; enough to seek by, not enough to bully.
+  Contingent existence, the intelligibility of nature, moral obligation, and conscience are all pointers: enough to seek by, not enough to bully.
 - **Disposition shapes sight.** Knowing a person is not like reading a gauge; it depends on the posture of the one seeking. 
   Scripture frames God as found by those who seek him honestly, which is a different epistemic situation than detecting a distant object.
 - **The search itself is data.** 
@@ -36,7 +36,7 @@ what is most knowable in itself can be least evident to minds like ours, so it m
 
 In plainer terms: that one line &mdash; "the predicate is the same as the subject" &mdash; is the key. 
 Aquinas is saying that for God, *to be* and *to exist* aren't two separate things: existence isn't something God has, it's what God *is*. 
-So "God exists" is a bit like saying "the existing one exists" &mdash; true by its very nature. 
+So "God exists" is a bit like saying "the existing one exists": true by its very nature. 
 The catch is that we can't see God's nature directly, so this built-in truth doesn't feel obvious to us; we have to arrive at it the long way, through the things God has made.
 
 *On knowing God through his effects rather than face-to-face, see [The Five Ways](node/aquinas-five-ways).*

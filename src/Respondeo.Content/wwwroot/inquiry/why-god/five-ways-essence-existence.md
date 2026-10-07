@@ -1,7 +1,7 @@
 ---
 id: five-ways-essence-existence
 title: "Essence & Existence &mdash; The Second Foundation"
-summary: Aristotle's and Aquinas's distinction between essence and existence.
+summary: "Aristotle's and Aquinas's distinction between essence and existence."
 ---
 
 > Essence answers to what a thing is, while existence, or being, answers to that it is, or the fact that it exists.

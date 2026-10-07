@@ -2,7 +2,7 @@
 id: lamb-of-god
 title: "Lamb of God"
 sortKey: "Lamb of God"
-summary: The litany sung at the breaking of the Bread before Communion.
+summary: "The litany sung at the breaking of the Bread before Communion."
 category: mass
 language: en
 translationKey: lamb-of-god

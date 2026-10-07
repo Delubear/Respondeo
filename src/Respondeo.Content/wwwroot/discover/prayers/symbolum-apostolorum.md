@@ -1,7 +1,7 @@
 ---
 id: symbolum-apostolorum
 title: "Symbolum Apostolorum"
-summary: The Latin of the Apostles' Creed.
+summary: "The Latin of the Apostles' Creed."
 category: daily
 language: la
 translationKey: apostles-creed

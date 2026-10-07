@@ -1,7 +1,7 @@
 ---
 id: objection-burden-of-proof
 title: "The Burden of Proof"
-summary: Isn't the believer the one who has to prove God, like a teapot orbiting the sun?
+summary: "Isn't the believer the one who has to prove God, like a teapot orbiting the sun?"
 ---
 
 **The objection, at its strongest:**
@@ -13,18 +13,18 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
 
 **In response:**
 
-- **The teapot is a bad analogy.** A teapot is a contingent physical object that *would* leave detectable traces &mdash; its absence of evidence really is evidence of absence. 
+- **The teapot is a bad analogy.** A teapot is a contingent physical object that *would* leave detectable traces: its absence of evidence really is evidence of absence. 
   God is not proposed as an object within the universe, but as the necessary ground of the universe. The two claims are in entirely different categories, so the intuition doesn't transfer.
 - **"Lack of belief" still owes an account.** If the question is "does an ultimate explanation of contingent reality exist?", 
   then *both* answers are substantive positions about the way things are. 
   Saying "I simply lack belief" does not exempt one from explaining why contingent things exist at all. 
   There is also no neutral *default* here: treating disbelief as the automatic starting point is not neutrality 
-  but a conclusion smuggled in as a premise &mdash; the true zero point is "I do not know," which is itself a substantive stance, not an exemption from the question.
+  but a conclusion smuggled in as a premise: the true zero point is "I do not know," which is itself a substantive stance, not an exemption from the question.
 - **There is an argument, not a mere assertion.** The believer is not saying "prove me wrong." 
   Classical natural theology offers positive arguments &mdash; from contingency, causation, and order &mdash; that reason from features of the world to their necessary source. 
   One may dispute those arguments, but they are evidence offered, which is exactly what "meeting the burden" looks like.
 
-  Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from his effects &mdash; the same logic by which we infer any unseen cause from what it produces:
+  Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from his effects, the same logic by which we infer any unseen cause from what it produces:
 
   > When an effect is better known to us than its cause, from the effect we proceed to the
   > knowledge of the cause. And from every effect the existence of its proper cause can be

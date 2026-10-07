@@ -1,14 +1,14 @@
 ---
 id: begin-entering-outside
 title: "If You Are Entering the Faith from Outside"
-summary: The ordinary path of formation for the unbaptized or those coming from another tradition.
+summary: "The ordinary path of formation for the unbaptized or those coming from another tradition."
 tags:
   - the catholic church
   - conversion
 ---
 
 For someone not yet baptized, or baptized in another tradition and seeking full communion, 
-the ordinary path is through a parish's process of formation &mdash; often called **OCIA** or the **Order of Christian Initiation**.
+the ordinary path is through a parish's process of formation: often called **OCIA** or the **Order of Christian Initiation**.
 
 1. **Contact a local Catholic parish.**
    Call the office or speak to a priest, and say plainly that you are interested in becoming Catholic.
@@ -20,4 +20,4 @@ the ordinary path is through a parish's process of formation &mdash; often calle
 
 3. **Receive the sacraments of initiation.**
    The path leads to Baptism (if you are not already baptized), 
-   Confirmation, and first Eucharist &mdash; usually celebrated together, often at Easter.
+   Confirmation, and first Eucharist, usually celebrated together, often at Easter.

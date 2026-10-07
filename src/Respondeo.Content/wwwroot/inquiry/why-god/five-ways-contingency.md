@@ -1,7 +1,7 @@
 ---
 id: five-ways-contingency
 title: "The Third Way &mdash; Contingency and Necessity"
-summary: From things that can fail to be, to a necessary being.
+summary: "From things that can fail to be, to a necessary being."
 ---
 
 > We find in nature things that are possible to be and not to be, since they are found to be generated, and to corrupt.

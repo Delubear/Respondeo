@@ -2,7 +2,7 @@
 id: confiteor
 title: "The Confiteor"
 sortKey: "Confiteor"
-summary: The Penitential Act in which we confess our sins before Mass.
+summary: "The Penitential Act in which we confess our sins before Mass."
 category: mass
 language: en
 translationKey: confiteor

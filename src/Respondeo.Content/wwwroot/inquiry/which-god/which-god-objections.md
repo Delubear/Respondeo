@@ -1,7 +1,7 @@
 ---
 id: which-god-objections
 title: "Objections to This God"
-summary: What are the strongest objections to a personal, self-revealing God of Israel, and how do we respond?
+summary: "What are the strongest objections to a personal, self-revealing God of Israel, and how do we respond?"
 tags:
   - divine revelation
 sections:

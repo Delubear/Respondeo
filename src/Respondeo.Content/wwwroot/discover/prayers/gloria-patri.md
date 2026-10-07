@@ -1,7 +1,7 @@
 ---
 id: gloria-patri
 title: "Gloria Patri"
-summary: The Latin of the Glory Be.
+summary: "The Latin of the Glory Be."
 category: daily
 language: la
 translationKey: glory-be

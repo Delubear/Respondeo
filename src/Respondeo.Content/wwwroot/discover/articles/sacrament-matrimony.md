@@ -1,7 +1,7 @@
 ---
 id: sacrament-matrimony
 title: "Matrimony"
-summary: The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church.
+summary: "The sacrament by which a man and woman are joined in a covenant that images Christ's love for the Church."
 topic: sacraments
 tags:
   - sacraments
@@ -13,7 +13,7 @@ reviewStatus: unvetted
 **What it is.**
 In Matrimony, a baptized man and woman give themselves to each other in a permanent, faithful, life-giving covenant.
 The spouses are the ministers of the sacrament; the Church witnesses and blesses what they confer on one another.
-Christ raises their natural union into a sign of His own union with the Church &mdash; a bond He sanctifies and strengthens with grace.
+Christ raises their natural union into a sign of His own union with the Church: a bond He sanctifies and strengthens with grace.
 
 **Why celebrate it.**
 Marriage is not merely a contract or a milestone but a vocation and a channel of grace.

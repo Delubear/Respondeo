@@ -1,7 +1,7 @@
 ---
 id: objection-science-explains
 title: "Science Explains Everything"
-summary: As science advances, doesn't it leave less and less for God to do?
+summary: "As science advances, doesn't it leave less and less for God to do?"
 ---
 
 **The objection, at its strongest:**
@@ -10,7 +10,7 @@ summary: As science advances, doesn't it leave less and less for God to do?
 2. The gaps where God was invoked keep shrinking.
 3. So God is an outdated placeholder for what we do not yet understand.
 
-This is essentially Aquinas's second objection &mdash; that natural and human causes are a *complete* explanatory set, leaving God redundant:
+This is essentially Aquinas's second objection, that natural and human causes are a *complete* explanatory set, leaving God redundant:
 
 > It is superfluous to suppose that what can be accounted for by a few principles has been
 > produced by many. But it seems that everything we see in the world can be accounted for by
@@ -28,18 +28,18 @@ This is essentially Aquinas's second objection &mdash; that natural and human ca
   and why is it ordered* that grounds the whole enterprise. 
   Explaining the mechanism of a kettle does not remove the person who wanted tea.
 - **This is not a gap that waits to be closed.** It is tempting to reply: 
-  "Science couldn't explain lightning once either &mdash; give it time, and 'why is there anything at all' will fall too." 
-  But this mistakes the kind of question it is. Science advances by finding *deeper mechanisms* &mdash; a prior cause, a finer law. 
+  "Science couldn't explain lightning once either; give it time, and 'why is there anything at all' will fall too." 
+  But this mistakes the kind of question it is. Science advances by finding *deeper mechanisms*: a prior cause, a finer law. 
   "Why is there any lawful, existing world for mechanisms to operate in?" is not a missing mechanism further down the same road; it is a question about the road itself. 
-  No amount of progress *along* the chain explains why there is a chain, so this is not a shrinking gap &mdash; it is a question science presupposes every time it succeeds.
+  No amount of progress *along* the chain explains why there is a chain, so this is not a shrinking gap; it is a question science presupposes every time it succeeds.
 - **Science rests on assumptions it cannot prove.** That the universe is rational, that its order is stable and discoverable, 
-  that our minds track truth &mdash; these are not results of science but conditions for it. 
+  that our minds track truth: these are not results of science but conditions for it. 
   A created, intelligible cosmos makes better sense of *why science works* than brute, unexplained regularity does.
 - **The history cuts both ways.** Many founders of modern science pursued it *because* they expected a law-giver's ordered world. 
   The success of science is comfortable company for theism, not its refutation.
 
 Aquinas answers that nature and human reason are not the bottom of the explanation at all. Both of them *change* and can *fail*, 
-so both are themselves caused &mdash; which means they point beyond themselves rather than settling the matter:
+so both are themselves caused, which means they point beyond themselves rather than settling the matter:
 
 > Since nature works for a determinate end under the direction of a higher agent, whatever
 > is done by nature must needs be traced back to God, as to its first cause. So also

@@ -1,25 +1,25 @@
 ---
 id: church-recognizing-it
 title: "Which Church Is It?"
-summary: How to recognize Christ's Church among the many that claim His name.
+summary: "How to recognize Christ's Church among the many that claim His name."
 tags:
   - the catholic church
 ---
 
-If Christ founded a visible Church meant to endure, then it did not vanish &mdash; it is somewhere, and it can be found.
+If Christ founded a visible Church meant to endure, then it did not vanish: it is somewhere, and it can be found.
 But that is where the difficulty begins.
 Many communities claim His name, and they teach contradictory things about baptism, authority, the Eucharist, and salvation.
 They cannot all be the Church He founded, since He founded *one*.
 So we need a way to tell the original from the later branchings.
 
 The test is not "which community feels most alive" or "which reads Scripture as I do." 
-It is historical and concrete: which body can be traced, without a break, to the Church of the apostles &mdash; in leadership, teaching, and worship?
+It is historical and concrete: which body can be traced, without a break, to the Church of the apostles, in leadership, teaching, and worship?
 
 **How to identify the Church Christ founded:**
 
 1. **Unbroken continuity, not a later re-founding.**
    The true Church should reach back to the apostles in a continuous line, not appear centuries later as a fresh start.
-   A community that began in the 1500s, or the 1800s, is by its own history a *reform of*, or a *break from*, something older &mdash; not the thing itself.
+   A community that began in the 1500s, or the 1800s, is by its own history a *reform of*, or a *break from*, something older, not the thing itself.
 
 2. **Apostolic succession, not self-appointment.**
    Christ gave authority to specific men and empowered them to hand it on.
@@ -37,7 +37,7 @@ It is historical and concrete: which body can be traced, without a break, to the
 
 **Following the evidence.** Applied honestly, these tests point in a definite direction.
 The historical continuity, the succession of bishops, the teaching office, and the sacramental worship of the early Church are not distributed evenly across all who claim Christ's name.
-They converge most fully on the Catholic Church &mdash; the community that can trace its line, its leadership, and its worship back through the Fathers to the apostles themselves.
+They converge most fully on the Catholic Church: the community that can trace its line, its leadership, and its worship back through the Fathers to the apostles themselves.
 
 ## See it today: tracing a family line
 
@@ -49,6 +49,6 @@ The Church can be traced the same way: bishop to bishop, back to the apostles Ch
 The line either holds or it does not.
 
 **Where this leads.** Historical continuity tells us *where* to look, 
-but Christ also gave His Church visible **marks** &mdash; features by which it could be recognized in any age.
+but Christ also gave His Church visible **marks**: features by which it could be recognized in any age.
 The creed names four of them: one, holy, catholic, and apostolic.
 The next question is what those marks mean, and where they are actually found today.

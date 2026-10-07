@@ -1,7 +1,7 @@
 ---
 id: jesus-who-was-he
 title: "Who Was Jesus?"
-summary: The historical man of Nazareth, and the startling claim Christianity makes about him.
+summary: "The historical man of Nazareth, and the startling claim Christianity makes about him."
 tags:
   - jesus christ
   - divine revelation

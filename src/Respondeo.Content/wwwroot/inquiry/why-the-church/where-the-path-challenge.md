@@ -1,7 +1,7 @@
 ---
 id: where-the-path-challenge
 title: "Not ready yet? A challenge for you"
-summary: A simple daily-prayer challenge for anyone not yet ready to come home &mdash; or wanting to strengthen their faith first.
+summary: "A simple daily-prayer challenge for anyone not yet ready to come home, or wanting to strengthen their faith first."
 tags:
   - the catholic church
   - conversion
@@ -21,7 +21,7 @@ It costs seconds to minutes a day, and it asks nothing you cannot sincerely offe
 
 A prayer for each place on the road:
 
-- **If you're an atheist or agnostic**, pray this each day, sincerely, with humility and perseverance &mdash; it takes
+- **If you're an atheist or agnostic**, pray this each day, sincerely, with humility and perseverance. It takes
   ten to fifteen seconds:
 
   > *God, if you exist, please help me to know you, love you, and serve you. Guide me to the full truth about
@@ -38,7 +38,7 @@ A prayer for each place on the road:
 
   > *God, I trust that you know my intentions are pure. I seek you above all else. Have mercy on me for my sins.*
 
-- **If you're already Catholic**, learn to pray the full five-decade Rosary and pray it every day &mdash; your day
+- **If you're already Catholic**, learn to pray the full five-decade Rosary and pray it every day. Your day
   should feel incomplete without it.
 
 The logic is the flare-gun logic: the stakes are high and the cost is tiny, so there is every reason to try and
@@ -50,7 +50,7 @@ which begins at the linked timestamp:
 
 [Watch "My Challenge to You" (opens at the timestamp)](https://www.youtube.com/watch?v=7X_HmSQ6A1A&t=26073s)
 
-*Credit: the challenge above &mdash; including the flare-gun analogy and the three prayers &mdash; is drawn from the "My
+*Credit: the challenge above, including the flare-gun analogy and the three prayers, is drawn from the "My
 Challenge to You" portion of "The BEST Objections to Catholicism ANSWERED" by [Majesty of Reason](https://www.youtube.com/@MajestyofReason). 
 The excerpts are quoted for study and reflection; full credit belongs to the original creator. Please watch the video in full on
 YouTube. Be sure to also watch his previous two videos discussing his intellectual journey into Catholicism.*

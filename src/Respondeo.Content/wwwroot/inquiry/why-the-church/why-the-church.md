@@ -1,7 +1,7 @@
 ---
 id: why-the-church
 title: "Why the Church?"
-summary: From the Christ who rose to the community He left behind &mdash; did He found a Church, and is the Catholic Church that Church?
+summary: "From the Christ who rose to the community He left behind: did He found a Church, and is the Catholic Church that Church?"
 tags:
   - getting started
   - the catholic church

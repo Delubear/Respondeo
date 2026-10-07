@@ -1,7 +1,7 @@
 ---
 id: glory-be
 title: "Glory Be"
-summary: The Doxology &mdash; praise to the Holy Trinity.
+summary: "The Doxology: praise to the Holy Trinity."
 category: daily
 language: en
 translationKey: glory-be

@@ -2,7 +2,7 @@
 id: therese-of-lisieux
 title: "St. Thérèse of Lisieux"
 sortKey: "Thérèse of Lisieux"
-summary: The Carmelite nun whose "Little Way" of spiritual childhood made her one of the most beloved modern saints and a Doctor of the Church.
+summary: "The Carmelite nun whose \"Little Way\" of spiritual childhood made her one of the most beloved modern saints and a Doctor of the Church."
 era: modern
 region: europe
 patronages: [Missions, Youth]
@@ -34,7 +34,7 @@ life, published after her death as *Story of a Soul*.
 
 ## The Little Way
 
-Thérèse is best known for her "Little Way" &mdash; a path to holiness founded not on great deeds but on
+Thérèse is best known for her "Little Way": a path to holiness founded not on great deeds but on
 doing small, ordinary things with great love and complete trust in God's mercy, like a child in the
 arms of a father. This spirituality of confidence and littleness spread rapidly after her death.
 

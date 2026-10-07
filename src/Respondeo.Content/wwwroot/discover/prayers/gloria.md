@@ -2,7 +2,7 @@
 id: gloria
 title: "The Gloria"
 sortKey: "Gloria"
-summary: The great hymn of praise sung on Sundays and feasts.
+summary: "The great hymn of praise sung on Sundays and feasts."
 category: mass
 language: en
 translationKey: gloria

@@ -1,7 +1,7 @@
 ---
 id: jesus-objection-did-he-exist
 title: "Did Jesus Even Exist?"
-summary: Is Jesus of Nazareth a real figure of history, or a myth with no man behind him?
+summary: "Is Jesus of Nazareth a real figure of history, or a myth with no man behind him?"
 ---
 
 **The objection, at its strongest:**
@@ -13,7 +13,7 @@ Why assume a real man stands behind the legend rather than a myth that later gen
 
 **The response:**
 
-The "Jesus never existed" thesis is held by almost no working historian, religious or secular &mdash; and not out of piety, 
+The "Jesus never existed" thesis is held by almost no working historian, religious or secular, and not out of piety, 
 but because the evidence for his existence is stronger than for most ordinary figures of antiquity.
 
 First, the sources are early and plural.
@@ -34,5 +34,5 @@ a named home town treated as an embarrassment ("can anything good come out of Na
 Inventors locate their heroes in glorious origins, not in a backwater, 
 and they do not script the founder's death by the most shameful means the ancient world knew.
 
-The honest historical question was never *whether* Jesus existed, but *who* he was and *what* happened to him &mdash; which 
+The honest historical question was never *whether* Jesus existed, but *who* he was and *what* happened to him, which 
 is exactly where this path has been pressing all along.

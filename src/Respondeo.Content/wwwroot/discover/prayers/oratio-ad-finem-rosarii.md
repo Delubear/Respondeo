@@ -1,7 +1,7 @@
 ---
 id: oratio-ad-finem-rosarii
 title: "Deus, Cuius Unigénitus"
-summary: The Latin of the collect said after the Salve Regina to close the Rosary.
+summary: "The Latin of the collect said after the Salve Regina to close the Rosary."
 category: marian
 language: la
 translationKey: rosary-concluding-prayer

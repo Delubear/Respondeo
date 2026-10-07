@@ -2,7 +2,7 @@
 id: nicene-creed
 title: "The Nicene Creed"
 sortKey: "Nicene Creed"
-summary: The profession of faith proclaimed at Mass on Sundays and solemnities.
+summary: "The profession of faith proclaimed at Mass on Sundays and solemnities."
 category: daily
 language: en
 translationKey: nicene-creed

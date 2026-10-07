@@ -1,7 +1,7 @@
 ---
 id: litany-sacred-heart
 title: "Litany of the Sacred Heart"
-summary: The traditional litany of invocations to the Sacred Heart of Jesus, each answered "have mercy on us."
+summary: "The traditional litany of invocations to the Sacred Heart of Jesus, each answered \"have mercy on us.\""
 category: litany
 language: en
 translationKey: litany-sacred-heart
