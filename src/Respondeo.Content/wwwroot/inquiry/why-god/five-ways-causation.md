@@ -8,10 +8,10 @@ summary: "From ordered efficient causes to a first cause."
 >
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
-The First Way looked at *change*; the Second Way looks at *existence* &mdash; at the causes that make things be and act.
+The First Way looked at *change*; the Second Way looks at *existence*: at the causes that make things be and act.
 An **efficient cause** is that which brings something about: the sculptor of the statue, the fire that heats, the signet ring that presses its shape into the wax.
 
-Aquinas observes that these causes come in *orders* &mdash; chains where one cause acts through another.
+Aquinas observes that these causes come in *orders*: chains where one cause acts through another.
 And no such cause is the efficient cause of *itself*:
 
 > There is no case known (neither is it, indeed, possible) in which a thing is found to be the efficient cause of itself; 
@@ -38,14 +38,14 @@ He means an **essentially ordered** series, where every member depends *at this 
 - A gear turns only while the gear meshed before it is turning; stop the first and the whole train halts at once.
 - A brush paints only as the painter guides it; take the painter away and the motion stops instantly.
 
-In such a series, the intermediate causes are *instruments* &mdash; they pass along a causal power they do not originate.
+In such a series, the intermediate causes are *instruments*: they pass along a causal power they do not originate.
 An infinite regress of instruments explains nothing: a chain of infinitely many links, with no ceiling to hang from, holds up no chandelier at all. 
 Borrowed power with no original lender is no explanation.
 
 **Why this connects to act and potency.**
 An efficient cause gives being or actuality to its effect.
 But nothing can give what it does not have.
-So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own &mdash; a 
+So a series of causes that each *receive* their power to act must finally end in something that *has* that power on its own: a 
 cause that is not switched on by anything else, but is the unsourced source of the whole chain.
 
 > Therefore it is necessary to admit a first efficient cause, to which everyone gives the name of God.
@@ -79,7 +79,7 @@ At *every* level the chair **has its cohesion on loan** from a deeper actuality 
 And notice the tell-tale sign of an essential series: the instant any level fails, the chair does not fall &mdash; it *ceases to be a chair at all*. 
 Its very being is held, this moment, by what lies beneath it in the order of explanation.
 
-**Where the ladder points.** Physics can keep naming deeper rungs &mdash; quarks, fields, perhaps something below. 
+**Where the ladder points.** Physics can keep naming deeper rungs: quarks, fields, perhaps something below. 
 But each rung it names is another *borrower*: something whose *holding-together-now* is received and governed, never self-explaining. 
 Descend as far as you like and you never reach a rung that **holds itself in being**.
 

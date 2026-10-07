@@ -13,8 +13,8 @@ One thinker, Parmenides, concluded that change must be an illusion. Aristotle so
 
 **The distinction, in plain terms:**
 
-- **Act (actuality):** the way a thing actually *is* right now &mdash; a cup of coffee that is actually hot.
-- **Potency (potentiality):** the real capacity a thing *has* to become something it is not yet &mdash; that same coffee's ability to become cold.
+- **Act (actuality):** the way a thing actually *is* right now: a cup of coffee that is actually hot.
+- **Potency (potentiality):** the real capacity a thing *has* to become something it is not yet: that same coffee's ability to become cold.
 
 Potency is not mere nothing, but it is not yet actual either.
 The cold coffee is *potentially* hot; the acorn is *potentially* an oak; you are *potentially* asleep.
@@ -33,7 +33,7 @@ A potential cannot make itself actual, because then it would already have to pos
 **Why this matters for the Five Ways.**
 Each way, especially the First Way from **motion**, is really an argument about act and potency:
 
-1. Change is real &mdash; potencies are being actualized all around us.
+1. Change is real: potencies are being actualized all around us.
 2. No potency actualizes itself; each is actualized by something already in act.
 3. This cannot regress infinitely through things that are *themselves* mixtures of act and potency, for the whole chain would then have no source of actuality.
 4. Therefore there must be something that is **Pure Act** &mdash; actual through and through, with no unrealized potential &mdash; the source of all actualization.

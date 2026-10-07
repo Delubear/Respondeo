@@ -22,7 +22,7 @@ Aquinas&rsquo;s point is that **aiming requires an aimer**:
 
 **The argument, step by step:**
 
-1. Natural things that lack knowledge act toward an end &mdash; they achieve their goal not by chance but nearly always in the same way, so as to obtain the best result.
+1. Natural things that lack knowledge act toward an end: they achieve their goal not by chance but nearly always in the same way, so as to obtain the best result.
 2. What lacks knowledge cannot tend toward an end unless directed by something that *has* knowledge and intelligence.
 3. Mindless striving that reliably hits a target must be aimed by an intellect that can hold that target in view.
 4. Therefore some intelligent being exists by whom all natural things are ordered to their end &mdash; *and this being we call God.*
@@ -41,10 +41,10 @@ Consider everything the plant does, none of which it *understands*:
 - Its **roots grow downward** and toward water, though the seed has no map of the soil.
 - Its **leaves turn to face the light** (phototropism), tracking the sun across the day.
 - Its **stomata open and close** to balance moisture and gas exchange.
-- **Photosynthesis** converts light, water, and air into sugar &mdash; a chemistry aimed with precision at the plant&rsquo;s nourishment.
+- **Photosynthesis** converts light, water, and air into sugar: a chemistry aimed with precision at the plant&rsquo;s nourishment.
 - Its cells **divide, specialize, and repair** in an ordered sequence toward a mature, reproducing organism.
 
-Notice two things at once. First, the plant has **no awareness** of any of this &mdash; it does not know what water is, or light, or sugar. 
+Notice two things at once. First, the plant has **no awareness** of any of this: it does not know what water is, or light, or sugar. 
 Second, its parts and processes are unmistakably **aimed**: each reliably tends toward the plant&rsquo;s flourishing, "nearly always in the same way, so as to obtain the best result."
 
 Here is the pivot. **Tending toward a specific outcome is a kind of pointing** &mdash; and pointing is aimed at something that does not exist yet (the mature plant, the sugar not-yet-made). 

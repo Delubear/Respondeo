@@ -24,7 +24,7 @@ They are not four boasts but four tests &mdash; and a genuine claimant must bear
    The mark shows in the unbroken stream of saints it has formed across every century and culture.
 
 3. **Catholic.**
-   *Catholic* means *universal* &mdash; for all peoples, in all times, teaching the whole of what Christ revealed.
+   *Catholic* means *universal*: for all peoples, in all times, teaching the whole of what Christ revealed.
    The true Church is not bound to one nation or era but spans the globe and the ages, holding the fullness of the faith rather than a selection of it.
 
 4. **Apostolic.**

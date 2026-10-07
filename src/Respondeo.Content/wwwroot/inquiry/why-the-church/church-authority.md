@@ -31,7 +31,7 @@ None of the three is a rival to the others; each is meaningless without them.
 
 3. **The Magisterium &mdash; the office that interprets.**
    A text and a living memory still need someone charged to say, authoritatively, what they mean when disputes arise.
-   Christ gave that charge to the apostles and their successors &mdash; the bishops in union with Peter's successor.
+   Christ gave that charge to the apostles and their successors: the bishops in union with Peter's successor.
    The Magisterium does not invent new revelation; its task is the narrower one of *guarding* and *faithfully interpreting* what was handed down.
    It is a servant of the word, not its master.
 
@@ -52,7 +52,7 @@ Remove the court and the constitution does not produce unity &mdash; it produces
 The Church's deposit of faith works the same way: Scripture is the text, Tradition the living understanding, and the Magisterium the court.
 Together they let the Church speak with one voice where private reading alone fragments into many.
 
-**Where this leads.** This is the Catholic account of how revelation reaches us &mdash; Scripture, Tradition, and teaching office, together.
+**Where this leads.** This is the Catholic account of how revelation reaches us: Scripture, Tradition, and teaching office, together.
 With that, the case has been laid out in full: Christ founded a Church, it can be recognized, it bears the four marks, and it hands on His revelation with authority.
 From here the path draws together toward a decision.
 Those who want to test the claim against its hardest objections first can take the route through them; otherwise, we turn to what the whole path has shown.

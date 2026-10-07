@@ -19,22 +19,22 @@ Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
 
 **The argument, step by step:**
 
-1. We find gradations of perfection in things &mdash; degrees of goodness, truth, nobility, being.
-2. To call things *more* or *less* of something is to measure them against a maximum &mdash; a fullest instance they approach in varying degrees.
+1. We find gradations of perfection in things: degrees of goodness, truth, nobility, being.
+2. To call things *more* or *less* of something is to measure them against a maximum: a fullest instance they approach in varying degrees.
 3. In the things Aquinas has in view, the maximum in a genus is also the **cause** of that quality in everything else (as fire, the hottest thing, is the source of heat in what is warm).
 4. Therefore there exists something that is the maximum of being, goodness, and every perfection &mdash; and the cause of these in all other things &mdash; *and this we call God.*
 
 **A clarification &mdash; this is the hardest of the five.** Two points clear up the usual objections:
 
 - Aquinas is **not** talking about degrees on a measuring scale (like temperature in degrees, or height in inches). 
-  Those are just quantities. He means qualities like **being, goodness, and truth** &mdash; things that come in degrees but are not tied to any one kind of object.
+  Those are just quantities. He means qualities like **being, goodness, and truth**: things that come in degrees but are not tied to any one kind of object.
 - Nor is he arguing "because some things are warmer, there must be a warmest thing somewhere." 
   His point in step 3 is that when something has a quality only *partly* and *by sharing in it*, that points back to something which *is* that quality fully and in its own right. 
   What has a quality partially and second-hand points to what has it completely and first-hand.
 
 ## See it today: the warmth of a room
 
-You do not need a philosophy library to watch this argument work &mdash; only to notice how you already speak.
+You do not need a philosophy library to watch this argument work: only to notice how you already speak.
 
 Step into a warm room and you naturally say it is **warmer** than the hallway, **cooler** than the oven. 
 Every such judgment is a comparison, and every comparison quietly measures each thing against a fuller case of the same quality. 

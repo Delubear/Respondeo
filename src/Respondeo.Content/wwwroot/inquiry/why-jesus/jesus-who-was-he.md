@@ -43,13 +43,13 @@ Here is where Christianity says something no historian is forced to say, but whi
 
 2. **True God and true man.**
    The claim is not that Jesus was a god-like figure, half-divine, or God merely *appearing* to be human.
-   It is that he is fully God and fully man &mdash; one person in whom the infinite Creator and a real human life meet.
+   It is that he is fully God and fully man: one person in whom the infinite Creator and a real human life meet.
    He grew tired, wept, ate, and died, and yet is confessed as the eternal Word through whom all things were made.
 
 3. **Why it would matter.**
    If it is true, it changes everything the earlier steps established.
    A God reached by reason is known *from a distance*, through his effects.
-   A God who becomes man has closed that distance himself &mdash; shown his face, spoken in a human voice, and entered his own creation.
+   A God who becomes man has closed that distance himself: shown his face, spoken in a human voice, and entered his own creation.
    That is the difference between concluding that God exists and meeting him.
 
 > It belongs to the essence of the highest good to communicate itself in the highest manner to the creature, 

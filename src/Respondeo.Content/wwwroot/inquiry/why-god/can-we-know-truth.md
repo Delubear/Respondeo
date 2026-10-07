@@ -30,7 +30,7 @@ So this is the honest first question, before the First Way or anything else.
 - **Disagreement doesn't erase truth; it presupposes it.** Two people can only genuinely *disagree* if there's a fact of the matter they disagree about. 
   If everything were mere preference, we wouldn't argue &mdash; we'd just have tastes, like preferring tea to coffee. 
   The heat of our deepest disagreements is itself a sign that we think something real is at stake.
-- **Doubting the senses still uses the mind.** Yes, senses sometimes mislead &mdash; a straw looks bent in water. 
+- **Doubting the senses still uses the mind.** Yes, senses sometimes mislead: a straw looks bent in water. 
   But we know that *because* further reasoning and observation corrected it. Error is only detectable against a background of truths we can reach. 
   A mind that could never know anything could never even discover its own mistakes.
 - **You can't function as a relativist.** Nobody actually lives as though truth were optional. 
@@ -40,9 +40,9 @@ So this is the honest first question, before the First Way or anything else.
 **What this stage assumes &mdash; and what it doesn't.**
 None of this claims your reasoning is infallible, or that truth is always easy to reach. It claims something more modest and unavoidable:
 
-- **Truth exists** &mdash; there is a way things actually are, independent of what we prefer.
-- **The mind can reach it** &mdash; not perfectly, but really, through careful reasoning and honest attention.
-- **Some questions have real answers** &mdash; and "does anything explain the world's existence?" is one of them, not a matter of taste.
+- **Truth exists**: there is a way things actually are, independent of what we prefer.
+- **The mind can reach it**: not perfectly, but really, through careful reasoning and honest attention.
+- **Some questions have real answers**: and "does anything explain the world's existence?" is one of them, not a matter of taste.
 
 That is all the arguments ahead require. They do not ask you to be certain in advance; they ask you to accept that the question is *answerable*, and then to follow the reasoning honestly.
 

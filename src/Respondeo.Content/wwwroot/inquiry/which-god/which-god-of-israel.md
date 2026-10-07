@@ -106,7 +106,7 @@ This is the threshold between *reason* and *faith*: not a leap away from evidenc
 
 So the honest posture at the end of this stage is not *case closed* but *case handed on*.
 The stages that follow take up exactly this: they build the historical evidence for whether the God of Israel 
-kept His promise &mdash; whether the expectation woven through His Scriptures actually landed on an identifiable person and event.
+kept His promise: whether the expectation woven through His Scriptures actually landed on an identifiable person and event.
 The argument here is not replaced by what comes next; it is *continued* by it.
 
 ## See it today: a letter addressed by name

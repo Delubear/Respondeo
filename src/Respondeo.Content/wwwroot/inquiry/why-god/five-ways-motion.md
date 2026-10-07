@@ -72,7 +72,7 @@ And notice the tell-tale sign of an essential series: the instant any level fail
 the water does not keep warming from leftover momentum; the actualizing *stops*. 
 Each member is an *instrument*, moving the next only insofar as it is itself being moved this moment.
 
-**Where the ladder points.** Physics can keep naming deeper rungs &mdash; fields, particles, perhaps something below. 
+**Where the ladder points.** Physics can keep naming deeper rungs: fields, particles, perhaps something below. 
 But each rung it names is another *mover-that-is-moved*: something whose power to actualize is received and governed, never self-possessed. 
 Descend as far as you like and you never reach a rung that is **actualizing without itself being actualized**.
 

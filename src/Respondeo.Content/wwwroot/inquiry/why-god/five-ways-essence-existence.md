@@ -17,8 +17,8 @@ So in every ordinary thing there is a real gap between *what it is* and the plai
 
 **The distinction, in plain terms:**
 
-- **Essence:** *what* a thing is &mdash; the kind of thing it is, its nature or definition. The essence of a dog is to be a certain kind of living animal.
-- **Existence:** *that* a thing is &mdash; the sheer act of being, the fact that the thing is actually there rather than merely possible.
+- **Essence:** *what* a thing is: the kind of thing it is, its nature or definition. The essence of a dog is to be a certain kind of living animal.
+- **Existence:** *that* a thing is: the sheer act of being, the fact that the thing is actually there rather than merely possible.
 
 In everything we meet, essence and existence are genuinely two different things.
 A thing's nature does not include its own existence &mdash; which is why you can fully understand it and yet it may not exist, and why it can come into being and later pass away.
