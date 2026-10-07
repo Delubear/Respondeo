@@ -25,12 +25,14 @@ summary: If God wanted a relationship with us, why isn't his existence obvious?
 Aquinas grants the core of the objection &mdash; God's existence is *not* obvious to us &mdash; but explains why: 
 what is most knowable in itself can be least evident to minds like ours, so it must be reasoned to rather than simply seen:
 
-> "A thing can be self-evident in either of two ways: on the one hand, self-evident in
+> A thing can be self-evident in either of two ways: on the one hand, self-evident in
 > itself, though not to us; on the other, self-evident in itself, and to us... Therefore I
 > say that this proposition, 'God exists,' of itself is self-evident, for the predicate is
 > the same as the subject... Now because we do not know the essence of God, the proposition
 > is not self-evident to us; but needs to be demonstrated by things that are more known to
-> us, though less known in their nature &mdash; namely, by His effects." &mdash; [*Summa Theologiae* I, Q. 2, A. 1](summa/prima-q002#article-1)
+> us, though less known in their nature &mdash; namely, by His effects.
+>
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 1](summa/prima-q002#article-1)
 
 In plainer terms: that one line &mdash; "the predicate is the same as the subject" &mdash; is the key. 
 Aquinas is saying that for God, *to be* and *to exist* aren't two separate things: existence isn't something God has, it's what God *is*. 

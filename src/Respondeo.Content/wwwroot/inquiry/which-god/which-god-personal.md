@@ -7,8 +7,9 @@ tags:
   - divine revelation
 ---
 
-> "Since therefore God is in the highest degree of immateriality... it follows that He is in the highest degree of knowledge." 
-&mdash; [*Summa Theologiae* I, Q. 14, A. 1](summa/prima-q014#article-1)
+> Since therefore God is in the highest degree of immateriality... it follows that He is in the highest degree of knowledge.
+>
+> &mdash; [*Summa Theologiae* I, Q. 14, A. 1](summa/prima-q014#article-1)
 
 We have reached one unlimited source of all being. 
 Here many people stop and picture something like a force — gravity, or *the universe*, or an impersonal ground of existence. 

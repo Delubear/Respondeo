@@ -39,9 +39,11 @@ truths He reveals and of the reason by which we study the world, so a genuine fi
 of faith can never really collide. Where they *seem* to, either the science has overreached its evidence or the Scripture
 has been misread &mdash; and patient inquiry, not panic, is the Catholic response:
 
-> "Though faith is above reason, there can never be any real discrepancy between faith and reason. Since the same God who
+> Though faith is above reason, there can never be any real discrepancy between faith and reason. Since the same God who
 > reveals mysteries and infuses faith has bestowed the light of reason on the human mind, God cannot deny Himself, nor can
-> truth ever contradict truth." &mdash; First Vatican Council, *Dei Filius*
+> truth ever contradict truth.
+>
+> &mdash; First Vatican Council, *Dei Filius*
 
 - **The harmony is the Catholic track record, not a recent rescue.** The same Church produced the cathedral schools and
   the university, the friar-scientists and the monastic copyists who preserved learning. A priest, Georges Lemaitre, first

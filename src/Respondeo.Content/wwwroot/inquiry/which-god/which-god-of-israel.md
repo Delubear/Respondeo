@@ -6,7 +6,9 @@ tags:
   - divine revelation
 ---
 
-> "Hear, O Israel: The Lord our God is one Lord." &mdash; Deuteronomy 6:4
+> Hear, O Israel: The Lord our God is one Lord.
+>
+> &mdash; Deuteronomy 6:4
 
 We have reached one personal God who can reveal Himself, and we have weighed the claimants.
 The path keeps narrowing to a single, strange story: not a philosopher's argument, but a *covenant* — a 

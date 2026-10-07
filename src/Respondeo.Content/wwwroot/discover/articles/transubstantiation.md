@@ -32,6 +32,7 @@ As the Catechism puts it:
 > By the consecration of the bread and wine there takes place a change of the whole substance of the
 > bread into the substance of the Body of Christ our Lord and of the whole substance of the wine into
 > the substance of his Blood.
+>
 > &mdash; Catechism of the Catholic Church, 1376
 
 ## Why the Church teaches it
@@ -39,6 +40,7 @@ As the Catechism puts it:
 The teaching rests on Christ's own words. At the Last Supper He took bread and a cup and said:
 
 > This is my body, which is given for you… This cup is the new covenant in my blood.
+>
 > &mdash; Luke 22:19–20
 
 In John 6 He pressed the point without softening it, even as His hearers left: "my flesh is true food,
@@ -58,6 +60,7 @@ captures the same thought in his hymn *Adoro te devote*:
 
 > Sight, touch, and taste in thee are each deceived;
 > the ear alone most safely is believed.
+>
 > &mdash; St. Thomas Aquinas, *Adoro te devote*
 
 :::youtube A9QmUeRJsFA
@@ -73,6 +76,7 @@ every particle. It is also why reception calls for preparation and a state of gr
 > guilty of profaning the body and blood of the Lord. Let a person examine himself, then, and so eat
 > of the bread and drink of the cup. For anyone who eats and drinks without discerning the body eats
 > and drinks judgment on himself.
+>
 > &mdash; 1 Corinthians 11:27–29
 
 For the one coming home, transubstantiation is the reason the Eucharist is not a symbol to admire but

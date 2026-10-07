@@ -7,7 +7,9 @@ tags:
   - divine revelation
 ---
 
-> "So the Father is God, the Son is God, and the Holy Spirit is God. And yet they are not three Gods, but one God." — Athanasian Creed
+> So the Father is God, the Son is God, and the Holy Spirit is God. And yet they are not three Gods, but one God.
+>
+> &mdash; Athanasian Creed
 
 If the last step lands — if Jesus really claimed the authority and name of God — then an alarm should sound, and it is the right alarm to sound. 
 The whole path to this point insisted that God is **one**. [Why one God, not many?](node/which-god-monotheism) argued that the ultimate source is single, 
@@ -39,8 +41,10 @@ So the Trinity is not three Gods (that is **tritheism**, and it is a heresy the 
 Nor is it one person wearing three masks or playing three roles (that is **modalism**, also condemned). 
 It is one God — one nature, undivided — subsisting as three who eternally give and receive that one nature in love.
 
-> "In God essence is not really distinct from person; and yet the persons are really distinguished from each 
-> other… Thus there are one essence and three persons." — [*Summa Theologiae* I, Q. 39, A. 1](summa/prima-q039#article-1)
+> In God essence is not really distinct from person; and yet the persons are really distinguished from each 
+> other… Thus there are one essence and three persons.
+>
+> &mdash; [*Summa Theologiae* I, Q. 39, A. 1](summa/prima-q039#article-1)
 
 Crucially, the persons are not *parts*.
 

@@ -4,7 +4,8 @@ title: "The Third Way — Contingency and Necessity"
 summary: From things that can fail to be, to a necessary being.
 ---
 
-> "We find in nature things that are possible to be and not to be, since they are found to be generated, and to corrupt." 
+> We find in nature things that are possible to be and not to be, since they are found to be generated, and to corrupt.
+>
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The earlier ways traced *change* and *causal dependence*. The Third Way looks at the most basic fact of all: that things **exist at all**, when they need not have. 

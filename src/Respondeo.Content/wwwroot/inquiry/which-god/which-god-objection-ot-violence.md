@@ -12,8 +12,9 @@ summary: How can the God of Israel be the good, just Creator reason reaches, giv
 
 **In response:**
 
-> "What He does according to His will He does justly... But whereas law comes to us from some higher power, God is a law unto Himself." 
-&mdash; [*Summa Theologiae* I, Q. 21, A. 1, ad 2](summa/prima-q021#article-1-reply-2)
+> What He does according to His will He does justly... But whereas law comes to us from some higher power, God is a law unto Himself.
+>
+> &mdash; [*Summa Theologiae* I, Q. 21, A. 1, ad 2](summa/prima-q021#article-1-reply-2)
 
 - **The objection borrows the standard it uses to accuse.** To call these acts *evil* is to appeal to a real, binding moral law that stands over God and everyone. 
   But this stage argued that the Creator *is* the ground of that moral law. You cannot coherently use morality to indict the very source that makes morality more than preference. 

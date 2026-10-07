@@ -6,7 +6,9 @@ tags:
   - divine revelation
 ---
 
-> "That which is known of God is manifest in them. For God hath manifested it unto them." &mdash; Romans 1:19
+> That which is known of God is manifest in them. For God hath manifested it unto them.
+>
+> &mdash; Romans 1:19
 
 Reason has reached one personal God who can reveal Himself, marked by credible signs. But that description fits several of the world's great claimants, at least in part. 
 Before naming the one who speaks, it helps to see clearly **how the God reason reaches relates to — and differs from — the major alternatives.** 

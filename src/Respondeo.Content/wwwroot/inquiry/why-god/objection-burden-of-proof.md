@@ -26,11 +26,12 @@ summary: Isn't the believer the one who has to prove God, like a teapot orbiting
 
   Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from his effects &mdash; the same logic by which we infer any unseen cause from what it produces:
 
-  > "When an effect is better known to us than its cause, from the effect we proceed to the
+  > When an effect is better known to us than its cause, from the effect we proceed to the
   > knowledge of the cause. And from every effect the existence of its proper cause can be
   > demonstrated, so long as its effects are better known to us; because since every effect
   > depends upon its cause, if the effect exists, the cause must pre-exist. Hence the
-  > existence of God... can be demonstrated from those of His effects which are known to us."
+  > existence of God... can be demonstrated from those of His effects which are known to us.
+  >
   > &mdash; [*Summa Theologiae* I, Q. 2, A. 2](summa/prima-q002#article-2)
 
 - **Everyone reasons past strict proof.** We accept other minds, the reliability of memory, and the external world without deductive proof. 

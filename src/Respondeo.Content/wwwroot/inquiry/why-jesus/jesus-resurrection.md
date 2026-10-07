@@ -45,9 +45,11 @@ A miracle is the hardest explanation to accept — yet the only way to exclude i
 Drop that assumption, and the Resurrection is simply where the evidence points.
 It does not compel belief, but it leaves the alternatives looking more strained than the miracle they were meant to avoid.
 
-> "Christ manifested His Resurrection in two ways: namely, by testimony; and by proof or sign: and each manifestation was sufficient 
+> Christ manifested His Resurrection in two ways: namely, by testimony; and by proof or sign: and each manifestation was sufficient 
 > in its own class... That it was a true Resurrection He shows first on the part of the body... And 
-> He establishes this by offering His body to be handled." — [*Summa Theologiae* III, Q. 55, A. 6](summa/tertia-q055#article-6)
+> He establishes this by offering His body to be handled.
+>
+> &mdash; [*Summa Theologiae* III, Q. 55, A. 6](summa/tertia-q055#article-6)
 
 ## See it today: what the witnesses would not take back
 

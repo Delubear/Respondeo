@@ -16,10 +16,12 @@ It begins with a child's suffering, and no honest answer can pretend that away.
 
 St. Thomas takes it seriously enough to make it the *first* objection against God's very existence:
 
-> "It seems that God does not exist; because if one of two contraries be infinite, the
+> It seems that God does not exist; because if one of two contraries be infinite, the
 > other would be altogether destroyed. But the word 'God' means that He is infinite
 > goodness. If, therefore, God existed, there would be no evil discoverable; but there is
-> evil in the world. Therefore God does not exist." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, obj. 1](summa/prima-q002#article-3-objection-1)
+> evil in the world. Therefore God does not exist.
+>
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3, obj. 1](summa/prima-q002#article-3-objection-1)
 
 **In response:**
 
@@ -37,10 +39,12 @@ St. Thomas takes it seriously enough to make it the *first* objection against Go
 
 Aquinas's own reply turns the objection on its head: evil does not disprove God, but presupposes a good so great it can draw good even out of evil:
 
-> "As Augustine says (Enchiridion xi): 'Since God is the highest good, He would not allow
+> As Augustine says (Enchiridion xi): 'Since God is the highest good, He would not allow
 > any evil to exist in His works, unless His omnipotence and goodness were such as to bring
 > good even out of evil.' This is part of the infinite goodness of God, that He should allow
-> evil to exist, and out of it produce good." &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
+> evil to exist, and out of it produce good.
+>
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
 
 **A closer look at freedom.** It is worth dwelling on the third point, because the free-will reply is often heard as a glib trade &mdash; 
 as if God weighed our comfort against our autonomy and simply chose autonomy. 

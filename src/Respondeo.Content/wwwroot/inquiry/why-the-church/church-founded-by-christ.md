@@ -36,8 +36,9 @@ If He left a Church with authority, then there is a *someone* charged to guard a
    settled disputes with binding authority (the Council of Jerusalem), and governed real communities with elders and overseers.
    The structured, teaching Church visible in the earliest records is the one they believed Christ had established.
 
-> "As the whole Church is termed one mystic body from its likeness to the natural body of a man... so 
-> likewise Christ is called the Head of the Church... He has the power of bestowing grace on all the members of the Church."
+> As the whole Church is termed one mystic body from its likeness to the natural body of a man... so 
+> likewise Christ is called the Head of the Church... He has the power of bestowing grace on all the members of the Church.
+>
 > &mdash; [*Summa Theologiae* III, Q. 8, A. 1](summa/tertia-q008#article-1)
 
 ## See it today: a charter, not just a speech

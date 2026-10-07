@@ -23,12 +23,14 @@ summary: If everything needs a cause, doesn't God need one too?
 
   St. Thomas makes exactly this move in the Second Way, and gives the uncaused cause its name:
 
-  > "There is no case known... in which a thing is found to be the efficient cause of itself;
+  > There is no case known... in which a thing is found to be the efficient cause of itself;
   > for so it would be prior to itself, which is impossible... Now if it is possible to go on
   > to infinity in efficient causes, there will be no first efficient cause, neither will
   > there be an ultimate effect, nor any intermediate efficient causes; all of which is
   > plainly false. Therefore it is necessary to admit a first efficient cause, to which
-  > everyone gives the name of God." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+  > everyone gives the name of God.
+  >
+  > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 - **"Why not the universe?" is a fair question with an answer.** The universe is the very thing whose contingency we observe &mdash; 
   it changes, it is composite, it could have been otherwise. 

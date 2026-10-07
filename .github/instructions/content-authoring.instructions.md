@@ -40,6 +40,30 @@ contract. Ready-to-copy templates live under `docs/templates/`.
 page renders a standard notice. Do **not** hand-write an inline HTML note in the body. Prayers and
 devotions are short, fixed traditional texts and do not use this flag.
 
+## Quotations and emphasis (articles, miracles, saints, inquiry nodes)
+
+For any set-off Markdown block quote (a `>` block) in prose content, use one consistent style:
+
+- **No surrounding quotation marks.** A `>` block is already visually set off, so wrapping the quoted
+  text in `"…"` is redundant. Reserve `"…"` for short *inline* quotations run into your own sentence.
+  Internal quotation marks that belong to the quoted text (e.g. a word in single quotes) stay.
+- **Attribution on its own line**, as the last line of the same blockquote, after a blank `>`
+  separator, prefixed with the `&mdash;` entity:
+
+  ```markdown
+  > Quoted sentence that stands on its own as a block.
+  >
+  > &mdash; Source, *Work*
+  ```
+
+- For a Summa quotation the attribution line *is* the canonical Summa citation link, e.g.
+  `> &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)` (the citation text still
+  follows the `Q.`/`A.` style enforced by `ContentLinkIntegrityTests`).
+- **Do not** join the quote and attribution with `<br />` or append `&mdash; Source` to the end of the
+  quoted sentence.
+- **Emphasis uses `*italics*`, never quotation marks.** Italicize an emphasized word or phrase
+  (`the *public* claim`); do not use scare-quotes for emphasis.
+
 ## Prayers (`prayers/*.md`)
 
 Markdown: YAML front-matter, then the prayer text as the body.

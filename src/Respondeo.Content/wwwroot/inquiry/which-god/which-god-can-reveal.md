@@ -6,8 +6,9 @@ tags:
   - divine revelation
 ---
 
-> "It was necessary for man's salvation that there should be a knowledge revealed by God, besides philosophical science built up by human reason." 
-&mdash; [*Summa Theologiae* I, Q. 1, A. 1](summa/prima-q001#article-1)
+> It was necessary for man's salvation that there should be a knowledge revealed by God, besides philosophical science built up by human reason.
+>
+> &mdash; [*Summa Theologiae* I, Q. 1, A. 1](summa/prima-q001#article-1)
 
 Reason has carried us to a God who is one, and who is personal — a mind and a will. That last point changes everything. A blind force cannot address you. 
 A person can. So the door stands open to something reason alone could never supply: that this God might **speak**.

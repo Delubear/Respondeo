@@ -4,7 +4,9 @@ title: "The Fifth Way — Governance of the World"
 summary: From the purposeful order of nature to an intelligent designer.
 ---
 
-> "We see that things which lack intelligence, such as natural bodies, act for an end." &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
+> We see that things which lack intelligence, such as natural bodies, act for an end.
+>
+> &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 The earlier ways traced *change* and *causal dependence*. The Fifth Way notices something different: **directedness**. 
 Things that have no minds of their own nevertheless behave *as if aimed* &mdash; consistently, and toward outcomes that benefit them.
@@ -15,6 +17,7 @@ A seed tends toward becoming a plant, not a puddle. Fire tends toward heating, n
 Aquinas&rsquo;s point is that **aiming requires an aimer**:
 
 > Whatever lacks intelligence cannot move towards an end, unless it be directed by some being endowed with knowledge and intelligence; as the arrow is shot to its mark by the archer. 
+>
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3](summa/prima-q002#article-3)
 
 **The argument, step by step:**

@@ -4,7 +4,9 @@ title: "Essence & Existence — The Second Foundation"
 summary: Aristotle's and Aquinas's distinction between essence and existence.
 ---
 
-> Essence answers to what a thing is, while existence, or being, answers to that it is, or the fact that it exists. &mdash; The Thomistic Institute
+> Essence answers to what a thing is, while existence, or being, answers to that it is, or the fact that it exists.
+>
+> &mdash; The Thomistic Institute
 
 Alongside act and potency, the Five Ways lean on a second, closely related distinction: **essence** and **existence**.
 Aristotle first pried the two apart; Aquinas made their relationship the sharpest point of his metaphysics.
@@ -26,7 +28,8 @@ Because a creature's nature does not contain its own existence, being is somethi
 Its existence has to be given to it by something else, and kept going for as long as the thing lasts.
 Here is the principle Aquinas draws from this:
 
-> "Everything, then, which is such that its act of existing is other than its nature must needs have its act of existing from something else."
+> Everything, then, which is such that its act of existing is other than its nature must needs have its act of existing from something else.
+>
 > &mdash; St. Thomas Aquinas, *De Ente et Essentia*, ch. 4
 
 The dog does not account for its own being; its existence is derived, dependent, borrowed at every moment.
