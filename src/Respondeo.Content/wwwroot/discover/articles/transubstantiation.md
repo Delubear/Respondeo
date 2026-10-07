@@ -60,6 +60,9 @@ captures the same thought in his hymn *Adoro te devote*:
 > the ear alone most safely is believed.
 > &mdash; St. Thomas Aquinas, *Adoro te devote*
 
+:::youtube A9QmUeRJsFA
+:::
+
 ## What it means for worship
 
 If Christ is truly present, then the Eucharist is to be adored, not merely remembered. This is the
