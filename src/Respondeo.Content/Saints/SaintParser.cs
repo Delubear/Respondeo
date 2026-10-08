@@ -47,7 +47,8 @@ internal sealed partial class SaintParser(IContentHtmlRenderer html)
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
     // Normalizes free-text life dates: trims and converts a plain hyphen range separator
-    // (optionally spaced, e.g. "1225-1274" or "1225 - 1274") into an en dash entity so authors can type a normal "-".
+    // (optionally spaced, e.g. "1225-1274" or "1225 - 1274") into an en dash so authors can type a normal "-".
+    // Emits the literal en dash character (not a "&ndash;" entity) because dates render as plain, HTML-encoded text.
     private static string? NormalizeDates(string? dates)
     {
         if (string.IsNullOrWhiteSpace(dates))
@@ -55,7 +56,7 @@ internal sealed partial class SaintParser(IContentHtmlRenderer html)
             return dates;
         }
 
-        return RangeSeparator().Replace(dates.Trim(), "&ndash;");
+        return RangeSeparator().Replace(dates.Trim(), "\u2013");
     }
 
     // When a fallback is supplied it is used for an otherwise-empty list; a null fallback leaves the list empty

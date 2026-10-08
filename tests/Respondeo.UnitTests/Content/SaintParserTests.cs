@@ -102,9 +102,9 @@ public class SaintParserTests
     }
 
     [Theory]
-    [InlineData("1225-1274", "1225&ndash;1274")]
-    [InlineData("1225 - 1274", "1225&ndash;1274")]
-    [InlineData("1181/82-1226", "1181/82&ndash;1226")]
+    [InlineData("1225-1274", "1225\u20131274")]
+    [InlineData("1225 - 1274", "1225\u20131274")]
+    [InlineData("1181/82-1226", "1181/82\u20131226")]
     public void Parse_converts_plain_hyphen_date_ranges_to_en_dash(string input, string expected)
     {
         var raw = $"""
