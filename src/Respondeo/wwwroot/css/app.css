@@ -838,7 +838,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .filter-layout {
     display: grid;
     grid-template-columns: minmax(12rem, 16rem) 1fr;
-    gap: 2.5rem;
+    gap: 1.5rem;
     align-items: start;
 }
 
@@ -864,7 +864,6 @@ input[type="search"]::-webkit-search-cancel-button {
 @media (max-width: 640px) {
     .filter-layout {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
     }
 
     .filter-rail {
