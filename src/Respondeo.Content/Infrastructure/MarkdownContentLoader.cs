@@ -60,7 +60,7 @@ public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher
     {
         try
         {
-            var raw = await fetcher.GetStringAsync(url);
+            var raw = await Fetcher.GetStringAsync(url);
             return reader.TryRead<TFrontMatter>(raw, out var meta, out var body) ? Map(meta!, body, fileName) : null;
         }
         catch (HttpRequestException)
