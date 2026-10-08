@@ -11,16 +11,10 @@ namespace Respondeo.Content.Infrastructure;
 /// </summary>
 /// <typeparam name="TFrontMatter">The pillar's front-matter DTO.</typeparam>
 /// <typeparam name="TModel">The materialized public model.</typeparam>
-public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher fetcher, FrontMatterReader reader)
+public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher fetcher, FrontMatterReader reader) : ContentCatalogLoader(fetcher)
     where TFrontMatter : ContentFrontMatterBase
     where TModel : class
 {
-    /// <summary>The static-web-asset root every Discover pillar's bundled content is served from.</summary>
-    protected const string DiscoverRoot = "_content/Respondeo.Content/discover";
-
-    /// <summary>The fetcher used to retrieve files, exposed so derived loaders can also fetch manifests/JSON.</summary>
-    protected ContentFetcher Fetcher => fetcher;
-
     /// <summary>
     /// Maps a successfully-parsed front-matter block and Markdown body onto the public model.
     /// The <paramref name="fileName"/> is the manifest entry the content came from, so derived loaders can derive per-file context (e.g. a stage from the containing folder).
@@ -34,29 +28,9 @@ public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher
     /// </summary>
     protected async Task<IReadOnlyList<TModel>> LoadManifestAsync(string root, string manifestPath)
     {
-        var manifest = await fetcher.GetFromJsonAsync<ContentManifest>(manifestPath) ?? new ContentManifest();
+        var manifest = await FetchManifestAsync(manifestPath);
         var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{root}/{f}", f)));
         return [.. parsed.OfType<TModel>()];
-    }
-
-    /// <summary>
-    /// Builds the two structures every pillar's catalog needs from the loaded models: an id&#8594;model lookup
-    /// (for detail pages) and an ordered list of index entries (for the browse/search index), in input order.
-    /// </summary>
-    protected static (Dictionary<string, TModel> ById, List<TEntry> Entries) BuildCatalog<TEntry>(
-        IEnumerable<TModel> models,
-        Func<TModel, string> idSelector,
-        Func<TModel, TEntry> entrySelector)
-    {
-        var byId = new Dictionary<string, TModel>(StringComparer.OrdinalIgnoreCase);
-        var entries = new List<TEntry>();
-        foreach (var model in models)
-        {
-            byId[idSelector(model)] = model;
-            entries.Add(entrySelector(model));
-        }
-
-        return (byId, entries);
     }
 
     /// <summary>
@@ -68,7 +42,7 @@ public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher
     {
         try
         {
-            var dto = await fetcher.GetFromJsonAsync<TDto>(path);
+            var dto = await Fetcher.GetFromJsonAsync<TDto>(path);
             return dto is null ? empty : toCatalog(dto);
         }
         catch (HttpRequestException)

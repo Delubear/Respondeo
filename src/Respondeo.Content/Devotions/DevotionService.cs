@@ -11,13 +11,13 @@ namespace Respondeo.Content.Devotions;
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="DevotionParser"/>,
 /// and caches the parsed devotions and derived index in memory for the app's lifetime.
 /// </summary>
-internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html, IPrayerService prayers) : IDevotionService
+internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html, IPrayerService prayers)
+    : ContentCatalogLoader(new ContentFetcher(http, ContentCachePolicy.Immutable)), IDevotionService
 {
-    private const string DevotionsRoot = "_content/Respondeo.Content/discover/devotions";
+    private const string DevotionsRoot = DiscoverRoot + "/devotions";
     private const string ManifestPath = DevotionsRoot + "/devotions-manifest.json";
 
     private readonly DevotionParser _parser = new(html);
-    private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<Catalog> _catalog = new();
 
     /// <summary>Returns the browse index, loading the catalog once and caching it.</summary>
@@ -74,38 +74,10 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
-        var manifest = await _fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        var devotions = await Task.WhenAll(manifest.Files.Select(LoadDevotionAsync));
-
-        var map = new Dictionary<string, DevotionDocument>(StringComparer.OrdinalIgnoreCase);
-        var summaries = new List<DevotionSummary>();
-        foreach (var devotion in devotions)
-        {
-            if (devotion is null)
-            {
-                continue;
-            }
-
-            map[devotion.Id] = devotion;
-            summaries.Add(devotion.ToSummaryContract());
-        }
-
+        var devotions = await LoadJsonManifestAsync<DevotionDto, DevotionDocument>(DevotionsRoot, ManifestPath, _parser.Parse);
+        var (map, summaries) = BuildCatalog(devotions, d => d.Id, d => d.ToSummaryContract());
         return new Catalog(map, summaries);
     });
-
-    private async Task<DevotionDocument?> LoadDevotionAsync(string fileName)
-    {
-        try
-        {
-            var dto = await _fetcher.GetFromJsonAsync<DevotionDto>($"{DevotionsRoot}/{fileName}");
-            return _parser.Parse(dto);
-        }
-        catch (HttpRequestException)
-        {
-            return null;
-        }
-    }
 
     private sealed record Catalog(Dictionary<string, DevotionDocument> Devotions, IReadOnlyList<DevotionSummary> Summaries);
 }

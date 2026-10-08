@@ -81,4 +81,23 @@ public class SaintParserTests
 
         Assert.Null(doc);
     }
+
+    [Fact]
+    public void Parse_returns_null_when_front_matter_is_malformed_yaml()
+    {
+        const string raw = """
+            ---
+            id: broken
+            patronages:
+              - Mystics
+             - badly-indented
+            ---
+
+            ## Life
+            """;
+
+        var doc = CreateParser().Parse(raw);
+
+        Assert.Null(doc);
+    }
 }
