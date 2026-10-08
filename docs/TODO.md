@@ -174,3 +174,60 @@ here as editorial intent.
 ## Housekeeping
 
 - [ ] Vet "unvetted content" stubs and remove the NOTE banner as they are finished
+
+## Technical / SEO
+
+### Proposal: build-time prerendering (SSG) for crawlers, keeping the WASM-first approach
+
+- [ ] **Prerender each route to static HTML at build time, so non-JS crawlers and social
+  unfurlers get per-page markup instead of the generic `index.html` shell.**
+
+**Why.** The site is a pure Blazor WebAssembly app: every URL serves the same static
+`wwwroot/index.html`, and the real per-page content (title, description, `SeoHead` tags,
+JSON-LD) only materializes after the browser boots WASM and renders client-side. That splits
+visitors in two:
+
+- **JS-capable crawlers (Google, Bing)** run the app and already see full per-route metadata and
+  structured data. SEO for the engines that matter most is effectively fine today.
+- **Non-JS scrapers (some social-link unfurlers, smaller/non-JS bots)** only ever see the static
+  shell, so every URL shows the same site-level title/description/preview card.
+
+This is a *documented, accepted* trade-off (see the comment in `Components/SeoHead.razor` and
+`wwwroot/index.html`): we keep a simpler, static-hosted, fully offline/PWA architecture in exchange
+for weaker previews on non-JS consumers. The static baseline in `index.html` is already as strong
+as a single shell can be (complete OG + Twitter + canonical + description, matching `SiteMeta`).
+The only thing it cannot be is *per-page* — which is exactly what prerendering would add.
+
+**Approach (the one architecture-compatible option).** Because the site deploys to **GitHub Pages
+(static hosting only)**, server-side prerender hosts (`WebAssemblyPrerendered`, a render host) are
+out. The fit is **build-time static snapshots**:
+
+1. Reuse the existing route enumeration in `tools/Respondeo.SitemapGenerator` (it already walks
+   every content manifest + the Summa catalog into a `RouteSet` and matches real app routes), so the
+   prerender list and `sitemap.xml` stay in lockstep by construction.
+2. Serve a locally-published production build.
+3. Use a headless browser (Playwright/Puppeteer) to visit each route — running the real WASM app —
+   and save the hydrated DOM to a per-route `…/index.html` (needed for GitHub Pages per-URL routing).
+4. Wire the prerender step into the publish pipeline, after sitemap generation.
+
+**Why it preserves WASM-first.** Each snapshot keeps the normal Blazor bootstrap: browsers hydrate
+into the live WASM app exactly as today; crawlers/unfurlers read the baked markup. Hosting stays
+static (no server, no cache-header needs).
+
+**Costs / constraints to weigh.**
+
+- Adds a Node + headless-browser dependency and extra publish time (hundreds of routes to render).
+- Requires emitting per-route output files and handling GitHub Pages SPA routing (per-route
+  `index.html`, or the `404.html` fallback trick).
+- Concrete payoff is mainly **better social link previews + non-JS bots**, since Google/Bing already
+  execute the app's JS. Decide whether that payoff justifies the pipeline complexity.
+
+**Related, already done (for context).**
+
+- [x] Per-page `SeoHead` (title, description, canonical, Open Graph, Twitter Card, JSON-LD).
+- [x] Static `index.html` baseline for non-JS scrapers (full OG/Twitter/canonical, matches `SiteMeta`).
+- [x] `sitemap.xml` + `robots.txt` generated from content manifests at build time.
+- [x] Saint detail pages emit a schema.org `Person` JSON-LD node (`SiteMeta.PersonJsonLd`) rather than
+  a generic `Article`.
+- [ ] Consider: richer JSON-LD types for other pillars if a clear schema.org fit exists (most are
+  reasonable as `Article`/`CreativeWork` today).
