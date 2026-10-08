@@ -9,7 +9,7 @@ tags:
   - real presence
   - the catholic church
 sources:
-  - label: "Catechism of the Catholic Church, 1373&ndash;1381"
+  - label: "Catechism of the Catholic Church, 1373-1381"
     url: "https://www.vatican.va/archive/ENG0015/__P42.HTM"
   - label: "Council of Trent, Session 13 (1551), Decree on the Eucharist"
   - label: "St. Thomas Aquinas, Summa Theologiae III, Q. 75"

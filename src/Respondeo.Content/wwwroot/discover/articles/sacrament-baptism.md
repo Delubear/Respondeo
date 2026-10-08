@@ -10,9 +10,9 @@ tags:
   - rebirth
   - the catholic church
 sources:
-  - label: "Catechism of the Catholic Church, 1213&ndash;1284"
+  - label: "Catechism of the Catholic Church, 1213-1284"
     url: "https://www.vatican.va/archive/ENG0015/__P3G.HTM"
-  - label: "St. Thomas Aquinas, Summa Theologiae III, Q. 66&ndash;69"
+  - label: "St. Thomas Aquinas, Summa Theologiae III, Q. 66-69"
 ---
 
 **What it is.**

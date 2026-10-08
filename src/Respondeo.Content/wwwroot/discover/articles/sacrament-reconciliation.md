@@ -10,7 +10,7 @@ tags:
   - forgiveness
   - the catholic church
 sources:
-  - label: "Catechism of the Catholic Church, 1420&ndash;1498"
+  - label: "Catechism of the Catholic Church, 1420-1498"
     url: "https://www.vatican.va/archive/ENG0015/__P4C.HTM"
   - label: "Council of Trent, Session 14 (1551)"
 reviewStatus: unvetted
