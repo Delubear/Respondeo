@@ -27,22 +27,7 @@
     touch-action: pan-y;
 }
 
-/* Edge vignette: fade peeking neighbors by painting the page background over the left and
-   right edges. This replaces a mask on the reel itself, which would make the questions
-   translucent. They stay fully opaque; only the empty gutters and off-center neighbors
-   dissolve toward the page color. */
-.reel-wrap::after {
-    content: "";
-    position: absolute;
-    inset: 0 0 1.75rem 0;
-    pointer-events: none;
-    z-index: 2;
-    background:
-        linear-gradient(to right, var(--paper), transparent 22%),
-        linear-gradient(to left, var(--paper), transparent 22%);
-}
 
-.reel:focus-visible {
     outline: none;
 }
 
@@ -184,47 +169,65 @@
     }
 }
 
-/* Entrance: cards drift gently into place once the reel is positioned on load. */
+/* Entrance: cards drift gently into place once the reel is positioned on load.
+   Transform ONLY — never animate opacity here. An opacity keyframe with fill-mode `both` pins the
+   animated value and overrides the static .is-centered opacity below, which would keep every card
+   visible. Visibility is owned solely by the static rules on .reel__step / .is-centered. */
 .reel.is-ready .reel__step {
     animation: reel-enter 0.5s ease both;
 }
 
 @keyframes reel-enter {
     from {
-        opacity: 0;
         transform: translateX(0.75rem);
     }
     to {
-        opacity: 1;
         transform: translateX(0);
     }
 }
 
-/* Native scroll-driven turn: each card leans as it enters and settles at center. */
+/* Native scroll-driven turn: the scroll-timeline drives only the cosmetic lean/scale as a card
+   passes through. It does NOT control opacity — view-timeline progress is approximate geometry, so
+   neighbors land at a progress value that varies with viewport/card size and would leak into view.
+   Visibility is instead driven by the deterministic .is-centered class (updated every scroll frame
+   by reel.js), so a non-centered card is always exactly transparent and the centered one fully
+   opaque, regardless of width. The opacity lives on the item, so the centered card is never masked. */
 .reel--native .reel__step {
     animation: reel-turn linear both;
     animation-timeline: view(inline);
     animation-range: cover;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+/* When both the entrance and the native turn apply (the reel has is-ready AND reel--native), run
+   both animations rather than letting the higher-specificity entrance rule override the turn. Only
+   reel-turn is tied to the view timeline; reel-enter plays once on the default (time) timeline. */
+.reel--native.is-ready .reel__step {
+    animation: reel-enter 0.5s ease both, reel-turn linear both;
+    animation-timeline: auto, view(inline);
+    animation-range: normal, cover;
+}
+
+.reel--native .reel__step.is-centered {
+    opacity: 1;
 }
 
 @keyframes reel-turn {
     0% {
-        opacity: 0.25;
         transform: perspective(50rem) rotateY(24deg) scale(0.86);
     }
     50% {
-        opacity: 1;
         transform: perspective(50rem) rotateY(0deg) scale(1);
     }
     100% {
-        opacity: 0.25;
         transform: perspective(50rem) rotateY(-24deg) scale(0.86);
     }
 }
 
-/* JS fallback: dim every step, then emphasize whichever is centered. */
+/* JS fallback: hide every step, then reveal only whichever is centered. */
 .reel--js .reel__step {
-    opacity: 0.3;
+    opacity: 0;
     transform: scale(0.9);
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -391,6 +394,12 @@
 @media (prefers-reduced-motion: reduce) {
     .reel--native .reel__step {
         animation: none;
+    }
+
+    /* Visibility is already handled by the .is-centered rule above; here we only drop the
+       animation and the opacity transition so the centered-card reveal is instant. */
+    .reel--native .reel__step {
+        transition: none;
     }
 
     .reel.is-ready .reel__step {
