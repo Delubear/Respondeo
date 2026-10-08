@@ -1,0 +1,12 @@
+/* Scoped to GuideLatin.razor, which renders the .guide-latin span. An italic Latin annotation shown inline after a cue or subhead, set off by a middot. */
+.guide-latin {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-left: 0.4rem;
+}
+
+.guide-latin::before {
+    content: "\00b7";
+    margin-right: 0.4rem;
+}

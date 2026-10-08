@@ -1,0 +1,7 @@
+/* Scoped to GuideStep.razor, which renders the .guide-cue lead. The bold block lead for a .guide-steps item. */
+.guide-cue {
+    display: block;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+}

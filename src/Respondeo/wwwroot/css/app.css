@@ -251,19 +251,18 @@ h1, h2, h3 {
     border-top: 1px solid var(--rule);
 }
 
-/* .guide-subhead is the shared section heading used inside the floating guide/orb dialogs
-   (How to read the Summa, Guide to Prayers, Today in the Church). One source of truth so the
-   three dialogs stay visually identical. */
-.guide-subhead {
-    font-family: var(--display);
-    font-size: 1.05rem;
-    margin: 1.5rem 0 0.6rem;
-    color: var(--accent);
-}
+/* The .guide-subhead heading is scoped to GuideSection (GuideSection.razor.css). */
 
 /* Shared dialog-body patterns for the floating guides/orbs (Summa, Prayers, Today in the Church,
    Saints glossary). One source of truth so every guide reads identically; use a per-component class
-   only when a guide needs something genuinely unique (Summa ref chips, liturgy swatches, etc.). */
+   only when a guide needs something genuinely unique (Summa ref chips, liturgy swatches, etc.).
+
+   The .guide-list, .guide-term and .guide-steps rules below stay global because their selectors cross
+   component boundaries (the <ul>/<ol> is authored in GuideList/GuideSteps while the <li>, marker and
+   .guide-term span are authored in GuideItem/GuideStep), and .guide-term is also hand-written in
+   SummaGuide's TermContent. Scoped CSS stamps only the authoring component's elements, so these would
+   break if isolated. The single-author rules (.guide-subhead, .guide-cue, .guide-latin) have moved to
+   their components' .razor.css files. */
 
 /* A left-indented list whose items lead with a bold term followed by a description. The bold lead can
    be a <strong> or a .guide-term span. */
@@ -313,26 +312,8 @@ h1, h2, h3 {
     font-weight: 700;
 }
 
-/* The bold block lead for a .guide-steps item. */
-.guide-cue {
-    display: block;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 0.15rem;
-}
-
-/* An italic Latin annotation shown inline after a cue or subhead, set off by a middot. */
-.guide-latin {
-    font-weight: 400;
-    font-style: italic;
-    color: var(--ink-soft);
-    margin-left: 0.4rem;
-}
-
-.guide-latin::before {
-    content: "\00b7";
-    margin-right: 0.4rem;
-}
+/* The .guide-cue lead is scoped to GuideStep (GuideStep.razor.css).
+   The .guide-latin annotation is scoped to GuideLatin (GuideLatin.razor.css). */
 
 /* Shared detail-article scaffolding: the centered reading column, the stacked content sections,
    their display headings, and the muted "sources / further reading" list. Previously each detail

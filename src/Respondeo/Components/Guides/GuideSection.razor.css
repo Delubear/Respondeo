@@ -1,0 +1,9 @@
+/* Scoped to GuideSection.razor, which renders the .guide-subhead heading.
+   The shared section heading used inside the floating guide/orb dialogs (How to read the Summa,
+   Guide to Prayers, Today in the Church) so the dialogs stay visually identical. */
+.guide-subhead {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+    color: var(--accent);
+}
