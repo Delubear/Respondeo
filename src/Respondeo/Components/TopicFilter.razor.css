@@ -27,6 +27,19 @@
     margin-top: 0;
 }
 
+/* Section heading for a filter group in the browse rail. */
+.filter-rail__title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 1.25rem 0 0.75rem;
+}
+
+.filter-rail__title:first-child {
+    margin-top: 0;
+}
+
 .topic-filter__header .filter-rail__title {
     margin: 0 0 0.75rem;
 }

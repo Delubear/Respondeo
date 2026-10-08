@@ -1,0 +1,13 @@
+/* Scoped to FilterResults.razor: the results toolbar.
+   The .results-count and .empty-state lines stay global in app.css since they are shared with
+   the Summa search view and the detail/guard pages respectively. */
+
+/* Results toolbar — result count and a sort control, mirroring the Miracles list. */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}

@@ -817,15 +817,6 @@ input[type="search"]::-webkit-search-cancel-button {
     cursor: pointer;
 }
 
-/* Results toolbar — result count and a sort control, mirroring the Miracles list */
-.toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-}
 
 /* Muted result-count line, shared by the browse toolbar and the Summa search view. */
 .results-count {
@@ -834,42 +825,6 @@ input[type="search"]::-webkit-search-cancel-button {
     font-size: 0.9rem;
 }
 
-/* Browse layout — a filter rail beside the results column, mirroring the Articles index */
-.filter-layout {
-    display: grid;
-    grid-template-columns: minmax(12rem, 16rem) 1fr;
-    gap: 1.5rem;
-    align-items: start;
-}
-
-.filter-rail {
-    position: sticky;
-    top: 5rem;
-}
-
-.filter-rail__title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-soft);
-    margin: 1.25rem 0 0.75rem;
-}
-
-.filter-rail__title:first-child {
-    margin-top: 0;
-}
-
-/* Clear-all-filters button is scoped to the ClearFiltersButton component — see its .razor.css file. */
-
-@media (max-width: 640px) {
-    .filter-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .filter-rail {
-        position: static;
-    }
-}
 
 /* ---------- Mobile layout fill ----------
    On phones, the immersive devotion praying view needs the shell's content chain to be a flex

@@ -1,0 +1,25 @@
+/* Scoped to FilterLayout.razor: the browse grid (filter rail beside the results column) and its
+   mobile collapse. The .filter-rail__title rule lives with TopicFilter, which renders the heading. */
+
+/* Browse layout — a filter rail beside the results column, mirroring the Articles index. */
+.filter-layout {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.filter-rail {
+    position: sticky;
+    top: 5rem;
+}
+
+@media (max-width: 640px) {
+    .filter-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-rail {
+        position: static;
+    }
+}
