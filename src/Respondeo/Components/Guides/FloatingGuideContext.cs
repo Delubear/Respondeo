@@ -1,4 +1,4 @@
-namespace Respondeo.Components;
+namespace Respondeo.Components.Guides;
 
 /// <summary>
 /// Context handed to the dialog body and footer of a <see cref="FloatingGuide"/> so content can close the dialog (for example a footer button or an in-body link that navigates away).
