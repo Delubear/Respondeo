@@ -2,12 +2,13 @@
 @inject ISaintService Saints
 @inject IBreadcrumbTrail Trail
 @inject IFeastOfTheDay FeastOfTheDay
+@inject NavigationManager Nav
 
 <PageTitle>@(_saint is null ? "Saint" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_saint is not null)
 {
-    <SeoHead Title="@_saint.Title" Description="@_saint.Summary" Article="true" />
+    <SeoHead Title="@_saint.Title" Description="@_saint.Summary" JsonLd="@PersonJsonLd" />
 }
 
 <Breadcrumb CurrentTitle="@(_saint?.Title ?? "Saint")" StageHref="discover/saints" StageLabel="Saints" />
@@ -126,6 +127,12 @@ else
 
     // Stable id linking the era button to its popover note (the HTML Popover API pairs them by id).
     private readonly string _eraNoteId = $"era-note-{Guid.NewGuid():N}";
+
+    // A saint is a person, so advertise a schema.org Person node (not a generic Article) for richer results.
+    private string? PersonJsonLd => _saint is null ? null : SiteMeta.PersonJsonLd(_saint.Title, _saint.Summary, CanonicalUrl);
+
+    // The canonical URL resolved against the production origin, matching SeoHead so the JSON-LD url agrees with og:url.
+    private string CanonicalUrl => SiteMeta.AbsoluteUrl(Nav.ToBaseRelativePath(Nav.Uri).Split('?', '#')[0]);
 
     protected override async Task OnParametersSetAsync()
     {

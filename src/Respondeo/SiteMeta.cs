@@ -79,4 +79,27 @@ public static class SiteMeta
                 },
             },
         });
+
+    /// <summary>
+    /// Serializes a JSON-LD <c>Person</c> node for a saint's detail page, so search engines can model
+    /// the subject as a person (name, description, canonical URL) rather than a generic article.
+    /// Life dates are intentionally omitted from <c>birthDate</c>/<c>deathDate</c> because the source
+    /// value is free text (ranges, BC dates) that cannot be reliably coerced to ISO 8601.
+    /// </summary>
+    public static string PersonJsonLd(string name, string description, string canonicalUrl) =>
+        System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object?>
+        {
+            ["@context"] = "https://schema.org",
+            ["@type"] = "Person",
+            ["name"] = name,
+            ["description"] = description,
+            ["url"] = canonicalUrl,
+            ["image"] = SocialImageUrl,
+            ["subjectOf"] = new Dictionary<string, object?>
+            {
+                ["@type"] = "WebSite",
+                ["name"] = SiteName,
+                ["url"] = BaseUrl + "/",
+            },
+        });
 }
