@@ -12,7 +12,7 @@ public sealed class PrayerGuideSteps(PlaywrightContext context)
     [When("I open the prayer guide")]
     public async Task WhenIOpenThePrayerGuide()
     {
-        await Page.Locator(".prayer-guide__trigger").First.ClickAsync();
+        await Page.Locator("button[aria-label=\"Guide to prayers\"]").First.ClickAsync();
         await Page.WaitForSelectorAsync(".dialog[open]");
     }
 
