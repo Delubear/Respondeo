@@ -10,9 +10,12 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **Sections.feature** — collapsible sections open/close and deep-link via the URL.
 - **StageNavigation.feature** — stage URLs load directly, unknown paths show the not-found page, and the breadcrumb is rooted at the stage.
 - **Summa.feature** — browsing the Summa remembers search, expanded parts, and scroll position when pressing Back, and resets when leaving the Summa area.
+- **SummaQuestion.feature** — a question's articles open from the table of contents, from deep links, and toggle closed, keeping the URL in sync.
 - **Theme.feature** — the light/dark theme toggle switches and persists.
 - **Discover.feature** — the Discover pillar lists its sub-areas and opens prayers and articles.
 - **Devotions.feature** — the devotions browser lists devotions, and opening one shows its intro and enters the praying guide.
+- **PrayerGuide.feature** — the Guide to Prayers explains the prayer notation and inline prayer references render in full.
+- **Saints.feature** — the saints browser lists saint cards and opening one shows the saint's profile.
 
 These are intentionally few and focused on the core journey. Unit and component tests
 (in `Respondeo.UnitTests`) cover the fine-grained logic.

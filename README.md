@@ -10,6 +10,7 @@ A Blazor WebAssembly app that presents a graph of Markdown-authored content node
 | `Respondeo.Content.Shared` | Shared content contracts and rendering layer (Markdown-to-HTML and Summa reference/token expansion). |
 | `Respondeo.Content` | Hand-authored content: the Discover pillar (miracles, saints, prayers, devotions, articles) and the Inquiry pillar (Markdown/YAML nodes), with their parsers and services. |
 | `Respondeo.Content.Summa` | The Summa Theologiae corpus (generated JSON) and its models/service. |
+| `Respondeo.LiturgicalCalendar` | A pure, deterministic Ordinary Form liturgical calendar engine (season, color, and the day's celebration) behind `ILiturgicalCalendar`. |
 | `Respondeo.SummaImporter` | Developer tool (under `tools/`) that parses `docs/summa.txt` into the generated corpus. |
 | `Respondeo.SitemapGenerator` | Build/deploy tool (under `tools/`) that generates `sitemap.xml` from the content manifests. |
 | `Respondeo.UnitTests` | Unit and bUnit component tests. |
@@ -46,11 +47,18 @@ See [`tests/Respondeo.AcceptanceTests/README.md`](tests/Respondeo.AcceptanceTest
 
 ## Authoring content
 
-Content lives in `src/Respondeo.Content/wwwroot/inquiry/` as Markdown files, each with a
+The `Respondeo.Content` library has two authoring pillars, each with its own guide:
+
+- **Inquiry** (the reasoned path into the faith): Markdown/YAML nodes under
+  `src/Respondeo.Content/wwwroot/inquiry/`. See **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/INQUIRY.md)**.
+- **Discover** (living the faith): prayers, devotions, articles, miracles, and saints under
+  `src/Respondeo.Content/wwwroot/discover/`. See **[`src/Respondeo.Content/DISCOVER.md`](src/Respondeo.Content/DISCOVER.md)**.
+
+Inquiry content lives in `src/Respondeo.Content/wwwroot/inquiry/` as Markdown files, each with a
 YAML front-matter header followed by a Markdown body. New files must also be listed in
 `manifest.json` so `InquiryService` can load them.
 
-The full authoring guide — front matter, links, and the media directives (YouTube, PDF, buttons) —
+The full Inquiry authoring guide — front matter, links, and the media directives (YouTube, PDF, buttons) —
 lives in **[`src/Respondeo.Content/INQUIRY.md`](src/Respondeo.Content/INQUIRY.md)**. Two
 ready-to-copy templates sit alongside the content to start from:
 
@@ -58,6 +66,13 @@ ready-to-copy templates sit alongside the content to start from:
   every front-matter field and an example of each parser directive.
 - [`example-section.md`](docs/templates/example-section.md) — a minimal
   section stub for use as a collapsible section of a parent page.
+
+Discover content is split by kind (prayers and articles as Markdown, devotions as JSON, miracles and
+saints as faceted Markdown), each registered in its own per-type manifest. See
+**[`src/Respondeo.Content/DISCOVER.md`](src/Respondeo.Content/DISCOVER.md)** for the per-kind front
+matter and the matching templates under [`docs/templates/`](docs/templates). Reusable authoring
+prompts live under [`.github/prompts/`](.github/prompts) (`add-article`, `add-prayer`,
+`add-devotion`, `add-miracle`, `add-saint`).
 
 ## Summa corpus
 
@@ -138,6 +153,7 @@ change. The flags live in the **`FeatureFlags`** section of
 | `PrayerFeature` | Hides the Prayers area within Discover. |
 | `DevotionsFeature` | Hides the Devotions area within Discover. |
 | `ArticlesFeature` | Hides the Articles area within Discover. |
+| `ExternalFeedback` | Skips the feedback choice dialog so the trigger goes straight to opening a GitHub issue (instead of also offering the hosted Tally form). |
 
 To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a
 per-environment override at `wwwroot/appsettings.{Environment}.json` (it merges over the base file).

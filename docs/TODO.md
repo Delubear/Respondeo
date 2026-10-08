@@ -72,6 +72,7 @@ hub → founded by Christ → recognizing it → four marks → authority → (o
   - [x] Eastern Orthodoxy (which apostolic church?)
   - [x] The Blessed Virgin Mary (role in salvation, the New Ark)
   - [x] Praying to the saints
+  - [x] Science, evolution, and Genesis (does the faith require a young earth?)
 - [x] Where the path has led (consolidating terminus) — hands off to *Coming Home*
 
 ## Stage: Coming Home
@@ -89,13 +90,12 @@ Flow graph audited: no unreachable nodes, single intended terminus.
 - [x] Why practice, and why believe it for real (optional detour, cross-linked with obstacles)
 - [~] What holds people back (obstacles: shame, wounds, habit, doubt, cost) (optional detour, cross-linked with why practice)
 - [~] How to begin (sections: returning Catholic, entering from outside, Eastern Orthodox) — hands off to *Discover*
-- [x] Sacraments content relocated out of Coming Home into the Discover pillar
 
 ---
 
 ## Cross-cutting / possible future stages
 
-- [ ] Possible 6th stage: "Living It" — sacraments, prayer, daily practice
+- [~] Possible 6th stage: "Living It" — sacraments, prayer, daily practice
 - [ ] Suffering (fuller pastoral treatment beyond the problem-of-evil objection)
 - [ ] Morality without God / grounding of objective moral values
 - [ ] Science & faith (history, Galileo, evolution) as a standalone thread
@@ -117,6 +117,7 @@ model and browsable by facet + free-text search.
 - [~] Our Lady of Guadalupe
 - [~] The Cures of Lourdes
 - [~] The Incorrupt Body of St. Bernadette
+- [~] Our Lady of Soufanieh (Damascus apparitions to Myrna Nazzour)
 - [ ] Consider: theological/philosophical treatment of what a miracle is (Aquinas, Hume)
 - [ ] Consider: more Eucharistic miracles (Orvieto-Bolsena, Santarém, Sokółka)
 - [ ] Consider: more approved apparitions (Lourdes 1858, Fatima, Knock, Akita)
@@ -129,9 +130,9 @@ An area within the Discover pillar (reached from the Discover sub-navigation, ro
 with typed facet front-matter (era, region, patronages, states of life, canonizations, dates, feast
 day, tags), parsed into a typed model and browsable by facet + free-text search.
 
-- [~] Saints area scaffolding (models, service, browse state, pages, Discover sub-nav link, feature flag)
-- [~] Browse page: facet filters (era / region / state of life / canonization) + search + sort by title
-- [~] Detail page: facts panel (with era description), prose sections, patronages, tags, sources
+- [x] Saints area scaffolding (models, service, browse state, pages, Discover sub-nav link, feature flag)
+- [x] Browse page: facet filters (era / region / state of life / canonization) + search + sort by title
+- [x] Detail page: facts panel (with era description), prose sections, patronages, tags, sources
 - [~] St. Augustine of Hippo
 - [~] St. Francis of Assisi
 - [~] St. Thérèse of Lisieux
@@ -145,13 +146,12 @@ end of Coming Home as an ongoing endgame rather than a new journey stage. Prayer
 hand-authored Markdown; devotions are data-driven JSON so an interactive Rosary/chaplet player can walk
 the visitor bead by bead without code changes.
 
-- [~] Discover pillar scaffolding (project, models, parser, services, manifests, DI, masthead link, feature flags)
-- [~] Hub page (`/discover`) linking Miracles, Saints, Prayers, Devotions, Articles
-- [~] Prayers: searchable index (`/discover/prayers`) + detail with optional Latin (`/discover/prayers/{id}`)
-- [~] Devotions: index (`/discover/devotions`) + interactive data-driven player (`/discover/devotions/{id}`)
-- [~] Articles: index (`/discover/articles`) + sectioned detail with sources (`/discover/articles/{id}`)
-- [~] Coming Home finale hands off into Discover via `nextStage`
-- [x] Relocate the Sacraments content into Discover articles
+- [x] Discover pillar scaffolding (project, models, parser, services, manifests, DI, masthead link, feature flags)
+- [x] Hub page (`/discover`) linking Miracles, Saints, Prayers, Devotions, Articles
+- [x] Prayers: searchable index (`/discover/prayers`) + detail with optional Latin (`/discover/prayers/{id}`)
+- [x] Devotions: index (`/discover/devotions`) + interactive data-driven player (`/discover/devotions/{id}`)
+- [x] Articles: index (`/discover/articles`) + sectioned detail with sources (`/discover/articles/{id}`)
+- [x] Coming Home finale hands off into Discover via `nextStage`
 - [ ] Consider: more prayers (Litanies, the Angelus, Divine Mercy), more chaplets
 - [ ] Consider: more deep-dive articles (the Eucharist, Confession practice, the liturgical year)
 - [ ] Consider: mind copyright on any non-public-domain prayers/translations
