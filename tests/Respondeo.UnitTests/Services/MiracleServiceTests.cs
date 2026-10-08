@@ -1,6 +1,3 @@
-using System.Net;
-using System.Text;
-using Respondeo.Content.Discover;
 using Respondeo.Content.Miracles;
 using Respondeo.UnitTests.TestSupport;
 

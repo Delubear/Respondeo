@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Content.Articles;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Devotions;
-using Respondeo.Content.Discover;
 using Respondeo.Content.Inquiry;
 using Respondeo.Content.Miracles;
 using Respondeo.Content.Prayers;
@@ -21,7 +20,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Registers both content pillars:
     /// <list type="bullet">
-    /// <item><description>Discover: four peer content services (prayers, devotions, articles, and the catalog of Catholic miracles), plus a thin <see cref="IDiscoverOverview"/> facade used by the landing page to warm them all.</description></item>
+    /// <item><description>Discover: four peer content services (prayers, devotions, articles, and the catalog of Catholic miracles).</description></item>
     /// <item><description>Inquiry: the content parser and the <see cref="IContentService"/> implementation.</description></item>
     /// </list>
     /// The services are scoped because they depend on the scoped <see cref="HttpClient"/> in Blazor WebAssembly; the stateless parser is registered as a singleton.
@@ -37,7 +36,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IMiracleService, MiracleService>();
         services.AddScoped<ISaintService, SaintService>();
-        services.AddScoped<IDiscoverOverview, DiscoverOverview>();
 
         // Inquiry pillar
         services.AddSingleton<InquiryParser>();

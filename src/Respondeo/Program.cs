@@ -50,6 +50,9 @@ builder.Services.AddScoped<DevotionBrowse>();
 // Pure row projection, tag facet, and search/sort for the Discover articles index, kept out of the Articles browse page so it is unit-testable.
 builder.Services.AddScoped<ArticleBrowse>();
 
+// Thin facade that warms every Discover content index so the landing page can pre-load the whole pillar in one call.
+builder.Services.AddScoped<DiscoverOverview>();
+
 // Tracks the visitor's navigation path (persisted in sessionStorage) for breadcrumbs.
 builder.Services.AddScoped<IBreadcrumbTrail, BreadcrumbTrail>();
 
