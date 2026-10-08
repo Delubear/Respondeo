@@ -16,28 +16,26 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
     private readonly FrontMatterReader _reader = new();
 
     /// <summary>Parses a prayer Markdown file, or returns null when it lacks valid front-matter / an id.</summary>
-    public PrayerDocument? Parse(string raw)
-    {
-        if (!_reader.TryRead<PrayerFrontMatter>(raw, out var meta, out var body))
-        {
-            return null;
-        }
+    public PrayerDocument? Parse(string raw) => _reader.TryRead<PrayerFrontMatter>(raw, out var meta, out var body) ? Map(meta!, body) : null;
 
-        return new PrayerDocument
-        {
-            Id = meta!.Id,
-            Title = meta.Title,
-            SortValue = meta.SortValue,
-            Summary = meta.Summary,
-            Category = NormalizeSlug(meta.Category, "other"),
-            Language = NormalizeSlug(meta.Language, "en"),
-            TranslationKey = string.IsNullOrWhiteSpace(meta.TranslationKey) ? null : meta.TranslationKey.Trim(),
-            Html = html.ToHtmlPreservingLineBreaks(AnnotateVersicleMarkers(body.Trim())),
-            Tags = meta.Tags,
-            Attribution = meta.Attribution,
-            Unlisted = meta.Unlisted,
-        };
-    }
+    /// <summary>
+    /// Maps an already-parsed front-matter block and body onto a <see cref="PrayerDocument"/>.
+    /// Shared by <see cref="Parse"/> and the content loader so both produce identical documents from the same input.
+    /// </summary>
+    public PrayerDocument Map(PrayerFrontMatter meta, string body) => new()
+    {
+        Id = meta.Id,
+        Title = meta.Title,
+        SortValue = meta.SortValue,
+        Summary = meta.Summary,
+        Category = NormalizeSlug(meta.Category, "other"),
+        Language = NormalizeSlug(meta.Language, "en"),
+        TranslationKey = string.IsNullOrWhiteSpace(meta.TranslationKey) ? null : meta.TranslationKey.Trim(),
+        Html = html.ToHtmlPreservingLineBreaks(AnnotateVersicleMarkers(body.Trim())),
+        Tags = meta.Tags,
+        Attribution = meta.Attribution,
+        Unlisted = meta.Unlisted,
+    };
 
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 

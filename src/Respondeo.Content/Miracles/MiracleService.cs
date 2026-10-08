@@ -15,7 +15,6 @@ namespace Respondeo.Content.Miracles;
 internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html) :
     MarkdownContentLoader<MiracleFrontMatter, MiracleRecordDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
-    private const string DiscoverRoot = "_content/Respondeo.Content/discover";
     private const string MiraclesRoot = DiscoverRoot + "/miracles";
     private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";
@@ -32,19 +31,8 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
     }
 
     /// <summary>Returns the slug&#8594;label facet catalog, loading and caching it once.</summary>
-    public Task<MiracleFacetCatalog> GetFacetsAsync() => _facets.GetAsync(async () =>
-    {
-        try
-        {
-            var dto = await Fetcher.GetFromJsonAsync<FacetsDto>(FacetsPath);
-            return dto?.ToCatalog() ?? MiracleFacetCatalog.Empty;
-        }
-        catch (HttpRequestException)
-        {
-            // Missing facets file must not break browsing; labels fall back to humanized slugs.
-            return MiracleFacetCatalog.Empty;
-        }
-    });
+    public Task<MiracleFacetCatalog> GetFacetsAsync() =>
+        _facets.GetAsync(() => LoadFacetsAsync<FacetsDto, MiracleFacetCatalog>(FacetsPath, dto => dto.ToCatalog(), MiracleFacetCatalog.Empty));
 
     /// <summary>Returns the full content of a single miracle by id, or null if it does not exist.</summary>
     public async Task<MiracleRecord?> GetByIdAsync(string id)
@@ -62,25 +50,8 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
 
     private async Task<Catalog> LoadCatalogAsync()
     {
-        var manifest = await Fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        // Fetch every file concurrently rather than sequentially so the cold load overlaps the network round trips;
-        // results are assembled in manifest order for deterministic index order.
-        var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{MiraclesRoot}/{f}", f)));
-
-        var records = new Dictionary<string, MiracleRecordDocument>(StringComparer.OrdinalIgnoreCase);
-        var entries = new List<MiracleIndexEntry>();
-        foreach (var record in parsed)
-        {
-            if (record is null)
-            {
-                continue;
-            }
-
-            records[record.Id] = record;
-            entries.Add(record.ToIndexEntryContract());
-        }
-
+        var parsed = await LoadManifestAsync(MiraclesRoot, ManifestPath);
+        var (records, entries) = BuildCatalog(parsed, r => r.Id, r => r.ToIndexEntryContract());
         return new Catalog(records, new MiracleIndex { Entries = entries });
     }
 

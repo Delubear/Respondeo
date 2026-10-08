@@ -11,13 +11,13 @@ namespace Respondeo.Content.Articles;
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="ArticleParser"/>,
 /// and caches the parsed articles and derived index in memory for the app's lifetime.
 /// </summary>
-internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html) : IArticleService
+internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html) :
+    MarkdownContentLoader<ArticleFrontMatter, ArticleDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IArticleService
 {
-    private const string ArticlesRoot = "_content/Respondeo.Content/discover/articles";
+    private const string ArticlesRoot = DiscoverRoot + "/articles";
     private const string ManifestPath = ArticlesRoot + "/articles-manifest.json";
 
     private readonly ArticleParser _parser = new(html);
-    private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<Catalog> _catalog = new();
 
     /// <summary>Returns the browse index, loading the catalog once and caching it.</summary>
@@ -35,40 +35,14 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
         return catalog.Articles.TryGetValue(id, out var article) ? article.ToContract() : null;
     }
 
+    protected override ArticleDocument Map(ArticleFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
+
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
-        var manifest = await _fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        var articles = await Task.WhenAll(manifest.Files.Select(LoadArticleAsync));
-
-        var map = new Dictionary<string, ArticleDocument>(StringComparer.OrdinalIgnoreCase);
-        var summaries = new List<ArticleSummary>();
-        foreach (var article in articles)
-        {
-            if (article is null)
-            {
-                continue;
-            }
-
-            map[article.Id] = article;
-            summaries.Add(article.ToSummaryContract());
-        }
-
-        return new Catalog(map, summaries);
+        var articles = await LoadManifestAsync(ArticlesRoot, ManifestPath);
+        var (byId, summaries) = BuildCatalog(articles, a => a.Id, a => a.ToSummaryContract());
+        return new Catalog(byId, summaries);
     });
-
-    private async Task<ArticleDocument?> LoadArticleAsync(string fileName)
-    {
-        try
-        {
-            var raw = await _fetcher.GetStringAsync($"{ArticlesRoot}/{fileName}");
-            return _parser.Parse(raw);
-        }
-        catch (HttpRequestException)
-        {
-            return null;
-        }
-    }
 
     private sealed record Catalog(Dictionary<string, ArticleDocument> Articles, IReadOnlyList<ArticleSummary> Summaries);
 }

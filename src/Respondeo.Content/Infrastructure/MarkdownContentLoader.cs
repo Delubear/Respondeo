@@ -15,6 +15,9 @@ public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher
     where TFrontMatter : ContentFrontMatterBase
     where TModel : class
 {
+    /// <summary>The static-web-asset root every Discover pillar's bundled content is served from.</summary>
+    protected const string DiscoverRoot = "_content/Respondeo.Content/discover";
+
     /// <summary>The fetcher used to retrieve files, exposed so derived loaders can also fetch manifests/JSON.</summary>
     protected ContentFetcher Fetcher => fetcher;
 
@@ -23,6 +26,56 @@ public abstract class MarkdownContentLoader<TFrontMatter, TModel>(ContentFetcher
     /// The <paramref name="fileName"/> is the manifest entry the content came from, so derived loaders can derive per-file context (e.g. a stage from the containing folder).
     /// </summary>
     protected abstract TModel Map(TFrontMatter meta, string body, string fileName);
+
+    /// <summary>
+    /// Fetches the pillar's manifest from <paramref name="manifestPath"/>, then fetches and parses every listed file
+    /// (concurrently) from <paramref name="root"/>, returning the successfully-parsed models in manifest order.
+    /// Missing/invalid entries are dropped so a single bad file never takes down the catalog.
+    /// </summary>
+    protected async Task<IReadOnlyList<TModel>> LoadManifestAsync(string root, string manifestPath)
+    {
+        var manifest = await fetcher.GetFromJsonAsync<ContentManifest>(manifestPath) ?? new ContentManifest();
+        var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{root}/{f}", f)));
+        return [.. parsed.OfType<TModel>()];
+    }
+
+    /// <summary>
+    /// Builds the two structures every pillar's catalog needs from the loaded models: an id&#8594;model lookup
+    /// (for detail pages) and an ordered list of index entries (for the browse/search index), in input order.
+    /// </summary>
+    protected static (Dictionary<string, TModel> ById, List<TEntry> Entries) BuildCatalog<TEntry>(
+        IEnumerable<TModel> models,
+        Func<TModel, string> idSelector,
+        Func<TModel, TEntry> entrySelector)
+    {
+        var byId = new Dictionary<string, TModel>(StringComparer.OrdinalIgnoreCase);
+        var entries = new List<TEntry>();
+        foreach (var model in models)
+        {
+            byId[idSelector(model)] = model;
+            entries.Add(entrySelector(model));
+        }
+
+        return (byId, entries);
+    }
+
+    /// <summary>
+    /// Fetches and converts a pillar's <c>facets.json</c> into its catalog, returning <paramref name="empty"/> when the
+    /// file is absent/unreachable so a missing facets file never breaks browsing (labels fall back to humanized slugs).
+    /// </summary>
+    protected async Task<TCatalog> LoadFacetsAsync<TDto, TCatalog>(string path, Func<TDto, TCatalog> toCatalog, TCatalog empty)
+        where TDto : class
+    {
+        try
+        {
+            var dto = await fetcher.GetFromJsonAsync<TDto>(path);
+            return dto is null ? empty : toCatalog(dto);
+        }
+        catch (HttpRequestException)
+        {
+            return empty;
+        }
+    }
 
     /// <summary>
     /// Fetches and parses a single Markdown file into its model, or returns null when the file is missing/unreachable

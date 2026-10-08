@@ -12,13 +12,13 @@ namespace Respondeo.Content.Prayers;
 /// Runs entirely client-side: fetches files via <see cref="HttpClient"/>, delegates parsing to <see cref="PrayerParser"/>,
 /// pairs each vernacular prayer with its Latin translation, and caches the parsed prayers and derived index in memory for the app's lifetime.
 /// </summary>
-internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) : IPrayerService
+internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) :
+    MarkdownContentLoader<PrayerFrontMatter, PrayerDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IPrayerService
 {
-    private const string PrayersRoot = "_content/Respondeo.Content/discover/prayers";
+    private const string PrayersRoot = DiscoverRoot + "/prayers";
     private const string ManifestPath = PrayersRoot + "/prayers-manifest.json";
 
     private readonly PrayerParser _parser = new(html);
-    private readonly ContentFetcher _fetcher = new(http, ContentCachePolicy.Immutable);
     private readonly AsyncInitCache<Catalog> _catalog = new();
 
     // Markdig renders "[Label](prayer:some-id)" as an anchor whose href is the raw "prayer:some-id"
@@ -43,12 +43,11 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer.ToContract() : null;
     }
 
+    protected override PrayerDocument Map(PrayerFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
+
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
-        var manifest = await _fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        var prayers = await Task.WhenAll(manifest.Files.Select(LoadPrayerAsync));
-        var loaded = prayers.Where(p => p is not null).Cast<PrayerDocument>().ToList();
+        var loaded = (await LoadManifestAsync(PrayersRoot, ManifestPath)).ToList();
         PairTranslations(loaded);
 
         // Every prayer (including Latin) stays addressable by id, but only the primary-language,
@@ -64,19 +63,6 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
 
         return new Catalog(map, summaries);
     });
-
-    private async Task<PrayerDocument?> LoadPrayerAsync(string fileName)
-    {
-        try
-        {
-            var raw = await _fetcher.GetStringAsync($"{PrayersRoot}/{fileName}");
-            return _parser.Parse(raw);
-        }
-        catch (HttpRequestException)
-        {
-            return null;
-        }
-    }
 
     // A prayer is "primary" (browsable) unless it is a Latin translation of another prayer.
     private static bool IsPrimaryLanguage(PrayerDocument prayer) =>

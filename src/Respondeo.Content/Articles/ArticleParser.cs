@@ -14,27 +14,24 @@ internal sealed class ArticleParser(IContentHtmlRenderer html)
     private readonly FrontMatterReader _reader = new();
 
     /// <summary>Parses an article Markdown file, or returns null when it lacks valid front-matter / an id.</summary>
-    public ArticleDocument? Parse(string raw)
+    public ArticleDocument? Parse(string raw) => _reader.TryRead<ArticleFrontMatter>(raw, out var meta, out var body) ? Map(meta!, body) : null;
+
+    /// <summary>
+    /// Maps an already-parsed front-matter block and body onto an <see cref="ArticleDocument"/>.
+    /// Shared by <see cref="Parse"/> and the content loader so both produce identical documents from the same input.
+    /// </summary>
+    public ArticleDocument Map(ArticleFrontMatter meta, string body) => new()
     {
-        if (!_reader.TryRead<ArticleFrontMatter>(raw, out var meta, out var body))
-        {
-            return null;
-        }
+        Id = meta.Id,
+        Title = meta.Title,
+        SortValue = meta.SortValue,
+        Summary = meta.Summary,
+        Topic = NormalizeSlug(meta.Topic, "general"),
+        Tags = meta.Tags,
+        IsUnvetted = meta.IsUnvetted,
+        BodyHtml = html.ToHtml(body),
+        Sources = [.. meta.Sources.Select(s => new ArticleSourceDocument { Label = s.Label, Url = s.Url })],
+    };
 
-        return new ArticleDocument
-        {
-            Id = meta!.Id,
-            Title = meta.Title,
-            SortValue = meta.SortValue,
-            Summary = meta.Summary,
-            Topic = NormalizeSlug(meta.Topic, "general"),
-            Tags = meta.Tags,
-            IsUnvetted = meta.IsUnvetted,
-            BodyHtml = html.ToHtml(body),
-            Sources = [.. meta.Sources.Select(s => new ArticleSourceDocument { Label = s.Label, Url = s.Url })],
-        };
-    }
-
-    private static string NormalizeSlug(string? slug, string fallback) =>
-        string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
+    private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 }

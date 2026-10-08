@@ -15,7 +15,6 @@ namespace Respondeo.Content.Saints;
 internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
     MarkdownContentLoader<SaintFrontMatter, SaintRecordDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), ISaintService
 {
-    private const string DiscoverRoot = "_content/Respondeo.Content/discover";
     private const string SaintsRoot = DiscoverRoot + "/saints";
     private const string ManifestPath = SaintsRoot + "/saints-manifest.json";
     private const string FacetsPath = SaintsRoot + "/facets.json";
@@ -32,19 +31,8 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
     }
 
     /// <summary>Returns the slug&#8594;label facet catalog, loading and caching it once.</summary>
-    public Task<SaintFacetCatalog> GetFacetsAsync() => _facets.GetAsync(async () =>
-    {
-        try
-        {
-            var dto = await Fetcher.GetFromJsonAsync<FacetsDto>(FacetsPath);
-            return dto?.ToCatalog() ?? SaintFacetCatalog.Empty;
-        }
-        catch (HttpRequestException)
-        {
-            // Missing facets file must not break browsing; labels fall back to humanized slugs.
-            return SaintFacetCatalog.Empty;
-        }
-    });
+    public Task<SaintFacetCatalog> GetFacetsAsync() =>
+        _facets.GetAsync(() => LoadFacetsAsync<FacetsDto, SaintFacetCatalog>(FacetsPath, dto => dto.ToCatalog(), SaintFacetCatalog.Empty));
 
     /// <summary>Returns the full content of a single saint by id, or null if it does not exist.</summary>
     public async Task<SaintRecord?> GetByIdAsync(string id)
@@ -62,25 +50,8 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
 
     private async Task<Catalog> LoadCatalogAsync()
     {
-        var manifest = await Fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        // Fetch every file concurrently rather than sequentially so the cold load overlaps the network round trips;
-        // results are assembled in manifest order for deterministic index order.
-        var parsed = await LoadFilesAsync(manifest.Files.Select(f => ($"{SaintsRoot}/{f}", f)));
-
-        var records = new Dictionary<string, SaintRecordDocument>(StringComparer.OrdinalIgnoreCase);
-        var entries = new List<SaintIndexEntry>();
-        foreach (var record in parsed)
-        {
-            if (record is null)
-            {
-                continue;
-            }
-
-            records[record.Id] = record;
-            entries.Add(record.ToIndexEntryContract());
-        }
-
+        var parsed = await LoadManifestAsync(SaintsRoot, ManifestPath);
+        var (records, entries) = BuildCatalog(parsed, r => r.Id, r => r.ToIndexEntryContract());
         return new Catalog(records, new SaintIndex { Entries = entries });
     }
 
