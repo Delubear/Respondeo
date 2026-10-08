@@ -12,7 +12,7 @@ public sealed class SaintBrowse
     // The historical order of the era facet, oldest first.
     // Era slugs are a small fixed vocabulary (see saints/facets.json), so chronological sorting ranks by this order; any unknown slug sorts last.
     // This is the single source of era chronology used by the "Chronological" sort options.
-    private static readonly string[] _eraOrder = ["early-church", "medieval", "early-modern", "modern"];
+    private static readonly string[] _eraOrder = ["old-testament", "early-church", "medieval", "early-modern", "modern"];
 
     /// <summary>
     /// The chronological rank of an era slug (0 = oldest). Unmapped slugs rank after all known eras so they sort to the end, keeping the ordering deterministic.

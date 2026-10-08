@@ -99,11 +99,12 @@ public class SaintBrowseTests
     }
 
     [Theory]
-    [InlineData("early-church", 0)]
-    [InlineData("medieval", 1)]
-    [InlineData("modern", 3)]
-    [InlineData("unknown", 4)]
-    [InlineData(null, 4)]
+    [InlineData("old-testament", 0)]
+    [InlineData("early-church", 1)]
+    [InlineData("medieval", 2)]
+    [InlineData("modern", 4)]
+    [InlineData("unknown", 5)]
+    [InlineData(null, 5)]
     public void EraRank_ranks_known_eras_and_sends_unknowns_last(string? era, int expected)
     {
         Assert.Equal(expected, SaintBrowse.EraRank(era));
