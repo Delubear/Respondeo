@@ -36,23 +36,10 @@ internal sealed class InquiryService(HttpClient http, InquiryParser parser) : Ma
 
     private Task<Dictionary<string, InquiryNodeDocument>> EnsureLoadedAsync() => _nodes.GetAsync(async () =>
     {
-        var manifest = await Fetcher.GetFromJsonAsync<ContentManifest>(ManifestPath) ?? new ContentManifest();
-
-        // Fetch every node concurrently rather than sequentially: on a cold load the content set is dozens of small files,
-        // and awaiting them one at a time serialises the network round trips into a noticeable first-load delay.
-        // Results are assembled in manifest order for determinism.
-        var nodes = await LoadFilesAsync(manifest.Files.Select(f => ($"{ContentRoot}/{f}", f)));
-
-        var loaded = new Dictionary<string, InquiryNodeDocument>(StringComparer.OrdinalIgnoreCase);
-        foreach (var node in nodes)
-        {
-            if (node is not null)
-            {
-                loaded[node.Id] = node;
-            }
-        }
-
-        return loaded;
+        // LoadManifestAsync fetches the manifest and loads every listed node concurrently (dozens of small files on a cold load),
+        // returning them in manifest order with missing/invalid entries dropped. Key by id for lookup.
+        var nodes = await LoadManifestAsync(ContentRoot, ManifestPath);
+        return nodes.ToDictionary(n => n.Id, StringComparer.OrdinalIgnoreCase);
     });
 
     // A node's stage is the content sub-folder it lives in (e.g. "why-god/aquinas-five-ways.md" belongs to the "why-god" stage).
