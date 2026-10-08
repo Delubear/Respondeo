@@ -110,7 +110,7 @@
        line length for body text); --w-wide is the roomier column for the home page, browse catalogs,
        and layout-driven detail surfaces. --maxw is kept as a back-compat alias for --w-read. */
     --w-read: 46rem;
-    --w-wide: 56rem;
+    --w-wide: 60rem;
     --maxw: var(--w-read);
 }
 
