@@ -29,6 +29,7 @@
   },
   "statesOfLife": {
     "religious": "Religious",
+    "deacon": "Deacon",
     "priest": "Priest",
     "bishop": "Bishop",
     "pope": "Pope",

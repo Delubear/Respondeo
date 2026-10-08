@@ -153,13 +153,24 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
 - **Facet slugs must exist in `saints/facets.json`** — enforced by test. Allowed values:
   - `era` (single): `early-church`, `medieval`, `early-modern`, `modern`
   - `region` (single): `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
-  - `statesOfLife` (list): `religious`, `priest`, `bishop`, `lay`, `martyr`, `virgin`, `widow`
+  - `statesOfLife` (list): `religious`, `deacon`, `priest`, `bishop`, `pope`, `lay`, `martyr`, `virgin`, `widow`
   - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`, `doctor-of-the-church`
 - **`statesOfLife` and `canonizations` are multi-valued and required** (at least one each) — enforced
   by test. A saint may hold several (e.g. `[priest, martyr]`, `[canonized, doctor-of-the-church]`).
-- **List only the highest holy order, not the ones it implies** — a `bishop` is already a `priest`
-  (and a pope is already a `bishop`), so use `[bishop]`, not `[bishop, priest]`. Add other, non-implied
-  states as needed (e.g. `[bishop, martyr]`).
+- **List every state of life that genuinely applies.** The slugs are independent descriptors, not a
+  ranked ladder, and the browse filter matches any saint whose list *contains* a selected state, so
+  being thorough only makes a saint easier to find (never excludes them).
+  - **Holy orders are cumulative in reality, so include each order the saint holds** — the ladder is
+    `deacon` → `priest` → `bishop` → `pope`. A priest is also a deacon; a bishop is also a priest
+    and deacon; a pope is also a bishop, priest, and deacon. Use `[deacon, priest, bishop]` for a
+    bishop and `[deacon, priest, bishop, pope]` for a pope, so each surfaces under every order's
+    filter. A saint ordained only to the diaconate (e.g. St. Francis of Assisi) is just `[deacon]`.
+  - **`religious`** means a vowed member of a religious order (Franciscan, Carmelite, etc.), as
+    opposed to diocesan/secular clergy. Add it whenever it applies, and omit it for secular clergy.
+    So a friar who is also a bishop is `[priest, bishop, religious]`; a diocesan bishop is
+    `[priest, bishop]`; a non-ordained friar is `[religious]`.
+  - **`martyr`, `virgin`, and `widow`** are likewise independent — add each that applies (e.g.
+    `[bishop, priest, martyr]`, `[religious, virgin]`).
 - `patronages` is **free-text display values** (e.g. `["Missions", "The poor"]`), not facet slugs — it
   is searched and shown on cards/detail but is **not** a filter facet, so it is not listed in
   `facets.json`. Reuse existing wording/casing for consistency.

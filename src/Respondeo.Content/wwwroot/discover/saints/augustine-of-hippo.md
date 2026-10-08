@@ -6,7 +6,7 @@ summary: "The restless seeker turned bishop whose Confessions and City of God sh
 era: early-church
 region: africa
 patronages: [Theologians & scholars, Converts]
-statesOfLife: [bishop]
+statesOfLife: [deacon, priest, bishop, religious]
 canonizations: [pre-congregation, doctor-of-the-church]
 dates: "354&ndash;430"
 feastDay: "August 28"
