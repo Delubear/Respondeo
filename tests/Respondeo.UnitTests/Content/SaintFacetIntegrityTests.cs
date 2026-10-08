@@ -23,11 +23,9 @@ public class SaintFacetIntegrityTests
         return Path.Combine(repoRoot, "src", "Respondeo.Content", "wwwroot", "discover", "saints");
     }
 
-    // The era map carries {label, description} objects; the rest are slug->label maps. We only need the keys here.
-    private sealed record EraEntry(string Label, string Description);
-
+    // All facet maps are slug->label. We only need the keys here.
     private sealed record FacetMaps(
-        Dictionary<string, EraEntry> Eras,
+        Dictionary<string, string> Eras,
         Dictionary<string, string> Regions,
         Dictionary<string, string> StatesOfLife,
         Dictionary<string, string> Canonizations);
@@ -125,9 +123,7 @@ public class SaintFacetIntegrityTests
             }
         }
 
-        Assert.True(
-            missing.Count == 0,
-            $"facets.json is missing labels for slugs used in content: {string.Join("; ", missing)}");
+        Assert.True(missing.Count == 0, $"facets.json is missing labels for slugs used in content: {string.Join("; ", missing)}");
     }
 
     [Fact]
@@ -153,8 +149,6 @@ public class SaintFacetIntegrityTests
             }
         }
 
-        Assert.True(
-            unpopulated.Count == 0,
-            $"saints missing required multi-valued facets: {string.Join("; ", unpopulated)}");
+        Assert.True(unpopulated.Count == 0, $"saints missing required multi-valued facets: {string.Join("; ", unpopulated)}");
     }
 }
