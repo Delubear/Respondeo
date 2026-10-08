@@ -5,26 +5,26 @@ namespace Respondeo.UnitTests.Routing;
 
 /// <summary>
 /// Verifies node URLs are nested under their stage so the section shows in the URL and the
-/// masthead tab lights up, while stageless nodes keep the flat route.
+/// masthead tab lights up. Every node belongs to a stage, so a missing stage is a content error.
 /// </summary>
 public class ContentRoutesTests
 {
     [Fact]
     public void Node_with_a_stage_is_nested_under_the_stage_slug()
     {
-        Assert.Equal("why-god/node/aquinas-five-ways", ContentRoutes.NodeHref("aquinas-five-ways", "why-god"));
+        Assert.Equal("why-god/aquinas-five-ways", ContentRoutes.NodeHref("aquinas-five-ways", "why-god"));
     }
 
     [Fact]
-    public void Node_without_a_stage_uses_the_flat_route()
+    public void Node_without_a_stage_throws()
     {
-        Assert.Equal("node/glossary", ContentRoutes.NodeHref("glossary", null));
+        Assert.Throws<ArgumentException>(() => ContentRoutes.NodeHref("glossary", null));
     }
 
     [Fact]
-    public void Empty_stage_is_treated_as_stageless()
+    public void Empty_stage_throws()
     {
-        Assert.Equal("node/test", ContentRoutes.NodeHref("test", string.Empty));
+        Assert.Throws<ArgumentException>(() => ContentRoutes.NodeHref("test", string.Empty));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class ContentRoutesTests
             Stage = "why-god",
         };
 
-        Assert.Equal("why-god/node/what-is-god-like", ContentRoutes.NodeHref(node));
+        Assert.Equal("why-god/what-is-god-like", ContentRoutes.NodeHref(node));
     }
 
     [Fact]

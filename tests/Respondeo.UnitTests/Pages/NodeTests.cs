@@ -15,7 +15,7 @@ namespace Respondeo.UnitTests.Pages;
 
 public class NodeTests : TestContext
 {
-    private const string Manifest = "{\"files\":[\"root.md\",\"child.md\"]}";
+    private const string Manifest = "{\"files\":[\"why-god/root.md\",\"why-god/child.md\"]}";
 
     // root branches to child (branch edges now live in flow, not front-matter).
     private const string RootMd = "---\nid: root\ntitle: Root Question\nsummary: The root\n---\nRoot body";
@@ -28,8 +28,8 @@ public class NodeTests : TestContext
         var handler = new StubHandler(new Dictionary<string, string>
         {
             ["_content/Respondeo.Content/inquiry/manifest.json"] = Manifest,
-            ["_content/Respondeo.Content/inquiry/root.md"] = RootMd,
-            ["_content/Respondeo.Content/inquiry/child.md"] = ChildMd,
+            ["_content/Respondeo.Content/inquiry/why-god/root.md"] = RootMd,
+            ["_content/Respondeo.Content/inquiry/why-god/child.md"] = ChildMd,
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://localhost/") };
 
@@ -66,7 +66,9 @@ public class NodeTests : TestContext
     [Fact]
     public void Renders_node_title_and_body()
     {
-        var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
+        var cut = RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
 
         Assert.Equal("Root Question", cut.Find("h1.pillar__title").TextContent);
         Assert.Contains("Root body", cut.Find(".content-body").TextContent);
@@ -75,10 +77,12 @@ public class NodeTests : TestContext
     [Fact]
     public void Renders_branch_cards_with_label_and_prompt()
     {
-        var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
+        var cut = RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
 
         var card = cut.Find(".branches a.card");
-        Assert.Equal("node/child", card.GetAttribute("href"));
+        Assert.Equal("why-god/child", card.GetAttribute("href"));
         Assert.Contains("Go deeper", card.TextContent);
         Assert.Contains("Explore this path", card.TextContent);
     }
@@ -95,7 +99,9 @@ public class NodeTests : TestContext
     [Fact]
     public void Does_not_render_branches_section_when_node_has_no_branches()
     {
-        var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "child"));
+        var cut = RenderComponent<Node>(p => p
+            .Add(c => c.Id, "child")
+            .Add(c => c.Stage, "why-god"));
 
         Assert.Empty(cut.FindAll("section.branches"));
     }
@@ -103,44 +109,51 @@ public class NodeTests : TestContext
     [Fact]
     public void Renders_current_node_as_the_final_breadcrumb()
     {
-        var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
+        var cut = RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
 
         Assert.Equal("Root Question", cut.Find(".breadcrumb__current").TextContent);
     }    [Fact]
     public void Renders_ancestor_crumbs_from_the_trail()
     {
         // Visiting "child" yields a trail of root -> child; root is the ancestor crumb.
-        _trail.VisitAsync("child").Returns(Task.FromResult<IReadOnlyList<string>>(new[] { "root", "child" }));
+        _trail.VisitAsync("child", "why-god").Returns(Task.FromResult<IReadOnlyList<string>>(new[] { "root", "child" }));
 
-        var cut = RenderComponent<Node>(p => p.Add(c => c.Id, "child"));
+        var cut = RenderComponent<Node>(p => p
+            .Add(c => c.Id, "child")
+            .Add(c => c.Stage, "why-god"));
 
         var link = cut.Find("a.breadcrumb__link");
-        Assert.Equal("node/root", link.GetAttribute("href"));
+        Assert.Equal("why-god/root", link.GetAttribute("href"));
         Assert.Equal("Root Question", link.TextContent);
     }
 
     [Fact]
     public void Redirects_to_the_canonical_url_when_the_stage_segment_is_wrong()
     {
-        // root has no stage, so its canonical URL is the flat node/root. A stray stage segment
-        // in the URL should trigger a replace-navigation to the canonical route.
+        // root lives in the why-god stage, so its canonical URL is why-god/root. A wrong stage
+        // segment in the URL should trigger a replace-navigation to the canonical route.
         var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
 
         RenderComponent<Node>(p => p
             .Add(c => c.Id, "root")
-            .Add(c => c.Stage, "why-god"));
+            .Add(c => c.Stage, "why-jesus"));
 
-        Assert.Equal(nav.ToAbsoluteUri("node/root").ToString(), nav.Uri);
+        Assert.Equal(nav.ToAbsoluteUri("why-god/root").ToString(), nav.Uri);
     }
 
     [Fact]
     public void Does_not_redirect_when_the_stage_segment_matches()
     {
         var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
+        nav.NavigateTo("why-god/root");
         var start = nav.Uri;
 
-        // root is stageless; rendering without a stage segment is already canonical.
-        RenderComponent<Node>(p => p.Add(c => c.Id, "root"));
+        // root belongs to why-god; rendering with the matching stage segment is already canonical.
+        RenderComponent<Node>(p => p
+            .Add(c => c.Id, "root")
+            .Add(c => c.Stage, "why-god"));
 
         Assert.Equal(start, nav.Uri);
     }
@@ -151,12 +164,12 @@ public class NodeTests : TestContext
         // A deep link such as ?section=... must survive the canonical redirect so shared section
         // links keep working when the URL's stage segment is corrected.
         var nav = Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
-        nav.NavigateTo("why-god/node/root?section=intro");
+        nav.NavigateTo("why-jesus/root?section=intro");
 
         RenderComponent<Node>(p => p
             .Add(c => c.Id, "root")
-            .Add(c => c.Stage, "why-god"));
+            .Add(c => c.Stage, "why-jesus"));
 
-        Assert.Equal(nav.ToAbsoluteUri("node/root?section=intro").ToString(), nav.Uri);
+        Assert.Equal(nav.ToAbsoluteUri("why-god/root?section=intro").ToString(), nav.Uri);
     }
 }

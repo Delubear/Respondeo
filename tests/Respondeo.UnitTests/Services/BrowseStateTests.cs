@@ -128,7 +128,7 @@ public class BrowseStateTests
         var summa = state.Section("summa", () => { exits.Add("exit"); return ValueTask.CompletedTask; });
         summa.Query = "existence of God";
 
-        nav.NavigateTo("why-god/node/root");
+        nav.NavigateTo("why-god/root");
 
         Assert.Equal(string.Empty, summa.Query);
         Assert.Single(exits);

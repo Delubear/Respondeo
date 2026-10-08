@@ -129,7 +129,7 @@ internal static class SitemapGenerator
     }
 
     // 4. Journey content nodes + their stage landing pages.
-    // A node's stage is its content sub-folder; its id comes from the front matter. Root-level nodes fall back to the flat node/{id} route.
+    // A node's stage is its content sub-folder; its id comes from the front matter. Every node belongs to a stage, so a root-level node is a content error and is skipped with a warning.
     private static void CollectJourneyRoutes(RouteSet routes, string contentRoot, string contentManifestPath)
     {
         if (!File.Exists(contentManifestPath))
@@ -158,12 +158,14 @@ internal static class SitemapGenerator
 
             var slashIndex = file.IndexOf('/');
             var stage = slashIndex > 0 ? file[..slashIndex] : null;
-            if (!string.IsNullOrEmpty(stage))
+            if (string.IsNullOrEmpty(stage))
             {
-                stages.Add(stage);
+                Console.Error.WriteLine($"warning: Node '{id}' ({file}) is not in a stage folder; skipping (every node must belong to a stage).");
+                continue;
             }
 
-            routes.Add(string.IsNullOrEmpty(stage) ? $"node/{id}" : $"{stage}/node/{id}");
+            stages.Add(stage);
+            routes.Add($"{stage}/{id}");
         }
 
         foreach (var stage in stages)

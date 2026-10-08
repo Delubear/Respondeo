@@ -8,6 +8,7 @@ namespace Respondeo.AcceptanceTests.Steps;
 public sealed class SectionSteps(PlaywrightContext context)
 {
     private const string PageId = "aquinas-five-ways";
+    private const string Stage = "why-god";
     private const string SecondSectionId = "five-ways-essence-existence";
 
     private IPage Page => context.Page;
@@ -15,14 +16,14 @@ public sealed class SectionSteps(PlaywrightContext context)
     [Given("I open the Five Ways page")]
     public async Task GivenIOpenTheFiveWaysPage()
     {
-        await Page.GotoAsync($"{context.BaseUrl}/node/{PageId}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+        await Page.GotoAsync($"{context.BaseUrl}/{Stage}/{PageId}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
         await Page.WaitForSelectorAsync(".accordion__trigger");
     }
 
     [Given("I open the Five Ways page with the second section in the URL")]
     public async Task GivenIOpenTheFiveWaysPageWithTheSecondSectionInTheUrl()
     {
-        await Page.GotoAsync($"{context.BaseUrl}/node/{PageId}?section={SecondSectionId}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+        await Page.GotoAsync($"{context.BaseUrl}/{Stage}/{PageId}?section={SecondSectionId}", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
         await Page.WaitForSelectorAsync(".accordion__trigger");
     }
 
