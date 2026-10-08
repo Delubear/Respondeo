@@ -8,7 +8,7 @@ region: europe
 patronages: [Missions, Youth]
 statesOfLife: [religious, virgin]
 canonizations: [canonized, doctor-of-the-church]
-dates: "1873&ndash;1897"
+dates: "1873-1897"
 feastDay: "October 1"
 reviewStatus: unvetted
 tags:

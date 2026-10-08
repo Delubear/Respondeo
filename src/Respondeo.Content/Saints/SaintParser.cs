@@ -1,6 +1,7 @@
 using Respondeo.Content.Infrastructure;
 using Respondeo.Content.Rendering;
 using Respondeo.Content.Shared;
+using System.Text.RegularExpressions;
 
 namespace Respondeo.Content.Saints;
 
@@ -10,7 +11,7 @@ namespace Respondeo.Content.Saints;
 /// so the Markdown engine stays behind an abstraction.
 /// Performs no I/O so it can be tested in isolation. The body is split into titled sections on top-level "## " headings.
 /// </summary>
-internal sealed class SaintParser(IContentHtmlRenderer html)
+internal sealed partial class SaintParser(IContentHtmlRenderer html)
 {
     private readonly FrontMatterReader _reader = new();
 
@@ -34,7 +35,7 @@ internal sealed class SaintParser(IContentHtmlRenderer html)
         Patronages = NormalizeText(meta.Patronages),
         StatesOfLife = NormalizeList(meta.StatesOfLife, fallback: null),
         Canonizations = NormalizeList(meta.Canonizations, fallback: null),
-        Dates = meta.Dates,
+        Dates = NormalizeDates(meta.Dates),
         FeastDay = meta.FeastDay,
         Tags = meta.Tags,
         IsUnvetted = meta.IsUnvetted,
@@ -45,7 +46,18 @@ internal sealed class SaintParser(IContentHtmlRenderer html)
     // Normalizes a single facet slug: trims, lowercases, and falls back to the supplied default when blank.
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
-    // Normalizes a list of facet slugs: trims/lowercases, drops blanks and duplicates (order-preserving).
+    // Normalizes free-text life dates: trims and converts a plain hyphen range separator
+    // (optionally spaced, e.g. "1225-1274" or "1225 - 1274") into an en dash entity so authors can type a normal "-".
+    private static string? NormalizeDates(string? dates)
+    {
+        if (string.IsNullOrWhiteSpace(dates))
+        {
+            return dates;
+        }
+
+        return RangeSeparator().Replace(dates.Trim(), "&ndash;");
+    }
+
     // When a fallback is supplied it is used for an otherwise-empty list; a null fallback leaves the list empty
     // (so a content-integrity test can require authors to populate it).
     private static IReadOnlyList<string> NormalizeList(IEnumerable<string>? slugs, string? fallback)
@@ -95,4 +107,9 @@ internal sealed class SaintParser(IContentHtmlRenderer html)
 
         return result;
     }
+
+    // Matches a single hyphen used as a range separator, with optional surrounding spaces. A leading
+    // hyphen (e.g. "-1274") is a minus sign rather than a range and is deliberately not matched.
+    [GeneratedRegex(@"(?<=\S)\s*-\s*(?=\S)")]
+    private static partial Regex RangeSeparator();
 }

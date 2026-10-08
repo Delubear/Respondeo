@@ -8,7 +8,7 @@ region: europe
 patronages: ["Animals & ecology", "The poor"]
 statesOfLife: [deacon, religious]
 canonizations: [pre-congregation]
-dates: "1181/82&ndash;1226"
+dates: "1181/82-1226"
 feastDay: "October 4"
 tags:
   - franciscan

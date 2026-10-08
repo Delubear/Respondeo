@@ -8,7 +8,7 @@ region: europe
 patronages: [Civil defense volunteers, Adolescents]
 statesOfLife: [deacon, priest, religious]
 canonizations: [canonized]
-dates: "1887&ndash;1968"
+dates: "1887-1968"
 feastDay: "September 23"
 reviewStatus: unvetted
 tags:

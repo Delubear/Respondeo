@@ -100,4 +100,26 @@ public class SaintParserTests
 
         Assert.Null(doc);
     }
+
+    [Theory]
+    [InlineData("1225-1274", "1225&ndash;1274")]
+    [InlineData("1225 - 1274", "1225&ndash;1274")]
+    [InlineData("1181/82-1226", "1181/82&ndash;1226")]
+    public void Parse_converts_plain_hyphen_date_ranges_to_en_dash(string input, string expected)
+    {
+        var raw = $"""
+            ---
+            id: dated-saint
+            title: "A Dated Saint"
+            dates: "{input}"
+            ---
+
+            A life.
+            """;
+
+        var doc = CreateParser().Parse(raw);
+
+        Assert.NotNull(doc);
+        Assert.Equal(expected, doc!.Dates);
+    }
 }

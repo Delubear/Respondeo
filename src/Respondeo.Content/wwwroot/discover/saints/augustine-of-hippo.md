@@ -8,7 +8,7 @@ region: africa
 patronages: [Theologians & scholars, Converts]
 statesOfLife: [deacon, priest, bishop, religious]
 canonizations: [pre-congregation, doctor-of-the-church]
-dates: "354&ndash;430"
+dates: "354-430"
 feastDay: "August 28"
 tags:
   - grace

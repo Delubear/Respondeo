@@ -8,7 +8,7 @@ region: europe
 patronages: [Students, Universities, Theologians]
 statesOfLife: [deacon, priest, religious]
 canonizations: [canonized, doctor-of-the-church]
-dates: "1225&ndash;1274"
+dates: "1225-1274"
 feastDay: "January 28"
 reviewStatus: unvetted
 tags:

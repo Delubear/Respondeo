@@ -8,7 +8,7 @@ region: europe
 patronages: [Astronomers, The Dominican Order]
 statesOfLife: [deacon, priest, religious]
 canonizations: [canonized]
-dates: "1170&ndash;1221"
+dates: "1170-1221"
 feastDay: "August 8"
 reviewStatus: unvetted
 tags:
