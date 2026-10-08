@@ -41,26 +41,17 @@
                 <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
             </aside>
 
-            <div class="filter-results">
-                <div class="toolbar">
-                    <p class="results-count">@Filtered.Count of @(_devotions?.Count ?? 0) devotions</p>
+            <FilterResults FilteredCount="Filtered.Count" TotalCount="_devotions?.Count ?? 0" Noun="devotions" EmptyMessage="No devotions match your search.">
+                <Sort>
                     <SortSelect T="DevotionSummary" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
-                </div>
-
-                @if (Filtered.Count == 0)
-                {
-                    <p class="empty-state">No devotions match your search.</p>
-                }
-                else
-                {
-                    <CardGrid SingleColumn="true">
-                        @foreach (var d in Filtered)
-                        {
-                            <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" />
-                        }
-                    </CardGrid>
-                }
-            </div>
+                </Sort>
+                <ChildContent>
+                    @foreach (var d in Filtered)
+                    {
+                        <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" />
+                    }
+                </ChildContent>
+            </FilterResults>
         </div>
     }
 </section>

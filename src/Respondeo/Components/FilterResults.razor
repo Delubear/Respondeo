@@ -1,0 +1,46 @@
+@* The results column shared by every browse page (Articles, Saints, Prayers, Miracles, Devotions).
+
+   It owns the repeated shell: the .filter-results wrapper, the .toolbar with its .results-count line
+   and sort control, and the empty-state vs. card-grid switch. Pages supply only what varies:
+     - FilteredCount / TotalCount / Noun   the "X of Y noun" count line.
+     - EmptyMessage                        shown when nothing matches.
+     - Sort                                the page's own generic <SortSelect T="...">.
+     - ChildContent                        the cards for the matching results, wrapped in a single-column grid. *@
+
+<div class="filter-results">
+    <div class="toolbar">
+        <p class="results-count">@FilteredCount of @TotalCount @Noun</p>
+        @Sort
+    </div>
+
+    @if (FilteredCount == 0)
+    {
+        <p class="empty-state">@EmptyMessage</p>
+    }
+    else
+    {
+        <CardGrid SingleColumn="true">
+            @ChildContent
+        </CardGrid>
+    }
+</div>
+
+@code {
+    /// <summary>The number of items matching the current search and filters.</summary>
+    [Parameter, EditorRequired] public int FilteredCount { get; set; }
+
+    /// <summary>The total number of items before filtering, shown after "of".</summary>
+    [Parameter, EditorRequired] public int TotalCount { get; set; }
+
+    /// <summary>The plural noun for the items (e.g. "articles", "saints"), shown after the counts.</summary>
+    [Parameter, EditorRequired] public string Noun { get; set; } = string.Empty;
+
+    /// <summary>The message shown when no items match.</summary>
+    [Parameter, EditorRequired] public string EmptyMessage { get; set; } = string.Empty;
+
+    /// <summary>The sort control, typically the page's generic <c>SortSelect</c>, rendered in the toolbar.</summary>
+    [Parameter] public RenderFragment? Sort { get; set; }
+
+    /// <summary>The result cards, rendered inside a single-column card grid when any items match.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -36,26 +36,17 @@
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="filter-results">
-                <div class="toolbar">
-                    <p class="results-count">@Filtered.Count of @_all.Count miracles</p>
+            <FilterResults FilteredCount="Filtered.Count" TotalCount="_all.Count" Noun="miracles" EmptyMessage="No miracles match the current filters.">
+                <Sort>
                     <SortSelect T="MiracleIndexEntry" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
-                </div>
-
-                @if (Filtered.Count == 0)
-                {
-                    <p class="empty-state">No miracles match the current filters.</p>
-                }
-                else
-                {
-                    <CardGrid SingleColumn="true">
-                        @foreach (var m in Filtered)
-                        {
-                            <Card Href="@ContentRoutes.MiracleHref(m.Id)" Title="@m.Title" Pills="@Browser.Pills(m, _facets)" Summary="@Browser.CardSummary(m, _facets)" Cta="Read &rarr;" Level="2" />
-                        }
-                    </CardGrid>
-                }
-            </div>
+                </Sort>
+                <ChildContent>
+                    @foreach (var m in Filtered)
+                    {
+                        <Card Href="@ContentRoutes.MiracleHref(m.Id)" Title="@m.Title" Pills="@Browser.Pills(m, _facets)" Summary="@Browser.CardSummary(m, _facets)" Cta="Read &rarr;" Level="2" />
+                    }
+                </ChildContent>
+            </FilterResults>
         </div>
     }
 </section>

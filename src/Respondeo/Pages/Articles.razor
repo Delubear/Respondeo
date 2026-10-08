@@ -6,14 +6,12 @@
 @inject BrowseStateInterop BrowseJs
 
 <PageTitle>Articles &mdash; Discover &mdash; Respondeo</PageTitle>
-
 <SeoHead Title="Living the Faith — Articles" Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
 <section class="pillar browse" data-browse-scroll="articles">
     <PillarHeader Eyebrow="Beneath the practice" Title="Articles">
         <Lede>
-            Once you are living the faith, questions deepen rather than disappear. These articles dig
-            into the practices and teachings of the Church &mdash; the reasons beneath the rhythm.
+            Once you are living the faith, questions deepen rather than disappear. These articles dig into the practices and teachings of the Church &mdash; the reasons beneath the rhythm.
         </Lede>
     </PillarHeader>
 
@@ -40,31 +38,17 @@
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </aside>
 
-            <div class="filter-results">
-                <div class="toolbar">
-                    <p class="results-count">@Filtered.Count of @(_articles?.Count ?? 0) articles</p>
+            <FilterResults FilteredCount="Filtered.Count" TotalCount="_articles?.Count ?? 0" Noun="articles" EmptyMessage="No articles match your search.">
+                <Sort>
                     <SortSelect T="ArticleRow" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
-                </div>
-
-                @if (Filtered.Count == 0)
-                {
-                    <p class="empty-state">No articles match your search.</p>
-                }
-                else
-                {
-                    <CardGrid SingleColumn="true">
-                        @foreach (var a in Filtered)
-                        {
-                            <Card Href="@a.Href"
-                                  Title="@a.Title"
-                                  Pill="@a.Pill"
-                                  Summary="@a.Summary"
-                                  Cta="Read &rarr;"
-                                  Level="2" />
-                        }
-                    </CardGrid>
-                }
-            </div>
+                </Sort>
+                <ChildContent>
+                    @foreach (var a in Filtered)
+                    {
+                        <Card Href="@a.Href" Title="@a.Title" Pill="@a.Pill" Summary="@a.Summary" Cta="Read &rarr;" Level="2" />
+                    }
+                </ChildContent>
+            </FilterResults>
         </div>
     }
 </section>
