@@ -7,7 +7,7 @@
 .reel-wrap {
     position: relative;
     margin: 0.25rem auto 0;
-    max-width: 52rem;
+    max-width: var(--w-wide);
     /* Room below for the progress-dot rail. */
     padding-bottom: 1.75rem;
 }
@@ -410,14 +410,11 @@
 /* ---------- Responsive ---------- */
 
 /* Desktop enhancement: on wide viewports the reel can feel a touch bare, so give it more presence.
-   Widen the reel viewport, enlarge the centered question card, and lift the headline ceiling. Scoped
-   to >=58rem (the same point the labelled hint pills appear) so the finely-tuned mobile/tablet
+   Enlarge the centered question card and lift the headline ceiling. The reel width itself follows the
+   shared --w-wide column (set on .reel-wrap above), so it stays aligned with the hero and aside.
+   Scoped to >=58rem (the same point the labelled hint pills appear) so the finely-tuned mobile/tablet
    layouts below are untouched. */
 @media (min-width: 58rem) {
-    .reel-wrap {
-        max-width: 64rem;
-    }
-
     .reel__step {
         width: 36rem;
     }

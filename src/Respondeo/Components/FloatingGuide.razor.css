@@ -20,8 +20,10 @@
     cursor: pointer;
     box-shadow: 0 0.35rem 0.9rem var(--shadow);
     transition: bottom 0.15s ease, background 0.12s ease, color 0.12s ease;
-    /* Mirror the back-to-top reveal: fade and slide up on first appearance, so switching pages
-       (and showing a different number of orbs) animates them in the same way. */
+    /* Fade and slide up on first appearance. The orbs live in MainLayout and are rendered by route,
+       so an orb persists as one element across navigations within its area (no re-animation); this
+       keyframe only runs when the orb genuinely first mounts (entering its area). The bottom
+       transition above handles the slot slide when it raises/stacks above the back-to-top arrow. */
     animation: float-circle-enter 0.15s ease both;
 }
 

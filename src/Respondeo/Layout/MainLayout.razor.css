@@ -69,7 +69,7 @@
 
 .content__inner {
     width: 100%;
-    max-width: var(--maxw);
+    max-width: var(--w-wide);
     margin: 0 auto;
     padding: 1.5rem 1.25rem 3rem;
 }

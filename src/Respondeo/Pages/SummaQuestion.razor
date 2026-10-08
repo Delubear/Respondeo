@@ -37,8 +37,6 @@ else
         <PillarHeader Eyebrow="@($"{PartTitle}{(string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}")} {(_question.IsPrologue ? $"\u00B7 {_question.Title}" : $"\u00B7 Question {_question.Number}")}")"
                       Title="@_question.Title" />
 
-        <SummaGuide />
-
         @if (!string.IsNullOrWhiteSpace(_question.PrologueHtml))
         {
             <div class="summa-question__prologue">

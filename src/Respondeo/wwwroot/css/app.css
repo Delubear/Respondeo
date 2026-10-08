@@ -106,7 +106,12 @@
     --masthead-rule: #ffffff;
     --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
     --display: 'Cinzel', 'EB Garamond', Georgia, serif;
-    --maxw: 46rem;
+    /* Two standard content measures used site-wide. --w-read is the prose/reading column (optimal
+       line length for body text); --w-wide is the roomier column for the home page, browse catalogs,
+       and layout-driven detail surfaces. --maxw is kept as a back-compat alias for --w-read. */
+    --w-read: 46rem;
+    --w-wide: 56rem;
+    --maxw: var(--w-read);
 }
 
 /* ---------- Dark theme ---------- */
@@ -334,7 +339,7 @@ h1, h2, h3 {
    page (discover article, etc.) reimplemented these with its own BEM prefix; they are now one
    source of truth so every reading surface shares the same measure, rhythm, and type. */
 .content-article {
-    max-width: 46rem;
+    max-width: var(--w-read);
     margin: 0 auto;
     /* The layout's .content__inner already supplies the page's bottom gutter, so this surface only
        needs its own top rhythm; adding bottom padding here doubled the space below the footer. */
@@ -675,6 +680,11 @@ details.accordion__item[open] > .accordion__trigger {
 }
 
 /* ---------- Journey landing pages ---------- */
+.landing {
+    max-width: var(--w-read);
+    margin-inline: auto;
+}
+
 .landing__title {
     margin: 0 0 0.5rem;
 }
@@ -755,8 +765,8 @@ details.accordion__item[open] > .accordion__trigger {
    type stay identical across pillars and only need to change in one place.
    --------------------------------------------------------------------------- */
 .pillar {
-    width: min(60rem, 100vw - 2.5rem);
-    margin-inline: calc(50% - min(60rem, 100vw - 2.5rem) / 2);
+    max-width: var(--w-wide);
+    margin-inline: auto;
 }
 
 .pillar__title {
@@ -776,7 +786,7 @@ details.accordion__item[open] > .accordion__trigger {
    60rem measure. Long-form prose surfaces (articles, miracles) use the tighter .content-article
    measure instead so their body text keeps an optimal line length. */
 .reading-wide {
-    max-width: 60rem;
+    max-width: var(--w-wide);
     margin: 0 auto;
     padding: 1rem 0 3rem;
 }

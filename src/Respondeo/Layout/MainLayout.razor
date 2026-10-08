@@ -51,15 +51,50 @@
     <InstallPrompt />
 </div>
 
+@* Floating orbs live here (not in the pages) so each persists as a single element across navigation
+   within its area and animates only on true first appearance. The liturgical orb is one instance
+   spanning every Discover-area route; it merely slides when its Raised state changes. Which orbs
+   show on which route is declared in FloatingGuideRoutes (the single source of truth). *@
+@if (_guides.ShowLiturgicalOrb)
+{
+    <LiturgicalOrb Raised="_guides.LiturgicalOrbRaised" />
+}
+@if (_guides.ShowPrayerGuide)
+{
+    <GuideToPrayers />
+}
+@if (_guides.ShowSaintGlossary)
+{
+    <SaintGlossaryOrb />
+}
+@if (_guides.ShowSummaGuide)
+{
+    <SummaGuide />
+}
+
 @code {
+    // Which floating orbs the current route shows. Orbs live here (not in the pages) so an orb that applies
+    // to several routes persists as one element across in-area navigation and only animates on true first
+    // appearance. The route-to-orb mapping is declared in FloatingGuideRoutes.
+    private FloatingGuideState _guides = FloatingGuideRoutes.Resolve(string.Empty);
+
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
-    protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
+    protected override void OnInitialized()
+    {
+        UpdateGuides();
+        Nav.LocationChanged += OnLocationChanged;
+    }
 
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        UpdateGuides();
+        StateHasChanged();
         await AnnounceAsync();
     }
+
+    // Resolve which floating orbs the current route shows from the single source of truth.
+    private void UpdateGuides() => _guides = FloatingGuideRoutes.Resolve(Nav.ToBaseRelativePath(Nav.Uri));
 
     // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is otherwise silent to screen readers.
     // Post the new page title to a polite live region so assistive technology announces the destination page.

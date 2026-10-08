@@ -1,5 +1,9 @@
 /* ---------- Node article ---------- */
 .node {
+    /* Inquiry body copy is long-form prose, so it opts down to the reading measure even though the
+       page column itself is the wider default. */
+    max-width: var(--w-read);
+    margin-inline: auto;
     /* Gentle fade + rise when a new node's content is shown, so switching between
        nodes feels like a deliberate page turn rather than a hard swap. Keyed on the
        node id in the markup so each navigation re-mounts and re-runs the animation. */
