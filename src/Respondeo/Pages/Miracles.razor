@@ -26,16 +26,17 @@
     }
     else
     {
-        <SearchBox Id="miracles-search" Label="Search miracles" Placeholder="e.g. Lanciano, healing, Italy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
-
-        <div class="filter-layout">
-            <aside class="filter-rail">
+        <FilterLayout>
+            <Search>
+                <SearchBox Id="miracles-search" Label="Search miracles" Placeholder="e.g. Lanciano, healing, Italy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
+            </Search>
+            <Rail>
                 <TopicFilter Title="Kind" Topics="_types" Selected="_selectedTypes" SelectedChanged="OnTypesChanged" DisplayLabel="_facets.Category" />
                 <TopicFilter Title="Church&rsquo;s judgment" Topics="_approvals" Selected="_selectedApprovals" SelectedChanged="OnApprovalsChanged" DisplayLabel="_facets.Approval" />
                 <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
-            </aside>
-
+            </Rail>
+            <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_all.Count" Noun="miracles" EmptyMessage="No miracles match the current filters.">
                 <Sort>
                     <SortSelect T="MiracleIndexEntry" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
@@ -47,7 +48,8 @@
                     }
                 </ChildContent>
             </FilterResults>
-        </div>
+            </ChildContent>
+        </FilterLayout>
     }
 </section>
 

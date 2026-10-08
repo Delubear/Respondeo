@@ -1,0 +1,33 @@
+@* The browse-page shell shared by Articles, Saints, Prayers, Miracles and Devotions: an optional
+   search box above a two-column grid whose left rail holds the page's filters and whose right column
+   holds the results.
+
+   It owns the repeated structure (the .filter-layout grid and the .filter-rail aside) so the layout
+   class names live in one place. Pages supply only what varies:
+     - Search         the optional <SearchBox> rendered above the grid.
+     - Rail           the page's own filters (TopicFilters + ClearFiltersButton).
+     - ChildContent   the results column, typically a <FilterResults>. *@
+
+@if (Search is not null)
+{
+    @Search
+}
+
+<div class="filter-layout">
+    <aside class="filter-rail">
+        @Rail
+    </aside>
+
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Optional search control rendered above the filter grid.</summary>
+    [Parameter] public RenderFragment? Search { get; set; }
+
+    /// <summary>The filter rail contents (the page's filters and clear-all action).</summary>
+    [Parameter] public RenderFragment? Rail { get; set; }
+
+    /// <summary>The results column, typically a <c>FilterResults</c>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -30,17 +30,18 @@
     }
     else
     {
-        <SearchBox Id="devotion-search" Label="Search devotions" Placeholder="e.g. Rosary, chaplet, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
-
-        <div class="filter-layout">
-            <aside class="filter-rail">
+        <FilterLayout>
+            <Search>
+                <SearchBox Id="devotion-search" Label="Search devotions" Placeholder="e.g. Rosary, chaplet, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
+            </Search>
+            <Rail>
                 @if (_kinds.Count > 0)
                 {
                     <TopicFilter Title="Kind" Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
                 }
                 <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
-            </aside>
-
+            </Rail>
+            <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_devotions?.Count ?? 0" Noun="devotions" EmptyMessage="No devotions match your search.">
                 <Sort>
                     <SortSelect T="DevotionSummary" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
@@ -52,7 +53,8 @@
                     }
                 </ChildContent>
             </FilterResults>
-        </div>
+            </ChildContent>
+        </FilterLayout>
     }
 </section>
 

@@ -25,10 +25,11 @@
     }
     else
     {
-        <SearchBox Id="prayer-search" Label="Search prayers" Placeholder="e.g. Hail Mary, Creed, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
-
-        <div class="filter-layout">
-            <aside class="filter-rail">
+        <FilterLayout>
+            <Search>
+                <SearchBox Id="prayer-search" Label="Search prayers" Placeholder="e.g. Hail Mary, Creed, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
+            </Search>
+            <Rail>
                 @if (_categories.Count > 0)
                 {
                     <TopicFilter Title="Category" Topics="_categoryLabels" Selected="_selectedCategories" SelectedChanged="OnCategoriesChanged" />
@@ -38,8 +39,8 @@
                     <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
-            </aside>
-
+            </Rail>
+            <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_prayers?.Count ?? 0" Noun="prayers" EmptyMessage="No prayers match your search.">
                 <Sort>
                     <SortSelect T="PrayerSummary" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
@@ -51,7 +52,8 @@
                     }
                 </ChildContent>
             </FilterResults>
-        </div>
+            </ChildContent>
+        </FilterLayout>
     }
 </section>
 

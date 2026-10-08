@@ -27,17 +27,18 @@
     }
     else
     {
-        <SearchBox Id="article-search" Label="Search articles" Placeholder="e.g. Confession, Eucharist, prayer..." Value="@_query" ValueChanged="OnSearchChanged" />
-
-        <div class="filter-layout">
-            <aside class="filter-rail">
+        <FilterLayout>
+            <Search>
+                <SearchBox Id="article-search" Label="Search articles" Placeholder="e.g. Confession, Eucharist, prayer..." Value="@_query" ValueChanged="OnSearchChanged" />
+            </Search>
+            <Rail>
                 @if (_tags.Count > 0)
                 {
                     <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
-            </aside>
-
+            </Rail>
+            <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_articles?.Count ?? 0" Noun="articles" EmptyMessage="No articles match your search.">
                 <Sort>
                     <SortSelect T="ArticleRow" Value="@_sortKey" ValueChanged="OnSortChanged" Options="_sortOptions" />
@@ -49,7 +50,8 @@
                     }
                 </ChildContent>
             </FilterResults>
-        </div>
+            </ChildContent>
+        </FilterLayout>
     }
 </section>
 
