@@ -24,9 +24,12 @@
     color: var(--ink-soft);
 }
 
-/* Float the label up onto the hairline so the rule reads as a labeled divider. */
+/* Float the label up onto the hairline so the rule reads as a labeled divider.
+   Block (not inline-block) so the pills below fall on their own line, but shrink-wrapped with
+   fit-content + auto margins so the background stays only behind the text and stays centered. */
 .reel__aside-lead {
-    display: inline-block;
+    display: block;
+    width: fit-content;
     margin: -2.4rem auto 0;
     padding: 0 1rem;
     background: var(--paper);
@@ -36,6 +39,8 @@
 }
 
 .reel__aside-paths {
+    /* inline-grid so it shrink-wraps to content and the 1fr tracks equalize (both pills the same
+       width). The block lead above guarantees this starts on its own line. */
     display: inline-grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
