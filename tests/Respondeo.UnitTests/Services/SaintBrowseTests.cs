@@ -14,10 +14,10 @@ public class SaintBrowseTests
 
     private static readonly SaintFacetCatalog Facets = new()
     {
-        Eras = new Dictionary<string, SaintEra>(StringComparer.OrdinalIgnoreCase)
+        Eras = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["medieval"] = new SaintEra("Medieval", "The Middle Ages."),
-            ["modern"] = new SaintEra("Modern", "The modern era."),
+            ["medieval"] = "Medieval",
+            ["modern"] = "Modern",
         },
         Regions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {

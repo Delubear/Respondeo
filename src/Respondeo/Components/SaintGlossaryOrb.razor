@@ -1,0 +1,109 @@
+@* A small floating glossary orb shown on the Saints browse and detail pages.
+    It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide, liturgical orb):
+    a bottom-right circle that slides up to stack above the back-to-top arrow.
+    Tapping it opens a Dialog explaining the saint facets &mdash; states of life, canonizations, eras,
+    and patronages &mdash; so the terms used on the cards and detail pages are self-explanatory. *@
+
+<FloatingGuide Title="Reading the saints" Eyebrow="What the labels mean" 
+               AriaLabel="Glossary: what the saint labels mean" Tooltip="What the labels mean"
+               DialogClass="dialog--glossary" Raised="Raised">
+    <Icon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5V19.5Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </Icon>
+    <ChildContent>
+        <div class="glossary">
+            <p>
+                Each saint is tagged with a few plain labels so you can browse and compare them. Here is
+                what those labels mean.
+            </p>
+
+            <h3 class="guide-subhead">States of life</h3>
+            <p>
+                A saint's state of life is the vocation or office they lived. Holy orders build on one
+                another &mdash; deacon, then priest, then bishop &mdash; so a saint often carries more
+                than one. These labels are independent, and a saint may hold several.
+            </p>
+            <ul class="glossary__list">
+                <li><span class="glossary__term">Religious</span> &mdash; a vowed member of a religious
+                    order or community (Franciscan, Carmelite, Benedictine, and so on), as distinct from
+                    diocesan clergy.</li>
+                <li><span class="glossary__term">Deacon</span> &mdash; the first rank of Holy Orders,
+                    ordained to service of the word, the altar, and charity.</li>
+                <li><span class="glossary__term">Priest</span> &mdash; ordained to offer the Mass,
+                    forgive sins, and shepherd souls.</li>
+                <li><span class="glossary__term">Bishop</span> &mdash; a successor of the Apostles who
+                    holds the fullness of Holy Orders and governs a local church.</li>
+                <li><span class="glossary__term">Pope</span> &mdash; the Bishop of Rome and successor of
+                    St. Peter, who leads the whole Church. (An office, not a separate order.)</li>
+                <li><span class="glossary__term">Lay faithful</span> &mdash; a baptized member of the
+                    Church who is not ordained, living holiness in the world.</li>
+                <li><span class="glossary__term">Martyr</span> &mdash; one who was killed for the faith,
+                    bearing the ultimate witness to Christ.</li>
+                <li><span class="glossary__term">Virgin</span> &mdash; one who consecrated their virginity
+                    to God for the sake of the Kingdom.</li>
+                <li><span class="glossary__term">Widow</span> &mdash; one who, after the death of a
+                    spouse, gave the rest of their life to God's service.</li>
+            </ul>
+
+            <h3 class="guide-subhead">Canonization</h3>
+            <p>
+                Canonization is the Church's path to formally recognizing that a person is in heaven and
+                may be honored publicly. These labels mark how far that recognition has advanced.
+            </p>
+            <ul class="glossary__list">
+                <li><span class="glossary__term">Servant of God</span> &mdash; the first step, given once
+                    the Church opens an official cause for the person.</li>
+                <li><span class="glossary__term">Venerable</span> &mdash; declared to have lived heroic
+                    virtue, though not yet beatified.</li>
+                <li><span class="glossary__term">Beatified</span> &mdash; declared "Blessed," permitting
+                    limited public devotion (usually after a verified miracle).</li>
+                <li><span class="glossary__term">Canonized</span> &mdash; declared a saint, honored by the
+                    whole Church with the title "Saint."</li>
+                <li><span class="glossary__term">Doctor of the Church</span> &mdash; a saint recognized for
+                    the outstanding value of their teaching for the whole Church.</li>
+                <li><span class="glossary__term">Pre-Congregation</span> &mdash; honored as a saint by
+                    ancient tradition, from before the modern canonization process existed.</li>
+            </ul>
+
+            <h3 class="guide-subhead">Era</h3>
+            <p>
+                The era places a saint in the sweep of the Church's history, from the apostolic age to
+                our own day.
+            </p>
+            <ul class="glossary__list">
+                <li><span class="glossary__term">Early Church</span> &mdash; the apostolic age through the
+                    Church Fathers and the great councils, roughly the first six centuries (up to about
+                    600 AD).</li>
+                <li><span class="glossary__term">Medieval</span> &mdash; the Middle Ages, roughly 600 to
+                    1500: the age of monasticism, the mendicant orders, and the scholastics.</li>
+                <li><span class="glossary__term">Early modern</span> &mdash; roughly 1500 to 1800: the
+                    Reformation, the Catholic Reformation, and the great missionary expansion.</li>
+                <li><span class="glossary__term">Modern</span> &mdash; roughly 1800 to the present, from
+                    the industrial age through the Second Vatican Council and our own day.</li>
+            </ul>
+
+            <h3 class="guide-subhead">Patronage</h3>
+            <p>
+                A patron saint is a special heavenly intercessor and protector for a cause, place, trade,
+                or group of people &mdash; often tied to something in the saint's own life. Patronages
+                are a time-honored way of asking a particular saint to pray for a particular need; they
+                are shown on each profile to help you find a saint close to your situation.
+            </p>
+        </div>
+    </ChildContent>
+    <Footer>
+        <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+    </Footer>
+</FloatingGuide>
+
+@code {
+    /// <summary>
+    /// When true, the orb sits one slot higher so it clears another floating control that already
+    /// occupies the base slot (e.g. the liturgical orb on the Saints browse page).
+    /// </summary>
+    [Parameter] public bool Raised { get; set; }
+}

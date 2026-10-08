@@ -9,8 +9,8 @@ namespace Respondeo.Content.Contracts;
 /// </summary>
 public sealed class SaintFacetCatalog
 {
-    /// <summary>Era slug &#8594; era (label + description), e.g. "medieval" &#8594; { "Medieval", "The Middle Ages…" }.</summary>
-    public IReadOnlyDictionary<string, SaintEra> Eras { get; init; } = new Dictionary<string, SaintEra>(StringComparer.OrdinalIgnoreCase);
+    /// <summary>Era slug &#8594; display label (e.g. "medieval" &#8594; "Medieval").</summary>
+    public IReadOnlyDictionary<string, string> Eras { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Region slug &#8594; display label (e.g. "middle-east" &#8594; "Middle East").</summary>
     public IReadOnlyDictionary<string, string> Regions { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -25,10 +25,7 @@ public sealed class SaintFacetCatalog
     public static SaintFacetCatalog Empty { get; } = new();
 
     /// <summary>Resolves an era slug to its label, humanizing the slug when it is unmapped.</summary>
-    public string Era(string slug) => !string.IsNullOrWhiteSpace(slug) && Eras.TryGetValue(slug.Trim(), out var era) ? era.Label : SaintFacets.Humanize(slug);
-
-    /// <summary>Resolves an era slug to its description, or an empty string when the slug is unmapped or has none.</summary>
-    public string EraDescription(string slug) => !string.IsNullOrWhiteSpace(slug) && Eras.TryGetValue(slug.Trim(), out var era) ? era.Description : string.Empty;
+    public string Era(string slug) => Lookup(Eras, slug);
 
     /// <summary>Resolves a region slug to its label, humanizing the slug when it is unmapped.</summary>
     public string Region(string slug) => Lookup(Regions, slug);
@@ -42,9 +39,6 @@ public sealed class SaintFacetCatalog
     private static string Lookup(IReadOnlyDictionary<string, string> map, string slug) =>
         !string.IsNullOrWhiteSpace(slug) && map.TryGetValue(slug.Trim(), out var label) ? label : SaintFacets.Humanize(slug);
 }
-
-/// <summary>A historical era facet value: a display label and a short description of the period it covers.</summary>
-public sealed record SaintEra(string Label, string Description);
 
 /// <summary>
 /// Small presentation helpers for saint facets that do not depend on the loaded catalog: turning a raw slug into readable text.

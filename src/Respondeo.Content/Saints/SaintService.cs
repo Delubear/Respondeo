@@ -56,29 +56,20 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
 
     private sealed record Catalog(Dictionary<string, SaintRecordDocument> Records, SaintIndex Index);
 
-    // Serialization shape for facets.json: the era map carries label+description objects, the rest are slug->label maps.
+    // Serialization shape for facets.json: four slug->label maps.
     private sealed class FacetsDto
     {
-        public Dictionary<string, EraDto> Eras { get; set; } = [];
+        public Dictionary<string, string> Eras { get; set; } = [];
         public Dictionary<string, string> Regions { get; set; } = [];
         public Dictionary<string, string> StatesOfLife { get; set; } = [];
         public Dictionary<string, string> Canonizations { get; set; } = [];
 
         public SaintFacetCatalog ToCatalog() => new()
         {
-            Eras = new Dictionary<string, SaintEra>(
-                Eras.Select(kvp => new KeyValuePair<string, SaintEra>(kvp.Key, new SaintEra(kvp.Value.Label, kvp.Value.Description))),
-                StringComparer.OrdinalIgnoreCase),
+            Eras = new Dictionary<string, string>(Eras, StringComparer.OrdinalIgnoreCase),
             Regions = new Dictionary<string, string>(Regions, StringComparer.OrdinalIgnoreCase),
             StatesOfLife = new Dictionary<string, string>(StatesOfLife, StringComparer.OrdinalIgnoreCase),
             Canonizations = new Dictionary<string, string>(Canonizations, StringComparer.OrdinalIgnoreCase),
         };
-
-        // A single era entry: its display label and a short description of the period it covers.
-        public sealed class EraDto
-        {
-            public string Label { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-        }
     }
 }

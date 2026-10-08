@@ -64,19 +64,7 @@ else
             }
             <div class="saint__fact">
                 <dt>Era</dt>
-                <dd>
-                    @if (string.IsNullOrWhiteSpace(_facets.EraDescription(_saint.Era)))
-                    {
-                        @_facets.Era(_saint.Era)
-                    }
-                    else
-                    {
-                        <span class="saint__era">
-                            <button type="button" class="saint__era-toggle" popovertarget="@_eraNoteId" aria-label="@($"About the {_facets.Era(_saint.Era)} era")">@_facets.Era(_saint.Era)</button>
-                            <span class="saint__fact-note" id="@_eraNoteId" popover>@_facets.EraDescription(_saint.Era)</span>
-                        </span>
-                    }
-                </dd>
+                <dd>@_facets.Era(_saint.Era)</dd>
             </div>
             @if (!string.Equals(_saint.Region, "unknown", StringComparison.OrdinalIgnoreCase))
             {
@@ -118,15 +106,14 @@ else
     </article>
 }
 
+<SaintGlossaryOrb />
+
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
     private SaintRecord? _saint;
     private bool _loading = true;
     private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
-
-    // Stable id linking the era button to its popover note (the HTML Popover API pairs them by id).
-    private readonly string _eraNoteId = $"era-note-{Guid.NewGuid():N}";
 
     // A saint is a person, so advertise a schema.org Person node (not a generic Article) for richer results.
     private string? PersonJsonLd => _saint is null ? null : SiteMeta.PersonJsonLd(_saint.Title, _saint.Summary, CanonicalUrl);

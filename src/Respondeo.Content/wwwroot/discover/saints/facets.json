@@ -1,21 +1,9 @@
 {
   "eras": {
-    "early-church": {
-      "label": "Early Church",
-      "description": "The apostolic age through the age of the Church Fathers and the great councils — roughly the first six centuries, up to about 600 AD."
-    },
-    "medieval": {
-      "label": "Medieval",
-      "description": "The Middle Ages, roughly 600 to 1500 — the age of monasticism, the mendicant orders, and the scholastics."
-    },
-    "early-modern": {
-      "label": "Early modern",
-      "description": "Roughly 1500 to 1800 — the Reformation, the Catholic Reformation, and the great missionary expansion."
-    },
-    "modern": {
-      "label": "Modern",
-      "description": "Roughly 1800 to the present — from the industrial age through the Second Vatican Council and our own day."
-    }
+    "early-church": "Early Church",
+    "medieval": "Medieval",
+    "early-modern": "Early modern",
+    "modern": "Modern"
   },
   "regions": {
     "europe": "Europe",

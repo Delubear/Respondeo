@@ -3,16 +3,16 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.UnitTests.Content;
 
 /// <summary>
-/// Unit tests for <see cref="SaintFacetCatalog"/> label/description lookup and the
+/// Unit tests for <see cref="SaintFacetCatalog"/> label lookup and the
 /// <see cref="SaintFacets.Humanize"/> slug fallback used whenever a slug is not present in the loaded catalog.
 /// </summary>
 public class SaintFacetTests
 {
     private static readonly SaintFacetCatalog Catalog = new()
     {
-        Eras = new Dictionary<string, SaintEra>(StringComparer.OrdinalIgnoreCase)
+        Eras = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["medieval"] = new SaintEra("Medieval", "The Middle Ages."),
+            ["medieval"] = "Medieval",
         },
         Regions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -29,11 +29,10 @@ public class SaintFacetTests
     };
 
     [Fact]
-    public void Era_resolves_mapped_label_and_description()
+    public void Era_resolves_mapped_label()
     {
         Assert.Equal("Medieval", Catalog.Era("medieval"));
         Assert.Equal("Medieval", Catalog.Era(" MEDIEVAL "));
-        Assert.Equal("The Middle Ages.", Catalog.EraDescription("medieval"));
     }
 
     [Fact]
@@ -43,12 +42,6 @@ public class SaintFacetTests
         Assert.Equal("Oceania", Catalog.Region("oceania"));
         Assert.Equal("Lay", Catalog.StateOfLife("lay"));
         Assert.Equal("Beatified", Catalog.Canonization("beatified"));
-    }
-
-    [Fact]
-    public void EraDescription_is_empty_for_unmapped_slug()
-    {
-        Assert.Empty(Catalog.EraDescription("baroque"));
     }
 
     [Theory]
@@ -67,6 +60,5 @@ public class SaintFacetTests
     public void Empty_catalog_always_humanizes()
     {
         Assert.Equal("Medieval", SaintFacetCatalog.Empty.Era("medieval"));
-        Assert.Empty(SaintFacetCatalog.Empty.EraDescription("medieval"));
     }
 }

@@ -60,8 +60,8 @@ public class SaintServiceTests
     private const string FacetsJson = """
         {
           "eras": {
-            "medieval": { "label": "Medieval", "description": "The Middle Ages." },
-            "modern": { "label": "Modern", "description": "The modern era." }
+            "medieval": "Medieval",
+            "modern": "Modern"
           },
           "regions": { "europe": "Europe" },
           "statesOfLife": { "religious": "Religious", "founder": "Founder" },
@@ -149,14 +149,13 @@ public class SaintServiceTests
     }
 
     [Fact]
-    public async Task GetFacets_maps_slugs_to_labels_and_descriptions()
+    public async Task GetFacets_maps_slugs_to_labels()
     {
         var service = CreateService();
 
         var facets = await service.GetFacetsAsync();
 
         Assert.Equal("Medieval", facets.Era("medieval"));
-        Assert.Equal("The Middle Ages.", facets.EraDescription("medieval"));
         Assert.Equal("Europe", facets.Region("europe"));
         Assert.Equal("Religious", facets.StateOfLife("religious"));
         Assert.Equal("Doctor of the Church", facets.Canonization("doctor-of-the-church"));
@@ -171,6 +170,5 @@ public class SaintServiceTests
 
         // Missing facets must not break browsing; unknown slugs humanize instead.
         Assert.Equal("Medieval", facets.Era("medieval"));
-        Assert.Empty(facets.EraDescription("medieval"));
     }
 }
