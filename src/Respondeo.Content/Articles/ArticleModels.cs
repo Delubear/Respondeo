@@ -1,9 +1,8 @@
 namespace Respondeo.Content.Articles;
 
 // ---------------------------------------------------------------------------
-// Article domain models (internal). Produced by ArticleParser from Markdown +
-// front-matter, then mapped onto the public Respondeo.Content.Contracts DTOs
-// at the service boundary. Never exposed to consumers.
+// Article domain models (internal). Produced by ArticleParser from Markdown + front-matter,
+// then mapped onto the public Respondeo.Content.Contracts DTOs at the service boundary. Never exposed to consumers.
 // ---------------------------------------------------------------------------
 
 /// <summary>The parsed full content of a single article (internal domain model).</summary>

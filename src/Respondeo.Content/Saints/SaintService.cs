@@ -31,8 +31,7 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
     }
 
     /// <summary>Returns the slug&#8594;label facet catalog, loading and caching it once.</summary>
-    public Task<SaintFacetCatalog> GetFacetsAsync() =>
-        _facets.GetAsync(() => LoadFacetsAsync<FacetsDto, SaintFacetCatalog>(FacetsPath, dto => dto.ToCatalog(), SaintFacetCatalog.Empty));
+    public Task<SaintFacetCatalog> GetFacetsAsync() => _facets.GetAsync(() => LoadFacetsAsync<FacetsDto, SaintFacetCatalog>(FacetsPath, dto => dto.ToCatalog(), SaintFacetCatalog.Empty));
 
     /// <summary>Returns the full content of a single saint by id, or null if it does not exist.</summary>
     public async Task<SaintRecord?> GetByIdAsync(string id)

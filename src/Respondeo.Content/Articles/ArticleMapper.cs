@@ -3,9 +3,8 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Content.Articles;
 
 /// <summary>
-/// Maps the internal <see cref="ArticleDocument"/> domain model onto the public
-/// <see cref="Article"/> / <see cref="ArticleSummary"/> contract DTOs at the service boundary,
-/// so consumers never depend on the parsing/domain types.
+/// Maps the internal <see cref="ArticleDocument"/> domain model onto the public <see cref="Article"/> / <see cref="ArticleSummary"/>
+/// contract DTOs at the service boundary, so consumers never depend on the parsing/domain types.
 /// </summary>
 internal static class ArticleMapper
 {

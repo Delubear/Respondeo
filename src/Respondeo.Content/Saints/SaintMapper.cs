@@ -3,9 +3,8 @@ using Respondeo.Content.Contracts;
 namespace Respondeo.Content.Saints;
 
 /// <summary>
-/// Maps the internal saint domain models onto the public
-/// <see cref="SaintRecord"/> / <see cref="SaintIndex"/> contract DTOs at the
-/// service boundary, so consumers never depend on the parsing/domain types.
+/// Maps the internal saint domain models onto the public <see cref="SaintRecord"/> / <see cref="SaintIndex"/>
+/// contract DTOs at the service boundary, so consumers never depend on the parsing/domain types.
 /// </summary>
 internal static class SaintMapper
 {

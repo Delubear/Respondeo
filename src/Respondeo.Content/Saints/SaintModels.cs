@@ -1,9 +1,8 @@
 namespace Respondeo.Content.Saints;
 
 // ---------------------------------------------------------------------------
-// Saint domain models (internal). Produced by SaintParser / the content
-// loader, then mapped onto the public Respondeo.Content.Contracts DTOs at the
-// service boundary. Never exposed to consumers.
+// Saint domain models (internal). Produced by SaintParser / the content loader,
+// then mapped onto the public Respondeo.Content.Contracts DTOs at the service boundary. Never exposed to consumers.
 // ---------------------------------------------------------------------------
 
 /// <summary>The lightweight browse/search index for the whole saints catalog (internal domain model).</summary>

@@ -6,8 +6,7 @@ using System.Text.RegularExpressions;
 namespace Respondeo.Content.Prayers;
 
 /// <summary>
-/// Turns a raw prayer Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="PrayerDocument"/>
-/// domain model.
+/// Turns a raw prayer Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="PrayerDocument"/> domain model.
 /// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>;
 /// the parser performs no I/O so it can be tested in isolation.
 /// </summary>
@@ -39,9 +38,8 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
 
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
-    // Lines that open with a versicle/response marker ("V." / "R.") would otherwise be parsed by
-    // Markdig as ordered-list items (e.g. <ol type="I">), dropping the literal marker. Escaping the
-    // dot keeps "V." and "R." as plain text so the prayer reads as verse, not a numbered list.
+    // Lines that open with a versicle/response marker ("V." / "R.") would otherwise be parsed by Markdig as ordered-list items (e.g. <ol type="I">),
+    // dropping the literal marker. Escaping the dot keeps "V." and "R." as plain text so the prayer reads as verse, not a numbered list.
     private static readonly Regex VersicleMarker = new(@"(?m)^(\s*[VR])\.(\s)", RegexOptions.Compiled);
 
     private static string AnnotateVersicleMarkers(string body) => VersicleMarker.Replace(body, "$1\\.$2");

@@ -1,9 +1,8 @@
 namespace Respondeo.Content.Prayers;
 
 // ---------------------------------------------------------------------------
-// Prayer domain models (internal). Produced by PrayerParser, paired with Latin
-// translations by PrayerService, then mapped onto the public
-// Respondeo.Content.Contracts DTOs at the service boundary.
+// Prayer domain models (internal). Produced by PrayerParser, paired with Latin translations by PrayerService,
+// then mapped onto the public Respondeo.Content.Contracts DTOs at the service boundary.
 // ---------------------------------------------------------------------------
 
 /// <summary>The parsed full text of a single prayer (internal domain model).</summary>

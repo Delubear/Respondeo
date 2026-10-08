@@ -21,9 +21,8 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
     private readonly PrayerParser _parser = new(html);
     private readonly AsyncInitCache<Catalog> _catalog = new();
 
-    // Markdig renders "[Label](prayer:some-id)" as an anchor whose href is the raw "prayer:some-id"
-    // scheme. Match that anchor (optionally wrapped in its own <p>) so a reference on its own line is
-    // replaced cleanly by the embedded prayer block.
+    // Markdig renders "[Label](prayer:some-id)" as an anchor whose href is the raw "prayer:some-id" scheme.
+    // Match that anchor (optionally wrapped in its own <p>) so a reference on its own line is replaced cleanly by the embedded prayer block.
     private static readonly Regex PrayerReference = new(
         "<p>\\s*<a href=\"prayer:(?<id>[^\"]+)\">(?<label>.*?)</a>\\s*</p>|<a href=\"prayer:(?<id>[^\"]+)\">(?<label>.*?)</a>",
         RegexOptions.Compiled | RegexOptions.Singleline);
@@ -51,8 +50,7 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         PairTranslations(loaded);
 
         // Every prayer (including Latin) stays addressable by id, but only the primary-language,
-        // listed prayers appear in the browse index so translations and contextual fragments
-        // (e.g. Dominican versicles) are not shown as standalone catalog rows.
+        // listed prayers appear in the browse index so translations and contextual fragments (e.g. Dominican versicles) are not shown as standalone catalog rows.
         var map = loaded.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
         ExpandPrayerReferences(loaded, map);
         var summaries = loaded
@@ -65,13 +63,11 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
     });
 
     // A prayer is "primary" (browsable) unless it is a Latin translation of another prayer.
-    private static bool IsPrimaryLanguage(PrayerDocument prayer) =>
-        !string.Equals(prayer.Language, "la", StringComparison.OrdinalIgnoreCase);
+    private static bool IsPrimaryLanguage(PrayerDocument prayer) => !string.Equals(prayer.Language, "la", StringComparison.OrdinalIgnoreCase);
 
-    // Replace standalone "[Title](prayer:some-id)" references with the full text of the referenced
-    // prayer, inlined as a labelled block. Authors keep devotions like novenas readable by linking to
-    // the Our Father / Hail Mary / Glory Be instead of repeating them; the service expands the links
-    // at load time because, unlike the isolated parser, it has the whole catalog in hand.
+    // Replace standalone "[Title](prayer:some-id)" references with the full text of the referenced prayer, inlined as a labelled block.
+    // Authors keep devotions like novenas readable by linking to the Our Father / Hail Mary / Glory Be instead of repeating them;
+    // the service expands the links at load time because, unlike the isolated parser, it has the whole catalog in hand.
     private static void ExpandPrayerReferences(IReadOnlyList<PrayerDocument> prayers, IReadOnlyDictionary<string, PrayerDocument> map)
     {
         foreach (var prayer in prayers)

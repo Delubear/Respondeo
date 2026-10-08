@@ -5,8 +5,7 @@ using Respondeo.Content.Shared;
 namespace Respondeo.Content.Saints;
 
 /// <summary>
-/// Turns a raw saint Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="SaintRecordDocument"/>
-/// domain model.
+/// Turns a raw saint Markdown file (with a "---" delimited YAML front-matter block) into the typed <see cref="SaintRecordDocument"/> domain model.
 /// Front-matter reading is delegated to the shared <see cref="FrontMatterReader"/> and HTML rendering to the injected <see cref="IContentHtmlRenderer"/>
 /// so the Markdown engine stays behind an abstraction.
 /// Performs no I/O so it can be tested in isolation. The body is split into titled sections on top-level "## " headings.
