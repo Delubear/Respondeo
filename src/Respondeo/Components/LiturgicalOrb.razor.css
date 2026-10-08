@@ -102,21 +102,6 @@
     margin-bottom: 0.15rem;
 }
 
-.liturgy__ranks {
-    margin: 0;
-    padding-left: 1.2rem;
-    color: var(--ink);
-}
-
-.liturgy__ranks li {
-    margin-bottom: 0.6rem;
-}
-
-.liturgy__rank-name {
-    font-weight: 700;
-    color: var(--ink);
-}
-
 .liturgy__disclaimer {
     margin: 1rem 0 0;
     padding-top: 0.9rem;

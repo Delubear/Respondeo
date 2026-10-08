@@ -256,6 +256,79 @@ h1, h2, h3 {
     color: var(--accent);
 }
 
+/* Shared dialog-body patterns for the floating guides/orbs (Summa, Prayers, Today in the Church,
+   Saints glossary). One source of truth so every guide reads identically; use a per-component class
+   only when a guide needs something genuinely unique (Summa ref chips, liturgy swatches, etc.). */
+
+/* A left-indented list whose items lead with a bold term followed by a description. The bold lead can
+   be a <strong> or a .guide-term span. */
+.guide-list {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+    color: var(--ink);
+}
+
+.guide-list li {
+    margin-bottom: 0.6rem;
+}
+
+.guide-term {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* A numbered list with circular step markers, used for ordered walkthroughs inside a guide. */
+.guide-steps {
+    list-style: none;
+    counter-reset: guide-step;
+    margin: 0;
+    padding: 0;
+}
+
+.guide-steps > li {
+    counter-increment: guide-step;
+    position: relative;
+    padding: 0 0 1rem 2.2rem;
+}
+
+.guide-steps > li::before {
+    content: counter(guide-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* The bold block lead for a .guide-steps item. */
+.guide-cue {
+    display: block;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+}
+
+/* An italic Latin annotation shown inline after a cue or subhead, set off by a middot. */
+.guide-latin {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-left: 0.4rem;
+}
+
+.guide-latin::before {
+    content: "\00b7";
+    margin-right: 0.4rem;
+}
+
 /* Shared detail-article scaffolding: the centered reading column, the stacked content sections,
    their display headings, and the muted "sources / further reading" list. Previously each detail
    page (discover article, etc.) reimplemented these with its own BEM prefix; they are now one
