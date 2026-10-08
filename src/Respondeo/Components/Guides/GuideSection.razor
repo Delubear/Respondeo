@@ -1,0 +1,20 @@
+@* A titled section inside a floating guide/orb dialog: a shared .guide-subhead heading followed by its body content.
+One source of truth for the section heading so every guide dialog stays identical.
+
+   Use Title for a plain-text heading (the common case). When the heading needs inline markup (e.g. a <GuideLatin> annotation), use TitleContent instead. *@
+
+<h3 class="guide-subhead">@(TitleContent ?? DefaultTitle)</h3>
+@ChildContent
+
+@code {
+    /// <summary>The plain-text section heading. Ignored when <see cref="TitleContent"/> is set.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Custom heading markup used instead of plain <see cref="Title"/> text (e.g. a heading with a &lt;GuideLatin&gt; annotation).</summary>
+    [Parameter] public RenderFragment? TitleContent { get; set; }
+
+    /// <summary>The section body (paragraphs, lists, steps).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment DefaultTitle => builder => builder.AddContent(0, Title);
+}

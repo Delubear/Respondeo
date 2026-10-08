@@ -1,0 +1,10 @@
+@* A left-indented glossary-style list (.guide-list) whose items each lead with a bold term followed by a description. Pair with <GuideItem> children. *@
+
+<ul class="guide-list">
+    @ChildContent
+</ul>
+
+@code {
+    /// <summary>The list items, typically a sequence of <see cref="GuideItem"/>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

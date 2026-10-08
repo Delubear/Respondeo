@@ -1,0 +1,31 @@
+@* A single <GuideList> entry: a bold lead term, an em dash, then the description. The component owns the "&mdash;" separator so the term/description convention lives in one place.
+
+   The lead can be supplied three ways:
+     - Term           a plain string rendered in a .guide-term span (the common case).
+     - TermContent    custom lead markup when the term is not a plain .guide-term span (e.g. a <strong> label or a .summa-guide__ref chip).
+     - neither        no lead/dash; the item is just its ChildContent. *@
+
+<li>
+    @if (TermContent is not null)
+    {
+        @TermContent
+        <text> &mdash; </text>
+    }
+    else if (!string.IsNullOrEmpty(Term))
+    {
+        <span class="guide-term">@Term</span>
+        <text> &mdash; </text>
+    }
+    @ChildContent
+</li>
+
+@code {
+    /// <summary>The lead term, rendered in a .guide-term span. Ignored when <see cref="TermContent"/> is set.</summary>
+    [Parameter] public string? Term { get; set; }
+
+    /// <summary>Custom lead markup used instead of a plain .guide-term span (e.g. a &lt;strong&gt; or a reference chip).</summary>
+    [Parameter] public RenderFragment? TermContent { get; set; }
+
+    /// <summary>The item description shown after the em dash.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

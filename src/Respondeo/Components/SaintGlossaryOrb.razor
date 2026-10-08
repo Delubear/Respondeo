@@ -4,9 +4,7 @@
     Tapping it opens a Dialog explaining the saint facets &mdash; states of life, canonizations, eras,
     and patronages &mdash; so the terms used on the cards and detail pages are self-explanatory. *@
 
-<FloatingGuide Title="Reading the saints" Eyebrow="What the labels mean" 
-               AriaLabel="Glossary: what the saint labels mean" Tooltip="What the labels mean"
-               DialogClass="dialog--glossary" Raised="Raised">
+<FloatingGuide Title="Reading the saints" Eyebrow="What the labels mean" AriaLabel="Glossary: what the saint labels mean" Tooltip="What the labels mean" DialogClass="dialog--glossary" Raised="Raised">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
@@ -20,81 +18,85 @@
                 what those labels mean.
             </p>
 
-            <h3 class="guide-subhead">Era</h3>
+            <GuideSection Title="Era">
             <p>
                 The era places a saint in the sweep of salvation history, from the patriarchs and
                 prophets of the Old Testament to our own day.
             </p>
-            <ul class="guide-list">
-                <li><span class="guide-term">Old Testament</span> &mdash; the holy men and women of
+            <GuideList>
+                <GuideItem Term="Old Testament">the holy men and women of
                     Israel before Christ &mdash; the patriarchs, prophets, and kings such as David and
-                    Solomon &mdash; whom the Church honors as saints of the old covenant.</li>
-                <li><span class="guide-term">Early Church</span> &mdash; the apostolic age through the
+                    Solomon &mdash; whom the Church honors as saints of the old covenant.</GuideItem>
+                <GuideItem Term="Early Church">the apostolic age through the
                     Church Fathers and the great councils, roughly the first six centuries (up to about
-                    600 AD).</li>
-                <li><span class="guide-term">Medieval</span> &mdash; the Middle Ages, roughly 600 to
-                    1500: the age of monasticism, the mendicant orders, and the scholastics.</li>
-                <li><span class="guide-term">Early modern</span> &mdash; roughly 1500 to 1800: the
-                    Reformation, the Catholic Reformation, and the great missionary expansion.</li>
-                <li><span class="guide-term">Modern</span> &mdash; roughly 1800 to the present, from
-                    the industrial age through the Second Vatican Council and our own day.</li>
-            </ul>
+                    600 AD).</GuideItem>
+                <GuideItem Term="Medieval">the Middle Ages, roughly 600 to
+                    1500: the age of monasticism, the mendicant orders, and the scholastics.</GuideItem>
+                <GuideItem Term="Early modern">roughly 1500 to 1800: the
+                    Reformation, the Catholic Reformation, and the great missionary expansion.</GuideItem>
+                <GuideItem Term="Modern">roughly 1800 to the present, from
+                    the industrial age through the Second Vatican Council and our own day.</GuideItem>
+            </GuideList>
+            </GuideSection>
 
-            <h3 class="guide-subhead">State of life</h3>
+            <GuideSection Title="State of life">
             <p>
                 A saint's state of life is the vocation or office they lived. Holy orders build on one
                 another &mdash; deacon, then priest, then bishop &mdash; so a saint often carries more
                 than one. These labels are independent, and a saint may hold several.
             </p>
-            <ul class="guide-list">
-                <li><span class="guide-term">Religious</span> &mdash; a vowed member of a religious
+            <GuideList>
+                <GuideItem Term="Religious">a vowed member of a religious
                     order or community (Franciscan, Carmelite, Benedictine, and so on), as distinct from
-                    diocesan clergy.</li>
-                <li><span class="guide-term">Deacon</span> &mdash; the first rank of Holy Orders,
-                    ordained to service of the word, the altar, and charity.</li>
-                <li><span class="guide-term">Priest</span> &mdash; ordained to offer the Mass,
-                    forgive sins, and shepherd souls.</li>
-                <li><span class="guide-term">Bishop</span> &mdash; a successor of the Apostles who
-                    holds the fullness of Holy Orders and governs a local church.</li>
-                <li><span class="guide-term">Pope</span> &mdash; the Bishop of Rome and successor of
-                    St. Peter, who leads the whole Church. (An office, not a separate order.)</li>
-                <li><span class="guide-term">Lay faithful</span> &mdash; a baptized member of the
-                    Church who is not ordained, living holiness in the world.</li>
-                <li><span class="guide-term">Martyr</span> &mdash; one who was killed for the faith,
-                    bearing the ultimate witness to Christ.</li>
-                <li><span class="guide-term">Virgin</span> &mdash; one who consecrated their virginity
-                    to God for the sake of the Kingdom.</li>
-                <li><span class="guide-term">Widow</span> &mdash; one who, after the death of a
-                    spouse, gave the rest of their life to God's service.</li>
-            </ul>
+                    diocesan clergy.</GuideItem>
+                <GuideItem Term="Deacon">the first rank of Holy Orders,
+                    ordained to service of the word, the altar, and charity.</GuideItem>
+                <GuideItem Term="Priest">ordained to offer the Mass,
+                    forgive sins, and shepherd souls.</GuideItem>
+                <GuideItem Term="Bishop">a successor of the Apostles who
+                    holds the fullness of Holy Orders and governs a local church.</GuideItem>
+                <GuideItem Term="Pope">the Bishop of Rome and successor of
+                    St. Peter, who leads the whole Church. (An office, not a separate order.)</GuideItem>
+                <GuideItem Term="Lay faithful">a baptized member of the
+                    Church who is not ordained, living holiness in the world.</GuideItem>
+                <GuideItem Term="Martyr">one who was killed for the faith,
+                    bearing the ultimate witness to Christ.</GuideItem>
+                <GuideItem Term="Virgin">one who consecrated their virginity
+                    to God for the sake of the Kingdom.</GuideItem>
+                <GuideItem Term="Widow">one who, after the death of a
+                    spouse, gave the rest of their life to God's service.</GuideItem>
+            </GuideList>
+            </GuideSection>
 
-            <h3 class="guide-subhead">Canonization</h3>
+            <GuideSection Title="Canonization">
             <p>
                 Canonization is the Church's path to formally recognizing that a person is in heaven and
                 may be honored publicly. These labels mark how far that recognition has advanced.
             </p>
-            <ul class="guide-list">
-                <li><span class="guide-term">Servant of God</span> &mdash; the first step, given once
-                    the Church opens an official cause for the person.</li>
-                <li><span class="guide-term">Venerable</span> &mdash; declared to have lived heroic
-                    virtue, though not yet beatified.</li>
-                <li><span class="guide-term">Beatified</span> &mdash; declared "Blessed," permitting
-                    limited public devotion (usually after a verified miracle).</li>
-                <li><span class="guide-term">Canonized</span> &mdash; declared a saint, honored by the
-                    whole Church with the title "Saint."</li>
-                <li><span class="guide-term">Doctor of the Church</span> &mdash; a saint recognized for
-                    the outstanding value of their teaching for the whole Church.</li>
-                <li><span class="guide-term">Pre-Congregation</span> &mdash; honored as a saint by
-                    ancient tradition, from before the modern canonization process existed.</li>
-            </ul>
+            <GuideList>
+                <GuideItem Term="Servant of God">the first step, given once
+                    the Church opens an official cause for the person.</GuideItem>
+                <GuideItem Term="Venerable">declared to have lived heroic
+                    virtue, though not yet beatified.</GuideItem>
+                <GuideItem Term="Beatified">declared "Blessed," permitting
+                    limited public devotion (usually after a verified miracle).</GuideItem>
+                <GuideItem Term="Canonized">declared a saint, honored by the
+                    whole Church with the title "Saint."</GuideItem>
+                <GuideItem Term="Doctor of the Church">a saint recognized for
+                    the outstanding value of their teaching for the whole Church.</GuideItem>
+                <GuideItem Term="Pre-Congregation">honored as a saint by
+                    ancient tradition, from before the modern canonization process existed.</GuideItem>
+            </GuideList>
+            </GuideSection>
 
-            <h3 class="guide-subhead">Patronage</h3>
+            <GuideSection Title="Patronage">
             <p>
                 A patron saint is a special heavenly intercessor and protector for a cause, place, trade,
                 or group of people &mdash; often tied to something in the saint's own life. Patronages
                 are a time-honored way of asking a particular saint to pray for a particular need; they
                 are shown on each profile to help you find a saint close to your situation.
             </p>
+            </GuideSection>
         </div>
     </ChildContent>
     <Footer>

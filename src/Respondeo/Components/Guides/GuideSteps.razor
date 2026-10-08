@@ -1,0 +1,10 @@
+@* A numbered walkthrough (.guide-steps) with circular step markers. Pair with <GuideStep> children. *@
+
+<ol class="guide-steps">
+    @ChildContent
+</ol>
+
+@code {
+    /// <summary>The ordered steps, typically a sequence of <see cref="GuideStep"/>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

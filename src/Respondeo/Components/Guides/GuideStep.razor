@@ -1,0 +1,20 @@
+@* A single <GuideSteps> entry: a bold block lead (.guide-cue) followed by the step's body.
+    The Cue can be a plain string or, when it carries inline markup (e.g. a <GuideLatin> annotation), CueContent. *@
+
+<li>
+    <span class="guide-cue">@(CueContent ?? DefaultCue)</span>
+    @ChildContent
+</li>
+
+@code {
+    /// <summary>The bold lead text for the step, rendered in a .guide-cue span. Ignored when <see cref="CueContent"/> is set.</summary>
+    [Parameter] public string? Cue { get; set; }
+
+    /// <summary>Custom lead markup used instead of plain <see cref="Cue"/> text (e.g. a cue with a &lt;GuideLatin&gt; annotation).</summary>
+    [Parameter] public RenderFragment? CueContent { get; set; }
+
+    /// <summary>The step body shown under the cue.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment DefaultCue => builder => builder.AddContent(0, Cue);
+}
