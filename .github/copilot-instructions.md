@@ -45,3 +45,6 @@
 
 ## Testing Guidelines
 - Use the Respondeo.AcceptanceTests project for visual/E2E/acceptance tests rather than scaffolding a new one.
+
+## Miracle Article Guidelines
+- When writing Respondeo miracle articles (especially Eucharistic miracles), do not fault a reported miracle for lacking a "controlled trial" or "independent replication" — that is a category error, since a miracle is a singular act of God, not a repeatable experiment. Instead, distinguish what science can address (authenticity of the relic/sample, competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
