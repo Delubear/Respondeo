@@ -39,5 +39,6 @@ internal static class MiracleMapper
         Country = document.Country,
         Year = document.Year,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
     };
 }

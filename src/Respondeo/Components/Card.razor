@@ -44,7 +44,10 @@ else
     /// <summary>When true, the card renders a subtle golden shimmer (e.g. a saint's feast day is today).</summary>
     [Parameter] public bool Shimmer { get; set; }
 
-    private string CssClass => string.Concat("card", Visited ? " card--visited" : "", Shimmer ? " card--feast" : "");
+    /// <summary>When true, the card shows an angled "in progress" ribbon in the top-right corner (e.g. unvetted content).</summary>
+    [Parameter] public bool InProgress { get; set; }
+
+    private string CssClass => string.Concat("card", Visited ? " card--visited" : "", Shimmer ? " card--feast" : "", InProgress ? " card--wip" : "");
 
     private IReadOnlyList<string> AllPills =>
         (Pills ?? [])
@@ -54,6 +57,10 @@ else
 
     private RenderFragment CardBody => __builder =>
     {
+        @if (InProgress)
+        {
+            <span class="card__ribbon" aria-label="Work in progress">In progress</span>
+        }
         @if (Visited)
         {
             <span class="card__check" aria-hidden="true">

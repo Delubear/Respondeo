@@ -29,5 +29,6 @@ internal static class ArticleMapper
         Summary = document.Summary,
         Topic = document.Topic,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
     };
 }

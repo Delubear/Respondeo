@@ -49,7 +49,7 @@
                 <ChildContent>
                     @foreach (var d in Filtered)
                     {
-                        <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" />
+                        <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" InProgress="@d.Draft" />
                     }
                 </ChildContent>
             </FilterResults>

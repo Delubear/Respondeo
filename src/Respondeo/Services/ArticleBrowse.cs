@@ -5,7 +5,7 @@ namespace Respondeo.Services;
 /// <summary>
 /// A searchable, filterable row for a Discover article. <see cref="Pill"/> is a precomputed display-only kicker (the article's topic); <see cref="Href"/> is the precomputed card link.
 /// </summary>
-public sealed record ArticleRow(string Id, string Title, string SortValue, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href);
+public sealed record ArticleRow(string Id, string Title, string SortValue, string Summary, string? Pill, IReadOnlyList<string> Tags, string Href, bool IsUnvetted);
 
 /// <summary>
 /// Pure, stateless browse logic for the Discover articles index: projecting summaries into display rows, tag-facet derivation, and the combined search/filter/sort.
@@ -21,7 +21,7 @@ public sealed class ArticleBrowse
     /// </summary>
     public IReadOnlyList<ArticleRow> BuildRows(IEnumerable<ArticleSummary> articles) =>
         [.. articles
-            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, ContentRoutes.ArticleHref(a.Id)))
+            .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, ContentRoutes.ArticleHref(a.Id), a.IsUnvetted))
             .OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)];
 
     /// <summary>The distinct, alphabetically ordered tags that occur across the rows.</summary>

@@ -35,6 +35,9 @@ internal sealed class MiracleIndexEntryDocument
     public int? Year { get; init; }
 
     public IReadOnlyList<string> Tags { get; init; } = [];
+
+    /// <summary>True when the front-matter marks this miracle as not yet reviewed.</summary>
+    public bool IsUnvetted { get; init; }
 }
 
 /// <summary>The full content of a single miracle (internal domain model).</summary>

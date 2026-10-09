@@ -60,6 +60,9 @@ public sealed class SaintIndexEntry
 
     /// <summary>Free-text tags for extra searchable categorization.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
+
+    /// <summary>True when the saint is marked as not yet reviewed, so cards can flag it as in progress.</summary>
+    public bool IsUnvetted { get; init; }
 }
 
 /// <summary>

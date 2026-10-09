@@ -55,6 +55,7 @@
                               Summary="@Browser.CardSummary(s, _facets)"
                               Cta="Read &rarr;"
                               Shimmer="@_feastIds.Contains(s.Id)"
+                              InProgress="@s.IsUnvetted"
                               Level="2" />
                     }
                 </ChildContent>

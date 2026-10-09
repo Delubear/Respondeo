@@ -46,5 +46,6 @@ internal static class SaintMapper
         Canonizations = document.Canonizations,
         Dates = document.Dates,
         Tags = document.Tags,
+        IsUnvetted = document.IsUnvetted,
     };
 }

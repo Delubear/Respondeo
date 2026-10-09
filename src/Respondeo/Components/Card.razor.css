@@ -133,3 +133,37 @@ button.card {
     }
 }
 
+/* ---------- Work-in-progress ribbon ---------- */
+/* An angled banner pinned across the top-right corner of a card that links to unvetted content,
+   so readers can see at a glance which entries are still being written. The card clips the ribbon
+   to its own rounded corner. */
+.card--wip {
+    overflow: hidden;
+}
+
+.card__ribbon {
+    position: absolute;
+    top: 1.05rem;
+    right: -2.9rem;
+    transform: rotate(45deg);
+    width: 10.5rem;
+    padding: 0.2rem 0.35rem 0.2rem 1.4rem;
+    text-align: center;
+    font-family: var(--display, inherit);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    box-shadow: 0 1px 2px var(--shadow);
+    pointer-events: none;
+}
+
+/* In dark mode the full-strength gold is too bright next to a dark card; mute it and keep the
+   text dark so the ribbon reads as a quiet label rather than a harsh highlight. */
+[data-theme="dark"] .card__ribbon {
+    color: #1a150d;
+    background: color-mix(in srgb, var(--gold) 70%, #4a3a16);
+}
+

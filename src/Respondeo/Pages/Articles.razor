@@ -46,7 +46,7 @@
                 <ChildContent>
                     @foreach (var a in Filtered)
                     {
-                        <Card Href="@a.Href" Title="@a.Title" Pill="@a.Pill" Summary="@a.Summary" Cta="Read &rarr;" Level="2" />
+                        <Card Href="@a.Href" Title="@a.Title" Pill="@a.Pill" Summary="@a.Summary" Cta="Read &rarr;" Level="2" InProgress="@a.IsUnvetted" />
                     }
                 </ChildContent>
             </FilterResults>
