@@ -53,10 +53,24 @@ striking:
 - No trace of **preservatives or artificial agents** was found, which is notable given the material's
   age and its centuries of unprotected exposure.
 
-These claims are widely repeated in Catholic literature and were summarized in later studies, though
-they have not been subject to independent replication, and some historians question the tradition on
-account of the gap between the alleged event and its first written records. They are reported here as
-findings held in devotion, not as settled scientific fact.
+These claims are widely repeated in Catholic literature and were summarized in later studies. It is
+worth being clear about what such analysis can and cannot show. Science can describe what the preserved
+material *is* today; it cannot reach back to witness the alleged change at the altar, and a miracle, as
+a singular act of God, is not the sort of thing one could stage again in a laboratory. The honest
+questions here are narrower ones: whether the relics are authentic and whether the examinations were
+sound.
+
+Some historians do note the gap between the alleged 8th-century event and its first surviving written
+record. But the gap is easy to overstate, and it cuts less than it first appears. The documented history
+is itself very old: a formal notarial record survives from 1574, and the relics have been continuously
+housed, inventoried, and publicly venerated at Lanciano for centuries since, well before anyone could
+have known what a microscope would one day find in them. For a later forgery to account for the relic,
+someone in the medieval or early-modern period would have had to fashion a fragment of real human heart
+muscle and real human blood, leave no trace of the preservatives such a fraud would require, and then
+submit it, unknowingly, to a histology that would only exist four hundred years later. That the
+substances answer to a modern laboratory at all is part of what a believer weighs. The findings are
+reported here as what the tradition holds and the examiners stated, which a believer may rightly take as
+a sign.
 
 ::: youtube AaQpDfRevQk
 :::
