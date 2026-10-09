@@ -62,7 +62,15 @@ async function onFetch(event) {
         // For navigation requests (e.g. a deep link like /summa/prima-q001, or a refresh), serve
         // index.html so client-side routing can render the page - this makes deep links work
         // offline and also avoids the 404-fallback problem for in-app routes.
-        const shouldServeIndexHtml = event.request.mode === 'navigate';
+        //
+        // EXCEPTION: a navigation whose URL is an actual published file (e.g. /sitemap.xml or
+        // /robots.txt - pasted into the address bar, which issues a 'navigate' request) must return
+        // the file itself, NOT the SPA shell. Without this, the router would render its in-app 404
+        // for those paths. App routes are extensionless and absent from the manifest, so they still
+        // fall back to index.html as intended.
+        const requestedAssetUrl = new URL(event.request.url).href;
+        const isPublishedAsset = manifestUrlList.includes(requestedAssetUrl);
+        const shouldServeIndexHtml = event.request.mode === 'navigate' && !isPublishedAsset;
 
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
