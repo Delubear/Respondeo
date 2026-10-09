@@ -9,17 +9,16 @@
     align-items: start;
 }
 
+/* The rail flows with the page rather than sticking. A sticky rail taller than the viewport forces
+   the whole page to scroll before its lower facets can be reached, and capping it with its own
+   overflow creates a nested scroll area that fights the page scroll. Plain flow keeps a single,
+   predictable scroll axis. */
 .filter-rail {
-    position: sticky;
-    top: 5rem;
+    align-self: start;
 }
 
 @media (max-width: 640px) {
     .filter-layout {
         grid-template-columns: 1fr;
-    }
-
-    .filter-rail {
-        position: static;
     }
 }

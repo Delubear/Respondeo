@@ -491,10 +491,13 @@ details.accordion__item[open] > .accordion__trigger {
 
 /* On small screens the virtual keyboard shrinks the viewport, which pins any position:fixed
    control (the floating guide circles and back-to-top arrow) to a strip just above the keyboard where
-   it reads as a stray colored block. Hide those floating controls while a text field is focused. */
+   it reads as a stray colored block. Hide those floating controls while a text field is focused.
+   Scope this to text-entry fields (and textareas) only: checkboxes, radios, and other non-keyboard
+   inputs also match :focus but open no keyboard, so they must not hide the orbs (e.g. filter
+   checkboxes on the browse pages). */
 @media (max-width: 640px) {
-    body:has(input:focus, textarea:focus) .back-to-top,
-    body:has(input:focus, textarea:focus) .float-circle {
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .back-to-top,
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .float-circle {
         display: none;
     }
 }
