@@ -105,9 +105,21 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj -c Release --no-build
 
+      # Generate the sitemap BEFORE publish so it exists on disk when the project
+      # is evaluated. The Blazor WASM SDK builds its static web asset list from the
+      # wwwroot/** content glob, which MSBuild evaluates once at project-load time
+      # (before any target runs). sitemap.xml is gitignored, so on a clean CI checkout
+      # it is absent at evaluation; writing it later in a BeforeBuild target is too
+      # late to join the glob, so publish would omit it and the live file 404s.
+      # Running the generator as its own step fixes the ordering: the file is present
+      # at evaluation, globbed as a static web asset, and copied into the published site.
+      - name: Generate sitemap
+        if: steps.filter.outputs.code-changed == 'true'
+        run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo/wwwroot/sitemap.xml
+
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release -p:GenerateSitemapOnBuild=true
+        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
 
       # The site is served from the custom apex domain (respondeo.faith), so it
       # lives at the domain root and <base href="/"> (as authored) is correct.

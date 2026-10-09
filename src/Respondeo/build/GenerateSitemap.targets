@@ -14,14 +14,18 @@
 	in-process <MSBuild> task avoids that entirely and does not pollute the WASM app with a
 	ProjectReference to an Exe.
 
-	Opt-in only: this runs ONLY when GenerateSitemapOnBuild=true, which the deploy pipeline sets on
-	its `dotnet publish` step. Regular local/dev builds do not regenerate the sitemap. The file is a
-	generated CI artifact (NOT tracked in git — see .gitignore); it is written fresh into the
-	published output at deploy time.
+	Opt-in only: this runs ONLY when GenerateSitemapOnBuild=true. The file is a generated artifact
+	(NOT tracked in git — see .gitignore).
 
-	It runs BeforeTargets="BeforeBuild" so the freshly written wwwroot/sitemap.xml is picked up as a
-	static web asset and published to the site root. The generator no-ops (leaves the file untouched)
-	when nothing changed.
+	IMPORTANT ordering caveat: the Blazor WASM SDK builds its static web asset list from the
+	wwwroot/** content glob, which MSBuild evaluates ONCE at project-load time, before any target
+	runs. Because sitemap.xml is gitignored, it is absent at evaluation on a clean checkout, so a
+	file written here (BeforeBuild, i.e. after evaluation) is NOT in the glob and would be omitted
+	from the published site (a live 404). For that reason the DEPLOY PIPELINE generates the sitemap
+	in a dedicated step BEFORE `dotnet publish` (see .github/workflows/deploy.yml) so the file exists
+	at evaluation and is globbed/published correctly. This in-build target remains only as a local
+	convenience for an incremental rebuild where the file already exists on disk from a prior run.
+	The generator no-ops (leaves the file untouched) when nothing changed.
   -->
   <PropertyGroup>
 	<!-- Off by default; the deploy workflow passes -p:GenerateSitemapOnBuild=true on publish. -->
