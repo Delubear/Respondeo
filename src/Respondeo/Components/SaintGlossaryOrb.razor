@@ -1,8 +1,9 @@
 @* A small floating glossary orb shown on the Saints browse and detail pages.
     It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide, liturgical orb):
     a bottom-right circle that slides up to stack above the back-to-top arrow.
-    Tapping it opens a Dialog explaining the saint facets &mdash; states of life, canonizations, eras,
-    and patronages &mdash; so the terms used on the cards and detail pages are self-explanatory. *@
+    Tapping it opens a Dialog explaining the saint facets &mdash; states of life, designations,
+    religious orders, canonizations, eras, and patronages &mdash; so the terms used on the cards and
+    detail pages are self-explanatory. *@
 
 <FloatingGuide Title="Reading the saints" Eyebrow="What the labels mean" AriaLabel="Glossary: what the saint labels mean" Tooltip="What the labels mean" DialogClass="dialog--glossary" Raised="Raised">
     <Icon>
@@ -46,9 +47,35 @@
                 <GuideItem Term="Bishop">a successor of the Apostles who holds the fullness of Holy Orders and governs a local church.</GuideItem>
                 <GuideItem Term="Pope">the Bishop of Rome and successor of St. Peter, who leads the whole Church. (An office, not a separate order.)</GuideItem>
                 <GuideItem Term="Lay faithful">a baptized member of the Church who is not ordained, living holiness in the world.</GuideItem>
+            </GuideList>
+            </GuideSection>
+
+            <GuideSection Title="Designation">
+            <p>
+                A designation is an honor or role the Church attaches to a saint beyond their state of life. These labels are independent, and a saint may hold several.
+            </p>
+            <GuideList>
+                <GuideItem Term="Apostle">one of the Twelve chosen by Christ to be the foundation of his Church.</GuideItem>
+                <GuideItem Term="Evangelist">one of the four &mdash; Matthew, Mark, Luke, and John &mdash; who wrote a Gospel.</GuideItem>
+                <GuideItem Term="Prophet">one raised up by God, chiefly in the Old Testament, to speak his word to his people.</GuideItem>
                 <GuideItem Term="Martyr">one who was killed for the faith, bearing the ultimate witness to Christ.</GuideItem>
                 <GuideItem Term="Virgin">one who consecrated their virginity to God for the sake of the Kingdom.</GuideItem>
                 <GuideItem Term="Widow">one who, after the death of a spouse, gave the rest of their life to God's service.</GuideItem>
+                <GuideItem Term="Founder">one who founded a religious order, movement, or institute.</GuideItem>
+                <GuideItem Term="Doctor of the Church">a saint recognized for the outstanding value of their teaching for the whole Church.</GuideItem>
+            </GuideList>
+            </GuideSection>
+
+            <GuideSection Title="Religious order">
+            <p>
+                For a saint who was a vowed religious, this names the order, congregation, or institute they belonged to or founded. Diocesan clergy and lay saints carry no order.
+            </p>
+            <GuideList>
+                <GuideItem Term="Augustinian">following the Rule of St. Augustine.</GuideItem>
+                <GuideItem Term="Dominican">the Order of Preachers, founded by St. Dominic.</GuideItem>
+                <GuideItem Term="Franciscan">the order of friars following St. Francis of Assisi.</GuideItem>
+                <GuideItem Term="Capuchin Franciscan">a reform branch of the Franciscans, known for its simplicity and preaching.</GuideItem>
+                <GuideItem Term="Carmelite">the order of contemplatives drawing on the tradition of Mount Carmel.</GuideItem>
             </GuideList>
             </GuideSection>
 
@@ -62,7 +89,6 @@
                 <GuideItem Term="Venerable">declared to have lived heroic virtue, though not yet beatified.</GuideItem>
                 <GuideItem Term="Beatified">declared "Blessed," permitting limited public devotion (usually after a verified miracle).</GuideItem>
                 <GuideItem Term="Canonized">declared a saint, honored by the whole Church with the title "Saint."</GuideItem>
-                <GuideItem Term="Doctor of the Church">a saint recognized for the outstanding value of their teaching for the whole Church.</GuideItem>
                 <GuideItem Term="Pre-Congregation">honored as a saint by ancient tradition, from before the modern canonization process existed.</GuideItem>
             </GuideList>
             </GuideSection>
