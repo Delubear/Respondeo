@@ -7,6 +7,9 @@ era: medieval
 region: europe
 patronages: [Astronomers, The Dominican Order]
 statesOfLife: [deacon, priest, religious]
+designations: [founder]
+sex: male
+religiousOrders: [dominican]
 canonizations: [canonized]
 dates: "1170-1221"
 feastDay: "August 8"

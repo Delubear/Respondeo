@@ -26,6 +26,9 @@ public class SaintParserTests
               - Mystics
               - mystics
             statesOfLife: [Religious, PRIEST, religious]
+            designations: [Doctor-Of-The-Church, doctor-of-the-church]
+            sex: Male
+            religiousOrders: [Carmelite]
             canonizations: [Canonized]
             dates: "1542–1591"
             reviewStatus: unvetted
@@ -45,6 +48,9 @@ public class SaintParserTests
         Assert.Equal("europe", doc.Region);
         // Lists de-duplicate case-insensitively and lowercase slugs.
         Assert.Equal(["religious", "priest"], doc.StatesOfLife);
+        Assert.Equal(["doctor-of-the-church"], doc.Designations);
+        Assert.Equal("male", doc.Sex);
+        Assert.Equal(["carmelite"], doc.ReligiousOrders);
         Assert.Equal(["canonized"], doc.Canonizations);
         // Patronages keep author casing but drop case-insensitive duplicates.
         Assert.Equal(["Mystics"], doc.Patronages);
@@ -70,6 +76,9 @@ public class SaintParserTests
         Assert.Equal("unknown", doc!.Era);
         Assert.Equal("unknown", doc.Region);
         Assert.Empty(doc.StatesOfLife);
+        Assert.Empty(doc.Designations);
+        Assert.Equal(string.Empty, doc.Sex);
+        Assert.Empty(doc.ReligiousOrders);
         Assert.Empty(doc.Canonizations);
         Assert.False(doc.IsUnvetted);
     }

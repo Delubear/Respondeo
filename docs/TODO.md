@@ -127,14 +127,15 @@ model and browsable by facet + free-text search.
 
 An area within the Discover pillar (reached from the Discover sub-navigation, routes under
 `/discover/saints/`), gated by the `SaintsFeature` flag. Each saint is a hand-authored Markdown file
-with typed facet front-matter (era, region, patronages, states of life, canonizations, dates, feast
-day, tags), parsed into a typed model and browsable by facet + free-text search.
+with typed facet front-matter (era, region, patronages, states of life, designations, sex, religious
+orders, canonizations, dates, feast day, tags), parsed into a typed model and browsable by facet +
+free-text search.
 
 - [x] Saints area scaffolding (models, service, browse state, pages, Discover sub-nav link, feature flag)
 - [x] Browse page: facet filters (era / region / state of life / canonization) + search + sort by title
 - [x] Detail page: facts panel (with era description), prose sections, patronages, tags, sources
-- [~] St. Augustine of Hippo
-- [~] St. Francis of Assisi
+- [x] St. Augustine of Hippo
+- [x] St. Francis of Assisi
 - [~] St. Thérèse of Lisieux
 - [ ] Consider: more Doctors of the Church and broader regional/era coverage
 - [ ] Consider: patronage grouping once the corpus is large enough to warrant it

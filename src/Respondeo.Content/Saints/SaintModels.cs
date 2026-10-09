@@ -31,6 +31,12 @@ internal sealed class SaintIndexEntryDocument
 
     public required IReadOnlyList<string> StatesOfLife { get; init; }
 
+    public IReadOnlyList<string> Designations { get; init; } = [];
+
+    public string Sex { get; init; } = string.Empty;
+
+    public IReadOnlyList<string> ReligiousOrders { get; init; } = [];
+
     public required IReadOnlyList<string> Canonizations { get; init; }
 
     public string? Dates { get; init; }
@@ -57,6 +63,12 @@ internal sealed class SaintRecordDocument
     public required IReadOnlyList<string> Patronages { get; init; }
 
     public required IReadOnlyList<string> StatesOfLife { get; init; }
+
+    public IReadOnlyList<string> Designations { get; init; } = [];
+
+    public string Sex { get; init; } = string.Empty;
+
+    public IReadOnlyList<string> ReligiousOrders { get; init; } = [];
 
     public required IReadOnlyList<string> Canonizations { get; init; }
 

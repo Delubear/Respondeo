@@ -7,7 +7,12 @@ era: early-church
 region: africa
 patronages: [Theologians & scholars, Converts]
 statesOfLife: [deacon, priest, bishop, religious]
-canonizations: [pre-congregation, doctor-of-the-church]
+designations: [doctor-of-the-church]
+sex: male
+# TODO: revisit the `religious` state of life once we have more saints and a settled
+# definition. Augustine lived a monastic/communal life and the Augustinians (OSA, 1244)
+# follow his Rule, but he predates the order, so he is intentionally not tagged augustinian.
+canonizations: [pre-congregation]
 dates: "354-430"
 feastDay: "August 28"
 tags:

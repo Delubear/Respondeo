@@ -22,11 +22,23 @@ internal sealed class SaintFrontMatter : ContentFrontMatterBase
     [YamlMember(Alias = "patronages")]
     public List<string> Patronages { get; set; } = [];
 
-    /// <summary>The state-of-life slugs (e.g. ["religious", "priest", "martyr"]).</summary>
+    /// <summary>The state-of-life slugs (e.g. ["religious", "priest"]).</summary>
     [YamlMember(Alias = "statesOfLife")]
     public List<string> StatesOfLife { get; set; } = [];
 
-    /// <summary>The canonization-status slugs (e.g. ["canonized", "doctor-of-the-church"]).</summary>
+    /// <summary>The designation slugs (e.g. ["martyr", "virgin", "doctor-of-the-church"]).</summary>
+    [YamlMember(Alias = "designations")]
+    public List<string> Designations { get; set; } = [];
+
+    /// <summary>The sex slug ("male" or "female").</summary>
+    [YamlMember(Alias = "sex")]
+    public string Sex { get; set; } = string.Empty;
+
+    /// <summary>The religious-order slugs (e.g. ["dominican"]).</summary>
+    [YamlMember(Alias = "religiousOrders")]
+    public List<string> ReligiousOrders { get; set; } = [];
+
+    /// <summary>The canonization-status slugs (e.g. ["canonized"]).</summary>
     [YamlMember(Alias = "canonizations")]
     public List<string> Canonizations { get; set; } = [];
 

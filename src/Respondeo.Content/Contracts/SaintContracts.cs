@@ -40,10 +40,19 @@ public sealed class SaintIndexEntry
     /// <summary>The patronage slugs associated with the saint (facet). Ordered; the first is the primary patronage.</summary>
     public required IReadOnlyList<string> Patronages { get; init; }
 
-    /// <summary>The saint's states of life (facet), as slugs. A saint may hold several (e.g. religious, priest, martyr).</summary>
+    /// <summary>The saint's states of life (facet), as slugs. A saint may hold several (e.g. religious, priest).</summary>
     public required IReadOnlyList<string> StatesOfLife { get; init; }
 
-    /// <summary>The saint's canonization statuses (facet), as slugs (e.g. canonized plus doctor-of-the-church).</summary>
+    /// <summary>The saint's designations (facet), as slugs (e.g. martyr, virgin, doctor-of-the-church). May be empty.</summary>
+    public IReadOnlyList<string> Designations { get; init; } = [];
+
+    /// <summary>The saint's sex (facet), as a slug ("male" or "female"). Empty when unknown.</summary>
+    public string Sex { get; init; } = string.Empty;
+
+    /// <summary>The saint's religious orders (facet), as slugs (e.g. dominican). May be empty.</summary>
+    public IReadOnlyList<string> ReligiousOrders { get; init; } = [];
+
+    /// <summary>The saint's canonization statuses (facet), as slugs (e.g. canonized).</summary>
     public required IReadOnlyList<string> Canonizations { get; init; }
 
     /// <summary>Free-text life dates (e.g. "1181–1226"), for display.</summary>
@@ -79,10 +88,19 @@ public sealed class SaintRecord
     /// <summary>The patronages associated with the saint, as free-text display values. Ordered; the first is the primary patronage.</summary>
     public required IReadOnlyList<string> Patronages { get; init; }
 
-    /// <summary>The saint's states of life, as slugs. A saint may hold several (e.g. religious, priest, martyr).</summary>
+    /// <summary>The saint's states of life, as slugs. A saint may hold several (e.g. religious, priest).</summary>
     public required IReadOnlyList<string> StatesOfLife { get; init; }
 
-    /// <summary>The saint's canonization statuses, as slugs (e.g. canonized plus doctor-of-the-church).</summary>
+    /// <summary>The saint's designations, as slugs (e.g. martyr, virgin, doctor-of-the-church). May be empty.</summary>
+    public IReadOnlyList<string> Designations { get; init; } = [];
+
+    /// <summary>The saint's sex, as a slug ("male" or "female"). Empty when unknown.</summary>
+    public string Sex { get; init; } = string.Empty;
+
+    /// <summary>The saint's religious orders, as slugs (e.g. dominican). May be empty.</summary>
+    public IReadOnlyList<string> ReligiousOrders { get; init; } = [];
+
+    /// <summary>The saint's canonization statuses, as slugs (e.g. canonized).</summary>
     public required IReadOnlyList<string> Canonizations { get; init; }
 
     /// <summary>Free-text life dates (e.g. "354–430"). Null when unknown.</summary>

@@ -28,6 +28,9 @@ public class SaintFacetIntegrityTests
         Dictionary<string, string> Eras,
         Dictionary<string, string> Regions,
         Dictionary<string, string> StatesOfLife,
+        Dictionary<string, string> Designations,
+        Dictionary<string, string> Sexes,
+        Dictionary<string, string> ReligiousOrders,
         Dictionary<string, string> Canonizations);
 
     private static FacetMaps ReadFacets(string saintsDir)
@@ -39,7 +42,7 @@ public class SaintFacetIntegrityTests
         return dto!;
     }
 
-    private sealed record SaintSlugs(string? Era, string? Region, List<string> StatesOfLife, List<string> Canonizations);
+    private sealed record SaintSlugs(string? Era, string? Region, List<string> StatesOfLife, List<string> Designations, string? Sex, List<string> ReligiousOrders, List<string> Canonizations);
 
     // A tiny front-matter reader: pulls the "key: value" and "key: [a, b]" lines between the two "---"
     // fences. Good enough for the flat facet fields we need to validate.
@@ -49,7 +52,10 @@ public class SaintFacetIntegrityTests
         var start = Array.IndexOf(lines, "---");
         string? era = null;
         string? region = null;
+        string? sex = null;
         var statesOfLife = new List<string>();
+        var designations = new List<string>();
+        var religiousOrders = new List<string>();
         var canonizations = new List<string>();
 
         for (var i = start + 1; i < lines.Length; i++)
@@ -68,9 +74,21 @@ public class SaintFacetIntegrityTests
             {
                 region = line["region:".Length..].Trim().Trim('"', '\'');
             }
+            else if (line.StartsWith("sex:", StringComparison.OrdinalIgnoreCase))
+            {
+                sex = line["sex:".Length..].Trim().Trim('"', '\'');
+            }
             else if (line.StartsWith("statesOfLife:", StringComparison.OrdinalIgnoreCase))
             {
                 statesOfLife.AddRange(ReadList(line, "statesOfLife:"));
+            }
+            else if (line.StartsWith("designations:", StringComparison.OrdinalIgnoreCase))
+            {
+                designations.AddRange(ReadList(line, "designations:"));
+            }
+            else if (line.StartsWith("religiousOrders:", StringComparison.OrdinalIgnoreCase))
+            {
+                religiousOrders.AddRange(ReadList(line, "religiousOrders:"));
             }
             else if (line.StartsWith("canonizations:", StringComparison.OrdinalIgnoreCase))
             {
@@ -78,7 +96,7 @@ public class SaintFacetIntegrityTests
             }
         }
 
-        return new SaintSlugs(era, region, statesOfLife, canonizations);
+        return new SaintSlugs(era, region, statesOfLife, designations, sex, religiousOrders, canonizations);
     }
 
     private static IEnumerable<string> ReadList(string line, string key)
@@ -115,6 +133,21 @@ public class SaintFacetIntegrityTests
             foreach (var state in slugs.StatesOfLife.Where(s => !facets.StatesOfLife.ContainsKey(s)))
             {
                 missing.Add($"{name}: stateOfLife '{state}'");
+            }
+
+            foreach (var designation in slugs.Designations.Where(d => !facets.Designations.ContainsKey(d)))
+            {
+                missing.Add($"{name}: designation '{designation}'");
+            }
+
+            if (!string.IsNullOrWhiteSpace(slugs.Sex) && !facets.Sexes.ContainsKey(slugs.Sex))
+            {
+                missing.Add($"{name}: sex '{slugs.Sex}'");
+            }
+
+            foreach (var order in slugs.ReligiousOrders.Where(o => !facets.ReligiousOrders.ContainsKey(o)))
+            {
+                missing.Add($"{name}: religiousOrder '{order}'");
             }
 
             foreach (var canonization in slugs.Canonizations.Where(c => !facets.Canonizations.ContainsKey(c)))

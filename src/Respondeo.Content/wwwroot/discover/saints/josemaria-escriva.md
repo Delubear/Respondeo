@@ -7,6 +7,8 @@ era: modern
 region: europe
 patronages: [Opus Dei]
 statesOfLife: [deacon, priest]
+designations: [founder]
+sex: male
 canonizations: [canonized]
 dates: "1902-1975"
 feastDay: "June 26"

@@ -80,6 +80,27 @@ else
                     <dd>@string.Join(", ", _saint.StatesOfLife.Select(_facets.StateOfLife))</dd>
                 </div>
             }
+            @if (_saint.Designations.Count > 0)
+            {
+                <div class="saint__fact">
+                    <dt>Designation</dt>
+                    <dd>@string.Join(", ", _saint.Designations.Select(_facets.Designation))</dd>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(_saint.Sex))
+            {
+                <div class="saint__fact">
+                    <dt>Sex</dt>
+                    <dd>@_facets.Sex(_saint.Sex)</dd>
+                </div>
+            }
+            @if (_saint.ReligiousOrders.Count > 0)
+            {
+                <div class="saint__fact">
+                    <dt>Religious order</dt>
+                    <dd>@string.Join(", ", _saint.ReligiousOrders.Select(_facets.ReligiousOrder))</dd>
+                </div>
+            }
             @if (_saint.Patronages.Count > 0)
             {
                 <div class="saint__fact saint__fact--wide">

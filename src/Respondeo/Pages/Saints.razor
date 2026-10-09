@@ -35,6 +35,9 @@
                 <TopicFilter Title="Era" Topics="_eras" Selected="_selectedEras" SelectedChanged="OnErasChanged" DisplayLabel="_facets.Era" />
                 <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
                 <TopicFilter Title="State of life" Topics="_statesOfLife" Selected="_selectedStatesOfLife" SelectedChanged="OnStatesOfLifeChanged" DisplayLabel="_facets.StateOfLife" />
+                <TopicFilter Title="Designation" Topics="_designations" Selected="_selectedDesignations" SelectedChanged="OnDesignationsChanged" DisplayLabel="_facets.Designation" />
+                <TopicFilter Title="Sex" Topics="_sexes" Selected="_selectedSexes" SelectedChanged="OnSexesChanged" DisplayLabel="_facets.Sex" />
+                <TopicFilter Title="Religious order" Topics="_religiousOrders" Selected="_selectedReligiousOrders" SelectedChanged="OnReligiousOrdersChanged" DisplayLabel="_facets.ReligiousOrder" />
                 <TopicFilter Title="Canonization" Topics="_canonizations" Selected="_selectedCanonizations" SelectedChanged="OnCanonizationsChanged" DisplayLabel="_facets.Canonization" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
@@ -66,6 +69,9 @@
     private IReadOnlyList<string> _eras = [];
     private IReadOnlyList<string> _regions = [];
     private IReadOnlyList<string> _statesOfLife = [];
+    private IReadOnlyList<string> _designations = [];
+    private IReadOnlyList<string> _sexes = [];
+    private IReadOnlyList<string> _religiousOrders = [];
     private IReadOnlyList<string> _canonizations = [];
     private IReadOnlySet<string> _feastIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
@@ -74,6 +80,9 @@
     private IReadOnlySet<string> _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedDesignations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedSexes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    private IReadOnlySet<string> _selectedReligiousOrders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private IReadOnlySet<string> _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
@@ -92,6 +101,9 @@
         _selectedEras = new HashSet<string>(_browse.GetFilter("era"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
         _selectedStatesOfLife = new HashSet<string>(_browse.GetFilter("state"), StringComparer.OrdinalIgnoreCase);
+        _selectedDesignations = new HashSet<string>(_browse.GetFilter("designation"), StringComparer.OrdinalIgnoreCase);
+        _selectedSexes = new HashSet<string>(_browse.GetFilter("sex"), StringComparer.OrdinalIgnoreCase);
+        _selectedReligiousOrders = new HashSet<string>(_browse.GetFilter("order"), StringComparer.OrdinalIgnoreCase);
         _selectedCanonizations = new HashSet<string>(_browse.GetFilter("canonization"), StringComparer.OrdinalIgnoreCase);
 
         _facets = await SaintService.GetFacetsAsync();
@@ -105,6 +117,9 @@
         _eras = Browser.Eras(_all, _facets);
         _regions = Browser.Regions(_all, _facets);
         _statesOfLife = Browser.StatesOfLife(_all, _facets);
+        _designations = Browser.Designations(_all, _facets);
+        _sexes = Browser.Sexes(_all, _facets);
+        _religiousOrders = Browser.ReligiousOrders(_all, _facets);
         _canonizations = Browser.Canonizations(_all, _facets);
     }
 
@@ -145,11 +160,32 @@
         _browse.SetFilter("canonization", selected);
     }
 
+    private void OnDesignationsChanged(IReadOnlySet<string> selected)
+    {
+        _selectedDesignations = selected;
+        _browse.SetFilter("designation", selected);
+    }
+
+    private void OnSexesChanged(IReadOnlySet<string> selected)
+    {
+        _selectedSexes = selected;
+        _browse.SetFilter("sex", selected);
+    }
+
+    private void OnReligiousOrdersChanged(IReadOnlySet<string> selected)
+    {
+        _selectedReligiousOrders = selected;
+        _browse.SetFilter("order", selected);
+    }
+
     private void ClearFilters()
     {
         _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedDesignations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedSexes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selectedReligiousOrders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _browse.Clear();
     }
@@ -165,6 +201,9 @@
                 _selectedEras,
                 _selectedRegions,
                 _selectedStatesOfLife,
+                _selectedDesignations,
+                _selectedSexes,
+                _selectedReligiousOrders,
                 _selectedCanonizations,
                 _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 }

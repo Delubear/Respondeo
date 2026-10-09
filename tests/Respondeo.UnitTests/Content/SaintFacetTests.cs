@@ -22,6 +22,18 @@ public class SaintFacetTests
         {
             ["religious"] = "Religious",
         },
+        Designations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["doctor-of-the-church"] = "Doctor of the Church",
+        },
+        Sexes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["male"] = "Male",
+        },
+        ReligiousOrders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["dominican"] = "Dominican",
+        },
         Canonizations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["canonized"] = "Canonized",
@@ -33,6 +45,14 @@ public class SaintFacetTests
     {
         Assert.Equal("Medieval", Catalog.Era("medieval"));
         Assert.Equal("Medieval", Catalog.Era(" MEDIEVAL "));
+    }
+
+    [Fact]
+    public void Lookups_resolve_new_facet_labels()
+    {
+        Assert.Equal("Doctor of the Church", Catalog.Designation("doctor-of-the-church"));
+        Assert.Equal("Male", Catalog.Sex("male"));
+        Assert.Equal("Dominican", Catalog.ReligiousOrder("dominican"));
     }
 
     [Fact]

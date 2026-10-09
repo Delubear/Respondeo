@@ -149,14 +149,19 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
 Markdown with front-matter carrying typed **facet** metadata, then `## `-sectioned body.
 
 - Extra fields: `era`, `region`, `patronages` (free-text list), `statesOfLife` (list),
-  `canonizations` (list), `dates`, `feastDay`, `sources`.
+  `designations` (list), `sex` (single), `religiousOrders` (list), `canonizations` (list),
+  `dates`, `feastDay`, `sources`.
 - **Facet slugs must exist in `saints/facets.json`** — enforced by test. Allowed values:
   - `era` (single): `early-church`, `medieval`, `early-modern`, `modern`
   - `region` (single): `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
-  - `statesOfLife` (list): `religious`, `deacon`, `priest`, `bishop`, `pope`, `lay`, `martyr`, `virgin`, `widow`
-  - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`, `doctor-of-the-church`
+  - `statesOfLife` (list): `religious`, `deacon`, `priest`, `bishop`, `pope`, `lay`
+  - `designations` (list): `apostle`, `evangelist`, `prophet`, `martyr`, `virgin`, `widow`, `founder`, `doctor-of-the-church`
+  - `sex` (single): `male`, `female`
+  - `religiousOrders` (list): `augustinian`, `dominican`, `franciscan`, `capuchin`, `carmelite`
+  - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`
 - **`statesOfLife` and `canonizations` are multi-valued and required** (at least one each) — enforced
-  by test. A saint may hold several (e.g. `[priest, martyr]`, `[canonized, doctor-of-the-church]`).
+  by test. A saint may hold several (e.g. `[priest, bishop]`, `[canonized]`).
+- **`designations`, `sex`, and `religiousOrders` are optional.** Add each that genuinely applies.
 - **List every state of life that genuinely applies.** The slugs are independent descriptors, not a
   ranked ladder, and the browse filter matches any saint whose list *contains* a selected state, so
   being thorough only makes a saint easier to find (never excludes them).
@@ -169,8 +174,15 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
     opposed to diocesan/secular clergy. Add it whenever it applies, and omit it for secular clergy.
     So a friar who is also a bishop is `[priest, bishop, religious]`; a diocesan bishop is
     `[priest, bishop]`; a non-ordained friar is `[religious]`.
-  - **`martyr`, `virgin`, and `widow`** are likewise independent — add each that applies (e.g.
-    `[bishop, priest, martyr]`, `[religious, virgin]`).
+  - **`designations`** carry honorific/role descriptors that are not states of life: `apostle`,
+    `evangelist`, `prophet`, `martyr`, `virgin`, `widow`, `founder` (of a religious order, movement,
+    or institute), and `doctor-of-the-church`. They are independent — add each that applies (e.g.
+    `[martyr]`, `[virgin, doctor-of-the-church]`, `[founder]`).
+  - **`religiousOrders`** names the institute(s) a `religious` saint belongs to or founded (e.g.
+    `[dominican]`). Omit it for secular clergy and for founders of non-order institutes (e.g. Opus
+    Dei, a personal prelature). Only tag an order the saint actually belonged to — do not tag a saint
+    with an order merely named after them if it was founded after their lifetime.
+  - **`sex`** is a single value, `male` or `female`.
 - `patronages` is **free-text display values** (e.g. `["Missions", "The poor"]`), not facet slugs — it
   is searched and shown on cards/detail but is **not** a filter facet, so it is not listed in
   `facets.json`. Reuse existing wording/casing for consistency.

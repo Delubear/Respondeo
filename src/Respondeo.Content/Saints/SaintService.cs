@@ -56,12 +56,15 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
 
     private sealed record Catalog(Dictionary<string, SaintRecordDocument> Records, SaintIndex Index);
 
-    // Serialization shape for facets.json: four slug->label maps.
+    // Serialization shape for facets.json: the slug->label maps.
     private sealed class FacetsDto
     {
         public Dictionary<string, string> Eras { get; set; } = [];
         public Dictionary<string, string> Regions { get; set; } = [];
         public Dictionary<string, string> StatesOfLife { get; set; } = [];
+        public Dictionary<string, string> Designations { get; set; } = [];
+        public Dictionary<string, string> Sexes { get; set; } = [];
+        public Dictionary<string, string> ReligiousOrders { get; set; } = [];
         public Dictionary<string, string> Canonizations { get; set; } = [];
 
         public SaintFacetCatalog ToCatalog() => new()
@@ -69,6 +72,9 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
             Eras = new Dictionary<string, string>(Eras, StringComparer.OrdinalIgnoreCase),
             Regions = new Dictionary<string, string>(Regions, StringComparer.OrdinalIgnoreCase),
             StatesOfLife = new Dictionary<string, string>(StatesOfLife, StringComparer.OrdinalIgnoreCase),
+            Designations = new Dictionary<string, string>(Designations, StringComparer.OrdinalIgnoreCase),
+            Sexes = new Dictionary<string, string>(Sexes, StringComparer.OrdinalIgnoreCase),
+            ReligiousOrders = new Dictionary<string, string>(ReligiousOrders, StringComparer.OrdinalIgnoreCase),
             Canonizations = new Dictionary<string, string>(Canonizations, StringComparer.OrdinalIgnoreCase),
         };
     }

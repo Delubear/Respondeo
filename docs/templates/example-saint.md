@@ -19,8 +19,11 @@ summary: A one-line description used on cards and previews.  # OPTIONAL.
 era: modern                     # OPTIONAL (single). Historical era facet: early-church, medieval, early-modern, modern.
 region: europe                  # OPTIONAL (single). Region facet used by the region filter.
 patronages: ["Missions", "Youth"]   # OPTIONAL (free-text list). Patronages — searched and shown, but NOT a filter facet, so any wording is allowed. Reuse existing wording/casing for consistency.
-statesOfLife: [religious]       # REQUIRED (list, >=1). States of life: religious, deacon, priest, bishop, pope, lay, martyr, virgin, widow. Holy orders are cumulative (deacon -> priest -> bishop -> pope); list every state that applies.
-canonizations: [canonized]      # REQUIRED (list, >=1). Canonization status(es): canonized, beatified, venerable, servant-of-god, pre-congregation, doctor-of-the-church.
+statesOfLife: [religious]       # REQUIRED (list, >=1). States of life: religious, deacon, priest, bishop, pope, lay. Holy orders are cumulative (deacon -> priest -> bishop -> pope); list every state that applies.
+designations: [doctor-of-the-church]   # OPTIONAL (list). Honorifics/roles that are not states of life: apostle, evangelist, prophet, martyr, virgin, widow, founder, doctor-of-the-church.
+sex: female                     # OPTIONAL (single). male or female.
+religiousOrders: [carmelite]    # OPTIONAL (list). Institute(s) a religious saint belonged to or founded: augustinian, dominican, franciscan, capuchin, carmelite. Omit for secular clergy.
+canonizations: [canonized]      # REQUIRED (list, >=1). Canonization status(es): canonized, beatified, venerable, servant-of-god, pre-congregation.
 dates: "1873-1897"              # OPTIONAL. Free-text life dates shown in the facts panel. Use a plain "-" for ranges; the pipeline renders it as an en dash.
 feastDay: "October 1"           # OPTIONAL. Feast day shown in the facts panel.
 

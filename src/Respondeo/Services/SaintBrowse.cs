@@ -41,6 +41,25 @@ public sealed class SaintBrowse
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(facets.StateOfLife, StringComparer.CurrentCultureIgnoreCase)];
 
+    /// <summary>The distinct designation slugs that occur in the catalog, ordered by display label.</summary>
+    public IReadOnlyList<string> Designations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
+        [.. entries.SelectMany(s => s.Designations)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(facets.Designation, StringComparer.CurrentCultureIgnoreCase)];
+
+    /// <summary>The distinct sex slugs that occur in the catalog, ordered by display label.</summary>
+    public IReadOnlyList<string> Sexes(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
+        [.. entries.Select(s => s.Sex)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(facets.Sex, StringComparer.CurrentCultureIgnoreCase)];
+
+    /// <summary>The distinct religious-order slugs that occur in the catalog, ordered by display label.</summary>
+    public IReadOnlyList<string> ReligiousOrders(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
+        [.. entries.SelectMany(s => s.ReligiousOrders)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(facets.ReligiousOrder, StringComparer.CurrentCultureIgnoreCase)];
+
     /// <summary>The distinct canonization slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Canonizations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
         [.. entries.SelectMany(s => s.Canonizations)
@@ -60,6 +79,9 @@ public sealed class SaintBrowse
         IReadOnlySet<string> selectedEras,
         IReadOnlySet<string> selectedRegions,
         IReadOnlySet<string> selectedStatesOfLife,
+        IReadOnlySet<string> selectedDesignations,
+        IReadOnlySet<string> selectedSexes,
+        IReadOnlySet<string> selectedReligiousOrders,
         IReadOnlySet<string> selectedCanonizations,
         SortOption<SaintIndexEntry> sort)
     {
@@ -69,6 +91,9 @@ public sealed class SaintBrowse
             (selectedEras.Count == 0 || selectedEras.Contains(s.Era))
             && (selectedRegions.Count == 0 || selectedRegions.Contains(s.Region))
             && (selectedStatesOfLife.Count == 0 || s.StatesOfLife.Any(selectedStatesOfLife.Contains))
+            && (selectedDesignations.Count == 0 || s.Designations.Any(selectedDesignations.Contains))
+            && (selectedSexes.Count == 0 || selectedSexes.Contains(s.Sex))
+            && (selectedReligiousOrders.Count == 0 || s.ReligiousOrders.Any(selectedReligiousOrders.Contains))
             && (selectedCanonizations.Count == 0 || s.Canonizations.Any(selectedCanonizations.Contains))
             && Matches(s, term, facets));
 
@@ -90,6 +115,8 @@ public sealed class SaintBrowse
             || facets.Era(s.Era).Contains(query, StringComparison.OrdinalIgnoreCase)
             || facets.Region(s.Region).Contains(query, StringComparison.OrdinalIgnoreCase)
             || s.StatesOfLife.Select(facets.StateOfLife).Any(v => v.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || s.Designations.Select(facets.Designation).Any(v => v.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || s.ReligiousOrders.Select(facets.ReligiousOrder).Any(v => v.Contains(query, StringComparison.OrdinalIgnoreCase))
             || s.Canonizations.Select(facets.Canonization).Any(v => v.Contains(query, StringComparison.OrdinalIgnoreCase));
     }
 

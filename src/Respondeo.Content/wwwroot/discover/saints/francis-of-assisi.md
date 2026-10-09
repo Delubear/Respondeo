@@ -7,6 +7,9 @@ era: medieval
 region: europe
 patronages: ["Animals & ecology", "The poor"]
 statesOfLife: [deacon, religious]
+designations: [founder]
+sex: male
+religiousOrders: [franciscan]
 canonizations: [pre-congregation]
 dates: "1181/82-1226"
 feastDay: "October 4"

@@ -22,17 +22,34 @@
     "priest": "Priest",
     "bishop": "Bishop",
     "pope": "Pope",
-    "lay": "Lay faithful",
+    "lay": "Lay faithful"
+  },
+  "designations": {
+    "apostle": "Apostle",
+    "evangelist": "Evangelist",
+    "prophet": "Prophet",
     "martyr": "Martyr",
     "virgin": "Virgin",
-    "widow": "Widow"
+    "widow": "Widow",
+    "founder": "Founder",
+    "doctor-of-the-church": "Doctor of the Church"
+  },
+  "sexes": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "religiousOrders": {
+    "augustinian": "Augustinian",
+    "dominican": "Dominican",
+    "franciscan": "Franciscan",
+    "capuchin": "Capuchin Franciscan",
+    "carmelite": "Carmelite"
   },
   "canonizations": {
     "canonized": "Canonized",
     "beatified": "Beatified",
     "venerable": "Venerable",
     "servant-of-god": "Servant of God",
-    "pre-congregation": "Pre-Congregation (traditional)",
-    "doctor-of-the-church": "Doctor of the Church"
+    "pre-congregation": "Pre-Congregation (traditional)"
   }
 }

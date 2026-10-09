@@ -6,7 +6,9 @@ summary: "The fisherman whom Christ named the rock of his Church, first among th
 era: early-church
 region: middle-east
 patronages: [Popes, Fishermen, The Church]
-statesOfLife: [bishop, pope, martyr]
+statesOfLife: [bishop, pope]
+designations: [apostle, martyr]
+sex: male
 canonizations: [pre-congregation]
 dates: "d. c. 64"
 feastDay: "June 29"

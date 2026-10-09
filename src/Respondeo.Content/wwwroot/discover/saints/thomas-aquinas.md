@@ -7,7 +7,10 @@ era: medieval
 region: europe
 patronages: [Students, Universities, Theologians]
 statesOfLife: [deacon, priest, religious]
-canonizations: [canonized, doctor-of-the-church]
+designations: [doctor-of-the-church]
+sex: male
+religiousOrders: [dominican]
+canonizations: [canonized]
 dates: "1225-1274"
 feastDay: "January 28"
 reviewStatus: unvetted

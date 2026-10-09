@@ -27,12 +27,26 @@ public class SaintBrowseTests
         StatesOfLife = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["religious"] = "Religious",
-            ["founder"] = "Founder",
+            ["priest"] = "Priest",
+        },
+        Designations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["doctor-of-the-church"] = "Doctor of the Church",
+            ["virgin"] = "Virgin",
+        },
+        Sexes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["male"] = "Male",
+            ["female"] = "Female",
+        },
+        ReligiousOrders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["franciscan"] = "Franciscan",
+            ["carmelite"] = "Carmelite",
         },
         Canonizations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["canonized"] = "Canonized",
-            ["doctor-of-the-church"] = "Doctor of the Church",
         },
     };
 
@@ -52,7 +66,10 @@ public class SaintBrowseTests
             Era = "medieval",
             Region = "europe",
             Patronages = ["Animals", "Ecology"],
-            StatesOfLife = ["religious", "founder"],
+            StatesOfLife = ["religious"],
+            Designations = [],
+            Sex = "male",
+            ReligiousOrders = ["franciscan"],
             Canonizations = ["canonized"],
             Dates = "1181–1226",
             Tags = ["poverty"],
@@ -66,7 +83,10 @@ public class SaintBrowseTests
             Region = "europe",
             Patronages = [],
             StatesOfLife = ["religious"],
-            Canonizations = ["canonized", "doctor-of-the-church"],
+            Designations = ["virgin", "doctor-of-the-church"],
+            Sex = "female",
+            ReligiousOrders = ["carmelite"],
+            Canonizations = ["canonized"],
             Dates = "1873–1897",
             Tags = [],
         },
@@ -87,7 +107,31 @@ public class SaintBrowseTests
     {
         var states = _browse.StatesOfLife(SampleIndex(), Facets);
 
-        Assert.Equal(["founder", "religious"], states);
+        Assert.Equal(["religious"], states);
+    }
+
+    [Fact]
+    public void Designations_flattens_and_orders_by_label()
+    {
+        var designations = _browse.Designations(SampleIndex(), Facets);
+
+        Assert.Equal(["doctor-of-the-church", "virgin"], designations);
+    }
+
+    [Fact]
+    public void Sexes_are_distinct_and_ordered_by_label()
+    {
+        var sexes = _browse.Sexes(SampleIndex(), Facets);
+
+        Assert.Equal(["female", "male"], sexes);
+    }
+
+    [Fact]
+    public void ReligiousOrders_flattens_and_orders_by_label()
+    {
+        var orders = _browse.ReligiousOrders(SampleIndex(), Facets);
+
+        Assert.Equal(["carmelite", "franciscan"], orders);
     }
 
     [Fact]
@@ -95,7 +139,7 @@ public class SaintBrowseTests
     {
         var canonizations = _browse.Canonizations(SampleIndex(), Facets);
 
-        Assert.Equal(["canonized", "doctor-of-the-church"], canonizations);
+        Assert.Equal(["canonized"], canonizations);
     }
 
     [Theory]
@@ -113,7 +157,7 @@ public class SaintBrowseTests
     [Fact]
     public void Filter_without_criteria_returns_all_sorted()
     {
-        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, SortTitleAsc);
+        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, Empty, Empty, Empty, SortTitleAsc);
 
         Assert.Equal(["francis", "therese"], results.Select(r => r.Id));
     }
@@ -123,20 +167,40 @@ public class SaintBrowseTests
     {
         var eras = new HashSet<string>(["modern"], StringComparer.OrdinalIgnoreCase);
 
-        var results = _browse.Filter(SampleIndex(), Facets, "", eras, Empty, Empty, Empty, SortTitleAsc);
+        var results = _browse.Filter(SampleIndex(), Facets, "", eras, Empty, Empty, Empty, Empty, Empty, Empty, SortTitleAsc);
 
         var only = Assert.Single(results);
         Assert.Equal("therese", only.Id);
     }
 
     [Fact]
-    public void Filter_matches_canonization_within_a_multi_value_group()
+    public void Filter_matches_designation_within_a_multi_value_group()
     {
-        var canonizations = new HashSet<string>(["doctor-of-the-church"], StringComparer.OrdinalIgnoreCase);
+        var designations = new HashSet<string>(["doctor-of-the-church"], StringComparer.OrdinalIgnoreCase);
 
-        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, canonizations, SortTitleAsc);
+        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, designations, Empty, Empty, Empty, SortTitleAsc);
 
         Assert.Equal("therese", Assert.Single(results).Id);
+    }
+
+    [Fact]
+    public void Filter_matches_sex()
+    {
+        var sexes = new HashSet<string>(["female"], StringComparer.OrdinalIgnoreCase);
+
+        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, sexes, Empty, Empty, SortTitleAsc);
+
+        Assert.Equal("therese", Assert.Single(results).Id);
+    }
+
+    [Fact]
+    public void Filter_matches_religious_order()
+    {
+        var orders = new HashSet<string>(["franciscan"], StringComparer.OrdinalIgnoreCase);
+
+        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, Empty, orders, Empty, SortTitleAsc);
+
+        Assert.Equal("francis", Assert.Single(results).Id);
     }
 
     [Fact]
@@ -148,13 +212,13 @@ public class SaintBrowseTests
         Assert.Equal("therese", Single("Doctor").Id);
 
         SaintIndexEntry Single(string query) =>
-            Assert.Single(_browse.Filter(SampleIndex(), Facets, query, Empty, Empty, Empty, Empty, SortTitleAsc));
+            Assert.Single(_browse.Filter(SampleIndex(), Facets, query, Empty, Empty, Empty, Empty, Empty, Empty, Empty, SortTitleAsc));
     }
 
     [Fact]
     public void Filter_sorts_chronologically()
     {
-        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, SortChronological);
+        var results = _browse.Filter(SampleIndex(), Facets, "", Empty, Empty, Empty, Empty, Empty, Empty, Empty, SortChronological);
 
         Assert.Equal(["francis", "therese"], results.Select(r => r.Id));
     }

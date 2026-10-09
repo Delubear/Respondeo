@@ -7,6 +7,8 @@ era: modern
 region: europe
 patronages: [Civil defense volunteers, Adolescents]
 statesOfLife: [deacon, priest, religious]
+sex: male
+religiousOrders: [capuchin]
 canonizations: [canonized]
 dates: "1887-1968"
 feastDay: "September 23"

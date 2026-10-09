@@ -18,6 +18,15 @@ public sealed class SaintFacetCatalog
     /// <summary>State-of-life slug &#8594; display label (e.g. "religious" &#8594; "Religious").</summary>
     public IReadOnlyDictionary<string, string> StatesOfLife { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>Designation slug &#8594; display label (e.g. "martyr" &#8594; "Martyr", "doctor-of-the-church" &#8594; "Doctor of the Church").</summary>
+    public IReadOnlyDictionary<string, string> Designations { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Sex slug &#8594; display label (e.g. "male" &#8594; "Male").</summary>
+    public IReadOnlyDictionary<string, string> Sexes { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Religious-order slug &#8594; display label (e.g. "dominican" &#8594; "Dominican").</summary>
+    public IReadOnlyDictionary<string, string> ReligiousOrders { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
     /// <summary>Canonization slug &#8594; display label (e.g. "canonized" &#8594; "Canonized").</summary>
     public IReadOnlyDictionary<string, string> Canonizations { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
@@ -32,6 +41,15 @@ public sealed class SaintFacetCatalog
 
     /// <summary>Resolves a state-of-life slug to its label, humanizing the slug when it is unmapped.</summary>
     public string StateOfLife(string slug) => Lookup(StatesOfLife, slug);
+
+    /// <summary>Resolves a designation slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string Designation(string slug) => Lookup(Designations, slug);
+
+    /// <summary>Resolves a sex slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string Sex(string slug) => Lookup(Sexes, slug);
+
+    /// <summary>Resolves a religious-order slug to its label, humanizing the slug when it is unmapped.</summary>
+    public string ReligiousOrder(string slug) => Lookup(ReligiousOrders, slug);
 
     /// <summary>Resolves a canonization slug to its label, humanizing the slug when it is unmapped.</summary>
     public string Canonization(string slug) => Lookup(Canonizations, slug);

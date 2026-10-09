@@ -6,8 +6,11 @@ summary: "The Carmelite nun whose \"Little Way\" of spiritual childhood made her
 era: modern
 region: europe
 patronages: [Missions, Youth]
-statesOfLife: [religious, virgin]
-canonizations: [canonized, doctor-of-the-church]
+statesOfLife: [religious]
+designations: [virgin, doctor-of-the-church]
+sex: female
+religiousOrders: [carmelite]
+canonizations: [canonized]
 dates: "1873-1897"
 feastDay: "October 1"
 reviewStatus: unvetted
