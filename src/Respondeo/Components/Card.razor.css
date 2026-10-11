@@ -83,7 +83,7 @@ button.card {
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    background: transparent;
     border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--rule));
     border-radius: var(--radius-pill);
     padding: 0.14rem 0.68rem;
