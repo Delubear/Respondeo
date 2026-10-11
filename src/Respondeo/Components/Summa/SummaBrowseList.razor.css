@@ -137,7 +137,7 @@
 }
 
 .summa__question-number {
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: lining-nums tabular-nums;
     color: var(--ink-soft);
     font-size: 0.85rem;
 }

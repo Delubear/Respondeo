@@ -90,8 +90,17 @@
     --rule: #d9d6cf;
     --accent: #7b1113;
     --accent-ink: #ffffff;
+    /* Rubrication: in a manuscript the rubric (literally 'red') marked titles, headings and liturgical
+       directions. Our sanguine accent is that cappa red, so --rubric names that role for eyebrows,
+       section labels and versicle/response markers — distinct from --accent used for links/interaction. */
+    --rubric: var(--accent);
     --gold: #b8902f;
     --gold-bright: #e8c874;
+    /* Gold is reserved for *events* \u2014 something sacred or singular is present: a feast day, a
+       completed devotion, a canonization, the ceremonial stage plate. Use --gold-event (not --gold
+       directly) for these cues so the restraint is self-documenting; never use gold for ordinary UI
+       chrome, where it would lose its meaning. */
+    --gold-event: var(--gold);
     --shadow: rgba(17, 17, 17, 0.08);
     --code-bg: #f0eee9;
     /* Floating controls (back-to-top, Summa guide): mirror the primary .btn so they stay consistent. */
@@ -124,6 +133,12 @@
     --focus-ring-width: 2px;
     --focus-ring-color: var(--accent);
     --focus-ring-offset: 2px;
+    /* One motion language so every surface feels composed by a single hand: a gentle "turning the
+       page" easing and a small duration scale (quick taps -> hover lifts -> entrances). */
+    --ease-page: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --dur-1: 0.12s;
+    --dur-2: 0.16s;
+    --dur-3: 0.3s;
 }
 
 /* ---------- Dark theme ---------- */
@@ -137,6 +152,7 @@
     --rule: #3a372f;
     --accent: #c6474a;
     --accent-ink: #15140f;
+    --rubric: var(--accent);
     --gold: #c9a54e;
     --gold-bright: #f0d488;
     --shadow: rgba(0, 0, 0, 0.5);
@@ -194,6 +210,11 @@ html, body {
     font-size: 1.125rem;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    /* Lean into EB Garamond's book typography: common + discretionary ligatures and old-style
+       (text) figures that sit on the baseline like a printed missal. Contexts that need aligned
+       numerals (Summa citations, fact tables) re-assert tabular/lining figures locally. */
+    font-variant-ligatures: common-ligatures discretionary-ligatures;
+    font-variant-numeric: oldstyle-nums;
 }
 
 /* On installed PWAs with viewport-fit=cover, the viewport extends into the device safe areas
@@ -215,10 +236,11 @@ a:hover {
 }
 
 /* Summa citations (links into the summa/ corpus) read as a single reference unit: keep the whole
-   citation on one line and use tabular figures so the numerals align. Applied globally so every
-   content pillar — inquiry, articles, miracles, prayers, devotions — renders them identically. */
+   citation on one line and use lining tabular figures so the numerals align uniformly, overriding the
+   site-wide old-style default. Applied globally so every content pillar — inquiry, articles, miracles,
+   prayers, devotions — renders them identically. */
 a[href^="summa/"] {
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: lining-nums tabular-nums;
 }
 
 /* Visually hidden but available to screen readers (labels and live-region announcements). */
@@ -252,7 +274,7 @@ h1, h2, h3 {
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-size: 0.8rem;
-    color: var(--ink-soft);
+    color: var(--rubric);
 }
 
 /* .section-rule is the standard "new section below a hairline" separator used at the foot of detail
@@ -466,7 +488,7 @@ details.accordion__item[open] > .accordion__trigger {
     color: var(--accent);
     text-decoration: none;
     white-space: nowrap;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: lining-nums tabular-nums;
     border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
@@ -1043,7 +1065,7 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 0 1rem;
 }
 
-.content-body blockquote {
+
     margin: 1.5rem 0;
     padding: 0.5rem 1.25rem;
     border-left: 4px solid var(--accent);
@@ -1061,6 +1083,22 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .content-body :is(ol, ul) {
     padding-left: 1.4rem;
+}
+
+/* Fleuron section break: replace the default rule with a centered printer's mark (a leaf/aldus
+   ornament) in gold, the way a printed book separates passages. The <hr> keeps its semantic meaning
+   for assistive tech while reading as ornament rather than a plain line. */
+.content-body hr {
+    border: 0;
+    margin: 2.5rem 0;
+    text-align: center;
+    line-height: 1;
+}
+
+.content-body hr::before {
+    content: "\2767";
+    font-size: 1.6rem;
+    color: var(--gold);
 }
 
 .content-body img:not(.video-facade__thumb) {

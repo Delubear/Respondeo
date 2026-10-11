@@ -8,7 +8,7 @@
     padding: 1.3rem 1.4rem;
     color: var(--ink);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    transition: transform var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page), background var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page);
     position: relative;
 }
 
@@ -21,7 +21,7 @@
     height: 3px;
     border-radius: var(--radius) var(--radius) 0 0;
     background: transparent;
-    transition: background 0.16s ease;
+    transition: background var(--dur-2) var(--ease-page);
 }
 
 /* When rendered as an in-page action the card is a <button>; strip native chrome
@@ -105,13 +105,13 @@ button.card {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
-    transition: letter-spacing 0.16s ease;
+    transition: letter-spacing var(--dur-2) var(--ease-page);
 }
 
 .card__cta-arrow {
     display: inline-block;
     margin-left: 0.35rem;
-    transition: transform 0.16s ease;
+    transition: transform var(--dur-2) var(--ease-page);
 }
 
 /* A gentle widening of the CTA's tracking plus a nudge of the arrow on hover reads as the card
