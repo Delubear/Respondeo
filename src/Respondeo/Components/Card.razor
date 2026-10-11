@@ -59,6 +59,23 @@ else
             .Where(p => !string.IsNullOrWhiteSpace(p))
             .ToList();
 
+    // Split a trailing arrow glyph off the CTA so it can drift on hover independently of the label.
+    private static readonly char[] ArrowGlyphs = ['\u2192', '\u2794', '\u279C', '\u27A4', '\u2B95'];
+
+    private string? CtaArrow
+    {
+        get
+        {
+            var trimmed = Cta.TrimEnd();
+            return trimmed.Length > 0 && ArrowGlyphs.Contains(trimmed[^1])
+                ? trimmed[^1].ToString()
+                : null;
+        }
+    }
+
+    private string CtaLabel =>
+        CtaArrow is null ? Cta : Cta[..Cta.LastIndexOfAny(ArrowGlyphs)].TrimEnd();
+
     private RenderFragment CardBody => __builder =>
     {
         @if (Status == CardStatus.InProgress)
@@ -73,11 +90,11 @@ else
         }
         @if (Level <= 2)
         {
-            <h2 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>
+            <h2 class="card__title"><span class="card__title-text">@Title</span>@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h2>
         }
         else
         {
-            <h3 class="card__title">@Title@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
+            <h3 class="card__title"><span class="card__title-text">@Title</span>@foreach (var pill in AllPills) {<span class="card__pill">@pill</span>}</h3>
         }
         @if (!string.IsNullOrWhiteSpace(Subtitle))
         {
@@ -87,6 +104,6 @@ else
         {
             <p class="card__summary">@Summary</p>
         }
-        <span class="card__cta">@Cta</span>
+        <span class="card__cta">@CtaLabel@if (CtaArrow is not null) {<span class="card__cta-arrow" aria-hidden="true">@CtaArrow</span>}</span>
     };
 }

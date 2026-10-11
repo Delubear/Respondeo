@@ -1,6 +1,7 @@
 .card {
     display: flex;
     flex-direction: column;
+    height: 100%;
     background: var(--parchment);
     border: 1px solid var(--rule);
     border-radius: 6px;
@@ -49,10 +50,22 @@ button.card {
     outline-offset: 2px;
 }
 
+/* Title and its pills share one wrapping row, so a long title or pill drops cleanly to the next
+   line instead of crowding or splitting the heading. */
 .card__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.5rem;
     margin: 0 0 0.5rem;
-    font-size: 1.2rem;
+    font-family: var(--display, inherit);
+    font-size: 1.22rem;
+    font-weight: 600;
     line-height: 1.25;
+}
+
+.card__title-text {
+    flex: 0 1 auto;
 }
 
 .card__subtitle {
@@ -64,7 +77,6 @@ button.card {
 
 .card__pill {
     display: inline-block;
-    margin-left: 0.5rem;
     font-family: var(--body, inherit);
     font-weight: 500;
     font-size: 0.68rem;
@@ -76,7 +88,6 @@ button.card {
     border-radius: 999px;
     padding: 0.14rem 0.68rem;
     white-space: nowrap;
-    vertical-align: middle;
 }
 
 .card__summary {
@@ -88,6 +99,7 @@ button.card {
 }
 
 .card__cta {
+    margin-top: auto;
     font-family: var(--display);
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -96,9 +108,20 @@ button.card {
     transition: letter-spacing 0.16s ease;
 }
 
-/* A gentle widening of the CTA's tracking on hover reads as the card "opening up" to be entered. */
+.card__cta-arrow {
+    display: inline-block;
+    margin-left: 0.35rem;
+    transition: transform 0.16s ease;
+}
+
+/* A gentle widening of the CTA's tracking plus a nudge of the arrow on hover reads as the card
+   "opening up" to be entered. */
 .card:hover .card__cta {
     letter-spacing: 0.16em;
+}
+
+.card:hover .card__cta-arrow {
+    transform: translateX(3px);
 }
 
 .card__check {

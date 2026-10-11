@@ -62,6 +62,20 @@ public class CardTests : TestContext
     }
 
     [Fact]
+    public void Splits_trailing_arrow_into_its_own_span()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Cta, "Read \u2192"));
+
+        // The arrow is isolated so it can animate independently; the label is trimmed and the gap
+        // is restored visually by CSS margin, so the DOM text has no literal space before the arrow.
+        Assert.Equal("Read\u2192", cut.Find("span.card__cta").TextContent);
+        Assert.Equal("\u2192", cut.Find("span.card__cta-arrow").TextContent);
+    }
+
+    [Fact]
     public void Omits_visited_badge_by_default()
     {
         var cut = RenderComponent<Card>(p => p
