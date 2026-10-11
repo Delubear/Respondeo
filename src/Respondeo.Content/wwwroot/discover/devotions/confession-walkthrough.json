@@ -1,0 +1,97 @@
+{
+  "id": "confession-walkthrough",
+  "title": "Walkthrough of Confession",
+  "sortKey": "Confession Walkthrough",
+  "summary": "A step-by-step guide to the Sacrament of Penance, from examining your conscience to making your act of contrition and receiving absolution.",
+  "kind": "confession",
+  "latinAvailable": false,
+  "draft": true,
+  "intro": "In the Sacrament of Penance — also called Confession or Reconciliation — the risen Christ, through the priest, forgives the sins we have committed after Baptism and restores us to the life of grace. This walkthrough carries you through the sacrament from beginning to end: preparing your heart, confessing your sins, receiving absolution, and giving thanks. Advance through each moment, tap the information icon to learn what is happening and why, and read the words you say along the way. The priest's questions and counsel will vary; these steps show the ordinary form the sacrament takes.",
+  "sequence": [
+    {
+      "kind": "section",
+      "title": "Before You Go",
+      "explanation": "Confession begins before you enter the confessional. In the quiet beforehand we ask the Holy Spirit to light up our conscience, then prayerfully look back over our lives since our last confession to recall our sins honestly and without excuse."
+    },
+    {
+      "kind": "prayer",
+      "title": "Call on the Holy Spirit",
+      "text": "Come, Holy Spirit, enlighten my mind that I may know my sins, move my heart that I may be truly sorry for them, and give me the grace to confess them humbly and sincerely.",
+      "role": "all",
+      "explanation": "We cannot see our sins clearly by our own light alone. Before examining our conscience we ask the Holy Spirit — who convicts the world of sin and leads us into all truth — to show us where we have fallen and to soften our hearts with genuine sorrow."
+    },
+    {
+      "kind": "prayer",
+      "title": "Examine Your Conscience",
+      "text": "(In silence, review your thoughts, words, actions, and omissions since your last confession. The Ten Commandments and the precepts of the Church are a trustworthy mirror. Resolve to confess all mortal sins in kind and number, and to name your venial sins as well.)",
+      "role": "all",
+      "explanation": "The examination of conscience is an honest look at our lives measured against God's law and the example of Christ. The Ten Commandments, the Beatitudes, and the two great commandments of love of God and neighbor are a reliable guide. We must confess every mortal sin we can remember, telling what kind it was and how many times; venial sins need not be confessed but it is good to do so. Honesty here is itself an act of humility and trust in God's mercy."
+    },
+    {
+      "kind": "section",
+      "title": "In the Confessional",
+      "explanation": "Entering the confessional, you may kneel behind the screen or sit face to face, as you prefer. The priest acts in the person of Christ and is bound by an absolute seal of secrecy. You have nothing to fear: you are meeting the Good Shepherd who leaves the ninety-nine to seek you out."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Sign of the Cross",
+      "prayerId": "sign-of-the-cross",
+      "role": "all",
+      "explanation": "As at the beginning of every sacred act, priest and penitent begin by signing themselves with the cross, placing the whole encounter under the mercy of the Father, Son, and Holy Spirit. The priest may then welcome you and invite you to trust in God."
+    },
+    {
+      "kind": "prayer",
+      "title": "State Your Confession",
+      "text": "Bless me, Father, for I have sinned. It has been [how long] since my last confession.",
+      "role": "all",
+      "explanation": "You open your confession by acknowledging that you have sinned and saying roughly how long it has been since you last confessed. You may also mention your state in life (for example, married, single, or a religious) if it helps the priest to counsel you. Then confess your sins simply and clearly, beginning with anything most serious."
+    },
+    {
+      "kind": "prayer",
+      "title": "Confess Your Sins",
+      "text": "(Tell your sins honestly and humbly. Confess all mortal sins in kind and number; you may also name your venial sins. \r\n\r\nWhen you have finished, you might say: 'For these and all the sins of my life, I am sorry.')",
+      "role": "all",
+      "explanation": "This is the heart of your part in the sacrament: naming your sins aloud to Christ through the priest. Speak plainly, without excusing yourself or accusing others. If you have forgotten how to confess or are unsure, simply ask the priest for help — he is there to assist you, not to judge you. When you have said everything, signal that you are finished."
+    },
+    {
+      "kind": "prayer",
+      "title": "Listen to the Priest",
+      "text": "(The priest may offer a few words of counsel and encouragement. He then gives you a penance — a prayer or act to carry out after confession.)",
+      "role": "priest",
+      "explanation": "Standing in the place of Christ the physician of souls, the priest may give brief advice to help you grow in holiness and avoid sin. He then assigns a penance — often a prayer to say or a good work to do — which expresses your sorrow and begins to repair the harm sin has done. Accept it with humility and resolve to complete it."
+    },
+    {
+      "kind": "prayer",
+      "title": "The Act of Contrition",
+      "prayerId": "act-of-contrition",
+      "role": "all",
+      "explanation": "At the priest's invitation you express your sorrow for sin and your resolve to amend your life. Contrition — true sorrow for having offended God, together with the firm purpose not to sin again — is the most important act of the penitent. You may use the traditional Act of Contrition, another approved prayer, or your own words of sorrow."
+    },
+    {
+      "kind": "prayer",
+      "title": "Absolution",
+      "text": "Amen.",
+      "role": "people",
+      "explanation": "Extending his hand, the priest pronounces the words of absolution, ending: '...and I absolve you from your sins in the name of the Father, and of the Son, and of the Holy Spirit.' As he does, make the Sign of the Cross. At that moment Christ himself, through the Church, truly forgives your sins and restores you to grace. You answer 'Amen' — it is done. \r\n\r\nMany priests close with, 'Give thanks to the Lord, for he is good,' to which you reply, 'His mercy endures for ever.'"
+    },
+    {
+      "kind": "section",
+      "title": "After Confession",
+      "explanation": "Leaving the confessional forgiven and renewed, we complete the sacrament by carrying out the penance we were given and by thanking God for his mercy. A soul in the state of grace is the most beautiful thing in creation — guard it, and return often."
+    },
+    {
+      "kind": "prayer",
+      "title": "Perform Your Penance",
+      "text": "(As soon as you are able, pray or carry out the penance the priest assigned. If it was a prayer, you may wish to make it now.)",
+      "role": "all",
+      "explanation": "Completing the penance given by the priest is part of the sacrament. It is a small sharing in Christ's own satisfaction for sin and helps repair the wounds our faults have left in us and in others. Do it promptly, with gratitude, while the grace of the sacrament is fresh."
+    },
+    {
+      "kind": "prayer",
+      "title": "Give Thanks",
+      "text": "Thank you, Lord Jesus, for the gift of your mercy. Give me the grace to sin no more, to love you above all things, and to begin again. Amen.",
+      "role": "all",
+      "explanation": "Confession ends where it began — in prayer. Pause to thank God for washing you clean and raising you up, and ask for the strength to live your new beginning. Resolve to return to this fountain of mercy regularly, for the sacrament not only forgives sin but strengthens us against it."
+    }
+  ]
+}
