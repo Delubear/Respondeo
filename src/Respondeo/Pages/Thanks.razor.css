@@ -33,6 +33,17 @@
     line-height: 1.6;
 }
 
+/* Match the quotation styling used for Markdown quotes elsewhere on the site
+   (the shared .content-body blockquote rule) so it reads identically. */
+.content-article blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
 /* ---------- Special thanks to the Holy Spirit ---------- */
 /* Gold-forward so it reads as "divine light"; the site's red accent is kept deep in the
    gradient and never placed directly against the gold, so the two never clash. */
