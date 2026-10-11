@@ -11,7 +11,7 @@
         linear-gradient(var(--parchment), var(--parchment)) padding-box,
         linear-gradient(135deg, var(--gold), var(--gold-bright) 50%, var(--gold)) border-box;
     border: 1px solid transparent;
-    border-radius: 3px;
+    border-radius: var(--radius-sm);
     color: var(--ink);
     text-decoration: none;
     box-shadow: 0 8px 26px var(--shadow);
@@ -37,7 +37,7 @@
 }
 
 .stage-card:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
     outline-offset: 4px;
 }
 
