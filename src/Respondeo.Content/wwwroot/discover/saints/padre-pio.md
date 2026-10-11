@@ -6,7 +6,7 @@ summary: "The Capuchin friar and priest marked by the stigmata, famed as a confe
 era: modern
 region: europe
 patronages: [Civil defense volunteers, Adolescents]
-statesOfLife: [deacon, priest, religious]
+statesOfLife: [priest, religious]
 sex: male
 religiousOrders: [capuchin]
 canonizations: [canonized]

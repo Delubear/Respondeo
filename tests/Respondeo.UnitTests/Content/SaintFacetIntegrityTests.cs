@@ -184,4 +184,42 @@ public class SaintFacetIntegrityTests
 
         Assert.True(unpopulated.Count == 0, $"saints missing required multi-valued facets: {string.Join("; ", unpopulated)}");
     }
+
+    // The holy-order ranks within the statesOfLife vocabulary, in ascending order. A saint lives in
+    // exactly one of these at most (the terminal rank); the remaining statesOfLife slugs (e.g.
+    // "religious", "lay") describe consecrated life and are orthogonal.
+    private static readonly HashSet<string> HolyOrderSlugs =
+        new(["deacon", "priest", "bishop", "pope"], StringComparer.OrdinalIgnoreCase);
+
+    [Fact]
+    public void Every_saint_lists_at_most_one_holy_order()
+    {
+        var saintsDir = SaintsDirectory();
+
+        // Guard against the vocabulary drifting: every slug we treat as a holy order must still
+        // exist in facets.json, so this test keeps enforcing the right set.
+        var facets = ReadFacets(saintsDir);
+        foreach (var order in HolyOrderSlugs)
+        {
+            Assert.True(facets.StatesOfLife.ContainsKey(order), $"facets.json is missing the holy-order slug '{order}'");
+        }
+
+        var offenders = new List<string>();
+
+        foreach (var file in Directory.EnumerateFiles(saintsDir, "*.md", SearchOption.TopDirectoryOnly))
+        {
+            var name = Path.GetFileName(file);
+            var orders = ReadFacetSlugs(file).StatesOfLife.Where(HolyOrderSlugs.Contains).ToList();
+
+            if (orders.Count > 1)
+            {
+                offenders.Add($"{name}: [{string.Join(", ", orders)}]");
+            }
+        }
+
+        Assert.True(
+            offenders.Count == 0,
+            "statesOfLife must list only the terminal (highest) holy order, not the orders passed through. " +
+            $"Offenders: {string.Join("; ", offenders)}");
+    }
 }

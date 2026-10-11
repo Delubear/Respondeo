@@ -6,7 +6,7 @@ summary: "The Spanish priest who founded Opus Dei, preaching the universal call 
 era: modern
 region: europe
 patronages: [Opus Dei]
-statesOfLife: [deacon, priest]
+statesOfLife: [priest]
 designations: [founder]
 sex: male
 canonizations: [canonized]

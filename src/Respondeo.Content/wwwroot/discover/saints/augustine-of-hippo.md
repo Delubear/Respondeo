@@ -6,7 +6,7 @@ summary: "The restless seeker turned bishop whose Confessions and City of God sh
 era: early-church
 region: africa
 patronages: [Theologians & scholars, Converts]
-statesOfLife: [deacon, priest, bishop, religious]
+statesOfLife: [bishop, religious]
 designations: [doctor-of-the-church]
 sex: male
 # TODO: revisit the `religious` state of life once we have more saints and a settled

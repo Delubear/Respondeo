@@ -6,7 +6,7 @@ summary: "The Dominican friar and Doctor of the Church whose Summa Theologiae re
 era: medieval
 region: europe
 patronages: [Students, Universities, Theologians]
-statesOfLife: [deacon, priest, religious]
+statesOfLife: [priest, religious]
 designations: [doctor-of-the-church]
 sex: male
 religiousOrders: [dominican]

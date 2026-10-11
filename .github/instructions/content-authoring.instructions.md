@@ -160,20 +160,22 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
   - `religiousOrders` (list): `augustinian`, `dominican`, `franciscan`, `capuchin`, `carmelite`
   - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`
 - **`statesOfLife` and `canonizations` are multi-valued and required** (at least one each) — enforced
-  by test. A saint may hold several (e.g. `[priest, bishop]`, `[canonized]`).
+  by test. A saint may hold several (e.g. `[bishop, religious]`, `[canonized]`).
 - **`designations`, `sex`, and `religiousOrders` are optional.** Add each that genuinely applies.
 - **List every state of life that genuinely applies.** The slugs are independent descriptors, not a
-  ranked ladder, and the browse filter matches any saint whose list *contains* a selected state, so
-  being thorough only makes a saint easier to find (never excludes them).
-  - **Holy orders are cumulative in reality, so include each order the saint holds** — the ladder is
-    `deacon` → `priest` → `bishop` → `pope`. A priest is also a deacon; a bishop is also a priest
-    and deacon; a pope is also a bishop, priest, and deacon. Use `[deacon, priest, bishop]` for a
-    bishop and `[deacon, priest, bishop, pope]` for a pope, so each surfaces under every order's
-    filter. A saint ordained only to the diaconate (e.g. St. Francis of Assisi) is just `[deacon]`.
+  ranked ladder, and the browse filter matches any saint whose list *contains* a selected state.
+  - **Holy orders are recorded as the terminal (highest) rank only — list at most one of** `deacon`,
+    `priest`, `bishop`, `pope` (enforced by test). Store the single highest order the saint actually
+    attained, *not* the lower orders passed through, so a bishop is `[bishop]` (never
+    `[deacon, priest, bishop]`) and a pope is `[pope]`. This keeps each order's filter exact — e.g.
+    filtering `deacon` returns only saints whose highest order was the diaconate (St. Francis of
+    Assisi, `[deacon, religious]`), not every priest and bishop. A saint ordained only to the
+    diaconate is just `[deacon]`.
   - **`religious`** means a vowed member of a religious order (Franciscan, Carmelite, etc.), as
     opposed to diocesan/secular clergy. Add it whenever it applies, and omit it for secular clergy.
-    So a friar who is also a bishop is `[priest, bishop, religious]`; a diocesan bishop is
-    `[priest, bishop]`; a non-ordained friar is `[religious]`.
+    So a friar-bishop is `[bishop, religious]`; a diocesan bishop is `[bishop]`; a secular priest is
+    `[priest]`; a non-ordained friar is `[religious]`. Do not tag `lay` for ordained clergy; reserve
+    `lay` for non-ordained, non-religious seculars (e.g. a married layperson).
   - **`designations`** carry honorific/role descriptors that are not states of life: `apostle`,
     `evangelist`, `prophet`, `martyr`, `virgin`, `widow`, `founder` (of a religious order, movement,
     or institute), and `doctor-of-the-church`. They are independent — add each that applies (e.g.

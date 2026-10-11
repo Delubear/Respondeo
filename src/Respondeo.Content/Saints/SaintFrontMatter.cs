@@ -22,7 +22,14 @@ internal sealed class SaintFrontMatter : ContentFrontMatterBase
     [YamlMember(Alias = "patronages")]
     public List<string> Patronages { get; set; } = [];
 
-    /// <summary>The state-of-life slugs (e.g. ["religious", "priest"]).</summary>
+    /// <summary>
+    /// The state-of-life slugs (e.g. ["bishop", "religious"]).
+    /// Holy orders are recorded as the TERMINAL rank only (the highest order actually attained):
+    /// list at most one of deacon | priest | bishop | pope, never the lower orders passed through.
+    /// So a bishop is ["bishop"], not ["deacon", "priest", "bishop"]. Add "religious" for those in
+    /// consecrated life; a secular/diocesan cleric just carries the order (no "lay"); "lay" is only
+    /// for non-ordained, non-religious seculars.
+    /// </summary>
     [YamlMember(Alias = "statesOfLife")]
     public List<string> StatesOfLife { get; set; } = [];
 

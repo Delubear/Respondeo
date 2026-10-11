@@ -6,7 +6,7 @@ summary: "The Spanish priest who founded the Order of Preachers (Dominicans) to 
 era: medieval
 region: europe
 patronages: [Astronomers, The Dominican Order]
-statesOfLife: [deacon, priest, religious]
+statesOfLife: [priest, religious]
 designations: [founder]
 sex: male
 religiousOrders: [dominican]
