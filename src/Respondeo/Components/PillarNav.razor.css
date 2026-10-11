@@ -32,7 +32,7 @@
     white-space: nowrap;
     border-radius: 999px;
     border: 1px solid transparent;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    transition: color var(--dur-2) var(--ease-page), background-color var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page);
 }
 
 .pillarnav__link:hover {

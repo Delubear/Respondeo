@@ -185,7 +185,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     font-size: 0.8rem;
-    transition: top 0.15s ease;
+    transition: top var(--dur-2) var(--ease-page);
 }
 
 .skip-link:focus {
@@ -430,7 +430,7 @@ summary.accordion__trigger::-webkit-details-marker {
     font-family: var(--display);
     font-size: 1.15rem;
     line-height: 1.3;
-    transition: color 0.15s ease;
+    transition: color var(--dur-2) var(--ease-page);
 }
 
 .accordion__trigger:hover {
@@ -979,7 +979,7 @@ input[type="search"]::-webkit-search-cancel-button {
     object-fit: cover;
     display: block;
     opacity: 0.85;
-    transition: opacity 0.15s ease;
+    transition: opacity var(--dur-2) var(--ease-page);
 }
 
 .video-facade__play:hover .video-facade__thumb,

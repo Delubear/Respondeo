@@ -19,7 +19,7 @@
     background: var(--parchment);
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page);
 }
 
 .summa__match-link:hover,

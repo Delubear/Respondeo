@@ -19,7 +19,7 @@
     color: var(--float-btn-fg);
     cursor: pointer;
     box-shadow: 0 0.35rem 0.9rem var(--shadow);
-    transition: bottom 0.15s ease, background 0.12s ease, color 0.12s ease;
+    transition: bottom var(--dur-2) var(--ease-page), background var(--dur-1) var(--ease-page), color var(--dur-1) var(--ease-page);
     /* Fade and slide up on first appearance. The orbs live in MainLayout and are rendered by route,
        so an orb persists as one element across navigations within its area (no re-animation); this
        keyframe only runs when the orb genuinely first mounts (entering its area). The bottom
@@ -80,7 +80,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     .float-circle {
-        transition: background 0.12s ease, color 0.12s ease;
+        transition: background var(--dur-1) var(--ease-page), color var(--dur-1) var(--ease-page);
         animation: none;
     }
 }

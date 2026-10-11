@@ -14,7 +14,7 @@
     color: var(--masthead-fg-soft);
     cursor: pointer;
     line-height: 1;
-    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    transition: color var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page), background var(--dur-2) var(--ease-page);
 }
 
 .theme-toggle:hover {

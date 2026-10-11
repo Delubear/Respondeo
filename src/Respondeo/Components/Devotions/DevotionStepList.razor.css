@@ -235,7 +235,7 @@
     border-radius: 0.5rem;
     background: var(--paper);
     overflow: hidden;
-    transition: border-color 0.15s ease, opacity 0.15s ease;
+    transition: border-color var(--dur-2) var(--ease-page), opacity var(--dur-2) var(--ease-page);
 }
 
 .devotion__prayer-row.is-current {
@@ -259,7 +259,7 @@
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background var(--dur-2) var(--ease-page);
 }
 
 .devotion__prayer-main:disabled {
@@ -312,7 +312,7 @@
     background: transparent;
     color: var(--ink-soft);
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition: background var(--dur-2) var(--ease-page), color var(--dur-2) var(--ease-page);
 }
 
 .devotion__prayer-book:hover,

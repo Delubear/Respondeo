@@ -75,7 +75,7 @@
     text-align: left;
     font-family: var(--display);
     background: var(--paper);
-    transition: background 0.15s ease;
+    transition: background var(--dur-2) var(--ease-page);
 }
 
 .summa__treatise-summary:hover {
@@ -93,7 +93,7 @@
     border-right: 2px solid var(--ink-soft);
     border-bottom: 2px solid var(--ink-soft);
     transform: rotate(-45deg);
-    transition: transform 0.15s ease;
+    transition: transform var(--dur-2) var(--ease-page);
 }
 
 .summa__treatise[open] > .summa__treatise-summary .summa__treatise-marker {

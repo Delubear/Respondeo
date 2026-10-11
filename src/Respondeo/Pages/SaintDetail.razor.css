@@ -50,10 +50,10 @@
     gap: 0.25rem;
     margin-left: 0.5rem;
     padding: 0.08rem 0.5rem;
-    border: 1px solid var(--gold, #c8a24a);
+    border: 1px solid var(--gold-event, #c8a24a);
     border-radius: 999px;
     background: rgba(200, 162, 74, 0.12);
-    color: var(--gold, #c8a24a);
+    color: var(--gold-event, #c8a24a);
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.06em;

@@ -48,7 +48,7 @@
     text-decoration: none;
     cursor: pointer;
     box-shadow: 0 1px 0 var(--shadow);
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    transition: transform var(--dur-1) var(--ease-page), box-shadow var(--dur-1) var(--ease-page), background var(--dur-1) var(--ease-page);
 }
 
 .feedback__choice:hover {

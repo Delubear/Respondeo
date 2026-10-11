@@ -145,8 +145,8 @@ button.card {
    within the card, gently breathing brighter and dimmer, so it feels celebratory without shouting.
    The glow is derived from --gold so it tracks the active theme. */
 .card--feast {
-    border-color: var(--gold);
-    box-shadow: 0 1px 0 var(--shadow), 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent);
+    border-color: var(--gold-event);
+    box-shadow: 0 1px 0 var(--shadow), 0 0 0 1px color-mix(in srgb, var(--gold-event) 35%, transparent);
     overflow: hidden;
 }
 
@@ -159,8 +159,8 @@ button.card {
     background: radial-gradient(
         130% 110% at 50% 50%,
         transparent 45%,
-        color-mix(in srgb, var(--gold) 45%, transparent) 72%,
-        color-mix(in srgb, var(--gold) 70%, transparent) 100%);
+        color-mix(in srgb, var(--gold-event) 45%, transparent) 72%,
+        color-mix(in srgb, var(--gold-event) 70%, transparent) 100%);
     opacity: 0.4;
 }
 
