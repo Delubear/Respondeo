@@ -70,9 +70,24 @@ export function jumpToContent() {
     // breadcrumb, leaving a gap that only closes once the reader scrolls far enough for the sticky
     // breadcrumb to pin. Prefer the breadcrumb's own offset so it starts flush at the top; fall
     // back to .content (then the page top) on surfaces that have no breadcrumb.
+    //
+    // We must use the layout offset (offsetTop walked up the offsetParent chain), NOT
+    // getBoundingClientRect(): the breadcrumb is sticky, so once the reader has scrolled past it its
+    // rect top reads 0 (it's pinned to the viewport top). Computing target as rect.top + pageYOffset
+    // would then resolve to the CURRENT scroll position - so navigating from the bottom of a long
+    // article (where the "Next Stage" card lives) would leave the reader stranded at the bottom.
+    // offsetTop reflects the element's natural-flow position and is immune to the sticky pin.
+    const documentTopOf = (el) => {
+        let top = 0;
+        for (let node = el; node; node = node.offsetParent) {
+            top += node.offsetTop;
+        }
+        return top;
+    };
+
     const scrollToContent = () => {
         const target = document.querySelector('.breadcrumb') || document.querySelector('.content');
-        const top = target ? target.getBoundingClientRect().top + window.pageYOffset : 0;
+        const top = target ? documentTopOf(target) : 0;
         window.scrollTo(0, top);
     };
 
