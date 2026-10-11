@@ -11,7 +11,7 @@
         linear-gradient(var(--parchment), var(--parchment)) padding-box,
         linear-gradient(135deg, var(--gold-event), var(--gold-bright) 50%, var(--gold-event)) border-box;
     border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     color: var(--ink);
     text-decoration: none;
     box-shadow: 0 8px 26px var(--shadow);

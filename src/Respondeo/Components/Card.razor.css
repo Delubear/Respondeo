@@ -3,7 +3,7 @@
     flex-direction: column;
     height: 100%;
     background: var(--parchment);
-    border: 1px solid var(--rule);
+    border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--rule));
     border-radius: var(--radius);
     padding: 1.3rem 1.4rem;
     color: var(--ink);
