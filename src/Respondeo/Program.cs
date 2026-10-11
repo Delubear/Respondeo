@@ -81,6 +81,11 @@ builder.Services.AddScoped<BrowseState>();
 builder.Services.AddScoped<Func<DateOnly>>(_ => () => DateOnly.FromDateTime(DateTime.Now));
 builder.Services.AddScoped<IFeastOfTheDay, FeastOfTheDay>();
 
+// Watches for the calendar day rolling over while a long-lived tab stays open, so the date-driven
+// surfaces (liturgical orb, masthead portrait, saint of the day) refresh in place instead of showing
+// yesterday. Everything is client-side, so without this a tab left open never re-reads "today".
+builder.Services.AddScoped<IDayWatcher, DayWatcher>();
+
 // Picks the masthead portrait of Aquinas proper to the day (Christmas hat, Ash Wednesday ashes, or
 // his usual likeness). The selection logic is a pure service so it stays out of the layout and is unit-testable.
 builder.Services.AddScoped<ISeasonalPortrait, SeasonalPortrait>();

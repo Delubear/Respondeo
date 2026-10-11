@@ -19,6 +19,16 @@ internal static class LiturgicalOrbStubs
         context.Services.AddSingleton<ILiturgicalCalendar>(new RomanCalendar());
         context.Services.AddSingleton<Func<DateOnly>>(() => new DateOnly(2025, 1, 1));
 
+        // The orb (and the other date-driven surfaces it shares a host with) subscribe to day rollover.
+        // A no-op stub satisfies the dependency without a real timer firing during tests.
+        if (!context.Services.Any(s => s.ServiceType == typeof(IDayWatcher)))
+        {
+            var dayWatcher = Substitute.For<IDayWatcher>();
+            dayWatcher.Today.Returns(new DateOnly(2025, 1, 1));
+            dayWatcher.StartAsync().Returns(Task.CompletedTask);
+            context.Services.AddSingleton(dayWatcher);
+        }
+
         if (!context.Services.Any(s => s.ServiceType == typeof(ISaintService)))
         {
             var saints = Substitute.For<ISaintService>();

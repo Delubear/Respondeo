@@ -1,6 +1,8 @@
 @page "/not-found"
 @layout MainLayout
 @inject IFeastOfTheDay FeastOfTheDay
+@inject Respondeo.Services.IDayWatcher DayWatcher
+@implements IDisposable
 
 <PageTitle>Not Found &mdash; Respondeo</PageTitle>
 
@@ -53,6 +55,20 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DayWatcher.DayChanged += OnDayChanged;
         _feast = await FeastOfTheDay.GetTodayAsync();
     }
+
+    // The watched day rolled over while the page stayed open; re-resolve today's feast so the
+    // "on this day" highlight reflects the new day.
+    private async void OnDayChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            _feast = await FeastOfTheDay.GetTodayAsync();
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 }

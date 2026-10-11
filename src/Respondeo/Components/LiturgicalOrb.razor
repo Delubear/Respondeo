@@ -6,6 +6,8 @@
 @inject ILiturgicalCalendar Calendar
 @inject ISaintService Saints
 @inject Func<DateOnly> Today
+@inject Respondeo.Services.IDayWatcher DayWatcher
+@implements IDisposable
 
 <FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
                AriaLabel="@($"Today in the Church: {SeasonName}")" Tooltip="Today in the Church"
@@ -126,14 +128,23 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DayWatcher.DayChanged += OnDayChanged;
+        await LoadDayAsync();
+    }
+
+    // Resolves today's liturgical day, chooses the ferial optional memorial (if any), and loads the
+    // linked saint profiles. Extracted so the day-rollover handler can rebuild the same state when a
+    // long-open tab crosses midnight.
+    private async Task LoadDayAsync()
+    {
         _day = Calendar.ForDate(Today());
 
         // On a ferial day with optional memorials, surface a single one. When several are available, pick at random so the dialog rotates through them rather than always favoring the first.
-        if (_day.OptionalMemorials.Count > 0)
-        {
-            _optionalMemorial = _day.OptionalMemorials[Random.Shared.Next(_day.OptionalMemorials.Count)];
-        }
+        _optionalMemorial = _day.OptionalMemorials.Count > 0
+            ? _day.OptionalMemorials[Random.Shared.Next(_day.OptionalMemorials.Count)]
+            : null;
 
+        _profiles.Clear();
         foreach (var id in LinkedSlugs())
         {
             if (await Saints.GetByIdAsync(id) is { } record)
@@ -142,6 +153,19 @@
             }
         }
     }
+
+    // The watched day rolled over (e.g. the tab sat open past midnight); rebuild today's day on the
+    // renderer thread so the orb and its dialog reflect the new date without a reload.
+    private async void OnDayChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            await LoadDayAsync();
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 
     private IEnumerable<string> LinkedSlugs()
     {

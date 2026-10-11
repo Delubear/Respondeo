@@ -4,6 +4,7 @@
 @inject AccessibilityInterop Accessibility
 @inject Respondeo.Services.FeatureFlags Features
 @inject Respondeo.Services.ISeasonalPortrait Portrait
+@inject Respondeo.Services.IDayWatcher DayWatcher
 
 <div class="page">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -84,7 +85,23 @@
     {
         UpdateGuides();
         Nav.LocationChanged += OnLocationChanged;
+        DayWatcher.DayChanged += OnDayChanged;
     }
+
+    // Start the day watcher once the renderer is live (JS interop is unavailable during OnInitialized).
+    // It listens for the tab becoming visible again and re-checks the date, so a tab left open overnight
+    // refreshes the moment the user returns to it.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await DayWatcher.StartAsync();
+        }
+    }
+
+    // The watched day rolled over while the tab sat open; re-render so the masthead's seasonal portrait
+    // (which reads the date live) picks up the new day's image.
+    private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
 
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
@@ -110,6 +127,10 @@
         }
     }
 
-    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+        DayWatcher.DayChanged -= OnDayChanged;
+    }
 }
 

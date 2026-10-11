@@ -3,6 +3,8 @@
 @inject IBreadcrumbTrail Trail
 @inject IFeastOfTheDay FeastOfTheDay
 @inject NavigationManager Nav
+@inject Respondeo.Services.IDayWatcher DayWatcher
+@implements IDisposable
 
 <PageTitle>@(_saint is null ? "Saint" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
 
@@ -147,4 +149,12 @@ else
         _saint = await Saints.GetByIdAsync(Id);
         _loading = false;
     }
+
+    protected override void OnInitialized() => DayWatcher.DayChanged += OnDayChanged;
+
+    // The watched day rolled over while the profile stayed open; re-render so the "celebrated today"
+    // badge (which reads the date live via IsToday) appears or clears for the new day.
+    private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
+
+    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 }

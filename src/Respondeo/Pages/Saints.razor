@@ -5,6 +5,8 @@
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
 @inject IFeastOfTheDay FeastOfTheDay
+@inject Respondeo.Services.IDayWatcher DayWatcher
+@implements IDisposable
 
 <PageTitle>Catholic Saints &mdash; Respondeo</PageTitle>
 
@@ -98,6 +100,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
+        DayWatcher.DayChanged += OnDayChanged;
         _browse = Browse.Section("discover/saints", () => BrowseJs.ClearAsync("saints"));
         _selectedEras = new HashSet<string>(_browse.GetFilter("era"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
@@ -132,6 +135,19 @@
             await BrowseJs.RestoreScrollAsync("saints");
         }
     }
+
+    // The watched day rolled over while the gallery stayed open; re-resolve today's feast ids so the
+    // golden shimmer moves to the saints celebrated on the new day.
+    private async void OnDayChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            _feastIds = await FeastOfTheDay.GetTodayFeastIdsAsync();
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 
     private void OnSearchChanged(string value) => _browse.Query = value;
 
