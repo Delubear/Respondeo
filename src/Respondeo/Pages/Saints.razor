@@ -54,8 +54,8 @@
                               Pills="@Browser.Pills(s)"
                               Summary="@Browser.CardSummary(s, _facets)"
                               Cta="Read &rarr;"
-                              Shimmer="@_feastIds.Contains(s.Id)"
-                              InProgress="@s.IsUnvetted"
+                              Status="@(s.IsUnvetted ? CardStatus.InProgress : CardStatus.None)"
+                              Feast="@_feastIds.Contains(s.Id)"
                               Level="2" />
                     }
                 </ChildContent>

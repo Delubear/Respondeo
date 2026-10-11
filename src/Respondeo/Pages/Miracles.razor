@@ -44,7 +44,7 @@
                 <ChildContent>
                     @foreach (var m in Filtered)
                     {
-                        <Card Href="@ContentRoutes.MiracleHref(m.Id)" Title="@m.Title" Pills="@Browser.Pills(m, _facets)" Summary="@Browser.CardSummary(m, _facets)" Cta="Read &rarr;" Level="2" InProgress="@m.IsUnvetted" />
+                        <Card Href="@ContentRoutes.MiracleHref(m.Id)" Title="@m.Title" Pills="@Browser.Pills(m, _facets)" Summary="@Browser.CardSummary(m, _facets)" Cta="Read &rarr;" Level="2" Status="@(m.IsUnvetted ? CardStatus.InProgress : CardStatus.None)" />
                     }
                 </ChildContent>
             </FilterResults>

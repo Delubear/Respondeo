@@ -49,7 +49,7 @@
                 <ChildContent>
                     @foreach (var d in Filtered)
                     {
-                        <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" InProgress="@d.Draft" />
+                        <Card Href="@ContentRoutes.DevotionHref(d.Id)" Title="@d.Title" Pills="@KindPills(d)" Summary="@d.Summary" Cta="Begin &rarr;" Level="2" Status="@(d.Draft ? CardStatus.InProgress : CardStatus.None)" />
                     }
                 </ChildContent>
             </FilterResults>
@@ -123,7 +123,8 @@
     private IReadOnlyList<DevotionSummary> Filtered =>
         _devotions is null ? [] : Browser.Filter(_devotions, _query, _selectedKinds, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
 
-    // The card's meta pills: the kind tag, plus an "In progress" flag for drafts still being vetted.
+    // The card's meta pills: just the kind tag. The draft/unvetted state is shown by the card's
+    // "In progress" ribbon (via Status), so it is deliberately not duplicated as a pill here.
     private IReadOnlyList<string> KindPills(DevotionSummary d)
     {
         var pills = new List<string>();
@@ -131,11 +132,6 @@
         if (!string.IsNullOrWhiteSpace(kind))
         {
             pills.Add(kind);
-        }
-
-        if (d.Draft)
-        {
-            pills.Add("In progress");
         }
 
         return pills;

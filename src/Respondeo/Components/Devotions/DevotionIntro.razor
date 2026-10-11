@@ -20,7 +20,7 @@
     {
         @* A previous visit was left un-finished; offer to pick up where they left off. Beginning any set below already starts fresh, so a single Resume action is all that's needed. *@
         <div class="devotion__resume" role="status">
-            <Card Title="Resume where you left off" Pill="In progress" Summary="@ResumeText" Cta="Resume &rarr;" Level="2" OnClick="OnResume" />
+            <Card Title="Resume where you left off" Pills="@(new[] { "In progress" })" Summary="@ResumeText" Cta="Resume &rarr;" Level="2" OnClick="OnResume" />
         </div>
     }
 
@@ -41,7 +41,7 @@
             <div class="devotion__set-options">
                 @foreach (var set in Devotion.MysterySets)
                 {
-                    <Card Title="@set.Name" Pill="@set.When" Summary="@set.Summary" Cta="Begin praying &rarr;" Level="3" OnClick="() => OnBegin.InvokeAsync(set.Id)" />
+                    <Card Title="@set.Name" Pills="@(new[] { set.When })" Summary="@set.Summary" Cta="Begin praying &rarr;" Level="3" OnClick="() => OnBegin.InvokeAsync(set.Id)" />
                 }
             </div>
         </div>

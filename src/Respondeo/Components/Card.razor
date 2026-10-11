@@ -26,9 +26,6 @@ else
 
     [Parameter] public string? Summary { get; set; }
 
-    /// <summary>Optional short meta tag (e.g. a category or kind) shown beside the title.</summary>
-    [Parameter] public string? Pill { get; set; }
-
     /// <summary>Optional set of short meta tags, each rendered as its own pill.</summary>
     [Parameter] public IReadOnlyList<string>? Pills { get; set; }
 
@@ -38,30 +35,37 @@ else
     /// <summary>Heading level for the title (2 or 3) so cards nest correctly under their section.</summary>
     [Parameter] public int Level { get; set; } = 2;
 
-    /// <summary>When true, the card renders a faded "visited" treatment with a checkmark badge.</summary>
-    [Parameter] public bool Visited { get; set; }
+    /// <summary>
+    /// The card's corner badge, which is mutually exclusive: a card shows at most one of a visited
+    /// checkmark or an "in progress" ribbon, since both occupy the same top-right corner.
+    /// </summary>
+    [Parameter] public CardStatus Status { get; set; } = CardStatus.None;
 
-    /// <summary>When true, the card renders a subtle golden shimmer (e.g. a saint's feast day is today).</summary>
-    [Parameter] public bool Shimmer { get; set; }
+    /// <summary>
+    /// When true, the card renders a celebratory golden glow (e.g. a saint whose feast is today).
+    /// This is a full-card treatment, not a corner badge, so it is orthogonal to <see cref="Status"/>
+    /// and may be shown alongside a visited or in-progress card.
+    /// </summary>
+    [Parameter] public bool Feast { get; set; }
 
-    /// <summary>When true, the card shows an angled "in progress" ribbon in the top-right corner (e.g. unvetted content).</summary>
-    [Parameter] public bool InProgress { get; set; }
-
-    private string CssClass => string.Concat("card", Visited ? " card--visited" : "", Shimmer ? " card--feast" : "", InProgress ? " card--wip" : "");
+    private string CssClass => string.Concat(
+        "card",
+        Status == CardStatus.Visited ? " card--visited" : "",
+        Status == CardStatus.InProgress ? " card--wip" : "",
+        Feast ? " card--feast" : "");
 
     private IReadOnlyList<string> AllPills =>
         (Pills ?? [])
-            .Concat(string.IsNullOrWhiteSpace(Pill) ? [] : new[] { Pill! })
             .Where(p => !string.IsNullOrWhiteSpace(p))
             .ToList();
 
     private RenderFragment CardBody => __builder =>
     {
-        @if (InProgress)
+        @if (Status == CardStatus.InProgress)
         {
             <span class="card__ribbon" aria-label="Work in progress">In progress</span>
         }
-        @if (Visited)
+        @if (Status == CardStatus.Visited)
         {
             <span class="card__check" aria-hidden="true">
                 <svg viewBox="0 0 16 16" width="12" height="12" focusable="false"><path d="M13.5 4.5 6.5 11.5 2.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>

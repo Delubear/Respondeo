@@ -78,9 +78,62 @@ public class CardTests : TestContext
         var cut = RenderComponent<Card>(p => p
             .Add(c => c.Href, "/node/home")
             .Add(c => c.Title, "Home")
-            .Add(c => c.Visited, true));
+            .Add(c => c.Status, CardStatus.Visited));
 
         Assert.NotNull(cut.Find("span.card__check"));
         Assert.NotNull(cut.Find("a.card--visited"));
+    }
+
+    [Fact]
+    public void Renders_in_progress_ribbon_when_in_progress()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Status, CardStatus.InProgress));
+
+        Assert.NotNull(cut.Find("span.card__ribbon"));
+        Assert.NotNull(cut.Find("a.card--wip"));
+    }
+
+    [Fact]
+    public void In_progress_status_does_not_also_render_visited_check()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Status, CardStatus.InProgress));
+
+        // A card advertises exactly one corner treatment, so the ribbon and the check never co-exist.
+        Assert.Empty(cut.FindAll("span.card__check"));
+    }
+
+    [Fact]
+    public void Feast_glow_can_coexist_with_an_in_progress_ribbon()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Status, CardStatus.InProgress)
+            .Add(c => c.Feast, true));
+
+        // Feast is a full-card glow, not a corner badge, so it is orthogonal to the status badge.
+        Assert.NotNull(cut.Find("a.card--feast"));
+        Assert.NotNull(cut.Find("a.card--wip"));
+        Assert.NotNull(cut.Find("span.card__ribbon"));
+    }
+
+    [Fact]
+    public void Renders_all_pills()
+    {
+        var cut = RenderComponent<Card>(p => p
+            .Add(c => c.Href, "/node/home")
+            .Add(c => c.Title, "Home")
+            .Add(c => c.Pills, new[] { "First", "Second" }));
+
+        var pills = cut.FindAll("span.card__pill").ToList();
+        Assert.Equal(2, pills.Count);
+        Assert.Equal("First", pills[0].TextContent);
+        Assert.Equal("Second", pills[1].TextContent);
     }
 }

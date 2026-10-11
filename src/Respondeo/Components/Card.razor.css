@@ -2,13 +2,25 @@
     display: flex;
     flex-direction: column;
     background: var(--parchment);
-    border: 1px solid var(--ink);
-    border-radius: 2px;
-    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.3rem 1.4rem;
     color: var(--ink);
-    box-shadow: 0 1px 0 var(--shadow);
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    box-shadow: 0 1px 2px var(--shadow);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
     position: relative;
+}
+
+/* A hairline accent along the top edge that warms up on hover, giving the flat card a touch of depth
+   without changing its footprint. */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    border-radius: 6px 6px 0 0;
+    background: transparent;
+    transition: background 0.16s ease;
 }
 
 /* When rendered as an in-page action the card is a <button>; strip native chrome
@@ -22,9 +34,14 @@ button.card {
 
 .card:hover {
     text-decoration: none;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px var(--shadow);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px var(--shadow);
     background: var(--parchment-hover);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--rule));
+}
+
+.card:hover::before {
+    background: var(--accent);
 }
 
 .card:focus-visible {
@@ -35,6 +52,7 @@ button.card {
 .card__title {
     margin: 0 0 0.5rem;
     font-size: 1.2rem;
+    line-height: 1.25;
 }
 
 .card__subtitle {
@@ -48,14 +66,15 @@ button.card {
     display: inline-block;
     margin-left: 0.5rem;
     font-family: var(--body, inherit);
-    font-weight: 400;
+    font-weight: 500;
     font-size: 0.68rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--accent);
-    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--rule));
     border-radius: 999px;
-    padding: 0.12rem 0.65rem;
+    padding: 0.14rem 0.68rem;
     white-space: nowrap;
     vertical-align: middle;
 }
@@ -64,6 +83,7 @@ button.card {
     margin: 0 0 1rem;
     color: var(--ink-soft);
     font-size: 0.98rem;
+    line-height: 1.5;
     flex: 1 1 auto;
 }
 
@@ -73,16 +93,19 @@ button.card {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
+    transition: letter-spacing 0.16s ease;
 }
 
-.card--visited:hover {
-    opacity: 1;
+/* A gentle widening of the CTA's tracking on hover reads as the card "opening up" to be entered. */
+.card:hover .card__cta {
+    letter-spacing: 0.16em;
 }
 
 .card__check {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -96,10 +119,11 @@ button.card {
 
 /* ---------- Feast-day glow ---------- */
 /* A saint whose fixed-date feast is today: a warm golden border and a soft light that radiates from
-   within the card, gently breathing brighter and dimmer, so it feels celebratory without shouting. */
+   within the card, gently breathing brighter and dimmer, so it feels celebratory without shouting.
+   The glow is derived from --gold so it tracks the active theme. */
 .card--feast {
-    border-color: var(--gold, #c8a24a);
-    box-shadow: 0 1px 0 var(--shadow), 0 0 0 1px rgba(200, 162, 74, 0.35);
+    border-color: var(--gold);
+    box-shadow: 0 1px 0 var(--shadow), 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent);
     overflow: hidden;
 }
 
@@ -112,14 +136,26 @@ button.card {
     background: radial-gradient(
         130% 110% at 50% 50%,
         transparent 45%,
-        rgba(255, 223, 128, 0.28) 72%,
-        rgba(255, 245, 214, 0.55) 100%);
+        color-mix(in srgb, var(--gold) 45%, transparent) 72%,
+        color-mix(in srgb, var(--gold) 70%, transparent) 100%);
     opacity: 0.4;
+}
+
+/* In dark mode a rim of warm light over a dark card reads much stronger; dial it back so the feast
+   cue stays celebratory rather than glaring, matching the restraint used on the ribbon. */
+[data-theme="dark"] .card--feast::after {
+    opacity: 0.22;
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .card--feast::after {
         animation: card-feast-glow 4.5s ease-in-out infinite;
+    }
+
+    /* Keep the dark-mode breath within the quieter range so the animation peak matches the
+       dialed-back static opacity above rather than flaring back to full strength. */
+    [data-theme="dark"] .card--feast::after {
+        animation-name: card-feast-glow-dark;
     }
 }
 
@@ -133,6 +169,16 @@ button.card {
     }
 }
 
+@keyframes card-feast-glow-dark {
+    0%, 100% {
+        opacity: 0.16;
+    }
+
+    50% {
+        opacity: 0.32;
+    }
+}
+
 /* ---------- Work-in-progress ribbon ---------- */
 /* An angled banner pinned across the top-right corner of a card that links to unvetted content,
    so readers can see at a glance which entries are still being written. The card clips the ribbon
@@ -141,6 +187,8 @@ button.card {
     overflow: hidden;
 }
 
+/* The offset/width below are tuned to the card's current padding and 6px radius; retune them if
+   either changes. The z-index keeps the ribbon above the feast glow when both states coincide. */
 .card__ribbon {
     position: absolute;
     top: 1.05rem;
@@ -148,6 +196,7 @@ button.card {
     transform: rotate(45deg);
     width: 10.5rem;
     padding: 0.2rem 0.35rem 0.2rem 1.4rem;
+    z-index: 1;
     text-align: center;
     font-family: var(--display, inherit);
     font-size: 0.6rem;

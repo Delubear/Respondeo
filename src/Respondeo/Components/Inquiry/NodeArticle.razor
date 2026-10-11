@@ -33,7 +33,7 @@
             <CardGrid>
                 @foreach (var branch in _branches)
                 {
-                    <Card Href="@branch.Href" Title="@branch.Label" Summary="@branch.Link.Prompt" Cta="Continue →" Visited="@_visited.Contains(branch.Link.To)" Level="3" />
+                    <Card Href="@branch.Href" Title="@branch.Label" Summary="@branch.Link.Prompt" Cta="Continue →" Status="@(_visited.Contains(branch.Link.To) ? CardStatus.Visited : CardStatus.None)" Level="3" />
                 }
             </CardGrid>
         </section>
