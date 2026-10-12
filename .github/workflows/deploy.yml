@@ -136,6 +136,26 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: cp release/wwwroot/index.html release/wwwroot/404.html
 
+      # The 404.html fallback renders deep links for people, but it is served with
+      # HTTP 404, so search engines refuse to index any route except "/". Give every
+      # canonical route from the sitemap its own copy of the app shell (e.g.
+      # discover/saints.html) so GitHub Pages serves it at /discover/saints with
+      # HTTP 200. <base href="/"> is absolute, so the copies load assets correctly
+      # at any depth.
+      - name: Add per-route entry pages
+        if: steps.filter.outputs.code-changed == 'true'
+        run: |
+          site=release/wwwroot
+          count=0
+          for path in $(grep -oP '(?<=<loc>https://respondeo\.faith/)[^<]+(?=</loc>)' "$site/sitemap.xml"); do
+            target="$site/$path.html"
+            mkdir -p "$(dirname "$target")"
+            cp "$site/index.html" "$target"
+            count=$((count + 1))
+          done
+          echo "Wrote $count route entry pages"
+          test "$count" -gt 0
+
       - name: Disable Jekyll processing
         if: steps.filter.outputs.code-changed == 'true'
         run: touch release/wwwroot/.nojekyll
