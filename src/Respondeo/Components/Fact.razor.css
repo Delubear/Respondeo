@@ -1,0 +1,23 @@
+.fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.fact--wide {
+    grid-column: 1 / -1;
+}
+
+.fact dt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+}
+
+.fact dd {
+    margin: 0;
+    font-weight: 400;
+}

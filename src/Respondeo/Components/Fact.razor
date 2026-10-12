@@ -1,0 +1,19 @@
+@* One labeled entry inside a <FactPanel>. *@
+<div class="fact @(Wide ? "fact--wide" : null)">
+    <dt>@Label</dt>
+    <dd>@ChildContent</dd>
+</div>
+
+@code {
+    /// <summary>The term shown above the value.</summary>
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// When true the fact spans the full row, for values that can be long (patronage, canonization)
+    /// so they stay left-aligned instead of wrapping inside one narrow grid track.
+    /// </summary>
+    [Parameter] public bool Wide { get; set; }
+
+    /// <summary>The fact's value.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

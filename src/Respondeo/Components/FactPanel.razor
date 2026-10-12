@@ -1,0 +1,12 @@
+@* A bordered at-a-glance facts panel (a definition list) shared by the detail pages. Fill it with <Fact> items. *@
+<dl class="fact-panel @Class">
+    @ChildContent
+</dl>
+
+@code {
+    /// <summary>Optional extra class (e.g. a page hook like "saint__facts").</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>The <see cref="Fact"/> items to render.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
