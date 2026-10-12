@@ -48,10 +48,6 @@ runs:
       shell: bash
       run: chmod +x tests/Respondeo.AcceptanceTests/bin/Release/net10.0/.playwright/node/linux-x64/node
 
-    - name: Install static file server
-      shell: bash
-      run: dotnet tool install --global dotnet-serve
-
     - name: Install Playwright browsers
       shell: bash
       run: pwsh tests/Respondeo.AcceptanceTests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
@@ -64,9 +60,9 @@ runs:
         # Start the static server in the background within the SAME step so it
         # stays alive while the tests run. Backgrounded processes from a prior
         # step can be terminated when that step's shell exits.
-        # --quiet suppresses dotnet-serve's per-request info logging, which otherwise
-        # floods the acceptance-test logs with a line for every static file served.
-        dotnet serve -d site -p 5000 --fallback-file index.html --quiet &
+        # serve.py mirrors GitHub Pages lookup (<path>, <path>.html, <path>/index.html,
+        # then 404.html), so per-route entry pages resolve without a trailing-slash redirect.
+        python3 "$GITHUB_ACTION_PATH/serve.py" site 5000 &
         SERVER_PID=$!
         trap "kill $SERVER_PID" EXIT
 
