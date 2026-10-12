@@ -141,16 +141,25 @@ jobs:
       # canonical route from the sitemap its own copy of the app shell (e.g.
       # discover/saints.html) so GitHub Pages serves it at /discover/saints with
       # HTTP 200. <base href="/"> is absolute, so the copies load assets correctly
-      # at any depth.
+      # at any depth. Each copy also gets its own canonical and og:url so crawlers that
+      # don't run JavaScript don't treat every route as a duplicate of the home page.
       - name: Add per-route entry pages
         if: steps.filter.outputs.code-changed == 'true'
         run: |
           site=release/wwwroot
+          origin=https://respondeo.faith
+          grep -qF "<link rel=\"canonical\" href=\"$origin/\" />" "$site/index.html" || { echo "::error::index.html canonical tag not found"; exit 1; }
+          grep -qF "<meta property=\"og:url\" content=\"$origin/\" />" "$site/index.html" || { echo "::error::index.html og:url tag not found"; exit 1; }
           count=0
           for path in $(grep -oP '(?<=<loc>https://respondeo\.faith/)[^<]+(?=</loc>)' "$site/sitemap.xml"); do
             target="$site/$path.html"
             mkdir -p "$(dirname "$target")"
-            cp "$site/index.html" "$target"
+            url="$origin/$path"
+            sed -e "s|<link rel=\"canonical\" href=\"$origin/\" />|<link rel=\"canonical\" href=\"$url\" />|" \
+                -e "s|<meta property=\"og:url\" content=\"$origin/\" />|<meta property=\"og:url\" content=\"$url\" />|" \
+                "$site/index.html" > "$target"
+            grep -qF "<link rel=\"canonical\" href=\"$url\" />" "$target" || { echo "::error::canonical not rewritten for $path"; exit 1; }
+            grep -qF "<meta property=\"og:url\" content=\"$url\" />" "$target" || { echo "::error::og:url not rewritten for $path"; exit 1; }
             count=$((count + 1))
           done
           echo "Wrote $count route entry pages"
