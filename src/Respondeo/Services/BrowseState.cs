@@ -107,6 +107,36 @@ public sealed class BrowseSection
     /// <summary>True when the query or any facet filter is active.</summary>
     public bool HasActiveFilters => !string.IsNullOrWhiteSpace(Query) || _filters.Values.Any(set => set.Count > 0);
 
+    /// <summary>
+    /// Applies a shareable link's filters (e.g. <c>?type=eucharistic&amp;region=europe,asia</c>), replacing any remembered state.
+    /// Facet values may be repeated or comma-separated. Does nothing when the link carries no query or facet values,
+    /// so a plain visit keeps the remembered state. The URL is only read, never updated.
+    /// </summary>
+    /// <returns>True when the link supplied filters and the state was replaced.</returns>
+    public bool ApplyLink(string? query, IReadOnlyDictionary<string, string[]?> facets)
+    {
+        var parsed = facets.ToDictionary(
+            kv => kv.Key,
+            kv => (kv.Value ?? []).SelectMany(v => v.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToArray());
+
+        if (string.IsNullOrWhiteSpace(query) && parsed.Values.All(v => v.Length == 0))
+        {
+            return false;
+        }
+
+        Clear();
+        Query = query?.Trim() ?? string.Empty;
+        foreach (var (facet, values) in parsed)
+        {
+            if (values.Length > 0)
+            {
+                SetFilter(facet, new HashSet<string>(values, StringComparer.OrdinalIgnoreCase));
+            }
+        }
+
+        return true;
+    }
+
     /// <summary>Clears the query and every facet selection. Does not touch the JS-owned store.</summary>
     public void Clear()
     {

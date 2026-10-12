@@ -56,6 +56,11 @@
 </section>
 
 @code {
+    // Optional shareable-link filters, e.g. discover/prayers?category=marian&tag=mercy. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "category")] public string[]? LinkCategories { get; set; }
+    [SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
+
     private IReadOnlyList<PrayerSummary>? _prayers;
     private string _query = string.Empty;
 
@@ -81,6 +86,7 @@
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["category"] = LinkCategories, ["tags"] = LinkTags });
         _query = _browse.Query;
         _selectedCategories = new HashSet<string>(_browse.GetFilter("category"), StringComparer.OrdinalIgnoreCase);
         _selectedTags = new HashSet<string>(_browse.GetFilter("tags"), StringComparer.OrdinalIgnoreCase);

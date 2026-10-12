@@ -37,6 +37,9 @@
 </section>
 
 @code {
+    // Optional shareable-link search, e.g. summa?q=grace. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+
     private SummaIndex? _index;
     private IReadOnlyList<SummaSearchEntry> _matches = Array.Empty<SummaSearchEntry>();
 
@@ -61,6 +64,7 @@
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("summa", () => BrowseJs.ClearAsync("summa"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>());
         _index = await SummaService.GetIndexAsync();
         _entries = Search.BuildEntries(_index);
 

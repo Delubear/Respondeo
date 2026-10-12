@@ -57,6 +57,10 @@
 </section>
 
 @code {
+    // Optional shareable-link filters, e.g. discover/devotions?kind=chaplet. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "kind")] public string[]? LinkKinds { get; set; }
+
     private IReadOnlyList<DevotionSummary>? _devotions;
     private string _query = string.Empty;
 
@@ -78,6 +82,7 @@
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("discover/devotions", () => BrowseJs.ClearAsync("devotions"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["kind"] = LinkKinds });
         _query = _browse.Query;
         _selectedKinds = new HashSet<string>(_browse.GetFilter("kind"), StringComparer.OrdinalIgnoreCase);
 

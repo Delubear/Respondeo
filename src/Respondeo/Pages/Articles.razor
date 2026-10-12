@@ -55,6 +55,10 @@
 </section>
 
 @code {
+    // Optional shareable-link filters, e.g. discover/articles?tag=confession&q=sin. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
+
     private IReadOnlyList<ArticleRow>? _articles;
     private string _query = string.Empty;
 
@@ -76,6 +80,7 @@
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("discover/articles", () => BrowseJs.ClearAsync("articles"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["tag"] = LinkTags });
         _query = _browse.Query;
         _selectedTags = new HashSet<string>(_browse.GetFilter("tag"), StringComparer.OrdinalIgnoreCase);
 

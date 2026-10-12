@@ -66,6 +66,16 @@
 </section>
 
 @code {
+    // Optional shareable-link filters, e.g. discover/saints?era=early-church&region=europe. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "era")] public string[]? LinkEras { get; set; }
+    [SupplyParameterFromQuery(Name = "region")] public string[]? LinkRegions { get; set; }
+    [SupplyParameterFromQuery(Name = "state")] public string[]? LinkStates { get; set; }
+    [SupplyParameterFromQuery(Name = "designation")] public string[]? LinkDesignations { get; set; }
+    [SupplyParameterFromQuery(Name = "sex")] public string[]? LinkSexes { get; set; }
+    [SupplyParameterFromQuery(Name = "order")] public string[]? LinkOrders { get; set; }
+    [SupplyParameterFromQuery(Name = "canonization")] public string[]? LinkCanonizations { get; set; }
+
     private IReadOnlyList<SaintIndexEntry>? _all;
     private IReadOnlyList<string> _eras = [];
     private IReadOnlyList<string> _regions = [];
@@ -100,6 +110,16 @@
         await Trail.ClearAsync();
         DayWatcher.DayChanged += OnDayChanged;
         _browse = Browse.Section("discover/saints", () => BrowseJs.ClearAsync("saints"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
+        {
+            ["era"] = LinkEras,
+            ["region"] = LinkRegions,
+            ["state"] = LinkStates,
+            ["designation"] = LinkDesignations,
+            ["sex"] = LinkSexes,
+            ["order"] = LinkOrders,
+            ["canonization"] = LinkCanonizations,
+        });
         _selectedEras = new HashSet<string>(_browse.GetFilter("era"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
         _selectedStatesOfLife = new HashSet<string>(_browse.GetFilter("state"), StringComparer.OrdinalIgnoreCase);

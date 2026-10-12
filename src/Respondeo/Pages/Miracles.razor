@@ -52,6 +52,12 @@
 </section>
 
 @code {
+    // Optional shareable-link filters, e.g. discover/miracles?type=eucharistic or ?region=europe,asia&q=blood. Read once on load; the URL is never updated.
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "type")] public string[]? LinkTypes { get; set; }
+    [SupplyParameterFromQuery(Name = "approval")] public string[]? LinkApprovals { get; set; }
+    [SupplyParameterFromQuery(Name = "region")] public string[]? LinkRegions { get; set; }
+
     private IReadOnlyList<MiracleIndexEntry>? _all;
     private IReadOnlyList<string> _types = [];
     private IReadOnlyList<string> _approvals = [];
@@ -76,6 +82,12 @@
     {
         await Trail.ClearAsync();
         _browse = Browse.Section("discover/miracles", () => BrowseJs.ClearAsync("miracles"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
+        {
+            ["type"] = LinkTypes,
+            ["approval"] = LinkApprovals,
+            ["region"] = LinkRegions,
+        });
         _selectedTypes = new HashSet<string>(_browse.GetFilter("type"), StringComparer.OrdinalIgnoreCase);
         _selectedApprovals = new HashSet<string>(_browse.GetFilter("approval"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);

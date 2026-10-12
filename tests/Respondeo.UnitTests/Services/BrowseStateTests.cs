@@ -22,6 +22,43 @@ public class BrowseStateTests
     }
 
     [Fact]
+    public void ApplyLink_replaces_state_with_link_filters_and_splits_commas()
+    {
+        var nav = new TestNavigationManager(Root + "discover/miracles");
+        using var state = new BrowseState(nav);
+        var section = state.Section("discover/miracles");
+        section.Query = "old";
+        section.SetFilter("approval", new HashSet<string> { "approved" });
+
+        var applied = section.ApplyLink(" blood ", new Dictionary<string, string[]?>
+        {
+            ["type"] = ["Eucharistic"],
+            ["region"] = ["europe,asia", "africa"],
+            ["approval"] = null,
+        });
+
+        Assert.True(applied);
+        Assert.Equal("blood", section.Query);
+        Assert.Contains("eucharistic", section.GetFilter("type"));
+        Assert.Equal(3, section.GetFilter("region").Count);
+        Assert.Empty(section.GetFilter("approval"));
+    }
+
+    [Fact]
+    public void ApplyLink_without_values_keeps_remembered_state()
+    {
+        var nav = new TestNavigationManager(Root + "discover/miracles");
+        using var state = new BrowseState(nav);
+        var section = state.Section("discover/miracles");
+        section.Query = "kept";
+
+        var applied = section.ApplyLink(null, new Dictionary<string, string[]?> { ["type"] = null, ["region"] = [] });
+
+        Assert.False(applied);
+        Assert.Equal("kept", section.Query);
+    }
+
+    [Fact]
     public void Section_returns_the_same_instance_for_the_same_area()
     {
         var nav = new TestNavigationManager(Root + "discover/prayers");
