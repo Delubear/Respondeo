@@ -2,7 +2,7 @@
 @inject IMiracleService Miracles
 @inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_miracle is null ? "Miracle" : $"{_miracle.Title} \u2014 Respondeo")</PageTitle>
+<PageTitle>@(_miracle is null ? "Miracle \u2014 Respondeo" : $"{_miracle.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_miracle is not null)
 {
@@ -17,12 +17,9 @@
 }
 else if (_miracle is null)
 {
-    <section class="content-article">
-        <h1 class="pillar__title">Miracle not found</h1>
-        <p class="empty-state">
-            There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/miracles">Return to the catalog</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Miracle not found" BackHref="discover/miracles" BackLabel="Return to the catalog">
+        There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;.
+    </ItemNotFound>
 }
 else
 {
@@ -37,33 +34,21 @@ else
             </ConstructionNotice>
         }
 
-        <dl class="miracle__facts">
-            <div class="miracle__fact">
-                <dt>Church&rsquo;s judgment</dt>
-                <dd>@_facets.Approval(_miracle.Approval)</dd>
-            </div>
+        <FactPanel Class="miracle__facts">
+            <Fact Label="Church's judgment">@_facets.Approval(_miracle.Approval)</Fact>
             @if (!string.IsNullOrWhiteSpace(_miracle.Country))
             {
-                <div class="miracle__fact">
-                    <dt>Place</dt>
-                    <dd>@_miracle.Country</dd>
-                </div>
+                <Fact Label="Place">@_miracle.Country</Fact>
             }
             @if (_century is not null)
             {
-                <div class="miracle__fact">
-                    <dt>When</dt>
-                    <dd>@_century</dd>
-                </div>
+                <Fact Label="When">@_century</Fact>
             }
             @if (!string.IsNullOrWhiteSpace(_miracle.FeastDay))
             {
-                <div class="miracle__fact">
-                    <dt>Feast day</dt>
-                    <dd>@_miracle.FeastDay</dd>
-                </div>
+                <Fact Label="Feast day">@_miracle.FeastDay</Fact>
             }
-        </dl>
+        </FactPanel>
 
         <div class="content-body">
             @((MarkupString)_miracle.BodyHtml)

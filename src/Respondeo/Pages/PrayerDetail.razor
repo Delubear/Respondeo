@@ -2,7 +2,7 @@
 @inject IPrayerService Prayers
 @inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_prayer is null ? "Prayer" : $"{_prayer.Title} \u2014 Respondeo")</PageTitle>
+<PageTitle>@(_prayer is null ? "Prayer \u2014 Respondeo" : $"{_prayer.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_prayer is not null)
 {
@@ -17,12 +17,9 @@
 }
 else if (_prayer is null)
 {
-    <section class="content-article">
-        <h1 class="pillar__title">Prayer not found</h1>
-        <p class="empty-state">
-            There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/prayers">Return to all prayers</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Prayer not found" BackHref="discover/prayers" BackLabel="Return to all prayers">
+        There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;.
+    </ItemNotFound>
 }
 else
 {

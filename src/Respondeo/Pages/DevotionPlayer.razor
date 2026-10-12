@@ -7,7 +7,7 @@
 @inject NavigationInterop Navigation
 @inject ImmersiveInterop Immersive
 
-<PageTitle>@(_devotion is null ? "Devotion" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
+<PageTitle>@(_devotion is null ? "Devotion \u2014 Respondeo" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_devotion is not null)
 {
@@ -22,12 +22,9 @@
 }
 else if (_devotion is null)
 {
-    <section class="content-article">
-        <h1 class="pillar__title">Devotion not found</h1>
-        <p class="empty-state">
-            There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/devotions">Return to all devotions</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Devotion not found" BackHref="discover/devotions" BackLabel="Return to all devotions">
+        There is no devotion with the id &ldquo;<code>@Id</code>&rdquo;.
+    </ItemNotFound>
 }
 else if (!_started)
 {

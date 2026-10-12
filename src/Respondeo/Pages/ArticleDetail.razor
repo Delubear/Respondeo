@@ -2,7 +2,7 @@
 @inject IArticleService Articles
 @inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_article is null ? "Article" : $"{_article.Title} \u2014 Respondeo")</PageTitle>
+<PageTitle>@(_article is null ? "Article \u2014 Respondeo" : $"{_article.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_article is not null)
 {
@@ -17,12 +17,9 @@
 }
 else if (_article is null)
 {
-    <section class="content-article">
-        <h1 class="pillar__title">Article not found</h1>
-        <p class="empty-state">
-            There is no article with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/articles">Return to all articles</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Article not found" BackHref="discover/articles" BackLabel="Return to all articles">
+        There is no article with the id &ldquo;<code>@Id</code>&rdquo;.
+    </ItemNotFound>
 }
 else
 {

@@ -1,0 +1,27 @@
+@* Shared "item not found" state for detail pages: heading, explanation, a way back, and noindex metadata. *@
+<PageTitle>@Title &mdash; Respondeo</PageTitle>
+<SeoHead Title="@Title" OgType="website" NoIndex="true" />
+
+<section class="content-article @Class">
+    <h1 class="pillar__title">@Title</h1>
+    <p class="empty-state">
+        @ChildContent <a href="@BackHref">@BackLabel</a>.
+    </p>
+</section>
+
+@code {
+    /// <summary>The heading, e.g. "Saint not found".</summary>
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    /// <summary>Where the recovery link points.</summary>
+    [Parameter, EditorRequired] public string BackHref { get; set; } = string.Empty;
+
+    /// <summary>The recovery link text.</summary>
+    [Parameter, EditorRequired] public string BackLabel { get; set; } = string.Empty;
+
+    /// <summary>Optional extra class on the section.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>The explanation shown before the recovery link.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

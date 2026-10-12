@@ -9,7 +9,7 @@
 @inject NavigationInterop Navigation
 @inject SummaRefInterop SummaRef
 
-<PageTitle>@(_question is null ? "Summa Theologiae" : $"{_question.Title} — Summa Theologiae")</PageTitle>
+<PageTitle>@(_question is null ? "Summa Theologiae \u2014 Respondeo" : $"{_question.Title} \u2014 Summa Theologiae \u2014 Respondeo")</PageTitle>
 
 @if (_question is not null)
 {
@@ -24,12 +24,9 @@
 }
 else if (_question is null)
 {
-    <section class="content-article content-article--empty">
-        <h1 class="pillar__title">Question not found</h1>
-        <p class="empty-state">
-            That question is not part of the Summa. <a href="summa">Return to the Summa</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Question not found" BackHref="summa" BackLabel="Return to the Summa" Class="content-article--empty">
+        That question is not part of the Summa.
+    </ItemNotFound>
 }
 else
 {

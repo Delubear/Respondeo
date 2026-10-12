@@ -6,7 +6,7 @@
 @inject Respondeo.Services.IDayWatcher DayWatcher
 @implements IDisposable
 
-<PageTitle>@(_saint is null ? "Saint" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
+<PageTitle>@(_saint is null ? "Saint \u2014 Respondeo" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
 
 @if (_saint is not null)
 {
@@ -21,12 +21,9 @@
 }
 else if (_saint is null)
 {
-    <section class="content-article">
-        <h1 class="pillar__title">Saint not found</h1>
-        <p class="empty-state">
-            There is no saint with the id &ldquo;<code>@Id</code>&rdquo;. <a href="discover/saints">Return to the gallery</a>.
-        </p>
-    </section>
+    <ItemNotFound Title="Saint not found" BackHref="discover/saints" BackLabel="Return to the gallery">
+        There is no saint with the id &ldquo;<code>@Id</code>&rdquo;.
+    </ItemNotFound>
 }
 else
 {
@@ -41,12 +38,10 @@ else
             </ConstructionNotice>
         }
 
-        <dl class="saint__facts">
+        <FactPanel Class="saint__facts">
             @if (!string.IsNullOrWhiteSpace(_saint.FeastDay))
             {
-                <div class="saint__fact">
-                    <dt>Feast day</dt>
-                    <dd>
+                <Fact Label="Feast day">
                         @_saint.FeastDay
                         @if (FeastOfTheDay.IsToday(_saint.FeastDay))
                         {
@@ -54,70 +49,42 @@ else
                                 <span aria-hidden="true">&#10024;</span> Today
                             </span>
                         }
-                    </dd>
-                </div>
+                    </Fact>
             }
             @if (!string.IsNullOrWhiteSpace(_saint.Dates))
             {
-                <div class="saint__fact">
-                    <dt>Lived</dt>
-                    <dd>@_saint.Dates</dd>
-                </div>
+                <Fact Label="Lived">@_saint.Dates</Fact>
             }
-            <div class="saint__fact">
-                <dt>Era</dt>
-                <dd>@_facets.Era(_saint.Era)</dd>
-            </div>
+            <Fact Label="Era">@_facets.Era(_saint.Era)</Fact>
             @if (!string.Equals(_saint.Region, "unknown", StringComparison.OrdinalIgnoreCase))
             {
-                <div class="saint__fact">
-                    <dt>Region</dt>
-                    <dd>@_facets.Region(_saint.Region)</dd>
-                </div>
+                <Fact Label="Region">@_facets.Region(_saint.Region)</Fact>
             }
             @if (_saint.StatesOfLife.Count > 0)
             {
-                <div class="saint__fact">
-                    <dt>State of life</dt>
-                    <dd>@string.Join(", ", _saint.StatesOfLife.Select(_facets.StateOfLife))</dd>
-                </div>
+                <Fact Label="State of life">@string.Join(", ", _saint.StatesOfLife.Select(_facets.StateOfLife))</Fact>
             }
             @if (_saint.Designations.Count > 0)
             {
-                <div class="saint__fact">
-                    <dt>Designation</dt>
-                    <dd>@string.Join(", ", _saint.Designations.Select(_facets.Designation))</dd>
-                </div>
+                <Fact Label="Designation">@string.Join(", ", _saint.Designations.Select(_facets.Designation))</Fact>
             }
             @if (!string.IsNullOrWhiteSpace(_saint.Sex))
             {
-                <div class="saint__fact">
-                    <dt>Sex</dt>
-                    <dd>@_facets.Sex(_saint.Sex)</dd>
-                </div>
+                <Fact Label="Sex">@_facets.Sex(_saint.Sex)</Fact>
             }
             @if (_saint.ReligiousOrders.Count > 0)
             {
-                <div class="saint__fact">
-                    <dt>Religious order</dt>
-                    <dd>@string.Join(", ", _saint.ReligiousOrders.Select(_facets.ReligiousOrder))</dd>
-                </div>
+                <Fact Label="Religious order">@string.Join(", ", _saint.ReligiousOrders.Select(_facets.ReligiousOrder))</Fact>
             }
             @if (_saint.Patronages.Count > 0)
             {
-                <div class="saint__fact saint__fact--wide">
-                    <dt>Patronage</dt>
-                    <dd>@string.Join(", ", _saint.Patronages)</dd>
-                </div>
+                <Fact Label="Patronage" Wide="true">@string.Join(", ", _saint.Patronages)</Fact>
             }
             @if (_saint.Canonizations.Count > 0)
             {
-                <div class="saint__fact saint__fact--wide">
-                    <dt>Canonization</dt>
-                    <dd>@string.Join(", ", _saint.Canonizations.Select(_facets.Canonization))</dd>
-                </div>
+                <Fact Label="Canonization" Wide="true">@string.Join(", ", _saint.Canonizations.Select(_facets.Canonization))</Fact>
             }
-        </dl>
+        </FactPanel>
 
         <div class="content-body">
             @((MarkupString)_saint.BodyHtml)
