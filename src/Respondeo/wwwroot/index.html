@@ -20,14 +20,17 @@
     <meta property="og:title" content="Respondeo &mdash; Real questions. Reasoned answers." />
     <meta property="og:description" content="Real questions about God, Christ, and the Catholic Church, met with the reasoned answers of St. Thomas Aquinas. Browsable, searchable, and yours offline." />
     <meta property="og:url" content="https://respondeo.faith/" />
-    <meta property="og:image" content="https://respondeo.faith/icon-512.png" />
+    <meta property="og:image" content="https://respondeo.faith/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Respondeo: Real questions. Reasoned answers." />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter / X Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Respondeo &mdash; Real questions. Reasoned answers." />
     <meta name="twitter:description" content="Real questions about God, Christ, and the Catholic Church, met with the reasoned answers of St. Thomas Aquinas. Browsable, searchable, and yours offline." />
-    <meta name="twitter:image" content="https://respondeo.faith/icon-512.png" />
+    <meta name="twitter:image" content="https://respondeo.faith/og-image.png" />
 
     <link rel="preload" id="webassembly" />
     <!-- Self-hosted webfonts (@font-face rules live in css/app.css). Served as first-party assets
@@ -88,10 +91,11 @@
         </div>
     </div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
+    <div id="blazor-error-ui" role="alert">
+        <span class="blazor-error-ui__mark" aria-hidden="true">&#10013;</span>
+        <span class="blazor-error-ui__text">Something went wrong on this page. Reloading usually sets it right.</span>
         <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
+        <button type="button" class="dismiss" aria-label="Dismiss">&times;</button>
     </div>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" defer></script>
     <script>
