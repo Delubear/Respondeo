@@ -11,7 +11,9 @@
 
     <ScrollAffordances />
 
-    <header class="masthead" @ontouchstart="OnMastheadTouchStart" @ontouchend="OnMastheadTouchEnd">
+    @* The masthead and pillar switcher form one drag zone on phones: drag down to open the full masthead, up to close. *@
+    <div class="masthead-zone" @ontouchstart="OnMastheadTouchStart" @ontouchend="OnMastheadTouchEnd">
+    <header class="masthead">
         <ThemeToggle />
         @if (Features.AquinasPortrait)
         {
@@ -33,6 +35,7 @@
     </header>
 
     <PillarNav />
+    </div>
     <MastheadNav />
     <DiscoverNav />
 

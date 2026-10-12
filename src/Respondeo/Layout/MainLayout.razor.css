@@ -186,16 +186,17 @@
        Dragging the masthead down opens the full one and up closes it; the choice persists across navigation.
        touch-action stops vertical drags on the masthead from scrolling or triggering the browser's
        pull-to-refresh, which stays available on the content below. */
-    .masthead {
+    .masthead-zone {
+        position: relative;
         touch-action: pan-x;
     }
 
-    /* A small grab handle hints that the masthead can be dragged. */
-    .masthead::after {
+    /* A small grab handle below the pillar switcher hints that the zone can be dragged. */
+    .masthead-zone::after {
         content: "";
         position: absolute;
         left: 50%;
-        bottom: 0.25rem;
+        bottom: 0.15rem;
         width: 2.25rem;
         height: 0.2rem;
         border-radius: 0.1rem;
@@ -206,7 +207,7 @@
     }
 
     .page--inner:not(.page--masthead-open) .masthead {
-        padding: 0.7rem 5.5rem 0.75rem;
+        padding: 0.7rem 5.5rem 0.3rem;
     }
 
     .page--inner:not(.page--masthead-open) .masthead__brand {

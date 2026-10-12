@@ -54,14 +54,25 @@
 
 @media (max-width: 800px) {
     .pillarnav {
-        padding: 0.5rem 0.4rem;
+        padding: 0.5rem 0.4rem 0.7rem;
         border-bottom: 1px solid var(--masthead-rule);
     }
 
-    /* Keep the three pillars on a single line rather than wrapping. */
+    /* Keep the three pillars on a single line, with the middle pill (Summa) centered on the page so it
+       sits directly above the masthead's drag handle; equal flexible side columns keep it centered
+       regardless of the outer pills' label widths. */
     .pillarnav__list {
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         gap: 0.3rem;
+    }
+
+    .pillarnav__item:first-child {
+        justify-self: end;
+    }
+
+    .pillarnav__item:last-child {
+        justify-self: start;
     }
 
     .pillarnav__link {
@@ -87,14 +98,6 @@
 }
 
 @media (max-width: 480px) {
-    /* Below this the three nowrap pills ("The Journey", "Summa Theologiae", "Miracles") no
-       longer fit on one line; allow them to wrap again rather than forcing a min-content
-       floor that pushes the whole page wider than the viewport (background bleed on the
-       right/bottom edges on very narrow screens). */
-    .pillarnav__list {
-        flex-wrap: wrap;
-    }
-
     .pillarnav__link {
         font-size: 0.78rem;
         letter-spacing: 0.02em;
