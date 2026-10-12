@@ -105,6 +105,14 @@ export function jumpToContent() {
 
 let cancelSettle = null;
 
+// A remembered-position restore (scroll-store.js) is more specific than the generic content jump,
+// so it calls this to stop any in-flight settle from dragging the page back to the content top.
+window.respondeoCancelScrollSettle = () => {
+    if (cancelSettle) {
+        cancelSettle();
+    }
+};
+
 function settleScroll(apply) {
     if (cancelSettle) {
         cancelSettle();

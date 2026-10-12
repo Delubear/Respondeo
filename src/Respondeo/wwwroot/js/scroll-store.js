@@ -53,6 +53,12 @@ window.respondeoScrollRestore = (function () {
                 return;
             }
 
+            // The route-change content jump (scroll.js) settles over several frames too; the restore
+            // wins, so cancel it on every tick in case it started after this restore did.
+            if (window.respondeoCancelScrollSettle) {
+                window.respondeoCancelScrollSettle();
+            }
+
             var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             var clamped = Math.min(target, Math.max(maxScroll, 0));
             window.scrollTo(0, clamped);
