@@ -6,12 +6,12 @@
 @inject Respondeo.Services.ISeasonalPortrait Portrait
 @inject Respondeo.Services.IDayWatcher DayWatcher
 
-<div class="page @(_isHome ? null : "page--inner")">
+<div class="page page--inner @(_mastheadExpanded ? "page--masthead-open" : null)">
     <a class="skip-link" href="#content">Skip to content</a>
 
     <ScrollAffordances />
 
-    <header class="masthead">
+    <header class="masthead" @ontouchstart="OnMastheadTouchStart" @ontouchend="OnMastheadTouchEnd">
         <ThemeToggle />
         @if (Features.AquinasPortrait)
         {
@@ -23,6 +23,13 @@
             <span class="masthead__mark" aria-hidden="true">&#10013;</span>
         </a>
         <p class="masthead__tag">Real questions. Reasoned answers.</p>
+        @* Phones drag the masthead itself (down to open, up to close); this button is the keyboard and
+           screen-reader route to the same toggle and is only visible while focused. *@
+        <button type="button" class="masthead__expand" @onclick="ToggleMasthead"
+                aria-expanded="@(_mastheadExpanded ? "true" : "false")"
+                aria-label="@(_mastheadExpanded ? "Show less of the header" : "Show the full header")">
+            <span class="masthead__expand-glyph" aria-hidden="true">&#8964;</span>
+        </button>
     </header>
 
     <PillarNav />
@@ -79,8 +86,45 @@
     // appearance. The route-to-orb mapping is declared in FloatingGuideRoutes.
     private FloatingGuideState _guides = FloatingGuideRoutes.Resolve(string.Empty);
 
-    // Inner pages get a slimmer masthead on phones so the content starts higher on the screen.
-    private bool _isHome = true;
+    // On phones the slim masthead can be dragged open to the full one; the choice persists across navigation.
+    private bool _mastheadExpanded;
+
+    // Minimum vertical travel (CSS px) before a masthead drag counts as open/close rather than a tap.
+    private const double MastheadSwipeThreshold = 24;
+    private double? _touchStartX;
+    private double? _touchStartY;
+
+    private void ToggleMasthead() => _mastheadExpanded = !_mastheadExpanded;
+
+    private void OnMastheadTouchStart(TouchEventArgs e)
+    {
+        if (e.Touches.Length != 1)
+        {
+            _touchStartX = _touchStartY = null;
+            return;
+        }
+
+        _touchStartX = e.Touches[0].ClientX;
+        _touchStartY = e.Touches[0].ClientY;
+    }
+
+    private void OnMastheadTouchEnd(TouchEventArgs e)
+    {
+        if (_touchStartY is not { } startY || _touchStartX is not { } startX || e.ChangedTouches.Length == 0)
+        {
+            return;
+        }
+
+        _touchStartX = _touchStartY = null;
+        var dy = e.ChangedTouches[0].ClientY - startY;
+        var dx = e.ChangedTouches[0].ClientX - startX;
+        if (Math.Abs(dy) < MastheadSwipeThreshold || Math.Abs(dy) < Math.Abs(dx))
+        {
+            return;
+        }
+
+        _mastheadExpanded = dy > 0;
+    }
 
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
@@ -118,7 +162,6 @@
     {
         var path = Nav.ToBaseRelativePath(Nav.Uri);
         _guides = FloatingGuideRoutes.Resolve(path);
-        _isHome = path.Split('?', '#')[0].Length == 0;
     }
 
     // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is otherwise silent to screen readers.

@@ -47,6 +47,10 @@
    radial mask so it reads as a faint fresco bleeding through the background. It extends past
    the masthead so its base sits along the bottom edge of the pillar nav (both share the same
    background, so the overlap is seamless). It shrinks and fades on narrow screens but stays visible. */
+.masthead__expand {
+    display: none;
+}
+
 .masthead__portrait {
     position: absolute;
     bottom: -2.6rem;
@@ -177,22 +181,102 @@
         padding: 1rem 1rem 2.5rem;
     }
 
+
     /* Inner pages: a slim masthead (wordmark only) so the reading content starts higher on phones.
-       The home page keeps the full masthead with tagline and portrait as the site's front door. */
-    .page--inner .masthead {
-        padding: 0.7rem 5.5rem 0.6rem;
+       Dragging the masthead down opens the full one and up closes it; the choice persists across navigation.
+       touch-action stops vertical drags on the masthead from scrolling or triggering the browser's
+       pull-to-refresh, which stays available on the content below. */
+    .masthead {
+        touch-action: pan-x;
     }
 
-    .page--inner .masthead__brand {
+    /* A small grab handle hints that the masthead can be dragged. */
+    .masthead::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0.25rem;
+        width: 2.25rem;
+        height: 0.2rem;
+        border-radius: 0.1rem;
+        background: var(--masthead-fg-soft);
+        opacity: 0.45;
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+
+    .page--inner:not(.page--masthead-open) .masthead {
+        padding: 0.7rem 5.5rem 0.75rem;
+    }
+
+    .page--inner:not(.page--masthead-open) .masthead__brand {
         font-size: 1.2rem;
     }
 
-    .page--inner .masthead__mark {
+    .page--inner:not(.page--masthead-open) .masthead__mark {
         font-size: 1.1rem;
     }
 
-    .page--inner .masthead__tag,
-    .page--inner .masthead__portrait {
+    .page--inner:not(.page--masthead-open) .masthead__tag,
+    .page--inner:not(.page--masthead-open) .masthead__portrait {
         display: none;
+    }
+
+    /* Keyboard/screen-reader fallback for the drag: visually hidden until focused, then shown left of the theme toggle. */
+    .masthead__expand {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0.6rem;
+        right: 3.1rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--masthead-fg-soft);
+        font-size: 1.1rem;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0;
+        transition: color var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page), background var(--dur-2) var(--ease-page);
+    }
+
+    .masthead__expand:not(:focus-visible) {
+        clip-path: inset(50%);
+    }
+
+    .masthead__expand:focus-visible {
+        opacity: 1;
+    }
+
+    .masthead__expand:hover {
+        color: var(--masthead-fg);
+        border-color: var(--masthead-rule);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .masthead__expand:focus-visible {
+        outline: 2px solid var(--masthead-fg);
+        outline-offset: 2px;
+    }
+
+    .masthead__expand-glyph {
+        display: inline-block;
+        transform: translateY(-0.15em);
+        transition: transform 0.2s ease;
+    }
+
+    .page--masthead-open .masthead__expand-glyph {
+        transform: translateY(0.15em) rotate(180deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .masthead__expand,
+    .masthead__expand-glyph {
+        transition: none;
     }
 }
