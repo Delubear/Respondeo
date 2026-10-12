@@ -2,6 +2,7 @@
 
 ## General Guidelines
 - Use American English spelling (e.g., "color", "behavior", "catalog", "center") in all user-facing text, content, and documentation for the Respondeo project, not British spelling.
+- Use a plain straight apostrophe (') everywhere in Razor markup and content Markdown; never &rsquo;, &#8217;, or a typed curly ’.
 
 ## Line wrapping
 - Keep lines under 200 characters, splitting them as necessary to stay within that limit.
