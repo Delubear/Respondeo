@@ -41,14 +41,16 @@
     text-decoration: none;
 }
 
+/* The active pill sits on the always-dark masthead, so it uses the masthead's light ink rather than
+   --accent-ink (dark in dark mode, which reads poorly on the dark-mode red). */
 .pillarnav__link--active {
-    color: var(--accent-ink);
+    color: var(--masthead-fg);
     background: var(--accent);
     border-color: var(--accent);
 }
 
 .pillarnav__link--active:hover {
-    color: var(--accent-ink);
+    color: var(--masthead-fg);
     border-color: var(--accent);
 }
 
@@ -84,7 +86,7 @@
     }
 
     .pillarnav__link--active {
-        color: var(--accent-ink);
+        color: var(--masthead-fg);
     }
 }
 
