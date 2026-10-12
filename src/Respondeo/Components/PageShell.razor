@@ -1,0 +1,65 @@
+@* Shared page shell: the browser title, per-page SEO metadata, and (optionally) the breadcrumb that
+   every routed page sets up, followed by the page's own content.
+   Set SeoReady="false" while content loads so a placeholder isn't advertised; the breadcrumb only
+   renders when a stage or ancestor crumbs are supplied. *@
+
+<PageTitle>@SiteMeta.FullTitle(TabTitle ?? Title ?? FallbackTitle)</PageTitle>
+
+@if (SeoReady)
+{
+	<SeoHead Title="@Title" Description="@Description" OgType="@OgType" Article="@Article" JsonLd="@JsonLd" NoIndex="@NoIndex" />
+}
+
+@if (StageHref is not null || Crumbs.Count > 0)
+{
+	<Breadcrumb CurrentTitle="@(Title ?? FallbackTitle)" StageHref="@StageHref" StageLabel="@StageLabel" Crumbs="Crumbs" BackHref="@BackHref" BackLabel="@BackLabel" />
+}
+
+@ChildContent
+
+@code {
+	/// <summary>The page title (without the site suffix); null while content is loading, or for the home page.</summary>
+	[Parameter] public string? Title { get; set; }
+
+	/// <summary>Title shown in the tab and breadcrumb before <see cref="Title"/> is known, e.g. "Article".</summary>
+	[Parameter] public string? FallbackTitle { get; set; }
+
+	/// <summary>Optional browser-tab title (without the site suffix) when it should differ from <see cref="Title"/>.</summary>
+	[Parameter] public string? TabTitle { get; set; }
+
+	/// <summary>The meta description for the page.</summary>
+	[Parameter] public string? Description { get; set; }
+
+	/// <summary>The Open Graph type. Defaults to "article".</summary>
+	[Parameter] public string OgType { get; set; } = "article";
+
+	/// <summary>Emit an Article structured-data node (when no <see cref="JsonLd"/> is given).</summary>
+	[Parameter] public bool Article { get; set; }
+
+	/// <summary>Optional pre-serialized JSON-LD.</summary>
+	[Parameter] public string? JsonLd { get; set; }
+
+	/// <summary>Ask crawlers not to index this page.</summary>
+	[Parameter] public bool NoIndex { get; set; }
+
+	/// <summary>Whether the SEO metadata should be emitted yet. Defaults to true.</summary>
+	[Parameter] public bool SeoReady { get; set; } = true;
+
+	/// <summary>Breadcrumb stage root route (e.g. "discover").</summary>
+	[Parameter] public string? StageHref { get; set; }
+
+	/// <summary>Breadcrumb stage root label (e.g. "Discover").</summary>
+	[Parameter] public string? StageLabel { get; set; }
+
+	/// <summary>Ancestor crumbs between the stage root and this page.</summary>
+	[Parameter] public IReadOnlyList<Breadcrumb.Crumb> Crumbs { get; set; } = Array.Empty<Breadcrumb.Crumb>();
+
+	/// <summary>Optional "back" crumb href (e.g. the Summa article a cross-reference jump started from).</summary>
+	[Parameter] public string? BackHref { get; set; }
+
+	/// <summary>Label for the back crumb.</summary>
+	[Parameter] public string? BackLabel { get; set; }
+
+	/// <summary>The page body.</summary>
+	[Parameter] public RenderFragment? ChildContent { get; set; }
+}

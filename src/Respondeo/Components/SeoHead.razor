@@ -65,7 +65,7 @@
 
     private string Meta => string.IsNullOrWhiteSpace(Description) ? SiteMeta.DefaultDescription : Description!.Trim();
 
-    private string FullTitle => string.IsNullOrWhiteSpace(Title) ? SiteMeta.DefaultTitle : $"{Title} — {SiteMeta.SiteName}";
+    private string FullTitle => SiteMeta.FullTitle(Title);
 
     // The canonical URL is the current route resolved against the production origin, so it stays correct regardless of the host the app is actually served from (localhost, preview, etc.).
     private string CanonicalUrl

@@ -7,14 +7,8 @@
 @inject NavigationInterop Navigation
 @inject ImmersiveInterop Immersive
 
-<PageTitle>@(_devotion is null ? "Devotion \u2014 Respondeo" : $"{_devotion.Title} \u2014 Respondeo")</PageTitle>
-
-@if (_devotion is not null)
-{
-    <SeoHead Title="@_devotion.Title" Description="@_devotion.Summary" Article="true" />
-}
-
-<Breadcrumb CurrentTitle="@(_devotion?.Title ?? "Devotion")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
+<PageShell Title="@_devotion?.Title" FallbackTitle="Devotion" Description="@_devotion?.Summary" Article="true" SeoReady="@(_devotion is not null)"
+           StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
 
 @if (_loading)
 {

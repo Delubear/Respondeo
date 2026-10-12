@@ -4,8 +4,7 @@
 
 @if (_isKnownStage)
 {
-    <PageTitle>@_label &mdash; Respondeo</PageTitle>
-    <SeoHead Title="@_label" Description="@_node?.Summary" />
+    <PageShell Title="@_label" Description="@_node?.Summary" />
 
     @if (_loading)
     {

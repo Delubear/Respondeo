@@ -9,14 +9,9 @@
 @inject NavigationInterop Navigation
 @inject SummaRefInterop SummaRef
 
-<PageTitle>@(_question is null ? "Summa Theologiae \u2014 Respondeo" : $"{_question.Title} \u2014 Summa Theologiae \u2014 Respondeo")</PageTitle>
-
-@if (_question is not null)
-{
-    <SeoHead Title="@_question.Title" Description="@_seoDescription" Article="true" />
-}
-
-<Breadcrumb CurrentTitle="@(_question?.Title ?? "Question")" StageHref="summa" StageLabel="Summa Theologiae" Crumbs="_crumbs" BackHref="@_backHref" BackLabel="@_backLabel" />
+<PageShell Title="@_question?.Title" FallbackTitle="Question" Description="@_seoDescription" Article="true" SeoReady="@(_question is not null)"
+           TabTitle="@SiteMeta.JoinTitle(_question?.Title, "Summa Theologiae")"
+           StageHref="summa" StageLabel="Summa Theologiae" Crumbs="_crumbs" BackHref="@_backHref" BackLabel="@_backLabel" />
 
 @if (_loading)
 {

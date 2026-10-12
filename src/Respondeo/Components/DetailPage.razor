@@ -1,0 +1,125 @@
+@* Shared layout for single-item detail pages (articles, saints, miracles, prayers): the page shell,
+   then loading -> not found -> the item itself. The item renders as a header, an optional unvetted
+   notice, optional facts, the body, then tags/sources and a back link.
+   Pages supply only their data and any item-specific pieces (Facts, or a custom Body). *@
+
+<PageShell Title="@(Loading ? null : Title)" FallbackTitle="@Noun" Description="@Summary" JsonLd="@JsonLd" Article="true"
+           SeoReady="@(!Loading && Title is not null)" StageHref="@StageHref" StageLabel="@StageLabel" Crumbs="Crumbs">
+    @if (Loading)
+    {
+        <Loading>@LoadingText</Loading>
+    }
+    else if (Title is null)
+    {
+        <ItemNotFound Title="@($"{Noun} not found")" BackHref="@ListHref" BackLabel="@NotFoundBackLabel">
+            There is no @Noun.ToLowerInvariant() with the id &ldquo;<code>@Id</code>&rdquo;.
+        </ItemNotFound>
+    }
+    else
+    {
+        <article class="content-article">
+            <PillarHeader Eyebrow="@Eyebrow" Title="@Title" LedeText="@Summary" />
+
+            @if (IsUnvetted)
+            {
+                <ConstructionNotice>
+                    <strong>Unvetted content.</strong>
+                    <span>This @UnvettedNoun is a work in progress and has not yet been reviewed; it may contain errors.</span>
+                </ConstructionNotice>
+            }
+
+            @Facts
+
+            @if (Body is not null)
+            {
+                @Body
+            }
+            else
+            {
+                <div class="content-body">
+                    @((MarkupString)(BodyHtml ?? string.Empty))
+                </div>
+            }
+
+            @if (TagsBeforeSources)
+            {
+                <TagList Tags="Tags" />
+                <SourcesList Sources="Sources" />
+            }
+            else
+            {
+                <SourcesList Sources="Sources" />
+                <TagList Tags="Tags" />
+            }
+            <BackLink Href="@ListHref" Label="@BackLabel" />
+        </article>
+    }
+</PageShell>
+
+@code {
+    /// <summary>True while the item is being fetched.</summary>
+    [Parameter] public bool Loading { get; set; }
+
+    /// <summary>The item title; null once loaded means the item was not found.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>The route id that was requested (shown in the not-found message).</summary>
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    /// <summary>Capitalized singular noun for the item type, e.g. "Article".</summary>
+    [Parameter, EditorRequired] public string Noun { get; set; } = string.Empty;
+
+    /// <summary>The item summary, used as the lede and meta description.</summary>
+    [Parameter] public string? Summary { get; set; }
+
+    /// <summary>Optional kicker above the title.</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>Optional JSON-LD override (e.g. a Person node for saints); defaults to Article.</summary>
+    [Parameter] public string? JsonLd { get; set; }
+
+    /// <summary>Text shown while loading, e.g. "Opening the article…".</summary>
+    [Parameter] public string LoadingText { get; set; } = "Loading\u2026";
+
+    /// <summary>The catalog route the back links return to.</summary>
+    [Parameter, EditorRequired] public string ListHref { get; set; } = string.Empty;
+
+    /// <summary>Back-link text at the foot of the item.</summary>
+    [Parameter] public string BackLabel { get; set; } = "Back";
+
+    /// <summary>Recovery-link text on the not-found state.</summary>
+    [Parameter] public string NotFoundBackLabel { get; set; } = "Return";
+
+    /// <summary>Breadcrumb stage root route.</summary>
+    [Parameter] public string? StageHref { get; set; }
+
+    /// <summary>Breadcrumb stage root label.</summary>
+    [Parameter] public string? StageLabel { get; set; }
+
+    /// <summary>Breadcrumb ancestor crumbs.</summary>
+    [Parameter] public IReadOnlyList<Breadcrumb.Crumb> Crumbs { get; set; } = Array.Empty<Breadcrumb.Crumb>();
+
+    /// <summary>Whether to show the unvetted-content notice.</summary>
+    [Parameter] public bool IsUnvetted { get; set; }
+
+    /// <summary>Noun used in the unvetted notice, e.g. "profile" or "account".</summary>
+    [Parameter] public string UnvettedNoun { get; set; } = "article";
+
+    /// <summary>Optional facts panel rendered above the body.</summary>
+    [Parameter] public RenderFragment? Facts { get; set; }
+
+    /// <summary>The rendered body HTML, shown inside <c>.content-body</c>.</summary>
+    [Parameter] public string? BodyHtml { get; set; }
+
+    /// <summary>Optional custom body that replaces <see cref="BodyHtml"/> (e.g. a prayer's text and Latin).</summary>
+    [Parameter] public RenderFragment? Body { get; set; }
+
+    /// <summary>Tags shown at the foot of the item.</summary>
+    [Parameter] public IReadOnlyList<string> Tags { get; set; } = [];
+
+    /// <summary>Sources shown at the foot of the item.</summary>
+    [Parameter] public IReadOnlyList<Respondeo.Content.Contracts.IContentSource> Sources { get; set; } = [];
+
+    /// <summary>Render tags above sources (saints, miracles) instead of below (articles).</summary>
+    [Parameter] public bool TagsBeforeSources { get; set; }
+}

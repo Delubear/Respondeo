@@ -13,8 +13,24 @@ public static class SiteMeta
     /// <summary>The site / brand name, as shown in titles and the Open Graph <c>og:site_name</c>.</summary>
     public const string SiteName = "Respondeo";
 
+    /// <summary>The separator between the segments of a page title (a spaced em dash).</summary>
+    public const string TitleSeparator = " \u2014 ";
+
+    /// <summary>The site tagline.</summary>
+    public const string Tagline = "Real questions. Reasoned answers.";
+
     /// <summary>The default page title used when a page supplies none.</summary>
-    public const string DefaultTitle = "Respondeo — Real questions. Reasoned answers.";
+    public const string DefaultTitle = SiteName + TitleSeparator + Tagline;
+
+    /// <summary>Joins title segments with <see cref="TitleSeparator"/>, skipping blank ones.</summary>
+    public static string JoinTitle(params string?[] parts) => string.Join(TitleSeparator, parts.Where(p => !string.IsNullOrWhiteSpace(p)));
+
+    /// <summary>The full document title for a page: its segments followed by the site name, or <see cref="DefaultTitle"/> when it has none.</summary>
+    public static string FullTitle(params string?[] parts)
+    {
+        var title = JoinTitle(parts);
+        return title.Length == 0 ? DefaultTitle : title + TitleSeparator + SiteName;
+    }
 
     /// <summary>
     /// The default meta description, used for the site root and as a fallback for pages that do not

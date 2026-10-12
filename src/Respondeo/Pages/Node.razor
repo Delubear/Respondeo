@@ -4,13 +4,8 @@
 @inject IBreadcrumbTrail Trail
 @inject IVisitedNodes Visited
 
-@if (_node is not null)
-{
-    <PageTitle>@_node.Title &mdash; Respondeo</PageTitle>
-    <SeoHead Title="@_node.Title" Description="@_node.Summary" Article="true" />
-}
-
-<Breadcrumb Crumbs="_breadcrumb.Ancestors" CurrentTitle="@_breadcrumb.CurrentTitle" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
+<PageShell Title="@(_node?.Title ?? _breadcrumb.CurrentTitle)" Description="@_node?.Summary" Article="true" SeoReady="@(_node is not null)"
+           Crumbs="_breadcrumb.Ancestors" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
 
 @if (_loading)
 {

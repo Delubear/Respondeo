@@ -1,45 +1,19 @@
 @page "/discover/saints/{Id}"
 @inject ISaintService Saints
-@inject IBreadcrumbTrail Trail
 @inject IFeastOfTheDay FeastOfTheDay
 @inject NavigationManager Nav
 @inject Respondeo.Services.IDayWatcher DayWatcher
 @implements IDisposable
 
-<PageTitle>@(_saint is null ? "Saint \u2014 Respondeo" : $"{_saint.Title} \u2014 Respondeo")</PageTitle>
-
-@if (_saint is not null)
-{
-    <SeoHead Title="@_saint.Title" Description="@_saint.Summary" JsonLd="@PersonJsonLd" />
-}
-
-<Breadcrumb CurrentTitle="@(_saint?.Title ?? "Saint")" StageHref="discover/saints" StageLabel="Saints" />
-
-@if (_loading)
-{
-    <Loading>Opening the life&hellip;</Loading>
-}
-else if (_saint is null)
-{
-    <ItemNotFound Title="Saint not found" BackHref="discover/saints" BackLabel="Return to the gallery">
-        There is no saint with the id &ldquo;<code>@Id</code>&rdquo;.
-    </ItemNotFound>
-}
-else
-{
-    <article class="content-article">
-        <PillarHeader Eyebrow="@string.Join(" \u00B7 ", _saint.Patronages)" Title="@_saint.Title" LedeText="@_saint.Summary" />
-
-        @if (_saint.IsUnvetted)
-        {
-            <ConstructionNotice>
-                <strong>Unvetted content.</strong>
-                <span>This profile is a work in progress and has not yet been reviewed; it may contain errors.</span>
-            </ConstructionNotice>
-        }
-
+<DetailPage Loading="_loading" Id="@Id" Noun="Saint" Title="@_saint?.Title" Summary="@_saint?.Summary"
+            Eyebrow="@(_saint is null ? null : string.Join(" \u00B7 ", _saint.Patronages))" JsonLd="@PersonJsonLd"
+            LoadingText="Opening the life…" StageHref="discover/saints" StageLabel="Saints"
+            ListHref="discover/saints" BackLabel="Back to all saints" NotFoundBackLabel="Return to the gallery"
+            IsUnvetted="@(_saint?.IsUnvetted ?? false)" UnvettedNoun="profile" BodyHtml="@_saint?.BodyHtml"
+            Tags="@(_saint?.Tags ?? [])" Sources="@(_saint?.Sources ?? [])" TagsBeforeSources="true">
+    <Facts>
         <FactPanel Class="saint__facts">
-            @if (!string.IsNullOrWhiteSpace(_saint.FeastDay))
+            @if (!string.IsNullOrWhiteSpace(_saint!.FeastDay))
             {
                 <Fact Label="Feast day">
                         @_saint.FeastDay
@@ -85,16 +59,8 @@ else
                 <Fact Label="Canonization" Wide="true">@string.Join(", ", _saint.Canonizations.Select(_facets.Canonization))</Fact>
             }
         </FactPanel>
-
-        <div class="content-body">
-            @((MarkupString)_saint.BodyHtml)
-        </div>
-
-        <TagList Tags="_saint.Tags" />
-        <SourcesList Sources="_saint.Sources" />
-        <BackLink Href="discover/saints" Label="Back to all saints" />
-    </article>
-}
+    </Facts>
+</DetailPage>
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;

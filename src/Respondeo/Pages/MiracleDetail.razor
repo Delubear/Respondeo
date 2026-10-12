@@ -1,41 +1,15 @@
 @page "/discover/miracles/{Id}"
 @inject IMiracleService Miracles
-@inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_miracle is null ? "Miracle \u2014 Respondeo" : $"{_miracle.Title} \u2014 Respondeo")</PageTitle>
-
-@if (_miracle is not null)
-{
-    <SeoHead Title="@_miracle.Title" Description="@_miracle.Summary" Article="true" />
-}
-
-<Breadcrumb CurrentTitle="@(_miracle?.Title ?? "Miracle")" StageHref="discover/miracles" StageLabel="Miracles" />
-
-@if (_loading)
-{
-    <Loading>Opening the account&hellip;</Loading>
-}
-else if (_miracle is null)
-{
-    <ItemNotFound Title="Miracle not found" BackHref="discover/miracles" BackLabel="Return to the catalog">
-        There is no miracle with the id &ldquo;<code>@Id</code>&rdquo;.
-    </ItemNotFound>
-}
-else
-{
-    <article class="content-article">
-        <PillarHeader Eyebrow="@string.Join(" · ", _miracle.Types.Select(_facets.Category))" Title="@_miracle.Title" LedeText="@_miracle.Summary" />
-
-        @if (_miracle.IsUnvetted)
-        {
-            <ConstructionNotice>
-                <strong>Unvetted content.</strong>
-                <span>This account is a work in progress and has not yet been reviewed; it may contain errors.</span>
-            </ConstructionNotice>
-        }
-
+<DetailPage Loading="_loading" Id="@Id" Noun="Miracle" Title="@_miracle?.Title" Summary="@_miracle?.Summary"
+            Eyebrow="@(_miracle is null ? null : string.Join(" \u00B7 ", _miracle.Types.Select(_facets.Category)))"
+            LoadingText="Opening the account…" StageHref="discover/miracles" StageLabel="Miracles"
+            ListHref="discover/miracles" BackLabel="Back to all miracles" NotFoundBackLabel="Return to the catalog"
+            IsUnvetted="@(_miracle?.IsUnvetted ?? false)" UnvettedNoun="account" BodyHtml="@_miracle?.BodyHtml"
+            Tags="@(_miracle?.Tags ?? [])" Sources="@(_miracle?.Sources ?? [])" TagsBeforeSources="true">
+    <Facts>
         <FactPanel Class="miracle__facts">
-            <Fact Label="Church's judgment">@_facets.Approval(_miracle.Approval)</Fact>
+            <Fact Label="Church's judgment">@_facets.Approval(_miracle!.Approval)</Fact>
             @if (!string.IsNullOrWhiteSpace(_miracle.Country))
             {
                 <Fact Label="Place">@_miracle.Country</Fact>
@@ -49,16 +23,8 @@ else
                 <Fact Label="Feast day">@_miracle.FeastDay</Fact>
             }
         </FactPanel>
-
-        <div class="content-body">
-            @((MarkupString)_miracle.BodyHtml)
-        </div>
-
-        <TagList Tags="_miracle.Tags" />
-        <SourcesList Sources="_miracle.Sources" />
-        <BackLink Href="discover/miracles" Label="Back to all miracles" />
-    </article>
-}
+    </Facts>
+</DetailPage>
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;

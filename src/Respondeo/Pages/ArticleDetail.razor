@@ -1,48 +1,11 @@
 @page "/discover/articles/{Id}"
 @inject IArticleService Articles
-@inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_article is null ? "Article \u2014 Respondeo" : $"{_article.Title} \u2014 Respondeo")</PageTitle>
-
-@if (_article is not null)
-{
-    <SeoHead Title="@_article.Title" Description="@_article.Summary" Article="true" />
-}
-
-<Breadcrumb CurrentTitle="@(_article?.Title ?? "Article")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
-
-@if (_loading)
-{
-    <Loading>Opening the article&hellip;</Loading>
-}
-else if (_article is null)
-{
-    <ItemNotFound Title="Article not found" BackHref="discover/articles" BackLabel="Return to all articles">
-        There is no article with the id &ldquo;<code>@Id</code>&rdquo;.
-    </ItemNotFound>
-}
-else
-{
-    <article class="content-article">
-        <PillarHeader Title="@_article.Title" LedeText="@_article.Summary" />
-
-        @if (_article.IsUnvetted)
-        {
-            <ConstructionNotice>
-                <strong>Unvetted content.</strong>
-                <span>This article is a work in progress and has not yet been reviewed; it may contain errors.</span>
-            </ConstructionNotice>
-        }
-
-        <div class="content-body">
-            @((MarkupString)_article.BodyHtml)
-        </div>
-
-        <SourcesList Sources="_article.Sources" />
-        <TagList Tags="_article.Tags" />
-        <BackLink Href="discover/articles" Label="Back to all articles" />
-    </article>
-}
+<DetailPage Loading="_loading" Id="@Id" Noun="Article" Title="@_article?.Title" Summary="@_article?.Summary"
+            LoadingText="Opening the article…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
+            ListHref="discover/articles" BackLabel="Back to all articles" NotFoundBackLabel="Return to all articles"
+            IsUnvetted="@(_article?.IsUnvetted ?? false)" BodyHtml="@_article?.BodyHtml"
+            Tags="@(_article?.Tags ?? [])" Sources="@(_article?.Sources ?? [])" />
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;

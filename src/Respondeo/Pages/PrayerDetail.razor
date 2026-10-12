@@ -1,33 +1,13 @@
 @page "/discover/prayers/{Id}"
 @inject IPrayerService Prayers
-@inject IBreadcrumbTrail Trail
 
-<PageTitle>@(_prayer is null ? "Prayer \u2014 Respondeo" : $"{_prayer.Title} \u2014 Respondeo")</PageTitle>
-
-@if (_prayer is not null)
-{
-    <SeoHead Title="@_prayer.Title" Description="@_prayer.Summary" Article="true" />
-}
-
-<Breadcrumb CurrentTitle="@(_prayer?.Title ?? "Prayer")" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
-
-@if (_loading)
-{
-    <Loading>Opening the prayer&hellip;</Loading>
-}
-else if (_prayer is null)
-{
-    <ItemNotFound Title="Prayer not found" BackHref="discover/prayers" BackLabel="Return to all prayers">
-        There is no prayer with the id &ldquo;<code>@Id</code>&rdquo;.
-    </ItemNotFound>
-}
-else
-{
-    <article class="content-article">
-        <PillarHeader Title="@_prayer.Title" LedeText="@_prayer.Summary" />
-
+<DetailPage Loading="_loading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
+            LoadingText="Opening the prayer…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
+            ListHref="discover/prayers" BackLabel="Back to all prayers" NotFoundBackLabel="Return to all prayers"
+            Tags="@(_prayer?.Tags ?? [])">
+    <Body>
         <div class="prayer__text">
-            @((MarkupString)_prayer.Html)
+            @((MarkupString)_prayer!.Html)
         </div>
 
         @if (!string.IsNullOrWhiteSpace(_prayer.LatinHtml))
@@ -44,11 +24,8 @@ else
         {
             <p class="prayer__attribution">@_prayer.Attribution</p>
         }
-
-        <TagList Tags="_prayer.Tags" />
-        <BackLink Href="discover/prayers" Label="Back to all prayers" />
-    </article>
-}
+    </Body>
+</DetailPage>
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
