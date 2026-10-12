@@ -9,18 +9,19 @@ namespace Respondeo.Services.Prayers;
 public sealed class PrayerLanguageService(IJSRuntime js) : IPrayerLanguageService
 {
     private const string StorageKey = "respondeo.prayerLanguage";
+    private readonly LocalStorage _storage = new(js);
 
     public bool ShowLatin { get; private set; }
 
     public async Task InitializeAsync()
     {
-        var stored = await js.InvokeAsync<string?>("localStorage.getItem", StorageKey);
+        var stored = await _storage.GetAsync(StorageKey);
         ShowLatin = stored == "la";
     }
 
     public async Task SetAsync(bool showLatin)
     {
         ShowLatin = showLatin;
-        await js.InvokeVoidAsync("localStorage.setItem", StorageKey, showLatin ? "la" : "en");
+        await _storage.SetAsync(StorageKey, showLatin ? "la" : "en");
     }
 }

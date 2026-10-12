@@ -10,10 +10,11 @@ namespace Respondeo.Services.Devotions;
 public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressService
 {
     private const string StorageKey = "respondeo.devotion.progress";
+    private readonly LocalStorage _storage = new(js);
 
     public async Task<DevotionProgress?> LoadAsync(string devotionId)
     {
-        var stored = await js.InvokeAsync<string?>("localStorage.getItem", StorageKey);
+        var stored = await _storage.GetAsync(StorageKey);
         if (string.IsNullOrWhiteSpace(stored))
         {
             return null;
@@ -37,7 +38,7 @@ public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressSe
     public async Task SaveAsync(DevotionProgress progress)
     {
         var json = JsonSerializer.Serialize(progress);
-        await js.InvokeVoidAsync("localStorage.setItem", StorageKey, json);
+        await _storage.SetAsync(StorageKey, json);
     }
 
     public async Task ClearAsync(string devotionId)
@@ -46,7 +47,7 @@ public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressSe
         var existing = await LoadAsync(devotionId);
         if (existing is not null)
         {
-            await js.InvokeVoidAsync("localStorage.removeItem", StorageKey);
+            await _storage.RemoveAsync(StorageKey);
         }
     }
 }

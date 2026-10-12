@@ -10,12 +10,13 @@ namespace Respondeo.Services;
 public sealed class ThemeService(IJSRuntime js) : IThemeService
 {
     private const string StorageKey = "respondeo.theme";
+    private readonly LocalStorage _storage = new(js);
 
     public Theme Current { get; private set; } = Theme.Light;
 
     public async Task InitializeAsync()
     {
-        var stored = await js.InvokeAsync<string?>("localStorage.getItem", StorageKey);
+        var stored = await _storage.GetAsync(StorageKey);
 
         Current = stored switch
         {
@@ -29,7 +30,7 @@ public sealed class ThemeService(IJSRuntime js) : IThemeService
     public async Task ToggleAsync()
     {
         Current = Current == Theme.Dark ? Theme.Light : Theme.Dark;
-        await js.InvokeVoidAsync("localStorage.setItem", StorageKey, Name(Current));
+        await _storage.SetAsync(StorageKey, Name(Current));
         await ApplyAsync();
     }
 
