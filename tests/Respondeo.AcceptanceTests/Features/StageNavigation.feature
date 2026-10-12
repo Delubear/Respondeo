@@ -23,3 +23,11 @@ Feature: Stage navigation
 	And I choose the first masthead stage
 	And I choose the first branch card
 	Then the breadcrumb should contain 1 step
+
+  Scenario: Following a card from the bottom of a page lands at the top of the next page on a phone
+	Given I am viewing on a 390 pixel wide screen
+	And I open the "why-god" stage directly
+	When I choose the first branch card
+	And I scroll to the bottom of the page
+	And I choose the last card on the page
+	Then the breadcrumb should be at the top of the screen

@@ -233,6 +233,37 @@ public sealed class NavigationSteps(PlaywrightContext context)
         Assert.Equal(path, new Uri(Page.Url).AbsolutePath);
     }
 
+    [When("I scroll to the bottom of the page")]
+    public async Task WhenIScrollToTheBottomOfThePage()
+    {
+        await Page.EvaluateAsync("() => window.scrollTo(0, document.documentElement.scrollHeight)");
+        await Page.WaitForFunctionAsync("() => window.scrollY > 0");
+    }
+
+    [When("I choose the last card on the page")]
+    public async Task WhenIChooseTheLastCardOnThePage()
+    {
+        // Wait for the URL to change so the assertion runs against the destination page, not the one we left.
+        var before = Page.Url;
+        await Page.Locator(".card").Last.ClickAsync();
+        await Page.WaitForURLAsync(url => url != before);
+        await Page.WaitForSelectorAsync(".breadcrumb");
+    }
+
+    [Then("the breadcrumb should be at the top of the screen")]
+    public async Task ThenTheBreadcrumbShouldBeAtTheTopOfTheScreen()
+    {
+        // Card navigation should land the reader on the breadcrumb (masthead scrolled out of view), even when
+        // leaving from the bottom of a long page and while the destination content renders asynchronously.
+        const string atTop = "() => { const b = document.querySelector('.breadcrumb'); return !!b && Math.abs(b.getBoundingClientRect().top) <= 2 && window.scrollY > 0; }";
+        await Page.WaitForFunctionAsync(atTop, null, new PageWaitForFunctionOptions { Timeout = 5000, PollingInterval = 50 });
+
+        // The scroll settle window runs for ~30 frames; confirm the position still holds once it has finished.
+        await Page.WaitForTimeoutAsync(1000);
+        var top = await Page.EvaluateAsync<double>("() => document.querySelector('.breadcrumb').getBoundingClientRect().top");
+        Assert.True(Math.Abs(top) <= 2, $"Expected the breadcrumb at the top of the screen after settling, but it was {top}px from the top.");
+    }
+
     // The off-ramp beneath the reel renders two .reel__pill links; match by the destination href.
     private ILocator OffRampPill(string slug) => Page.Locator($".reel__pill[href='{slug}']");
 }
