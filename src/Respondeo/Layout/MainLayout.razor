@@ -6,7 +6,7 @@
 @inject Respondeo.Services.ISeasonalPortrait Portrait
 @inject Respondeo.Services.IDayWatcher DayWatcher
 
-<div class="page">
+<div class="page @(_isHome ? null : "page--inner")">
     <a class="skip-link" href="#content">Skip to content</a>
 
     <ScrollAffordances />
@@ -79,6 +79,9 @@
     // appearance. The route-to-orb mapping is declared in FloatingGuideRoutes.
     private FloatingGuideState _guides = FloatingGuideRoutes.Resolve(string.Empty);
 
+    // Inner pages get a slimmer masthead on phones so the content starts higher on the screen.
+    private bool _isHome = true;
+
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
     protected override void OnInitialized()
@@ -111,7 +114,12 @@
     }
 
     // Resolve which floating orbs the current route shows from the single source of truth.
-    private void UpdateGuides() => _guides = FloatingGuideRoutes.Resolve(Nav.ToBaseRelativePath(Nav.Uri));
+    private void UpdateGuides()
+    {
+        var path = Nav.ToBaseRelativePath(Nav.Uri);
+        _guides = FloatingGuideRoutes.Resolve(path);
+        _isHome = path.Split('?', '#')[0].Length == 0;
+    }
 
     // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is otherwise silent to screen readers.
     // Post the new page title to a polite live region so assistive technology announces the destination page.

@@ -1,6 +1,16 @@
 @* Presentational breadcrumb of the visitor's navigation trail. Pure UI: it renders the already-resolved crumbs and the current node title. Trail building stays with the caller. *@
 @inject IJSRuntime JS
+@inject NavigationManager Nav
 @implements IAsyncDisposable
+
+@* SEO-only BreadcrumbList for search results. Built from the stable route hierarchy (root, linked
+   ancestors, current page); the per-visit "back" crumb and unlinked crumbs are left out. *@
+@if (!string.IsNullOrWhiteSpace(CurrentTitle))
+{
+    <HeadContent>
+        <script type="application/ld+json">@((MarkupString)BreadcrumbJsonLd)</script>
+    </HeadContent>
+}
 
 <nav class="breadcrumb" aria-label="Breadcrumb" @ref="_root">
     <button type="button" class="breadcrumb__chevron breadcrumb__chevron--prev" aria-label="Scroll breadcrumb left" tabindex="-1" @onclick="ScrollLeftAsync">
@@ -80,6 +90,21 @@
     public sealed record Crumb(string Id, string Title, string? Stage = null, string? Href = null, bool Plain = false);
 
     private static string CrumbHref(Crumb crumb) => crumb.Href ?? ContentRoutes.NodeHref(crumb.Id, crumb.Stage);
+
+    private string BreadcrumbJsonLd
+    {
+        get
+        {
+            var items = new List<(string Name, string Path)> { (SiteMeta.SiteName, string.Empty) };
+            if (StageHref is not null && !string.IsNullOrWhiteSpace(StageLabel))
+            {
+                items.Add((StageLabel, StageHref));
+            }
+            items.AddRange(Crumbs.Where(c => !c.Plain).Select(c => (c.Title, CrumbHref(c))));
+            items.Add((CurrentTitle!, Nav.ToBaseRelativePath(Nav.Uri).Split('?', '#')[0]));
+            return SiteMeta.BreadcrumbJsonLd(items);
+        }
+    }
 
     private ElementReference _root;
     private IJSObjectReference? _module;

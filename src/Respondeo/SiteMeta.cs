@@ -24,10 +24,16 @@ public static class SiteMeta
         "Real questions about God, Christ, and the Catholic Church, met with the reasoned answers of St. Thomas Aquinas. Browsable, searchable, and yours offline.";
 
     /// <summary>The site-relative path to the social preview image used for Open Graph / Twitter Cards.</summary>
-    public const string SocialImagePath = "icon-512.png";
+    public const string SocialImagePath = "og-image.png";
 
-    /// <summary>The absolute URL of the social preview image.</summary>
+    /// <summary>The absolute URL of the social preview image (1200x630, sized for large link cards).</summary>
     public const string SocialImageUrl = BaseUrl + "/" + SocialImagePath;
+
+    /// <summary>Alt text describing the social preview image.</summary>
+    public const string SocialImageAlt = "Respondeo: Real questions. Reasoned answers.";
+
+    /// <summary>The absolute URL of the square brand logo used as the publisher logo in structured data.</summary>
+    public const string LogoUrl = BaseUrl + "/icon-512.png";
 
     /// <summary>Builds an absolute URL from a site-relative path (e.g. <c>summa/prima-q002</c>).</summary>
     public static string AbsoluteUrl(string relativePath)
@@ -75,9 +81,28 @@ public static class SiteMeta
                 ["logo"] = new Dictionary<string, object?>
                 {
                     ["@type"] = "ImageObject",
-                    ["url"] = SocialImageUrl,
+                    ["url"] = LogoUrl,
                 },
             },
+        });
+
+    /// <summary>
+    /// Serializes a JSON-LD <c>BreadcrumbList</c> so search engines can show the page's place in the site
+    /// (e.g. Respondeo › Summa Theologiae › Question) instead of a bare URL in results. SEO-only; not rendered visibly.
+    /// </summary>
+    /// <param name="items">Ordered (name, site-relative path) pairs from the root to the current page.</param>
+    public static string BreadcrumbJsonLd(IEnumerable<(string Name, string Path)> items) =>
+        System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object?>
+        {
+            ["@context"] = "https://schema.org",
+            ["@type"] = "BreadcrumbList",
+            ["itemListElement"] = items.Select((item, index) => new Dictionary<string, object?>
+            {
+                ["@type"] = "ListItem",
+                ["position"] = index + 1,
+                ["name"] = item.Name,
+                ["item"] = AbsoluteUrl(item.Path),
+            }).ToList(),
         });
 
     /// <summary>

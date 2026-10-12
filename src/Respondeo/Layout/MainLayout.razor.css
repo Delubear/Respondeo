@@ -176,4 +176,23 @@
     .content__inner {
         padding: 1rem 1rem 2.5rem;
     }
+
+    /* Inner pages: a slim masthead (wordmark only) so the reading content starts higher on phones.
+       The home page keeps the full masthead with tagline and portrait as the site's front door. */
+    .page--inner .masthead {
+        padding: 0.7rem 5.5rem 0.6rem;
+    }
+
+    .page--inner .masthead__brand {
+        font-size: 1.2rem;
+    }
+
+    .page--inner .masthead__mark {
+        font-size: 1.1rem;
+    }
+
+    .page--inner .masthead__tag,
+    .page--inner .masthead__portrait {
+        display: none;
+    }
 }

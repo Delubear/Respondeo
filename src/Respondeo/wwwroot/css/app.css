@@ -438,6 +438,21 @@ h1, h2, h3 {
     margin-bottom: 1.5rem;
 }
 
+/* Illuminated-manuscript drop cap on the opening paragraph of long-form reading pages: Inquiry
+   nodes, articles, saints, and miracles. A floated first letter is used everywhere (rather than
+   initial-letter) so the cap renders the same in every browser. */
+article.content-article > .content-body > p:first-of-type::first-letter,
+article.node > .content-body > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    font-family: var(--display);
+    font-size: 3.6em;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 0.8;
+    color: var(--accent);
+}
+
 /* ---------------------------------------------------------------------------
    Shared collapsible accordion: one source of truth for every "sections"
    surface (inquiry node sections and Summa question articles). The component
@@ -608,25 +623,52 @@ details.accordion__item[open] > .accordion__trigger {
     }
 }
 
-/* ---------- Blazor error UI (retained from template) ---------- */
+/* ---------- Blazor error UI ---------- */
+/* Blazor sets display:block on unhandled errors; restyled as a site-themed bottom banner. */
 #blazor-error-ui {
-    background: #ffe9e9;
-    border-top: 3px solid var(--accent);
+    background: var(--masthead-bg);
+    color: var(--masthead-fg);
+    border-top: 3px solid var(--masthead-rule);
     bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
     display: none;
     left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    padding: 0.75rem 3rem calc(0.75rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
     position: fixed;
     width: 100%;
     z-index: var(--z-float);
+    text-align: center;
+}
+
+#blazor-error-ui .blazor-error-ui__mark {
+    margin-right: 0.5rem;
+}
+
+#blazor-error-ui .reload {
+    margin-left: 0.75rem;
+    color: var(--masthead-fg);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
 }
 
 #blazor-error-ui .dismiss {
     cursor: pointer;
     position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: 0;
+    color: var(--masthead-fg-soft);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+}
+
+#blazor-error-ui .dismiss:hover,
+#blazor-error-ui .dismiss:focus-visible {
+    color: var(--masthead-fg);
 }
 
 .app-loading {
@@ -1280,4 +1322,3 @@ input[type="search"]::-webkit-search-cancel-button {
 .prayer-embed__text > p:last-child {
     margin-bottom: 0;
 }
-
