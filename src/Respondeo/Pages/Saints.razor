@@ -32,13 +32,13 @@
                 <SearchBox Id="saints-search" Label="Search saints" Placeholder="e.g. Francis, missions, Africa..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                <TopicFilter Title="Era" Topics="_eras" Selected="_selectedEras" SelectedChanged="OnErasChanged" DisplayLabel="_facets.Era" />
-                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
-                <TopicFilter Title="State of life" Topics="_statesOfLife" Selected="_selectedStatesOfLife" SelectedChanged="OnStatesOfLifeChanged" DisplayLabel="_facets.StateOfLife" />
-                <TopicFilter Title="Designation" Topics="_designations" Selected="_selectedDesignations" SelectedChanged="OnDesignationsChanged" DisplayLabel="_facets.Designation" />
-                <TopicFilter Title="Sex" Topics="_sexes" Selected="_selectedSexes" SelectedChanged="OnSexesChanged" DisplayLabel="_facets.Sex" />
-                <TopicFilter Title="Religious order" Topics="_religiousOrders" Selected="_selectedReligiousOrders" SelectedChanged="OnReligiousOrdersChanged" DisplayLabel="_facets.ReligiousOrder" />
-                <TopicFilter Title="Canonization" Topics="_canonizations" Selected="_selectedCanonizations" SelectedChanged="OnCanonizationsChanged" DisplayLabel="_facets.Canonization" />
+                <TopicFilter Title="Era" Topics="_eras" Selected="_selectedEras" SelectedChanged="OnErasChanged" DisplayLabel="_facets.Era" Counts="Counts(0)" />
+                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" Counts="Counts(1)" />
+                <TopicFilter Title="State of life" Topics="_statesOfLife" Selected="_selectedStatesOfLife" SelectedChanged="OnStatesOfLifeChanged" DisplayLabel="_facets.StateOfLife" Counts="Counts(2)" />
+                <TopicFilter Title="Designation" Topics="_designations" Selected="_selectedDesignations" SelectedChanged="OnDesignationsChanged" DisplayLabel="_facets.Designation" Counts="Counts(3)" />
+                <TopicFilter Title="Sex" Topics="_sexes" Selected="_selectedSexes" SelectedChanged="OnSexesChanged" DisplayLabel="_facets.Sex" Counts="Counts(4)" />
+                <TopicFilter Title="Religious order" Topics="_religiousOrders" Selected="_selectedReligiousOrders" SelectedChanged="OnReligiousOrdersChanged" DisplayLabel="_facets.ReligiousOrder" Counts="Counts(5)" />
+                <TopicFilter Title="Canonization" Topics="_canonizations" Selected="_selectedCanonizations" SelectedChanged="OnCanonizationsChanged" DisplayLabel="_facets.Canonization" Counts="Counts(6)" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
             <ChildContent>
@@ -241,4 +241,35 @@
                 _selectedReligiousOrders,
                 _selectedCanonizations,
                 _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+
+    private static readonly IReadOnlySet<string> None = new HashSet<string>();
+
+    // Counts for one facet group (by position in the rail) apply every OTHER active filter and the search,
+    // so each option shows what picking it would add.
+    private IReadOnlyDictionary<string, int> Counts(int facet)
+    {
+        var rows = Browser.Filter(
+            _all ?? [],
+            _facets,
+            _browse.Query,
+            facet == 0 ? None : _selectedEras,
+            facet == 1 ? None : _selectedRegions,
+            facet == 2 ? None : _selectedStatesOfLife,
+            facet == 3 ? None : _selectedDesignations,
+            facet == 4 ? None : _selectedSexes,
+            facet == 5 ? None : _selectedReligiousOrders,
+            facet == 6 ? None : _selectedCanonizations,
+            _sortOptions[0]);
+
+        return facet switch
+        {
+            0 => FacetCounts.Of(rows, s => s.Era),
+            1 => FacetCounts.Of(rows, s => s.Region),
+            2 => FacetCounts.Of(rows, s => s.StatesOfLife),
+            3 => FacetCounts.Of(rows, s => s.Designations),
+            4 => FacetCounts.Of(rows, s => s.Sex),
+            5 => FacetCounts.Of(rows, s => s.ReligiousOrders),
+            _ => FacetCounts.Of(rows, s => s.Canonizations),
+        };
+    }
 }

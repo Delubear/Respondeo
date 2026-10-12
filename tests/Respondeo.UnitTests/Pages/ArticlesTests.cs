@@ -119,7 +119,7 @@ public class ArticlesTests : TestContext
         var tagsHeading = cut.FindAll("h2.filter-rail__title").Any(h => h.TextContent.Trim() == "Tags");
         Assert.True(tagsHeading);
 
-        var options = cut.FindAll("label.topic-filter__option").Select(o => o.TextContent.Trim()).ToList();
+        var options = cut.FindAll(".topic-filter__label").Select(o => o.TextContent.Trim()).ToList();
         Assert.Contains("Eucharist", options);
         Assert.Contains("Confession", options);
     }
@@ -131,7 +131,7 @@ public class ArticlesTests : TestContext
 
         // The "Eucharist" tag belongs only to the eucharist article, not to confession.
         var checkbox = cut.FindAll("label.topic-filter__option")
-            .First(o => o.TextContent.Trim() == "Eucharist")
+            .First(o => o.QuerySelector(".topic-filter__label")!.TextContent.Trim() == "Eucharist")
             .QuerySelector("input[type=checkbox]")!;
         checkbox.Change(true);
 

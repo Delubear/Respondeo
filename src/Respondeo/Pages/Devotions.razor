@@ -35,7 +35,8 @@
             <Rail>
                 @if (_kinds.Count > 0)
                 {
-                    <TopicFilter Title="Kind" Topics="_kindLabels" Selected="_selectedKinds" SelectedChanged="OnKindsChanged" />
+                    <TopicFilter Title="Kind" Topics="_kindLabels" Selected="_selectedKinds"
+                                 SelectedChanged="OnKindsChanged" Counts="KindCounts" />
                 }
                 <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
             </Rail>
@@ -125,6 +126,10 @@
     // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
     private IReadOnlyList<DevotionSummary> Filtered =>
         _devotions is null ? [] : Browser.Filter(_devotions, _query, _selectedKinds, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+
+    // Kind counts apply only the search (kind is the sole facet); kinds are selected by display label, so count by label.
+    private IReadOnlyDictionary<string, int> KindCounts =>
+        FacetCounts.Of(Browser.Filter(_devotions ?? [], _query, new HashSet<string>(), _sortOptions[0]), d => Browser.FormatKind(d.Kind) ?? d.Kind);
 
     // The card's meta pills: just the kind tag. The draft/unvetted state is shown by the card's
     // "In progress" ribbon (via Status), so it is deliberately not duplicated as a pill here.

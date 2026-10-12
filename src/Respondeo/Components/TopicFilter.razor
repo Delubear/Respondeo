@@ -1,10 +1,8 @@
-@* Topic filter sidebar for the articles index. Owns only selection UI; the parent owns the topic list and decides what to do with the selection (two-way bound via @bind-Selected). *@
+@* Topic filter sidebar for the browse pages. Owns only selection UI; the parent owns the topic list and decides what to do with the selection (two-way bound via @bind-Selected).
+   A group with no topics renders nothing, so facets with no content never appear. When Counts is supplied, each option shows how many results it would yield
+   alongside the other active filters; zero-count options are dimmed and disabled (but stay in place so the rail never jumps), except selected ones, which stay clickable so they can be cleared. *@
 
-@if (Topics.Count == 0)
-{
-    <p class="topic-filter__empty">No topics yet.</p>
-}
-else
+@if (Topics.Count > 0)
 {
     @if (!string.IsNullOrWhiteSpace(Title))
     {
@@ -18,9 +16,16 @@ else
     <div class="topic-filter">
         @foreach (var topic in Topics)
         {
-            <label class="topic-filter__option">
-                <input type="checkbox" checked="@IsSelected(topic)" @onchange="() => ToggleTopic(topic)" />
-                <span>@Label(topic)</span>
+            var count = Count(topic);
+            var selected = IsSelected(topic);
+            var unavailable = count == 0 && !selected;
+            <label class="topic-filter__option @(unavailable ? "topic-filter__option--empty" : null)">
+                <input type="checkbox" checked="@selected" disabled="@unavailable" @onchange="() => ToggleTopic(topic)" />
+                <span class="topic-filter__label">@Label(topic)</span>
+                @if (count is { } n)
+                {
+                    <span class="topic-filter__count" aria-label="@($"{n} {(n == 1 ? "result" : "results")}")">@n</span>
+                }
             </label>
         }
     </div>
@@ -50,6 +55,14 @@ else
     /// Lets callers store neutral slugs in <see cref="Selected"/> while displaying friendly labels.
     /// </summary>
     [Parameter] public Func<string, string>? DisplayLabel { get; set; }
+
+    /// <summary>
+    /// Optional per-topic result counts (keyed by topic value), computed against the other active filters and the search.
+    /// When null no counts are shown and every option stays enabled. A topic missing from the map counts as zero.
+    /// </summary>
+    [Parameter] public IReadOnlyDictionary<string, int>? Counts { get; set; }
+
+    private int? Count(string topic) => Counts is null ? null : Counts.GetValueOrDefault(topic);
 
     private bool IsSelected(string topic) => Selected.Contains(topic);
 

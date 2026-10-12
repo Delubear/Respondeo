@@ -33,7 +33,8 @@
             <Rail>
                 @if (_tags.Count > 0)
                 {
-                    <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" />
+                    <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged"
+                                 DisplayLabel="TagLabel.Format" Counts="TagCounts" />
                 }
                 <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
@@ -121,4 +122,8 @@
 
     private IReadOnlyList<ArticleRow> Filtered =>
         _articles is null ? [] : Browser.Filter(_articles, _query, _selectedTags, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+
+    // Tag counts apply only the search (tags are the sole facet).
+    private IReadOnlyDictionary<string, int> TagCounts =>
+        FacetCounts.Of(Browser.Filter(_articles ?? [], _query, new HashSet<string>(), _sortOptions[0]), a => a.Tags);
 }

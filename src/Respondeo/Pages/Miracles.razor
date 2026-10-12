@@ -29,9 +29,9 @@
                 <SearchBox Id="miracles-search" Label="Search miracles" Placeholder="e.g. Lanciano, healing, Italy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                <TopicFilter Title="Kind" Topics="_types" Selected="_selectedTypes" SelectedChanged="OnTypesChanged" DisplayLabel="_facets.Category" />
-                <TopicFilter Title="Church's judgment" Topics="_approvals" Selected="_selectedApprovals" SelectedChanged="OnApprovalsChanged" DisplayLabel="_facets.Approval" />
-                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" />
+                <TopicFilter Title="Kind" Topics="_types" Selected="_selectedTypes" SelectedChanged="OnTypesChanged" DisplayLabel="_facets.Category" Counts="TypeCounts" />
+                <TopicFilter Title="Church's judgment" Topics="_approvals" Selected="_selectedApprovals" SelectedChanged="OnApprovalsChanged" DisplayLabel="_facets.Approval" Counts="ApprovalCounts" />
+                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" Counts="RegionCounts" />
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
             <ChildContent>
@@ -153,4 +153,16 @@
                 _selectedApprovals,
                 _selectedRegions,
                 _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+
+    // Each facet's counts apply every OTHER active filter (and the search), so an option shows what picking it would add.
+    private static readonly IReadOnlySet<string> None = new HashSet<string>();
+
+    private IReadOnlyDictionary<string, int> TypeCounts =>
+        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, None, _selectedApprovals, _selectedRegions, _sortOptions[0]), m => m.Types);
+
+    private IReadOnlyDictionary<string, int> ApprovalCounts =>
+        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, _selectedTypes, None, _selectedRegions, _sortOptions[0]), m => m.Approval);
+
+    private IReadOnlyDictionary<string, int> RegionCounts =>
+        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, _selectedTypes, _selectedApprovals, None, _sortOptions[0]), m => m.Region);
 }

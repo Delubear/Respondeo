@@ -15,6 +15,20 @@
     color: var(--ink);
 }
 
+.topic-filter__count {
+    margin-left: auto;
+    padding-left: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+}
+
+/* No results alongside the other active filters: kept in place (so the rail never jumps) but dimmed and inert. */
+.topic-filter__option--empty {
+    opacity: 0.45;
+    cursor: default;
+}
+
 .topic-filter__header {
     display: flex;
     align-items: baseline;
@@ -73,15 +87,15 @@
     color: var(--ink);
 }
 
-.topic-filter__empty {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-}
-
 @media (max-width: 40rem) {
     .topic-filter {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 0.75rem 1.25rem;
+    }
+
+    .topic-filter__count {
+        margin-left: 0;
+        padding-left: 0;
     }
 }

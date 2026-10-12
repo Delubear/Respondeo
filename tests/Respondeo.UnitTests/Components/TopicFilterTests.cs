@@ -18,12 +18,29 @@ public class TopicFilterTests : TestContext
     }
 
     [Fact]
-    public void Shows_an_empty_message_when_no_topics()
+    public void Renders_nothing_when_no_topics()
     {
-        var cut = RenderComponent<TopicFilter>(p => p.Add(c => c.Topics, Array.Empty<string>()));
+        var cut = RenderComponent<TopicFilter>(p => p
+            .Add(c => c.Topics, Array.Empty<string>())
+            .Add(c => c.Title, "Kind"));
 
-        Assert.NotNull(cut.Find("p.topic-filter__empty"));
-        Assert.Empty(cut.FindAll("label.topic-filter__option"));
+        Assert.Empty(cut.Markup.Trim());
+    }
+
+    [Fact]
+    public void Shows_counts_and_disables_zero_count_options_unless_selected()
+    {
+        var cut = RenderComponent<TopicFilter>(p => p
+            .Add(c => c.Topics, ["a", "b", "c"])
+            .Add(c => c.Selected, new HashSet<string>(["c"], StringComparer.OrdinalIgnoreCase))
+            .Add(c => c.Counts, new Dictionary<string, int> { ["a"] = 3 }));
+
+        var options = cut.FindAll("label.topic-filter__option").ToList();
+        Assert.Equal("3", options[0].QuerySelector(".topic-filter__count")!.TextContent);
+        Assert.False(options[0].QuerySelector("input")!.HasAttribute("disabled"));
+        Assert.True(options[1].QuerySelector("input")!.HasAttribute("disabled"));
+        Assert.Contains("topic-filter__option--empty", options[1].ClassName);
+        Assert.False(options[2].QuerySelector("input")!.HasAttribute("disabled"));
     }
 
     [Fact]
