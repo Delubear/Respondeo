@@ -5,6 +5,7 @@
 @inject Respondeo.Services.FeatureFlags Features
 @inject Respondeo.Services.ISeasonalPortrait Portrait
 @inject Respondeo.Services.IDayWatcher DayWatcher
+@inject IJSRuntime JS
 
 <div class="page page--inner @(_mastheadExpanded ? "page--masthead-open" : null)">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -12,7 +13,7 @@
     <ScrollAffordances />
 
     @* The masthead and pillar switcher form one drag zone on phones: drag down to open the full masthead, up to close. *@
-    <div class="masthead-zone" @ontouchstart="OnMastheadTouchStart" @ontouchend="OnMastheadTouchEnd">
+    <div class="masthead-zone" @ref="_mastheadZone">
     <header class="masthead">
         <ThemeToggle />
         @if (Features.AquinasPortrait)
@@ -90,43 +91,19 @@
     private FloatingGuideState _guides = FloatingGuideRoutes.Resolve(string.Empty);
 
     // On phones the slim masthead can be dragged open to the full one; the choice persists across navigation.
+    // The drag itself runs in js/masthead-drag.js (per-frame finger tracking is too chatty for interop) and
+    // reports only the final state here.
     private bool _mastheadExpanded;
-
-    // Minimum vertical travel (CSS px) before a masthead drag counts as open/close rather than a tap.
-    private const double MastheadSwipeThreshold = 24;
-    private double? _touchStartX;
-    private double? _touchStartY;
+    private ElementReference _mastheadZone;
+    private DotNetObjectReference<MainLayout>? _selfRef;
 
     private void ToggleMasthead() => _mastheadExpanded = !_mastheadExpanded;
 
-    private void OnMastheadTouchStart(TouchEventArgs e)
+    [JSInvokable]
+    public void SetMastheadExpanded(bool expanded)
     {
-        if (e.Touches.Length != 1)
-        {
-            _touchStartX = _touchStartY = null;
-            return;
-        }
-
-        _touchStartX = e.Touches[0].ClientX;
-        _touchStartY = e.Touches[0].ClientY;
-    }
-
-    private void OnMastheadTouchEnd(TouchEventArgs e)
-    {
-        if (_touchStartY is not { } startY || _touchStartX is not { } startX || e.ChangedTouches.Length == 0)
-        {
-            return;
-        }
-
-        _touchStartX = _touchStartY = null;
-        var dy = e.ChangedTouches[0].ClientY - startY;
-        var dx = e.ChangedTouches[0].ClientX - startX;
-        if (Math.Abs(dy) < MastheadSwipeThreshold || Math.Abs(dy) < Math.Abs(dx))
-        {
-            return;
-        }
-
-        _mastheadExpanded = dy > 0;
+        _mastheadExpanded = expanded;
+        StateHasChanged();
     }
 
     // Cloudflare Web Analytics (loaded in index.html) auto-tracks SPA route changes via the History API, so no manual pageview call is needed here.
@@ -146,6 +123,8 @@
         if (firstRender)
         {
             await DayWatcher.StartAsync();
+            _selfRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("respondeoMasthead.attach", _mastheadZone, _selfRef);
         }
     }
 
@@ -185,6 +164,7 @@
     {
         Nav.LocationChanged -= OnLocationChanged;
         DayWatcher.DayChanged -= OnDayChanged;
+        _selfRef?.Dispose();
     }
 }
 

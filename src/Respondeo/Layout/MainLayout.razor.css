@@ -185,10 +185,22 @@
     /* Inner pages: a slim masthead (wordmark only) so the reading content starts higher on phones.
        Dragging the masthead down opens the full one and up closes it; the choice persists across navigation.
        touch-action stops vertical drags on the masthead from scrolling or triggering the browser's
-       pull-to-refresh, which stays available on the content below. */
+       pull-to-refresh, which stays available on the content below.
+       --mp is the open progress (0 = slim, 1 = full). The class sets the resting value; js/masthead-drag.js
+       overrides it inline while the finger moves, and the transition eases it to rest on release. */
     .masthead-zone {
         position: relative;
         touch-action: pan-x;
+        --mp: 0;
+        transition: --mp 0.25s var(--ease-page, ease-out);
+    }
+
+    .page--masthead-open .masthead-zone {
+        --mp: 1;
+    }
+
+    .masthead-zone--dragging {
+        transition: none;
     }
 
     /* A small grab handle below the pillar switcher hints that the zone can be dragged. */
@@ -206,21 +218,27 @@
         pointer-events: none;
     }
 
-    .page--inner:not(.page--masthead-open) .masthead {
-        padding: 0.7rem 5.5rem 0.3rem;
+    .page--inner .masthead {
+        padding: calc(0.7rem + 1.05rem * var(--mp)) calc(5.5rem - 4.5rem * var(--mp)) calc(0.3rem + 0.95rem * var(--mp));
     }
 
-    .page--inner:not(.page--masthead-open) .masthead__brand {
-        font-size: 1.2rem;
+    .page--inner .masthead__brand {
+        font-size: calc(1.2rem + 0.3rem * var(--mp));
     }
 
-    .page--inner:not(.page--masthead-open) .masthead__mark {
-        font-size: 1.1rem;
+    .page--inner .masthead__mark {
+        font-size: calc(1.1rem + 0.4rem * var(--mp));
     }
 
-    .page--inner:not(.page--masthead-open) .masthead__tag,
-    .page--inner:not(.page--masthead-open) .masthead__portrait {
-        display: none;
+    .page--inner .masthead__tag {
+        max-height: calc(2.5rem * max(var(--mp), 0));
+        margin-top: calc(0.35rem * var(--mp));
+        overflow: hidden;
+        opacity: var(--mp);
+    }
+
+    .page--inner .masthead__portrait {
+        opacity: calc(0.16 * var(--mp));
     }
 
     /* Keyboard/screen-reader fallback for the drag: visually hidden until focused, then shown left of the theme toggle. */
