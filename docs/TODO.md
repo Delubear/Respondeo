@@ -188,8 +188,10 @@ here as editorial intent.
 JSON-LD) only materializes after the browser boots WASM and renders client-side. That splits
 visitors in two:
 
-- **JS-capable crawlers (Google, Bing)** run the app and already see full per-route metadata and
-  structured data. SEO for the engines that matter most is effectively fine today.
+- **JS-capable crawlers (Google, Bing)** run the app and see full per-route metadata and
+  structured data, *provided the URL answers HTTP 200*. Until the deploy wrote per-route entry
+  pages (see below), every deep link was served by the `404.html` fallback with status 404, so
+  Google indexed only `/`. That is now fixed without prerendering.
 - **Non-JS scrapers (some social-link unfurlers, smaller/non-JS bots)** only ever see the static
   shell, so every URL shows the same site-level title/description/preview card.
 
@@ -208,7 +210,7 @@ out. The fit is **build-time static snapshots**:
    prerender list and `sitemap.xml` stay in lockstep by construction.
 2. Serve a locally-published production build.
 3. Use a headless browser (Playwright/Puppeteer) to visit each route — running the real WASM app —
-   and save the hydrated DOM to a per-route `…/index.html` (needed for GitHub Pages per-URL routing).
+   and save the hydrated DOM over that route's existing `<route>.html` entry page.
 4. Wire the prerender step into the publish pipeline, after sitemap generation.
 
 **Why it preserves WASM-first.** Each snapshot keeps the normal Blazor bootstrap: browsers hydrate
@@ -218,16 +220,22 @@ static (no server, no cache-header needs).
 **Costs / constraints to weigh.**
 
 - Adds a Node + headless-browser dependency and extra publish time (hundreds of routes to render).
-- Requires emitting per-route output files and handling GitHub Pages SPA routing (per-route
-  `index.html`, or the `404.html` fallback trick).
-- Concrete payoff is mainly **better social link previews + non-JS bots**, since Google/Bing already
-  execute the app's JS. Decide whether that payoff justifies the pipeline complexity.
+- Per-route output files already exist: the deploy's "Add per-route entry pages" step copies
+  `index.html` to `<route>.html` for every sitemap URL so each route answers HTTP 200. Prerendering
+  would overwrite those same files with hydrated markup instead of the generic shell. Keep the
+  `<route>.html` naming (not `<route>/index.html`), which serves `/route` without a trailing-slash
+  redirect that would conflict with the canonical URLs.
+- Concrete payoff is now only **better social link previews + non-JS bots**, since Google/Bing
+  execute the app's JS and every route returns 200. Decide whether that payoff justifies the
+  pipeline complexity.
 
 **Related, already done (for context).**
 
 - [x] Per-page `SeoHead` (title, description, canonical, Open Graph, Twitter Card, JSON-LD).
 - [x] Static `index.html` baseline for non-JS scrapers (full OG/Twitter/canonical, matches `SiteMeta`).
 - [x] `sitemap.xml` + `robots.txt` generated from content manifests at build time.
+- [x] Every sitemap route served with HTTP 200 (per-route `index.html` copies in the deploy), so
+  Google can index deep links instead of rejecting them as 404.
 - [x] Saint detail pages emit a schema.org `Person` JSON-LD node (`SiteMeta.PersonJsonLd`) rather than
   a generic `Article`.
 - [ ] Consider: richer JSON-LD types for other pillars if a clear schema.org fit exists (most are
