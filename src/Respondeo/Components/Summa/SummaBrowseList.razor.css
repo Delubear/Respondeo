@@ -160,7 +160,7 @@
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     .summa__question-link {
         grid-template-columns: 2.5rem 1fr;
     }

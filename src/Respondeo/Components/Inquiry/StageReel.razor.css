@@ -85,7 +85,7 @@
     text-decoration: none;
     color: inherit;
     /* Peeking neighbors read as quieter until they reach center (reinforced by the turn/JS rules). */
-    transition: color 0.3s ease;
+    transition: color var(--dur-3) var(--ease-page);
 }
 
 .reel__q-text {
@@ -127,7 +127,7 @@
     color: var(--accent);
     opacity: 0;
     transform: translateY(-0.35rem);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity var(--dur-3) var(--ease-page), transform var(--dur-3) var(--ease-page);
 }
 
 .reel__q-cue-arrow {
@@ -135,7 +135,7 @@
     height: 1px;
     position: relative;
     background: currentColor;
-    transition: transform 0.3s ease;
+    transition: transform var(--dur-3) var(--ease-page);
 }
 
 .reel__q-cue-arrow::after {
@@ -174,7 +174,7 @@
    animated value and overrides the static .is-centered opacity below, which would keep every card
    visible. Visibility is owned solely by the static rules on .reel__step / .is-centered. */
 .reel.is-ready .reel__step {
-    animation: reel-enter 0.5s ease both;
+    animation: reel-enter var(--dur-4) var(--ease-page) both;
 }
 
 @keyframes reel-enter {
@@ -197,14 +197,14 @@
     animation-timeline: view(inline);
     animation-range: cover;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity var(--dur-3) var(--ease-page);
 }
 
 /* When both the entrance and the native turn apply (the reel has is-ready AND reel--native), run
    both animations rather than letting the higher-specificity entrance rule override the turn. Only
    reel-turn is tied to the view timeline; reel-enter plays once on the default (time) timeline. */
 .reel--native.is-ready .reel__step {
-    animation: reel-enter 0.5s ease both, reel-turn linear both;
+    animation: reel-enter var(--dur-4) var(--ease-page) both, reel-turn linear both;
     animation-timeline: auto, view(inline);
     animation-range: normal, cover;
 }
@@ -229,7 +229,7 @@
 .reel--js .reel__step {
     opacity: 0;
     transform: scale(0.9);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity var(--dur-3) var(--ease-page), transform var(--dur-3) var(--ease-page);
 }
 
 .reel--js .reel__step.is-in-view {
@@ -268,7 +268,7 @@
     background: transparent;
     cursor: pointer;
     opacity: 0.85;
-    transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    transition: opacity var(--dur-3) var(--ease-page), transform var(--dur-3) var(--ease-page), background var(--dur-3) var(--ease-page);
 }
 
 .reel-dots ::deep .reel-dots__dot:hover,
@@ -308,7 +308,7 @@
     cursor: pointer;
     font: inherit;
     opacity: 1;
-    transition: opacity 0.3s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: opacity var(--dur-3) var(--ease-page), color var(--dur-2) var(--ease-page), transform var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page);
 }
 
 .reel__hint:hover,
@@ -438,7 +438,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     .reel-wrap {
         padding-bottom: 1.5rem;
     }

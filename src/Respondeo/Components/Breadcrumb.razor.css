@@ -1,7 +1,7 @@
 .breadcrumb {
     position: sticky;
     top: 0;
-    z-index: 5;
+    z-index: var(--z-sticky);
     background: var(--paper);
     font-size: 0.85rem;
     letter-spacing: 0.03em;

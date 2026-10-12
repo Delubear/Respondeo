@@ -7,7 +7,7 @@
     position: fixed;
     right: 1.25rem;
     bottom: 1.25rem;
-    z-index: 1000;
+    z-index: var(--z-float);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -24,7 +24,7 @@
        so an orb persists as one element across navigations within its area (no re-animation); this
        keyframe only runs when the orb genuinely first mounts (entering its area). The bottom
        transition above handles the slot slide when it raises/stacks above the back-to-top arrow. */
-    animation: float-circle-enter 0.15s ease both;
+    animation: float-circle-enter var(--dur-2) var(--ease-page) both;
 }
 
 @keyframes float-circle-enter {

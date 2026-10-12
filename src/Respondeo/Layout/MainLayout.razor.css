@@ -153,7 +153,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     .masthead__brand {
         font-size: 1.5rem;
     }

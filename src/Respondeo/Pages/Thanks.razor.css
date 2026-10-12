@@ -3,9 +3,9 @@
 .thanks__support {
     margin: 0 0 1.25rem;
     padding: 1rem 1.25rem;
-    border-left: 3px solid var(--gold, #c8a24a);
-    background: var(--surface-raised, rgba(200, 162, 74, 0.08));
-    border-radius: 0 6px 6px 0;
+    border-left: 3px solid var(--gold);
+    background: color-mix(in srgb, var(--gold) 8%, transparent);
+    border-radius: 0 var(--radius) var(--radius) 0;
     line-height: 1.6;
     color: var(--ink-soft);
 }

@@ -21,7 +21,7 @@
 
 .devotion__lang-btn.is-active {
     background: var(--accent);
-    color: var(--on-accent, #fff);
+    color: var(--accent-ink);
 }
 
 .devotion__lang-btn:focus-visible {
@@ -35,7 +35,7 @@
 }
 
 /* On mobile the immersive exit row carries a compact EN/LA button beside the theme toggle. */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     /* Mirror the ThemeToggle's shape so the two controls read as a matched pair. */
     .devotion__lang-mini {
         display: inline-flex;

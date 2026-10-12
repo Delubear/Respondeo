@@ -139,6 +139,30 @@
     --dur-1: 0.12s;
     --dur-2: 0.16s;
     --dur-3: 0.3s;
+    --dur-4: 0.5s;
+    /* Stacking layers, lowest to highest, so overlapping surfaces never fight over magic numbers. */
+    --z-raised: 1;
+    --z-sticky: 5;
+    --z-prompt: 60;
+    --z-float: 1000;
+    --z-skip: 2000;
+    /* Modular type scale (~1.2 ratio) for UI chrome; prose keeps its own rhythm. */
+    --fs-xs: 0.75rem;
+    --fs-sm: 0.875rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.2rem;
+    --fs-xl: 1.44rem;
+    --fs-2xl: 1.728rem;
+    /* Liturgical vestment colors. These are fixed by the calendar, not the theme. */
+    --lit-violet: #6b4e9e;
+    --lit-white: #fdfbf4;
+    --lit-green: #2f7d4f;
+    --lit-red: #a4303a;
+    --lit-rose: #e3a7bc;
+    --lit-black: #2a2a2a;
+    /* Breakpoints (custom properties cannot be used in @media, so this is the reference list):
+       40rem = phone/bottom-sheet layout (the standard mobile breakpoint); 36rem = narrow prose
+       tweaks; 58rem = Stage reel wide layout. Nav components use content-driven widths. */
 }
 
 /* ---------- Dark theme ---------- */
@@ -177,7 +201,7 @@
     position: absolute;
     left: 0.5rem;
     top: -3rem;
-    z-index: 2000;
+    z-index: var(--z-skip);
     background: var(--ink);
     color: var(--parchment);
     padding: 0.55rem 1rem;
@@ -529,7 +553,7 @@ details.accordion__item[open] > .accordion__trigger {
    Scope this to text-entry fields (and textareas) only: checkboxes, radios, and other non-keyboard
    inputs also match :focus but open no keyboard, so they must not hide the orbs (e.g. filter
    checkboxes on the browse pages). */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .back-to-top,
     body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .float-circle {
         display: none;
@@ -540,7 +564,7 @@ details.accordion__item[open] > .accordion__trigger {
    circle controls (back-to-top arrow and the guide circles) overlap and block its action
    buttons. While the prompt is visible, hide those controls so the prompt is fully tappable;
    they reappear once the prompt is installed or dismissed. */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     body:has(.install-prompt) .back-to-top,
     body:has(.install-prompt) .float-circle {
         display: none;
@@ -558,7 +582,7 @@ details.accordion__item[open] > .accordion__trigger {
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
     position: fixed;
     width: 100%;
-    z-index: 1000;
+    z-index: var(--z-float);
 }
 
 #blazor-error-ui .dismiss {
@@ -691,7 +715,7 @@ details.accordion__item[open] > .accordion__trigger {
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     html, body {
         font-size: 1.05rem;
     }
@@ -726,7 +750,7 @@ details.accordion__item[open] > .accordion__trigger {
     position: fixed;
     left: 50%;
     bottom: 1rem;
-    z-index: 1000;
+    z-index: var(--z-float);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -737,12 +761,12 @@ details.accordion__item[open] > .accordion__trigger {
     background: var(--parchment);
     color: var(--ink);
     border: 1px solid var(--rule);
-    border-radius: 0.5rem;
+    border-radius: var(--radius);
     box-shadow: 0 0.5rem 1.5rem var(--shadow);
     font-family: var(--serif);
-    font-size: 1rem;
+    font-size: var(--fs-md);
     opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: transform var(--dur-3) var(--ease-page), opacity var(--dur-3) var(--ease-page);
 }
 
 .pwa-update.is-visible {
@@ -771,7 +795,7 @@ details.accordion__item[open] > .accordion__trigger {
 
 @media (prefers-reduced-motion: reduce) {
     .pwa-update {
-        transition: opacity 0.25s ease;
+        transition: opacity var(--dur-3) var(--ease-page);
     }
 }
 
@@ -851,7 +875,7 @@ input[type="search"]::-webkit-search-cancel-button {
    gated to immersive mode: applying it to every page turned normal block flow into a min-height:0
    flex column, which broke width/scroll measurement on pages like the Home reel and let the column
    scroll vertically past the footer. */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     body.is-immersive .content {
         display: flex;
         flex-direction: column;
@@ -872,7 +896,7 @@ input[type="search"]::-webkit-search-cancel-button {
    on phones, where the stacked masthead/nav/footer otherwise claim most of the screen; desktops keep
    their full chrome. These rules live here (not in a scoped stylesheet) because the nav and footer are
    separate components, so a global selector is needed to reach them all. */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     body.is-immersive .masthead,
     body.is-immersive .pillarnav,
     body.is-immersive .mastnav,

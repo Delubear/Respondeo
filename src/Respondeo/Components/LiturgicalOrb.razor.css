@@ -131,9 +131,9 @@
     height: 1.7rem;
 }
 
-.liturgy__swatch--violet { background: #6b4e9e; }
-.liturgy__swatch--white { background: #fdfbf4; }
-.liturgy__swatch--green { background: #2f7d4f; }
-.liturgy__swatch--red { background: #a4303a; }
-.liturgy__swatch--rose { background: #e3a7bc; }
-.liturgy__swatch--black { background: #2a2a2a; }
+.liturgy__swatch--violet { background: var(--lit-violet); }
+.liturgy__swatch--white { background: var(--lit-white); }
+.liturgy__swatch--green { background: var(--lit-green); }
+.liturgy__swatch--red { background: var(--lit-red); }
+.liturgy__swatch--rose { background: var(--lit-rose); }
+.liturgy__swatch--black { background: var(--lit-black); }

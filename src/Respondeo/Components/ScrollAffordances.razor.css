@@ -5,7 +5,7 @@
     height: 3px;
     width: 0;
     background: var(--accent);
-    z-index: 1000;
+    z-index: var(--z-float);
     transition: width 0.05s linear;
 }
 
@@ -25,8 +25,8 @@
     opacity: 0;
     pointer-events: none;
     transform: translateY(0.5rem);
-    transition: opacity 0.15s ease, transform 0.15s ease, background 0.12s ease, color 0.12s ease;
-    z-index: 1000;
+    transition: opacity var(--dur-2) var(--ease-page), transform var(--dur-2) var(--ease-page), background var(--dur-1) var(--ease-page), color var(--dur-1) var(--ease-page);
+    z-index: var(--z-float);
 }
 
 .back-to-top.is-visible {
@@ -41,8 +41,8 @@
 }
 
 .back-to-top:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
 }
 
 /* Respect users who prefer reduced motion: drop the reveal transition. */

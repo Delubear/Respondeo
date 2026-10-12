@@ -1,48 +1,3 @@
-
-.saint__facts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-    gap: 0.75rem 2rem;
-    margin: 0 0 1.5rem;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    background: var(--parchment);
-}
-
-.saint__fact {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    min-width: 0;
-}
-
-/* Facts whose value can be long (patronage, state of life, canonization) span the
-   full row so they get the room they need and stay left-aligned under the first
-   column, instead of being squeezed into one narrow grid track and wrapping. */
-.saint__fact--wide {
-    grid-column: 1 / -1;
-}
-
-.saint__fact dt {
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-}
-
-.saint__fact dd {
-    margin: 0;
-    font-weight: 400;
-}
-
-.saint__fact-note {
-    font-weight: 400;
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-}
-
 /* A small "Today" badge shown beside the feast day when it falls on the current date. */
 .saint__feast-today {
     display: inline-flex;
@@ -50,10 +5,10 @@
     gap: 0.25rem;
     margin-left: 0.5rem;
     padding: 0.08rem 0.5rem;
-    border: 1px solid var(--gold-event, #c8a24a);
+    border: 1px solid var(--gold-event);
     border-radius: var(--radius-pill);
-    background: rgba(200, 162, 74, 0.12);
-    color: var(--gold-event, #c8a24a);
+    background: color-mix(in srgb, var(--gold-event) 12%, transparent);
+    color: var(--gold-event);
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.06em;

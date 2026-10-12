@@ -65,7 +65,7 @@
 
 /* On mobile the immersive exit row carries a compact EN/LA button beside the theme toggle, so the
    above-the-list segmented toggle is hidden. */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     .devotion__lang--inline {
         display: none;
     }
