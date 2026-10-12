@@ -11,7 +11,7 @@ summary: "From degrees of perfection to a maximum that causes them."
 The earlier ways traced *change*, *causal dependence*, and *contingency*. The Fourth Way begins from something we do every day without noticing: we **rank** things. 
 We call one act kinder than another, one proof more rigorous, one landscape more beautiful. These *more* and *less* judgments are the starting point.
 
-Aquinas&rsquo;s claim is that **comparison presupposes a standard**:
+Aquinas's claim is that **comparison presupposes a standard**:
 
 > *More* and *less* are predicated of different things according as they resemble in their different ways something which is the maximum. 
 >
@@ -42,7 +42,7 @@ You cannot rank warmth without an idea of *heat itself* that the warm things pos
 
 Now shift from heat to the perfections Aquinas actually means:
 
-- You call one friend&rsquo;s act **kinder** than another&rsquo;s. By what measure? You are comparing both to *goodness itself*, which each act embodies only partially.
+- You call one friend's act **kinder** than another's. By what measure? You are comparing both to *goodness itself*, which each act embodies only partially.
 - You call one explanation **truer** than another. Against what? *Truth itself*, which every partial account approaches but none exhausts.
 - You call one thing **more fully realized**, more richly *being*, than a fading or broken one. Against what? Existence held **completely**, without lack.
 

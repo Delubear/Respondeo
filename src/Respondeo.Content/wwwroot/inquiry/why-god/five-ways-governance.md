@@ -14,7 +14,7 @@ Things that have no minds of their own nevertheless behave *as if aimed* &mdash;
 An **end** here does not mean a conscious goal; it means a *result aimed at*: a definite outcome that a thing reliably tends to produce. 
 A seed tends toward becoming a plant, not a puddle. Fire tends toward heating, not freezing.
 
-Aquinas&rsquo;s point is that **aiming requires an aimer**:
+Aquinas's point is that **aiming requires an aimer**:
 
 > Whatever lacks intelligence cannot move towards an end, unless it be directed by some being endowed with knowledge and intelligence; as the arrow is shot to its mark by the archer. 
 >
@@ -41,17 +41,17 @@ Consider everything the plant does, none of which it *understands*:
 - Its **roots grow downward** and toward water, though the seed has no map of the soil.
 - Its **leaves turn to face the light** (phototropism), tracking the sun across the day.
 - Its **stomata open and close** to balance moisture and gas exchange.
-- **Photosynthesis** converts light, water, and air into sugar: a chemistry aimed with precision at the plant&rsquo;s nourishment.
+- **Photosynthesis** converts light, water, and air into sugar: a chemistry aimed with precision at the plant's nourishment.
 - Its cells **divide, specialize, and repair** in an ordered sequence toward a mature, reproducing organism.
 
 Notice two things at once. First, the plant has **no awareness** of any of this: it does not know what water is, or light, or sugar. 
-Second, its parts and processes are unmistakably **aimed**: each reliably tends toward the plant&rsquo;s flourishing, "nearly always in the same way, so as to obtain the best result."
+Second, its parts and processes are unmistakably **aimed**: each reliably tends toward the plant's flourishing, "nearly always in the same way, so as to obtain the best result."
 
 Here is the pivot. **Tending toward a specific outcome is a kind of pointing** &mdash; and pointing is aimed at something that does not exist yet (the mature plant, the sugar not-yet-made). 
 How can a present, mindless process be *aimed at* a future good it cannot picture or understand?
 
 - It cannot be **chance**: chance does not repeat "nearly always in the same way." Randomness scatters; the plant converges.
-- It cannot come **from the plant&rsquo;s own knowledge**: it has none.
+- It cannot come **from the plant's own knowledge**: it has none.
 - The tendency must therefore be **built into its nature** &mdash; and a directedness written into a thing that cannot author it must be set there by an intellect that *can* hold the end in view.
 
 The plant *reaches* for the light because its nature is aimed &mdash; 

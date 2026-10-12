@@ -62,9 +62,9 @@ The argument can feel abstract until you watch it in a single ordinary object. T
 **First, a common misstep.** It is tempting to build the chain *outward*: my body rests on the chair, the chair on the floor, 
 the floor on the house, the house on its foundation, the foundation on the planet. 
 But this is a chain of **weight and location**, not of *being*. Remove the chair and you do not stop existing &mdash; you simply fall. 
-Each link here sustains a thing&rsquo;s *position*, not its *existence*, so the series is only *accidentally* ordered.
+Each link here sustains a thing's *position*, not its *existence*, so the series is only *accidentally* ordered.
 
-**The essential chain runs inward, into the chair&rsquo;s depth.** Ask not "what is underneath it?" but 
+**The essential chain runs inward, into the chair's depth.** Ask not "what is underneath it?" but 
 "**what is holding this in existence, right now?**" &mdash; and follow that question down:
 
 1. The **chair** is a chair only because its **wooden structure** holds its shape *right now*.
