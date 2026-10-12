@@ -6,7 +6,7 @@
     margin: 0 0 1.5rem;
     padding: 1rem 1.25rem;
     border: 1px solid var(--rule);
-    border-radius: 0.6rem;
+    border-radius: var(--radius);
     background: var(--parchment);
 }
 
@@ -51,7 +51,7 @@
     margin-left: 0.5rem;
     padding: 0.08rem 0.5rem;
     border: 1px solid var(--gold-event, #c8a24a);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: rgba(200, 162, 74, 0.12);
     color: var(--gold-event, #c8a24a);
     font-size: 0.7rem;

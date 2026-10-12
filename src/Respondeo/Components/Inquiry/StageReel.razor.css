@@ -302,7 +302,7 @@
     color: var(--ink);
     background: var(--parchment);
     border: 1px solid var(--rule);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 0.4rem 0.9rem;
     box-shadow: 0 4px 14px var(--shadow);
     cursor: pointer;

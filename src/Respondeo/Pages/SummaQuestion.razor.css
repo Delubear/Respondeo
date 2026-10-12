@@ -10,7 +10,7 @@
 .summa-question__toc {
     background: var(--parchment);
     border: 1px solid var(--rule);
-    border-radius: 0.6rem;
+    border-radius: var(--radius);
     padding: 1rem 1.25rem;
     margin-bottom: 2rem;
 }

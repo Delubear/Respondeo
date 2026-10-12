@@ -12,7 +12,7 @@
     background: var(--parchment);
     border: 1px solid var(--rule);
     border-top: 3px solid var(--accent);
-    border-radius: 0.5rem;
+    border-radius: var(--radius);
     box-shadow: 0 6px 20px var(--shadow);
 }
 

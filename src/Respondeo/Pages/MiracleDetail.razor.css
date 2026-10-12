@@ -6,7 +6,7 @@
     margin: 0 0 1.5rem;
     padding: 1rem 1.25rem;
     border: 1px solid var(--rule);
-    border-radius: 0.6rem;
+    border-radius: var(--radius);
     background: var(--parchment);
 }
 

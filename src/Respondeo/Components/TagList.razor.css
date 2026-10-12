@@ -11,7 +11,7 @@
 
 .tag {
     padding: 0.2rem 0.6rem;
-    border-radius: 1rem;
+    border-radius: var(--radius-pill);
     background: var(--parchment-hover);
     font-size: 0.85rem;
     color: var(--ink-soft);

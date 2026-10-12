@@ -30,7 +30,7 @@
     font-size: 1rem;
     letter-spacing: 0.05em;
     white-space: nowrap;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid transparent;
     transition: color var(--dur-2) var(--ease-page), background-color var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page);
 }

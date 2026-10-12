@@ -3,7 +3,7 @@
     max-width: 100%;
     padding: 0.9rem 1.4rem;
     border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
-    border-radius: 0.5rem;
+    border-radius: var(--radius);
     background: color-mix(in srgb, var(--gold) 6%, var(--parchment));
     color: var(--ink);
     text-decoration: none;
@@ -36,7 +36,7 @@
     display: inline-block;
     margin-top: 0.3rem;
     padding: 0.1rem 0.5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--gold) 16%, transparent);
     font-size: 0.7rem;
     font-weight: 600;
