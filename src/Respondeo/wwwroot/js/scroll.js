@@ -95,6 +95,41 @@ export function jumpToContent() {
     // view. The content element's top is stable regardless of which page is loading.
     scrollToContent();
 
-    // See jumpToTop for why we re-assert after the render + focus cycle.
-    requestAnimationFrame(() => requestAnimationFrame(scrollToContent));
+    // A double requestAnimationFrame isn't enough on its own: Inquiry nodes load asynchronously
+    // (the page briefly shows "Loading" and then grows), and on phones the masthead slims from the
+    // home layout to the inner-page layout, moving the breadcrumb's offset. Keep re-asserting for
+    // a short settle window (~500ms) so we land on the final layout, but stop the moment the reader
+    // starts scrolling themselves so we never fight their input.
+    settleScroll(scrollToContent);
+}
+
+let cancelSettle = null;
+
+function settleScroll(apply) {
+    if (cancelSettle) {
+        cancelSettle();
+    }
+
+    let frames = 30;
+    let rafId = 0;
+    const stopEvents = ['touchstart', 'wheel', 'keydown', 'mousedown'];
+    const stop = () => {
+        cancelAnimationFrame(rafId);
+        stopEvents.forEach(type => window.removeEventListener(type, stop, true));
+        if (cancelSettle === stop) {
+            cancelSettle = null;
+        }
+    };
+    const tick = () => {
+        apply();
+        if (--frames > 0) {
+            rafId = requestAnimationFrame(tick);
+        } else {
+            stop();
+        }
+    };
+
+    stopEvents.forEach(type => window.addEventListener(type, stop, { capture: true, passive: true }));
+    cancelSettle = stop;
+    rafId = requestAnimationFrame(tick);
 }
