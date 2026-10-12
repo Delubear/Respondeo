@@ -13,6 +13,10 @@
 
 <HeadContent>
     <meta name="description" content="@Meta" />
+    @if (NoIndex)
+    {
+        <meta name="robots" content="noindex" />
+    }
     <link rel="canonical" href="@CanonicalUrl" />
 
     <meta property="og:type" content="@OgType" />
@@ -52,6 +56,9 @@
 
     /// <summary>When true (and no explicit JsonLd is supplied), emits an Article structured-data node.</summary>
     [Parameter] public bool Article { get; set; }
+
+    /// <summary>When true, asks crawlers not to index this page (e.g. the not-found page).</summary>
+    [Parameter] public bool NoIndex { get; set; }
 
     private string Meta => string.IsNullOrWhiteSpace(Description) ? SiteMeta.DefaultDescription : Description!.Trim();
 

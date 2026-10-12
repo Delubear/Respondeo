@@ -5,10 +5,11 @@
 @if (_isKnownStage)
 {
     <PageTitle>@_label &mdash; Respondeo</PageTitle>
+    <SeoHead Title="@_label" Description="@_node?.Summary" />
 
     @if (_loading)
     {
-        <Loading>Loading&hellip;</Loading>
+        <Loading>Turning the page&hellip;</Loading>
     }
     else if (_node is null)
     {
