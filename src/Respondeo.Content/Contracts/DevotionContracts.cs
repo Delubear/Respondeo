@@ -108,6 +108,12 @@ public sealed class DevotionStep
     /// <summary>The prayer to pray, referenced by id, for a "prayer" step.</summary>
     public string? PrayerId { get; init; }
 
+    /// <summary>
+    /// Optional cataloged prayers stacked one after another within this single step (e.g. the Ten Commandments
+    /// and the Beatitudes in an examination of conscience). Shown after any inline <see cref="TextHtml"/>.
+    /// </summary>
+    public IReadOnlyList<string> PrayerIds { get; init; } = [];
+
     /// <summary>How many times the prayer is repeated (e.g. 10 Hail Marys). Defaults to 1.</summary>
     public int Repeat { get; init; } = 1;
 

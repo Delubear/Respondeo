@@ -53,6 +53,13 @@ internal sealed class DevotionStepDto
     public string Kind { get; set; } = "prayer";
     public string? Title { get; set; }
     public string? PrayerId { get; set; }
+
+    /// <summary>
+    /// Optional additional cataloged prayers stacked one after another in the same step (e.g. the Ten Commandments
+    /// and the Beatitudes for an examination of conscience). Shown after any inline <see cref="Text"/>.
+    /// </summary>
+    public List<string> PrayerIds { get; set; } = [];
+
     public int Repeat { get; set; } = 1;
     public string? Bead { get; set; }
     public string? Note { get; set; }

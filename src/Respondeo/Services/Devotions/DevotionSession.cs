@@ -248,9 +248,30 @@ public sealed class DevotionSession(Devotion devotion, IReadOnlyDictionary<strin
             latinTitle = string.IsNullOrWhiteSpace(step.Title) ? null : step.Title;
             latinHtml = step.TextLatinHtml;
         }
+        else if (step.PrayerIds.Count > 0 && !string.IsNullOrWhiteSpace(step.Title))
+        {
+            // Only stacked prayers: the step's Title labels the row and the stack supplies all the words.
+            title = step.Title!;
+            html = string.Empty;
+            latinTitle = null;
+            latinHtml = null;
+        }
         else
         {
             // Nothing to pray (no resolvable prayer and no inline text): skip this step.
+            return;
+        }
+
+        // Stack any additional cataloged prayers beneath the step's own words, each under its own heading.
+        var stacked = StackPrayers(step.PrayerIds);
+        if (stacked.Length > 0)
+        {
+            html += stacked;
+            latinHtml = null;
+        }
+
+        if (string.IsNullOrWhiteSpace(html))
+        {
             return;
         }
 
@@ -272,5 +293,24 @@ public sealed class DevotionSession(Devotion devotion, IReadOnlyDictionary<strin
                 Role = step.Role,
             });
         }
+    }
+
+    // Renders each resolvable prayer as a titled block, in order; unknown ids are skipped.
+    private string StackPrayers(IReadOnlyList<string> ids)
+    {
+        var builder = new System.Text.StringBuilder();
+        foreach (var id in ids)
+        {
+            if (prayers.TryGetValue(id, out var prayer))
+            {
+                builder.Append("<section class=\"devotion__stacked-prayer\"><h3 class=\"devotion__stacked-prayer-title\">")
+                    .Append(System.Net.WebUtility.HtmlEncode(prayer.Title))
+                    .Append("</h3>")
+                    .Append(prayer.Html)
+                    .Append("</section>");
+            }
+        }
+
+        return builder.ToString();
     }
 }

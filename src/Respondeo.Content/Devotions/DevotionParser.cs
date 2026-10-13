@@ -51,6 +51,7 @@ internal sealed class DevotionParser(IContentHtmlRenderer html)
         Kind = string.IsNullOrWhiteSpace(step.Kind) ? "prayer" : step.Kind.Trim().ToLowerInvariant(),
         Title = step.Title,
         PrayerId = step.PrayerId,
+        PrayerIds = [.. step.PrayerIds.Where(id => !string.IsNullOrWhiteSpace(id)).Select(id => id.Trim())],
         Repeat = step.Repeat < 1 ? 1 : step.Repeat,
         Bead = string.IsNullOrWhiteSpace(step.Bead) ? null : step.Bead.Trim().ToLowerInvariant(),
         Note = string.IsNullOrWhiteSpace(step.Note) ? null : step.Note.Trim(),

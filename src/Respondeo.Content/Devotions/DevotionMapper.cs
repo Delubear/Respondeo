@@ -46,6 +46,7 @@ internal static class DevotionMapper
         Kind = step.Kind,
         Title = step.Title,
         PrayerId = step.PrayerId,
+        PrayerIds = step.PrayerIds,
         Repeat = step.Repeat,
         Bead = step.Bead,
         Note = step.Note,

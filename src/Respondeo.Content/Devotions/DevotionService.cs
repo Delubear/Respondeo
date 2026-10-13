@@ -53,6 +53,8 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
                     ids.Add(step.PrayerId);
                 }
 
+                ids.UnionWith(step.PrayerIds);
+
                 Collect(step.PerMystery);
             }
         }

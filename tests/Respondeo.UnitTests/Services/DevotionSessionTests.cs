@@ -7,6 +7,35 @@ public class DevotionSessionTests
 {
     private static Prayer Prayer(string id, string title) => new() { Id = id, Title = title, Html = $"<p>{title}</p>" };
 
+    [Fact]
+    public void Start_StacksPrayerIdsBeneathInlineTextInOneRow()
+    {
+        var devotion = new Devotion
+        {
+            Id = "confession",
+            Title = "Confession",
+            Sequence =
+            [
+                new DevotionStep { Title = "Examine", TextHtml = "<p>Reflect.</p>", PrayerIds = ["ten-commandments", "missing", "beatitudes"] },
+            ],
+        };
+        var prayers = new Dictionary<string, Prayer>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["ten-commandments"] = Prayer("ten-commandments", "The Ten Commandments"),
+            ["beatitudes"] = Prayer("beatitudes", "The Beatitudes"),
+        };
+
+        var session = new DevotionSession(devotion, prayers);
+        session.Start(null);
+
+        var bead = Assert.Single(session.Beads);
+        Assert.Equal("Examine", bead.PrayerTitle);
+        Assert.StartsWith("<p>Reflect.</p>", bead.PrayerHtml);
+        var commandments = bead.PrayerHtml!.IndexOf("The Ten Commandments</h3>", StringComparison.Ordinal);
+        var beatitudes = bead.PrayerHtml.IndexOf("The Beatitudes</h3>", StringComparison.Ordinal);
+        Assert.True(commandments > 0 && beatitudes > commandments);
+    }
+
     // A chaplet with no mystery sets: an opening prayer followed by three repeated Hail Marys.
     private static DevotionSession SimpleSession()
     {

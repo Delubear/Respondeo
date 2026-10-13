@@ -61,6 +61,8 @@ internal sealed class DevotionStepDocument
 
     public string? PrayerId { get; init; }
 
+    public IReadOnlyList<string> PrayerIds { get; init; } = [];
+
     public int Repeat { get; init; } = 1;
 
     public string? Bead { get; init; }

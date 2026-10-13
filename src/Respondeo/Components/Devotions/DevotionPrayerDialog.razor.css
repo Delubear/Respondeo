@@ -8,3 +8,14 @@
 .devotion__explanation + .devotion__explanation-words-label {
     margin-top: 1rem;
 }
+
+/* Prayers stacked within one step (e.g. the Ten Commandments and the Beatitudes), each under its own small heading. */
+.devotion__words ::deep .devotion__stacked-prayer + .devotion__stacked-prayer,
+.devotion__words ::deep p + .devotion__stacked-prayer {
+    margin-top: 1.5rem;
+}
+
+.devotion__words ::deep .devotion__stacked-prayer-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+}

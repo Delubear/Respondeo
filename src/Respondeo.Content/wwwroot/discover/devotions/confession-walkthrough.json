@@ -5,7 +5,7 @@
   "summary": "A step-by-step guide to the Sacrament of Penance, from examining your conscience to making your act of contrition and receiving absolution.",
   "kind": "confession",
   "latinAvailable": false,
-  "draft": true,
+  "draft": false,
   "intro": "In the Sacrament of Penance — also called Confession or Reconciliation — the risen Christ, through the priest, forgives the sins we have committed after Baptism and restores us to the life of grace. This walkthrough carries you through the sacrament from beginning to end: preparing your heart, confessing your sins, receiving absolution, and giving thanks. Advance through each moment, tap the information icon to learn what is happening and why, and read the words you say along the way. The priest's questions and counsel will vary; these steps show the ordinary form the sacrament takes.",
   "sequence": [
     {
@@ -23,7 +23,8 @@
     {
       "kind": "prayer",
       "title": "Examine Your Conscience",
-      "text": "(In silence, review your thoughts, words, actions, and omissions since your last confession. The Ten Commandments and the precepts of the Church are a trustworthy mirror. Resolve to confess all mortal sins in kind and number, and to name your venial sins as well.)",
+      "text": "(In silence, review your thoughts, words, actions, and omissions since your last confession. The Ten Commandments and the Beatitudes below are a trustworthy mirror. Resolve to confess all mortal sins in kind and number, and to name your venial sins as well.)\r\n\r\nA sin is mortal when all three conditions are met (*Catechism* 1857):\r\n\r\n1. **Grave matter:** the act itself is seriously wrong, as specified by the Ten Commandments.\r\n2. **Full knowledge:** you knew it was gravely sinful.\r\n3. **Deliberate consent:** you freely chose it anyway.\r\n\r\nIf any condition is missing, the sin is venial.",
+      "prayerIds": [ "ten-commandments", "beatitudes" ],
       "role": "all",
       "explanation": "The examination of conscience is an honest look at our lives measured against God's law and the example of Christ. The Ten Commandments, the Beatitudes, and the two great commandments of love of God and neighbor are a reliable guide. We must confess every mortal sin we can remember, telling what kind it was and how many times; venial sins need not be confessed but it is good to do so. Honesty here is itself an act of humility and trust in God's mercy."
     },
