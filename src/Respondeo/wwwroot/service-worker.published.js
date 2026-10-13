@@ -9,7 +9,15 @@ self.importScripts('./service-worker-assets.js');
 
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
-self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
+// Cross-origin requests (e.g. the Cloudflare analytics beacon) are never precached, so leave them to
+// the browser. Routing them through the worker turns a blocked or offline beacon into an uncaught
+// "Failed to fetch" error in the worker.
+self.addEventListener('fetch', event => {
+    if (new URL(event.request.url).origin !== self.origin) {
+        return;
+    }
+    event.respondWith(onFetch(event));
+});
 
 // A freshly installed worker parks in the "waiting" state until every tab using the old worker
 // is gone - which on an installed PWA can be a long time. When the page detects this waiting
@@ -77,7 +85,6 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     }
 
-    // Fall back to the network for anything not precached (fonts, analytics, on-demand content
-    // not yet cached). Offline, cross-origin requests simply fail without breaking the app.
+    // Fall back to the network for anything not precached (on-demand content not yet cached).
     return cachedResponse || fetch(event.request);
 }
