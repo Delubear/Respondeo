@@ -1168,7 +1168,8 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 0 1rem;
 }
 
-.content-body blockquote {
+.content-body blockquote,
+.devotion__explanation blockquote {
     margin: 1.5rem 0;
     padding: 0.5rem 1.25rem;
     border-left: 4px solid var(--accent);
