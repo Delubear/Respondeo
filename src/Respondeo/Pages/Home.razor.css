@@ -1,3 +1,21 @@
+/* ---------- First step ----------
+   A single clear starting point under the reel for readers unsure which question to pick. */
+.home__start {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+}
+
+/* The destination reads upright in the accent color so the eye lands on where it leads. */
+.home__start a {
+    font-style: normal;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
 /* ---------- Reel prompt ----------
    A quiet cue above the journey reel that tells the reader what to do with it:
    scan the questions and pick the one that fits where they honestly stand. */
@@ -17,7 +35,7 @@
    quiet pill links to Discover and the Summa. */
 .reel__aside {
     max-width: 44rem;
-    margin: 3rem auto 0;
+    margin: 2.5rem auto 0;
     padding-top: 1.5rem;
     border-top: 1px solid var(--rule);
     text-align: center;
@@ -75,7 +93,8 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 40rem) {
-    .reel__prompt {
+    .reel__prompt,
+    .home__start {
         font-size: 0.95rem;
     }
 

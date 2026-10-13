@@ -9,7 +9,7 @@
     margin: 0.25rem auto 0;
     max-width: var(--w-wide);
     /* Room below for the progress-dot rail. */
-    padding-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
 }
 
 .reel {
@@ -20,8 +20,9 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    /* Room left/right so the first and last cards can still center. */
-    padding: 0.5rem 40%;
+    /* Room left/right so the first and last cards can still center. No vertical padding so the
+       question sits close under the "What speaks to you?" prompt and the cue sits close above the dots. */
+    padding: 0 40%;
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */
     touch-action: pan-y;
@@ -60,7 +61,7 @@
     max-width: 80vw;
     display: flex;
     justify-content: center;
-    padding: 0.75rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     transform-origin: center center;
     cursor: pointer;
 }
@@ -440,7 +441,7 @@
 
 @media (max-width: 40rem) {
     .reel-wrap {
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
     }
 
     .reel {

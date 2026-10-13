@@ -8,7 +8,7 @@
 <header class="pillar__header">
     @if (!string.IsNullOrWhiteSpace(Eyebrow))
     {
-        <p class="pillar__eyebrow">@Eyebrow</p>
+        <p class="pillar__eyebrow" title="@EyebrowHint">@Eyebrow</p>
     }
     <h1 class="pillar__title">@Title</h1>
     @ChildContent
@@ -25,6 +25,9 @@
 @code {
     /// <summary>Optional accent-colored kicker shown above the title.</summary>
     [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>Optional hover hint for the eyebrow, e.g. a translation of a Latin kicker.</summary>
+    [Parameter] public string? EyebrowHint { get; set; }
 
     /// <summary>The display title rendered as the page/section h1.</summary>
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
