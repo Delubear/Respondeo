@@ -76,7 +76,22 @@
         }
     }
 
-    private async Task OpenAsync() => await _dialog.Show();
+    /// <summary>
+    /// Optional work to run just before the dialog opens (e.g. bringing date-driven content up to date).
+    /// The resulting render is flushed before the dialog is shown, so it never opens on stale content.
+    /// </summary>
+    [Parameter] public EventCallback OnOpening { get; set; }
+
+    private async Task OpenAsync()
+    {
+        if (OnOpening.HasDelegate)
+        {
+            await OnOpening.InvokeAsync();
+            await Task.Yield();
+        }
+
+        await _dialog.Show();
+    }
 
     private async Task CloseAsync() => await _dialog.Close();
 
