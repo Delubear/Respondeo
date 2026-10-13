@@ -1,5 +1,7 @@
+using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Contracts;
 
@@ -9,7 +11,13 @@ using Respondeo.Content.Summa.Contracts;
 // It enumerates every canonical, crawlable route from the content manifests that ship in the site and writes wwwroot/sitemap.xml.
 // Slugs are resolved through the Summa part catalog so the emitted URLs always match the app's real routes.
 //
-// Usage: Respondeo.SitemapGenerator <repoRoot> <outputSitemapPath>
+// Usage:
+//   Respondeo.SitemapGenerator <repoRoot> <outputSitemapPath>
+//   Respondeo.SitemapGenerator <repoRoot> --entry-pages <publishedSiteDir>
+//
+// The --entry-pages mode runs after publish: for every route it writes a copy of the published index.html
+// (e.g. discover/saints.html, which GitHub Pages serves at /discover/saints) with that page's own title,
+// description, canonical URL, and social tags, so crawlers see a distinct page before the app renders.
 //
 // Structure: Main parses the arguments, then asks each Collect* method to contribute the routes for one content source into a shared RouteSet.
 // The set is sorted and rendered by WriteSitemap. Each source is self-contained so a new content pillar is added by writing one more Collect* method.
@@ -19,20 +27,22 @@ return SitemapGenerator.Run(args);
 internal static class SitemapGenerator
 {
     private const string BaseUrl = "https://respondeo.faith";
+    private const string SiteName = "Respondeo";
+    private const string TitleSeparator = " \u2014 ";
 
     // The catalog is pure and stateless, so the build-time tool simply news one up rather than resolving it from DI.
     private static readonly ISummaPartCatalog Parts = new SummaPartCatalog();
 
     public static int Run(string[] args)
     {
-        if (args.Length < 2)
+        if (args.Length < 2 || (args[1] == "--entry-pages" && args.Length < 3))
         {
             Console.Error.WriteLine("Usage: Respondeo.SitemapGenerator <repoRoot> <outputSitemapPath>");
+            Console.Error.WriteLine("       Respondeo.SitemapGenerator <repoRoot> --entry-pages <publishedSiteDir>");
             return 1;
         }
 
         var repoRoot = Path.GetFullPath(args[0]);
-        var outputPath = Path.GetFullPath(args[1]);
         var paths = ContentPaths.ForRepo(repoRoot);
 
         var routes = new RouteSet();
@@ -43,21 +53,32 @@ internal static class SitemapGenerator
         CollectJourneyRoutes(routes, paths.ContentRoot, paths.ContentManifest);
         CollectDiscoverRoutes(routes, paths.DiscoverRoot, paths.PrayersManifest, paths.DevotionsManifest, paths.ArticlesManifest);
 
-        return WriteSitemap(routes, outputPath);
+        return args[1] == "--entry-pages"
+            ? EntryPages.Write(routes, Path.GetFullPath(args[2]))
+            : WriteSitemap(routes, Path.GetFullPath(args[1]));
     }
 
     // 1. Top-level static routes that always exist regardless of content.
+    // Titles and descriptions mirror each page's <PageShell> so the pre-render shell matches what the app later sets.
     private static void CollectStaticRoutes(RouteSet routes)
     {
-        routes.Add("");            // Home
-        routes.Add("summa");
-        routes.Add("discover");
-        routes.Add("discover/miracles");
-        routes.Add("discover/saints");
-        routes.Add("discover/prayers");
-        routes.Add("discover/devotions");
-        routes.Add("discover/articles");
-        routes.Add("thanks");
+        routes.Add("");            // Home keeps index.html's own site-wide title and description.
+        routes.Add("summa", "Summa Theologiae",
+            "Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance.");
+        routes.Add("discover", "Discover Catholicism",
+            "Explore the riches of the Catholic faith: recognized miracles, the lives of the saints, a treasury of prayers, interactive devotions, and articles on the Church's teaching and practice.");
+        routes.Add("discover/miracles", "Catholic Miracles",
+            "A growing catalog of reported and recognized Catholic miracles \u2014 Eucharistic miracles, Marian apparitions, and healings \u2014 with the Church's judgment on each.");
+        routes.Add("discover/saints", "Catholic Saints",
+            "A growing gallery of the saints \u2014 their lives, patronages, state of life, and the Church's recognition of their holiness, from the early Church to our own day.");
+        routes.Add("discover/prayers", "Catholic Prayers",
+            "A treasury of the Church's traditional prayers \u2014 the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside.");
+        routes.Add("discover/devotions", "Catholic Devotions",
+            "Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery.");
+        routes.Add("discover/articles", "Living the Faith" + TitleSeparator + "Articles",
+            "Deeper dives into the Catholic life \u2014 Confession, the Eucharist, and the Church's teaching \u2014 the why beneath the practice.");
+        routes.Add("thanks", "Thanks & Sources",
+            "The inspiration behind Respondeo, the public-domain and open sources it draws on, and further reading we recommend for exploring the Catholic faith.");
     }
 
     // 2. Summa part landing pages + every question, mapping storage keys (p1) to URL slugs (prima).
@@ -78,7 +99,8 @@ internal static class SitemapGenerator
         foreach (var part in parts.EnumerateArray())
         {
             var partKey = part.GetProperty("id").GetString() ?? string.Empty;
-            routes.Add($"summa/part/{Parts.SlugForKey(partKey)}");
+            var partTitle = part.TryGetProperty("title", out var pt) ? pt.GetString() ?? string.Empty : string.Empty;
+            routes.Add($"summa/part/{Parts.SlugForKey(partKey)}", JoinTitle(partTitle, "Summa Theologiae"), null);
 
             if (!part.TryGetProperty("questions", out var questions))
             {
@@ -90,7 +112,8 @@ internal static class SitemapGenerator
                 var questionId = question.GetProperty("id").GetString();
                 if (!string.IsNullOrWhiteSpace(questionId))
                 {
-                    routes.Add($"summa/{ToQuestionSlug(questionId)}");
+                    var title = question.TryGetProperty("title", out var t) ? t.GetString() : null;
+                    routes.Add($"summa/{ToQuestionSlug(questionId)}", title, SummaQuestionDescription(question, title, partTitle));
                 }
             }
         }
@@ -108,7 +131,8 @@ internal static class SitemapGenerator
 
         foreach (var file in ReadManifestFiles(miraclesManifestPath))
         {
-            routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}");
+            var fullPath = Path.Combine(discoverRoot, "miracles", file);
+            routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath));
         }
     }
 
@@ -124,7 +148,8 @@ internal static class SitemapGenerator
 
         foreach (var file in ReadManifestFiles(saintsManifestPath))
         {
-            routes.Add($"discover/saints/{Path.GetFileNameWithoutExtension(file)}");
+            var fullPath = Path.Combine(Path.GetDirectoryName(saintsManifestPath)!, file);
+            routes.Add($"discover/saints/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath));
         }
     }
 
@@ -165,12 +190,18 @@ internal static class SitemapGenerator
             }
 
             stages.Add(stage);
-            routes.Add($"{stage}/{id}");
+            routes.Add($"{stage}/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
+
+            // A stage's landing page (/{stage}) renders the node whose id is the stage slug.
+            if (string.Equals(id, stage, StringComparison.OrdinalIgnoreCase))
+            {
+                stages.Add(stage, ReadTitle(fullPath), ReadSummary(fullPath));
+            }
         }
 
         foreach (var stage in stages)
         {
-            routes.Add(stage);
+            routes.Add(stage, stages.MetaFor(stage));
         }
     }
 
@@ -222,7 +253,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"discover/prayers/{id}");
+                routes.Add($"discover/prayers/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
             }
         }
     }
@@ -246,7 +277,8 @@ internal static class SitemapGenerator
             var id = ReadJsonId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"discover/devotions/{id}");
+                using var doc = JsonDocument.Parse(File.ReadAllText(fullPath));
+                routes.Add($"discover/devotions/{id}", ReadJsonString(doc, "title"), ReadJsonString(doc, "summary"));
             }
         }
     }
@@ -270,7 +302,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"discover/articles/{id}");
+                routes.Add($"discover/articles/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
             }
         }
     }
@@ -379,6 +411,44 @@ internal static class SitemapGenerator
         return doc.RootElement.TryGetProperty("id", out var id) ? id.GetString() : null;
     }
 
+    private static string? ReadJsonString(JsonDocument doc, string name) =>
+        doc.RootElement.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.String ? value.GetString() : null;
+
+    private static string? ReadTitle(string path) => File.Exists(path) ? ReadFrontMatterValue(path, "title") : null;
+
+    private static string? ReadSummary(string path) => File.Exists(path) ? ReadFrontMatterValue(path, "summary") : null;
+
+    private static string JoinTitle(params string?[] parts) =>
+        string.Join(TitleSeparator, parts.Where(p => !string.IsNullOrWhiteSpace(p)));
+
+    // Mirrors SummaQuestionPresenter.BuildSeoDescription so the pre-render shell matches the app's description.
+    private static string? SummaQuestionDescription(JsonElement question, string? title, string partTitle)
+    {
+        if (title is null)
+        {
+            return null;
+        }
+
+        if (question.TryGetProperty("isPrologue", out var p) && p.ValueKind == JsonValueKind.True)
+        {
+            return $"{partTitle} \u00B7 Prologue: {title}. From St. Thomas Aquinas's Summa Theologiae.";
+        }
+
+        var articles = question.TryGetProperty("articles", out var a) && a.ValueKind == JsonValueKind.Array
+            ? string.Join("; ", a.EnumerateArray().Select(x => x.TryGetProperty("title", out var at) ? at.GetString() : null).Where(s => !string.IsNullOrWhiteSpace(s)))
+            : string.Empty;
+        var number = question.TryGetProperty("number", out var n) ? n.ToString() : string.Empty;
+
+        return string.IsNullOrWhiteSpace(articles)
+            ? $"{partTitle} \u00B7 Question {number}: {title}. From St. Thomas Aquinas's Summa Theologiae."
+            : $"{title} \u2014 St. Thomas Aquinas asks: {articles}.";
+    }
+
+    // The full document title for a page, matching SiteMeta.FullTitle in the app.
+    internal static string FullTitle(string title) => title + TitleSeparator + SiteName;
+
+    internal static string AbsoluteUrl(string route) => route.Length == 0 ? $"{BaseUrl}/" : $"{BaseUrl}/{route}";
+
     private static string Escape(string value) => value
         .Replace("&", "&amp;")
         .Replace("<", "&lt;")
@@ -415,21 +485,34 @@ internal readonly record struct ContentPaths(
     }
 }
 
-// An insertion-ordered, de-duplicating collection of relative routes.
-// Adding the same route twice is a no-op; leading slashes are normalized away so "/summa" and "summa" are the same route.
+// A page's own title (without the site suffix) and meta description; either may be null to keep the site default.
+internal readonly record struct PageMeta(string? Title, string? Description);
+
+// An insertion-ordered, de-duplicating collection of relative routes, each with optional page metadata.
+// Adding the same route twice keeps the first entry but fills in metadata the first add lacked; leading slashes are normalized away so "/summa" and "summa" are the same route.
 internal sealed class RouteSet
 {
     private readonly List<string> _routes = [];
-    private readonly HashSet<string> _seen = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, PageMeta> _meta = new(StringComparer.Ordinal);
 
-    public void Add(string relative)
+    public void Add(string relative) => Add(relative, null, null);
+
+    public void Add(string relative, PageMeta meta) => Add(relative, meta.Title, meta.Description);
+
+    public void Add(string relative, string? title, string? description)
     {
         var normalized = relative.TrimStart('/');
-        if (_seen.Add(normalized))
+        if (_meta.TryGetValue(normalized, out var existing))
         {
-            _routes.Add(normalized);
+            _meta[normalized] = new PageMeta(existing.Title ?? title, existing.Description ?? description);
+            return;
         }
+
+        _routes.Add(normalized);
+        _meta[normalized] = new PageMeta(title, description);
     }
+
+    public PageMeta MetaFor(string route) => _meta.GetValueOrDefault(route);
 
     public IEnumerator<string> GetEnumerator() => _routes.GetEnumerator();
 
