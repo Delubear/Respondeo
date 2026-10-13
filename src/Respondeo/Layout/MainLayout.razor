@@ -3,8 +3,8 @@
 @inject NavigationManager Nav
 @inject AccessibilityInterop Accessibility
 @inject Respondeo.Services.FeatureFlags Features
-@inject Respondeo.Services.ISeasonalPortrait Portrait
-@inject Respondeo.Services.IDayWatcher DayWatcher
+@inject ISeasonalPortrait Portrait
+@inject IDayWatcher DayWatcher
 @inject IJSRuntime JS
 
 <div class="page page--inner @(_mastheadExpanded ? "page--masthead-open" : null)">
@@ -37,7 +37,7 @@
 
     <PillarNav />
     </div>
-    <MastheadNav />
+    <JourneyNav />
     <DiscoverNav />
 
     <main class="content" id="content" tabindex="-1">

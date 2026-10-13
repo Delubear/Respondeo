@@ -1,0 +1,320 @@
+@* A small floating "today in the Church" orb shown only on the Discover root pages.
+    It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that slides up to stack above the back-to-top arrow.
+    It is visually identical to the other circles and differs only by its calendar icon.
+    Tapping it opens a Dialog with today's season, color, celebration, the saint of the day, and a short explanation of the liturgical year. *@
+
+@inject ILiturgicalCalendar Calendar
+@inject ISaintService Saints
+@inject Func<DateOnly> Today
+@inject IDayWatcher DayWatcher
+@implements IDisposable
+
+<FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
+               AriaLabel="@($"Today in the Church: {SeasonName}")" Tooltip="Today in the Church"
+               DialogClass="dialog--liturgy" Raised="Raised" OnOpening="SyncToToday">
+    <Icon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9H21M7 3V5M17 3V5M8 15H10M14 15H16M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </Icon>
+    <ChildContent>
+        <div class="liturgy">
+            <div class="liturgy__status">
+                <div class="liturgy__today">
+                    <span class="liturgy__swatch liturgy__swatch--@ColorClass" aria-hidden="true"></span>
+                    <div class="liturgy__headline">
+                        <p class="liturgy__season">@SeasonName</p>
+                        <p class="liturgy__ferial">@DayLabel</p>
+                        <p class="liturgy__color">Liturgical color: @ColorName</p>
+                        @if (ColorClue is { } clue)
+                        {
+                            <p class="liturgy__color-clue">@clue</p>
+                        }
+                    </div>
+                </div>
+
+                @if (SingleCelebration is { } celebration)
+                {
+                    var profile = celebration.Id is not null ? ProfileFor(celebration.Id) : null;
+                    <div class="liturgy__celebrations">
+                        <p class="liturgy__saint-intro">@CelebrationIntro</p>
+                        <SaintHighlightCard Name="@celebration.Name" Slug="@celebration.Id" Note="@(IsOptionalMemorialCard ? "Optional memorial" : null)" Dates="@profile?.Dates" Summary="@(profile?.Summary ?? celebration.Summary)" OnNavigate="context.CloseAsync" />
+                    </div>
+                }
+            </div>
+
+            <hr class="liturgy__rule" />
+
+            <GuideSection Title="Colors and their meaning">
+            <p>
+                The Church keeps time differently from the calendar on the wall. Her year turns through
+                seasons &mdash; each with its own color, mood, and mysteries to pray.
+            </p>
+            <ul class="liturgy__seasons">
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--violet" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Advent &amp; Lent</span>
+                        Violet &mdash; seasons of preparation and penance (rose on Gaudete and Laetare Sundays).
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--white" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Christmas &amp; Easter</span>
+                        White &mdash; the great seasons of joy and light.
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--red" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Feasts of the Lord's Passion &amp; the Martyrs</span>
+                        Red &mdash; Palm Sunday, Good Friday, Pentecost, and the witness of the martyrs.
+                    </div>
+                </li>
+                <li>
+                    <span class="liturgy__swatch liturgy__swatch--green" aria-hidden="true"></span>
+                    <div class="liturgy__season-text">
+                        <span class="liturgy__season-name">Ordinary Time</span>
+                        Green &mdash; the weeks of growth outside the festal seasons.
+                    </div>
+                </li>
+            </ul>
+            </GuideSection>
+
+            <GuideSection Title="Degrees of celebration">
+            <p>
+                Not every day carries the same weight. The Church ranks her celebrations, and the higher
+                the rank, the more fully the day's prayers and readings give way to it.
+            </p>
+            <GuideList>
+                <GuideItem Term="Solemnity">The highest rank &mdash; the greatest mysteries and saints (Easter, Christmas,
+                    Pentecost, the Immaculate Conception). A solemnity begins the evening before and,
+                    like a Sunday, outranks almost everything else.</GuideItem>
+                <GuideItem Term="Feast">A major celebration kept on its own day but without the evening-before beginning (the Transfiguration, the Apostles, the Baptism of the Lord).</GuideItem>
+                <GuideItem Term="Memorial">A remembrance of a saint, woven into the ordinary prayers of the day rather than replacing them. Some are obligatory; many are optional.</GuideItem>
+                <GuideItem Term="Feria">An ordinary weekday with no assigned celebration, taking the color and prayers of its season.</GuideItem>
+            </GuideList>
+            </GuideSection>
+
+            <p class="liturgy__disclaimer">
+                This follows the General Roman Calendar &mdash; the Church's universal calendar for the
+                Ordinary Form. Your own country, diocese, or religious community may keep additional
+                feasts or observe some days differently, so the celebration near you can vary. For what
+                is kept locally, always defer to your diocese or parish.
+            </p>
+        </div>
+    </ChildContent>
+    <Footer>
+        <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+    </Footer>
+</FloatingGuide>
+
+@code {
+    private LiturgicalDay _day = default!;
+
+    // Full saint profiles for the day's linked celebrations, keyed by slug, so the dialog can show each saint's dates and summary alongside the link without a second round-trip per render.
+    private readonly Dictionary<string, SaintRecord> _profiles = new(StringComparer.Ordinal);
+
+    // The single optional memorial chosen for a ferial day, selected once per load (randomly when the day offers more than one) so it stays stable across re-renders.
+    private LiturgicalCelebration? _optionalMemorial;
+
+    /// <summary>
+    /// When true, the orb sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// </summary>
+    [Parameter] public bool Raised { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DayWatcher.DayChanged += OnDayChanged;
+        await LoadDayAsync();
+    }
+
+    // Resolves today's liturgical day, chooses the ferial optional memorial (if any), and loads the
+    // linked saint profiles. Extracted so the day-rollover handler can rebuild the same state when a
+    // long-open tab crosses midnight.
+    private async Task LoadDayAsync()
+    {
+        SetDay();
+        await LoadProfilesAsync();
+    }
+
+    // Resolves the day and its optional memorial. Synchronous, so the dialog's text can be brought up to date
+    // in the same render that opens it.
+    private void SetDay()
+    {
+        _loadedFor = Today();
+        _day = Calendar.ForDate(_loadedFor);
+
+        // On a ferial day with optional memorials, surface a single one. When several are available, pick at random so the dialog rotates through them rather than always favoring the first.
+        _optionalMemorial = _day.OptionalMemorials.Count > 0
+            ? _day.OptionalMemorials[Random.Shared.Next(_day.OptionalMemorials.Count)]
+            : null;
+    }
+
+    private async Task LoadProfilesAsync()
+    {
+        _profiles.Clear();
+        foreach (var id in LinkedSlugs())
+        {
+            if (await Saints.GetByIdAsync(id) is { } record)
+            {
+                _profiles[id] = record;
+            }
+        }
+    }
+
+    // The watched day rolled over (e.g. the tab sat open past midnight); rebuild today's day on the
+    // renderer thread so the orb and its dialog reflect the new date without a reload.
+    private async void OnDayChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            await LoadDayAsync();
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
+
+    private DateOnly _loadedFor;
+
+    // The day watcher only re-checks the date when the tab regains focus, which may not have happened yet when
+    // the orb is tapped. Bring the day up to date just before the dialog opens so it never shows yesterday's text
+    // and then changes. Resolving the day is instant; the saint profiles load right after.
+    private void SyncToToday()
+    {
+        if (Today() == _loadedFor)
+        {
+            return;
+        }
+
+        SetDay();
+        _ = InvokeAsync(async () =>
+        {
+            await LoadProfilesAsync();
+            StateHasChanged();
+        });
+    }
+
+    private IEnumerable<string> LinkedSlugs()
+    {
+        if (_day.Celebration?.Id is { } celebrationId)
+        {
+            yield return celebrationId;
+        }
+
+        foreach (var memorial in _day.OptionalMemorials)
+        {
+            if (memorial.Id is { } memorialId)
+            {
+                yield return memorialId;
+            }
+        }
+    }
+
+    private SaintRecord? ProfileFor(string id) => _profiles.GetValueOrDefault(id);
+
+    // The single celebration shown as a card: the principal celebration when there is one, otherwise the chosen optional memorial of a ferial day
+    // (the season/ferial blurb carries the day on the left instead).
+    // Only ever one card is shown, so a day's remaining optional memorials are intentionally not listed.
+    private LiturgicalCelebration? SingleCelebration => _day.Celebration ?? _optionalMemorial;
+
+    // True when the single card is an optional memorial (no principal celebration), so the dialog can flag it as optional and introduce it with "The Church also remembers today".
+    private bool IsOptionalMemorialCard => _day.Celebration is null && _optionalMemorial is not null;
+
+    // A short lead-in shown above the single card, phrased to fit whether the card is the day's principal celebration or an optional memorial the Church merely offers for remembrance.
+    private string CelebrationIntro
+    {
+        get
+        {
+            if (IsOptionalMemorialCard)
+            {
+                return "The Church also remembers today";
+            }
+
+            return _day.Celebration?.Rank switch
+            {
+                CelebrationRank.Solemnity => "Today the Church celebrates",
+                CelebrationRank.Feast => "Today the Church keeps the feast of",
+                _ => "Today the Church honors",
+            };
+        }
+    }
+
+    // A short explanation shown only when the day's color departs from its season's usual color,
+    // so the reader understands why today looks different (e.g. white for a saint during green Ordinary Time).
+    private string? ColorClue
+    {
+        get
+        {
+            if (_day.Color == SeasonDefaultColor)
+            {
+                return null;
+            }
+
+            return _day.Color switch
+            {
+                LiturgicalColor.White => "White today — honoring the Lord, Our Lady, or a saint who was not a martyr.",
+                LiturgicalColor.Red => "Red today — for a martyr, an apostle, or the Holy Spirit.",
+                LiturgicalColor.Rose => "Rose today — a note of joy that lightens this penitential season.",
+                LiturgicalColor.Violet => "Violet today — a penitential note set within the season.",
+                LiturgicalColor.Green => "Green today — the ordinary color returns for this day.",
+                _ => null,
+            };
+        }
+    }
+
+    // The color a day would wear from its season alone, before any celebration overrides it.
+    private LiturgicalColor SeasonDefaultColor => _day.Season switch
+    {
+        LiturgicalSeason.Advent => LiturgicalColor.Violet,
+        LiturgicalSeason.Lent => LiturgicalColor.Violet,
+        LiturgicalSeason.Christmas => LiturgicalColor.White,
+        LiturgicalSeason.Easter => LiturgicalColor.White,
+        LiturgicalSeason.Triduum => LiturgicalColor.Red,
+        _ => LiturgicalColor.Green,
+    };
+
+    private string SeasonName => _day.Season switch
+    {
+        LiturgicalSeason.Advent => "Advent",
+        LiturgicalSeason.Christmas => "Christmas Time",
+        LiturgicalSeason.Lent => "Lent",
+        LiturgicalSeason.Triduum => "The Sacred Paschal Triduum",
+        LiturgicalSeason.Easter => "Easter Time",
+        _ => "Ordinary Time",
+    };
+
+    private string ColorName => _day.Color.ToString();
+
+    private string ColorClass => _day.Color.ToString().ToLowerInvariant();
+
+    // The label shown in the headline's second line.
+    // On a ferial day it is the "Monday of the Nth Week…" title; on a celebration day it names the day by rank, e.g. "The Feast of the Transfiguration" or "The Memorial of Saint Benedict".
+    private string DayLabel
+    {
+        get
+        {
+            if (_day.Celebration is not { } celebration)
+            {
+                return _day.FerialName ?? SeasonName;
+            }
+
+            var name = LowerLeadingThe(celebration.Name);
+
+            return celebration.Rank switch
+            {
+                CelebrationRank.Solemnity => $"The Solemnity of {name}",
+                CelebrationRank.Feast => $"The Feast of {name}",
+                _ => $"The Memorial of {name}",
+            };
+        }
+    }
+
+    // Lowercases a leading "The " so rank-prefixed labels read naturally: "The Feast of the Transfiguration"
+    // and "The Memorial of the Passion of Saint John the Baptist", while plain "Saint Benedict" is untouched.
+    private static string LowerLeadingThe(string name) => name.StartsWith("The ", StringComparison.Ordinal) ? string.Concat("the ", name.AsSpan(4)) : name;
+}

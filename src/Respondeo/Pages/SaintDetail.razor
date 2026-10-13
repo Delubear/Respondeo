@@ -2,7 +2,7 @@
 @inject ISaintService Saints
 @inject IFeastOfTheDay FeastOfTheDay
 @inject NavigationManager Nav
-@inject Respondeo.Services.IDayWatcher DayWatcher
+@inject IDayWatcher DayWatcher
 @implements IDisposable
 
 <DetailPage Loading="_loading" Id="@Id" Noun="Saint" Title="@_saint?.Title" Summary="@_saint?.Summary"

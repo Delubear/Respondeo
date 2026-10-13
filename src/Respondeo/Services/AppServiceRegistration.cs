@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Services.Devotions;
-using Respondeo.Services.Inquiry;
 using Respondeo.Services.Prayers;
 using Respondeo.Services.Summa;
 
