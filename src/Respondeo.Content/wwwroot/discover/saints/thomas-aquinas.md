@@ -13,7 +13,6 @@ religiousOrders: [dominican]
 canonizations: [canonized]
 dates: "1225-1274"
 feastDay: "January 28"
-reviewStatus: unvetted
 tags:
   - dominican
   - summa theologiae
