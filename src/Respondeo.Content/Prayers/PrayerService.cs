@@ -42,6 +42,30 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer.ToContract() : null;
     }
 
+    /// <inheritdoc />
+    public async Task<string> QuotePrayerReferencesAsync(string html)
+    {
+        if (string.IsNullOrEmpty(html) || !html.Contains("prayer:", StringComparison.Ordinal))
+        {
+            return html;
+        }
+
+        var catalog = await Load();
+        return PrayerReference.Replace(html, match =>
+        {
+            var id = match.Groups["id"].Value;
+            if (!catalog.Prayers.TryGetValue(id, out var target))
+            {
+                return $"<a href=\"discover/prayers/{id}\">{match.Groups["label"].Value}</a>";
+            }
+
+            return "<blockquote class=\"prayer-quote\">" +
+                $"<div class=\"prayer-quote__text\">{target.Html}</div>" +
+                $"<p class=\"prayer-quote__source\">&mdash; <a href=\"discover/prayers/{target.Id}\">{target.Title}</a></p>" +
+                "</blockquote>";
+        });
+    }
+
     protected override PrayerDocument Map(PrayerFrontMatter meta, string body, string fileName) => _parser.Map(meta, body);
 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>

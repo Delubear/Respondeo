@@ -17,6 +17,9 @@ public class MiracleDetailTests : TestContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         _miracles = Substitute.For<IMiracleService>();
         Services.AddSingleton(_miracles);
+        var prayers = Substitute.For<IPrayerService>();
+        prayers.QuotePrayerReferencesAsync(Arg.Any<string>()).Returns(c => c.Arg<string>());
+        Services.AddSingleton(prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
     }
 

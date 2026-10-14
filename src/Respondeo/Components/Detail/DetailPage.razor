@@ -1,7 +1,9 @@
 @* Shared layout for single-item detail pages (articles, saints, miracles, prayers): the page shell,
    then loading -> not found -> the item itself. The item renders as a header, an optional unvetted
    notice, optional facts, the body, then tags/sources and a back link.
-   Pages supply only their data and any item-specific pieces (Facts, or a custom Body). *@
+   Pages supply only their data and any item-specific pieces (Facts, or a custom Body).
+   A [Title](prayer:some-id) link on its own line in the body is replaced by that prayer's full text as a quotation. *@
+@inject IPrayerService Prayers
 
 <PageShell Title="@(Loading ? null : Title)" FallbackTitle="@Noun" Description="@Summary" JsonLd="@JsonLd" Article="true"
            SeoReady="@(!Loading && Title is not null)" StageHref="@StageHref" StageLabel="@StageLabel" Crumbs="Crumbs">
@@ -37,7 +39,7 @@
             else
             {
                 <div class="content-body">
-                    @((MarkupString)(BodyHtml ?? string.Empty))
+                    @((MarkupString)_bodyHtml)
                 </div>
             }
 
@@ -57,6 +59,30 @@
 </PageShell>
 
 @code {
+    // BodyHtml with any prayer references expanded, and the source it was expanded from. The body stays empty
+    // until expansion finishes so a reference never flashes as a bare link before the prayer replaces it.
+    private string _bodyHtml = string.Empty;
+    private string? _expandedFrom;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var source = BodyHtml ?? string.Empty;
+        if (source == _expandedFrom)
+        {
+            return;
+        }
+
+        _expandedFrom = source;
+        _bodyHtml = string.Empty;
+        var expanded = await Prayers.QuotePrayerReferencesAsync(source);
+
+        // A newer body may have arrived while this one was expanding; keep only the latest.
+        if (_expandedFrom == source)
+        {
+            _bodyHtml = expanded;
+        }
+    }
+
     /// <summary>True while the item is being fetched.</summary>
     [Parameter] public bool Loading { get; set; }
 

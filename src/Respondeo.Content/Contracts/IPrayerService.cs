@@ -12,4 +12,11 @@ public interface IPrayerService
 
     /// <summary>Returns the full text of a single prayer by id, or null if it does not exist.</summary>
     Task<Prayer?> GetPrayerAsync(string id);
+
+    /// <summary>
+    /// Replaces each <c>[Title](prayer:some-id)</c> reference in rendered content HTML (a saint profile, article, or miracle)
+    /// with the referenced prayer's full text as a quotation, followed by a link to the prayer's own page.
+    /// Unknown ids become a plain link; HTML without references is returned unchanged.
+    /// </summary>
+    Task<string> QuotePrayerReferencesAsync(string html);
 }

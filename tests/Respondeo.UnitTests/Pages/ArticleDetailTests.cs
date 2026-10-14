@@ -17,6 +17,9 @@ public class ArticleDetailTests : TestContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         _articles = Substitute.For<IArticleService>();
         Services.AddSingleton(_articles);
+        var prayers = Substitute.For<IPrayerService>();
+        prayers.QuotePrayerReferencesAsync(Arg.Any<string>()).Returns(c => c.Arg<string>());
+        Services.AddSingleton(prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
     }
 
