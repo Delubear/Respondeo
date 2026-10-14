@@ -19,6 +19,7 @@ tags:
 sources:
   - label: "Vatican biography"
     url: "https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_20020616_padre-pio_en.html"
+# There is a lot more that could be added here, noted to revisit for expansion at a later date.
 ---
 
 St. Padre Pio (Francesco Forgione) was an Italian Capuchin friar and priest who bore the stigmata for
