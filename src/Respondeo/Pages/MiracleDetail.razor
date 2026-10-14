@@ -8,21 +8,24 @@
             IsUnvetted="@(_miracle?.IsUnvetted ?? false)" UnvettedNoun="account" BodyHtml="@_miracle?.BodyHtml"
             Tags="@(_miracle?.Tags ?? [])" Sources="@(_miracle?.Sources ?? [])" TagsBeforeSources="true">
     <Facts>
-        <FactPanel Class="miracle__facts">
-            <Fact Label="Church's judgment">@_facets.Approval(_miracle!.Approval)</Fact>
-            @if (!string.IsNullOrWhiteSpace(_miracle.Country))
-            {
-                <Fact Label="Place">@_miracle.Country</Fact>
-            }
-            @if (_century is not null)
-            {
-                <Fact Label="When">@_century</Fact>
-            }
-            @if (!string.IsNullOrWhiteSpace(_miracle.FeastDay))
-            {
-                <Fact Label="Feast day">@_miracle.FeastDay</Fact>
-            }
-        </FactPanel>
+        @if (_miracle is { } m)
+        {
+            <FactPanel Class="miracle__facts">
+                <Fact Label="Church's judgment">@_facets.Approval(m.Approval)</Fact>
+                @if (!string.IsNullOrWhiteSpace(m.Country))
+                {
+                    <Fact Label="Place">@m.Country</Fact>
+                }
+                @if (_century is not null)
+                {
+                    <Fact Label="When">@_century</Fact>
+                }
+                @if (!string.IsNullOrWhiteSpace(m.FeastDay))
+                {
+                    <Fact Label="Feast day">@m.FeastDay</Fact>
+                }
+            </FactPanel>
+        }
     </Facts>
 </DetailPage>
 
