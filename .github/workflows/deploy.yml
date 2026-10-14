@@ -28,6 +28,8 @@ jobs:
         with:
           # Fetch the actual corpus blobs: the Publish step embeds them into the site.
           lfs: true
+          # Full history so the sitemap's <lastmod> reflects each content file's last commit.
+          fetch-depth: 0
 
       # Detect whether any non-docs file changed. Docs-only pushes (READMEs,
       # TODO.md, AI instruction files) leave code-changed=false so the build,

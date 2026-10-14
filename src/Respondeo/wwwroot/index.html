@@ -54,6 +54,8 @@
     <script>
         // Defines the theme helper and applies the persisted (or OS) theme before Blazor boots, so there is no flash of the wrong theme on first paint.
         // This block MUST stay inline: it has to run before first paint to avoid a flash of the wrong theme (an external fetch could resolve after paint).
+        // Marks JS as available so the static entry-page content (html.js .static-entry) stays hidden behind the spinner.
+        document.documentElement.classList.add('js');
         window.respondeoTheme = {
             apply: function (theme) {
                 document.documentElement.setAttribute('data-theme', theme);

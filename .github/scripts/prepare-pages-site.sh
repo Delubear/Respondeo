@@ -10,6 +10,9 @@
 #    and Twitter equivalents) so crawlers that don't run JavaScript don't treat every route as a
 #    duplicate of the home page. The sitemap generator writes these from the same content sources
 #    it uses for sitemap.xml, so the two can't drift; it HTML-encodes values, which sed can't do safely.
+#    Each copy also carries a static rendering of the page's content inside #app, which Blazor
+#    replaces on boot, so crawlers see real text. The generator also rewrites 404.html so a
+#    trailing-slash URL (e.g. /discover/saints/) redirects to its canonical slash-less form.
 #
 # Usage: prepare-pages-site.sh <site-dir>
 set -euo pipefail

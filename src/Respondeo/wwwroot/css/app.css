@@ -671,6 +671,16 @@ details.accordion__item[open] > .accordion__trigger {
     color: var(--masthead-fg);
 }
 
+/* Static crawler copy written into each route entry page; hidden when JS runs (Blazor renders the real page). */
+html.js .static-entry {
+    display: none;
+}
+
+/* Without JS the app never boots, so show the content instead of an endless spinner. */
+html:not(.js) .app-loading {
+    display: none;
+}
+
 .app-loading {
     display: flex;
     flex-direction: column;

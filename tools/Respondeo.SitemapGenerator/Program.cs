@@ -45,7 +45,7 @@ internal static class SitemapGenerator
         var repoRoot = Path.GetFullPath(args[0]);
         var paths = ContentPaths.ForRepo(repoRoot);
 
-        var routes = new RouteSet();
+        var routes = new RouteSet(GitDates.Load(repoRoot));
         CollectStaticRoutes(routes);
         CollectSummaRoutes(routes, paths.SummaIndex);
         CollectMiracleRoutes(routes, paths.DiscoverRoot, paths.MiraclesManifest);
@@ -73,8 +73,8 @@ internal static class SitemapGenerator
             "A growing gallery of the saints \u2014 their lives, patronages, state of life, and the Church's recognition of their holiness, from the early Church to our own day.");
         routes.Add("discover/prayers", "Catholic Prayers",
             "A treasury of the Church's traditional prayers \u2014 the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside.");
-        routes.Add("discover/devotions", "Catholic Devotions",
-            "Pray the Holy Rosary and the chaplets step by step with an interactive guide that carries you through each bead and mystery.");
+        routes.Add("discover/devotions", "Catholic Devotions and Sacraments",
+            "Pray the Rosary and the chaplets bead by bead, and walk through the Mass and Confession step by step with an interactive guide.");
         routes.Add("discover/articles", "Living the Faith" + TitleSeparator + "Articles",
             "Deeper dives into the Catholic life \u2014 Confession, the Eucharist, and the Church's teaching \u2014 the why beneath the practice.");
         routes.Add("thanks", "Thanks & Sources",
@@ -100,7 +100,7 @@ internal static class SitemapGenerator
         {
             var partKey = part.GetProperty("id").GetString() ?? string.Empty;
             var partTitle = part.TryGetProperty("title", out var pt) ? pt.GetString() ?? string.Empty : string.Empty;
-            routes.Add($"summa/part/{Parts.SlugForKey(partKey)}", JoinTitle(partTitle, "Summa Theologiae"), null);
+            routes.Add($"summa/part/{Parts.SlugForKey(partKey)}", JoinTitle(partTitle, "Summa Theologiae"), null, summaIndexPath);
 
             if (!part.TryGetProperty("questions", out var questions))
             {
@@ -113,7 +113,9 @@ internal static class SitemapGenerator
                 if (!string.IsNullOrWhiteSpace(questionId))
                 {
                     var title = question.TryGetProperty("title", out var t) ? t.GetString() : null;
-                    routes.Add($"summa/{ToQuestionSlug(questionId)}", title, SummaQuestionDescription(question, title, partTitle));
+                    var questionFile = Directory.EnumerateFiles(Path.GetDirectoryName(summaIndexPath)!, questionId + ".json", SearchOption.AllDirectories)
+                        .FirstOrDefault();
+                    routes.Add($"summa/{ToQuestionSlug(questionId)}", title, SummaQuestionDescription(question, title, partTitle), questionFile);
                 }
             }
         }
@@ -132,7 +134,7 @@ internal static class SitemapGenerator
         foreach (var file in ReadManifestFiles(miraclesManifestPath))
         {
             var fullPath = Path.Combine(discoverRoot, "miracles", file);
-            routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath));
+            routes.Add($"discover/miracles/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
         }
     }
 
@@ -149,7 +151,7 @@ internal static class SitemapGenerator
         foreach (var file in ReadManifestFiles(saintsManifestPath))
         {
             var fullPath = Path.Combine(Path.GetDirectoryName(saintsManifestPath)!, file);
-            routes.Add($"discover/saints/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath));
+            routes.Add($"discover/saints/{Path.GetFileNameWithoutExtension(file)}", ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
         }
     }
 
@@ -165,7 +167,7 @@ internal static class SitemapGenerator
 
         // Stage landing pages (Stage.razor: "/{Slug}") are emitted after the nodes, once per stage,
         // so collect the stages we encounter while walking the nodes and add them at the end.
-        var stages = new RouteSet();
+        var stages = new RouteSet(routes.Dates);
 
         foreach (var file in ReadManifestFiles(contentManifestPath))
         {
@@ -190,12 +192,12 @@ internal static class SitemapGenerator
             }
 
             stages.Add(stage);
-            routes.Add($"{stage}/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
+            routes.Add($"{stage}/{id}", ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
 
             // A stage's landing page (/{stage}) renders the node whose id is the stage slug.
             if (string.Equals(id, stage, StringComparison.OrdinalIgnoreCase))
             {
-                stages.Add(stage, ReadTitle(fullPath), ReadSummary(fullPath));
+                stages.Add(stage, ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
             }
         }
 
@@ -253,7 +255,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"discover/prayers/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
+                routes.Add($"discover/prayers/{id}", ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
             }
         }
     }
@@ -278,7 +280,7 @@ internal static class SitemapGenerator
             if (!string.IsNullOrWhiteSpace(id))
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(fullPath));
-                routes.Add($"discover/devotions/{id}", ReadJsonString(doc, "title"), ReadJsonString(doc, "summary"));
+                routes.Add($"discover/devotions/{id}", ReadJsonString(doc, "title"), ReadJsonString(doc, "summary"), fullPath);
             }
         }
     }
@@ -302,7 +304,7 @@ internal static class SitemapGenerator
             var id = ReadFrontMatterId(fullPath);
             if (!string.IsNullOrWhiteSpace(id))
             {
-                routes.Add($"discover/articles/{id}", ReadTitle(fullPath), ReadSummary(fullPath));
+                routes.Add($"discover/articles/{id}", ReadTitle(fullPath), ReadSummary(fullPath), fullPath);
             }
         }
     }
@@ -322,6 +324,11 @@ internal static class SitemapGenerator
             var loc = route.Length == 0 ? $"{BaseUrl}/" : $"{BaseUrl}/{route}";
             xml.AppendLine("  <url>");
             xml.AppendLine($"    <loc>{Escape(loc)}</loc>");
+            if (routes.MetaFor(route).LastModified is { } lastModified)
+            {
+                xml.AppendLine($"    <lastmod>{lastModified:yyyy-MM-dd}</lastmod>");
+            }
+
             xml.AppendLine("  </url>");
         }
         xml.AppendLine("</urlset>");
@@ -486,30 +493,38 @@ internal readonly record struct ContentPaths(
 }
 
 // A page's own title (without the site suffix) and meta description; either may be null to keep the site default.
-internal readonly record struct PageMeta(string? Title, string? Description);
+// SourcePath is the content file the page renders (used for its static body), and LastModified its last commit date.
+internal readonly record struct PageMeta(string? Title, string? Description, string? SourcePath = null, DateTimeOffset? LastModified = null);
 
 // An insertion-ordered, de-duplicating collection of relative routes, each with optional page metadata.
 // Adding the same route twice keeps the first entry but fills in metadata the first add lacked; leading slashes are normalized away so "/summa" and "summa" are the same route.
-internal sealed class RouteSet
+internal sealed class RouteSet(GitDates dates)
 {
     private readonly List<string> _routes = [];
     private readonly Dictionary<string, PageMeta> _meta = new(StringComparer.Ordinal);
 
+    public GitDates Dates => dates;
+
     public void Add(string relative) => Add(relative, null, null);
 
-    public void Add(string relative, PageMeta meta) => Add(relative, meta.Title, meta.Description);
+    public void Add(string relative, PageMeta meta) => Add(relative, meta.Title, meta.Description, meta.SourcePath);
 
-    public void Add(string relative, string? title, string? description)
+    public void Add(string relative, string? title, string? description, string? sourcePath = null)
     {
         var normalized = relative.TrimStart('/');
+        var lastModified = dates.For(sourcePath);
         if (_meta.TryGetValue(normalized, out var existing))
         {
-            _meta[normalized] = new PageMeta(existing.Title ?? title, existing.Description ?? description);
+            _meta[normalized] = new PageMeta(
+                existing.Title ?? title,
+                existing.Description ?? description,
+                existing.SourcePath ?? sourcePath,
+                existing.LastModified ?? lastModified);
             return;
         }
 
         _routes.Add(normalized);
-        _meta[normalized] = new PageMeta(title, description);
+        _meta[normalized] = new PageMeta(title, description, sourcePath, lastModified);
     }
 
     public PageMeta MetaFor(string route) => _meta.GetValueOrDefault(route);
