@@ -10,7 +10,7 @@
 @implements IDisposable
 
 <FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
-               AriaLabel="@($"Today in the Church: {SeasonName}")" Tooltip="Today in the Church"
+               AriaLabel="@($"Today in the Church: {_view.SeasonName}")" Tooltip="Today in the Church"
                DialogClass="dialog--liturgy" Raised="Raised" OnOpening="SyncToToday">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
@@ -23,24 +23,24 @@
         <div class="liturgy">
             <div class="liturgy__status">
                 <div class="liturgy__today">
-                    <span class="liturgy__swatch liturgy__swatch--@ColorClass" aria-hidden="true"></span>
+                    <span class="liturgy__swatch liturgy__swatch--@_view.ColorClass" aria-hidden="true"></span>
                     <div class="liturgy__headline">
-                        <p class="liturgy__season">@SeasonName</p>
-                        <p class="liturgy__ferial">@DayLabel</p>
-                        <p class="liturgy__color">Liturgical color: @ColorName</p>
-                        @if (ColorClue is { } clue)
+                        <p class="liturgy__season">@_view.SeasonName</p>
+                        <p class="liturgy__ferial">@_view.DayLabel</p>
+                        <p class="liturgy__color">Liturgical color: @_view.ColorName</p>
+                        @if (_view.ColorClue is { } clue)
                         {
                             <p class="liturgy__color-clue">@clue</p>
                         }
                     </div>
                 </div>
 
-                @if (SingleCelebration is { } celebration)
+                @if (_view.Celebration is { } celebration)
                 {
-                    var profile = celebration.Id is not null ? ProfileFor(celebration.Id) : null;
+                    var profile = celebration.Id is not null ? _profiles.GetValueOrDefault(celebration.Id) : null;
                     <div class="liturgy__celebrations">
-                        <p class="liturgy__saint-intro">@CelebrationIntro</p>
-                        <SaintHighlightCard Name="@celebration.Name" Slug="@celebration.Id" Note="@(IsOptionalMemorialCard ? "Optional memorial" : null)" Dates="@profile?.Dates" Summary="@(profile?.Summary ?? celebration.Summary)" OnNavigate="context.CloseAsync" />
+                        <p class="liturgy__saint-intro">@_view.CelebrationIntro</p>
+                        <SaintHighlightCard Name="@celebration.Name" Slug="@celebration.Id" Note="@(_view.IsOptionalMemorial ? "Optional memorial" : null)" Dates="@profile?.Dates" Summary="@(profile?.Summary ?? celebration.Summary)" OnNavigate="context.CloseAsync" />
                     </div>
                 }
             </div>
@@ -113,13 +113,15 @@
 </FloatingGuide>
 
 @code {
-    private LiturgicalDay _day = default!;
+    private TodayInTheChurch _view = default!;
+    private DateOnly _loadedFor;
 
-    // Full saint profiles for the day's linked celebrations, keyed by slug, so the dialog can show each saint's dates and summary alongside the link without a second round-trip per render.
+    // Full saint profiles for the day's linked celebrations, keyed by slug, so the card can show dates and summary.
     private readonly Dictionary<string, SaintRecord> _profiles = new(StringComparer.Ordinal);
 
-    // The single optional memorial chosen for a ferial day, selected once per load (randomly when the day offers more than one) so it stays stable across re-renders.
-    private LiturgicalCelebration? _optionalMemorial;
+    // The in-flight (or finished) profile load for the current day. The first load reads the whole saint catalog,
+    // so opening waits on it; otherwise the top card renders bare and then grows when the dates and summary arrive.
+    private Task _profilesLoad = Task.CompletedTask;
 
     /// <summary>
     /// When true, the orb sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
@@ -132,32 +134,20 @@
         await LoadDayAsync();
     }
 
-    // Resolves today's liturgical day, chooses the ferial optional memorial (if any), and loads the
-    // linked saint profiles. Extracted so the day-rollover handler can rebuild the same state when a
-    // long-open tab crosses midnight.
-    private async Task LoadDayAsync()
-    {
-        SetDay();
-        await LoadProfilesAsync();
-    }
-
-    // Resolves the day and its optional memorial. Synchronous, so the dialog's text can be brought up to date
-    // in the same render that opens it.
-    private void SetDay()
+    // Resolves today's day and starts loading its saint profiles. The view is set synchronously, so it is current
+    // in the same render that opens the dialog; callers await the returned profile load.
+    private Task LoadDayAsync()
     {
         _loadedFor = Today();
-        _day = Calendar.ForDate(_loadedFor);
-
-        // On a ferial day with optional memorials, surface a single one. When several are available, pick at random so the dialog rotates through them rather than always favoring the first.
-        _optionalMemorial = _day.OptionalMemorials.Count > 0
-            ? _day.OptionalMemorials[Random.Shared.Next(_day.OptionalMemorials.Count)]
-            : null;
+        _view = TodayInTheChurch.For(Calendar.ForDate(_loadedFor));
+        _profilesLoad = LoadProfilesAsync(_view.LinkedSlugs().ToList());
+        return _profilesLoad;
     }
 
-    private async Task LoadProfilesAsync()
+    private async Task LoadProfilesAsync(IReadOnlyList<string> slugs)
     {
         _profiles.Clear();
-        foreach (var id in LinkedSlugs())
+        foreach (var id in slugs)
         {
             if (await Saints.GetByIdAsync(id) is { } record)
             {
@@ -166,8 +156,8 @@
         }
     }
 
-    // The watched day rolled over (e.g. the tab sat open past midnight); rebuild today's day on the
-    // renderer thread so the orb and its dialog reflect the new date without a reload.
+    // The watched day rolled over (e.g. the tab sat open past midnight); rebuild on the renderer thread so the orb
+    // and its dialog reflect the new date without a reload.
     private async void OnDayChanged()
     {
         await InvokeAsync(async () =>
@@ -177,144 +167,10 @@
         });
     }
 
+    // The day watcher only re-checks the date when the tab regains focus, which may not have happened yet when the
+    // orb is tapped. Bring the day up to date before the dialog opens, and open only once its profiles have loaded.
+    private Task SyncToToday() => Today() != _loadedFor ? LoadDayAsync() : _profilesLoad;
+
     public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
-
-    private DateOnly _loadedFor;
-
-    // The day watcher only re-checks the date when the tab regains focus, which may not have happened yet when
-    // the orb is tapped. Bring the day up to date just before the dialog opens so it never shows yesterday's text
-    // and then changes. Resolving the day is instant; the saint profiles load right after.
-    private void SyncToToday()
-    {
-        if (Today() == _loadedFor)
-        {
-            return;
-        }
-
-        SetDay();
-        _ = InvokeAsync(async () =>
-        {
-            await LoadProfilesAsync();
-            StateHasChanged();
-        });
-    }
-
-    private IEnumerable<string> LinkedSlugs()
-    {
-        if (_day.Celebration?.Id is { } celebrationId)
-        {
-            yield return celebrationId;
-        }
-
-        foreach (var memorial in _day.OptionalMemorials)
-        {
-            if (memorial.Id is { } memorialId)
-            {
-                yield return memorialId;
-            }
-        }
-    }
-
-    private SaintRecord? ProfileFor(string id) => _profiles.GetValueOrDefault(id);
-
-    // The single celebration shown as a card: the principal celebration when there is one, otherwise the chosen optional memorial of a ferial day
-    // (the season/ferial blurb carries the day on the left instead).
-    // Only ever one card is shown, so a day's remaining optional memorials are intentionally not listed.
-    private LiturgicalCelebration? SingleCelebration => _day.Celebration ?? _optionalMemorial;
-
-    // True when the single card is an optional memorial (no principal celebration), so the dialog can flag it as optional and introduce it with "The Church also remembers today".
-    private bool IsOptionalMemorialCard => _day.Celebration is null && _optionalMemorial is not null;
-
-    // A short lead-in shown above the single card, phrased to fit whether the card is the day's principal celebration or an optional memorial the Church merely offers for remembrance.
-    private string CelebrationIntro
-    {
-        get
-        {
-            if (IsOptionalMemorialCard)
-            {
-                return "The Church also remembers today";
-            }
-
-            return _day.Celebration?.Rank switch
-            {
-                CelebrationRank.Solemnity => "Today the Church celebrates",
-                CelebrationRank.Feast => "Today the Church keeps the feast of",
-                _ => "Today the Church honors",
-            };
-        }
-    }
-
-    // A short explanation shown only when the day's color departs from its season's usual color,
-    // so the reader understands why today looks different (e.g. white for a saint during green Ordinary Time).
-    private string? ColorClue
-    {
-        get
-        {
-            if (_day.Color == SeasonDefaultColor)
-            {
-                return null;
-            }
-
-            return _day.Color switch
-            {
-                LiturgicalColor.White => "White today — honoring the Lord, Our Lady, or a saint who was not a martyr.",
-                LiturgicalColor.Red => "Red today — for a martyr, an apostle, or the Holy Spirit.",
-                LiturgicalColor.Rose => "Rose today — a note of joy that lightens this penitential season.",
-                LiturgicalColor.Violet => "Violet today — a penitential note set within the season.",
-                LiturgicalColor.Green => "Green today — the ordinary color returns for this day.",
-                _ => null,
-            };
-        }
-    }
-
-    // The color a day would wear from its season alone, before any celebration overrides it.
-    private LiturgicalColor SeasonDefaultColor => _day.Season switch
-    {
-        LiturgicalSeason.Advent => LiturgicalColor.Violet,
-        LiturgicalSeason.Lent => LiturgicalColor.Violet,
-        LiturgicalSeason.Christmas => LiturgicalColor.White,
-        LiturgicalSeason.Easter => LiturgicalColor.White,
-        LiturgicalSeason.Triduum => LiturgicalColor.Red,
-        _ => LiturgicalColor.Green,
-    };
-
-    private string SeasonName => _day.Season switch
-    {
-        LiturgicalSeason.Advent => "Advent",
-        LiturgicalSeason.Christmas => "Christmas Time",
-        LiturgicalSeason.Lent => "Lent",
-        LiturgicalSeason.Triduum => "The Sacred Paschal Triduum",
-        LiturgicalSeason.Easter => "Easter Time",
-        _ => "Ordinary Time",
-    };
-
-    private string ColorName => _day.Color.ToString();
-
-    private string ColorClass => _day.Color.ToString().ToLowerInvariant();
-
-    // The label shown in the headline's second line.
-    // On a ferial day it is the "Monday of the Nth Week…" title; on a celebration day it names the day by rank, e.g. "The Feast of the Transfiguration" or "The Memorial of Saint Benedict".
-    private string DayLabel
-    {
-        get
-        {
-            if (_day.Celebration is not { } celebration)
-            {
-                return _day.FerialName ?? SeasonName;
-            }
-
-            var name = LowerLeadingThe(celebration.Name);
-
-            return celebration.Rank switch
-            {
-                CelebrationRank.Solemnity => $"The Solemnity of {name}",
-                CelebrationRank.Feast => $"The Feast of {name}",
-                _ => $"The Memorial of {name}",
-            };
-        }
-    }
-
-    // Lowercases a leading "The " so rank-prefixed labels read naturally: "The Feast of the Transfiguration"
-    // and "The Memorial of the Passion of Saint John the Baptist", while plain "Saint Benedict" is untouched.
-    private static string LowerLeadingThe(string name) => name.StartsWith("The ", StringComparison.Ordinal) ? string.Concat("the ", name.AsSpan(4)) : name;
 }
+
