@@ -26,12 +26,11 @@
   },
   "designations": {
     "apostle": "Apostle",
-    "evangelist": "Evangelist",
-    "prophet": "Prophet",
     "martyr": "Martyr",
     "virgin": "Virgin",
     "widow": "Widow",
     "founder": "Founder",
+    "stigmatist": "Stigmatist",
     "doctor-of-the-church": "Doctor of the Church"
   },
   "sexes": {

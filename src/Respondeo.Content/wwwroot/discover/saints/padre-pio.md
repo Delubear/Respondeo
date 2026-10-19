@@ -7,6 +7,7 @@ era: modern
 region: europe
 patronages: [Civil defense volunteers, Adolescents]
 statesOfLife: [priest, religious]
+designations: [stigmatist]
 sex: male
 religiousOrders: [capuchin]
 canonizations: [canonized]

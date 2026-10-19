@@ -22,7 +22,7 @@ do all of the following:
    - `era` (single): `early-church`, `medieval`, `early-modern`, `modern`
    - `region` (single): `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
    - `statesOfLife` (list, at least one): `religious`, `deacon`, `priest`, `bishop`, `pope`, `lay`
-   - `designations` (list, optional): `apostle`, `evangelist`, `prophet`, `martyr`, `virgin`, `widow`, `founder`, `doctor-of-the-church`
+   - `designations` (list, optional): `apostle`, `martyr`, `virgin`, `widow`, `founder`, `stigmatist`, `doctor-of-the-church`
    - `sex` (single, optional): `male`, `female`
    - `religiousOrders` (list, optional): `augustinian`, `dominican`, `franciscan`, `capuchin`, `carmelite`
    - `canonizations` (list, at least one): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`

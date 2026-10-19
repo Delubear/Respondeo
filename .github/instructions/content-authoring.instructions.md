@@ -155,7 +155,7 @@ Markdown with front-matter carrying typed **facet** metadata, then `## `-section
   - `era` (single): `early-church`, `medieval`, `early-modern`, `modern`
   - `region` (single): `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
   - `statesOfLife` (list): `religious`, `deacon`, `priest`, `bishop`, `pope`, `lay`
-  - `designations` (list): `apostle`, `evangelist`, `prophet`, `martyr`, `virgin`, `widow`, `founder`, `doctor-of-the-church`
+  - `designations` (list): `apostle`, `martyr`, `virgin`, `widow`, `founder`, `stigmatist`, `doctor-of-the-church`
   - `sex` (single): `male`, `female`
   - `religiousOrders` (list): `augustinian`, `dominican`, `franciscan`, `capuchin`, `carmelite`
   - `canonizations` (list): `canonized`, `beatified`, `venerable`, `servant-of-god`, `pre-congregation`

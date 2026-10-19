@@ -7,7 +7,7 @@ era: medieval
 region: europe
 patronages: ["Animals & ecology", "The poor"]
 statesOfLife: [deacon, religious]
-designations: [founder]
+designations: [founder, stigmatist]
 sex: male
 religiousOrders: [franciscan]
 canonizations: [pre-congregation]

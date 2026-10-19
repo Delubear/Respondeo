@@ -20,7 +20,7 @@ era: modern                     # OPTIONAL (single). Historical era facet: early
 region: europe                  # OPTIONAL (single). Region facet used by the region filter.
 patronages: ["Missions", "Youth"]   # OPTIONAL (free-text list). Patronages — searched and shown, but NOT a filter facet, so any wording is allowed. Reuse existing wording/casing for consistency.
 statesOfLife: [religious]       # REQUIRED (list, >=1). States of life: religious, deacon, priest, bishop, pope, lay. Record only the TERMINAL (highest) holy order — at most one of deacon/priest/bishop/pope (a bishop is [bishop], not [deacon, priest, bishop]); add religious for a vowed order member; reserve lay for non-ordained seculars.
-designations: [doctor-of-the-church]   # OPTIONAL (list). Honorifics/roles that are not states of life: apostle, evangelist, prophet, martyr, virgin, widow, founder, doctor-of-the-church.
+designations: [doctor-of-the-church]   # OPTIONAL (list). Honorifics/roles that are not states of life: apostle, martyr, virgin, widow, founder, stigmatist, doctor-of-the-church.
 sex: female                     # OPTIONAL (single). male or female.
 religiousOrders: [carmelite]    # OPTIONAL (list). Institute(s) a religious saint belonged to or founded: augustinian, dominican, franciscan, capuchin, carmelite. Omit for secular clergy.
 canonizations: [canonized]      # REQUIRED (list, >=1). Canonization status(es): canonized, beatified, venerable, servant-of-god, pre-congregation.
