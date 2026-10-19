@@ -9,6 +9,8 @@
 <article class="node" @key="Node.Id">
     <PillarHeader Eyebrow="@Kicker" Title="@Node.Title" LedeText="@Node.Summary" />
 
+    @Notice
+
     @if (Node.IsUnvetted)
     {
         <ConstructionNotice>
@@ -55,6 +57,9 @@
 
     /// <summary>Optional short kicker shown above the title (the accent-colored line), e.g. a stage's journey label.</summary>
     [Parameter] public string? Kicker { get; set; }
+
+    /// <summary>Optional note shown just below the header, e.g. a stage landing page's invitation to skeptics.</summary>
+    [Parameter] public RenderFragment? Notice { get; set; }
 
     private readonly List<ResolvedBranch> _branches = new();
     private StageLink? _nextStage;

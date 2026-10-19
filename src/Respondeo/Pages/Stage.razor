@@ -4,55 +4,78 @@
 
 @if (_isKnownStage)
 {
-    <PageShell Title="@_label" Description="@_node?.Summary" />
+	<PageShell Title="@_label" Description="@_node?.Summary" />
 
-    @if (_loading)
-    {
-        <Loading>Turning the page&hellip;</Loading>
-    }
-    else if (_node is null)
-    {
-        <section class="landing">
-            <h1 class="landing__title">@_label</h1>
-            <p class="landing__placeholder">Content for this stage is coming soon.</p>
-        </section>
-    }
-    else
-    {
-        <NodeArticle Node="_node" Kicker="@_kicker" />
-    }
+	@if (_loading)
+	{
+		<Loading>Turning the page&hellip;</Loading>
+	}
+	else if (_node is null)
+	{
+		<section class="landing">
+			<h1 class="landing__title">@_label</h1>
+			<p class="landing__placeholder">Content for this stage is coming soon.</p>
+		</section>
+	}
+	else
+	{
+		<NodeArticle Node="_node" Kicker="@_kicker">
+			<Notice>
+				@if (_objectionsHref is not null)
+				{
+					<SkepticNote Href="@_objectionsHref" Label="@_objectionsLabel" Subject="@_objectionsSubject" />
+				}
+			</Notice>
+		</NodeArticle>
+	}
 }
 else
 {
-    <NotFound />
+	<NotFound />
 }
 
 @code {
-    // Stage landing pages share one route (/{Slug}). The slug is matched against SiteNavigation, the single source of truth, so adding a stage is a content + navigation change only.
-    [Parameter] public string Slug { get; set; } = string.Empty;
+	// Stage landing pages share one route (/{Slug}). The slug is matched against SiteNavigation, the single source of truth, so adding a stage is a content + navigation change only.
+	[Parameter] public string Slug { get; set; } = string.Empty;
 
-    private InquiryNode? _node;
-    private bool _loading = true;
-    private bool _isKnownStage;
-    private string _label = string.Empty;
-    private string? _kicker;
+	private InquiryNode? _node;
+	private bool _loading = true;
+	private bool _isKnownStage;
+	private string _label = string.Empty;
+	private string? _kicker;
+	private string? _objectionsHref;
+	private string _objectionsLabel = "the objections";
+	private string _objectionsSubject = "arguments against this stage";
 
-    protected override async Task OnParametersSetAsync()
-    {
-        var item = SiteNavigation.Items.FirstOrDefault(i => i.Href.Length > 0 && string.Equals(i.Href, Slug, StringComparison.OrdinalIgnoreCase));
+	protected override async Task OnParametersSetAsync()
+	{
+		var item = SiteNavigation.Items.FirstOrDefault(i => i.Href.Length > 0 && string.Equals(i.Href, Slug, StringComparison.OrdinalIgnoreCase));
 
-        _isKnownStage = item is not null;
-        if (item is null)
-        {
-            _loading = false;
-            return;
-        }
+		_isKnownStage = item is not null;
+		if (item is null)
+		{
+			_loading = false;
+			return;
+		}
 
-        _label = item.Label;
-        _loading = true;
-        _node = await Content.GetByIdAsync(item.Href);
-        var stages = await Flow.GetStagesAsync();
-        _kicker = stages.FirstOrDefault(s => string.Equals(s.Id, item.Href, StringComparison.OrdinalIgnoreCase))?.Kicker;
-        _loading = false;
-    }
+		_label = item.Label;
+		_loading = true;
+		_node = await Content.GetByIdAsync(item.Href);
+		var stages = await Flow.GetStagesAsync();
+		_kicker = stages.FirstOrDefault(s => string.Equals(s.Id, item.Href, StringComparison.OrdinalIgnoreCase))?.Kicker;
+
+		// Each stage's objections hub is the node in its folder named "...-objections" or "objections-...";
+		// Coming Home's equivalent is its "...-obstacles" page.
+		var all = await Content.GetAllAsync();
+		var objections = all.FirstOrDefault(n =>
+			string.Equals(n.Stage, item.Href, StringComparison.OrdinalIgnoreCase) &&
+			(n.Id.EndsWith("-objections", StringComparison.OrdinalIgnoreCase) ||
+			 n.Id.StartsWith("objections-", StringComparison.OrdinalIgnoreCase) ||
+			 n.Id.EndsWith("-obstacles", StringComparison.OrdinalIgnoreCase)));
+		_objectionsHref = objections is null ? null : ContentRoutes.NodeHref(objections);
+		var isObstacles = objections?.Id.EndsWith("-obstacles", StringComparison.OrdinalIgnoreCase) == true;
+		_objectionsLabel = isObstacles ? "the obstacles" : "the objections";
+		_objectionsSubject = isObstacles ? "reasons people hold back" : "arguments against this stage";
+		_loading = false;
+	}
 }

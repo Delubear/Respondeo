@@ -1,0 +1,22 @@
+@* A quiet invitation on Inquiry stage landing pages asking skeptical readers to stay until the stage's
+   objections (or obstacles). Deliberately calmer than ConstructionNotice: it is an invitation, not a warning. *@
+
+<aside class="skeptic-note" role="note">
+    <p class="skeptic-note__text">
+        <strong>Skeptical?</strong>
+        Good. We ask only that you stay until <a href="@Href">@Label</a>, where we take the strongest
+        @Subject head-on. If you are still not convinced, please
+        <Feedback LinkText="tell us why" />; your objections help us answer more honestly.
+    </p>
+</aside>
+
+@code {
+    /// <summary>Link to the stage's objections (or obstacles) page.</summary>
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+
+    /// <summary>Link text, e.g. "the objections".</summary>
+    [Parameter] public string Label { get; set; } = "the objections";
+
+    /// <summary>What that page confronts, e.g. "arguments against this stage".</summary>
+    [Parameter] public string Subject { get; set; } = "arguments against this stage";
+}

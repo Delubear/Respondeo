@@ -1,0 +1,19 @@
+.skeptic-note {
+    margin: 0 0 1.75rem;
+    padding: 0.75rem 1.1rem;
+    border-left: 3px solid var(--accent);
+    background: var(--parchment);
+    color: var(--ink-soft);
+}
+
+.skeptic-note__text {
+    margin: 0;
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.skeptic-note__text strong {
+    font-style: normal;
+    color: var(--ink);
+}
