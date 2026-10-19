@@ -10,6 +10,7 @@
         {
             <span class="saint-card__note">@Note</span>
         }
+        @Detail
         @if (!string.IsNullOrWhiteSpace(Dates))
         {
             <span class="saint-card__meta">
@@ -31,6 +32,7 @@ else
         {
             <span class="saint-card__note">@Note</span>
         }
+        @Detail
         @if (!string.IsNullOrWhiteSpace(Dates))
         {
             <span class="saint-card__meta">
@@ -53,6 +55,9 @@ else
 
     /// <summary>Optional small badge shown above the dates (e.g. "Optional memorial").</summary>
     [Parameter] public string? Note { get; set; }
+
+    /// <summary>Optional extra content shown beneath the note (e.g. the color an optional memorial would wear).</summary>
+    [Parameter] public RenderFragment? Detail { get; set; }
 
     /// <summary>Optional free-text life dates (e.g. "1181–1226").</summary>
     [Parameter] public string? Dates { get; set; }

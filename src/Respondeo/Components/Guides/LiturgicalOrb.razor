@@ -40,7 +40,28 @@
                     var profile = celebration.Id is not null ? _profiles.GetValueOrDefault(celebration.Id) : null;
                     <div class="liturgy__celebrations">
                         <p class="liturgy__saint-intro">@_view.CelebrationIntro</p>
-                        <SaintHighlightCard Name="@celebration.Name" Slug="@celebration.Id" Note="@(_view.IsOptionalMemorial ? "Optional memorial" : null)" Dates="@profile?.Dates" Summary="@(profile?.Summary ?? celebration.Summary)" OnNavigate="context.CloseAsync" />
+                        <div class="liturgy__carousel">
+                            @if (_view.CanCycle)
+                            {
+                                <button type="button" class="liturgy__cycle-btn" aria-label="Previous optional memorial" @onclick="_view.Previous">&lsaquo;</button>
+                            }
+                            <SaintHighlightCard Name="@celebration.Name" Slug="@celebration.Id" Note="@(_view.IsOptionalMemorial ? "Optional memorial" : null)" Dates="@profile?.Dates"
+                                                Summary="@(profile?.Summary ?? celebration.Summary)" OnNavigate="context.CloseAsync">
+                                <Detail>
+                                    @if (_view.OptionalMemorialColor is { } memorialColor)
+                                    {
+                                        <span class="liturgy__memorial-color">
+                                            <span class="liturgy__swatch liturgy__swatch--@memorialColor.ToString().ToLowerInvariant()" aria-hidden="true"></span>
+                                            @memorialColor if kept
+                                        </span>
+                                    }
+                                </Detail>
+                            </SaintHighlightCard>
+                            @if (_view.CanCycle)
+                            {
+                                <button type="button" class="liturgy__cycle-btn" aria-label="Next optional memorial" @onclick="_view.Next">&rsaquo;</button>
+                            }
+                        </div>
                     </div>
                 }
             </div>

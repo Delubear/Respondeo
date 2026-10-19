@@ -74,4 +74,52 @@ public class TodayInTheChurchTests
         Assert.Equal("Today the Church keeps the feast of", view.CelebrationIntro);
         Assert.Equal(["benedict"], view.LinkedSlugs());
     }
+
+    [Fact]
+    public void Several_optional_memorials_can_be_stepped_through_with_wraparound()
+    {
+        var first = new LiturgicalCelebration("Saint A", CelebrationRank.OptionalMemorial, LiturgicalColor.Red);
+        var second = new LiturgicalCelebration("Saint B", CelebrationRank.OptionalMemorial, LiturgicalColor.White);
+        var day = Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.Green) with { OptionalMemorials = [first, second] };
+
+        var view = TodayInTheChurch.For(day, new Random(0));
+        var start = view.Celebration;
+
+        Assert.True(view.CanCycle);
+        Assert.Equal(2, view.OptionalMemorialCount);
+
+        view.Next();
+        Assert.NotSame(start, view.Celebration);
+
+        view.Next();
+        Assert.Same(start, view.Celebration);
+
+        view.Previous();
+        Assert.NotSame(start, view.Celebration);
+        Assert.True(view.IsOptionalMemorial);
+    }
+
+    [Fact]
+    public void OptionalMemorialColor_is_shown_only_when_it_differs_from_the_day()
+    {
+        var red = new LiturgicalCelebration("Saint A", CelebrationRank.OptionalMemorial, LiturgicalColor.Red);
+        var green = new LiturgicalCelebration("Saint B", CelebrationRank.OptionalMemorial, LiturgicalColor.Green);
+
+        Assert.Equal(LiturgicalColor.Red, TodayInTheChurch.For(Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.Green) with { OptionalMemorials = [red] }).OptionalMemorialColor);
+        Assert.Null(TodayInTheChurch.For(Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.Green) with { OptionalMemorials = [green] }).OptionalMemorialColor);
+    }
+
+    [Fact]
+    public void A_single_optional_memorial_or_principal_celebration_cannot_cycle()
+    {
+        var memorial = new LiturgicalCelebration("Saint Blaise", CelebrationRank.OptionalMemorial, LiturgicalColor.Red);
+        var single = TodayInTheChurch.For(Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.Green) with { OptionalMemorials = [memorial] });
+        var feast = new LiturgicalCelebration("Saint Benedict", CelebrationRank.Feast, LiturgicalColor.White);
+        var principal = TodayInTheChurch.For(Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.White, feast) with { OptionalMemorials = [memorial, memorial] });
+
+        Assert.False(single.CanCycle);
+        Assert.False(principal.CanCycle);
+        principal.Next();
+        Assert.Same(feast, principal.Celebration);
+    }
 }

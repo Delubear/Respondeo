@@ -6,14 +6,16 @@
 .liturgy__status {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 1rem 1.5rem;
     margin-bottom: 1rem;
 }
 
+/* The season/day block stays narrow so a celebration beside it gets most of the width. */
 .liturgy__today {
-    flex: 0 1 auto;
+    flex: 1 1 10rem;
+    max-width: 17rem;
     min-width: 0;
     display: flex;
     align-items: center;
@@ -24,7 +26,7 @@
 }
 
 .liturgy__celebrations {
-    flex: 1 1 16rem;
+    flex: 1.75 1 16rem;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -69,6 +71,55 @@
 .liturgy__saint-intro {
     margin: 0 0 0.5rem;
     font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+/* Previous/next controls for stepping through several optional memorials on one day. */
+.liturgy__carousel {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Pinned near the top of the card and beside a full-width card, so the arrows stay put
+   whichever memorial is shown, however long its name or summary. */
+.liturgy__carousel .liturgy__cycle-btn {
+    flex: none;
+    margin-top: 1rem;
+}
+
+.liturgy__carousel ::deep .saint-card {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.liturgy__cycle-btn {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--parchment);
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.liturgy__cycle-btn:hover,
+.liturgy__cycle-btn:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.liturgy__memorial-color {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-style: italic;
     color: var(--ink-soft);
 }
 

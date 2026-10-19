@@ -9,33 +9,68 @@ namespace Respondeo.Services.Calendar;
 public sealed class TodayInTheChurch
 {
     private readonly LiturgicalDay _day;
+    private readonly IReadOnlyList<LiturgicalCelebration> _optionalMemorials;
+    private int _index;
 
-    private TodayInTheChurch(LiturgicalDay day, LiturgicalCelebration? optionalMemorial)
+    private TodayInTheChurch(LiturgicalDay day, int startIndex)
     {
         _day = day;
-        Celebration = day.Celebration ?? optionalMemorial;
-        IsOptionalMemorial = day.Celebration is null && optionalMemorial is not null;
+        _optionalMemorials = day.Celebration is null ? day.OptionalMemorials : [];
+        _index = startIndex;
     }
 
     /// <summary>
-    /// Builds the view for a day. On a ferial day with several optional memorials, one is picked at random so the dialog rotates through them;
-    /// the choice is fixed for the life of this instance.
+    /// Builds the view for a day. On a ferial day with several optional memorials, the first one shown is picked at random,
+    /// and the reader can step through the rest with <see cref="Next"/> and <see cref="Previous"/>.
     /// </summary>
     public static TodayInTheChurch For(LiturgicalDay day, Random? random = null)
     {
-        var memorials = day.OptionalMemorials;
-        var optional = memorials.Count > 0 ? memorials[(random ?? Random.Shared).Next(memorials.Count)] : null;
-        return new TodayInTheChurch(day, optional);
+        var count = day.Celebration is null ? day.OptionalMemorials.Count : 0;
+        var start = count > 1 ? (random ?? Random.Shared).Next(count) : 0;
+        return new TodayInTheChurch(day, start);
     }
 
     /// <summary>
-    /// The single celebration shown as a card: the principal celebration when there is one, otherwise the chosen optional memorial of a ferial day.
-    /// Only one card is ever shown, so remaining optional memorials are not listed.
+    /// The celebration shown as a card: the principal celebration when there is one, otherwise the currently selected optional memorial of a ferial day.
     /// </summary>
-    public LiturgicalCelebration? Celebration { get; }
+    public LiturgicalCelebration? Celebration => _day.Celebration ?? (_optionalMemorials.Count > 0 ? _optionalMemorials[_index] : null);
 
     /// <summary>True when the card is an optional memorial rather than the day's principal celebration.</summary>
-    public bool IsOptionalMemorial { get; }
+    public bool IsOptionalMemorial => _day.Celebration is null && _optionalMemorials.Count > 0;
+
+    /// <summary>The number of optional memorials the reader can step through (zero when the day has a principal celebration).</summary>
+    public int OptionalMemorialCount => _optionalMemorials.Count;
+
+    /// <summary>The zero-based position of the optional memorial currently shown.</summary>
+    public int OptionalMemorialIndex => _index;
+
+    /// <summary>True when there is more than one optional memorial, so previous/next controls should be shown.</summary>
+    public bool CanCycle => _optionalMemorials.Count > 1;
+
+    /// <summary>
+    /// The color the selected optional memorial would wear if it is kept, when that differs from the day's color; otherwise null.
+    /// An optional memorial does not change the day's color unless the celebrant chooses to keep it.
+    /// </summary>
+    public LiturgicalColor? OptionalMemorialColor =>
+        IsOptionalMemorial && Celebration is { } memorial && memorial.Color != _day.Color ? memorial.Color : null;
+
+    /// <summary>Shows the next optional memorial, wrapping to the first.</summary>
+    public void Next()
+    {
+        if (CanCycle)
+        {
+            _index = (_index + 1) % _optionalMemorials.Count;
+        }
+    }
+
+    /// <summary>Shows the previous optional memorial, wrapping to the last.</summary>
+    public void Previous()
+    {
+        if (CanCycle)
+        {
+            _index = (_index - 1 + _optionalMemorials.Count) % _optionalMemorials.Count;
+        }
+    }
 
     /// <summary>Slugs of every saint the day links to, so their profiles can be loaded together.</summary>
     public IEnumerable<string> LinkedSlugs()
