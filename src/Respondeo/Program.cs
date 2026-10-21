@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Respondeo;
 using Respondeo.Content.Summa;
-using Respondeo.Services;
 using Respondeo.Content;
 using Respondeo.LiturgicalCalendar;
 

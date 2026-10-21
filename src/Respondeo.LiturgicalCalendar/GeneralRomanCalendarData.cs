@@ -7,19 +7,76 @@ namespace Respondeo.LiturgicalCalendar;
 internal static class GeneralRomanCalendarData
 {
     private const string ResourceName = "Respondeo.LiturgicalCalendar.GeneralRomanCalendar.txt";
+    private const string UnitedStatesResourceName = "Respondeo.LiturgicalCalendar.UnitedStatesProper.txt";
 
-    private static readonly Lazy<IReadOnlyDictionary<(int Month, int Day), IReadOnlyList<LiturgicalCelebration>>> Entries = new(Parse);
+    private static readonly Lazy<IReadOnlyDictionary<(int Month, int Day), IReadOnlyList<LiturgicalCelebration>>> Entries = new(() => Freeze(Parse(ResourceName)));
+
+    private static readonly Lazy<IReadOnlyDictionary<(int Month, int Day), IReadOnlyList<LiturgicalCelebration>>> UnitedStatesEntries = new(BuildUnitedStates);
 
     /// <summary>Returns the fixed-date celebrations for the given month and day, or an empty list when none.</summary>
-    public static IReadOnlyList<LiturgicalCelebration> ForMonthDay(int month, int day) =>
-        Entries.Value.TryGetValue((month, day), out var celebrations) ? celebrations : [];
+    public static IReadOnlyList<LiturgicalCelebration> ForMonthDay(int month, int day) => ForMonthDay(month, day, CalendarRegion.GeneralRoman);
 
-    private static IReadOnlyDictionary<(int, int), IReadOnlyList<LiturgicalCelebration>> Parse()
+    /// <summary>Returns the fixed-date celebrations for the given month and day in the given region's calendar.</summary>
+    public static IReadOnlyList<LiturgicalCelebration> ForMonthDay(int month, int day, CalendarRegion region)
+    {
+        var entries = region == CalendarRegion.UnitedStates ? UnitedStatesEntries.Value : Entries.Value;
+        return entries.TryGetValue((month, day), out var celebrations) ? celebrations : [];
+    }
+
+    private static IReadOnlyDictionary<(int, int), IReadOnlyList<LiturgicalCelebration>> Freeze(Dictionary<(int, int), List<LiturgicalCelebration>> map) =>
+        map.ToDictionary(pair => pair.Key, pair => (IReadOnlyList<LiturgicalCelebration>)pair.Value);
+
+    /// <summary>Applies the United States proper over a fresh copy of the General Roman data: removals, same-name replacements, and additions.</summary>
+    private static IReadOnlyDictionary<(int, int), IReadOnlyList<LiturgicalCelebration>> BuildUnitedStates()
+    {
+        var map = Parse(ResourceName);
+        var removals = new List<((int, int) Date, string Name)>();
+        var overlay = Parse(UnitedStatesResourceName, removals);
+
+        foreach (var (date, name) in removals)
+        {
+            if (map.TryGetValue(date, out var list))
+            {
+                list.RemoveAll(c => c.Name == name);
+            }
+        }
+
+        foreach (var (date, celebrations) in overlay)
+        {
+            if (!map.TryGetValue(date, out var list))
+            {
+                list = [];
+                map[date] = list;
+            }
+
+            foreach (var celebration in celebrations)
+            {
+                var existing = list.FindIndex(c => c.Name == celebration.Name);
+                if (existing >= 0)
+                {
+                    list[existing] = celebration with { Id = list[existing].Id, Summary = celebration.Summary ?? list[existing].Summary };
+                }
+                else
+                {
+                    list.Add(celebration);
+                }
+            }
+
+            // Keep obligatory memorials and higher ahead of optional memorials so precedence picks them first.
+            var ordered = list.OrderBy(c => c.Rank).ToList();
+            list.Clear();
+            list.AddRange(ordered);
+        }
+
+        return Freeze(map);
+    }
+
+    private static Dictionary<(int, int), List<LiturgicalCelebration>> Parse(string resourceName, List<((int, int), string)>? removals = null)
     {
         var map = new Dictionary<(int, int), List<LiturgicalCelebration>>();
 
-        using var stream = typeof(GeneralRomanCalendarData).Assembly.GetManifestResourceStream(ResourceName)
-            ?? throw new InvalidOperationException($"Embedded liturgical calendar resource '{ResourceName}' was not found.");
+        using var stream = typeof(GeneralRomanCalendarData).Assembly.GetManifestResourceStream(resourceName)
+            ?? throw new InvalidOperationException($"Embedded liturgical calendar resource '{resourceName}' was not found.");
         using var reader = new StreamReader(stream);
 
         string? line;
@@ -32,6 +89,12 @@ internal static class GeneralRomanCalendarData
             }
 
             var parts = trimmed.Split('|', StringSplitOptions.TrimEntries);
+            if (removals is not null && trimmed.StartsWith('-') && parts.Length == 2)
+            {
+                removals.Add((ParseMonthDay(parts[0][1..]), parts[1]));
+                continue;
+            }
+
             if (parts.Length is not (4 or 5 or 6))
             {
                 throw new InvalidOperationException($"Malformed liturgical calendar line (expected 4 to 6 '|'-delimited fields): {trimmed}");
@@ -53,7 +116,7 @@ internal static class GeneralRomanCalendarData
             list.Add(celebration);
         }
 
-        return map.ToDictionary(pair => pair.Key, pair => (IReadOnlyList<LiturgicalCelebration>)pair.Value);
+        return map;
     }
 
     private static (int Month, int Day) ParseMonthDay(string field)

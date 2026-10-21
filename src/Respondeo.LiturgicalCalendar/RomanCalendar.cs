@@ -6,8 +6,14 @@ namespace Respondeo.LiturgicalCalendar;
 /// the fixed civil dates (Christmas is always 25 December) and Gregorian Easter (from which every moveable feast is an offset).
 /// No per-day data is stored; the whole year is computed on demand.
 /// </summary>
-internal sealed class RomanCalendar : ILiturgicalCalendar
+internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturgicalCalendar
 {
+    public RomanCalendar() : this(LiturgicalCalendarOptions.Default) { }
+
+    public LiturgicalCalendarOptions Options { get; } = options;
+
+    private bool IsUnitedStates => Options.Region == CalendarRegion.UnitedStates;
+
     public LiturgicalDay ForDate(DateOnly date)
     {
         var season = SeasonFor(date);
@@ -35,7 +41,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     /// <summary>Fixed feasts/commemorations of the Lord (or the equivalent) that replace a Sunday.</summary>
     private static readonly HashSet<(int, int)> SundayReplacingFixedDates = [(2, 2), (8, 6), (9, 14), (11, 9), (11, 2)];
 
-    private static DayResolution ResolveCelebrations(DateOnly date, LiturgicalSeason season)
+    private DayResolution ResolveCelebrations(DateOnly date, LiturgicalSeason season)
     {
         var named = NamedCelebrations(date, season);
 
@@ -84,7 +90,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         return new DayResolution(principal, optional);
     }
 
-    private static Candidate? HighestOfRank(IReadOnlyList<Candidate> candidates, CelebrationRank rank)
+    private Candidate? HighestOfRank(IReadOnlyList<Candidate> candidates, CelebrationRank rank)
     {
         Candidate? match = null;
         foreach (var candidate in candidates)
@@ -105,7 +111,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     }
 
     /// <summary>All named celebrations claiming the day: moveable, Sunday-based feasts of the Lord, and fixed dataset entries.</summary>
-    private static IReadOnlyList<Candidate> NamedCelebrations(DateOnly date, LiturgicalSeason season)
+    private IReadOnlyList<Candidate> NamedCelebrations(DateOnly date, LiturgicalSeason season)
     {
         var candidates = new List<Candidate>();
 
@@ -119,8 +125,14 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
             candidates.Add(new Candidate(lordFeast, OfTheLord: true));
         }
 
-        foreach (var fixedCelebration in GeneralRomanCalendarData.ForMonthDay(date.Month, date.Day))
+        foreach (var fixedCelebration in GeneralRomanCalendarData.ForMonthDay(date.Month, date.Day, Options.Region))
         {
+            // In the United States the Epiphany is transferred to the Sunday between 2 and 8 January (emitted below).
+            if (IsUnitedStates && date is { Month: 1, Day: 6 } && fixedCelebration.Rank == CelebrationRank.Solemnity)
+            {
+                continue;
+            }
+
             // A solemnity impeded by a Lenten Sunday, Holy Week, or the Octave of Easter is suppressed here and re-emitted on its transfer date below.
             if (IsTransferredAway(date))
             {
@@ -150,11 +162,11 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     ];
 
     /// <summary>True when the given date is the ordinary date of a transferable solemnity that is impeded this year.</summary>
-    private static bool IsTransferredAway(DateOnly date) =>
+    private bool IsTransferredAway(DateOnly date) =>
         TransferableSolemnities.Any(s => s.Month == date.Month && s.Day == date.Day && TransferTarget(date.Year, s.Month, s.Day) is not null);
 
     /// <summary>Transferable solemnities whose transfer date is the given date this year.</summary>
-    private static IEnumerable<LiturgicalCelebration> TransferredSolemnities(DateOnly date)
+    private IEnumerable<LiturgicalCelebration> TransferredSolemnities(DateOnly date)
     {
         foreach (var solemnity in TransferableSolemnities)
         {
@@ -170,7 +182,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     /// Holy Week and the Octave of Easter push the solemnity to the Monday after the Second Sunday of Easter;
     /// a Sunday of Lent pushes it to the following Monday.
     /// </summary>
-    private static DateOnly? TransferTarget(int year, int month, int day)
+    private DateOnly? TransferTarget(int year, int month, int day)
     {
         var original = new DateOnly(year, month, day);
         var easter = Computus.GregorianEaster(year);
@@ -189,8 +201,14 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         return null;
     }
 
-    /// <summary>Moveable feasts, each a fixed offset in days from Easter Sunday of the same year.</summary>
-    private static LiturgicalCelebration? MoveableCelebration(DateOnly date)
+    /// <summary>Days from Easter to the Ascension: Thursday (39) universally, Sunday (42) in most United States provinces.</summary>
+    private int AscensionOffset => IsUnitedStates && !Options.AscensionOnThursday ? 42 : 39;
+
+    /// <summary>Days from Easter to Corpus Christi: Thursday (60) universally, transferred to Sunday (63) in the United States.</summary>
+    private int CorpusChristiOffset => IsUnitedStates ? 63 : 60;
+
+    /// <summary>Moveable feasts, each a fixed offset
+    private LiturgicalCelebration? MoveableCelebration(DateOnly date)
     {
         var easter = Computus.GregorianEaster(date.Year);
         var offset = date.DayNumber - easter.DayNumber;
@@ -203,23 +221,28 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
             -2 => new("Good Friday of the Passion of the Lord", CelebrationRank.Solemnity, LiturgicalColor.Red),
             -1 => new("Holy Saturday", CelebrationRank.Solemnity, LiturgicalColor.White),
             0 => new("Easter Sunday of the Resurrection of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White),
-            39 => new("The Ascension of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White),
+            _ when offset == AscensionOffset => new("The Ascension of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White),
             49 => new("Pentecost Sunday", CelebrationRank.Solemnity, LiturgicalColor.Red),
             56 => new("The Most Holy Trinity", CelebrationRank.Solemnity, LiturgicalColor.White),
-            60 => new("The Most Holy Body and Blood of Christ", CelebrationRank.Solemnity, LiturgicalColor.White),
+            _ when offset == CorpusChristiOffset => new("The Most Holy Body and Blood of Christ", CelebrationRank.Solemnity, LiturgicalColor.White),
             68 => new("The Most Sacred Heart of Jesus", CelebrationRank.Solemnity, LiturgicalColor.White),
             _ => null,
         };
     }
 
     /// <summary>Feasts of the Lord anchored to a Sunday (or the Christmas octave): Holy Family, the Baptism of the Lord, and Christ the King.</summary>
-    private static IEnumerable<LiturgicalCelebration> SundayLordCelebrations(DateOnly date)
+    private IEnumerable<LiturgicalCelebration> SundayLordCelebrations(DateOnly date)
     {
         var year = date.Year;
 
         if (date == HolyFamily(year))
         {
             yield return new LiturgicalCelebration("The Holy Family of Jesus, Mary and Joseph", CelebrationRank.Feast, LiturgicalColor.White);
+        }
+
+        if (IsUnitedStates && date == Epiphany(year))
+        {
+            yield return new LiturgicalCelebration("The Epiphany of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White);
         }
 
         if (date == BaptismOfTheLord(year))
@@ -234,7 +257,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     }
 
     /// <summary>The Holy Family: the Sunday within the Octave of Christmas, or 30 December when Christmas itself is a Sunday.</summary>
-    private static DateOnly HolyFamily(int year)
+    private DateOnly HolyFamily(int year)
     {
         var christmas = new DateOnly(year, 12, 25);
         if (christmas.DayOfWeek == DayOfWeek.Sunday)
@@ -247,7 +270,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     }
 
     /// <summary>True on weekdays whose rank reduces every memorial to optional: Lenten/Triduum weekdays, the Octaves, and 17-24 December.</summary>
-    private static bool IsPrivilegedWeekday(DateOnly date, LiturgicalSeason season)
+    private bool IsPrivilegedWeekday(DateOnly date, LiturgicalSeason season)
     {
         return season switch
         {
@@ -263,7 +286,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     // Seasons, derived from Easter and the fixed Christmas / Epiphany anchors.
     // -----------------------------------------------------------------------
 
-    private static LiturgicalSeason SeasonFor(DateOnly date)
+    private LiturgicalSeason SeasonFor(DateOnly date)
     {
         var year = date.Year;
         var easter = Computus.GregorianEaster(year);
@@ -318,7 +341,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     /// <summary>
     /// The First Sunday of Advent: the fourth Sunday before Christmas Day (25 December).
     /// </summary>
-    private static DateOnly AdventStart(int year)
+    private DateOnly AdventStart(int year)
     {
         var christmas = new DateOnly(year, 12, 25);
 
@@ -331,16 +354,34 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     /// <summary>
     /// The Baptism of the Lord, which closes Christmas Time: the Sunday after Epiphany (6 January).
     /// </summary>
-    private static DateOnly BaptismOfTheLord(int year)
+    private DateOnly BaptismOfTheLord(int year)
     {
-        var epiphany = new DateOnly(year, 1, 6);
+        var epiphany = Epiphany(year);
+        if (IsUnitedStates)
+        {
+            // When the Epiphany falls on 7 or 8 January, the Baptism is kept on the following Monday.
+            return epiphany.Day >= 7 ? epiphany.AddDays(1) : epiphany.AddDays(7);
+        }
+
         var daysUntilSunday = (7 - (int)epiphany.DayOfWeek) % 7;
 
         // When Epiphany itself is a Sunday, the Baptism is the following Sunday (7 days later).
         return daysUntilSunday == 0 ? epiphany.AddDays(7) : epiphany.AddDays(daysUntilSunday);
     }
 
-    private static LiturgicalColor SeasonColor(LiturgicalSeason season, DateOnly date) => season switch
+    /// <summary>The Epiphany: 6 January, or in the United States the Sunday between 2 and 8 January.</summary>
+    private DateOnly Epiphany(int year)
+    {
+        if (!IsUnitedStates)
+        {
+            return new DateOnly(year, 1, 6);
+        }
+
+        var second = new DateOnly(year, 1, 2);
+        return second.AddDays((7 - (int)second.DayOfWeek) % 7);
+    }
+
+    private LiturgicalColor SeasonColor(LiturgicalSeason season, DateOnly date) => season switch
     {
         LiturgicalSeason.Advent => IsGaudete(date) ? LiturgicalColor.Rose : LiturgicalColor.Violet,
         LiturgicalSeason.Lent => IsLaetare(date) ? LiturgicalColor.Rose : LiturgicalColor.Violet,
@@ -351,10 +392,10 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     };
 
     /// <summary>Gaudete Sunday: the Third Sunday of Advent (rose vestments).</summary>
-    private static bool IsGaudete(DateOnly date) => date.DayOfWeek == DayOfWeek.Sunday && date == AdventStart(date.Year).AddDays(14);
+    private bool IsGaudete(DateOnly date) => date.DayOfWeek == DayOfWeek.Sunday && date == AdventStart(date.Year).AddDays(14);
 
     /// <summary>Laetare Sunday: the Fourth Sunday of Lent (rose vestments).</summary>
-    private static bool IsLaetare(DateOnly date)
+    private bool IsLaetare(DateOnly date)
     {
         var easter = Computus.GregorianEaster(date.Year);
 
@@ -374,9 +415,9 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         "Thirty-First", "Thirty-Second", "Thirty-Third", "Thirty-Fourth",
     ];
 
-    private static string Ordinal(int n) => n >= 1 && n <= Ordinals.Length ? Ordinals[n - 1] : n.ToString();
+    private string Ordinal(int n) => n >= 1 && n <= Ordinals.Length ? Ordinals[n - 1] : n.ToString();
 
-    private static string FerialName(DateOnly date, LiturgicalSeason season) => season switch
+    private string FerialName(DateOnly date, LiturgicalSeason season) => season switch
     {
         LiturgicalSeason.Advent => AdventFerialName(date),
         LiturgicalSeason.Christmas => ChristmasFerialName(date),
@@ -387,13 +428,13 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     };
 
     /// <summary>"Third Sunday of Advent" or "Monday of the Third Week of Advent" etc.</summary>
-    private static string AdventFerialName(DateOnly date)
+    private string AdventFerialName(DateOnly date)
     {
         var week = ((date.DayNumber - AdventStart(date.Year).DayNumber) / 7) + 1;
         return SeasonDayName(date, week, "Advent", "of");
     }
 
-    private static string ChristmasFerialName(DateOnly date)
+    private string ChristmasFerialName(DateOnly date)
     {
         // Within the Octave of the Nativity (25 December to 1 January).
         if (date is { Month: 12, Day: >= 25 })
@@ -409,7 +450,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         return $"{date.DayOfWeek} of Christmas Time";
     }
 
-    private static string LentFerialName(DateOnly date)
+    private string LentFerialName(DateOnly date)
     {
         var easter = Computus.GregorianEaster(date.Year);
         var firstSundayOfLent = easter.AddDays(-42);
@@ -430,7 +471,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         return SeasonDayName(date, week, "Lent", "of");
     }
 
-    private static string EasterFerialName(DateOnly date)
+    private string EasterFerialName(DateOnly date)
     {
         var easter = Computus.GregorianEaster(date.Year);
 
@@ -445,7 +486,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
     }
 
     /// <summary>The week of Ordinary Time, numbered 1-34 across the two spans before Lent and after Pentecost.</summary>
-    private static int OrdinaryTimeWeek(DateOnly date)
+    private int OrdinaryTimeWeek(DateOnly date)
     {
         var year = date.Year;
         var precedingSunday = date.AddDays(-(int)date.DayOfWeek);
@@ -454,7 +495,10 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         if (date < ashWednesday)
         {
             // First span: counted from the Baptism of the Lord, whose week is the First Week in Ordinary Time.
-            return ((precedingSunday.DayNumber - BaptismOfTheLord(year).DayNumber) / 7) + 1;
+            // The Baptism may fall on a Monday (United States), so anchor on the Sunday that begins its week.
+            var baptism = BaptismOfTheLord(year);
+            var baptismWeekSunday = baptism.AddDays(-(int)baptism.DayOfWeek);
+            return ((precedingSunday.DayNumber - baptismWeekSunday.DayNumber) / 7) + 1;
         }
 
         // Second span: counted back from the Thirty-Fourth Sunday (Christ the King), the last before Advent.
@@ -462,7 +506,7 @@ internal sealed class RomanCalendar : ILiturgicalCalendar
         return 34 - ((christKingSunday.DayNumber - precedingSunday.DayNumber) / 7);
     }
 
-    private static string SeasonDayName(DateOnly date, int week, string season, string preposition)
+    private string SeasonDayName(DateOnly date, int week, string season, string preposition)
     {
         var ordinal = Ordinal(week);
         return date.DayOfWeek == DayOfWeek.Sunday

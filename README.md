@@ -11,7 +11,7 @@ for living it (Discover), and a browsable *Summa Theologiae*. Live at **[respond
 | `Respondeo.Content` | Authored Inquiry and Discover content, with its parsers and services. |
 | `Respondeo.Content.Shared` | Shared content contracts and Markdown rendering. |
 | `Respondeo.Content.Summa` | The generated *Summa Theologiae* corpus and its service. |
-| `Respondeo.LiturgicalCalendar` | The liturgical calendar engine (season, color, and celebration of the day). |
+| `Respondeo.LiturgicalCalendar` | The liturgical calendar engine (season, color, and celebration of the day), with the General Roman Calendar and a USCCB (United States) calendar selectable from the calendar dialog. |
 | `tools/Respondeo.SummaImporter` | Builds the Summa corpus from `docs/summa.txt`. |
 | `tools/Respondeo.SitemapGenerator` | Generates `sitemap.xml` and static SEO pages at deploy time. |
 | `tests/Respondeo.UnitTests` | Unit and bUnit component tests. |

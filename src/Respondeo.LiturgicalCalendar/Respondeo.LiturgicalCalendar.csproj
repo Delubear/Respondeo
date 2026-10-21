@@ -15,6 +15,7 @@
 
   <ItemGroup>
 	<EmbeddedResource Include="GeneralRomanCalendar.txt" />
+	<EmbeddedResource Include="UnitedStatesProper.txt" />
   </ItemGroup>
 
   <ItemGroup>

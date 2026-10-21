@@ -7,6 +7,7 @@
 @inject ISaintService Saints
 @inject Func<DateOnly> Today
 @inject IDayWatcher DayWatcher
+@inject ICalendarPreference Preference
 @implements IDisposable
 
 <FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
@@ -121,15 +122,37 @@
             </GuideSection>
 
             <p class="liturgy__disclaimer">
-                This follows the General Roman Calendar &mdash; the Church's universal calendar for the
-                Ordinary Form. Your own country, diocese, or religious community may keep additional
+                @DisclaimerLead Your own country, diocese, or religious community may keep additional
                 feasts or observe some days differently, so the celebration near you can vary. For what
                 is kept locally, always defer to your diocese or parish.
             </p>
         </div>
     </ChildContent>
     <Footer>
-        <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+        <div class="liturgy-foot">
+            <details class="liturgy-menu">
+                <summary class="liturgy-menu__toggle">
+                    <span class="visually-hidden">Calendar: </span>@CalendarName
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </summary>
+                <div class="liturgy-menu__panel">
+                    <fieldset class="liturgy-menu__group">
+                        <legend>Calendar</legend>
+                        <label><input type="radio" name="liturgy-region" checked="@(!IsUs)" @onchange="() => SetCalendarAsync(LiturgicalCalendarOptions.Default)" /> General Roman</label>
+                        <label><input type="radio" name="liturgy-region" checked="@IsUs" @onchange="() => SetCalendarAsync(new(CalendarRegion.UnitedStates))" /> United States (USCCB)</label>
+                    </fieldset>
+                    @if (IsUs)
+                    {
+                        <label class="liturgy-menu__check">
+                            <input type="checkbox" checked="@Preference.Options.AscensionOnThursday"
+                                   @onchange="e => SetCalendarAsync(new(CalendarRegion.UnitedStates, AscensionOnThursday: e.Value is true))" />
+                            Keep the Ascension on Thursday
+                        </label>
+                    }
+                </div>
+            </details>
+            <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+        </div>
     </Footer>
 </FloatingGuide>
 
@@ -149,10 +172,35 @@
     /// </summary>
     [Parameter] public bool Raised { get; set; }
 
+    private bool IsUs => Preference.Options.Region == CalendarRegion.UnitedStates;
+
+    private string CalendarName => IsUs ? "United States (USCCB)" : "General Roman Calendar";
+
+    private string DisclaimerLead => IsUs
+        ? "This follows the proper calendar of the United States (USCCB), with the Ascension kept on "
+            + (Preference.Options.AscensionOnThursday ? "Thursday." : "Sunday.")
+        : "This follows the General Roman Calendar, the Church's universal calendar for the Ordinary Form.";
+
+    private Task SetCalendarAsync(LiturgicalCalendarOptions options) => Preference.SetAsync(options);
+
+    private async void OnCalendarChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            await LoadDayAsync();
+            StateHasChanged();
+        });
+    }
+
     protected override async Task OnInitializedAsync()
     {
         DayWatcher.DayChanged += OnDayChanged;
-        await LoadDayAsync();
+        Preference.Changed += OnCalendarChanged;
+        // Build the view before awaiting the stored preference: that await yields to a first render that reads _view.
+        // If the stored calendar differs from the default, Changed reloads the day.
+        var load = LoadDayAsync();
+        await Preference.InitializeAsync();
+        await load;
     }
 
     // Resolves today's day and starts loading its saint profiles. The view is set synchronously, so it is current
@@ -192,6 +240,10 @@
     // orb is tapped. Bring the day up to date before the dialog opens, and open only once its profiles have loaded.
     private Task SyncToToday() => Today() != _loadedFor ? LoadDayAsync() : _profilesLoad;
 
-    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
+    public void Dispose()
+    {
+        DayWatcher.DayChanged -= OnDayChanged;
+        Preference.Changed -= OnCalendarChanged;
+    }
 }
 

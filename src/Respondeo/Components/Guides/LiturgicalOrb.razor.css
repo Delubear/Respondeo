@@ -188,3 +188,79 @@
 .liturgy__swatch--red { background: var(--lit-red); }
 .liturgy__swatch--rose { background: var(--lit-rose); }
 .liturgy__swatch--black { background: var(--lit-black); }
+
+/* ---------- Calendar menu ---------- */
+
+/* Footer row: the calendar setting on the left, the Close action on the right. */
+.liturgy-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+}
+
+.liturgy-menu {
+    position: relative;
+}
+
+.liturgy-menu__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border, currentColor);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    list-style: none;
+    opacity: 0.85;
+}
+
+.liturgy-menu__toggle::-webkit-details-marker {
+    display: none;
+}
+
+.liturgy-menu__toggle svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    transition: transform 0.15s ease;
+}
+
+.liturgy-menu[open] .liturgy-menu__toggle svg {
+    transform: rotate(180deg);
+}
+
+.liturgy-menu__panel {
+    position: absolute;
+    bottom: calc(100% + 0.35rem);
+    left: 0;
+    z-index: 5;
+    min-width: 15rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface, Canvas);
+    border: 1px solid var(--border, currentColor);
+    border-radius: 0.5rem;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+    font-size: 0.9rem;
+}
+
+.liturgy-menu__group {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.liturgy-menu__group legend {
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+}
+
+.liturgy-menu__check {
+    display: block;
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border, currentColor);
+}

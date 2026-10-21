@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Respondeo.LiturgicalCalendar;
 using Respondeo.Services.Devotions;
 using Respondeo.Services.Prayers;
 using Respondeo.Services.Summa;
@@ -65,6 +65,12 @@ public static class AppServiceRegistration
     {
         // "Today" in the reader's local time zone, injected so the date-driven logic stays testable.
         services.AddScoped<Func<DateOnly>>(_ => () => DateOnly.FromDateTime(DateTime.Now));
+
+        // The reader's chosen liturgical calendar (General Roman or United States, localStorage); it replaces the
+        // engine's default registration so every date-driven surface follows the same preference.
+        services.AddScoped<PreferredLiturgicalCalendar>();
+        services.AddScoped<ICalendarPreference>(sp => sp.GetRequiredService<PreferredLiturgicalCalendar>());
+        services.AddScoped<ILiturgicalCalendar>(sp => sp.GetRequiredService<PreferredLiturgicalCalendar>());
 
         // Finds the saint whose feast the Church keeps today (404 page and liturgy dialog).
         services.AddScoped<IFeastOfTheDay, FeastOfTheDay>();
