@@ -203,3 +203,14 @@ document.addEventListener('click', function (e) {
     facade.appendChild(iframe);
 });
 
+// Dropdown menus built on <details class="liturgy-menu"> close when the reader clicks anywhere outside them.
+// Delegated so it covers menus rendered later (e.g. inside a dialog opened after page load).
+document.addEventListener('click', function (e) {
+    var openMenus = document.querySelectorAll('details.liturgy-menu[open]');
+    for (var i = 0; i < openMenus.length; i++) {
+        if (!openMenus[i].contains(e.target)) {
+            openMenus[i].removeAttribute('open');
+        }
+    }
+});
+
