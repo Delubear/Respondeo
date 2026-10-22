@@ -17,6 +17,7 @@ else
     <section class="reading-wide hourplayer">
         <h1 class="hourplayer__title">@_office.Title</h1>
         <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
+        <ConstructionNotice Area="the Liturgy of the Hours" />
         <p class="hourplayer__hint">Select each step to mark it prayed, in order.</p>
 
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
