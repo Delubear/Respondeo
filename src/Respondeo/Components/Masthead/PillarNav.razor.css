@@ -54,27 +54,31 @@
     border-color: var(--accent);
 }
 
+/* Just above the short-label breakpoint the full labels at desktop padding no longer fit on one
+   line, so tighten the pills and forbid wrapping. */
+@media (max-width: 900px) {
+    .pillarnav__list {
+        flex-wrap: nowrap;
+        gap: 0.3rem;
+    }
+
+    .pillarnav__link {
+        padding: 0.45rem 0.75rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+    }
+}
+
 @media (max-width: 800px) {
     .pillarnav {
         padding: 0.5rem 0.4rem 0.7rem;
         border-bottom: 1px solid var(--masthead-rule);
     }
 
-    /* Keep the three pillars on a single line, with the middle pill (Summa) centered on the page so it
-       sits directly above the masthead's drag handle; equal flexible side columns keep it centered
-       regardless of the outer pills' label widths. */
+    /* Keep every pillar on a single centered line. */
     .pillarnav__list {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        flex-wrap: nowrap;
         gap: 0.3rem;
-    }
-
-    .pillarnav__item:first-child {
-        justify-self: end;
-    }
-
-    .pillarnav__item:last-child {
-        justify-self: start;
     }
 
     /* Small pills on the dark masthead read faintly, so on phones use the full-strength masthead color
@@ -82,7 +86,7 @@
     .pillarnav__link {
         font-size: 0.9rem;
         color: var(--masthead-fg);
-        padding: 0.45rem 1rem;
+        padding: 0.45rem 0.7rem;
     }
 
     .pillarnav__link--active {
@@ -95,7 +99,7 @@
    pillar's short label from here down: hide the real (full) text but keep it in the DOM for screen
    readers and tests, and render the short label via a pseudo-element. Applying it to every width at
    or below the breakpoint avoids the jarring short->full flip when shrinking past 480px. */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .pillarnav__link[data-short] {
         font-size: 0;
     }
@@ -108,12 +112,12 @@
 
 @media (max-width: 480px) {
     .pillarnav__link {
-        font-size: 0.85rem;
-        letter-spacing: 0.03em;
-        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.02em;
+        padding: 0.35rem 0.55rem;
     }
 
     .pillarnav__link[data-short]::before {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 }

@@ -77,6 +77,66 @@ window.respondeoScroll = {
                 el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
             }
         });
+    },
+    // Jumps the WINDOW to a deep-linked element (e.g. a Bible verse) after navigation. A one-shot
+    // scroll loses to the route-change settle and FocusOnNavigate's reset, so - like
+    // respondeoScrollRestore - this re-applies the target across a short settle window and bails if
+    // the visitor scrolls themselves.
+    toVerse: function (id) {
+        var settleFrames = 20;
+        var maxFrames = 90;
+        var frame = 0;
+        var reached = 0;
+        var userScrolled = false;
+
+        function onUserScroll() {
+            userScrolled = true;
+        }
+        window.addEventListener('wheel', onUserScroll, { passive: true, once: true });
+        window.addEventListener('touchmove', onUserScroll, { passive: true, once: true });
+        window.addEventListener('keydown', onUserScroll, { once: true });
+
+        function cleanup() {
+            window.removeEventListener('wheel', onUserScroll);
+            window.removeEventListener('touchmove', onUserScroll);
+            window.removeEventListener('keydown', onUserScroll);
+        }
+
+        (function tick() {
+            if (userScrolled) {
+                cleanup();
+                return;
+            }
+
+            if (window.respondeoCancelScrollSettle) {
+                window.respondeoCancelScrollSettle();
+            }
+
+            frame++;
+            var el = document.getElementById(id);
+            if (el) {
+                var breadcrumb = document.querySelector('.breadcrumb');
+                var offset = (breadcrumb ? breadcrumb.getBoundingClientRect().height : 0) + Math.max(48, Math.round(window.innerHeight * 0.2));
+                var target = Math.max(el.getBoundingClientRect().top + window.pageYOffset - offset, 0);
+                var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                window.scrollTo(0, Math.min(target, Math.max(maxScroll, 0)));
+
+                if (maxScroll >= target) {
+                    reached++;
+                    if (reached >= settleFrames) {
+                        cleanup();
+                        return;
+                    }
+                }
+            }
+
+            if (frame >= maxFrames) {
+                cleanup();
+                return;
+            }
+
+            requestAnimationFrame(tick);
+        })();
     }
 };
 

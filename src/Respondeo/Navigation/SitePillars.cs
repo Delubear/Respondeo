@@ -28,6 +28,9 @@ public static class SitePillars
     /// <summary>The Summa pillar id.</summary>
     public const string SummaId = "summa";
 
+    /// <summary>The Holy Bible pillar id (the Douay-Rheims reader).</summary>
+    public const string BibleId = "bible";
+
     /// <summary>
     /// The Discover Catholicism pillar id. This single pillar groups several sub-areas
     /// (Miracles, Prayers, Devotions, Articles) under the <c>/discover/</c> route,
@@ -40,6 +43,7 @@ public static class SitePillars
     [
         new(JourneyId, "", "Inquiry"),
         new(SummaId, "summa", "Summa Theologiae", "Summa"),
+        new(BibleId, "bible", "Holy Bible", "Bible"),
         new(DiscoverId, "discover", "Discover Catholicism", "Discover"),
     ];
 
@@ -55,6 +59,11 @@ public static class SitePillars
         if (StartsWithSegment(path, "summa"))
         {
             return SummaId;
+        }
+
+        if (StartsWithSegment(path, "bible"))
+        {
+            return BibleId;
         }
 
         if (StartsWithSegment(path, "discover"))

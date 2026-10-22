@@ -17,6 +17,7 @@ public sealed class FeatureFlags
     /// <summary>Shows the Summa Theologiae pillar pill in the pillar switcher when enabled.</summary>
     public bool SummaPillar { get; set; } = true;
 
+    /// <summary>Shows the Holy Bible pillar pill in the pillar switcher when enabled.</summary>
     /// <summary>
     /// Master switch for the whole Discover Catholicism pillar.
     /// When disabled, the pillar and all of its sub-areas are hidden regardless of the individual feature flags below (it supersedes them).

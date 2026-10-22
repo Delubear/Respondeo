@@ -1,0 +1,52 @@
+.bible-chapters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-block: 1rem 1.5rem;
+}
+
+.bible-chapters__link {
+    min-width: 2.25rem;
+    text-align: center;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    text-decoration: none;
+}
+
+.bible-chapters__link[aria-current="page"] {
+    font-weight: 700;
+    outline: 1px solid currentColor;
+}
+
+.bible-verse {
+    margin-block: 0.4rem;
+    line-height: 1.7;
+}
+
+.bible-verse__number {
+    opacity: 0.6;
+    font-size: 0.7em;
+}
+
+.bible-verse--highlight {
+    margin-inline: -0.75rem;
+    padding: 0.15rem 0.75rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    box-shadow: inset 3px 0 0 var(--accent);
+}
+
+[data-theme="dark"] .bible-verse--highlight {
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+    box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.bible-pager {
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: 2rem;
+}
+
+.bible-pager__next {
+    margin-inline-start: auto;
+}

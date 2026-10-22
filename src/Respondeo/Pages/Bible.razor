@@ -1,0 +1,142 @@
+@page "/bible"
+@using Respondeo.Bible
+@inject IBreadcrumbTrail Trail
+@inject NavigationManager Nav
+
+<PageShell Title="Holy Bible"
+           Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
+
+<section class="pillar">
+    <PillarHeader Eyebrow="Douay-Rheims" Title="Holy Bible">
+        <Lede>
+            The complete Catholic Bible in the Douay-Rheims translation, all 73 books of the Old and New Testament.
+        </Lede>
+    </PillarHeader>
+
+    <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..."
+               Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
+
+    @if (IsSearching)
+    {
+        var reference = BibleReferenceParser.Parse(_query);
+        @if (reference is not null)
+        {
+            <a class="bible__match-card bible__reference-card" href="@reference.Href">
+                <span class="bible__match-meta">Go to passage</span>
+                <span class="bible__match-name">@reference.Label &rarr;</span>
+            </a>
+        }
+        var matches = Matches();
+        @if (reference is not null && matches.Count == 0)
+        {
+        }
+        else if (matches.Count == 0)
+        {
+            <p class="results-count">0 books found</p>
+            <p class="empty-state">No books match "@_query".</p>
+        }
+        else
+        {
+            <p class="results-count">@matches.Count @(matches.Count == 1 ? "book" : "books") found</p>
+            <ul class="bible__match-list">
+                @foreach (var book in matches)
+                {
+                    <li>
+                        <a class="bible__match-card" href="bible/@book.Slug">
+                            <span class="bible__match-name">@book.Name</span>
+                            @if (!string.IsNullOrEmpty(book.ModernName))
+                            {
+                                <span class="bible__modern">(@book.ModernName)</span>
+                            }
+                            <span class="bible__match-meta">
+                                @(book.Testament == BibleTestament.Old ? "Old Testament" : "New Testament") &middot; @ChapterLabel(book.ChapterCount)
+                            </span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    }
+    else
+    {
+        <div class="bible__browse">
+            @foreach (var (testament, title) in Parts)
+            {
+                var books = BibleBooks.All.Where(b => b.Testament == testament).ToList();
+                <details class="bible__part" open>
+                    <summary class="bible__part-summary">
+                        <span class="bible__part-title">@title</span>
+                        <span class="bible__part-count">@books.Count books</span>
+                    </summary>
+                    <ol class="bible__book-list">
+                        @for (var i = 0; i < books.Count; i++)
+                        {
+                            var book = books[i];
+                            <li>
+                                <a class="bible__book-link" href="bible/@book.Slug">
+                                    <span class="bible__book-number">@(i + 1)</span>
+                                    <span>
+                                        @book.Name
+                                        @if (!string.IsNullOrEmpty(book.ModernName))
+                                        {
+                                            <span class="bible__modern">(@book.ModernName)</span>
+                                        }
+                                    </span>
+                                    <span class="bible__book-chapters">@ChapterLabel(book.ChapterCount)</span>
+                                </a>
+                            </li>
+                        }
+                    </ol>
+                </details>
+            }
+        </div>
+    }
+
+    <p class="bible__attribution">Text: Douay-Rheims Bible, Challoner revision (public domain).</p>
+</section>
+
+@code {
+    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+
+    private static readonly (BibleTestament Testament, string Title)[] Parts =
+    [
+        (BibleTestament.Old, "Old Testament"),
+        (BibleTestament.New, "New Testament"),
+    ];
+
+    private string _query = "";
+
+    private bool IsSearching => !string.IsNullOrWhiteSpace(_query);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _query = LinkQuery ?? "";
+        await Trail.ClearAsync();
+    }
+
+    private void OnSearchChanged(string value) => _query = value ?? "";
+
+    private void OnSearchSubmitted(string value)
+    {
+        _query = value ?? "";
+        if (BibleReferenceParser.Parse(_query) is { } reference)
+        {
+            Nav.NavigateTo(reference.Href);
+        }
+        else if (Matches() is [var only])
+        {
+            Nav.NavigateTo($"bible/{only.Slug}");
+        }
+    }
+
+    private List<BibleBook> Matches()
+    {
+        var q = _query.Trim();
+        return BibleBooks.All.Where(b =>
+            b.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+            (b.ModernName?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            b.Slug.Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private static string ChapterLabel(int n) => n == 1 ? "1 chapter" : $"{n} chapters";
+}

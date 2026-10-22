@@ -58,7 +58,7 @@ metadata, the sitemap, and static SEO pages.
 
 Optional features can be switched off in the `FeatureFlags` section of
 [`wwwroot/appsettings.json`](src/Respondeo/wwwroot/appsettings.json). Every flag defaults to `true`:
-`AquinasPortrait`, `SummaPillar`, `DiscoverPillar`, `MiraclesFeature`, `SaintsFeature`,
+`AquinasPortrait`, `SummaPillar`, `BiblePillar`, `DiscoverPillar`,
 `PrayerFeature`, `DevotionsFeature`, `ArticlesFeature`, and `ExternalFeedback`. See
 [`docs/deployment.md`](docs/deployment.md#feature-flags) for what each one does.
 

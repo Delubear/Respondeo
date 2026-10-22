@@ -22,6 +22,8 @@ public sealed class NavigationInterop(IJSRuntime js)
     /// <summary>Smoothly scrolls the element named by <paramref name="target"/> (id or fragment) into view.</summary>
     public ValueTask ScrollIntoViewAsync(string target) => js.InvokeVoidAsync("respondeoScroll.intoView", target);
 
+    public ValueTask ScrollToVerseAsync(string id) => js.InvokeVoidAsync("respondeoScroll.toVerse", id);
+
     /// <summary>Centers the element with <paramref name="elementId"/> within its scrollable parent.</summary>
     public ValueTask CentreInParentAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.centreInParent", elementId);
 

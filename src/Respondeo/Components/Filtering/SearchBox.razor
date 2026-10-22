@@ -2,7 +2,7 @@
 
 <div class="search-box">
     <label class="search-box__label" for="@Id">@Label</label>
-    <input id="@Id" class="search-box__input" type="search" placeholder="@Placeholder" value="@_value" @oninput="OnInput" />
+    <input id="@Id" class="search-box__input" type="search" placeholder="@Placeholder" value="@_value" @oninput="OnInput" @onkeydown="OnKeyDown" />
 </div>
 
 @code {
@@ -31,6 +31,17 @@
         if (!string.Equals(Value, _value, StringComparison.Ordinal))
         {
             _value = Value;
+        }
+    }
+
+    /// <summary>Raised when the user presses Enter, with the current query text.</summary>
+    [Parameter] public EventCallback<string> OnSubmit { get; set; }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && OnSubmit.HasDelegate)
+        {
+            await OnSubmit.InvokeAsync(_value);
         }
     }
 

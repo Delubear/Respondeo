@@ -106,3 +106,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
+
+---
+
+## Liturgical and Scripture texts
+
+The Liturgy of the Hours pages use only public-domain texts: ancient Latin liturgical texts, breviary texts published before 1929,
+and the Douay-Rheims Bible (Challoner revision; digital text dedicated to the public domain under CC0).
+English renderings written by Respondeo contributors are labeled as unofficial translations.
+
+Copyrighted texts (the ICEL English translation of the Liturgy of the Hours, the Grail Psalms, the NABRE, and modern intercessions)
+are not reproduced; the app links to official sources instead. Any text added later under permission will be credited here.
+See src/Respondeo.LiturgyOfTheHours/README.md for details.

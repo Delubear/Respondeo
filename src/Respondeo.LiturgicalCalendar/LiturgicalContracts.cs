@@ -112,4 +112,7 @@ public interface ILiturgicalCalendar
 {
     /// <summary>Returns the season, color, and principal celebration (if any) for the given date.</summary>
     LiturgicalDay ForDate(DateOnly date);
+
+    /// <summary>The options this calendar was built with.</summary>
+    LiturgicalCalendarOptions Options => LiturgicalCalendarOptions.Default;
 }

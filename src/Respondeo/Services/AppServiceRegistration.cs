@@ -1,3 +1,4 @@
+using Respondeo.Bible;
 using Respondeo.LiturgicalCalendar;
 using Respondeo.Services.Devotions;
 using Respondeo.Services.Prayers;
@@ -95,6 +96,8 @@ public static class AppServiceRegistration
         services.AddScoped<AccessibilityInterop>();
         services.AddScoped<InstallInterop>();
         services.AddScoped<TallyInterop>();
+
+        services.AddBible();
 
         return services;
     }

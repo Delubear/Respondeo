@@ -1,0 +1,161 @@
+/* ---------- Browse (testaments & books), mirroring the Summa index ---------- */
+.bible__browse {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.bible__part {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--parchment);
+    overflow: hidden;
+}
+
+.bible__part-summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    cursor: pointer;
+    font-family: var(--display);
+    list-style: none;
+}
+
+.bible__part-summary::-webkit-details-marker {
+    display: none;
+}
+
+.bible__part-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.bible__part-count {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.bible__book-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.bible__book-link {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.55rem 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--rule);
+}
+
+.bible__book-link:hover,
+.bible__book-link:focus-visible {
+    background: var(--paper);
+    color: var(--accent);
+}
+
+.bible__book-number {
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+}
+
+.bible__book-chapters {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+.bible__modern {
+    margin-inline-start: 0.25rem;
+    font-size: 0.9em;
+    color: var(--ink-soft);
+}
+
+/* ---------- Search results ---------- */
+.bible__reference-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0.5rem 0 0.75rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    background: var(--parchment);
+    text-decoration: none;
+    color: inherit;
+}
+
+.bible__reference-card:hover,
+.bible__reference-card:focus-visible {
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.bible__match-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.bible__match-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--parchment);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page);
+}
+
+.bible__match-link:hover,
+.bible__match-link:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.bible__match-ref {
+    grid-column: 1;
+    font-size: 0.75rem;
+}
+
+.bible__match-title {
+    grid-column: 1;
+}
+
+.bible__match-kind {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+.bible__attribution {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+@media (max-width: 40rem) {
+    .bible__book-link {
+        grid-template-columns: 2rem 1fr auto;
+    }
+
+    .bible__book-chapters {
+        font-size: 0.7rem;
+    }
+}

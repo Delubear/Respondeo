@@ -28,8 +28,9 @@ public class PillarNavTests : TestContext
         var cut = RenderComponent<PillarNav>();
 
         var labels = cut.FindAll(".pillarnav__link").Select(l => l.TextContent.Trim()).ToList();
-        Assert.Equal(3, labels.Count);
+        Assert.Equal(4, labels.Count);
         Assert.Contains("Summa Theologiae", labels);
+        Assert.Contains("Holy Bible", labels);
         Assert.Contains("Discover Catholicism", labels);
     }
 
@@ -98,6 +99,7 @@ public class PillarNavTests : TestContext
         RegisterServices(new FeatureFlags
         {
             SummaPillar = false,
+            BiblePillar = false,
             DiscoverPillar = false,
         });
 

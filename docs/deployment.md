@@ -44,6 +44,7 @@ change. The flags live in the **`FeatureFlags`** section of
 | --- | --- |
 | `AquinasPortrait` | Hides the St. Thomas Aquinas portrait in the masthead. |
 | `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
+| `BiblePillar` | Hides the Holy Bible pill in the pillar switcher. |
 | `DiscoverPillar` | Hides the entire Discover pill in the pillar switcher (supersedes the per-feature flags). |
 | `MiraclesFeature` | Hides the Miracles area within Discover. |
 | `SaintsFeature` | Hides the Saints area within Discover. |

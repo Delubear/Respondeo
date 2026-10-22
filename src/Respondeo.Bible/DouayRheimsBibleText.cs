@@ -12,6 +12,27 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
 
     private readonly Dictionary<string, Task<BookFile?>> _books = [];
 
+    public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter)
+    {
+        var known = BibleBooks.Find(bookSlug);
+        if (known is null)
+        {
+            return null;
+        }
+
+        var book = await LoadBookAsync(known.Slug);
+        var match = book?.Chapters?.FirstOrDefault(c => c.Chapter == chapter);
+        if (match?.Verses is null)
+        {
+            return null;
+        }
+
+        return match.Verses
+            .Where(v => !string.IsNullOrWhiteSpace(v.Text))
+            .Select(v => new BibleVerse(v.Verse, v.Text!.Trim()))
+            .ToList();
+    }
+
     public async Task<string?> GetPassageAsync(string citation)
     {
         var passage = BibleCitation.Parse(citation);
@@ -20,23 +41,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
 
-        BookFile? book;
-        try
-        {
-            if (!_books.TryGetValue(passage.BookSlug, out var load))
-            {
-                load = http.GetFromJsonAsync<BookFile>($"{DataPath}/{passage.BookSlug}.json");
-                _books[passage.BookSlug] = load;
-            }
-
-            book = await load;
-        }
-        catch (Exception ex) when (ex is HttpRequestException or System.Text.Json.JsonException or NotSupportedException)
-        {
-            _books.Remove(passage.BookSlug);
-            return null;
-        }
-
+        var book = await LoadBookAsync(passage.BookSlug);
         if (book?.Chapters is null)
         {
             return null;
@@ -60,6 +65,25 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         }
 
         return text.Length == 0 ? null : text.ToString().TrimEnd();
+    }
+
+    private async Task<BookFile?> LoadBookAsync(string slug)
+    {
+        try
+        {
+            if (!_books.TryGetValue(slug, out var load))
+            {
+                load = http.GetFromJsonAsync<BookFile>($"{DataPath}/{slug}.json");
+                _books[slug] = load;
+            }
+
+            return await load;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or System.Text.Json.JsonException or NotSupportedException)
+        {
+            _books.Remove(slug);
+            return null;
+        }
     }
 
     private sealed record BookFile(List<ChapterFile>? Chapters);
