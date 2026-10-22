@@ -13,12 +13,15 @@ public enum BibleTestament
 {
     Old,
     New,
+
+    /// <summary>The Clementine Vulgate appendix, printed after the New Testament; not part of the canon.</summary>
+    Appendix,
 }
 
 /// <summary>A single numbered verse.</summary>
 public sealed record BibleVerse(int Number, string Text);
 
-/// <summary>The 73 books of the Catholic canon in Douay-Rheims order.</summary>
+/// <summary>The 73 books of the Catholic canon in Douay-Rheims order, followed by the non-canonical Vulgate appendix.</summary>
 public static class BibleBooks
 {
     public static readonly IReadOnlyList<BibleBook> All =
@@ -96,6 +99,9 @@ public static class BibleBooks
         New("3-john", "3 John", 1),
         New("jude", "Jude", 1),
         New("apocalypse", "Apocalypse", "Revelation", 22),
+        Appendix("prayer-of-manasses", "Prayer of Manasses", 1),
+        Appendix("3-esdras", "3 Esdras", 9),
+        Appendix("4-esdras", "4 Esdras", 16),
     ];
 
     /// <summary>Finds a book by its slug, or <c>null</c> when the slug is unknown.</summary>
@@ -110,4 +116,6 @@ public static class BibleBooks
 
     private static BibleBook New(string slug, string name, string? modern, int chapters) =>
         new(slug, name, modern, BibleTestament.New, chapters);
+
+    private static BibleBook Appendix(string slug, string name, int chapters) => new(slug, name, null, BibleTestament.Appendix, chapters);
 }

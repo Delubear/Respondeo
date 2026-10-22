@@ -49,7 +49,7 @@
                                 <span class="bible__modern">(@book.ModernName)</span>
                             }
                             <span class="bible__match-meta">
-                                @(book.Testament == BibleTestament.Old ? "Old Testament" : "New Testament") &middot; @ChapterLabel(book.ChapterCount)
+                                @TestamentLabel(book.Testament)
                             </span>
                         </a>
                     </li>
@@ -63,11 +63,15 @@
             @foreach (var (testament, title) in Parts)
             {
                 var books = BibleBooks.All.Where(b => b.Testament == testament).ToList();
-                <details class="bible__part" open>
+                <details class="bible__part" open="@(testament != BibleTestament.Appendix)">
                     <summary class="bible__part-summary">
                         <span class="bible__part-title">@title</span>
                         <span class="bible__part-count">@books.Count books</span>
                     </summary>
+                    @if (testament == BibleTestament.Appendix)
+                    {
+                        <p class="bible__attribution">Printed after the New Testament in the Clementine Vulgate; not part of the canon of Scripture.</p>
+                    }
                     <ol class="bible__book-list">
                         @for (var i = 0; i < books.Count; i++)
                         {
@@ -102,7 +106,15 @@
     [
         (BibleTestament.Old, "Old Testament"),
         (BibleTestament.New, "New Testament"),
+        (BibleTestament.Appendix, "Appendix"),
     ];
+
+    private static string TestamentLabel(BibleTestament t) => t switch
+    {
+        BibleTestament.Old => "Old Testament",
+        BibleTestament.New => "New Testament",
+        _ => "Appendix (non-canonical)",
+    };
 
     private string _query = "";
 

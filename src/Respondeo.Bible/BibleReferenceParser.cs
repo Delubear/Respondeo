@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Respondeo.Bible;
@@ -39,6 +39,9 @@ public static class BibleReferenceParser
         ["2-paralipomenon"] = ["2par", "2chr", "2chron"],
         ["1-esdras"] = ["1esd", "ezr"],
         ["2-esdras"] = ["2esd", "neh"],
+        ["3-esdras"] = ["3esd"],
+        ["4-esdras"] = ["4esd"],
+        ["prayer-of-manasses"] = ["prman", "manasses", "manasseh"],
         ["tobias"] = ["tob", "tb"],
         ["judith"] = ["jdt", "jud"],
         ["esther"] = ["est", "esth"],

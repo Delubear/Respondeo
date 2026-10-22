@@ -19,7 +19,8 @@ public class BiblePillarTests
     [Fact]
     public void BibleBooks_HasCatholicCanon()
     {
-        Assert.Equal(73, BibleBooks.All.Count);
+        Assert.Equal(73, BibleBooks.All.Count(b => b.Testament != BibleTestament.Appendix));
+        Assert.Equal(3, BibleBooks.All.Count(b => b.Testament == BibleTestament.Appendix));
         Assert.Equal(46, BibleBooks.All.Count(b => b.Testament == BibleTestament.Old));
         Assert.Equal(BibleBooks.All.Count, BibleBooks.All.Select(b => b.Slug).Distinct().Count());
     }
