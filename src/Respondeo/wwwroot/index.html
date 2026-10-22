@@ -131,7 +131,17 @@
     <!-- Cloudflare Web Analytics (cookieless, privacy-friendly). The beacon auto-tracks SPA route
          changes via the History API, so no manual per-navigation call is needed. The site token
          comes from Cloudflare -> Web Analytics. It is cross-origin/online-only and no-ops offline. -->
-    <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "66d628449e2449d397eec7c257c9e65e"}'></script>
+    <script>
+        (function () {
+            var host = location.hostname;
+            if (host === 'localhost' || host === '127.0.0.1') return;
+            var s = document.createElement('script');
+            s.type = 'module';
+            s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+            s.setAttribute('data-cf-beacon', '{"token": "66d628449e2449d397eec7c257c9e65e"}');
+            document.head.appendChild(s);
+        })();
+    </script>
     <!-- Register the PWA service worker. In development this is the no-op service-worker.js;
          at publish time the SDK swaps in service-worker.published.js, which precaches the app
          and bundled content for full offline use.

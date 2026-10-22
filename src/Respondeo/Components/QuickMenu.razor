@@ -1,0 +1,254 @@
+@implements IDisposable
+@inject NavigationManager Nav
+@inject IPinService Pins
+@inject IDevotionService DevotionService
+@inject Respondeo.Services.FeatureFlags Features
+
+<button type="button" class="quick-menu__toggle" @onclick="Open"
+		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
+	<span aria-hidden="true">&#9776;</span>
+</button>
+
+<Microsoft.AspNetCore.Components.Sections.SectionContent SectionName="quick-menu">
+@if (_open)
+{
+	<div class="quick-menu__backdrop" @onclick="Close"></div>
+	<nav class="quick-menu" role="dialog" aria-modal="true" aria-label="Quick menu" tabindex="-1"
+		 @onkeydown="OnKeyDown" @ref="_panel" style="@PanelStyle"
+		 @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
+		<div class="quick-menu__header" @ontouchstart="() => _fromHeader = true">
+			<h2 class="quick-menu__title">Quick menu</h2>
+			<button type="button" class="quick-menu__close" @onclick="Close" aria-label="Close the quick menu">&times;</button>
+		</div>
+
+		@if (_customizing)
+		{
+			<section class="quick-menu__section">
+				<h3 class="quick-menu__heading">Choose pages to pin</h3>
+				<ul class="quick-menu__list">
+					@foreach (var entry in _entries)
+					{
+						@RenderEntry(entry, true)
+					}
+				</ul>
+				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = false">Done</button>
+			</section>
+		}
+		else
+		{
+			<section class="quick-menu__section quick-menu__section--pinned">
+				<h3 class="quick-menu__heading">Pinned</h3>
+				@if (_pinned.Count == 0)
+				{
+					<p class="quick-menu__empty">Nothing pinned yet. Tap Customize to choose pages.</p>
+				}
+				else
+				{
+					<ul class="quick-menu__list">
+						@foreach (var entry in _pinned)
+						{
+							<li class="quick-menu__item">
+								<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+							</li>
+						}
+					</ul>
+				}
+				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = true">Customize</button>
+			</section>
+		}
+	</nav>
+}
+</Microsoft.AspNetCore.Components.Sections.SectionContent>
+
+@code {
+	private bool _open;
+	private bool _customizing;
+	private ElementReference _panel;
+	private bool _focusPanel;
+	private IReadOnlyList<SiteMap.Entry> _entries = [];
+	private List<SiteMap.Entry> _pinned = [];
+
+	private RenderFragment RenderEntry(SiteMap.Entry entry, bool withChildren) =>
+		@<li class="quick-menu__item">
+			<div class="quick-menu__row">
+				<button type="button" class="quick-menu__pin @(Pins.IsPinned(entry.Href) ? "quick-menu__pin--on" : null)"
+						aria-pressed
+						aria-label="@((Pins.IsPinned(entry.Href) ? "Unpin " : "Pin ") + entry.Label)"
+						@onclick="() => Pins.TogglePinAsync(entry.Href)">
+					<svg class="quick-menu__pin-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6z" /><path d="M12 14v7" /></svg>
+				</button>
+				<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+			</div>
+			@if (withChildren && entry.Children is { Count: > 0 } children)
+			{
+				<ul class="quick-menu__list quick-menu__list--nested">
+					@foreach (var child in children)
+					{
+						@RenderEntry(child, true)
+					}
+				</ul>
+			}
+		</li>;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_entries = SiteMap.Build(Features);
+		Refresh();
+		Pins.Changed += OnPinsChanged;
+		Nav.LocationChanged += OnLocationChanged;
+
+		if (Features.DiscoverPillar && Features.DevotionsFeature)
+		{
+			var devotions = await DevotionService.GetIndexAsync();
+			_entries = SiteMap.Build(Features,
+				[.. devotions.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)
+					.Select(d => new SiteMap.Entry(ContentRoutes.DevotionHref(d.Id), d.Title))]);
+			Refresh();
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await Pins.InitializeAsync();
+		}
+
+		if (_focusPanel && _open)
+		{
+			_focusPanel = false;
+			try
+			{
+				await _panel.FocusAsync();
+			}
+			catch (Exception ex) when (ex is InvalidOperationException or Microsoft.JSInterop.JSException)
+			{
+				// The drawer renders through a SectionOutlet, so its element may not be attached yet.
+			}
+		}
+	}
+
+	private void Refresh() =>
+		_pinned = Pins.Pins.Select(h => SiteMap.Find(_entries, h)).OfType<SiteMap.Entry>().ToList();
+
+	private void Open()
+	{
+		_open = true;
+		_focusPanel = true;
+	}
+
+	private void Close()
+	{
+		_open = false;
+		_customizing = false;
+		_dragX = 0;
+		_dragY = 0;
+		_tracking = false;
+	}
+
+	private const double SwipeCloseThreshold = 80;
+	private double _touchStartX;
+	private double _touchStartY;
+	private double _dragX;
+	private bool _tracking;
+	private bool _horizontal;
+	private double _dragY;
+	private bool _fromHeader;
+
+	private string? PanelStyle => !_tracking ? null
+		: _dragY > 0 ? $"transform: translateY({_dragY:0}px); transition: none;"
+		: _dragX > 0 ? $"transform: translateX({_dragX:0}px); transition: none;"
+		: null;
+
+	private void OnTouchStart(TouchEventArgs e)
+	{
+		if (e.Touches.Length != 1)
+		{
+			return;
+		}
+
+		_touchStartX = e.Touches[0].ClientX;
+		_touchStartY = e.Touches[0].ClientY;
+		_dragX = 0;
+		_horizontal = false;
+		_tracking = true;
+	}
+
+	private void OnTouchMove(TouchEventArgs e)
+	{
+		if (!_tracking || e.Touches.Length != 1)
+		{
+			return;
+		}
+
+		var dx = e.Touches[0].ClientX - _touchStartX;
+		var dy = e.Touches[0].ClientY - _touchStartY;
+		if (!_horizontal)
+		{
+			if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
+			{
+				if (_fromHeader && dy > 0)
+				{
+					_dragY = dy;
+					return;
+				}
+
+				if (_dragY <= 0)
+				{
+					_tracking = false;
+				}
+
+				return;
+			}
+
+			_horizontal = Math.Abs(dx) > 10;
+		}
+
+		if (_horizontal)
+		{
+			_dragX = Math.Max(0, dx);
+		}
+	}
+
+	private void OnTouchEnd(TouchEventArgs e)
+	{
+		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || _dragY > SwipeCloseThreshold);
+		_tracking = false;
+		_dragX = 0;
+		_dragY = 0;
+		_fromHeader = false;
+		if (shouldClose)
+		{
+			Close();
+		}
+	}
+
+	private void OnKeyDown(KeyboardEventArgs e)
+	{
+		if (e.Key == "Escape")
+		{
+			Close();
+		}
+	}
+
+	private void OnPinsChanged()
+	{
+		Refresh();
+		InvokeAsync(StateHasChanged);
+	}
+
+	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		if (_open)
+		{
+			_open = false;
+			InvokeAsync(StateHasChanged);
+		}
+	}
+
+	public void Dispose()
+	{
+		Pins.Changed -= OnPinsChanged;
+		Nav.LocationChanged -= OnLocationChanged;
+	}
+}

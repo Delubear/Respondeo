@@ -24,6 +24,9 @@ public static class AppServiceRegistration
         // Preferred light/dark theme (localStorage).
         services.AddScoped<IThemeService, ThemeService>();
 
+        // Pinned quick-menu destinations (localStorage).
+        services.AddScoped<IPinService, PinService>();
+
         // Whether the reader prefers Latin prayer names in devotions (localStorage).
         services.AddScoped<IPrayerLanguageService, PrayerLanguageService>();
 

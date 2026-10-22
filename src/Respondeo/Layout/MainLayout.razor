@@ -11,6 +11,7 @@
     <a class="skip-link" href="#content">Skip to content</a>
 
     <ScrollAffordances />
+    <QuickMenu />
 
     @* The masthead and pillar switcher form one drag zone on phones: drag down to open the full masthead, up to close. *@
     <div class="masthead-zone" @ref="_mastheadZone">
@@ -61,6 +62,7 @@
     </footer>
 
     <InstallPrompt />
+    <Microsoft.AspNetCore.Components.Sections.SectionOutlet SectionName="quick-menu" />
 </div>
 
 @* Floating orbs live here (not in the pages) so each persists as a single element across navigation

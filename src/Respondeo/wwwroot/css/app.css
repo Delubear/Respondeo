@@ -591,7 +591,8 @@ details.accordion__item[open] > .accordion__trigger {
    checkboxes on the browse pages). */
 @media (max-width: 40rem) {
     body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .back-to-top,
-    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .float-circle {
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .float-circle,
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .quick-menu__toggle {
         display: none;
     }
 }
@@ -602,7 +603,8 @@ details.accordion__item[open] > .accordion__trigger {
    they reappear once the prompt is installed or dismissed. */
 @media (max-width: 40rem) {
     body:has(.install-prompt) .back-to-top,
-    body:has(.install-prompt) .float-circle {
+    body:has(.install-prompt) .float-circle,
+    body:has(.install-prompt) .quick-menu__toggle {
         display: none;
     }
 }
@@ -1333,4 +1335,10 @@ input[type="search"]::-webkit-search-cancel-button {
     font-size: 0.9rem;
     font-style: normal;
     text-align: right;
+}
+
+/* Lock page scroll while the quick menu drawer is open so scrolling the drawer never moves the page behind it. */
+html:has(.quick-menu),
+body:has(.quick-menu) {
+  overflow: hidden;
 }
