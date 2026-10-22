@@ -34,14 +34,8 @@ public sealed class PinService(IJSRuntime js) : IPinService
     private List<string> _pins = [.. DefaultPins];
     private bool _initialized;
 
-    /// <summary>The pins a first-time visitor starts with.</summary>
-    public static readonly IReadOnlyList<string> DefaultPins =
-    [
-        "summa",
-        "bible",
-        "discover/devotions/dominican-rosary",
-        "discover/devotions/mass-ordinary-form",
-    ];
+    /// <summary>The pins a first-time visitor starts with (none).</summary>
+    public static readonly IReadOnlyList<string> DefaultPins = [];
 
     public IReadOnlyList<string> Pins => _pins;
 

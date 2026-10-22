@@ -105,17 +105,13 @@ public static class BibleBooks
     ];
 
     /// <summary>Finds a book by its slug, or <c>null</c> when the slug is unknown.</summary>
-    public static BibleBook? Find(string? slug) =>
-        All.FirstOrDefault(b => string.Equals(b.Slug, slug, StringComparison.OrdinalIgnoreCase));
+    public static BibleBook? Find(string? slug) => All.FirstOrDefault(b => string.Equals(b.Slug, slug, StringComparison.OrdinalIgnoreCase));
 
-    private static BibleBook Old(string slug, string name, string? modern, int chapters) =>
-        new(slug, name, modern, BibleTestament.Old, chapters);
+    private static BibleBook Old(string slug, string name, string? modern, int chapters) => new(slug, name, modern, BibleTestament.Old, chapters);
 
-    private static BibleBook New(string slug, string name, int chapters) =>
-        new(slug, name, null, BibleTestament.New, chapters);
+    private static BibleBook New(string slug, string name, int chapters) => new(slug, name, null, BibleTestament.New, chapters);
 
-    private static BibleBook New(string slug, string name, string? modern, int chapters) =>
-        new(slug, name, modern, BibleTestament.New, chapters);
+    private static BibleBook New(string slug, string name, string? modern, int chapters) => new(slug, name, modern, BibleTestament.New, chapters);
 
     private static BibleBook Appendix(string slug, string name, int chapters) => new(slug, name, null, BibleTestament.Appendix, chapters);
 }
