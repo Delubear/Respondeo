@@ -1,0 +1,147 @@
+@page "/discover/hours/{Slug}"
+@using Respondeo.LiturgyOfTheHours
+@inject ILiturgyOfTheHours Office
+@inject Respondeo.Bible.IBibleText Bible
+
+<PageShell Title="@_office?.Title" FallbackTitle="Liturgy of the Hours" Description="Pray the Liturgy of the Hours step by step." Article="true" SeoReady="@(_office is not null)"
+           StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
+
+@if (_office is null)
+{
+    <ItemNotFound Title="Hour not found" BackHref="discover/hours" BackLabel="Return to the Liturgy of the Hours">
+        There is no hour named &ldquo;<code>@Slug</code>&rdquo;.
+    </ItemNotFound>
+}
+else
+{
+    <section class="reading-wide hourplayer">
+        <h1 class="hourplayer__title">@_office.Title</h1>
+        <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
+        <p class="hourplayer__hint">Select each step to mark it prayed, in order.</p>
+
+        <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
+
+        <ol class="hourplayer__list">
+            @for (var i = 0; i < _office.Steps.Count; i++)
+            {
+                var index = i;
+                var step = _office.Steps[i];
+                <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)">
+                    <span class="hourplayer__marker" aria-hidden="true"></span>
+                    <div class="hourplayer__body">
+                        <button type="button" class="hourplayer__head" aria-pressed="@(index < _completed)" @onclick="() => Toggle(index)">
+                            <span class="hourplayer__step-title">@step.Title</span>
+                            @if (step.Reference?.DouayCitation is { } douay)
+                            {
+                                <span class="hourplayer__ref">@douay</span>
+                            }
+                        </button>
+                        @if (index == _completed || index == _expanded)
+                        {
+                            @if (step.Explanation is not null)
+                            {
+                                <p class="hourplayer__explain">@step.Explanation</p>
+                            }
+                            @if (step.Text is not null)
+                            {
+                                <p class="hourplayer__text">@step.Text</p>
+                            }
+                            else if (_passages.TryGetValue(index, out var passage))
+                            {
+                                <p class="hourplayer__text">@passage</p>
+                                <p class="hourplayer__translation">Douay-Rheims translation</p>
+                            }
+                            else if (step.UseOfficialText)
+                            {
+                                <p class="hourplayer__official">Read today's text from an official source below.</p>
+                            }
+                        }
+                        else if (step.Text is not null || step.Explanation is not null)
+                        {
+                            <button type="button" class="hourplayer__peek" @onclick="() => _expanded = index">Show text</button>
+                        }
+                    </div>
+                </li>
+            }
+        </ol>
+
+        @if (_completed >= _office.Steps.Count)
+        {
+            <p class="hourplayer__done">Thanks be to God. You have prayed @_office.Title.</p>
+        }
+
+        <h2 class="hourplayer__sources-title">Official texts</h2>
+        <ul class="hourplayer__sources">
+            @foreach (var source in _office.OfficialSources)
+            {
+                <li><a href="@source.Url" target="_blank" rel="noopener">@source.Name</a></li>
+            }
+        </ul>
+
+        <div class="hourplayer__exit">
+            <a href="discover/hours">Choose another hour</a>
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    [SupplyParameterFromQuery] public string? Date { get; set; }
+
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("hours", "Liturgy of the Hours", Href: "discover/hours")];
+
+    private Office? _office;
+    private DateOnly _date;
+    private int _completed;
+    private int _expanded = -1;
+    private string? _announcement;
+
+    private const string GloryBe =
+        "Glory be to the Father, and to the Son, and to the Holy Spirit,\nas it was in the beginning, is now, and ever shall be,\nworld without end. Amen.";
+
+    private Dictionary<int, string> _passages = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _date = DateOnly.TryParse(Date, out var d) ? d : DateOnly.FromDateTime(DateTime.Now);
+        Hour? hour = Slug.ToLowerInvariant() switch
+        {
+            "morning" => Hour.MorningPrayer,
+            "evening" => Hour.EveningPrayer,
+            "night" => Hour.NightPrayer,
+            _ => null,
+        };
+        _office = hour is { } h ? Office.Compose(_date, h) : null;
+        _completed = 0;
+        _expanded = -1;
+        _passages = [];
+
+        if (_office is null)
+        {
+            return;
+        }
+
+        var passages = new Dictionary<int, string>();
+        for (var i = 0; i < _office.Steps.Count; i++)
+        {
+            var step = _office.Steps[i];
+            if (step.Text is null && step.Reference is { } reference && await Bible.GetPassageAsync(reference.Citation) is { } text)
+            {
+                passages[i] = step.Kind == OfficeStepKind.Reading ? text : text + "\n\n" + GloryBe;
+            }
+        }
+
+        _passages = passages;
+    }
+
+    private void Toggle(int index)
+    {
+        _completed = index < _completed ? index : index + 1;
+        _expanded = -1;
+        _announcement = _completed >= _office!.Steps.Count
+            ? "All steps prayed."
+            : $"{_completed} of {_office.Steps.Count} steps prayed.";
+    }
+
+    private static string ToRoman(int n) => n switch { 1 => "I", 2 => "II", 3 => "III", _ => "IV" };
+}

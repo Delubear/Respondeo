@@ -64,9 +64,11 @@ public class PillarNavTests : TestContext
         {
             DiscoverPillar = true,
             MiraclesFeature = false,
+            SaintsFeature = false,
             PrayerFeature = false,
             DevotionsFeature = false,
             ArticlesFeature = false,
+            LiturgyOfTheHoursFeature = false,
         });
 
         var cut = RenderComponent<PillarNav>();
@@ -85,6 +87,7 @@ public class PillarNavTests : TestContext
             PrayerFeature = true,
             DevotionsFeature = false,
             ArticlesFeature = false,
+            LiturgyOfTheHoursFeature = false,
         });
 
         var cut = RenderComponent<PillarNav>();

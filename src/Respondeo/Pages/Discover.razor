@@ -1,6 +1,7 @@
 @page "/discover"
 @inject DiscoverOverview Overview
 @inject IBreadcrumbTrail Trail
+@inject Respondeo.Services.FeatureFlags Features
 
 <PageShell Title="Discover Catholicism"
          Description="Explore the riches of the Catholic faith: recognized miracles, the lives of the saints, a treasury of prayers, interactive devotions, and articles on the Church's teaching and practice." />
@@ -39,6 +40,15 @@
               Summary="Pray the Rosary and the chaplets, or walk through the Mass and Confession, with an interactive guide that explains each step."
               Cta="Begin &rarr;"
               Level="2" />
+        @if (Features.LiturgyOfTheHoursFeature)
+        {
+            <Card Href="discover/hours"
+                  Title="Liturgy of the Hours"
+                  Pills="@(new[] { "Interactive" })"
+                  Summary="Pray Morning, Evening, and Night Prayer with the whole Church, guided step by step through the psalms, canticles, and prayers for each day."
+                  Cta="Pray &rarr;"
+                  Level="2" />
+        }
         <Card Href="discover/articles"
               Title="Articles"
               Pills="@(new[] { "Learning" })"

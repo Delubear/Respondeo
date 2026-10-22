@@ -29,6 +29,7 @@ public static class DiscoverNavigation
         new("discover/saints", "Saints", false, f => f.SaintsFeature),
         new("discover/prayers", "Prayers", false, f => f.PrayerFeature),
         new("discover/devotions", "Devotions", false, f => f.DevotionsFeature),
+        new("discover/hours", "Hours", false, f => f.LiturgyOfTheHoursFeature),
         new("discover/articles", "Articles", false, f => f.ArticlesFeature),
     ];
 }

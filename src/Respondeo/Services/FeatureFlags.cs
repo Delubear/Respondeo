@@ -18,6 +18,8 @@ public sealed class FeatureFlags
     public bool SummaPillar { get; set; } = true;
 
     /// <summary>Shows the Holy Bible pillar pill in the pillar switcher when enabled.</summary>
+    public bool BiblePillar { get; set; } = true;
+
     /// <summary>
     /// Master switch for the whole Discover Catholicism pillar.
     /// When disabled, the pillar and all of its sub-areas are hidden regardless of the individual feature flags below (it supersedes them).
@@ -38,6 +40,9 @@ public sealed class FeatureFlags
 
     /// <summary>Shows the Articles sub-area within the Discover pillar when enabled.</summary>
     public bool ArticlesFeature { get; set; } = true;
+
+    /// <summary>Shows the Liturgy of the Hours sub-area within the Discover pillar when enabled.</summary>
+    public bool LiturgyOfTheHoursFeature { get; set; } = true;
 
     /// <summary>
     /// When enabled, the feedback trigger opens the choice dialog (open a GitHub issue, or send anonymous feedback via the hosted Tally form).

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<AssemblyName>Respondeo.LiturgyOfTheHours</AssemblyName>
+	<RootNamespace>Respondeo.LiturgyOfTheHours</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<InternalsVisibleTo Include="Respondeo.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\Respondeo.LiturgicalCalendar\Respondeo.LiturgicalCalendar.csproj" />
+	<ProjectReference Include="..\Respondeo.Bible\Respondeo.Bible.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+</Project>

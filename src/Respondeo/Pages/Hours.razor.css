@@ -1,0 +1,17 @@
+.hours__date {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto 1.5rem;
+}
+
+.hours__date input {
+    font: inherit;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.25rem;
+    background: var(--paper);
+    color: inherit;
+}
+

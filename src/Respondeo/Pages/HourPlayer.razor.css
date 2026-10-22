@@ -1,0 +1,146 @@
+.hourplayer {
+    text-align: center;
+}
+
+.hourplayer__meta,
+.hourplayer__hint {
+    color: var(--ink-soft);
+    margin: 0.25rem 0;
+}
+
+.hourplayer__list {
+    list-style: none;
+    margin: 1.5rem auto;
+    padding: 0;
+    max-width: 42rem;
+    text-align: left;
+}
+
+/* Two-column row mirroring the devotion thread: marker on the left, content on the right. */
+.hourplayer__step {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: stretch;
+}
+
+.hourplayer__marker {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.85rem;
+}
+
+.hourplayer__marker::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: var(--rule);
+}
+
+.hourplayer__marker::after {
+    content: "";
+    position: relative;
+    z-index: 1;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--ink-soft);
+}
+
+.hourplayer__step.is-done .hourplayer__marker::after {
+    background: var(--gold);
+    border-color: var(--gold);
+}
+
+.hourplayer__step.is-current .hourplayer__marker::after {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-bright);
+}
+
+.hourplayer__body {
+    padding: 0.4rem 0 0.9rem;
+    min-width: 0;
+}
+
+.hourplayer__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 0;
+    border-radius: 0.25rem;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.hourplayer__head:hover,
+.hourplayer__head:focus-visible {
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+}
+
+.hourplayer__step-title {
+    font-weight: 600;
+}
+
+.hourplayer__step.is-done .hourplayer__step-title {
+    color: var(--ink-soft);
+}
+
+.hourplayer__ref {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+}
+
+.hourplayer__explain,
+.hourplayer__official {
+    margin: 0.25rem 0.5rem;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+.hourplayer__text {
+    margin: 0.5rem 0.5rem 0;
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.hourplayer__translation {
+    margin: 0.25rem 0.5rem 0;
+    font-size: 0.8rem;
+    opacity: 0.75;
+}
+
+.hourplayer__peek {
+    margin: 0 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--gold);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.hourplayer__done {
+    font-weight: 600;
+    color: var(--gold);
+}
+
+.hourplayer__sources {
+    list-style: none;
+    padding: 0;
+}
+
+.hourplayer__exit {
+    margin: 2rem 0 1rem;
+}

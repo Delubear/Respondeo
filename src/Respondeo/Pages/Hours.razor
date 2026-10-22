@@ -1,0 +1,66 @@
+@page "/discover/hours"
+@using Respondeo.LiturgyOfTheHours
+
+<PageShell Title="Liturgy of the Hours" Description="Pray Morning, Evening, and Night Prayer of the Liturgy of the Hours, step by step." Article="true" SeoReady="true"
+           StageHref="discover" StageLabel="Discover" />
+
+<section class="pillar browse hours">
+    <PillarHeader Eyebrow="Discover" Title="Liturgy of the Hours">
+        <Lede>The prayer of the Church, sanctifying the day. Choose an hour to pray it step by step.</Lede>
+    </PillarHeader>
+
+    <label class="hours__date">
+        Date
+        <input type="date" value="@_date.ToString("yyyy-MM-dd")" @onchange="OnDateChanged" />
+    </label>
+
+    <CardGrid>
+        @foreach (var hour in Enum.GetValues<Hour>())
+        {
+            <Card Href="@($"discover/hours/{Slug(hour)}?date={_date:yyyy-MM-dd}")"
+                  Title="@Label(hour)"
+                  Summary="@Subtitle(hour)"
+                  Pills="@(hour == _suggested ? ["Now"] : null)"
+                  Cta="Pray &#x2192;" />
+        }
+    </CardGrid>
+</section>
+
+@code {
+    private DateOnly _date = DateOnly.FromDateTime(DateTime.Now);
+    private readonly Hour _suggested = DateTime.Now.Hour switch
+    {
+        < 12 => Hour.MorningPrayer,
+        < 20 => Hour.EveningPrayer,
+        _ => Hour.NightPrayer,
+    };
+
+    private void OnDateChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParse(e.Value?.ToString(), out var date))
+        {
+            _date = date;
+        }
+    }
+
+    internal static string Slug(Hour hour) => hour switch
+    {
+        Hour.MorningPrayer => "morning",
+        Hour.EveningPrayer => "evening",
+        _ => "night",
+    };
+
+    internal static string Label(Hour hour) => hour switch
+    {
+        Hour.MorningPrayer => "Morning Prayer",
+        Hour.EveningPrayer => "Evening Prayer",
+        _ => "Night Prayer",
+    };
+
+    private static string Subtitle(Hour hour) => hour switch
+    {
+        Hour.MorningPrayer => "Lauds, at the start of the day",
+        Hour.EveningPrayer => "Vespers, as evening falls",
+        _ => "Compline, before sleep",
+    };
+}

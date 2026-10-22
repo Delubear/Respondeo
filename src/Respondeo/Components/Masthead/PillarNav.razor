@@ -34,7 +34,10 @@
     private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
     {
         SitePillars.SummaId => Features.SummaPillar,
-        SitePillars.DiscoverId => Features.DiscoverPillar && (Features.MiraclesFeature || Features.PrayerFeature || Features.DevotionsFeature || Features.ArticlesFeature),
+        SitePillars.BibleId => Features.BiblePillar,
+        SitePillars.DiscoverId => Features.DiscoverPillar
+            && (Features.MiraclesFeature || Features.SaintsFeature || Features.PrayerFeature || Features.DevotionsFeature
+                || Features.ArticlesFeature || Features.LiturgyOfTheHoursFeature),
         _ => true,
     };
 
