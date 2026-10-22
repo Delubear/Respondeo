@@ -306,3 +306,30 @@
 .quick-menu__customize:focus-visible {
     background: color-mix(in srgb, currentColor 10%, transparent);
 }
+
+.quick-menu__label {
+    flex: 1;
+    min-width: 0;
+}
+
+.quick-menu__move {
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+}
+
+.quick-menu__move:hover:not(:disabled),
+.quick-menu__move:focus-visible {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.quick-menu__move:disabled {
+    opacity: .35;
+    cursor: default;
+}

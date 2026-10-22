@@ -45,15 +45,42 @@
 				else
 				{
 					<ul class="quick-menu__list">
-						@foreach (var entry in _pinned)
+						@for (var i = 0; i < _pinned.Count; i++)
 						{
-							<li class="quick-menu__item">
-								<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+							var entry = _pinned[i];
+							var isFirst = i == 0;
+							var isLast = i == _pinned.Count - 1;
+							<li class="quick-menu__item" @key="entry.Href">
+								@if (_reordering)
+								{
+									<div class="quick-menu__row">
+										<span class="quick-menu__label">@entry.Label</span>
+										<button type="button" class="quick-menu__move" disabled="@isFirst"
+												aria-label="@($"Move {entry.Label} up")" @onclick="() => Pins.MovePinAsync(entry.Href, -1)">&uarr;</button>
+										<button type="button" class="quick-menu__move" disabled="@isLast"
+												aria-label="@($"Move {entry.Label} down")" @onclick="() => Pins.MovePinAsync(entry.Href, 1)">&darr;</button>
+									</div>
+								}
+								else
+								{
+									<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+								}
 							</li>
 						}
 					</ul>
 				}
-				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = true">Customize</button>
+				@if (_reordering)
+				{
+					<button type="button" class="quick-menu__customize" @onclick="() => _reordering = false">Done</button>
+				}
+				else
+				{
+					<button type="button" class="quick-menu__customize" @onclick="() => _customizing = true">Customize</button>
+					@if (_pinned.Count > 1)
+					{
+						<button type="button" class="quick-menu__customize" @onclick="() => _reordering = true">Reorder</button>
+					}
+				}
 			</section>
 		}
 	</nav>
@@ -63,6 +90,7 @@
 @code {
 	private bool _open;
 	private bool _customizing;
+	private bool _reordering;
 	private ElementReference _panel;
 	private bool _focusPanel;
 	private IReadOnlyList<SiteMap.Entry> _entries = [];
@@ -141,6 +169,7 @@
 	{
 		_open = false;
 		_customizing = false;
+		_reordering = false;
 		_dragX = 0;
 		_dragY = 0;
 		_tracking = false;

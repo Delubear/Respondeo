@@ -22,6 +22,9 @@ public interface IPinService
 
     /// <summary>Pins the href if unpinned, or unpins it if pinned, and persists the change.</summary>
     Task TogglePinAsync(string href);
+
+    /// <summary>Moves a pinned href by the given offset within the pin order, and persists the change.</summary>
+    Task MovePinAsync(string href, int offset);
 }
 
 /// <summary>
@@ -81,6 +84,20 @@ public sealed class PinService(IJSRuntime js) : IPinService
             _pins.Add(href);
         }
 
+        await _storage.SetAsync(StorageKey, JsonSerializer.Serialize(_pins));
+        Changed?.Invoke();
+    }
+
+    public async Task MovePinAsync(string href, int offset)
+    {
+        var index = _pins.FindIndex(p => string.Equals(p, href, StringComparison.OrdinalIgnoreCase));
+        var target = index + offset;
+        if (index < 0 || target < 0 || target >= _pins.Count || target == index)
+        {
+            return;
+        }
+
+        (_pins[index], _pins[target]) = (_pins[target], _pins[index]);
         await _storage.SetAsync(StorageKey, JsonSerializer.Serialize(_pins));
         Changed?.Invoke();
     }
