@@ -14,6 +14,8 @@
 	<!-- Reuse the Summa part catalog so the storage-key -> URL-slug mapping (p1 -> prima) stays in one place
 		 and the sitemap URLs always match the app's real routes. -->
 	<ProjectReference Include="..\..\src\Respondeo.Content.Summa\Respondeo.Content.Summa.csproj" />
+	<!-- Reuse the Bible book list so every book/chapter route is emitted. -->
+	<ProjectReference Include="..\..\src\Respondeo.Bible\Respondeo.Bible.csproj" />
 	<!-- Renders each route's Markdown body into its static entry page for crawlers that don't run JavaScript. -->
 	<PackageReference Include="Markdig" />
   </ItemGroup>

@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Respondeo.Bible;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Contracts;
 
@@ -48,6 +49,7 @@ internal static class SitemapGenerator
         var routes = new RouteSet(GitDates.Load(repoRoot));
         CollectStaticRoutes(routes);
         CollectSummaRoutes(routes, paths.SummaIndex);
+        CollectBibleRoutes(routes);
         CollectMiracleRoutes(routes, paths.DiscoverRoot, paths.MiraclesManifest);
         CollectSaintRoutes(routes, paths.SaintsManifest);
         CollectJourneyRoutes(routes, paths.ContentRoot, paths.ContentManifest);
@@ -65,6 +67,8 @@ internal static class SitemapGenerator
         routes.Add("");            // Home keeps index.html's own site-wide title and description.
         routes.Add("summa", "Summa Theologiae",
             "Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance.");
+        routes.Add("bible", "Holy Bible",
+            "Read the Douay-Rheims Bible online \u2014 all 73 books of the Catholic canon plus the Clementine Vulgate appendix.");
         routes.Add("discover", "Discover Catholicism",
             "Explore the riches of the Catholic faith: recognized miracles, the lives of the saints, a treasury of prayers, interactive devotions, and articles on the Church's teaching and practice.");
         routes.Add("discover/miracles", "Catholic Miracles",
@@ -81,7 +85,20 @@ internal static class SitemapGenerator
             "The inspiration behind Respondeo, the public-domain and open sources it draws on, and further reading we recommend for exploring the Catholic faith.");
     }
 
-    // 2. Summa part landing pages + every question, mapping storage keys (p1) to URL slugs (prima).
+    // Every Bible book chapter, driven by the same book list the app routes with.
+    private static void CollectBibleRoutes(RouteSet routes)
+    {
+        foreach (var book in BibleBooks.All)
+        {
+            for (var chapter = 1; chapter <= book.ChapterCount; chapter++)
+            {
+                routes.Add($"bible/{book.Slug}/{chapter}", JoinTitle($"{book.Name} {chapter}", "Holy Bible"),
+                    $"Read {book.Name} chapter {chapter} in the Douay-Rheims Bible.");
+            }
+        }
+    }
+
+    // 2. Summa part landing pages
     private static void CollectSummaRoutes(RouteSet routes, string summaIndexPath)
     {
         if (!File.Exists(summaIndexPath))
