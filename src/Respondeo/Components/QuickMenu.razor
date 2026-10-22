@@ -31,8 +31,10 @@
 						@RenderEntry(entry, true)
 					}
 				</ul>
-				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = false">Done</button>
 			</section>
+			<div class="quick-menu__footer">
+				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = false">Done</button>
+			</div>
 		}
 		else
 		{
@@ -44,21 +46,20 @@
 				}
 				else
 				{
-					<ul class="quick-menu__list">
+					<ul class="quick-menu__list" @onpointermove="OnDragMove" @onpointerup="EndDrag"
+						@onpointercancel="EndDrag" @onpointerleave="EndDrag">
 						@for (var i = 0; i < _pinned.Count; i++)
 						{
 							var entry = _pinned[i];
-							var isFirst = i == 0;
-							var isLast = i == _pinned.Count - 1;
-							<li class="quick-menu__item" @key="entry.Href">
+							var idx = i;
+							<li class="quick-menu__item @(idx == _dragIndex ? "quick-menu__item--dragging" : null)"
+								style="@ItemStyle(idx)" @key="entry.Href">
 								@if (_reordering)
 								{
-									<div class="quick-menu__row">
+									<div class="quick-menu__row quick-menu__row--draggable"
+										 @onpointerdown="e => StartDrag(idx, e)" @onpointerdown:preventDefault>
 										<span class="quick-menu__label">@entry.Label</span>
-										<button type="button" class="quick-menu__move" disabled="@isFirst"
-												aria-label="@($"Move {entry.Label} up")" @onclick="() => Pins.MovePinAsync(entry.Href, -1)">&uarr;</button>
-										<button type="button" class="quick-menu__move" disabled="@isLast"
-												aria-label="@($"Move {entry.Label} down")" @onclick="() => Pins.MovePinAsync(entry.Href, 1)">&darr;</button>
+										<span class="quick-menu__handle" aria-hidden="true">&#x2807;</span>
 									</div>
 								}
 								else
@@ -71,7 +72,9 @@
 				}
 				@if (_reordering)
 				{
-					<button type="button" class="quick-menu__customize" @onclick="() => _reordering = false">Done</button>
+					<div class="quick-menu__footer">
+						<button type="button" class="quick-menu__customize" @onclick="() => _reordering = false">Done</button>
+					</div>
 				}
 				else
 				{
@@ -170,6 +173,8 @@
 		_open = false;
 		_customizing = false;
 		_reordering = false;
+		_dragIndex = -1;
+		_dragOffset = 0;
 		_dragX = 0;
 		_dragY = 0;
 		_tracking = false;
@@ -205,7 +210,7 @@
 
 	private void OnTouchMove(TouchEventArgs e)
 	{
-		if (!_tracking || e.Touches.Length != 1)
+		if (_dragIndex >= 0 || !_tracking || e.Touches.Length != 1)
 		{
 			return;
 		}
@@ -249,6 +254,71 @@
 		if (shouldClose)
 		{
 			Close();
+		}
+	}
+
+	private int _dragIndex = -1;
+	private double _dragStartY;
+	private double _dragOffset;
+	private const double RowHeight = 48;
+
+	private string? ItemStyle(int idx)
+	{
+		if (_dragIndex < 0)
+		{
+			return null;
+		}
+
+		if (idx == _dragIndex)
+		{
+			return $"transform:translateY({_dragOffset}px)";
+		}
+
+		var target = Math.Clamp(_dragIndex + (int)Math.Round(_dragOffset / RowHeight), 0, _pinned.Count - 1);
+		if (target > _dragIndex && idx > _dragIndex && idx <= target)
+		{
+			return $"transform:translateY(-{RowHeight}px)";
+		}
+
+		if (target < _dragIndex && idx < _dragIndex && idx >= target)
+		{
+			return $"transform:translateY({RowHeight}px)";
+		}
+
+		return null;
+	}
+
+	private void StartDrag(int idx, PointerEventArgs e)
+	{
+		_dragIndex = idx;
+		_dragStartY = e.ClientY;
+		_dragOffset = 0;
+	}
+
+	private void OnDragMove(PointerEventArgs e)
+	{
+		if (_dragIndex < 0)
+		{
+			return;
+		}
+
+		_dragOffset = Math.Clamp(e.ClientY - _dragStartY, -_dragIndex * RowHeight, (_pinned.Count - 1 - _dragIndex) * RowHeight);
+	}
+
+	private async Task EndDrag()
+	{
+		if (_dragIndex < 0)
+		{
+			return;
+		}
+
+		var steps = Math.Clamp((int)Math.Round(_dragOffset / RowHeight), -_dragIndex, _pinned.Count - 1 - _dragIndex);
+		var href = _pinned[_dragIndex].Href;
+		_dragIndex = -1;
+		_dragOffset = 0;
+		for (var s = 0; s < Math.Abs(steps); s++)
+		{
+			await Pins.MovePinAsync(href, Math.Sign(steps));
 		}
 	}
 
