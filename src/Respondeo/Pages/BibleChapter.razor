@@ -6,7 +6,7 @@
 @inject IBibleTranslationService Translations
 @inject NavigationManager Nav
 
-<PageShell Description="@($"{Heading} in the {_translation.Name()}.")"
+<PageShell Description="@($"{Heading} in the {_translation.Name()}.")" 
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
            StageHref="bible" StageLabel="Holy Bible" />
 
@@ -24,9 +24,7 @@ else
 {
     <article class="content-article">
         <PillarHeader Eyebrow="@(_translation.BookNameClarification(_book) is { } modern ? $"{_translation.ShortName()} · {modern}" : _translation.ShortName())" Title="@Heading" />
-
         <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
-
         <BibleChapterNav Book="_book" Translation="_translation" Current="Chapter" />
 
         @if (_unavailable)
