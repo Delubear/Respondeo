@@ -135,7 +135,7 @@ else
         _verses = verses;
         _unavailable = unavailable;
         _loading = false;
-        VerseSelection.Parse(VerseQuery);
+        _highlight = VerseSelection.Parse(VerseQuery);
         _pendingScroll = !_highlight.IsEmpty && _verses is not null;
     }
 
