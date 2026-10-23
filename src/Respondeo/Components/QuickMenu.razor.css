@@ -389,7 +389,10 @@
 }
 
 .quick-menu__row--draggable {
-    min-height: 48px;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.9rem;
+    color: var(--ink);
+    line-height: 1.3;
     touch-action: none;
     user-select: none;
     cursor: grab;
@@ -399,6 +402,7 @@
     margin-left: auto;
     opacity: .6;
     font-size: 1.2em;
+    line-height: 1;
 }
 
 .quick-menu__item {
@@ -409,7 +413,7 @@
     position: relative;
     z-index: 1;
     transition: none;
-    background: var(--surface, inherit);
+    border-radius: 0.6rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
     cursor: grabbing;
 }
