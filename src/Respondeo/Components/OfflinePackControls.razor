@@ -1,0 +1,73 @@
+@implements IDisposable
+@inject OfflinePacks Packs
+
+@* Download / remove control for the opt-in offline packs. Renders nothing where packs are unsupported
+   (development, or before the service worker controls the page). *@
+@if (Packs.Supported)
+{
+    <section class="offline-packs" aria-label="Offline reading">
+        @if (ShowHeading)
+        {
+            <h2 class="offline-packs__title">Save for offline</h2>
+        }
+        <p class="offline-packs__note">
+            Respondeo's articles, prayers and devotions are always available offline.
+            The Summa and the Bible are large, so they are saved only if you choose.
+            Without them, those texts and their search need a connection.
+        </p>
+        <ul class="offline-packs__list">
+            @foreach (var (key, label, size) in PackList)
+            {
+                var state = Packs.Get(key);
+                <li class="offline-packs__item">
+                    <span class="offline-packs__name">@label <span class="offline-packs__size">(@size)</span></span>
+                    @if (state.Downloading)
+                    {
+                        <span class="offline-packs__progress" role="status">Saving&hellip; @state.Percent%</span>
+                    }
+                    else if (state.Installed)
+                    {
+                        <span class="offline-packs__ready">Saved</span>
+                        <button type="button" class="offline-packs__remove" @onclick="() => Packs.RemoveAsync(key)">Remove</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="offline-packs__save" @onclick="() => Packs.DownloadAsync(key)">Save</button>
+                    }
+                    @if (state.Error is not null)
+                    {
+                        <span class="offline-packs__error" role="alert">@state.Error</span>
+                    }
+                </li>
+            }
+        </ul>
+    </section>
+}
+
+@code {
+    [Parameter] public bool ShowHeading { get; set; } = true;
+
+    [Parameter] public string[]? Only { get; set; }
+
+    private IEnumerable<(string Key, string Label, string Size)> PackList => AllPacks.Where(p => Only is null || Only.Contains(p.Key));
+
+    private static readonly (string Key, string Label, string Size)[] AllPacks =
+    [
+        (OfflinePacks.Summa, "Summa Theologiae", "about 18 MB"),
+        (OfflinePacks.Bible, "Douay-Rheims Bible", "about 5 MB")
+    ];
+
+    protected override void OnInitialized() => Packs.Changed += OnChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Packs.StartAsync();
+        }
+    }
+
+    private async void OnChanged() => await InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Packs.Changed -= OnChanged;
+}

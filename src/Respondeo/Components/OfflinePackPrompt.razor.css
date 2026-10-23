@@ -1,0 +1,43 @@
+.offline-prompt {
+    position: fixed;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%);
+    z-index: var(--z-prompt);
+    width: min(32rem, calc(100vw - 2rem));
+    max-height: calc(100vh - 2.5rem);
+    overflow-y: auto;
+    padding: 0.25rem 0.75rem 0.75rem;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    border-radius: var(--radius);
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
+.offline-prompt ::deep .offline-packs {
+    margin: 0.5rem 0;
+    border: 0;
+    padding: 0.5rem 0.25rem;
+}
+
+.offline-prompt__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.offline-prompt__done {
+    padding: 0.4rem 0.85rem;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 0.35rem;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.offline-prompt__done:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

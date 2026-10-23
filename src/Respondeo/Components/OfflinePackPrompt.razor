@@ -1,0 +1,35 @@
+@inject OfflinePacks Packs
+
+@* One-time prompt shown in the installed app, offering to save the large packs for offline reading. *@
+@if (_visible)
+{
+    <div class="offline-prompt" role="region" aria-label="Save for offline">
+        <OfflinePackControls ShowHeading="true" />
+        <div class="offline-prompt__actions">
+            <button type="button" class="offline-prompt__done" @onclick="CloseAsync">Done</button>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _visible;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Packs.StartAsync();
+            if (Packs.Supported && await Packs.ShouldPromptAsync())
+            {
+                _visible = true;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        _visible = false;
+        await Packs.MarkPromptedAsync();
+    }
+}

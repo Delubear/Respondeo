@@ -24,8 +24,20 @@ self.addEventListener('fetch', event => {
 // worker it shows an "update available" prompt; clicking it posts { type: 'skip-waiting' } here so
 // the new worker activates immediately, then the page reloads on the resulting controllerchange.
 self.addEventListener('message', event => {
-    if (event.data && event.data.type === 'skip-waiting') {
+    const data = event.data;
+    if (!data) {
+        return;
+    }
+    if (data.type === 'skip-waiting') {
         self.skipWaiting();
+    } else if (data.type === 'pack-status') {
+        event.waitUntil(getPackStatus().then(status => postToClients({ type: 'pack-status', packs: status })));
+    } else if (data.type === 'download-pack' && packs[data.pack]) {
+        event.waitUntil(downloadPack(data.pack, true));
+    } else if (data.type === 'remove-pack' && packs[data.pack]) {
+        event.waitUntil(caches.delete(packCacheName(data.pack))
+            .then(getPackStatus)
+            .then(status => postToClients({ type: 'pack-status', packs: status })));
     }
 });
 
@@ -43,6 +55,95 @@ const base = '/';
 const baseUrl = new URL(base, self.origin);
 const manifestUrlList = self.assetsManifest.assets.map(asset => new URL(asset.url, baseUrl).href);
 
+// Large opt-in content packs. They live in their own caches (outside the offline-cache- prefix) so a
+// new deploy does not wipe them; onActivate refreshes any installed pack whose version is stale.
+const packs = {
+    summa: '_content/Respondeo.Content.Summa/summa/',
+    bible: '_content/Respondeo.Bible/douay-rheims/'
+};
+const packVersionKey = '__pack-version';
+
+function packCacheName(pack) {
+    return `pack-${pack}`;
+}
+
+// The small Summa index stays in the core cache so the question list and title search work offline
+// even without the pack; only the question bodies are opt-in.
+const corePackExceptions = ['_content/Respondeo.Content.Summa/summa/summa-index.json'];
+
+function isPackAsset(url) {
+    return !corePackExceptions.includes(url) && Object.values(packs).some(prefix => url.startsWith(prefix));
+}
+
+function packAssets(pack) {
+    return self.assetsManifest.assets.filter(asset => asset.url.startsWith(packs[pack]) && !corePackExceptions.includes(asset.url));
+}
+
+async function postToClients(message) {
+    const all = await self.clients.matchAll({ includeUncontrolled: true });
+    all.forEach(client => client.postMessage(message));
+}
+
+async function getPackVersion(pack) {
+    if (!(await caches.has(packCacheName(pack)))) {
+        return null;
+    }
+    const cache = await caches.open(packCacheName(pack));
+    const marker = await cache.match(packVersionKey);
+    return marker ? await marker.text() : null;
+}
+
+async function getPackStatus() {
+    const status = {};
+    for (const pack of Object.keys(packs)) {
+        const assets = packAssets(pack);
+        const version = await getPackVersion(pack);
+        status[pack] = {
+            installed: version !== null,
+            stale: version !== null && version !== self.assetsManifest.version,
+            assetCount: assets.length
+        };
+    }
+    return status;
+}
+
+const packDownloads = {};
+
+function downloadPack(pack, notify) {
+    if (!packDownloads[pack]) {
+        packDownloads[pack] = runPackDownload(pack, notify).finally(() => delete packDownloads[pack]);
+    }
+    return packDownloads[pack];
+}
+
+async function runPackDownload(pack, notify) {
+    const assets = packAssets(pack);
+    const cache = await caches.open(packCacheName(pack));
+    const batchSize = 20;
+    try {
+        // Drop the marker first so an interrupted download reads as not installed.
+        await cache.delete(packVersionKey);
+        for (let i = 0; i < assets.length; i += batchSize) {
+            const batch = assets.slice(i, i + batchSize)
+                .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
+            await cache.addAll(batch);
+            if (notify) {
+                await postToClients({ type: 'pack-progress', pack, done: Math.min(i + batchSize, assets.length), total: assets.length });
+            }
+        }
+        await cache.put(packVersionKey, new Response(self.assetsManifest.version));
+        if (notify) {
+            await postToClients({ type: 'pack-complete', pack });
+            await postToClients({ type: 'pack-status', packs: await getPackStatus() });
+        }
+    } catch (error) {
+        console.warn(`Service worker: pack ${pack} download failed`, error);
+        if (notify) {
+            await postToClients({ type: 'pack-error', pack, message: String(error) });
+        }
+    }
+}
+
 async function onInstall() {
     console.info('Service worker: Install');
 
@@ -50,6 +151,7 @@ async function onInstall() {
     const assetsRequests = self.assetsManifest.assets
         .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
         .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
+        .filter(asset => !isPackAsset(asset.url))
         .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
     await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
 }
@@ -62,6 +164,17 @@ async function onActivate() {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
         .map(key => caches.delete(key)));
+
+    // Take control of already-open pages so offline packs work on the very first visit.
+    await self.clients.claim();
+
+    // Refresh installed packs
+    for (const pack of Object.keys(packs)) {
+        const version = await getPackVersion(pack);
+        if (version !== null && version !== self.assetsManifest.version) {
+            downloadPack(pack, true);
+        }
+    }
 }
 
 async function onFetch(event) {
@@ -83,6 +196,14 @@ async function onFetch(event) {
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
         cachedResponse = await cache.match(request);
+
+        if (!cachedResponse && !shouldServeIndexHtml) {
+            const relative = requestedAssetUrl.startsWith(baseUrl.href) ? requestedAssetUrl.substring(baseUrl.href.length) : '';
+            const pack = Object.keys(packs).find(p => relative.startsWith(packs[p]));
+            if (pack && await caches.has(packCacheName(pack))) {
+                cachedResponse = await (await caches.open(packCacheName(pack))).match(event.request);
+            }
+        }
     }
 
     // Fall back to the network for anything not precached (on-demand content not yet cached).

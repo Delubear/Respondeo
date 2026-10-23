@@ -3,6 +3,7 @@
 @inject IPinService Pins
 @inject IDevotionService DevotionService
 @inject Respondeo.Services.FeatureFlags Features
+@inject Respondeo.Services.OfflinePacks Packs
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -12,8 +13,8 @@
 <Microsoft.AspNetCore.Components.Sections.SectionContent SectionName="quick-menu">
 @if (_open)
 {
-	<div class="quick-menu__backdrop" @onclick="Close"></div>
-	<nav class="quick-menu" role="dialog" aria-modal="true" aria-label="Quick menu" tabindex="-1"
+	<div class="quick-menu__backdrop @(_closing ? "quick-menu__backdrop--closing" : null)" @onclick="Close"></div>
+	<nav class="quick-menu @(_closing ? "quick-menu--closing" : null)" role="dialog"
 		 @onkeydown="OnKeyDown" @ref="_panel" style="@PanelStyle"
 		 @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
 		<div class="quick-menu__header" @ontouchstart="() => _fromHeader = true">
@@ -21,7 +22,17 @@
 			<button type="button" class="quick-menu__close" @onclick="Close" aria-label="Close the quick menu">&times;</button>
 		</div>
 
-		@if (_customizing)
+		@if (_managingOffline)
+		{
+			<section class="quick-menu__section">
+				<h3 class="quick-menu__heading">Offline reading</h3>
+				<OfflinePackControls ShowHeading="false" />
+			</section>
+			<div class="quick-menu__footer">
+				<button type="button" class="quick-menu__customize" @onclick="() => _managingOffline = false">Done</button>
+			</div>
+		}
+		else if (_customizing)
 		{
 			<section class="quick-menu__section">
 				<h3 class="quick-menu__heading">Choose pages to pin</h3>
@@ -98,6 +109,17 @@
 								</svg>
 							</button>
 						}
+						@if (Packs.Supported)
+						{
+							<button type="button" class="quick-menu__icon-btn" aria-label="Offline reading" title="Offline reading"
+								@onclick="() => _managingOffline = true">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M12 3v12M7 10l5 5 5-5" />
+									<path d="M5 21h14" />
+								</svg>
+							</button>
+						}
 					</div>
 				}
 			</section>
@@ -110,6 +132,7 @@
 	private bool _open;
 	private bool _customizing;
 	private bool _reordering;
+	private bool _managingOffline;
 	private ElementReference _panel;
 	private bool _focusPanel;
 	private IReadOnlyList<SiteMap.Entry> _entries = [];
@@ -142,6 +165,7 @@
 		_entries = SiteMap.Build(Features);
 		Refresh();
 		Pins.Changed += OnPinsChanged;
+		Packs.Changed += OnPacksChanged;
 		Nav.LocationChanged += OnLocationChanged;
 
 		if (Features.DiscoverPillar && Features.DevotionsFeature)
@@ -159,6 +183,7 @@
 		if (firstRender)
 		{
 			await Pins.InitializeAsync();
+			await Packs.StartAsync();
 		}
 
 		if (_focusPanel && _open)
@@ -184,11 +209,24 @@
 		_focusPanel = true;
 	}
 
-	private void Close()
+	private bool _closing;
+
+	private async Task Close()
 	{
+		if (!_open || _closing)
+		{
+			return;
+		}
+
+		_closing = true;
+		_tracking = false;
+		StateHasChanged();
+		await Task.Delay(200);
+		_closing = false;
 		_open = false;
 		_customizing = false;
 		_reordering = false;
+		_managingOffline = false;
 		_dragIndex = -1;
 		_dragOffset = 0;
 		_dragX = 0;
@@ -260,7 +298,7 @@
 		}
 	}
 
-	private void OnTouchEnd(TouchEventArgs e)
+	private async Task OnTouchEnd(TouchEventArgs e)
 	{
 		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || _dragY > SwipeCloseThreshold);
 		_tracking = false;
@@ -269,7 +307,7 @@
 		_fromHeader = false;
 		if (shouldClose)
 		{
-			Close();
+			await Close();
 		}
 	}
 
@@ -338,11 +376,11 @@
 		}
 	}
 
-	private void OnKeyDown(KeyboardEventArgs e)
+	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
 		if (e.Key == "Escape")
 		{
-			Close();
+			await Close();
 		}
 	}
 
@@ -352,11 +390,14 @@
 		InvokeAsync(StateHasChanged);
 	}
 
+	private void OnPacksChanged() => InvokeAsync(StateHasChanged);
+
 	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
 		if (_open)
 		{
 			_open = false;
+			_closing = false;
 			InvokeAsync(StateHasChanged);
 		}
 	}
@@ -364,6 +405,7 @@
 	public void Dispose()
 	{
 		Pins.Changed -= OnPinsChanged;
+		Packs.Changed -= OnPacksChanged;
 		Nav.LocationChanged -= OnLocationChanged;
 	}
 }

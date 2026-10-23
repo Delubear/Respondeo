@@ -74,6 +74,7 @@
     <script src="js/scroll-store#[.{fingerprint}].js" defer></script>
     <script src="js/browse-state#[.{fingerprint}].js" defer></script>
     <script src="js/install#[.{fingerprint}].js" defer></script>
+    <script src="js/offline-packs#[.{fingerprint}].js" defer></script>
     <script src="js/masthead-drag#[.{fingerprint}].js" defer></script>
 </head>
 
@@ -164,7 +165,10 @@
             // the user closing every tab (unreliable on an installed PWA), we surface a small prompt
             // as soon as a waiting worker exists and let the reader update on their own terms.
             var reloading = false;
+            var hadController = !!navigator.serviceWorker.controller;
             navigator.serviceWorker.addEventListener('controllerchange', function () {
+                // The first worker claiming a fresh page is not an update, so there is nothing to reload.
+                if (!hadController) { hadController = true; return; }
                 // The new worker has taken control after skip-waiting; reload once to pick it up.
                 if (reloading) return;
                 reloading = true;

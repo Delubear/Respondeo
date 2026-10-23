@@ -1,0 +1,8 @@
+.offline-notice {
+    margin: 0.75rem 0;
+    padding: 0.6rem 0.85rem;
+    border-left: 3px solid var(--accent);
+    background: var(--parchment);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}

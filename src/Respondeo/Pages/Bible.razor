@@ -15,6 +15,7 @@
 
     <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..."
                Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
+    <OfflinePackNotice Pack="@OfflinePacks.Bible" Label="Bible" />
 
     @if (IsSearching)
     {
@@ -96,6 +97,7 @@
         </div>
     }
 
+    <OfflinePackControls Only="@(new[] { OfflinePacks.Bible })" />
     <p class="bible__attribution">Text: Douay-Rheims Bible, Challoner revision (public domain).</p>
 </section>
 

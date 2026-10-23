@@ -1,0 +1,77 @@
+.offline-packs {
+    margin: 1.5rem 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--parchment);
+}
+
+.offline-packs__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+}
+
+.offline-packs__note {
+    margin: 0 0 0.75rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.offline-packs__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.offline-packs__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.offline-packs__name {
+    flex: 1 1 auto;
+}
+
+.offline-packs__size,
+.offline-packs__progress,
+.offline-packs__ready {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.offline-packs__error {
+    flex-basis: 100%;
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+.offline-packs__save,
+.offline-packs__remove {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.35rem;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.offline-packs__save {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+
+.offline-packs__remove {
+    background: transparent;
+    color: var(--ink-soft);
+    border-color: var(--rule);
+}
+
+.offline-packs__save:focus-visible,
+.offline-packs__remove:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

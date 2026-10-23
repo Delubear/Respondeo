@@ -99,6 +99,8 @@ public static class AppServiceRegistration
         services.AddScoped<AccessibilityInterop>();
         services.AddScoped<InstallInterop>();
         services.AddScoped<TallyInterop>();
+        services.AddScoped<OfflinePacksInterop>();
+        services.AddScoped<OfflinePacks>();
 
         services.AddBible();
 

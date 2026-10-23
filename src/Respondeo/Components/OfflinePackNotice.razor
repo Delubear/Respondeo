@@ -1,0 +1,39 @@
+@implements IDisposable
+@inject OfflinePacks Packs
+
+@* Explains, when the reader is offline and has not saved this pack, why opening texts (and results that
+   lead to them) will not load. Renders nothing online, in development, or once the pack is saved. *@
+@if (_offline && Packs.Supported && !Packs.Get(Pack).Installed)
+{
+    <p class="offline-notice" role="status">
+        You're offline and the @Label isn't saved on this device, so search results and passages you haven't opened before won't load.
+        Save it for offline reading from the "Save for offline" section on this page the next time you're connected.
+    </p>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Pack { get; set; } = OfflinePacks.Summa;
+
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+
+    private bool _offline;
+
+    protected override void OnInitialized() => Packs.Changed += OnChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Packs.StartAsync();
+            _offline = !await Packs.IsOnlineAsync();
+            if (_offline)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async void OnChanged() => await InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Packs.Changed -= OnChanged;
+}

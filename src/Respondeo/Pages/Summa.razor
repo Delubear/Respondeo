@@ -22,6 +22,7 @@
     else
     {
         <SearchBox Id="summa-search" Label="Search questions &amp; articles" Placeholder="e.g. existence of God, virtue, grace..." Value="@_query" ValueChanged="OnSearchChanged" />
+        <OfflinePackNotice Pack="@OfflinePacks.Summa" Label="Summa" />
 
         @if (IsSearching)
         {
@@ -33,6 +34,7 @@
         }
     }
 
+    <OfflinePackControls Only="@(new[] { OfflinePacks.Summa })" />
     <SummaAttribution />
 </section>
 
