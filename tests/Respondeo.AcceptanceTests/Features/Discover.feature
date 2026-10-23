@@ -11,9 +11,9 @@ Feature: Discover Catholicism
 	And I should see a link to "discover/devotions"
 	And I should see a link to "discover/articles"
 
-  Scenario: The Discover sub-navigation is shown while browsing the pillar
+  Scenario: The Discover menu is shown and active while browsing the pillar
 	Given I open the Discover landing page
-	Then the Discover sub-navigation should be visible
+	Then the Discover menu should be visible and active
 
   Scenario: Opening a prayer from the prayers browser
 	Given I open the prayers browser

@@ -169,14 +169,14 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The Discover sub-navigation is shown while browsing the pillar")]
+        [Xunit.SkippableFactAttribute(DisplayName="The Discover menu is shown and active while browsing the pillar")]
         [Xunit.TraitAttribute("FeatureTitle", "Discover Catholicism")]
-        [Xunit.TraitAttribute("Description", "The Discover sub-navigation is shown while browsing the pillar")]
-        public async global::System.Threading.Tasks.Task TheDiscoverSub_NavigationIsShownWhileBrowsingThePillar()
+        [Xunit.TraitAttribute("Description", "The Discover menu is shown and active while browsing the pillar")]
+        public async global::System.Threading.Tasks.Task TheDiscoverMenuIsShownAndActiveWhileBrowsingThePillar()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The Discover sub-navigation is shown while browsing the pillar", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The Discover menu is shown and active while browsing the pillar", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 14
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -191,7 +191,7 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.GivenAsync("I open the Discover landing page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 16
- await testRunner.ThenAsync("the Discover sub-navigation should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the Discover menu should be visible and active", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

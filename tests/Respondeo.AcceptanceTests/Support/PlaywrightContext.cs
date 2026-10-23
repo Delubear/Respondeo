@@ -5,7 +5,7 @@ namespace Respondeo.AcceptanceTests.Support;
 /// <summary>
 /// Owns the Playwright browser/page lifecycle for a scenario and exposes the base URL under test.
 /// The base URL is read from the RESPONDEO_BASE_URL environment variable so the same tests can run
-/// against a locally served publish output in CI or a dev server locally (defaults to localhost:5000).
+/// against a locally served publish output in CI or a dev server locally (defaults to https://localhost:7024).
 /// </summary>
 public sealed class PlaywrightContext : IAsyncDisposable
 {
@@ -14,7 +14,7 @@ public sealed class PlaywrightContext : IAsyncDisposable
 
     public IPage Page { get; private set; } = default!;
 
-    public string BaseUrl { get; } = Environment.GetEnvironmentVariable("RESPONDEO_BASE_URL")?.TrimEnd('/') ?? "http://localhost:5000";
+    public string BaseUrl { get; } = Environment.GetEnvironmentVariable("RESPONDEO_BASE_URL")?.TrimEnd('/') ?? "https://localhost:7024";
 
     public async Task InitializeAsync(string scenarioName)
     {

@@ -51,11 +51,14 @@ public sealed class DiscoverSteps(PlaywrightContext context)
         Assert.True(count >= 1, $"Expected at least one link to '{href}', found {count}.");
     }
 
-    [Then("the Discover sub-navigation should be visible")]
-    public async Task ThenTheDiscoverSubNavigationShouldBeVisible()
+    [Then("the Discover menu should be visible and active")]
+    public async Task ThenTheDiscoverMenuShouldBeVisibleAndActive()
     {
-        var nav = Page.Locator("nav[aria-label='Discover Catholicism']");
-        Assert.True(await nav.IsVisibleAsync(), "Expected the Discover sub-navigation to be visible.");
+        var toggle = Page.Locator("button[aria-controls='pillarnav-discover-menu']");
+        await toggle.WaitForAsync();
+        Assert.True(await toggle.IsVisibleAsync(), "Expected the Discover menu toggle to be visible.");
+        var classes = await toggle.GetAttributeAsync("class") ?? string.Empty;
+        Assert.Contains("pillarnav__link--active", classes);
     }
 
     [Then("the prayer text should be visible")]
