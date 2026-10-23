@@ -42,4 +42,40 @@ public class BibleReferenceParserTests
     [Fact]
     public void Builds_verse_href() =>
         Assert.Equal("bible/john/3?v=16", BibleReferenceParser.Parse("Jn 3:16")!.Href);
+
+    [Theory]
+    [InlineData("Jn 3:5-7,16", "bible/john/3?v=5-7,16", "John 3:5-7,16")]
+    [InlineData("1 Cor 13:4-7", "bible/1-corinthians/13?v=4-7", "1 Corinthians 13:4-7")]
+    [InlineData("Jn 3:16, 5", "bible/john/3?v=5,16", "John 3:5,16")]
+    public void Builds_multi_range_href(string input, string href, string label)
+    {
+        var reference = BibleReferenceParser.Parse(input)!;
+        Assert.Equal(href, reference.Href);
+        Assert.Equal(label, reference.Label);
+    }
+}
+
+public class VerseSelectionTests
+{
+    [Theory]
+    [InlineData("5-7,16", null, "5-7,16")]
+    [InlineData("16,5-7", null, "5-7,16")]
+    [InlineData("7-5", null, "5-7")]
+    [InlineData("5-7,6-9", null, "5-9")]
+    [InlineData("5-7,8", null, "5-8")]
+    [InlineData("5", 7, "5-7")]
+    [InlineData("5,x,0,-3", null, "5")]
+    [InlineData("", null, "")]
+    public void Parses_selections(string input, int? to, string expected) =>
+        Assert.Equal(expected, VerseSelection.Parse(input, to).ToString());
+
+    [Fact]
+    public void Contains_checks_every_range()
+    {
+        var selection = VerseSelection.Parse("5-7,16");
+        Assert.True(selection.Contains(6));
+        Assert.True(selection.Contains(16));
+        Assert.False(selection.Contains(8));
+        Assert.Equal(5, selection.First);
+    }
 }

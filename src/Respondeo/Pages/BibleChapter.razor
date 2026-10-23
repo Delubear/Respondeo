@@ -35,7 +35,7 @@ else
         }
         else if (_verses is not null)
         {
-            <BibleChapterText Verses="_verses" HighlightStart="Verse" HighlightEnd="EndVerse" />
+            <BibleChapterText Verses="_verses" Highlight="_highlight" />
         }
 
         <BiblePager Previous="Previous" Next="Next" />
@@ -45,7 +45,7 @@ else
 @code {
     [Parameter] public string Book { get; set; } = "";
     [Parameter] public int Chapter { get; set; }
-    [SupplyParameterFromQuery(Name = "v")] public int? Verse { get; set; }
+    [SupplyParameterFromQuery(Name = "v")] public string? VerseQuery { get; set; }
     [SupplyParameterFromQuery(Name = "to")] public int? EndVerse { get; set; }
     [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
 
@@ -54,6 +54,7 @@ else
     private bool _unavailable;
 
     private bool _pendingScroll;
+    private VerseSelection _highlight = VerseSelection.Empty;
 
     private BibleBook? _book;
     private IReadOnlyList<BibleVerse>? _verses;
@@ -135,7 +136,8 @@ else
         _verses = verses;
         _unavailable = unavailable;
         _loading = false;
-        _pendingScroll = Verse is not null && _verses is not null;
+        _highlight = VerseSelection.Parse(VerseQuery, EndVerse);
+        _pendingScroll = !_highlight.IsEmpty && _verses is not null;
     }
 
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
@@ -149,7 +151,7 @@ else
         if (_pendingScroll && !_loading)
         {
             _pendingScroll = false;
-            await Navigation.ScrollToVerseAsync($"v{Verse}");
+            await Navigation.ScrollToVerseAsync($"v{_highlight.First}");
         }
     }
 }

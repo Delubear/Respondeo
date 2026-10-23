@@ -7,11 +7,7 @@
 
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<BibleVerse> Verses { get; set; } = [];
-    [Parameter] public int? HighlightStart { get; set; }
-    [Parameter] public int? HighlightEnd { get; set; }
+    [Parameter] public VerseSelection? Highlight { get; set; }
 
-    private string VerseClass(int number) => IsHighlighted(number) ? "bible-verse bible-verse--highlight" : "bible-verse";
-
-    private bool IsHighlighted(int number) =>
-        HighlightStart is { } start && number >= start && number <= (HighlightEnd is { } end && end > start ? end : start);
+    private string VerseClass(int number) => Highlight?.Contains(number) == true ? "bible-verse bible-verse--highlight" : "bible-verse";
 }

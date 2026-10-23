@@ -6,15 +6,20 @@ namespace Respondeo.Bible.Contracts;
 /// <summary>A resolved passage reference such as <c>John 3:16</c>.</summary>
 public sealed record BibleReference(BibleBook Book, int Chapter, int? Verse, int? EndVerse)
 {
-    /// <summary>A display label using the common modern book name.</summary>
-    public string Label => Verse is null
-        ? $"{Book.DisplayName} {Chapter}"
-        : EndVerse is null ? $"{Book.DisplayName} {Chapter}:{Verse}" : $"{Book.DisplayName} {Chapter}:{Verse}-{EndVerse}";
+    /// <summary>The full verse selection; defaults to <see cref="Verse"/>-<see cref="EndVerse"/>.</summary>
+    public VerseSelection Verses { get; init; } = Verse is { } v
+        ? VerseSelection.FromRanges([(v, EndVerse is { } e && e > v ? e : v)])
+        : VerseSelection.Empty;
 
-    /// <summary>The app-relative route to the chapter, with the verse range in the query string.</summary>
-    public string Href => Verse is null
+    /// <summary>A display label using the common modern book name.</summary>
+    public string Label => Verses.IsEmpty
+        ? $"{Book.DisplayName} {Chapter}"
+        : $"{Book.DisplayName} {Chapter}:{Verses}";
+
+    /// <summary>The app-relative route to the chapter, with the verse selection in the query string.</summary>
+    public string Href => Verses.IsEmpty
         ? $"bible/{Book.Slug}/{Chapter}"
-        : EndVerse is null ? $"bible/{Book.Slug}/{Chapter}?v={Verse}" : $"bible/{Book.Slug}/{Chapter}?v={Verse}&to={EndVerse}";
+        : $"bible/{Book.Slug}/{Chapter}?v={Verses}";
 }
 
 /// <summary>Parses free-text passage references (e.g. <c>Jn 3:16</c>, <c>1 Cor 13</c>, <c>Ps 22</c>) against the Douay-Rheims canon.</summary>
@@ -118,12 +123,13 @@ public static class BibleReferenceParser
         var chapter = int.Parse(match.Groups["chapter"].Value);
         if (chapter < 1 || chapter > book.ChapterCount) return null;
 
-        int? verse = match.Groups["verse"].Success ? int.Parse(match.Groups["verse"].Value) : null;
-        int? end = match.Groups["end"].Success ? int.Parse(match.Groups["end"].Value) : null;
-        if (verse is < 1) return null;
-        if (end is not null && (verse is null || end <= verse)) end = null;
+        if (!match.Groups["verses"].Success) return new BibleReference(book, chapter, null, null);
 
-        return new BibleReference(book, chapter, verse, end);
+        var selection = VerseSelection.Parse(match.Groups["verses"].Value);
+        if (selection.IsEmpty) return null;
+
+        var first = selection.Ranges[0];
+        return new BibleReference(book, chapter, first.Start, first.End > first.Start ? first.End : null) { Verses = selection };
     }
 
     private static string NormalizeBook(string prefix, string name)
@@ -174,6 +180,7 @@ public static class BibleReferenceParser
 
     private static readonly Regex ReferencePattern = new(
         @"^(?<prefix>(?:[1-4]|1st|2nd|3rd|4th)\.?\s*|(?:i{1,3}|iv|first|second|third|fourth)(?:\.\s*|\s+))?" +
-        @"(?<name>[a-z][a-z.\s]*?)\.?\s*(?<chapter>\d{1,3})(?:\s*[:.,]\s*(?<verse>\d{1,3})(?:\s*[-\u2013]\s*(?<end>\d{1,3}))?)?$",
+        @"(?<name>[a-z][a-z.\s]*?)\.?\s*(?<chapter>\d{1,3})" +
+        @"(?:\s*[:.,]\s*(?<verses>\d{1,3}(?:\s*[-\u2013]\s*\d{1,3})?(?:\s*,\s*\d{1,3}(?:\s*[-\u2013]\s*\d{1,3})?)*))?$",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 }
