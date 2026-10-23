@@ -25,9 +25,9 @@
         var reference = BibleReferenceParser.Parse(_query);
         @if (reference is not null)
         {
-            <a class="bible__match-card bible__reference-card" href="@reference.Href">
-                <span class="bible__match-meta">Go to passage</span>
-                <span class="bible__match-name">@reference.Label &rarr;</span>
+            <a class="bible__match-link bible__reference-card" href="@reference.Href">
+                <span class="bible__match-ref">Go to passage</span>
+                <span class="bible__match-title">@reference.Label &rarr;</span>
             </a>
         }
         var matches = Matches();
@@ -46,13 +46,13 @@
                 @foreach (var book in matches)
                 {
                     <li>
-                        <a class="bible__match-card" href="bible/@book.Slug">
-                            <span class="bible__match-name">@book.DisplayName</span>
+                        <a class="bible__match-link" href="bible/@book.Slug">
+                            <span class="bible__match-title">@book.DisplayName</span>
                             @if (book.DouayName is not null)
                             {
-                                <span class="bible__modern">(@book.DouayName)</span>
+                                <span class="bible__match-ref">@book.DouayName</span>
                             }
-                            <span class="bible__match-meta">
+                            <span class="bible__match-kind">
                                 @TestamentLabel(book.Testament)
                             </span>
                         </a>

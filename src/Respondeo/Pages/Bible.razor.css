@@ -129,10 +129,12 @@
 .bible__match-ref {
     grid-column: 1;
     font-size: 0.75rem;
+    color: var(--ink-soft);
 }
 
 .bible__match-title {
     grid-column: 1;
+    font-weight: 600;
 }
 
 .bible__match-kind {
