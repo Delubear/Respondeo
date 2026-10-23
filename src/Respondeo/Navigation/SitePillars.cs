@@ -55,6 +55,11 @@ public static class SitePillars
     public static string ResolveActiveId(string relativePath)
     {
         var path = relativePath.TrimStart('/');
+        var suffixIndex = path.IndexOfAny(['?', '#']);
+        if (suffixIndex >= 0)
+        {
+            path = path[..suffixIndex];
+        }
 
         if (StartsWithSegment(path, "summa"))
         {
