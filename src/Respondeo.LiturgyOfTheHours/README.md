@@ -14,7 +14,7 @@ The whole feature is controlled by `FeatureFlags:LiturgyOfTheHoursFeature` in `s
 
 When it is `false`:
 
-- the Hours tab is hidden from the Discover tab strip (`DiscoverNavigation`);
+from the Discover dropdown menu (`DiscoverNavigation`)
 - the Hours card is hidden on the Discover overview (`Discover.razor`);
 - it no longer counts toward showing the Discover pillar (`PillarNav.razor`).
 

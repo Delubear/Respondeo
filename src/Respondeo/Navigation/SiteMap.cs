@@ -25,7 +25,14 @@ public static class SiteMap
     {
         var entries = new List<Entry>
         {
-            new("", "Inquiry"),
+            new("", "Inquiry",
+            [
+                new("why-god", "Why God"),
+                new("which-god", "Which God"),
+                new("why-jesus", "Why Jesus"),
+                new("why-the-church", "Why the Church"),
+                new("coming-home", "Coming Home"),
+            ]),
             new(Href(SitePillars.SummaId), "Summa"),
             new(Href(SitePillars.BibleId), "Bible"),
         };

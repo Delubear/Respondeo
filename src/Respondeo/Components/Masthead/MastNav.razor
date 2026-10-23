@@ -1,7 +1,7 @@
 @* Presentational pillar sub-navigation shell: the .mastnav bar with a mobile toggle, a collapsing list,
     and the "top-level navigation" behavior (reset to top + fresh breadcrumb trail on click, collapse after navigating).
     It owns no opinion about *which* items to show or *when* to render \u2014 callers pass an item list and decide their own visibility,
-    so both the journey stages (JourneyNav) and the Discover sub-areas (DiscoverNav) reuse this one shell. *@
+    so the journey stages (JourneyNav) reuse this one shell. *@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject NavigationIntent NavIntent

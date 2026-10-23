@@ -54,7 +54,87 @@
     border-color: var(--accent);
 }
 
-/* Just above the short-label breakpoint the full labels at desktop padding no longer fit on one
+/* Discover dropdown toggle and menu. */
+.pillarnav__item--menu {
+    position: relative;
+}
+
+.pillarnav__toggle {
+    background: transparent;
+    cursor: pointer;
+    line-height: inherit;
+}
+
+.pillarnav__toggle.pillarnav__link--active {
+    background: var(--accent);
+}
+
+.pillarnav__toggle::after {
+    content: "\25BE";
+    margin-left: 0.35em;
+    font-size: 0.8em;
+}
+
+.pillarnav__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+}
+
+.pillarnav__menu {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    min-width: 12rem;
+    list-style: none;
+    margin: 0;
+    padding: 0.35rem 0;
+    background: var(--masthead-bg);
+    border: 1px solid var(--masthead-rule);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.pillarnav__menu-link {
+    display: block;
+    padding: 0.55rem 1.1rem;
+    color: var(--masthead-fg);
+    font-family: var(--display);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.pillarnav__menu-link:hover,
+.pillarnav__menu-link:focus-visible {
+    background: var(--accent);
+    color: var(--masthead-fg);
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+    .pillarnav__item--menu {
+        position: static;
+    }
+
+    .pillarnav__menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        transform: none;
+        top: 100%;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .pillarnav__toggle[data-short]::after {
+        font-size: 0.7rem;
+    }
+}
+
+/* Just above the short-label breakpoint
    line, so tighten the pills and forbid wrapping. */
 @media (max-width: 900px) {
     .pillarnav__list {

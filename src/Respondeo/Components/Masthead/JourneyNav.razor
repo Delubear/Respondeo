@@ -12,7 +12,8 @@
 
     // The journey stages, mapped to MastNav items. The Home link matches exactly so it only highlights on the home route; the rest match by prefix.
     private static readonly IReadOnlyList<MastNav.Item> _items =
-        SiteNavigation.Items.Select(i => new MastNav.Item(i.Href, i.Label, i.Href.Length == 0 ? NavLinkMatch.All : NavLinkMatch.Prefix)).ToList();
+        SiteNavigation.Items.Where(i => i.Href.Length > 0)
+            .Select(i => new MastNav.Item(i.Href, i.Label, NavLinkMatch.Prefix)).ToList();
 
     protected override void OnInitialized()
     {
@@ -36,7 +37,8 @@
     private void UpdateActive()
     {
         var relative = Nav.ToBaseRelativePath(Nav.Uri);
-        _isJourney = SitePillars.ResolveActiveId(relative) == SitePillars.JourneyId;
+        var path = relative.Split('?', '#')[0].Trim('/');
+        _isJourney = path.Length > 0 && SitePillars.ResolveActiveId(relative) == SitePillars.JourneyId;
     }
 
     public void Dispose() => Nav.LocationChanged -= OnLocationChanged;

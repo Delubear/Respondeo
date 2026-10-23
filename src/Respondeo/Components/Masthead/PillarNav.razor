@@ -12,15 +12,47 @@
         @foreach (var pillar in SitePillars.Items.Where(IsEnabled))
         {
             var isActive = pillar.Id == _activeId;
-            <li class="pillarnav__item">
-                <a class="pillarnav__link @(isActive ? "pillarnav__link--active" : "")"
-                   href="@pillar.Href"
-                   aria-current="@(isActive ? "page" : null)"
-                   data-short="@pillar.ShortLabelOrFull"
-                   @onclick="MarkTopLevel">
-                    @pillar.Label
-                </a>
-            </li>
+            @if (pillar.Id == SitePillars.DiscoverId)
+            {
+                <li class="pillarnav__item pillarnav__item--menu">
+                    <button type="button"
+                            class="pillarnav__link pillarnav__toggle @(isActive ? "pillarnav__link--active" : "")"
+                            aria-haspopup="true"
+                            aria-expanded="@(_menuOpen ? "true" : "false")"
+                            aria-controls="pillarnav-discover-menu"
+                            data-short="@pillar.ShortLabelOrFull"
+                            @onclick="ToggleMenu"
+                            @onkeydown="OnMenuKey">
+                        @pillar.Label
+                    </button>
+                    @if (_menuOpen)
+                    {
+                        <div class="pillarnav__backdrop" @onclick="CloseMenu"></div>
+                        <ul id="pillarnav-discover-menu" class="pillarnav__menu" @onkeydown="OnMenuKey">
+                            @foreach (var tab in DiscoverNavigation.Items.Where(t => t.IsEnabled(Features)))
+                            {
+                                <li>
+                                    <a class="pillarnav__menu-link" href="@tab.Href" @onclick="SelectMenuItem">
+                                        @(tab.Exact ? "All of Discover" : tab.Label)
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+            else
+            {
+                <li class="pillarnav__item">
+                    <a class="pillarnav__link @(isActive ? "pillarnav__link--active" : "")"
+                       href="@pillar.Href"
+                       aria-current="@(isActive ? "page" : null)"
+                       data-short="@pillar.ShortLabelOrFull"
+                       @onclick="MarkTopLevel">
+                        @pillar.Label
+                    </a>
+                </li>
+            }
         }
     </ul>
 </nav>
@@ -54,11 +86,33 @@
         await Trail.ClearAsync();
     }
 
+    private bool _menuOpen;
+
+    private void ToggleMenu() => _menuOpen = !_menuOpen;
+
+    private void CloseMenu() => _menuOpen = false;
+
+    private async Task SelectMenuItem()
+    {
+        _menuOpen = false;
+        await MarkTopLevel();
+    }
+
+    private void OnMenuKey(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            _menuOpen = false;
+        }
+    }
+
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var previous = _activeId;
+        var wasOpen = _menuOpen;
+        _menuOpen = false;
         UpdateActive();
-        if (_activeId != previous)
+        if (_activeId != previous || wasOpen)
         {
             StateHasChanged();
         }
