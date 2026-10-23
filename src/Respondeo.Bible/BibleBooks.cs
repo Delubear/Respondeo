@@ -6,7 +6,14 @@ namespace Respondeo.Bible;
 /// <param name="ModernName">The common modern name when it differs from <paramref name="Name"/>.</param>
 /// <param name="Testament">Old or New Testament.</param>
 /// <param name="ChapterCount">The number of chapters in the bundled text.</param>
-public sealed record BibleBook(string Slug, string Name, string? ModernName, BibleTestament Testament, int ChapterCount);
+public sealed record BibleBook(string Slug, string Name, string? ModernName, BibleTestament Testament, int ChapterCount)
+{
+    /// <summary>The name shown to readers: the common modern name, falling back to the Douay-Rheims name.</summary>
+    public string DisplayName => ModernName ?? Name;
+
+    /// <summary>The Douay-Rheims name when it differs from <see cref="DisplayName"/>, otherwise <c>null</c>.</summary>
+    public string? DouayName => ModernName is null ? null : Name;
+}
 
 /// <summary>The two testaments of the canon.</summary>
 public enum BibleTestament

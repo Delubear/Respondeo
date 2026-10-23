@@ -109,11 +109,44 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ---
 
+## CPDV JSON dataset (yoarikso/cpdvbible)
+
+The CPDV Bible data bundled with the Bible reader was built from the JSON files in
+https://github.com/yoarikso/cpdvbible (folder `cpdv-json`), used under the MIT License:
+
+```
+MIT License
+
+Copyright (c) 2026 Johannes Pagwiwoko (https://github.com/yoarikso)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
 ## Liturgical and Scripture texts
 
 The Liturgy of the Hours pages use only public-domain texts: ancient Latin liturgical texts, breviary texts published before 1929,
 and the Douay-Rheims Bible (Challoner revision; digital text dedicated to the public domain under CC0).
-English renderings written by Respondeo contributors are labeled as unofficial translations.
+The Bible reader uses the same Douay-Rheims text and also offers the Catholic Public Domain Version (CPDV),
+translated by Ronald L. Conte Jr. and dedicated to the public domain (https://www.sacredbible.org/).
+English renderings written by Respondeo contributors
 
 Copyrighted texts (the ICEL English translation of the Liturgy of the Hours, the Grail Psalms, the NABRE, and modern intercessions)
 are not reproduced; the app links to official sources instead. Any text added later under permission will be credited here.

@@ -1,0 +1,35 @@
+.bible-translation {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    margin: 0.5rem 0;
+}
+
+.bible-translation__option {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.bible-translation__option.is-selected {
+    background: var(--accent);
+    color: var(--paper);
+}
+
+.bible-translation__option:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.bible-translation__note {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin: 0.25rem 0 0.75rem;
+}

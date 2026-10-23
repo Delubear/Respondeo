@@ -1,0 +1,40 @@
+@using Respondeo.Bible
+
+<div class="bible-translation" role="radiogroup" aria-label="Bible translation">
+    @foreach (var translation in BibleTranslations.All)
+    {
+        var option = translation;
+        var selected = option == Value;
+        <button type="button" role="radio" class="bible-translation__option @(selected ? "is-selected" : null)"
+                aria-checked="@(selected ? "true" : "false")" title="@option.Name()"
+                @onclick="() => SelectAsync(option)">@option.ShortName()</button>
+    }
+</div>
+@if (Value == BibleTranslation.Cpdv)
+{
+    <p class="bible-translation__note">
+        The Catholic Public Domain Version is a modern translation of the Vulgate by Ronald L. Conte Jr.
+        It is public domain but unofficial: it carries no imprimatur.
+    </p>
+}
+else
+{
+    <p class="bible-translation__note">
+        The Douay-Rheims is the classic English Catholic translation of the Latin Vulgate (1582-1610),
+        as revised by Bishop Challoner in the 1750s. It is public domain and approved for Catholic use.
+    </p>
+}
+
+@code {
+    [Parameter] public BibleTranslation Value { get; set; }
+
+    [Parameter] public EventCallback<BibleTranslation> ValueChanged { get; set; }
+
+    private async Task SelectAsync(BibleTranslation translation)
+    {
+        if (translation != Value)
+        {
+            await ValueChanged.InvokeAsync(translation);
+        }
+    }
+}

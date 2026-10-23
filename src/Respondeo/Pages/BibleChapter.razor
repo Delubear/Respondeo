@@ -4,8 +4,10 @@
 @inject IBibleText Bible
 @inject IBreadcrumbTrail Trail
 @inject NavigationInterop Navigation
+@inject IBibleTranslationService Translations
+@inject NavigationManager Nav
 
-<PageShell Title="@Heading" FallbackTitle="Holy Bible" Description="@($"{Heading} in the Douay-Rheims Bible.")" Article="true"
+Description="@($"{Heading} in the {_translation.Name()}.")"
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
            StageHref="bible" StageLabel="Holy Bible" BackHref="bible" BackLabel="All books" />
 
@@ -13,7 +15,7 @@
 {
     <Loading>Opening the Scriptures&hellip;</Loading>
 }
-else if (_book is null || _verses is null)
+else if (_book is null || (_verses is null && !_unavailable))
 {
     <ItemNotFound Title="Chapter not found" BackHref="bible" BackLabel="Return to the Bible" Class="content-article--empty">
         That chapter is not part of the Douay-Rheims Bible.
@@ -22,9 +24,11 @@ else if (_book is null || _verses is null)
 else
 {
     <article class="content-article">
-        <PillarHeader Eyebrow="@(_book.ModernName is null ? "Douay-Rheims" : $"Douay-Rheims · {_book.ModernName}")" Title="@Heading" />
+        <PillarHeader Eyebrow="@(_book.DouayName is null ? _translation.ShortName() : $"{_translation.ShortName()} · {_book.DouayName}")" Title="@Heading" />
 
-        <nav class="bible-chapters" aria-label="Chapters of @_book.Name">
+        <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
+
+        <nav class="bible-chapters" aria-label="Chapters of @_book.DisplayName">
             @for (var i = 1; i <= _book.ChapterCount; i++)
             {
                 var number = i;
@@ -32,12 +36,34 @@ else
             }
         </nav>
 
-        <div class="bible-chapter">
-            @foreach (var verse in _verses)
-            {
-                <p class="@VerseClass(verse.Number)" id="@($"v{verse.Number}")"><sup class="bible-verse__number">@verse.Number</sup> @verse.Text</p>
-            }
-        </div>
+        @if (_unavailable)
+        {
+            <section class="bible-unavailable" role="status">
+                <h2 class="bible-unavailable__title">@Heading is not in the @_translation.Name()</h2>
+                <p>
+                    Translations differ in which books they include and in how they number chapters,
+                    so this passage has no counterpart in the @_translation.Name().
+                </p>
+                <div class="bible-unavailable__actions">
+                    @foreach (var other in Enum.GetValues<BibleTranslation>())
+                    {
+                        if (other == _translation) continue;
+                        var target = other;
+                        <button type="button" class="bible-unavailable__switch" @onclick="() => OnTranslationChangedAsync(target)">Read in the @target.Name()</button>
+                    }
+                    <a href="bible" class="bible-unavailable__back">All books</a>
+                </div>
+            </section>
+        }
+        else if (_verses is not null)
+        {
+            <div class="bible-chapter">
+                @foreach (var verse in _verses)
+                {
+                    <p class="@VerseClass(verse.Number)" id="@($"v{verse.Number}")"><sup class="bible-verse__number">@verse.Number</sup> @verse.Text</p>
+                }
+            </div>
+        }
 
         <nav class="bible-pager" aria-label="Chapter navigation">
             @if (Previous is { } prev)
@@ -57,6 +83,11 @@ else
     [Parameter] public int Chapter { get; set; }
     [SupplyParameterFromQuery(Name = "v")] public int? Verse { get; set; }
     [SupplyParameterFromQuery(Name = "to")] public int? EndVerse { get; set; }
+    [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
+
+    private bool _translationLoaded;
+    private BibleTranslation _translation;
+    private bool _unavailable;
 
     private bool _pendingScroll;
 
@@ -69,18 +100,18 @@ else
     private IReadOnlyList<BibleVerse>? _verses;
     private bool _loading = true;
 
-    private string? Heading => _book is null ? null : $"{_book.Name} {Chapter}";
+    private string? Heading => _book is null ? null : $"{_book.DisplayName} {Chapter}";
 
     private (string Href, string Label)? Previous
     {
         get
         {
             if (_book is null) return null;
-            if (Chapter > 1) return ($"bible/{_book.Slug}/{Chapter - 1}", $"{_book.Name} {Chapter - 1}");
+            if (Chapter > 1) return ($"bible/{_book.Slug}/{Chapter - 1}", $"{_book.DisplayName} {Chapter - 1}");
             var index = IndexOf(_book);
             if (index <= 0) return null;
             var prior = BibleBooks.All[index - 1];
-            return ($"bible/{prior.Slug}/{prior.ChapterCount}", $"{prior.Name} {prior.ChapterCount}");
+            return ($"bible/{prior.Slug}/{prior.ChapterCount}", $"{prior.DisplayName} {prior.ChapterCount}");
         }
     }
 
@@ -89,11 +120,11 @@ else
         get
         {
             if (_book is null) return null;
-            if (Chapter < _book.ChapterCount) return ($"bible/{_book.Slug}/{Chapter + 1}", $"{_book.Name} {Chapter + 1}");
+            if (Chapter < _book.ChapterCount) return ($"bible/{_book.Slug}/{Chapter + 1}", $"{_book.DisplayName} {Chapter + 1}");
             var index = IndexOf(_book);
             if (index < 0 || index >= BibleBooks.All.Count - 1) return null;
             var following = BibleBooks.All[index + 1];
-            return ($"bible/{following.Slug}/1", $"{following.Name} 1");
+            return ($"bible/{following.Slug}/1", $"{following.DisplayName} 1");
         }
     }
 
@@ -114,11 +145,33 @@ else
         _loading = true;
         if (Chapter == 0) Chapter = 1;
         _book = BibleBooks.Find(Book);
-        _verses = _book is null || Chapter < 1 || Chapter > _book.ChapterCount
-            ? null
-            : await Bible.GetChapterAsync(_book.Slug, Chapter);
+        if (!_translationLoaded)
+        {
+            await Translations.InitializeAsync();
+            _translationLoaded = true;
+        }
+
+        if (BibleTranslations.Parse(TranslationCode) is { } requested && requested != Translations.Current)
+        {
+            await Translations.SetAsync(requested);
+        }
+
+        _translation = Translations.Current;
+        _unavailable = false;
+        _verses = null;
+        if (_book is not null && Chapter >= 1 && Chapter <= _book.ChapterCount)
+        {
+            _verses = await Bible.GetChapterAsync(_book.Slug, Chapter, _translation);
+            _unavailable = _verses is null && _translation != BibleTranslation.DouayRheims;
+        }
         _loading = false;
         _pendingScroll = Verse is not null && _verses is not null;
+    }
+
+    private async Task OnTranslationChangedAsync(BibleTranslation translation)
+    {
+        await Translations.SetAsync(translation);
+        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code()), replace: true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

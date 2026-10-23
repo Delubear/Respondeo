@@ -6,10 +6,10 @@ namespace Respondeo.Bible;
 /// <summary>A resolved passage reference such as <c>John 3:16</c>.</summary>
 public sealed record BibleReference(BibleBook Book, int Chapter, int? Verse, int? EndVerse)
 {
-    /// <summary>A display label using the Douay-Rheims book name.</summary>
+    /// <summary>A display label using the common modern book name.</summary>
     public string Label => Verse is null
-        ? $"{Book.Name} {Chapter}"
-        : EndVerse is null ? $"{Book.Name} {Chapter}:{Verse}" : $"{Book.Name} {Chapter}:{Verse}-{EndVerse}";
+        ? $"{Book.DisplayName} {Chapter}"
+        : EndVerse is null ? $"{Book.DisplayName} {Chapter}:{Verse}" : $"{Book.DisplayName} {Chapter}:{Verse}-{EndVerse}";
 
     /// <summary>The app-relative route to the chapter, with the verse range in the query string.</summary>
     public string Href => Verse is null

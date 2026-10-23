@@ -3,16 +3,19 @@ using System.Text;
 
 namespace Respondeo.Bible;
 
-/// <summary>Loads public-domain Douay-Rheims text (CC0 dataset by janvier-s) from the bundled per-book JSON files.</summary>
+/// <summary>
+/// Loads public-domain Bible text from the bundled per-book JSON files: the Douay-Rheims (CC0 dataset by janvier-s)
+/// and the Catholic Public Domain Version (yoarikso/cpdvbible), which share the same schema and book slugs.
+/// </summary>
 internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
 {
     internal const string TranslationName = "Douay-Rheims";
 
-    private const string DataPath = "_content/Respondeo.Bible/douay-rheims";
+    private const string DataRoot = "_content/Respondeo.Bible";
 
     private readonly Dictionary<string, Task<BookFile?>> _books = [];
 
-    public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter)
+    public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation translation = BibleTranslation.DouayRheims)
     {
         var known = BibleBooks.Find(bookSlug);
         if (known is null)
@@ -20,7 +23,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
 
-        var book = await LoadBookAsync(known.Slug);
+        var book = await LoadBookAsync(known.Slug, translation);
         var match = book?.Chapters?.FirstOrDefault(c => c.Chapter == chapter);
         if (match?.Verses is null)
         {
@@ -41,7 +44,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
 
-        var book = await LoadBookAsync(passage.BookSlug);
+        var book = await LoadBookAsync(passage.BookSlug, BibleTranslation.DouayRheims);
         if (book?.Chapters is null)
         {
             return null;
@@ -67,21 +70,22 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         return text.Length == 0 ? null : text.ToString().TrimEnd();
     }
 
-    private async Task<BookFile?> LoadBookAsync(string slug)
+    private async Task<BookFile?> LoadBookAsync(string slug, BibleTranslation translation)
     {
+        var path = $"{DataRoot}/{translation.Folder()}/{slug}.json";
         try
         {
-            if (!_books.TryGetValue(slug, out var load))
+            if (!_books.TryGetValue(path, out var load))
             {
-                load = http.GetFromJsonAsync<BookFile>($"{DataPath}/{slug}.json");
-                _books[slug] = load;
+                load = http.GetFromJsonAsync<BookFile>(path);
+                _books[path] = load;
             }
 
             return await load;
         }
         catch (Exception ex) when (ex is HttpRequestException or System.Text.Json.JsonException or NotSupportedException)
         {
-            _books.Remove(slug);
+            _books.Remove(path);
             return null;
         }
     }

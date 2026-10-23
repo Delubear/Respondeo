@@ -30,6 +30,9 @@ public static class AppServiceRegistration
         // Whether the reader prefers Latin prayer names in devotions (localStorage).
         services.AddScoped<IPrayerLanguageService, PrayerLanguageService>();
 
+        // The reader's preferred Bible translation (localStorage).
+        services.AddScoped<IBibleTranslationService, BibleTranslationService>();
+
         // The reader's place in a devotion (localStorage) so it can be resumed after leaving.
         services.AddScoped<IDevotionProgressService, DevotionProgressService>();
 

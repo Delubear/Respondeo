@@ -2,16 +2,20 @@
 @using Respondeo.Bible
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
+@inject IBibleTranslationService Translations
 
 <PageShell Title="Holy Bible"
            Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
 
 <section class="pillar">
-    <PillarHeader Eyebrow="Douay-Rheims" Title="Holy Bible">
+    <PillarHeader Eyebrow="@_translation.ShortName()" Title="Holy Bible">
         <Lede>
-            The complete Catholic Bible in the Douay-Rheims translation, all 73 books of the Old and New Testament.
+            The complete Catholic Bible, all 73 books of the Old and New Testament, in the Douay-Rheims
+            or the Catholic Public Domain Version.
         </Lede>
     </PillarHeader>
+
+    <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
 
     <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..."
                Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
@@ -44,10 +48,10 @@
                 {
                     <li>
                         <a class="bible__match-card" href="bible/@book.Slug">
-                            <span class="bible__match-name">@book.Name</span>
-                            @if (!string.IsNullOrEmpty(book.ModernName))
+                            <span class="bible__match-name">@book.DisplayName</span>
+                            @if (book.DouayName is not null)
                             {
-                                <span class="bible__modern">(@book.ModernName)</span>
+                                <span class="bible__modern">(@book.DouayName)</span>
                             }
                             <span class="bible__match-meta">
                                 @TestamentLabel(book.Testament)
@@ -81,10 +85,10 @@
                                 <a class="bible__book-link" href="bible/@book.Slug">
                                     <span class="bible__book-number">@(i + 1)</span>
                                     <span>
-                                        @book.Name
-                                        @if (!string.IsNullOrEmpty(book.ModernName))
+                                        @book.DisplayName
+                                        @if (book.DouayName is not null)
                                         {
-                                            <span class="bible__modern">(@book.ModernName)</span>
+                                            <span class="bible__modern">(@book.DouayName)</span>
                                         }
                                     </span>
                                     <span class="bible__book-chapters">@ChapterLabel(book.ChapterCount)</span>
@@ -98,11 +102,24 @@
     }
 
     <OfflinePackControls Only="@(new[] { OfflinePacks.Bible })" />
-    <p class="bible__attribution">Text: Douay-Rheims Bible, Challoner revision (public domain).</p>
+    <p class="bible__attribution">
+        Text: Douay-Rheims Bible, Challoner revision (public domain); Catholic Public Domain Version, Ronald L. Conte Jr.
+        (public domain, unofficial).
+    </p>
 </section>
 
 @code {
     [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+    [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
+
+    private BibleTranslation _translation;
+
+    private async Task OnTranslationChangedAsync(BibleTranslation translation)
+    {
+        await Translations.SetAsync(translation);
+        _translation = translation;
+        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code()), replace: true);
+    }
 
     private static readonly (BibleTestament Testament, string Title)[] Parts =
     [
@@ -125,6 +142,13 @@
     protected override async Task OnInitializedAsync()
     {
         _query = LinkQuery ?? "";
+        await Translations.InitializeAsync();
+        if (BibleTranslations.Parse(TranslationCode) is { } requested && requested != Translations.Current)
+        {
+            await Translations.SetAsync(requested);
+        }
+
+        _translation = Translations.Current;
         await Trail.ClearAsync();
     }
 

@@ -58,8 +58,8 @@ const manifestUrlList = self.assetsManifest.assets.map(asset => new URL(asset.ur
 // Large opt-in content packs. They live in their own caches (outside the offline-cache- prefix) so a
 // new deploy does not wipe them; onActivate refreshes any installed pack whose version is stale.
 const packs = {
-    summa: '_content/Respondeo.Content.Summa/summa/',
-    bible: '_content/Respondeo.Bible/douay-rheims/'
+    summa: ['_content/Respondeo.Content.Summa/summa/'],
+    bible: ['_content/Respondeo.Bible/douay-rheims/', '_content/Respondeo.Bible/cpdv/']
 };
 const packVersionKey = '__pack-version';
 
@@ -72,11 +72,12 @@ function packCacheName(pack) {
 const corePackExceptions = ['_content/Respondeo.Content.Summa/summa/summa-index.json'];
 
 function isPackAsset(url) {
-    return !corePackExceptions.includes(url) && Object.values(packs).some(prefix => url.startsWith(prefix));
+    return !corePackExceptions.includes(url) && Object.values(packs).flat().some(prefix => url.startsWith(prefix));
 }
 
 function packAssets(pack) {
-    return self.assetsManifest.assets.filter(asset => asset.url.startsWith(packs[pack]) && !corePackExceptions.includes(asset.url));
+    return self.assetsManifest.assets.filter(asset =>
+        packs[pack].some(prefix => asset.url.startsWith(prefix)) && !corePackExceptions.includes(asset.url));
 }
 
 async function postToClients(message) {
@@ -199,7 +200,7 @@ async function onFetch(event) {
 
         if (!cachedResponse && !shouldServeIndexHtml) {
             const relative = requestedAssetUrl.startsWith(baseUrl.href) ? requestedAssetUrl.substring(baseUrl.href.length) : '';
-            const pack = Object.keys(packs).find(p => relative.startsWith(packs[p]));
+            Object.keys(packs).find(p => packs[p].some(prefix => relative.startsWith(prefix)));
             if (pack && await caches.has(packCacheName(pack))) {
                 cachedResponse = await (await caches.open(packCacheName(pack))).match(event.request);
             }
