@@ -200,7 +200,7 @@ async function onFetch(event) {
 
         if (!cachedResponse && !shouldServeIndexHtml) {
             const relative = requestedAssetUrl.startsWith(baseUrl.href) ? requestedAssetUrl.substring(baseUrl.href.length) : '';
-            Object.keys(packs).find(p => packs[p].some(prefix => relative.startsWith(prefix)));
+            const pack = Object.keys(packs).find(p => packs[p].some(prefix => relative.startsWith(prefix)));
             if (pack && await caches.has(packCacheName(pack))) {
                 cachedResponse = await (await caches.open(packCacheName(pack))).match(event.request);
             }
