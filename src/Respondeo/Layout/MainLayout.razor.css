@@ -62,6 +62,8 @@
     object-position: top center;
     opacity: 0.85;
     pointer-events: none;
+    color: transparent;
+    font-size: 0;
     -webkit-mask-image: radial-gradient(circle at 46% 55%, #000 38%, transparent 68%);
     mask-image: radial-gradient(circle at 46% 55%, #000 38%, transparent 68%);
 }

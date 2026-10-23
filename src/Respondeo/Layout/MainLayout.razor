@@ -19,7 +19,7 @@
         <ThemeToggle />
         @if (Features.AquinasPortrait)
         {
-            <img class="masthead__portrait" src="@Portrait.CurrentImagePath" alt="St. Thomas Aquinas, after Sandro Botticelli" width="144" height="144" loading="lazy" />
+            <img class="masthead__portrait" src="@Portrait.CurrentImagePath" alt="St. Thomas Aquinas, after Sandro Botticelli" width="144" height="144" decoding="async" />
         }
         <a class="masthead__brand" href="">
             <span class="masthead__mark" aria-hidden="true">&#10013;</span>
