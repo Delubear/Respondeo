@@ -98,6 +98,17 @@ public sealed class OfflinePacks(OfflinePacksInterop interop) : IAsyncDisposable
         }
     }
 
+    [JSInvokable]
+    public void OnSupportedChanged(bool supported)
+    {
+        if (Supported == supported)
+        {
+            return;
+        }
+        Supported = supported;
+        Changed?.Invoke();
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_ref is not null)
