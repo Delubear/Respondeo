@@ -20,7 +20,12 @@
     protected override void OnInitialized()
     {
         Nav.LocationChanged += OnLocationChanged;
+        _lastPath = PathOf(Nav.Uri);
     }
+
+    private string? _lastPath;
+
+    private static string PathOf(string uri) => uri.Split('?', '#')[0];
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -57,7 +62,10 @@
         // The masthead nav flags its clicks as top-level, which resets to the very top.
         // Everything else — entry cards, node/article navigation — scrolls down to the content region so the reader lands on their breadcrumb trail.
         var resetToTop = NavIntent.ConsumeResetToTop();
-        _ = _scroll.InvokeVoidAsync(resetToTop ? "jumpToTop" : "jumpToContent");
+        var path = PathOf(e.Location);
+        var samePage = path == _lastPath;
+        _lastPath = path;
+        _ = _scroll.InvokeVoidAsync(resetToTop ? "jumpToTop" : samePage ? "smoothToContent" : "jumpToContent");
     }
 
     public async ValueTask DisposeAsync()

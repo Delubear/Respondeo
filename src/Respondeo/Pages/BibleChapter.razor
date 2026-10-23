@@ -8,7 +8,7 @@
 
 <PageShell Description="@($"{Heading} in the {_translation.Name()}.")"
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
-           StageHref="bible" StageLabel="Holy Bible" BackHref="bible" BackLabel="All books" />
+           StageHref="bible" StageLabel="Holy Bible" />
 
 @if (_loading)
 {
@@ -147,7 +147,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _loading = true;
+        if (_verses is null && !_unavailable) _loading = true;
         if (Chapter == 0) Chapter = 1;
         _book = BibleBooks.Find(Book);
         if (!_translationLoaded)
@@ -161,14 +161,18 @@ else
             await Translations.SetAsync(requested);
         }
 
-        _translation = Translations.Current;
-        _unavailable = false;
-        _verses = null;
+        var translation = Translations.Current;
+        IReadOnlyList<BibleVerse>? verses = null;
+        var unavailable = false;
         if (_book is not null && Chapter >= 1 && Chapter <= _book.ChapterCount)
         {
-            _verses = await Bible.GetChapterAsync(_book.Slug, Chapter, _translation);
-            _unavailable = _verses is null && _translation != BibleTranslation.DouayRheims;
+            verses = await Bible.GetChapterAsync(_book.Slug, Chapter, translation);
+            unavailable = verses is null && translation != BibleTranslation.DouayRheims;
         }
+
+        _translation = translation;
+        _verses = verses;
+        _unavailable = unavailable;
         _loading = false;
         _pendingScroll = Verse is not null && _verses is not null;
     }

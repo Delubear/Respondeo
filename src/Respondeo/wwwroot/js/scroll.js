@@ -60,6 +60,17 @@ export function jumpToTop() {
     requestAnimationFrame(() => requestAnimationFrame(jump));
 }
 
+// Document-relative top of the content region (the breadcrumb, else .content, else 0). Uses the
+// layout offset rather than getBoundingClientRect() - see jumpToContent for why.
+function contentTop() {
+    const target = document.querySelector('.breadcrumb') || document.querySelector('.content');
+    let top = 0;
+    for (let node = target; node; node = node.offsetParent) {
+        top += node.offsetTop;
+    }
+    return top;
+}
+
 export function jumpToContent() {
     // Used for card/node navigation: settle the viewport at the top of the content region rather
     // than the very top of the page, so the masthead stays out of view and the reader lands on
@@ -77,19 +88,7 @@ export function jumpToContent() {
     // would then resolve to the CURRENT scroll position - so navigating from the bottom of a long
     // article (where the "Next Stage" card lives) would leave the reader stranded at the bottom.
     // offsetTop reflects the element's natural-flow position and is immune to the sticky pin.
-    const documentTopOf = (el) => {
-        let top = 0;
-        for (let node = el; node; node = node.offsetParent) {
-            top += node.offsetTop;
-        }
-        return top;
-    };
-
-    const scrollToContent = () => {
-        const target = document.querySelector('.breadcrumb') || document.querySelector('.content');
-        const top = target ? documentTopOf(target) : 0;
-        window.scrollTo(0, top);
-    };
+    const scrollToContent = () => window.scrollTo(0, contentTop());
 
     // Pin immediately (before the new page paints) so the masthead never flashes into
     // view. The content element's top is stable regardless of which page is loading.
@@ -101,6 +100,19 @@ export function jumpToContent() {
     // a short settle window (~500ms) so we land on the final layout, but stop the moment the reader
     // starts scrolling themselves so we never fight their input.
     settleScroll(scrollToContent);
+}
+
+// Used when only the query changes on the same page (e.g. switching Bible translation): glide to
+// the content region instead of jumping, bringing it to the top of the viewport.
+export function smoothToContent() {
+    if (cancelSettle) {
+        cancelSettle();
+    }
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        window.scrollTo({ top: contentTop(), behavior: reduce ? 'auto' : 'smooth' });
+    }));
 }
 
 let cancelSettle = null;
