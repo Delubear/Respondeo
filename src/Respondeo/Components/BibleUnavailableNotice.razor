@@ -1,0 +1,22 @@
+<section class="bible-unavailable" role="status">
+    <h2 class="bible-unavailable__title">@Heading is not in the @Translation.Name()</h2>
+    <p>
+        Translations differ in which books they include and in how they number chapters,
+        so this passage has no counterpart in the @Translation.Name().
+    </p>
+    <div class="bible-unavailable__actions">
+        @foreach (var other in Enum.GetValues<BibleTranslation>())
+        {
+            if (other == Translation) continue;
+            var target = other;
+            <button type="button" class="bible-unavailable__switch" @onclick="() => OnSwitch.InvokeAsync(target)">Read in the @target.Name()</button>
+        }
+        <a href="bible" class="bible-unavailable__back">All books</a>
+    </div>
+</section>
+
+@code {
+    [Parameter] public string? Heading { get; set; }
+    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter] public EventCallback<BibleTranslation> OnSwitch { get; set; }
+}

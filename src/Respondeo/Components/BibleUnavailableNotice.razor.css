@@ -1,0 +1,41 @@
+.bible-unavailable {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--gold) 6%, transparent);
+    text-align: center;
+}
+
+.bible-unavailable__title {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+}
+
+.bible-unavailable__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    margin-block-start: 1rem;
+}
+
+.bible-unavailable__switch {
+    font: inherit;
+    color: inherit;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.bible-unavailable__switch:hover,
+.bible-unavailable__switch:focus-visible {
+    background: color-mix(in srgb, var(--gold) 15%, transparent);
+}
+
+.bible-unavailable__back {
+    opacity: 0.85;
+}

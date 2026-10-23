@@ -1,0 +1,13 @@
+<nav class="bible-chapters" aria-label="Chapters of @Translation.BookName(Book)">
+    @for (var i = 1; i <= Translation.ChapterCount(Book); i++)
+    {
+        var number = i;
+        <a href="@($"bible/{Book.Slug}/{number}")" class="bible-chapters__link" aria-current="@(number == Current ? "page" : null)">@number</a>
+    }
+</nav>
+
+@code {
+    [Parameter, EditorRequired] public BibleBook Book { get; set; } = default!;
+    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter] public int Current { get; set; }
+}

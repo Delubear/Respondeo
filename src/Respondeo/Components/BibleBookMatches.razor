@@ -1,0 +1,43 @@
+@if (Books.Count == 0)
+{
+    if (!HasReference)
+    {
+        <p class="results-count">0 books found</p>
+        <p class="empty-state">No books match "@Query".</p>
+    }
+}
+else
+{
+    <p class="results-count">@Books.Count @(Books.Count == 1 ? "book" : "books") found</p>
+    <ul class="bible__match-list">
+        @foreach (var book in Books)
+        {
+            <li>
+                <a class="bible__match-link" href="bible/@book.Slug">
+                    <span class="bible__match-title">@Translation.BookName(book)</span>
+                    @if (Translation.BookNameClarification(book) is { } modern)
+                    {
+                        <span class="bible__match-ref">@modern</span>
+                    }
+                    <span class="bible__match-kind">
+                        @TestamentLabel(book.Testament)
+                    </span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<BibleBook> Books { get; set; } = [];
+    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter] public string Query { get; set; } = "";
+    [Parameter] public bool HasReference { get; set; }
+
+    private static string TestamentLabel(BibleTestament t) => t switch
+    {
+        BibleTestament.Old => "Old Testament",
+        BibleTestament.New => "New Testament",
+        _ => "Appendix (non-canonical)",
+    };
+}

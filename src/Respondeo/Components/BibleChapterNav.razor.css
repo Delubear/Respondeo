@@ -1,0 +1,19 @@
+.bible-chapters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-block: 1rem 1.5rem;
+}
+
+.bible-chapters__link {
+    min-width: 2.25rem;
+    text-align: center;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    text-decoration: none;
+}
+
+.bible-chapters__link[aria-current="page"] {
+    font-weight: 700;
+    outline: 1px solid currentColor;
+}

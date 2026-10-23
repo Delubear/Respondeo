@@ -27,53 +27,18 @@ else
 
         <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
 
-        <nav class="bible-chapters" aria-label="Chapters of @_translation.BookName(_book)">
-            @for (var i = 1; i <= _translation.ChapterCount(_book); i++)
-            {
-                var number = i;
-                <a href="@($"bible/{_book.Slug}/{number}")" class="bible-chapters__link" aria-current="@(number == Chapter ? "page" : null)">@number</a>
-            }
-        </nav>
+        <BibleChapterNav Book="_book" Translation="_translation" Current="Chapter" />
 
         @if (_unavailable)
         {
-            <section class="bible-unavailable" role="status">
-                <h2 class="bible-unavailable__title">@Heading is not in the @_translation.Name()</h2>
-                <p>
-                    Translations differ in which books they include and in how they number chapters,
-                    so this passage has no counterpart in the @_translation.Name().
-                </p>
-                <div class="bible-unavailable__actions">
-                    @foreach (var other in Enum.GetValues<BibleTranslation>())
-                    {
-                        if (other == _translation) continue;
-                        var target = other;
-                        <button type="button" class="bible-unavailable__switch" @onclick="() => OnTranslationChangedAsync(target)">Read in the @target.Name()</button>
-                    }
-                    <a href="bible" class="bible-unavailable__back">All books</a>
-                </div>
-            </section>
+            <BibleUnavailableNotice Heading="@Heading" Translation="_translation" OnSwitch="OnTranslationChangedAsync" />
         }
         else if (_verses is not null)
         {
-            <div class="bible-chapter">
-                @foreach (var verse in _verses)
-                {
-                    <p class="@VerseClass(verse.Number)" id="@($"v{verse.Number}")"><sup class="bible-verse__number">@verse.Number</sup> @verse.Text</p>
-                }
-            </div>
+            <BibleChapterText Verses="_verses" HighlightStart="Verse" HighlightEnd="EndVerse" />
         }
 
-        <nav class="bible-pager" aria-label="Chapter navigation">
-            @if (Previous is { } prev)
-            {
-                <a href="@prev.Href" class="bible-pager__prev">&larr; @prev.Label</a>
-            }
-            @if (Next is { } next)
-            {
-                <a href="@next.Href" class="bible-pager__next">@next.Label &rarr;</a>
-            }
-        </nav>
+        <BiblePager Previous="Previous" Next="Next" />
     </article>
 }
 
@@ -89,10 +54,6 @@ else
     private bool _unavailable;
 
     private bool _pendingScroll;
-
-    private string VerseClass(int number) => IsHighlighted(number) ? "bible-verse bible-verse--highlight" : "bible-verse";
-
-    private bool IsHighlighted(int number) => Verse is { } start && number >= start && number <= (EndVerse is { } end && end > start ? end : start);
 
     private BibleBook? _book;
     private IReadOnlyList<BibleVerse>? _verses;

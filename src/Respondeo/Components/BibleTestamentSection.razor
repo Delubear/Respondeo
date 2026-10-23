@@ -1,0 +1,39 @@
+<details class="bible__part" data-browse-section="@Testament" open="@Open">
+    <summary class="bible__part-summary">
+        <span class="bible__part-title">@Title</span>
+        <span class="bible__part-count">@Books.Count books</span>
+    </summary>
+    @if (Testament == BibleTestament.Appendix)
+    {
+        <p class="bible__attribution">Printed after the New Testament in the Clementine Vulgate; not part of the canon of Scripture.</p>
+    }
+    <ol class="bible__book-list">
+        @for (var i = 0; i < Books.Count; i++)
+        {
+            var book = Books[i];
+            <li>
+                <a class="bible__book-link" href="bible/@book.Slug">
+                    <span class="bible__book-number">@(i + 1)</span>
+                    <span>
+                        @Translation.BookName(book)
+                        @if (Translation.BookNameClarification(book) is { } modern)
+                        {
+                            <span class="bible__modern">(@modern)</span>
+                        }
+                    </span>
+                    @ChapterLabel(Translation.ChapterCount(book))
+                </a>
+            </li>
+        }
+    </ol>
+</details>
+
+@code {
+    [Parameter] public BibleTestament Testament { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter, EditorRequired] public IReadOnlyList<BibleBook> Books { get; set; } = [];
+    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter] public bool Open { get; set; }
+
+    private static string ChapterLabel(int n) => n == 1 ? "1 chapter" : $"{n} chapters";
+}

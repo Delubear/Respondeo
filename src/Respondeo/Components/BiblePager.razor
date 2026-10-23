@@ -1,0 +1,15 @@
+<nav class="bible-pager" aria-label="Chapter navigation">
+    @if (Previous is { } prev)
+    {
+        <a href="@prev.Href" class="bible-pager__prev">&larr; @prev.Label</a>
+    }
+    @if (Next is { } next)
+    {
+        <a href="@next.Href" class="bible-pager__next">@next.Label &rarr;</a>
+    }
+</nav>
+
+@code {
+    [Parameter] public (string Href, string Label)? Previous { get; set; }
+    [Parameter] public (string Href, string Label)? Next { get; set; }
+}

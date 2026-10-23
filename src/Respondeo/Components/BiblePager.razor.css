@@ -1,0 +1,9 @@
+.bible-pager {
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: 2rem;
+}
+
+.bible-pager__next {
+    margin-inline-start: auto;
+}

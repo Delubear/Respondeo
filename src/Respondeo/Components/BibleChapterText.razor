@@ -1,0 +1,17 @@
+<div class="bible-chapter">
+    @foreach (var verse in Verses)
+    {
+        <p class="@VerseClass(verse.Number)" id="@($"v{verse.Number}")"><sup class="bible-verse__number">@verse.Number</sup> @verse.Text</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<BibleVerse> Verses { get; set; } = [];
+    [Parameter] public int? HighlightStart { get; set; }
+    [Parameter] public int? HighlightEnd { get; set; }
+
+    private string VerseClass(int number) => IsHighlighted(number) ? "bible-verse bible-verse--highlight" : "bible-verse";
+
+    private bool IsHighlighted(int number) =>
+        HighlightStart is { } start && number >= start && number <= (HighlightEnd is { } end && end > start ? end : start);
+}
