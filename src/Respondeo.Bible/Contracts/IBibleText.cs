@@ -1,6 +1,10 @@
-namespace Respondeo.Bible;
+namespace Respondeo.Bible.Contracts;
 
-/// <summary>Resolves modern (Hebrew-numbered) Bible citations to passage text in the bundled translation.</summary>
+/// <summary>
+/// The public contract for reading the bundled Bible translations.
+/// Resolves modern (Hebrew-numbered) citations to passage text and loads whole chapters.
+/// Implementations own loading, parsing, and caching; consumers depend only on this surface.
+/// </summary>
 public interface IBibleText
 {
     /// <summary>Returns the passage text, one verse per line, or <c>null</c> when it cannot be resolved.</summary>

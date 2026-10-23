@@ -118,5 +118,5 @@ internal static class Psalter
     public static bool IsCanticle(string citation) => !citation.StartsWith("Psalm ", StringComparison.Ordinal);
 
     /// <summary>Converts a modern (Hebrew) psalm citation into the bundled translation's numbering for display.</summary>
-    public static string? DouayCitation(string citation) => Respondeo.Bible.BibleReferences.TranslationCitation(citation);
+    public static string? DouayCitation(string citation) => Respondeo.Bible.Contracts.BibleReferences.TranslationCitation(citation);
 }

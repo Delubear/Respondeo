@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Respondeo.Bible;
+using Respondeo.Bible.Contracts;
 
 namespace Respondeo.UnitTests.Bible;
 

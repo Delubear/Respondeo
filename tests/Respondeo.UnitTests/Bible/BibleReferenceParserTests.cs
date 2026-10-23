@@ -1,4 +1,5 @@
 using Respondeo.Bible;
+using Respondeo.Bible.Contracts;
 
 namespace Respondeo.UnitTests.Bible;
 

@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text;
+using Respondeo.Bible.Contracts;
 
 namespace Respondeo.Bible;
 
@@ -30,10 +31,9 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
 
-        return match.Verses
+        return [.. match.Verses
             .Where(v => !string.IsNullOrWhiteSpace(v.Text))
-            .Select(v => new BibleVerse(v.Verse, v.Text!.Trim()))
-            .ToList();
+            .Select(v => new BibleVerse(v.Verse, v.Text!.Trim()))];
     }
 
     public async Task<string?> GetPassageAsync(string citation)

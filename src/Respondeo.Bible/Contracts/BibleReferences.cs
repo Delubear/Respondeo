@@ -1,4 +1,4 @@
-namespace Respondeo.Bible;
+namespace Respondeo.Bible.Contracts;
 
 /// <summary>Translation-aware helpers for displaying citations alongside the bundled Bible text.</summary>
 public static class BibleReferences

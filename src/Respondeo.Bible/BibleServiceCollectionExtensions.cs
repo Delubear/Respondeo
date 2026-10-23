@@ -1,3 +1,5 @@
+using Respondeo.Bible.Contracts;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Respondeo.Bible;

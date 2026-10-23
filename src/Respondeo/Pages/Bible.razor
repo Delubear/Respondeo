@@ -1,5 +1,4 @@
 @page "/bible"
-@using Respondeo.Bible
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
@@ -67,7 +66,8 @@
         <div class="bible__browse">
             @foreach (var (testament, title) in Parts)
             {
-                var books = BibleBooks.All.Where(b => b.Testament == testament).ToList();
+                var books = _translation.Books().Where(b => b.Testament == testament).ToList();
+                if (books.Count == 0) continue;
                 <details class="bible__part" open="@(testament != BibleTestament.Appendix)">
                     <summary class="bible__part-summary">
                         <span class="bible__part-title">@title</span>
@@ -91,7 +91,7 @@
                                             <span class="bible__modern">(@book.DouayName)</span>
                                         }
                                     </span>
-                                    <span class="bible__book-chapters">@ChapterLabel(book.ChapterCount)</span>
+                                    @ChapterLabel(_translation.ChapterCount(book))
                                 </a>
                             </li>
                         }
@@ -170,7 +170,7 @@
     private List<BibleBook> Matches()
     {
         var q = _query.Trim();
-        return BibleBooks.All.Where(b =>
+        return _translation.Books().Where(b =>
             b.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
             (b.ModernName?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
             b.Slug.Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();

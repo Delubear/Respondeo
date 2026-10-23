@@ -1,7 +1,7 @@
 @page "/discover/hours/{Slug}"
 @using Respondeo.LiturgyOfTheHours
 @inject ILiturgyOfTheHours Office
-@inject Respondeo.Bible.IBibleText Bible
+@inject IBibleText Bible
 
 <PageShell Title="@_office?.Title" FallbackTitle="Liturgy of the Hours" Description="Pray the Liturgy of the Hours step by step." Article="true" SeoReady="@(_office is not null)"
            StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />

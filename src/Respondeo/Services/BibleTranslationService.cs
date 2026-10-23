@@ -1,5 +1,5 @@
 using Microsoft.JSInterop;
-using Respondeo.Bible;
+using Respondeo.Bible.Contracts;
 using Respondeo.Services.Interop;
 
 namespace Respondeo.Services;

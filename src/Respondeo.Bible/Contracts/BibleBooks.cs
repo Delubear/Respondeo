@@ -1,4 +1,4 @@
-namespace Respondeo.Bible;
+namespace Respondeo.Bible.Contracts;
 
 /// <summary>A book of the Douay-Rheims Bible.</summary>
 /// <param name="Slug">The route and data-file identifier (e.g. <c>isaie</c>).</param>

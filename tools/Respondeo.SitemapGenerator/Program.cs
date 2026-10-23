@@ -1,8 +1,6 @@
-using System.Net;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using Respondeo.Bible;
+using Respondeo.Bible.Contracts;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Contracts;
 

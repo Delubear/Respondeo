@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Respondeo.Bible;
+namespace Respondeo.Bible.Contracts;
 
 /// <summary>A resolved passage reference such as <c>John 3:16</c>.</summary>
 public sealed record BibleReference(BibleBook Book, int Chapter, int? Verse, int? EndVerse)
