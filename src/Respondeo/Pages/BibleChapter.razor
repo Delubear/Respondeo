@@ -46,7 +46,6 @@ else
     [Parameter] public string Book { get; set; } = "";
     [Parameter] public int Chapter { get; set; }
     [SupplyParameterFromQuery(Name = "v")] public string? VerseQuery { get; set; }
-    [SupplyParameterFromQuery(Name = "to")] public int? EndVerse { get; set; }
     [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
 
     private bool _translationLoaded;
@@ -136,7 +135,7 @@ else
         _verses = verses;
         _unavailable = unavailable;
         _loading = false;
-        _highlight = VerseSelection.Parse(VerseQuery, EndVerse);
+        VerseSelection.Parse(VerseQuery);
         _pendingScroll = !_highlight.IsEmpty && _verses is not null;
     }
 

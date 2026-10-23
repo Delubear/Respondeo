@@ -14,7 +14,20 @@ Feature: Deep links
 	  | discover/saints   |
 	  | discover/prayers  |
 	  | summa             |
+	  | bible             |
+	  | bible/john/3      |
+	  | discover/prayers/act-of-contrition                     |
+	  | discover/saints/augustine-of-hippo                     |
+	  | discover/articles/sacrament-anointing                  |
+	  | discover/miracles/bernadette-soubirous-incorrupt-body  |
 
-  Scenario: An unknown address is served with HTTP 404
-	When I request "this-page-does-not-exist" directly
+  Scenario Outline: An unknown address is served with HTTP 404
+	When I request "<path>" directly
 	Then the response status should be 404
+
+	Examples:
+	  | path                                |
+	  | this-page-does-not-exist            |
+	  | discover/prayers/no-such-prayer     |
+	  | discover/saints/no-such-saint       |
+	  | bible/no-such-book/1                |

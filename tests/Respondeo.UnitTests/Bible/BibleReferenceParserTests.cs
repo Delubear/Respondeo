@@ -58,16 +58,15 @@ public class BibleReferenceParserTests
 public class VerseSelectionTests
 {
     [Theory]
-    [InlineData("5-7,16", null, "5-7,16")]
-    [InlineData("16,5-7", null, "5-7,16")]
-    [InlineData("7-5", null, "5-7")]
-    [InlineData("5-7,6-9", null, "5-9")]
-    [InlineData("5-7,8", null, "5-8")]
-    [InlineData("5", 7, "5-7")]
-    [InlineData("5,x,0,-3", null, "5")]
-    [InlineData("", null, "")]
-    public void Parses_selections(string input, int? to, string expected) =>
-        Assert.Equal(expected, VerseSelection.Parse(input, to).ToString());
+    [InlineData("5-7,16", "5-7,16")]
+    [InlineData("16,5-7", "5-7,16")]
+    [InlineData("7-5", "5-7")]
+    [InlineData("5-7,6-9", "5-9")]
+    [InlineData("5-7,8", "5-8")]
+    [InlineData("5,x,0,-3", "5")]
+    [InlineData("", "")]
+    public void Parses_selections(string input, string expected) =>
+        Assert.Equal(expected, VerseSelection.Parse(input).ToString());
 
     [Fact]
     public void Contains_checks_every_range()

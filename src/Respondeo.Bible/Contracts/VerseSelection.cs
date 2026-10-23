@@ -31,10 +31,10 @@ public sealed class VerseSelection
     }
 
     /// <summary>
-    /// Parses a list such as <c>5-7,16</c>. A legacy <paramref name="to"/> value extends a single verse into a range.
+    /// Parses a list such as <c>5-7,16</c>.
     /// Invalid parts are ignored; reversed ranges are swapped; overlapping ranges are merged.
     /// </summary>
-    public static VerseSelection Parse(string? value, int? to = null)
+    public static VerseSelection Parse(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return Empty;
 
@@ -47,11 +47,6 @@ public sealed class VerseSelection
             var end = start;
             if (bounds.Length == 2 && !TryVerse(bounds[1], out end)) continue;
             ranges.Add(start <= end ? (start, end) : (end, start));
-        }
-
-        if (to is { } legacyEnd && ranges.Count == 1 && ranges[0].Start == ranges[0].End && legacyEnd > ranges[0].Start && legacyEnd <= MaxVerse)
-        {
-            ranges[0] = (ranges[0].Start, legacyEnd);
         }
 
         return FromRanges(ranges);

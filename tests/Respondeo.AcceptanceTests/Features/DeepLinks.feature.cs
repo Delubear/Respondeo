@@ -135,6 +135,12 @@ namespace Respondeo.AcceptanceTests.Features
         [Xunit.InlineDataAttribute("discover/saints", new string[0])]
         [Xunit.InlineDataAttribute("discover/prayers", new string[0])]
         [Xunit.InlineDataAttribute("summa", new string[0])]
+        [Xunit.InlineDataAttribute("bible", new string[0])]
+        [Xunit.InlineDataAttribute("bible/john/3", new string[0])]
+        [Xunit.InlineDataAttribute("discover/prayers/act-of-contrition", new string[0])]
+        [Xunit.InlineDataAttribute("discover/saints/augustine-of-hippo", new string[0])]
+        [Xunit.InlineDataAttribute("discover/articles/sacrament-anointing", new string[0])]
+        [Xunit.InlineDataAttribute("discover/miracles/bernadette-soubirous-incorrupt-body", new string[0])]
         public async global::System.Threading.Tasks.Task ADeepLinkIsServedWithHTTP200AndItsOwnCanonicalURL(string path, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -164,15 +170,20 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="An unknown address is served with HTTP 404")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="An unknown address is served with HTTP 404")]
         [Xunit.TraitAttribute("FeatureTitle", "Deep links")]
         [Xunit.TraitAttribute("Description", "An unknown address is served with HTTP 404")]
-        public async global::System.Threading.Tasks.Task AnUnknownAddressIsServedWithHTTP404()
+        [Xunit.InlineDataAttribute("this-page-does-not-exist", new string[0])]
+        [Xunit.InlineDataAttribute("discover/prayers/no-such-prayer", new string[0])]
+        [Xunit.InlineDataAttribute("discover/saints/no-such-saint", new string[0])]
+        [Xunit.InlineDataAttribute("bible/no-such-book/1", new string[0])]
+        public async global::System.Threading.Tasks.Task AnUnknownAddressIsServedWithHTTP404(string path, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("path", path);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("An unknown address is served with HTTP 404", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 18
+#line 24
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -182,10 +193,10 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 19
- await testRunner.WhenAsync("I request \"this-page-does-not-exist\" directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 25
+ await testRunner.WhenAsync(string.Format("I request \"{0}\" directly", path), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 26
  await testRunner.ThenAsync("the response status should be 404", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
