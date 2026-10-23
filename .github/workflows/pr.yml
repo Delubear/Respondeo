@@ -19,9 +19,6 @@ jobs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
     steps:
       - uses: actions/checkout@v5
-        with:
-          # Fetch the actual corpus blobs: the Publish step embeds them into the site.
-          lfs: true
 
       # Detect whether any non-docs file changed. Docs-only changes (READMEs,
       # TODO.md, AI instruction files) leave code-changed=false so the heavy
@@ -144,8 +141,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        # No lfs: the corpus isn't needed here; the published site arrives via the
-        # downloaded artifact, so skip fetching LFS blobs to save bandwidth.
 
       - name: Run acceptance tests
         uses: ./.github/actions/acceptance-tests

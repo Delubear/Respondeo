@@ -26,8 +26,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          # Fetch the actual corpus blobs: the Publish step embeds them into the site.
-          lfs: true
           # Full history so the sitemap's <lastmod> reflects each content file's last commit.
           fetch-depth: 0
 
@@ -182,8 +180,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        # No lfs: the corpus isn't needed here; the built site arrives via the
-        # downloaded artifact, so skip fetching LFS blobs to save bandwidth.
 
       - name: Run acceptance tests
         uses: ./.github/actions/acceptance-tests

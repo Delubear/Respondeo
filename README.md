@@ -19,9 +19,6 @@ for living it (Discover), and a browsable *Summa Theologiae*. Live at **[respond
 
 ## Getting started
 
-The Summa corpus and its source text are stored in [Git LFS](https://git-lfs.com/). Run `git lfs install`
-before cloning (or `git lfs pull` afterward) to get the real files instead of pointer stubs.
-
 ```powershell
 dotnet run --project src/Respondeo/Respondeo.csproj
 dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj
