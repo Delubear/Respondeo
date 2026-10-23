@@ -74,29 +74,32 @@
 .pillarnav__pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border: 1px solid var(--masthead-rule);
     border-radius: var(--radius-pill);
-    overflow: hidden;
 }
 
 .pillarnav__pair-half {
     display: flex;
     justify-content: center;
     text-align: center;
-    border: 0;
-    border-radius: 0;
+    border: 1px solid transparent;
 }
 
-.pillarnav__pair-half + .pillarnav__pair-half {
-    border-left: 1px solid var(--masthead-rule);
+.pillarnav__pair-half:first-child {
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
 }
 
-.pillarnav__pair-half:hover {
-    background: rgba(255, 255, 255, 0.06);
+.pillarnav__pair-half:last-child {
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+}
+
+.pillarnav__pair-half:hover,
+.pillarnav__pair-half:focus-visible {
+    border-color: var(--masthead-rule);
 }
 
 .pillarnav__pair-half.pillarnav__link--active {
     background: var(--accent);
+    border-color: var(--accent);
 }
 
 /* Discover dropdown toggle and menu. */
