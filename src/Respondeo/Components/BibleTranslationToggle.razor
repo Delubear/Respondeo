@@ -1,13 +1,7 @@
 
-<div class="bible-translation" role="radiogroup" aria-label="Bible translation">
-    @foreach (var translation in BibleTranslations.All)
-    {
-        var option = translation;
-        var selected = option == Value;
-        <button type="button" role="radio" class="bible-translation__option @(selected ? "is-selected" : null)"
-                aria-checked="@(selected ? "true" : "false")" title="@option.Name()"
-                @onclick="() => SelectAsync(option)">@option.ShortName()</button>
-    }
+<div class="bible-translation">
+    <SegmentedToggle TValue="BibleTranslation" Options="BibleTranslations.All" Value="Value" ValueChanged="SelectAsync"
+                     Label="t => t.ShortName()" Title="t => t.Name()" AriaLabel="Bible translation" />
 </div>
 @if (Value == BibleTranslation.Cpdv)
 {
@@ -29,11 +23,5 @@ else
 
     [Parameter] public EventCallback<BibleTranslation> ValueChanged { get; set; }
 
-    private async Task SelectAsync(BibleTranslation translation)
-    {
-        if (translation != Value)
-        {
-            await ValueChanged.InvokeAsync(translation);
-        }
-    }
+    private Task SelectAsync(BibleTranslation translation) => ValueChanged.InvokeAsync(translation);
 }

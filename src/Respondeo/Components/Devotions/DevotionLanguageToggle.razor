@@ -16,20 +16,8 @@
 }
 else
 {
-    <div class="devotion__lang-group" role="group" aria-label="Prayer language">
-        <button type="button"
-                class="devotion__lang-btn @(!ShowLatin ? "is-active" : null)"
-                @onclick="() => Set(false)"
-                aria-pressed="@(!ShowLatin)">
-            English
-        </button>
-        <button type="button"
-                class="devotion__lang-btn @(ShowLatin ? "is-active" : null)"
-                @onclick="() => Set(true)"
-                aria-pressed="@ShowLatin">
-            Latin
-        </button>
-    </div>
+    <SegmentedToggle TValue="bool" Options="LanguageOptions" Value="ShowLatin" ValueChanged="Set"
+                     Label="@(latin => latin ? "Latin" : "English")" AriaLabel="Prayer language" />
 }
 
 @code {
@@ -41,6 +29,8 @@ else
 
     /// <summary>Raised with the newly chosen value when the reader switches language.</summary>
     [Parameter] public EventCallback<bool> OnChange { get; set; }
+
+    private static readonly bool[] LanguageOptions = [false, true];
 
     private Task Set(bool latin) => OnChange.InvokeAsync(latin);
 }

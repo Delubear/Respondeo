@@ -1,0 +1,38 @@
+@typeparam TValue
+
+@* Shared pill-shaped segmented picker used for the site's option toggles. *@
+
+<div class="segmented @Class" role="radiogroup" aria-label="@AriaLabel">
+    @foreach (var item in Options)
+    {
+        var option = item;
+        var selected = EqualityComparer<TValue>.Default.Equals(option, Value);
+        <button type="button" role="radio" class="segmented__option @(selected ? "is-selected" : null)"
+                aria-checked="@(selected ? "true" : "false")" title="@Title?.Invoke(option)"
+                @onclick="() => SelectAsync(option)">@Label(option)</button>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IEnumerable<TValue> Options { get; set; } = [];
+
+    [Parameter] public TValue Value { get; set; } = default!;
+
+    [Parameter] public EventCallback<TValue> ValueChanged { get; set; }
+
+    [Parameter, EditorRequired] public Func<TValue, string> Label { get; set; } = default!;
+
+    [Parameter] public Func<TValue, string>? Title { get; set; }
+
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = "";
+
+    [Parameter] public string? Class { get; set; }
+
+    private async Task SelectAsync(TValue option)
+    {
+        if (!EqualityComparer<TValue>.Default.Equals(option, Value))
+        {
+            await ValueChanged.InvokeAsync(option);
+        }
+    }
+}

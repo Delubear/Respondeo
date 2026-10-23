@@ -1,34 +1,3 @@
-.devotion__lang-group {
-    display: inline-flex;
-    gap: 0;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.devotion__lang-btn {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    color: var(--ink-soft);
-    font-family: var(--display, inherit);
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.35rem 1rem;
-    cursor: pointer;
-}
-
-.devotion__lang-btn.is-active {
-    background: var(--accent);
-    color: var(--accent-ink);
-}
-
-.devotion__lang-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: -2px;
-}
-
 /* Mobile placement is a compact EN/LA button mirroring the theme toggle; hidden on desktop. */
 .devotion__lang-mini {
     display: none;
