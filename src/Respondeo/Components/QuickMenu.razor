@@ -42,7 +42,7 @@
 				<h3 class="quick-menu__heading">Pinned</h3>
 				@if (_pinned.Count == 0)
 				{
-					<p class="quick-menu__empty">Nothing pinned yet. Tap Customize to choose pages.</p>
+					<p class="quick-menu__empty">Nothing pinned yet. Tap the pencil icon to choose pages.</p>
 				}
 				else
 				{
@@ -78,11 +78,27 @@
 				}
 				else
 				{
-					<button type="button" class="quick-menu__customize" @onclick="() => _customizing = true">Customize</button>
-					@if (_pinned.Count > 1)
-					{
-						<button type="button" class="quick-menu__customize" @onclick="() => _reordering = true">Reorder</button>
-					}
+					<div class="quick-menu__actions">
+						<button type="button" class="quick-menu__icon-btn" aria-label="Customize" title="Customize"
+							@onclick="() => _customizing = true">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+								stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M12 20h9" />
+								<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+							</svg>
+						</button>
+						@if (_pinned.Count > 1)
+						{
+							<button type="button" class="quick-menu__icon-btn" aria-label="Reorder" title="Reorder"
+								@onclick="() => _reordering = true">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M7 4v16M3 8l4-4 4 4" />
+									<path d="M17 20V4M13 16l4 4 4-4" />
+								</svg>
+							</button>
+						}
+					</div>
 				}
 			</section>
 		}
