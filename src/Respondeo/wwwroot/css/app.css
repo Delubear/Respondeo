@@ -976,6 +976,7 @@ input[type="search"]::-webkit-search-cancel-button {
     body.is-immersive .pillarnav,
     body.is-immersive .mastnav,
     body.is-immersive .breadcrumb,
+    body.is-immersive .quick-menu__toggle,
     body.is-immersive .colophon {
         display: none;
     }
