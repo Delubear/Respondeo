@@ -62,6 +62,14 @@ public static class BibleTranslations
         return translation == BibleTranslation.Cpdv && CpdvChapterCounts.TryGetValue(book.Slug, out var count) ? count : book.ChapterCount;
     }
 
+    /// <summary>The book's name as the translation titles it: the Douay name for Douay-Rheims, the common modern name otherwise.</summary>
+    public static string BookName(this BibleTranslation translation, BibleBook book) => translation == BibleTranslation.DouayRheims ? book.Name : book.DisplayName;
+
+    /// <summary>
+    /// The common modern name to show alongside a Douay-Rheims title that differs from it (e.g. "3 Kings" is 1 Kings, "Josue" is Joshua), or <c>null</c> when the names match.
+    /// </summary>
+    public static string? BookNameClarification(this BibleTranslation translation, BibleBook book) => translation == BibleTranslation.DouayRheims ? book.ModernName : null;
+
     /// <summary>The books the translation includes, in canonical order.</summary>
     public static IReadOnlyList<BibleBook> Books(this BibleTranslation translation) => BibleBooks.All.Where(b => translation.Contains(b)).ToList();
 

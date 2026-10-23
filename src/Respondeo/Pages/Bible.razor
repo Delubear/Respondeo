@@ -47,10 +47,10 @@
                 {
                     <li>
                         <a class="bible__match-link" href="bible/@book.Slug">
-                            <span class="bible__match-title">@book.DisplayName</span>
-                            @if (book.DouayName is not null)
+                            <span class="bible__match-title">@_translation.BookName(book)</span>
+                            @if (_translation.BookNameClarification(book) is { } modern)
                             {
-                                <span class="bible__match-ref">@book.DouayName</span>
+                                <span class="bible__match-ref">@modern</span>
                             }
                             <span class="bible__match-kind">
                                 @TestamentLabel(book.Testament)
@@ -85,10 +85,10 @@
                                 <a class="bible__book-link" href="bible/@book.Slug">
                                     <span class="bible__book-number">@(i + 1)</span>
                                     <span>
-                                        @book.DisplayName
-                                        @if (book.DouayName is not null)
+                                        @_translation.BookName(book)
+                                        @if (_translation.BookNameClarification(book) is { } modern)
                                         {
-                                            <span class="bible__modern">(@book.DouayName)</span>
+                                            <span class="bible__modern">(@modern)</span>
                                         }
                                     </span>
                                     @ChapterLabel(_translation.ChapterCount(book))
