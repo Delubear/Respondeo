@@ -17,7 +17,7 @@
 else if (_book is null || (_verses is null && !_unavailable))
 {
     <ItemNotFound Title="Chapter not found" BackHref="bible" BackLabel="Return to the Bible" Class="content-article--empty">
-        That chapter is not part of the Douay-Rheims Bible.
+        That chapter is not part of the @_translation.Name().
     </ItemNotFound>
 }
 else
@@ -126,7 +126,17 @@ else
         if (_book is not null && Chapter >= 1 && Chapter <= _book.ChapterCount)
         {
             verses = await Bible.GetChapterAsync(_book.Slug, Chapter, translation);
-            unavailable = verses is null && translation != BibleTranslation.DouayRheims;
+            if (verses is null)
+            {
+                foreach (var other in Enum.GetValues<BibleTranslation>())
+                {
+                    if (other != translation && await Bible.GetChapterAsync(_book.Slug, Chapter, other) is not null)
+                    {
+                        unavailable = true;
+                        break;
+                    }
+                }
+            }
         }
 
         _translation = translation;
