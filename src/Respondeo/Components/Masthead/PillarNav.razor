@@ -8,11 +8,32 @@
 @inject Respondeo.Services.FeatureFlags Features
 
 <nav class="pillarnav" aria-label="Site areas">
-    <ul class="pillarnav__list">
+    <ul class="pillarnav__list @(IsPaired ? "pillarnav__list--paired" : "")">
         @foreach (var pillar in SitePillars.Items.Where(IsEnabled))
         {
             var isActive = pillar.Id == _activeId;
-            @if (pillar.Id == SitePillars.DiscoverId)
+            var isPaired = IsPaired && (pillar.Id == SitePillars.SummaId || pillar.Id == SitePillars.BibleId);
+            @if (isPaired && pillar.Id == SitePillars.BibleId)
+            {
+                continue;
+            }
+            @if (isPaired)
+            {
+                <li class="pillarnav__item pillarnav__pair" role="group" aria-label="Scripture and doctrine">
+                    @foreach (var half in PairedPillars)
+                    {
+                        var halfActive = half.Id == _activeId;
+                        <a class="pillarnav__link pillarnav__pair-half @(halfActive ? "pillarnav__link--active" : "")"
+                           href="@half.Href"
+                           aria-current="@(halfActive ? "page" : null)"
+                           data-short="@half.ShortLabelOrFull"
+                           @onclick="MarkTopLevel">
+                            @half.Label
+                        </a>
+                    }
+                </li>
+            }
+            else if (pillar.Id == SitePillars.DiscoverId)
             {
                 <li class="pillarnav__item pillarnav__item--menu">
                     <button type="button"
@@ -72,6 +93,15 @@
                 || Features.ArticlesFeature || Features.LiturgyOfTheHoursFeature),
         _ => true,
     };
+
+    // When both are enabled, Scripture and the Summa share one split capsule (Summa left, Bible right) to read as two sides of one coin.
+    private bool IsPaired => Features.BiblePillar && Features.SummaPillar;
+
+    private static IEnumerable<SitePillars.Pillar> PairedPillars =>
+    [
+        SitePillars.Items.First(p => p.Id == SitePillars.SummaId),
+        SitePillars.Items.First(p => p.Id == SitePillars.BibleId),
+    ];
 
     protected override void OnInitialized()
     {

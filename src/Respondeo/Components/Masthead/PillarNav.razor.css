@@ -18,6 +18,22 @@
     z-index: 2;
 }
 
+/* With the Summa|Bible capsule present, lay out as [before | pair | after] with equal side tracks
+   so the divider between Summa and Bible sits at the exact horizontal center. */
+.pillarnav__list--paired {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+}
+
+.pillarnav__list--paired > .pillarnav__item:has(~ .pillarnav__pair) {
+    justify-self: end;
+}
+
+.pillarnav__list--paired > .pillarnav__pair ~ .pillarnav__item {
+    justify-self: start;
+}
+
 .pillarnav__item {
     display: flex;
 }
@@ -52,6 +68,35 @@
 .pillarnav__link--active:hover {
     color: var(--masthead-fg);
     border-color: var(--accent);
+}
+
+/* Summa | Bible split capsule: one outlined pill divided into two equal, independently active halves. */
+.pillarnav__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--masthead-rule);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.pillarnav__pair-half {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: 0;
+    border-radius: 0;
+}
+
+.pillarnav__pair-half + .pillarnav__pair-half {
+    border-left: 1px solid var(--masthead-rule);
+}
+
+.pillarnav__pair-half:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.pillarnav__pair-half.pillarnav__link--active {
+    background: var(--accent);
 }
 
 /* Discover dropdown toggle and menu. */
