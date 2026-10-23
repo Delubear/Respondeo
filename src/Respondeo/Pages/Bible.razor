@@ -2,6 +2,8 @@
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
+@inject BrowseState Browse
+@inject BrowseStateInterop BrowseJs
 
 <PageShell Title="Holy Bible" Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
 
@@ -61,12 +63,12 @@
     }
     else
     {
-        <div class="bible__browse">
+        <div class="bible__browse" data-browse-scroll="bible">
             @foreach (var (testament, title) in Parts)
             {
                 var books = _translation.Books().Where(b => b.Testament == testament).ToList();
                 if (books.Count == 0) continue;
-                <details class="bible__part" open="@(testament != BibleTestament.Appendix)">
+                <details class="bible__part" data-browse-section="@testament" open="@IsPartOpen(testament)">
                     <summary class="bible__part-summary">
                         <span class="bible__part-title">@title</span>
                         <span class="bible__part-count">@books.Count books</span>
@@ -133,13 +135,31 @@
         _ => "Appendix (non-canonical)",
     };
 
-    private string _query = "";
+    // The search text lives in the scoped browse state so it survives drilling into a book and pressing Back; this property is just a convenient proxy.
+    private string _query
+    {
+        get => _browse.Query;
+        set => _browse.Query = value;
+    }
+
+    private BrowseSection _browse = default!;
+
+    // Snapshot of which parts were open when this page mounted, or null to use the defaults; never changes afterward.
+    private HashSet<string>? _openOnMount;
 
     private bool IsSearching => !string.IsNullOrWhiteSpace(_query);
 
+    private bool IsPartOpen(BibleTestament testament) => _openOnMount?.Contains(testament.ToString()) ?? testament != BibleTestament.Appendix;
+
     protected override async Task OnInitializedAsync()
     {
-        _query = LinkQuery ?? "";
+        _browse = Browse.Section("bible", () => BrowseJs.ClearAsync("bible"));
+        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>());
+        if (await BrowseJs.GetOpenAsync("bible") is { Length: > 0 } open)
+        {
+            _openOnMount = new HashSet<string>(open, StringComparer.Ordinal);
+        }
+
         await Translations.InitializeAsync();
         if (BibleTranslations.Parse(TranslationCode) is { } requested && requested != Translations.Current)
         {
@@ -148,6 +168,14 @@
 
         _translation = Translations.Current;
         await Trail.ClearAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowseJs.RestoreScrollAsync("bible");
+        }
     }
 
     private void OnSearchChanged(string value) => _query = value ?? "";
