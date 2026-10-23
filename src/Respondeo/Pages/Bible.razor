@@ -3,8 +3,7 @@
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
 
-<PageShell Title="Holy Bible"
-           Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
+<PageShell Title="Holy Bible" Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
 
 <section class="pillar">
     <PillarHeader Eyebrow="@_translation.ShortName()" Title="Holy Bible">
@@ -16,8 +15,7 @@
 
     <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
 
-    <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..."
-               Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
+    <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..." Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
     <OfflinePackNotice Pack="@OfflinePacks.Bible" Label="Bible" />
 
     @if (IsSearching)
