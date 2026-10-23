@@ -6,6 +6,7 @@ using NSubstitute;
 using Respondeo.Content.Summa;
 using Respondeo.Content.Summa.Contracts;
 using Respondeo.Services;
+using Respondeo.Services.Interop;
 using Respondeo.UnitTests.TestSupport;
 using SummaPage = Respondeo.Pages.Summa;
 
@@ -59,6 +60,8 @@ public class SummaTests : TestContext
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<SummaSearch>();
         Services.AddScoped<DialogInterop>();
+        Services.AddScoped<OfflinePacksInterop>();
+        Services.AddScoped<OfflinePacks>();
     }
 
     [Fact]
