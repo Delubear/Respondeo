@@ -246,6 +246,13 @@
     outline: none;
 }
 
+/* The <main> landmark (tabindex="-1") is only ever focused programmatically; on a fresh page load
+    browsers treat that focus as :focus-visible and draw a ring whose top edge shows under the masthead. */
+#content:focus,
+#content:focus-visible {
+    outline: none;
+}
+
 html, body {
     margin: 0;
     padding: 0;
