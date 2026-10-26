@@ -69,15 +69,22 @@ function packCacheName(pack) {
 
 // The small Summa index stays in the core cache so the question list and title search work offline
 // even without the pack; only the question bodies are opt-in.
+// Each Bible translation's manifest.json likewise stays in the versioned core cache so book/chapter counts
+// always match the deployed code instead of a stale pack copy.
 const corePackExceptions = ['_content/Respondeo.Content.Summa/summa/summa-index.json'];
 
+function isCorePackException(url) {
+    return corePackExceptions.includes(url) ||
+        packs.bible.some(prefix => url === `${prefix}manifest.json`);
+}
+
 function isPackAsset(url) {
-    return !corePackExceptions.includes(url) && Object.values(packs).flat().some(prefix => url.startsWith(prefix));
+    return !isCorePackException(url) && Object.values(packs).flat().some(prefix => url.startsWith(prefix));
 }
 
 function packAssets(pack) {
     return self.assetsManifest.assets.filter(asset =>
-        packs[pack].some(prefix => asset.url.startsWith(prefix)) && !corePackExceptions.includes(asset.url));
+        asset.url.startsWith(prefix)) && !isCorePackException(asset.url));
 }
 
 async function postToClients(message) {
