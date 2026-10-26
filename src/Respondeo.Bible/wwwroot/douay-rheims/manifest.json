@@ -1,8 +1,9 @@
-﻿{
+{
     "books":  {
                   "genesis":  {
                                   "file":  "genesis.json",
                                   "name":  "Genesis",
+                                  "chapters":  50,
                                   "abbreviations":  [
                                                         "gen",
                                                         "gn",
@@ -12,6 +13,7 @@
                   "exodus":  {
                                  "file":  "exodus.json",
                                  "name":  "Exodus",
+                                 "chapters":  40,
                                  "abbreviations":  [
                                                        "ex",
                                                        "exod",
@@ -21,6 +23,7 @@
                   "leviticus":  {
                                     "file":  "leviticus.json",
                                     "name":  "Leviticus",
+                                    "chapters":  27,
                                     "abbreviations":  [
                                                           "lev",
                                                           "lv"
@@ -29,6 +32,7 @@
                   "numbers":  {
                                   "file":  "numbers.json",
                                   "name":  "Numbers",
+                                  "chapters":  36,
                                   "abbreviations":  [
                                                         "num",
                                                         "nm",
@@ -38,6 +42,7 @@
                   "deuteronomy":  {
                                       "file":  "deuteronomy.json",
                                       "name":  "Deuteronomy",
+                                      "chapters":  34,
                                       "abbreviations":  [
                                                             "deut",
                                                             "dt",
@@ -47,6 +52,7 @@
                   "joshua":  {
                                  "file":  "josue.json",
                                  "name":  "Josue",
+                                 "chapters":  24,
                                  "abbreviations":  [
                                                        "jos",
                                                        "josh"
@@ -55,6 +61,7 @@
                   "judges":  {
                                  "file":  "judges.json",
                                  "name":  "Judges",
+                                 "chapters":  21,
                                  "abbreviations":  [
                                                        "judg",
                                                        "jdg",
@@ -64,6 +71,7 @@
                   "ruth":  {
                                "file":  "ruth.json",
                                "name":  "Ruth",
+                               "chapters":  4,
                                "abbreviations":  [
                                                      "ru",
                                                      "rth"
@@ -72,6 +80,7 @@
                   "1-samuel":  {
                                    "file":  "1-kings.json",
                                    "name":  "1 Kings",
+                                   "chapters":  31,
                                    "abbreviations":  [
                                                          "1kgs",
                                                          "1sam",
@@ -82,6 +91,7 @@
                   "2-samuel":  {
                                    "file":  "2-kings.json",
                                    "name":  "2 Kings",
+                                   "chapters":  24,
                                    "abbreviations":  [
                                                          "2kgs",
                                                          "2sam",
@@ -92,6 +102,7 @@
                   "1-kings":  {
                                   "file":  "3-kings.json",
                                   "name":  "3 Kings",
+                                  "chapters":  22,
                                   "abbreviations":  [
                                                         "3kgs"
                                                     ]
@@ -99,6 +110,7 @@
                   "2-kings":  {
                                   "file":  "4-kings.json",
                                   "name":  "4 Kings",
+                                  "chapters":  25,
                                   "abbreviations":  [
                                                         "4kgs"
                                                     ]
@@ -106,6 +118,7 @@
                   "1-chronicles":  {
                                        "file":  "1-paralipomenon.json",
                                        "name":  "1 Paralipomenon",
+                                       "chapters":  29,
                                        "abbreviations":  [
                                                              "1par",
                                                              "1chr",
@@ -115,6 +128,7 @@
                   "2-chronicles":  {
                                        "file":  "2-paralipomenon.json",
                                        "name":  "2 Paralipomenon",
+                                       "chapters":  36,
                                        "abbreviations":  [
                                                              "2par",
                                                              "2chr",
@@ -124,6 +138,7 @@
                   "ezra":  {
                                "file":  "1-esdras.json",
                                "name":  "1 Esdras",
+                               "chapters":  10,
                                "abbreviations":  [
                                                      "1esd",
                                                      "ezr"
@@ -132,6 +147,7 @@
                   "nehemiah":  {
                                    "file":  "2-esdras.json",
                                    "name":  "2 Esdras",
+                                   "chapters":  13,
                                    "abbreviations":  [
                                                          "2esd",
                                                          "neh"
@@ -140,6 +156,7 @@
                   "tobit":  {
                                 "file":  "tobias.json",
                                 "name":  "Tobias",
+                                "chapters":  14,
                                 "abbreviations":  [
                                                       "tob",
                                                       "tb"
@@ -148,6 +165,7 @@
                   "judith":  {
                                  "file":  "judith.json",
                                  "name":  "Judith",
+                                 "chapters":  16,
                                  "abbreviations":  [
                                                        "jdt",
                                                        "jud"
@@ -156,6 +174,7 @@
                   "esther":  {
                                  "file":  "esther.json",
                                  "name":  "Esther",
+                                 "chapters":  16,
                                  "abbreviations":  [
                                                        "est",
                                                        "esth"
@@ -164,6 +183,7 @@
                   "job":  {
                               "file":  "job.json",
                               "name":  "Job",
+                              "chapters":  42,
                               "abbreviations":  [
                                                     "jb"
                                                 ]
@@ -171,6 +191,7 @@
                   "psalms":  {
                                  "file":  "psalms.json",
                                  "name":  "Psalms",
+                                 "chapters":  150,
                                  "abbreviations":  [
                                                        "ps",
                                                        "psa",
@@ -181,6 +202,7 @@
                   "proverbs":  {
                                    "file":  "proverbs.json",
                                    "name":  "Proverbs",
+                                   "chapters":  31,
                                    "abbreviations":  [
                                                          "prov",
                                                          "prv",
@@ -190,6 +212,7 @@
                   "ecclesiastes":  {
                                        "file":  "ecclesiastes.json",
                                        "name":  "Ecclesiastes",
+                                       "chapters":  12,
                                        "abbreviations":  [
                                                              "eccl",
                                                              "eccles",
@@ -200,6 +223,7 @@
                   "song-of-songs":  {
                                         "file":  "canticle-of-canticles.json",
                                         "name":  "Canticle of Canticles",
+                                        "chapters":  8,
                                         "abbreviations":  [
                                                               "cant",
                                                               "song",
@@ -210,6 +234,7 @@
                   "wisdom":  {
                                  "file":  "wisdom.json",
                                  "name":  "Wisdom",
+                                 "chapters":  19,
                                  "abbreviations":  [
                                                        "wis",
                                                        "ws"
@@ -218,6 +243,7 @@
                   "sirach":  {
                                  "file":  "ecclesiasticus.json",
                                  "name":  "Ecclesiasticus",
+                                 "chapters":  51,
                                  "abbreviations":  [
                                                        "sir",
                                                        "ecclus"
@@ -226,6 +252,7 @@
                   "isaiah":  {
                                  "file":  "isaie.json",
                                  "name":  "Isaias",
+                                 "chapters":  66,
                                  "abbreviations":  [
                                                        "is",
                                                        "isa"
@@ -234,6 +261,7 @@
                   "jeremiah":  {
                                    "file":  "jeremie.json",
                                    "name":  "Jeremias",
+                                   "chapters":  52,
                                    "abbreviations":  [
                                                          "jer",
                                                          "jr"
@@ -242,6 +270,7 @@
                   "lamentations":  {
                                        "file":  "lamentations.json",
                                        "name":  "Lamentations",
+                                       "chapters":  5,
                                        "abbreviations":  [
                                                              "lam",
                                                              "la"
@@ -250,6 +279,7 @@
                   "baruch":  {
                                  "file":  "baruch.json",
                                  "name":  "Baruch",
+                                 "chapters":  6,
                                  "abbreviations":  [
                                                        "bar",
                                                        "ba"
@@ -258,6 +288,7 @@
                   "ezekiel":  {
                                   "file":  "ezechiel.json",
                                   "name":  "Ezechiel",
+                                  "chapters":  48,
                                   "abbreviations":  [
                                                         "ez",
                                                         "ezek",
@@ -267,6 +298,7 @@
                   "daniel":  {
                                  "file":  "daniel.json",
                                  "name":  "Daniel",
+                                 "chapters":  14,
                                  "abbreviations":  [
                                                        "dan",
                                                        "dn"
@@ -275,6 +307,7 @@
                   "hosea":  {
                                 "file":  "osee.json",
                                 "name":  "Osee",
+                                "chapters":  14,
                                 "abbreviations":  [
                                                       "os",
                                                       "hos"
@@ -283,6 +316,7 @@
                   "joel":  {
                                "file":  "joel.json",
                                "name":  "Joel",
+                               "chapters":  3,
                                "abbreviations":  [
                                                      "jl"
                                                  ]
@@ -290,6 +324,7 @@
                   "amos":  {
                                "file":  "amos.json",
                                "name":  "Amos",
+                               "chapters":  9,
                                "abbreviations":  [
                                                      "am"
                                                  ]
@@ -297,6 +332,7 @@
                   "obadiah":  {
                                   "file":  "abdias.json",
                                   "name":  "Abdias",
+                                  "chapters":  1,
                                   "abbreviations":  [
                                                         "abd",
                                                         "obad",
@@ -306,6 +342,7 @@
                   "jonah":  {
                                 "file":  "jonas.json",
                                 "name":  "Jonas",
+                                "chapters":  4,
                                 "abbreviations":  [
                                                       "jon"
                                                   ]
@@ -313,6 +350,7 @@
                   "micah":  {
                                 "file":  "micheas.json",
                                 "name":  "Micheas",
+                                "chapters":  7,
                                 "abbreviations":  [
                                                       "mic",
                                                       "mi"
@@ -321,6 +359,7 @@
                   "nahum":  {
                                 "file":  "nahum.json",
                                 "name":  "Nahum",
+                                "chapters":  3,
                                 "abbreviations":  [
                                                       "na",
                                                       "nah"
@@ -329,6 +368,7 @@
                   "habakkuk":  {
                                    "file":  "habacuc.json",
                                    "name":  "Habacuc",
+                                   "chapters":  3,
                                    "abbreviations":  [
                                                          "hab",
                                                          "hb"
@@ -337,6 +377,7 @@
                   "zephaniah":  {
                                     "file":  "sophonias.json",
                                     "name":  "Sophonias",
+                                    "chapters":  3,
                                     "abbreviations":  [
                                                           "soph",
                                                           "zeph",
@@ -346,6 +387,7 @@
                   "haggai":  {
                                  "file":  "aggeus.json",
                                  "name":  "Aggeus",
+                                 "chapters":  2,
                                  "abbreviations":  [
                                                        "agg",
                                                        "hag",
@@ -355,6 +397,7 @@
                   "zechariah":  {
                                     "file":  "zacharias.json",
                                     "name":  "Zacharias",
+                                    "chapters":  14,
                                     "abbreviations":  [
                                                           "zach",
                                                           "zech",
@@ -364,6 +407,7 @@
                   "malachi":  {
                                   "file":  "malachie.json",
                                   "name":  "Malachias",
+                                  "chapters":  4,
                                   "abbreviations":  [
                                                         "mal"
                                                     ]
@@ -371,6 +415,7 @@
                   "1-maccabees":  {
                                       "file":  "1-machabees.json",
                                       "name":  "1 Machabees",
+                                      "chapters":  16,
                                       "abbreviations":  [
                                                             "1mac",
                                                             "1macc",
@@ -380,6 +425,7 @@
                   "2-maccabees":  {
                                       "file":  "2-machabees.json",
                                       "name":  "2 Machabees",
+                                      "chapters":  15,
                                       "abbreviations":  [
                                                             "2mac",
                                                             "2macc",
@@ -389,6 +435,7 @@
                   "matthew":  {
                                   "file":  "matthew.json",
                                   "name":  "Matthew",
+                                  "chapters":  28,
                                   "abbreviations":  [
                                                         "mt",
                                                         "matt",
@@ -398,6 +445,7 @@
                   "mark":  {
                                "file":  "mark.json",
                                "name":  "Mark",
+                               "chapters":  16,
                                "abbreviations":  [
                                                      "mk",
                                                      "mar",
@@ -407,6 +455,7 @@
                   "luke":  {
                                "file":  "luke.json",
                                "name":  "Luke",
+                               "chapters":  24,
                                "abbreviations":  [
                                                      "lk",
                                                      "luk"
@@ -415,6 +464,7 @@
                   "john":  {
                                "file":  "john.json",
                                "name":  "John",
+                               "chapters":  21,
                                "abbreviations":  [
                                                      "jn",
                                                      "joh",
@@ -424,6 +474,7 @@
                   "acts":  {
                                "file":  "acts.json",
                                "name":  "Acts",
+                               "chapters":  28,
                                "abbreviations":  [
                                                      "ac",
                                                      "act"
@@ -432,6 +483,7 @@
                   "romans":  {
                                  "file":  "romans.json",
                                  "name":  "Romans",
+                                 "chapters":  16,
                                  "abbreviations":  [
                                                        "rom",
                                                        "rm",
@@ -441,6 +493,7 @@
                   "1-corinthians":  {
                                         "file":  "1-corinthians.json",
                                         "name":  "1 Corinthians",
+                                        "chapters":  16,
                                         "abbreviations":  [
                                                               "1cor",
                                                               "1co"
@@ -449,6 +502,7 @@
                   "2-corinthians":  {
                                         "file":  "2-corinthians.json",
                                         "name":  "2 Corinthians",
+                                        "chapters":  13,
                                         "abbreviations":  [
                                                               "2cor",
                                                               "2co"
@@ -457,6 +511,7 @@
                   "galatians":  {
                                     "file":  "galatians.json",
                                     "name":  "Galatians",
+                                    "chapters":  6,
                                     "abbreviations":  [
                                                           "gal",
                                                           "ga"
@@ -465,6 +520,7 @@
                   "ephesians":  {
                                     "file":  "ephesians.json",
                                     "name":  "Ephesians",
+                                    "chapters":  6,
                                     "abbreviations":  [
                                                           "eph"
                                                       ]
@@ -472,6 +528,7 @@
                   "philippians":  {
                                       "file":  "philippians.json",
                                       "name":  "Philippians",
+                                      "chapters":  4,
                                       "abbreviations":  [
                                                             "phil",
                                                             "php"
@@ -480,6 +537,7 @@
                   "colossians":  {
                                      "file":  "colossians.json",
                                      "name":  "Colossians",
+                                     "chapters":  4,
                                      "abbreviations":  [
                                                            "col"
                                                        ]
@@ -487,6 +545,7 @@
                   "1-thessalonians":  {
                                           "file":  "1-thessalonians.json",
                                           "name":  "1 Thessalonians",
+                                          "chapters":  5,
                                           "abbreviations":  [
                                                                 "1thess",
                                                                 "1thes",
@@ -496,6 +555,7 @@
                   "2-thessalonians":  {
                                           "file":  "2-thessalonians.json",
                                           "name":  "2 Thessalonians",
+                                          "chapters":  3,
                                           "abbreviations":  [
                                                                 "2thess",
                                                                 "2thes",
@@ -505,6 +565,7 @@
                   "1-timothy":  {
                                     "file":  "1-timothy.json",
                                     "name":  "1 Timothy",
+                                    "chapters":  6,
                                     "abbreviations":  [
                                                           "1tim",
                                                           "1tm"
@@ -513,6 +574,7 @@
                   "2-timothy":  {
                                     "file":  "2-timothy.json",
                                     "name":  "2 Timothy",
+                                    "chapters":  4,
                                     "abbreviations":  [
                                                           "2tim",
                                                           "2tm"
@@ -521,6 +583,7 @@
                   "titus":  {
                                 "file":  "titus.json",
                                 "name":  "Titus",
+                                "chapters":  3,
                                 "abbreviations":  [
                                                       "tit",
                                                       "ti"
@@ -529,6 +592,7 @@
                   "philemon":  {
                                    "file":  "philemon.json",
                                    "name":  "Philemon",
+                                   "chapters":  1,
                                    "abbreviations":  [
                                                          "phlm",
                                                          "philem",
@@ -538,6 +602,7 @@
                   "hebrews":  {
                                   "file":  "hebrews.json",
                                   "name":  "Hebrews",
+                                  "chapters":  13,
                                   "abbreviations":  [
                                                         "heb"
                                                     ]
@@ -545,6 +610,7 @@
                   "james":  {
                                 "file":  "james.json",
                                 "name":  "James",
+                                "chapters":  5,
                                 "abbreviations":  [
                                                       "jas",
                                                       "jm"
@@ -553,6 +619,7 @@
                   "1-peter":  {
                                   "file":  "1-peter.json",
                                   "name":  "1 Peter",
+                                  "chapters":  5,
                                   "abbreviations":  [
                                                         "1pet",
                                                         "1pt"
@@ -561,6 +628,7 @@
                   "2-peter":  {
                                   "file":  "2-peter.json",
                                   "name":  "2 Peter",
+                                  "chapters":  3,
                                   "abbreviations":  [
                                                         "2pet",
                                                         "2pt"
@@ -569,6 +637,7 @@
                   "1-john":  {
                                  "file":  "1-john.json",
                                  "name":  "1 John",
+                                 "chapters":  5,
                                  "abbreviations":  [
                                                        "1jn",
                                                        "1jo"
@@ -577,6 +646,7 @@
                   "2-john":  {
                                  "file":  "2-john.json",
                                  "name":  "2 John",
+                                 "chapters":  1,
                                  "abbreviations":  [
                                                        "2jn",
                                                        "2jo"
@@ -585,6 +655,7 @@
                   "3-john":  {
                                  "file":  "3-john.json",
                                  "name":  "3 John",
+                                 "chapters":  1,
                                  "abbreviations":  [
                                                        "3jn",
                                                        "3jo"
@@ -593,6 +664,7 @@
                   "jude":  {
                                "file":  "jude.json",
                                "name":  "Jude",
+                               "chapters":  1,
                                "abbreviations":  [
                                                      "jude",
                                                      "jd"
@@ -601,6 +673,7 @@
                   "revelation":  {
                                      "file":  "apocalypse.json",
                                      "name":  "Apocalypse",
+                                     "chapters":  22,
                                      "abbreviations":  [
                                                            "apoc",
                                                            "ap",
@@ -612,6 +685,7 @@
                   "prayer-of-manasses":  {
                                              "file":  "prayer-of-manasses.json",
                                              "name":  "Prayer of Manasses",
+                                             "chapters":  1,
                                              "abbreviations":  [
                                                                    "prman",
                                                                    "manasses",
@@ -621,6 +695,7 @@
                   "3-esdras":  {
                                    "file":  "3-esdras.json",
                                    "name":  "3 Esdras",
+                                   "chapters":  9,
                                    "abbreviations":  [
                                                          "3esd"
                                                      ]
@@ -628,6 +703,7 @@
                   "4-esdras":  {
                                    "file":  "4-esdras.json",
                                    "name":  "4 Esdras",
+                                   "chapters":  16,
                                    "abbreviations":  [
                                                          "4esd"
                                                      ]

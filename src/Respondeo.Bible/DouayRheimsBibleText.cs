@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using System.Text;
-using Respondeo.Bible.Contracts;
 
 namespace Respondeo.Bible;
 
