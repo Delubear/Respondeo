@@ -5,8 +5,9 @@
 @inject NavigationInterop Navigation
 @inject IBibleTranslationService Translations
 @inject NavigationManager Nav
+@inject IBibleTranslations AllTranslations
 
-<PageShell Description="@($"{Heading} in the {_translation.Name()}.")" 
+<PageShell Description="@($"{Heading} in the {_translation?.Name}.")" 
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
            StageHref="bible" StageLabel="Holy Bible" />
 
@@ -14,16 +15,16 @@
 {
     <Loading>Opening the Scriptures&hellip;</Loading>
 }
-else if (_book is null || (_verses is null && !_unavailable))
+else if (_translation is null || _book is null || (_verses is null && !_unavailable))
 {
     <ItemNotFound Title="Chapter not found" BackHref="bible" BackLabel="Return to the Bible" Class="content-article--empty">
-        That chapter is not part of the @_translation.Name().
+        That chapter is not part of the @(_translation?.Name ?? "Bible").
     </ItemNotFound>
 }
 else
 {
     <article class="content-article">
-        <PillarHeader Eyebrow="@(_translation.BookNameClarification(_book) is { } modern ? $"{_translation.ShortName()} · {modern}" : _translation.ShortName())" Title="@Heading" />
+        <PillarHeader Eyebrow="@(_translation.BookNameClarification(_book) is { } modern ? $"{_translation.ShortName} · {modern}" : _translation.ShortName)" Title="@Heading" />
         <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
         <BibleChapterNav Book="_book" Translation="_translation" Current="Chapter" />
 
@@ -47,7 +48,7 @@ else
     [Parameter] public string TranslationCode { get; set; } = "";
 
     private bool _translationLoaded;
-    private BibleTranslation _translation;
+    private BibleTranslation? _translation;
     private bool _unavailable;
 
     private bool _pendingScroll;
@@ -57,11 +58,11 @@ else
     private IReadOnlyList<BibleVerse>? _verses;
     private bool _loading = true;
 
-    private string? Heading => _book is null ? null : $"{_translation.BookName(_book)} {Chapter}";
+    private string? Heading => _book is null || _translation is null ? null : $"{_translation.BookName(_book)} {Chapter}";
 
-    private ChapterLink? Previous => _book is null ? null : BibleChapterNavigation.Previous(_book, Chapter, _translation);
+    private ChapterLink? Previous => _book is null || _translation is null ? null : BibleChapterNavigation.Previous(_book, Chapter, _translation);
 
-    private ChapterLink? Next => _book is null ? null : BibleChapterNavigation.Next(_book, Chapter, _translation);
+    private ChapterLink? Next => _book is null || _translation is null ? null : BibleChapterNavigation.Next(_book, Chapter, _translation);
 
     protected override async Task OnInitializedAsync() => await Trail.ClearAsync();
 
@@ -75,7 +76,7 @@ else
             _translationLoaded = true;
         }
 
-        if (BibleTranslations.Parse(TranslationCode) is not { } requested)
+        if (await AllTranslations.FindAsync(TranslationCode) is not { } requested)
         {
             _book = null;
             _verses = null;

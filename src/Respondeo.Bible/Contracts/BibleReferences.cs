@@ -33,6 +33,6 @@ public static class BibleReferences
             _ => number,
         };
 
-        return douay == number ? null : $"Psalm {douay} ({DouayRheimsBibleText.TranslationName})";
+        return douay == number ? null : $"Psalm {douay} (Douay-Rheims)";
     }
 }

@@ -1,33 +1,28 @@
 using System.Text.Json;
 using Respondeo.Bible;
 using Respondeo.Bible.Contracts;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Bible;
 
 public class BibleTranslationTests
 {
     [Theory]
-    [InlineData("cpdv", BibleTranslation.Cpdv)]
-    [InlineData("CPDV", BibleTranslation.Cpdv)]
-    [InlineData("drb", BibleTranslation.DouayRheims)]
-    [InlineData("douay-rheims", BibleTranslation.DouayRheims)]
-    public void Parse_KnownCodes(string code, BibleTranslation expected) =>
-        Assert.Equal(expected, BibleTranslations.Parse(code));
+    [InlineData("cpdv", "cpdv")]
+    [InlineData("CPDV", "cpdv")]
+    [InlineData("drb", "drb")]
+    [InlineData("douay-rheims", "drb")]
+    public void Find_KnownCodes(string code, string expected) =>
+        Assert.Equal(expected, TestBible.All.Single(t => t.Matches(code)).Code);
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData("kjv")]
-    public void Parse_UnknownCodes_ReturnsNull(string? code) => Assert.Null(BibleTranslations.Parse(code));
+    public void Find_UnknownCodes_ReturnsNull(string? code) => Assert.DoesNotContain(TestBible.All, t => t.Matches(code));
 
     [Fact]
-    public void Codes_RoundTrip()
-    {
-        foreach (var translation in BibleTranslations.All)
-        {
-            Assert.Equal(translation, BibleTranslations.Parse(translation.Code()));
-        }
-    }
+    public void Default_IsDouayRheims() => Assert.Equal("drb", TestBible.All[0].Code);
 
     [Fact]
     public void CpdvData_CoversEveryCanonicalBook()

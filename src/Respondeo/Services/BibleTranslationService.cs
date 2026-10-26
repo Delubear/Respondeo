@@ -21,21 +21,21 @@ public interface IBibleTranslationService
 }
 
 /// <summary>An <see cref="IBibleTranslationService"/> backed by <c>localStorage</c>, modeled on <see cref="Prayers.PrayerLanguageService"/>.</summary>
-public sealed class BibleTranslationService(IJSRuntime js) : IBibleTranslationService
+public sealed class BibleTranslationService(IJSRuntime js, IBibleTranslations translations) : IBibleTranslationService
 {
     private const string StorageKey = "respondeo.bibleTranslation";
     private readonly LocalStorage _storage = new(js);
 
-    public BibleTranslation Current { get; private set; }
+    public BibleTranslation Current { get; private set; } = default!;
 
     public async Task InitializeAsync()
     {
-        Current = BibleTranslations.Parse(await _storage.GetAsync(StorageKey)) ?? BibleTranslation.DouayRheims;
+        Current = await translations.FindAsync(await _storage.GetAsync(StorageKey)) ?? await translations.GetDefaultAsync();
     }
 
     public async Task SetAsync(BibleTranslation translation)
     {
         Current = translation;
-        await _storage.SetAsync(StorageKey, translation.Code());
+        await _storage.SetAsync(StorageKey, translation.Code);
     }
 }

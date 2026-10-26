@@ -11,11 +11,8 @@ public interface IBibleText
     Task<string?> GetPassageAsync(string citation);
 
     /// <summary>
-    /// Returns every verse of one chapter of a book (see <see cref="BibleBooks"/>) in the chosen translation,
+    /// Returns every verse of one chapter of a book (see <see cref="BibleBooks"/>) in the chosen translation (the default when <c>null</c>),
     /// or <c>null</c> when it cannot be loaded or that translation lacks the chapter.
     /// </summary>
-    Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation translation = BibleTranslation.DouayRheims);
-
-    /// <summary>The book abbreviations declared in the translation's manifest, keyed by modern slug (empty when it cannot be loaded).</summary>
-    Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation);
+    Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation? translation = null);
 }

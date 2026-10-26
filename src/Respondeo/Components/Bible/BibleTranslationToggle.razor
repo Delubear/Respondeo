@@ -1,27 +1,22 @@
+@inject IBibleTranslations AllTranslations
 
 <div class="bible-translation">
-    <SegmentedToggle TValue="BibleTranslation" Options="BibleTranslations.All" Value="Value" ValueChanged="SelectAsync"
-                     Label="t => t.ShortName()" Title="t => t.Name()" AriaLabel="Bible translation" />
+    <SegmentedToggle TValue="BibleTranslation" Options="_all" Value="Value" ValueChanged="SelectAsync"
+                     Label="t => t.ShortName" Title="t => t.Name" AriaLabel="Bible translation" />
 </div>
-@if (Value == BibleTranslation.Cpdv)
+@if (!string.IsNullOrEmpty(Value?.Description))
 {
-    <p class="bible-translation__note">
-        The Catholic Public Domain Version is a modern translation of the Vulgate by Ronald L. Conte Jr.
-        It is public domain but unofficial: it carries no imprimatur.
-    </p>
-}
-else
-{
-    <p class="bible-translation__note">
-        The Douay-Rheims is the classic English Catholic translation of the Latin Vulgate (1582-1610),
-        as revised by Bishop Challoner in the 1750s. It is public domain and approved for Catholic use.
-    </p>
+    <p class="bible-translation__note">@Value.Description</p>
 }
 
 @code {
-    [Parameter] public BibleTranslation Value { get; set; }
+    private IReadOnlyList<BibleTranslation> _all = [];
+
+    [Parameter] public BibleTranslation? Value { get; set; }
 
     [Parameter] public EventCallback<BibleTranslation> ValueChanged { get; set; }
+
+    protected override async Task OnInitializedAsync() => _all = await AllTranslations.GetAllAsync();
 
     private Task SelectAsync(BibleTranslation translation) => ValueChanged.InvokeAsync(translation);
 }

@@ -8,14 +8,13 @@ namespace Respondeo.Bible;
 /// Loads public-domain Bible text from the bundled per-book JSON files: the Douay-Rheims (CC0 dataset by janvier-s)
 /// and the Catholic Public Domain Version (yoarikso/cpdvbible), which share the same schema and book slugs.
 /// </summary>
-internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
+internal sealed class DouayRheimsBibleText(HttpClient http, IBibleTranslations translations) : IBibleText
 {
-    internal const string TranslationName = "Douay-Rheims";
-
     private readonly Dictionary<string, Task<BookFile?>> _books = [];
 
-    public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation translation = BibleTranslation.DouayRheims)
+    public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation? translation = null)
     {
+        translation ??= await translations.GetDefaultAsync();
         var known = BibleBooks.Find(bookSlug);
         if (known is null)
         {
@@ -43,7 +42,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         }
 
         var known = BibleBooks.Find(passage.BookSlug);
-        var book = known is null ? null : await LoadBookAsync(known.Slug, BibleTranslation.DouayRheims);
+        var book = known is null ? null : await LoadBookAsync(known.Slug, await translations.GetDefaultAsync());
         if (book?.Chapters is null)
         {
             return null;
@@ -69,19 +68,14 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         return text.Length == 0 ? null : text.ToString().TrimEnd();
     }
 
-    public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation) =>
-        Task.FromResult<IReadOnlyDictionary<string, IReadOnlyList<string>>>(BibleCatalog.Books(translation).ToDictionary(
-            kv => kv.Key,
-            kv => (IReadOnlyList<string>)(kv.Value.Abbreviations ?? []), StringComparer.Ordinal));
-
     private async Task<BookFile?> LoadBookAsync(string slug, BibleTranslation translation)
     {
-        if (!BibleCatalog.Books(translation).TryGetValue(slug, out var entry) || string.IsNullOrEmpty(entry.File))
+        if (!translation.Manifest.TryGetValue(slug, out var entry) || string.IsNullOrEmpty(entry.File))
         {
             return null;
         }
 
-        var path = $"{BibleCatalog.DataRoot}/{translation.Folder()}/{entry.File}";
+        var path = $"{BibleTranslationCatalog.DataRoot}/{translation.Folder}/{entry.File}";
         try
         {
             if (!_books.TryGetValue(path, out var load))

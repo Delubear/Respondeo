@@ -1,88 +1,106 @@
 namespace Respondeo.Bible.Contracts;
 
-using Respondeo.Bible;
-
-/// <summary>A bundled English translation of the Bible.</summary>
-public enum BibleTranslation
+/// <summary>
+/// A bundled Bible translation, described entirely by data: its metadata comes from <c>translations.json</c>
+/// and its books (names, chapter counts, abbreviations, files) from <c>{Folder}/manifest.json</c>.
+/// </summary>
+public sealed class BibleTranslation : IEquatable<BibleTranslation>
 {
-    /// <summary>The Douay-Rheims Bible, Challoner revision (the default).</summary>
-    DouayRheims,
+    private readonly IReadOnlyDictionary<string, BibleTranslationBook> _books;
 
-    /// <summary>The Catholic Public Domain Version (Ronald L. Conte Jr.); unofficial, without an imprimatur.</summary>
-    Cpdv,
-}
-
-/// <summary>Display names, route codes, and data folders for each <see cref="BibleTranslation"/>.</summary>
-public static class BibleTranslations
-{
-    /// <summary>Every bundled translation, the default first.</summary>
-    public static readonly IReadOnlyList<BibleTranslation> All = [BibleTranslation.DouayRheims, BibleTranslation.Cpdv];
+    public BibleTranslation(
+        string code,
+        string name,
+        string shortName,
+        string folder,
+        string? description,
+        IReadOnlyList<string> aliases,
+        IReadOnlyDictionary<string, BibleTranslationBook> books)
+    {
+        Code = code;
+        Name = name;
+        ShortName = shortName;
+        Folder = folder;
+        Description = description;
+        Aliases = aliases;
+        _books = books;
+    }
 
     /// <summary>The short code used in route segments and stored preferences.</summary>
-    public static string Code(this BibleTranslation translation) => translation switch
-    {
-        BibleTranslation.Cpdv => "cpdv",
-        _ => "drb",
-    };
+    public string Code { get; }
 
     /// <summary>The full display name.</summary>
-    public static string Name(this BibleTranslation translation) => translation switch
-    {
-        BibleTranslation.Cpdv => "Catholic Public Domain Version",
-        _ => "Douay-Rheims",
-    };
+    public string Name { get; }
 
     /// <summary>The compact label shown in the translation toggle.</summary>
-    public static string ShortName(this BibleTranslation translation) => translation switch
-    {
-        BibleTranslation.Cpdv => "CPDV",
-        _ => "Douay-Rheims",
-    };
+    public string ShortName { get; }
 
-    /// <summary>The wwwroot folder holding the per-book JSON files.</summary>
-    internal static string Folder(this BibleTranslation translation) => translation switch
+    /// <summary>The folder (under the Bible static assets) holding the manifest and per-book JSON files.</summary>
+    public string Folder { get; }
+
+    /// <summary>A short description of the translation's provenance, or <c>null</c>.</summary>
+    public string? Description { get; }
+
+    /// <summary>Additional codes that resolve to this translation.</summary>
+    public IReadOnlyList<string> Aliases { get; }
+
+    /// <summary>Whether <paramref name="code"/> is this translation's code or one of its aliases.</summary>
+    public bool Matches(string? code)
     {
-        BibleTranslation.Cpdv => "cpdv",
-        _ => "douay-rheims",
-    };
+        var value = code?.Trim();
+        return !string.IsNullOrEmpty(value) &&
+            (string.Equals(Code, value, StringComparison.OrdinalIgnoreCase) ||
+             Aliases.Any(a => string.Equals(a, value, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    /// <summary>The manifest entry for the book, or <c>null</c> when the translation lacks it.</summary>
+    public BibleTranslationBook? Entry(BibleBook book) => _books.TryGetValue(book.Slug, out var entry) ? entry : null;
+
+    /// <summary>Every book in the manifest, keyed by modern slug.</summary>
+    public IReadOnlyDictionary<string, BibleTranslationBook> Manifest => _books;
 
     /// <summary>Whether the translation's manifest includes the book.</summary>
-    public static bool Contains(this BibleTranslation translation, BibleBook book) => BibleCatalog.Entry(translation, book) is not null;
+    public bool Contains(BibleBook book) => Entry(book) is not null;
 
     /// <summary>The number of chapters the translation has for the book (0 when the book is absent).</summary>
-    public static int ChapterCount(this BibleTranslation translation, BibleBook book) =>
-        BibleCatalog.Entry(translation, book) is { } entry ? entry.Chapters ?? book.ChapterCount : 0;
+    public int ChapterCount(BibleBook book) => Entry(book) is { } entry ? entry.Chapters ?? book.ChapterCount : 0;
 
     /// <summary>The book's name as the translation's manifest titles it.</summary>
-    public static string BookName(this BibleTranslation translation, BibleBook book) =>
-        BibleCatalog.Entry(translation, book)?.Name ?? book.DisplayName;
+    public string BookName(BibleBook book) => Entry(book)?.Name ?? book.DisplayName;
 
     /// <summary>
     /// The common modern name to show alongside a title that differs from it (e.g. "3 Kings" is 1 Kings, "Josue" is Joshua), or <c>null</c> when the names match.
     /// </summary>
-    public static string? BookNameClarification(this BibleTranslation translation, BibleBook book) =>
-        string.Equals(translation.BookName(book), book.DisplayName, StringComparison.Ordinal) ? null : book.DisplayName;
+    public string? BookNameClarification(BibleBook book) =>
+        string.Equals(BookName(book), book.DisplayName, StringComparison.Ordinal) ? null : book.DisplayName;
 
     /// <summary>The books the translation includes, in canonical order.</summary>
-    public static IReadOnlyList<BibleBook> Books(this BibleTranslation translation) => BibleBooks.All.Where(b => translation.Contains(b)).ToList();
-
-    /// <summary>Parses a <see cref="Code"/>, returning <c>null</c> when it is unknown.</summary>
-    public static BibleTranslation? Parse(string? code) => code?.Trim().ToLowerInvariant() switch
-    {
-        "cpdv" => BibleTranslation.Cpdv,
-        "drb" or "dr" or "douay-rheims" => BibleTranslation.DouayRheims,
-        _ => null,
-    };
+    public IReadOnlyList<BibleBook> Books() => BibleBooks.All.Where(Contains).ToList();
 
     /// <summary>The book's route slug in this translation, derived from the name its manifest gives the book.</summary>
-    public static string Slug(this BibleTranslation translation, BibleBook book) =>
-        translation.BookName(book).ToLowerInvariant().Replace(' ', '-');
+    public string Slug(BibleBook book) => BookName(book).ToLowerInvariant().Replace(' ', '-');
 
     /// <summary>Finds a book by its route slug in this translation, or <c>null</c> when the slug is unknown.</summary>
-    public static BibleBook? FindBook(this BibleTranslation translation, string? slug) =>
-        BibleBooks.All.FirstOrDefault(b => string.Equals(translation.Slug(b), slug, StringComparison.OrdinalIgnoreCase));
+    public BibleBook? FindBook(string? slug) =>
+        BibleBooks.All.FirstOrDefault(b => string.Equals(Slug(b), slug, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>The relative link to a book's chapter in this translation, optionally selecting verses.</summary>
-    public static string ChapterHref(this BibleTranslation translation, BibleBook book, int chapter, string? verses = null) =>
-        $"bible/{translation.Code()}/{translation.Slug(book)}/{chapter}" + (string.IsNullOrEmpty(verses) ? "" : $"?v={verses}");
+    public string ChapterHref(BibleBook book, int chapter, string? verses = null) =>
+        $"bible/{Code}/{Slug(book)}/{chapter}" + (string.IsNullOrEmpty(verses) ? "" : $"?v={verses}");
+
+    public bool Equals(BibleTranslation? other) =>
+        other is not null && string.Equals(Code, other.Code, StringComparison.OrdinalIgnoreCase);
+
+    public override bool Equals(object? obj) => Equals(obj as BibleTranslation);
+
+    public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Code);
+
+    public override string ToString() => Code;
+
+    public static bool operator ==(BibleTranslation? left, BibleTranslation? right) => left?.Equals(right) ?? right is null;
+
+    public static bool operator !=(BibleTranslation? left, BibleTranslation? right) => !(left == right);
 }
+
+/// <summary>One book's entry in a translation manifest.</summary>
+public sealed record BibleTranslationBook(string? File, string? Name, int? Chapters, IReadOnlyList<string>? Abbreviations);

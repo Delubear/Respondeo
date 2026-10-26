@@ -30,9 +30,4 @@ builder.Services
     .AddRespondeoToday()
     .AddRespondeoInterop();
 
-var host = builder.Build();
-
-// Translation catalogs (books, names, chapter counts, abbreviations) come from the bundled manifests.
-await Respondeo.Bible.BibleCatalog.LoadAsync(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-await host.RunAsync();
+await builder.Build().RunAsync();

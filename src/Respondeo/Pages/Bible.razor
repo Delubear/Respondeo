@@ -3,13 +3,13 @@
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
 @inject BrowseState Browse
-@inject IBibleText BibleText
+@inject IBibleTranslations AllTranslations
 @inject BrowseStateInterop BrowseJs
 
 <PageShell Title="Holy Bible" Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
 
 <section class="pillar">
-    <PillarHeader Eyebrow="@_translation.ShortName()" Title="Holy Bible">
+    <PillarHeader Eyebrow="@_translation?.ShortName" Title="Holy Bible">
         <Lede>
             The complete Catholic Bible, all 73 books of the Old and New Testament, in the Douay-Rheims
             or the Catholic Public Domain Version.
@@ -21,9 +21,12 @@
     <SearchBox Id="bible-search" Label="Find a book or passage" Placeholder="e.g. Genesis, John 3:16, Ps 22..." Value="@_query" ValueChanged="OnSearchChanged" OnSubmit="OnSearchSubmitted" />
     <OfflinePackNotice Pack="@OfflinePacks.Bible" Label="Bible" />
 
-    @if (IsSearching)
+    @if (_translation is null)
     {
-        var reference = BibleReferenceParser.Parse(_query, _translation, _abbreviations);
+    }
+    else if (IsSearching)
+    {
+        var reference = BibleReferenceParser.Parse(_query, _translation);
         @if (reference is not null)
         {
             <a class="bible__match-link bible__reference-card" href="@reference.Href">
@@ -56,16 +59,13 @@
     [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
     [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
 
-    private BibleTranslation _translation;
-
-    private IReadOnlyDictionary<string, IReadOnlyList<string>>? _abbreviations;
+    private BibleTranslation? _translation;
 
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
     {
         await Translations.SetAsync(translation);
         _translation = translation;
-        _abbreviations = await BibleText.GetAbbreviationsAsync(translation);
-        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code()), replace: true);
+        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code), replace: true);
     }
 
     private static readonly (BibleTestament Testament, string Title)[] Parts =
@@ -101,13 +101,12 @@
         }
 
         await Translations.InitializeAsync();
-        if (BibleTranslations.Parse(TranslationCode) is { } requested && requested != Translations.Current)
+        if (await AllTranslations.FindAsync(TranslationCode) is { } requested && requested != Translations.Current)
         {
             await Translations.SetAsync(requested);
         }
 
         _translation = Translations.Current;
-        _abbreviations = await BibleText.GetAbbreviationsAsync(_translation);
         await Trail.ClearAsync();
     }
 
@@ -124,7 +123,8 @@
     private void OnSearchSubmitted(string value)
     {
         _query = value ?? "";
-        if (BibleReferenceParser.Parse(_query, _translation, _abbreviations) is { } reference)
+        if (_translation is null) return;
+        if (BibleReferenceParser.Parse(_query, _translation) is { } reference)
         {
             Nav.NavigateTo(reference.Href);
         }
@@ -137,7 +137,7 @@
     private List<BibleBook> Matches()
     {
         var q = _query.Trim();
-        return _translation.Books().Where(b =>
+        return _translation is null ? [] : _translation.Books().Where(b =>
             b.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
             (b.ModernName?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
             b.Slug.Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();

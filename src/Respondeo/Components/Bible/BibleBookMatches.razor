@@ -30,7 +30,7 @@ else
 
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<BibleBook> Books { get; set; } = [];
-    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter, EditorRequired] public BibleTranslation Translation { get; set; } = default!;
     [Parameter] public string Query { get; set; } = "";
     [Parameter] public bool HasReference { get; set; }
 

@@ -18,7 +18,7 @@ public sealed record BibleReference(BibleBook Book, int Chapter, int? Verse, int
         : $"{Translation.BookName(Book)} {Chapter}:{Verses}";
 
     /// <summary>The translation whose book naming the reference was resolved against.</summary>
-    public BibleTranslation Translation { get; init; } = BibleTranslation.DouayRheims;
+    public required BibleTranslation Translation { get; init; }
 
     /// <summary>The app-relative route to the chapter in <see cref="Translation"/>, with the verse selection in the query string.</summary>
     public string Href => Translation.ChapterHref(Book, Chapter, Verses.IsEmpty ? null : Verses.ToString());
@@ -29,31 +29,15 @@ public static class BibleReferenceParser
 {
     // Book names collide across translations ("1 Kings" is 1 Samuel in the Douay-Rheims but 3 Kings in modern Bibles),
     // so each translation gets its own lookup in which its own naming wins.
-    private static readonly ConditionalWeakTable<IReadOnlyDictionary<string, IReadOnlyList<string>>, Dictionary<BibleTranslation, Dictionary<string, BibleBook>>> Lookups = new();
-
-    private static readonly IReadOnlyDictionary<string, IReadOnlyList<string>> NoAbbreviations =
-        new Dictionary<string, IReadOnlyList<string>>(StringComparer.Ordinal);
+    private static readonly ConditionalWeakTable<BibleTranslation, Dictionary<string, BibleBook>> Lookups = new();
 
     /// <summary>
-    /// Parses <paramref name="input"/> as a chapter or verse reference using the book naming of <paramref name="translation"/>
-    /// and the <paramref name="abbreviations"/> from its manifest (see <see cref="IBibleText.GetAbbreviationsAsync"/>);
-    /// returns <c>null</c> for anything else, including a bare book name or a book the translation lacks.
+    /// Parses <paramref name="input"/> as a chapter or verse reference using the book naming and manifest abbreviations
+    /// of <paramref name="translation"/>; returns <c>null</c> for anything else, including a bare book name or a book the translation lacks.
     /// </summary>
-    public static BibleReference? Parse(
-        string? input,
-        BibleTranslation translation = BibleTranslation.DouayRheims,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? abbreviations = null)
+    public static BibleReference? Parse(string? input, BibleTranslation translation)
     {
-        var byTranslation = Lookups.GetValue(abbreviations ?? NoAbbreviations, _ => []);
-        Dictionary<string, BibleBook> lookup;
-        lock (byTranslation)
-        {
-            if (!byTranslation.TryGetValue(translation, out lookup!))
-            {
-                lookup = BuildLookup(translation, abbreviations ?? NoAbbreviations);
-                byTranslation[translation] = lookup;
-            }
-        }
+        var lookup = Lookups.GetValue(translation, BuildLookup);
 
         if (string.IsNullOrWhiteSpace(input)) return null;
 
@@ -104,11 +88,9 @@ public static class BibleReferenceParser
         return sb.ToString();
     }
 
-    private static Dictionary<string, BibleBook> BuildLookup(
-        BibleTranslation translation,
-        IReadOnlyDictionary<string, IReadOnlyList<string>> manifestAbbreviations)
+    private static Dictionary<string, BibleBook> BuildLookup(BibleTranslation translation)
     {
-        var books = BibleBooks.All.Where(b => translation.Contains(b)).ToList();
+        var books = translation.Books();
         var lookup = new Dictionary<string, BibleBook>(StringComparer.Ordinal);
 
         // The translation's own names and slugs are registered first so they win any collision.
@@ -119,10 +101,9 @@ public static class BibleReferenceParser
         }
 
         // Abbreviations come from the translation's manifest, so their meaning follows its naming tradition.
-        foreach (var (slug, abbreviations) in manifestAbbreviations)
+        foreach (var book in books)
         {
-            if (books.FirstOrDefault(b => b.Slug == slug) is not { } book) continue;
-            foreach (var abbreviation in abbreviations) lookup.TryAdd(Squash(abbreviation), book);
+            foreach (var abbreviation in translation.Entry(book)?.Abbreviations ?? []) lookup.TryAdd(Squash(abbreviation), book);
         }
 
         foreach (var book in books)

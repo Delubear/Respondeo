@@ -1,32 +1,13 @@
 using Respondeo.Bible;
 using Respondeo.Bible.Contracts;
+using Respondeo.UnitTests.TestSupport;
 
 namespace Respondeo.UnitTests.Bible;
 
 public class BibleReferenceParserTests
 {
-    private static readonly Dictionary<BibleTranslation, IReadOnlyDictionary<string, IReadOnlyList<string>>> Abbreviations =
-        BibleTranslations.All.ToDictionary(t => t, LoadAbbreviations);
-
-    private static BibleReference? Parse(string input, BibleTranslation translation = BibleTranslation.DouayRheims) =>
-        BibleReferenceParser.Parse(input, translation, Abbreviations[translation]);
-
-    private static IReadOnlyDictionary<string, IReadOnlyList<string>> LoadAbbreviations(BibleTranslation translation)
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "Respondeo.slnx"))) dir = dir.Parent;
-        var path = Path.Combine(dir!.FullName, "src", "Respondeo.Bible", "wwwroot", translation.Folder(), "manifest.json");
-        using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
-        var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.Ordinal);
-        foreach (var book in doc.RootElement.GetProperty("books").EnumerateObject())
-        {
-            result[book.Name] = book.Value.TryGetProperty("abbreviations", out var a)
-                ? [.. a.EnumerateArray().Select(e => e.GetString()!)]
-                : [];
-        }
-
-        return result;
-    }
+    private static BibleReference? Parse(string input, string translation = "drb") =>
+        BibleReferenceParser.Parse(input, TestBible.Get(translation));
 
     [Theory]
     [InlineData("John 3", "john", 3, null, null)]
@@ -67,13 +48,13 @@ public class BibleReferenceParserTests
         Assert.Equal("bible/drb/john/3?v=16", Parse("Jn 3:16")!.Href);
 
     [Theory]
-    [InlineData("1 Kings 1", BibleTranslation.DouayRheims, "1-kings", "bible/drb/1-kings/1")]
-    [InlineData("1 Kings 1", BibleTranslation.Cpdv, "3-kings", "bible/cpdv/1-kings/1")]
-    [InlineData("1 Kgs 1", BibleTranslation.Cpdv, "3-kings", "bible/cpdv/1-kings/1")]
-    [InlineData("3 Kings 1", BibleTranslation.DouayRheims, "3-kings", "bible/drb/3-kings/1")]
-    [InlineData("1 Samuel 1", BibleTranslation.Cpdv, "1-kings", "bible/cpdv/1-samuel/1")]
-    [InlineData("1 Samuel 1", BibleTranslation.DouayRheims, "1-kings", "bible/drb/1-kings/1")]
-    public void Resolves_books_by_translation_naming(string input, BibleTranslation translation, string fileSlug, string href)
+    [InlineData("1 Kings 1", "drb", "1-kings", "bible/drb/1-kings/1")]
+    [InlineData("1 Kings 1", "cpdv", "3-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("1 Kgs 1", "cpdv", "3-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("3 Kings 1", "drb", "3-kings", "bible/drb/3-kings/1")]
+    [InlineData("1 Samuel 1", "cpdv", "1-kings", "bible/cpdv/1-samuel/1")]
+    [InlineData("1 Samuel 1", "drb", "1-kings", "bible/drb/1-kings/1")]
+    public void Resolves_books_by_translation_naming(string input, string translation, string fileSlug, string href)
     {
         var reference = Parse(input, translation)!;
         Assert.Equal(fileSlug, reference.Book.FileSlug);
@@ -82,7 +63,7 @@ public class BibleReferenceParserTests
 
     [Fact]
     public void Rejects_books_missing_from_translation() =>
-        Assert.Null(Parse("Prayer of Manasses 1", BibleTranslation.Cpdv));
+        Assert.Null(Parse("Prayer of Manasses 1", "cpdv"));
 
     [Theory]
     [InlineData("Jn 3:5-7,16", "bible/drb/john/3?v=5-7,16", "John 3:5-7,16")]

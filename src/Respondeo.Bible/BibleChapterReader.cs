@@ -1,6 +1,6 @@
 namespace Respondeo.Bible;
 
-internal sealed class BibleChapterReader(IBibleText bible) : IBibleChapterReader
+internal sealed class BibleChapterReader(IBibleText bible, IBibleTranslations translations) : IBibleChapterReader
 {
     public async Task<BibleChapterResult> LoadAsync(BibleBook? book, int chapter, BibleTranslation translation)
     {
@@ -9,7 +9,7 @@ internal sealed class BibleChapterReader(IBibleText bible) : IBibleChapterReader
         var verses = await bible.GetChapterAsync(book.Slug, chapter, translation);
         if (verses is not null) return new BibleChapterResult(verses, false);
 
-        foreach (var other in Enum.GetValues<BibleTranslation>())
+        foreach (var other in await translations.GetAllAsync())
         {
             if (other != translation && await bible.GetChapterAsync(book.Slug, chapter, other) is not null)
             {

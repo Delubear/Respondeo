@@ -86,15 +86,14 @@ internal static class SitemapGenerator
     // Every Bible book chapter, driven by the same translation manifest the app routes with.
     private static void CollectBibleRoutes(RouteSet routes, string repoRoot)
     {
-        Respondeo.Bible.BibleCatalog.LoadFromDirectory(Path.Combine(repoRoot, "src", "Respondeo.Bible", "wwwroot"));
-        var translation = BibleTranslation.DouayRheims;
+        var translation = Respondeo.Bible.BibleTranslationCatalog.LoadFromDirectory(Path.Combine(repoRoot, "src", "Respondeo.Bible", "wwwroot"))[0];
         foreach (var book in translation.Books())
         {
             var name = translation.BookName(book);
             for (var chapter = 1; chapter <= translation.ChapterCount(book); chapter++)
             {
                 routes.Add(translation.ChapterHref(book, chapter), JoinTitle($"{name} {chapter}", "Holy Bible"),
-                    $"Read {name} chapter {chapter} in the Douay-Rheims Bible.");
+                    $"Read {name} chapter {chapter} in the {translation.Name} Bible.");
             }
         }
     }

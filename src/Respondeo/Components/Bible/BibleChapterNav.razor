@@ -8,6 +8,6 @@
 
 @code {
     [Parameter, EditorRequired] public BibleBook Book { get; set; } = default!;
-    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter, EditorRequired] public BibleTranslation Translation { get; set; } = default!;
     [Parameter] public int Current { get; set; }
 }

@@ -1,22 +1,27 @@
+@inject IBibleTranslations AllTranslations
 <section class="bible-unavailable" role="status">
-    <h2 class="bible-unavailable__title">@Heading is not in the @Translation.Name()</h2>
+    <h2 class="bible-unavailable__title">@Heading is not in the @Translation.Name</h2>
     <p>
         Translations differ in which books they include and in how they number chapters,
-        so this passage has no counterpart in the @Translation.Name().
+        so this passage has no counterpart in the @Translation.Name.
     </p>
     <div class="bible-unavailable__actions">
-        @foreach (var other in Enum.GetValues<BibleTranslation>())
+        @foreach (var other in _all)
         {
             if (other == Translation) continue;
             var target = other;
-            <button type="button" class="bible-unavailable__switch" @onclick="() => OnSwitch.InvokeAsync(target)">Read in the @target.Name()</button>
+            <button type="button" class="bible-unavailable__switch" @onclick="() => OnSwitch.InvokeAsync(target)">Read in the @target.Name</button>
         }
         <a href="bible" class="bible-unavailable__back">All books</a>
     </div>
 </section>
 
 @code {
+    private IReadOnlyList<BibleTranslation> _all = [];
+
     [Parameter] public string? Heading { get; set; }
-    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter, EditorRequired] public BibleTranslation Translation { get; set; } = default!;
     [Parameter] public EventCallback<BibleTranslation> OnSwitch { get; set; }
+
+    protected override async Task OnInitializedAsync() => _all = await AllTranslations.GetAllAsync();
 }

@@ -1,10 +1,11 @@
+using Respondeo.UnitTests.TestSupport;
 using Respondeo.Bible.Contracts;
 
 namespace Respondeo.UnitTests.Bible;
 
 public class BibleChapterNavigationTests
 {
-    private static readonly BibleTranslation Translation = BibleTranslation.Cpdv;
+    private static readonly BibleTranslation Translation = TestBible.Cpdv;
 
     [Fact]
     public void Previous_FirstBookFirstChapter_IsNull()
@@ -41,10 +42,10 @@ public class BibleChapterNavigationTests
     [Fact]
     public void Slugs_AreScopedPerTranslation()
     {
-        var cpdvBook = BibleTranslation.Cpdv.FindBook("1-kings");
+        var cpdvBook = TestBible.Cpdv.FindBook("1-kings");
         Assert.NotNull(cpdvBook);
-        Assert.Equal("bible/cpdv/1-kings/1", BibleTranslation.Cpdv.ChapterHref(cpdvBook, 1));
-        Assert.Equal(cpdvBook, BibleTranslation.DouayRheims.FindBook(BibleTranslation.DouayRheims.Slug(cpdvBook)));
-        Assert.StartsWith("bible/drb/", BibleTranslation.DouayRheims.ChapterHref(cpdvBook, 1));
+        Assert.Equal("bible/cpdv/1-kings/1", TestBible.Cpdv.ChapterHref(cpdvBook, 1));
+        Assert.Equal(cpdvBook, TestBible.Drb.FindBook(TestBible.Drb.Slug(cpdvBook)));
+        Assert.StartsWith("bible/drb/", TestBible.Drb.ChapterHref(cpdvBook, 1));
     }
 }

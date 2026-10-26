@@ -32,7 +32,7 @@
     [Parameter] public BibleTestament Testament { get; set; }
     [Parameter] public string Title { get; set; } = "";
     [Parameter, EditorRequired] public IReadOnlyList<BibleBook> Books { get; set; } = [];
-    [Parameter] public BibleTranslation Translation { get; set; }
+    [Parameter, EditorRequired] public BibleTranslation Translation { get; set; } = default!;
     [Parameter] public bool Open { get; set; }
 
     private static string ChapterLabel(int n) => n == 1 ? "1 chapter" : $"{n} chapters";
