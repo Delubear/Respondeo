@@ -1,5 +1,7 @@
 namespace Respondeo.Bible.Contracts;
 
+using Respondeo.Bible;
+
 /// <summary>A bundled English translation of the Bible.</summary>
 public enum BibleTranslation
 {
@@ -10,29 +12,11 @@ public enum BibleTranslation
     Cpdv,
 }
 
-/// <summary>The tradition a translation follows when naming and numbering books.</summary>
-public enum BookNaming
-{
-    /// <summary>Vulgate names and numbering (1-4 Kings, Paralipomenon, Isaie).</summary>
-    Vulgate,
-
-    /// <summary>Common modern names (1-2 Samuel, 1-2 Kings, Chronicles, Isaiah).</summary>
-    Modern,
-}
-
 /// <summary>Display names, route codes, and data folders for each <see cref="BibleTranslation"/>.</summary>
 public static class BibleTranslations
 {
     /// <summary>Every bundled translation, the default first.</summary>
     public static readonly IReadOnlyList<BibleTranslation> All = [BibleTranslation.DouayRheims, BibleTranslation.Cpdv];
-
-    /// <summary>The naming tradition the translation's book titles follow.</summary>
-    public static BookNaming Naming(this BibleTranslation translation) => translation switch
-    {
-        BibleTranslation.DouayRheims => BookNaming.Vulgate,
-        BibleTranslation.Cpdv => BookNaming.Modern,
-        _ => throw new ArgumentOutOfRangeException(nameof(translation)),
-    };
 
     /// <summary>The short code used in route segments and stored preferences.</summary>
     public static string Code(this BibleTranslation translation) => translation switch
@@ -62,33 +46,22 @@ public static class BibleTranslations
         _ => "douay-rheims",
     };
 
-    private static readonly HashSet<string> CpdvMissingBooks = ["3-esdras", "4-esdras", "prayer-of-manasses"];
-
-    private static readonly Dictionary<string, int> CpdvChapterCounts = new()
-    {
-        ["esther"] = 15,
-        ["tobit"] = 14,
-    };
-
-    /// <summary>Whether the translation includes the book at all.</summary>
-    public static bool Contains(this BibleTranslation translation, BibleBook book) => translation != BibleTranslation.Cpdv || !CpdvMissingBooks.Contains(book.Slug);
+    /// <summary>Whether the translation's manifest includes the book.</summary>
+    public static bool Contains(this BibleTranslation translation, BibleBook book) => BibleCatalog.Entry(translation, book) is not null;
 
     /// <summary>The number of chapters the translation has for the book (0 when the book is absent).</summary>
-    public static int ChapterCount(this BibleTranslation translation, BibleBook book)
-    {
-        if (!translation.Contains(book)) return 0;
-        return translation == BibleTranslation.Cpdv && CpdvChapterCounts.TryGetValue(book.Slug, out var count) ? count : book.ChapterCount;
-    }
+    public static int ChapterCount(this BibleTranslation translation, BibleBook book) =>
+        BibleCatalog.Entry(translation, book) is { } entry ? entry.Chapters ?? book.ChapterCount : 0;
 
-    /// <summary>The book's name as the translation titles it: the Douay name for Douay-Rheims, the common modern name otherwise.</summary>
+    /// <summary>The book's name as the translation's manifest titles it.</summary>
     public static string BookName(this BibleTranslation translation, BibleBook book) =>
-        translation.Naming() == BookNaming.Vulgate ? book.Name : book.DisplayName;
+        BibleCatalog.Entry(translation, book)?.Name ?? book.DisplayName;
 
     /// <summary>
-    /// The common modern name to show alongside a Douay-Rheims title that differs from it (e.g. "3 Kings" is 1 Kings, "Josue" is Joshua), or <c>null</c> when the names match.
+    /// The common modern name to show alongside a title that differs from it (e.g. "3 Kings" is 1 Kings, "Josue" is Joshua), or <c>null</c> when the names match.
     /// </summary>
     public static string? BookNameClarification(this BibleTranslation translation, BibleBook book) =>
-        translation.Naming() == BookNaming.Vulgate ? book.ModernName : null;
+        string.Equals(translation.BookName(book), book.DisplayName, StringComparison.Ordinal) ? null : book.DisplayName;
 
     /// <summary>The books the translation includes, in canonical order.</summary>
     public static IReadOnlyList<BibleBook> Books(this BibleTranslation translation) => BibleBooks.All.Where(b => translation.Contains(b)).ToList();
@@ -101,9 +74,9 @@ public static class BibleTranslations
         _ => null,
     };
 
-    /// <summary>The book's route slug in this translation: derived from the Douay name for Douay-Rheims, the modern name otherwise.</summary>
+    /// <summary>The book's route slug in this translation, derived from the name its manifest gives the book.</summary>
     public static string Slug(this BibleTranslation translation, BibleBook book) =>
-        translation.Naming() == BookNaming.Vulgate ? book.Name.ToLowerInvariant().Replace(' ', '-') : book.Slug;
+        translation.BookName(book).ToLowerInvariant().Replace(' ', '-');
 
     /// <summary>Finds a book by its route slug in this translation, or <c>null</c> when the slug is unknown.</summary>
     public static BibleBook? FindBook(this BibleTranslation translation, string? slug) =>

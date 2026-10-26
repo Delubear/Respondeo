@@ -47,7 +47,7 @@ internal static class SitemapGenerator
         var routes = new RouteSet(GitDates.Load(repoRoot));
         CollectStaticRoutes(routes);
         CollectSummaRoutes(routes, paths.SummaIndex);
-        CollectBibleRoutes(routes);
+        CollectBibleRoutes(routes, repoRoot);
         CollectMiracleRoutes(routes, paths.DiscoverRoot, paths.MiraclesManifest);
         CollectSaintRoutes(routes, paths.SaintsManifest);
         CollectJourneyRoutes(routes, paths.ContentRoot, paths.ContentManifest);
@@ -83,15 +83,18 @@ internal static class SitemapGenerator
             "The inspiration behind Respondeo, the public-domain and open sources it draws on, and further reading we recommend for exploring the Catholic faith.");
     }
 
-    // Every Bible book chapter, driven by the same book list the app routes with.
-    private static void CollectBibleRoutes(RouteSet routes)
+    // Every Bible book chapter, driven by the same translation manifest the app routes with.
+    private static void CollectBibleRoutes(RouteSet routes, string repoRoot)
     {
-        foreach (var book in BibleBooks.All)
+        Respondeo.Bible.BibleCatalog.LoadFromDirectory(Path.Combine(repoRoot, "src", "Respondeo.Bible", "wwwroot"));
+        var translation = BibleTranslation.DouayRheims;
+        foreach (var book in translation.Books())
         {
-            for (var chapter = 1; chapter <= book.ChapterCount; chapter++)
+            var name = translation.BookName(book);
+            for (var chapter = 1; chapter <= translation.ChapterCount(book); chapter++)
             {
-                routes.Add(BibleTranslation.DouayRheims.ChapterHref(book, chapter), JoinTitle($"{book.Name} {chapter}", "Holy Bible"),
-                    $"Read {book.Name} chapter {chapter} in the Douay-Rheims Bible.");
+                routes.Add(translation.ChapterHref(book, chapter), JoinTitle($"{name} {chapter}", "Holy Bible"),
+                    $"Read {name} chapter {chapter} in the Douay-Rheims Bible.");
             }
         }
     }

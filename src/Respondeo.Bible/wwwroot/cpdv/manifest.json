@@ -1,4 +1,4 @@
-﻿{
+{
     "books":  {
                   "genesis":  {
                                   "file":  "genesis.json",
@@ -135,6 +135,7 @@
                                },
                   "tobit":  {
                                 "file":  "tobit.json",
+                                "chapters":  14,
                                 "name":  "Tobit",
                                 "abbreviations":  [
                                                       "tob",
@@ -151,6 +152,7 @@
                              },
                   "esther":  {
                                  "file":  "esther.json",
+                                 "chapters":  15,
                                  "name":  "Esther",
                                  "abbreviations":  [
                                                        "est",

@@ -12,11 +12,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
 {
     internal const string TranslationName = "Douay-Rheims";
 
-    private const string DataRoot = "_content/Respondeo.Bible";
-
     private readonly Dictionary<string, Task<BookFile?>> _books = [];
-
-    private readonly Dictionary<string, Task<Manifest?>> _manifests = [];
 
     public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation translation = BibleTranslation.DouayRheims)
     {
@@ -73,24 +69,19 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         return text.Length == 0 ? null : text.ToString().TrimEnd();
     }
 
-    public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation)
-    {
-        var manifest = await LoadManifestAsync(translation);
-        return (manifest?.Books ?? []).ToDictionary(
+    public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation) =>
+        Task.FromResult<IReadOnlyDictionary<string, IReadOnlyList<string>>>(BibleCatalog.Books(translation).ToDictionary(
             kv => kv.Key,
-            kv => (IReadOnlyList<string>)(kv.Value.Abbreviations ?? []),
-            StringComparer.Ordinal);
-    }
+            kv => (IReadOnlyList<string>)(kv.Value.Abbreviations ?? []), StringComparer.Ordinal));
 
     private async Task<BookFile?> LoadBookAsync(string slug, BibleTranslation translation)
     {
-        var manifest = await LoadManifestAsync(translation);
-        if (manifest?.Books is null || !manifest.Books.TryGetValue(slug, out var entry) || string.IsNullOrEmpty(entry.File))
+        if (!BibleCatalog.Books(translation).TryGetValue(slug, out var entry) || string.IsNullOrEmpty(entry.File))
         {
             return null;
         }
 
-        var path = $"{DataRoot}/{translation.Folder()}/{entry.File}";
+        var path = $"{BibleCatalog.DataRoot}/{translation.Folder()}/{entry.File}";
         try
         {
             if (!_books.TryGetValue(path, out var load))
@@ -107,30 +98,6 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
     }
-
-    private async Task<Manifest?> LoadManifestAsync(BibleTranslation translation)
-    {
-        var path = $"{DataRoot}/{translation.Folder()}/manifest.json";
-        try
-        {
-            if (!_manifests.TryGetValue(path, out var load))
-            {
-                load = http.GetFromJsonAsync<Manifest>(path);
-                _manifests[path] = load;
-            }
-
-            return await load;
-        }
-        catch (Exception ex) when (ex is HttpRequestException or System.Text.Json.JsonException or NotSupportedException)
-        {
-            _manifests.Remove(path);
-            return null;
-        }
-    }
-
-    private sealed record Manifest(Dictionary<string, ManifestEntry>? Books);
-
-    private sealed record ManifestEntry(string? File, string? Name, string[]? Abbreviations);
 
     private sealed record BookFile(List<ChapterFile>? Chapters);
 
