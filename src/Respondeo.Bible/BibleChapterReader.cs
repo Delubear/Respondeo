@@ -4,7 +4,7 @@ internal sealed class BibleChapterReader(IBibleText bible, IBibleTranslations tr
 {
     public async Task<BibleChapterResult> LoadAsync(BibleBook? book, int chapter, BibleTranslation translation)
     {
-        if (book is null || chapter < 1 || chapter > book.ChapterCount) return BibleChapterResult.NotFound;
+        if (book is null || chapter < 1) return BibleChapterResult.NotFound;
 
         var verses = await bible.GetChapterAsync(book.Slug, chapter, translation);
         if (verses is not null) return new BibleChapterResult(verses, false);

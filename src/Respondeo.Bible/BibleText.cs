@@ -3,11 +3,8 @@ using System.Text;
 
 namespace Respondeo.Bible;
 
-/// <summary>
-/// Loads public-domain Bible text from the bundled per-book JSON files: the Douay-Rheims (CC0 dataset by janvier-s)
-/// and the Catholic Public Domain Version (yoarikso/cpdvbible), which share the same schema and book slugs.
-/// </summary>
-internal sealed class DouayRheimsBibleText(HttpClient http, IBibleTranslations translations) : IBibleText
+/// <summary>Loads Bible text for any configured translation from its bundled per-book JSON files.</summary>
+internal sealed class BibleText(HttpClient http, IBibleTranslations translations) : IBibleText
 {
     private readonly Dictionary<string, Task<BookFile?>> _books = [];
 

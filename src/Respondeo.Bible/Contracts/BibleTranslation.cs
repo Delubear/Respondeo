@@ -63,7 +63,7 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
     public bool Contains(BibleBook book) => Entry(book) is not null;
 
     /// <summary>The number of chapters the translation has for the book (0 when the book is absent).</summary>
-    public int ChapterCount(BibleBook book) => Entry(book) is { } entry ? entry.Chapters ?? book.ChapterCount : 0;
+    public int ChapterCount(BibleBook book) => Entry(book)?.Chapters ?? 0;
 
     /// <summary>The book's name as the translation's manifest titles it.</summary>
     public string BookName(BibleBook book) => Entry(book)?.Name ?? book.DisplayName;
