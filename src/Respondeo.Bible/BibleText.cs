@@ -11,13 +11,7 @@ internal sealed class BibleText(HttpClient http, IBibleTranslations translations
     public async Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation? translation = null)
     {
         translation ??= await translations.GetDefaultAsync();
-        var known = BibleBooks.Find(bookSlug);
-        if (known is null)
-        {
-            return null;
-        }
-
-        var book = await LoadBookAsync(known.Slug, translation);
+        var book = await LoadBookAsync(bookSlug, translation);
         var match = book?.Chapters?.FirstOrDefault(c => c.Chapter == chapter);
         if (match?.Verses is null)
         {
@@ -31,14 +25,14 @@ internal sealed class BibleText(HttpClient http, IBibleTranslations translations
 
     public async Task<string?> GetPassageAsync(string citation)
     {
-        var passage = BibleCitation.Parse(citation);
+        var translation = await translations.GetDefaultAsync();
+        var passage = BibleCitation.Parse(citation, translation);
         if (passage is null)
         {
             return null;
         }
 
-        var known = BibleBooks.Find(passage.BookSlug);
-        var book = known is null ? null : await LoadBookAsync(known.Slug, await translations.GetDefaultAsync());
+        var book = await LoadBookAsync(passage.BookSlug, translation);
         if (book?.Chapters is null)
         {
             return null;

@@ -2,33 +2,19 @@ using System.Text.RegularExpressions;
 
 namespace Respondeo.Bible;
 
-/// <summary>A contiguous span of verses, possibly crossing chapters, in one book of the Douay-Rheims dataset.</summary>
+/// <summary>A contiguous span of verses, possibly crossing chapters, in one book of a translation.</summary>
 internal sealed record VerseSpan(int Chapter, int StartVerse, int EndChapter, int EndVerse);
 
-/// <summary>A citation resolved to a Douay-Rheims book file and its verse spans.</summary>
+/// <summary>A citation resolved to a translation's book file and its verse spans.</summary>
 internal sealed record BiblePassage(string BookSlug, IReadOnlyList<VerseSpan> Spans);
 
-/// <summary>Parses modern citations such as "Psalm 5:2-10, 12-13" or "Isaiah 61:10-62:5" into Douay-Rheims passages.</summary>
+/// <summary>Parses modern citations such as "Psalm 5:2-10, 12-13" or "Isaiah 61:10-62:5" into passages, resolving books via the translation manifest.</summary>
 internal static class BibleCitation
 {
-    private static readonly Dictionary<string, string> Books = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["Psalm"] = "psalms", ["Psalms"] = "psalms",
-        ["Ezra"] = "1-esdras", ["Nehemiah"] = "2-esdras",
-        ["1 Samuel"] = "1-kings", ["2 Samuel"] = "2-kings", ["1 Kings"] = "3-kings", ["2 Kings"] = "4-kings",
-        ["1 Chronicles"] = "1-paralipomenon", ["2 Chronicles"] = "2-paralipomenon",
-        ["Obadiah"] = "abdias", ["Haggai"] = "aggeus", ["Revelation"] = "apocalypse",
-        ["Song of Songs"] = "canticle-of-canticles", ["Sirach"] = "ecclesiasticus", ["Ezekiel"] = "ezechiel",
-        ["Habakkuk"] = "habacuc", ["Isaiah"] = "isaie", ["Jeremiah"] = "jeremie", ["Jonah"] = "jonas",
-        ["Joshua"] = "josue", ["Malachi"] = "malachie", ["Micah"] = "micheas", ["Hosea"] = "osee",
-        ["Zephaniah"] = "sophonias", ["Tobit"] = "tobias", ["Zechariah"] = "zacharias",
-        ["1 Maccabees"] = "1-machabees", ["2 Maccabees"] = "2-machabees",
-    };
-
-    /// <summary>A sentinel end verse meaning "to the end of the chapter".</summary>
+    /// <summary>Sentinel end verse meaning "to the end of the chapter".</summary>
     public const int EndOfChapter = int.MaxValue;
 
-    public static BiblePassage? Parse(string citation)
+    public static BiblePassage? Parse(string citation, BibleTranslation translation)
     {
         var match = CitationPattern().Match(citation.Trim());
         if (!match.Success)
@@ -36,8 +22,13 @@ internal static class BibleCitation
             return null;
         }
 
-        var book = match.Groups["book"].Value.Trim();
-        var slug = Books.TryGetValue(book, out var mapped) ? mapped : book.ToLowerInvariant().Replace(' ', '-');
+        var book = BibleReferenceParser.FindBook(match.Groups["book"].Value, translation);
+        if (book is null)
+        {
+            return null;
+        }
+
+        var slug = book.Slug;
         var isPsalm = slug == "psalms";
         var spans = new List<VerseSpan>();
         var chapter = 0;

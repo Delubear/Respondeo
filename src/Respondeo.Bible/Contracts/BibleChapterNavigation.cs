@@ -16,7 +16,8 @@ public static class BibleChapterNavigation
         }
 
         var books = translation.Books();
-        var prior = BibleBooks.All.Take(IndexOf(book)).LastOrDefault(books.Contains);
+        var index = IndexOf(books, book);
+        var prior = index > 0 ? books[index - 1] : null;
         return prior is null ? null : Link(prior, translation.ChapterCount(prior), translation);
     }
 
@@ -24,18 +25,19 @@ public static class BibleChapterNavigation
     {
         if (chapter < translation.ChapterCount(book)) return Link(book, chapter + 1, translation);
         var books = translation.Books();
-        var following = BibleBooks.All.Skip(IndexOf(book) + 1).FirstOrDefault(books.Contains);
+        var index = IndexOf(books, book);
+        var following = index >= 0 && index + 1 < books.Count ? books[index + 1] : null;
         return following is null ? null : Link(following, 1, translation);
     }
 
     private static ChapterLink Link(BibleBook book, int chapter, BibleTranslation translation) =>
         new(translation.ChapterHref(book, chapter), $"{translation.BookName(book)} {chapter}");
 
-    private static int IndexOf(BibleBook book)
+    private static int IndexOf(IReadOnlyList<BibleBook> books, BibleBook book)
     {
-        for (var i = 0; i < BibleBooks.All.Count; i++)
+        for (var i = 0; i < books.Count; i++)
         {
-            if (BibleBooks.All[i] == book) return i;
+            if (books[i] == book) return i;
         }
 
         return -1;

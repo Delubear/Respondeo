@@ -7,6 +7,7 @@ namespace Respondeo.Bible.Contracts;
 public sealed class BibleTranslation : IEquatable<BibleTranslation>
 {
     private readonly IReadOnlyDictionary<string, BibleTranslationBook> _books;
+    private readonly IReadOnlyList<BibleBook> _order;
 
     public BibleTranslation(
         string code,
@@ -24,6 +25,7 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
         Description = description;
         Aliases = aliases;
         _books = books;
+        _order = [.. books.Keys.Select(key => new BibleBook(key))];
     }
 
     /// <summary>The short code used in route segments and stored preferences.</summary>
@@ -66,23 +68,25 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
     public int ChapterCount(BibleBook book) => Entry(book)?.Chapters ?? 0;
 
     /// <summary>The book's name as the translation's manifest titles it.</summary>
-    public string BookName(BibleBook book) => Entry(book)?.Name ?? book.DisplayName;
+    public string BookName(BibleBook book) => Entry(book)?.Name ?? book.Slug;
 
     /// <summary>
-    /// The common modern name to show alongside a title that differs from it (e.g. "3 Kings" is 1 Kings, "Josue" is Joshua), or <c>null</c> when the names match.
+    /// The manifest's common modern name for a book whose title differs from it (e.g. "3 Kings" is 1 Kings), or <c>null</c>.
     /// </summary>
-    public string? BookNameClarification(BibleBook book) =>
-        string.Equals(BookName(book), book.DisplayName, StringComparison.Ordinal) ? null : book.DisplayName;
+    public string? BookNameClarification(BibleBook book) => Entry(book)?.ModernName;
 
-    /// <summary>The books the translation includes, in canonical order.</summary>
-    public IReadOnlyList<BibleBook> Books() => BibleBooks.All.Where(Contains).ToList();
+    /// <summary>The section of the Bible the manifest places the book in.</summary>
+    public BibleTestament Testament(BibleBook book) => Entry(book)?.Testament ?? BibleTestament.Old;
+
+    /// <summary>The books the translation includes, in manifest order.</summary>
+    public IReadOnlyList<BibleBook> Books() => _order;
 
     /// <summary>The book's route slug in this translation, derived from the name its manifest gives the book.</summary>
     public string Slug(BibleBook book) => BookName(book).ToLowerInvariant().Replace(' ', '-');
 
     /// <summary>Finds a book by its route slug in this translation, or <c>null</c> when the slug is unknown.</summary>
     public BibleBook? FindBook(string? slug) =>
-        BibleBooks.All.FirstOrDefault(b => string.Equals(Slug(b), slug, StringComparison.OrdinalIgnoreCase));
+        _order.FirstOrDefault(b => string.Equals(Slug(b), slug, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>The relative link to a book's chapter in this translation, optionally selecting verses.</summary>
     public string ChapterHref(BibleBook book, int chapter, string? verses = null) =>
@@ -103,4 +107,10 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
 }
 
 /// <summary>One book's entry in a translation manifest.</summary>
-public sealed record BibleTranslationBook(string? File, string? Name, int? Chapters, IReadOnlyList<string>? Abbreviations);
+public sealed record BibleTranslationBook(
+    string? File,
+    string? Name,
+    string? ModernName,
+    BibleTestament? Testament,
+    int? Chapters,
+    IReadOnlyList<string>? Abbreviations);

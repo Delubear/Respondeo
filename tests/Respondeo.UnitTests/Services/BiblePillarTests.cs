@@ -18,18 +18,21 @@ public class BiblePillarTests
     public void Items_IncludesBible() => Assert.Contains(SitePillars.Items, p => p.Id == SitePillars.BibleId && p.Href == "bible");
 
     [Fact]
-    public void BibleBooks_HasCatholicCanon()
+    public void DrbManifest_HasCatholicCanon()
     {
-        Assert.Equal(73, BibleBooks.All.Count(b => b.Testament != BibleTestament.Appendix));
-        Assert.Equal(3, BibleBooks.All.Count(b => b.Testament == BibleTestament.Appendix));
-        Assert.Equal(46, BibleBooks.All.Count(b => b.Testament == BibleTestament.Old));
-        Assert.Equal(BibleBooks.All.Count, BibleBooks.All.Select(b => b.Slug).Distinct().Count());
+        var drb = Respondeo.UnitTests.TestSupport.TestBible.Drb;
+        var books = drb.Books();
+        Assert.Equal(73, books.Count(b => drb.Testament(b) != BibleTestament.Appendix));
+        Assert.Equal(3, books.Count(b => drb.Testament(b) == BibleTestament.Appendix));
+        Assert.Equal(46, books.Count(b => drb.Testament(b) == BibleTestament.Old));
+        Assert.Equal("genesis", books[0].Slug);
     }
 
     [Fact]
-    public void Find_IsCaseInsensitive_AndNullForUnknown()
+    public void FindBook_IsCaseInsensitive_AndNullForUnknown()
     {
-        Assert.Equal("Isaias", BibleBooks.Find("ISAIE")?.Name);
-        Assert.Null(BibleBooks.Find("nope"));
+        var drb = Respondeo.UnitTests.TestSupport.TestBible.Drb;
+        Assert.Equal("Isaias", drb.BookName(drb.FindBook("ISAIAS")!));
+        Assert.Null(drb.FindBook("nope"));
     }
 }

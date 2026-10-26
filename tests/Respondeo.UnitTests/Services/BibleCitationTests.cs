@@ -1,3 +1,4 @@
+using Respondeo.UnitTests.TestSupport;
 using Respondeo.Bible;
 using Respondeo.Bible.Contracts;
 
@@ -8,7 +9,7 @@ public class BibleCitationTests
     [Fact]
     public void Psalm_UsesVulgateNumbering()
     {
-        var passage = BibleCitation.Parse("Psalm 63:2-9");
+        var passage = BibleCitation.Parse("Psalm 63:2-9", TestBible.Drb);
 
         Assert.NotNull(passage);
         Assert.Equal("psalms", passage.BookSlug);
@@ -18,7 +19,7 @@ public class BibleCitationTests
     [Fact]
     public void CommaList_AndVerseSuffixes_AreParsed()
     {
-        var passage = BibleCitation.Parse("Exodus 15:1-4a, 8-13, 17-18");
+        var passage = BibleCitation.Parse("Exodus 15:1-4a, 8-13, 17-18", TestBible.Drb);
 
         Assert.NotNull(passage);
         Assert.Equal(
@@ -29,10 +30,10 @@ public class BibleCitationTests
     [Fact]
     public void CrossChapter_AndSemicolons_AreParsed()
     {
-        Assert.Equal(new VerseSpan(61, 10, 62, 5), Assert.Single(BibleCitation.Parse("Isaiah 61:10-62:5")!.Spans));
+        Assert.Equal(new VerseSpan(61, 10, 62, 5), Assert.Single(BibleCitation.Parse("Isaiah 61:10-62:5", TestBible.Drb)!.Spans));
 
-        var rev = BibleCitation.Parse("Revelation 4:11; 5:9, 10, 12");
-        Assert.Equal("apocalypse", rev!.BookSlug);
+        var rev = BibleCitation.Parse("Revelation 4:11; 5:9, 10, 12", TestBible.Drb);
+        Assert.Equal("revelation", rev!.BookSlug);
         Assert.Equal(new VerseSpan(5, 12, 5, 12), rev.Spans[^1]);
     }
 
@@ -44,8 +45,8 @@ public class BibleCitationTests
     [InlineData("Psalm 116:10-19", 115, 1, 10)]
     [InlineData("Psalm 147:12-20", 147, 1, 9)]
     public void Psalm_SplitAndMerged_MapToDouay(string citation, int chapter, int start, int end) =>
-        Assert.Equal(new VerseSpan(chapter, start, chapter, end), Assert.Single(BibleCitation.Parse(citation)!.Spans));
+        Assert.Equal(new VerseSpan(chapter, start, chapter, end), Assert.Single(BibleCitation.Parse(citation, TestBible.Drb)!.Spans));
 
     [Fact]
-    public void Unknown_ReturnsNull() => Assert.Null(BibleCitation.Parse("not a citation"));
+    public void Unknown_ReturnsNull() => Assert.Null(BibleCitation.Parse("not a citation", TestBible.Drb));
 }

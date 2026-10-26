@@ -63,6 +63,10 @@ public static class BibleReferenceParser
         };
     }
 
+    /// <summary>Resolves a book name or abbreviation using the translation's manifest naming, or <c>null</c> when unknown.</summary>
+    internal static BibleBook? FindBook(string name, BibleTranslation translation) =>
+        Lookups.GetValue(translation, BuildLookup).TryGetValue(Squash(name), out var book) ? book : null;
+
     private static string NormalizeBook(string prefix, string name)
     {
         var number = prefix.Trim().ToLowerInvariant().TrimEnd('.') switch
@@ -108,10 +112,8 @@ public static class BibleReferenceParser
 
         foreach (var book in books)
         {
-            lookup.TryAdd(Squash(book.Name), book);
             lookup.TryAdd(Squash(book.Slug), book);
-            lookup.TryAdd(Squash(book.FileSlug), book);
-            if (book.ModernName is not null) lookup.TryAdd(Squash(book.ModernName), book);
+            if (translation.BookNameClarification(book) is { } modern) lookup.TryAdd(Squash(modern), book);
         }
 
         return lookup;

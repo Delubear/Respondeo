@@ -41,7 +41,7 @@
         <div class="bible__browse" data-browse-scroll="bible">
             @foreach (var (testament, title) in Parts)
             {
-                var books = _translation.Books().Where(b => b.Testament == testament).ToList();
+                var books = _translation.Books().Where(b => _translation.Testament(b) == testament).ToList();
                 if (books.Count == 0) continue;
                 <BibleTestamentSection Testament="testament" Title="@title" Books="books" Translation="_translation" Open="IsPartOpen(testament)" />
             }
@@ -138,8 +138,8 @@
     {
         var q = _query.Trim();
         return _translation is null ? [] : _translation.Books().Where(b =>
-            b.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-            (b.ModernName?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            _translation.BookName(b).Contains(q, StringComparison.OrdinalIgnoreCase) ||
+            (_translation.BookNameClarification(b)?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
             b.Slug.Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 }

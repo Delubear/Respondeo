@@ -30,7 +30,7 @@ public class BibleTranslationTests
         var folder = Path.Combine(FindRepoRoot(), "src", "Respondeo.Bible", "wwwroot", "cpdv");
         using var manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(folder, "manifest.json")));
         var books = manifest.RootElement.GetProperty("books");
-        foreach (var book in BibleBooks.All.Where(b => b.Testament != BibleTestament.Appendix))
+        foreach (var book in TestBible.Drb.Books().Where(b => TestBible.Drb.Testament(b) != BibleTestament.Appendix))
         {
             Assert.True(books.TryGetProperty(book.Slug, out var entry), $"Missing CPDV manifest entry for {book.Slug}");
             var path = Path.Combine(folder, entry.GetProperty("file").GetString()!);

@@ -1,4 +1,4 @@
-{
+﻿{
     "books":  {
                   "genesis":  {
                                   "file":  "genesis.json",
@@ -8,7 +8,8 @@
                                                         "gen",
                                                         "gn",
                                                         "ge"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "exodus":  {
                                  "file":  "exodus.json",
@@ -18,7 +19,8 @@
                                                        "ex",
                                                        "exod",
                                                        "exo"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "leviticus":  {
                                     "file":  "leviticus.json",
@@ -27,7 +29,8 @@
                                     "abbreviations":  [
                                                           "lev",
                                                           "lv"
-                                                      ]
+                                                      ],
+                                    "testament":  "old"
                                 },
                   "numbers":  {
                                   "file":  "numbers.json",
@@ -37,7 +40,8 @@
                                                         "num",
                                                         "nm",
                                                         "nb"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "deuteronomy":  {
                                       "file":  "deuteronomy.json",
@@ -47,7 +51,8 @@
                                                             "deut",
                                                             "dt",
                                                             "deu"
-                                                        ]
+                                                        ],
+                                      "testament":  "old"
                                   },
                   "joshua":  {
                                  "file":  "joshua.json",
@@ -56,7 +61,8 @@
                                  "abbreviations":  [
                                                        "jos",
                                                        "josh"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "judges":  {
                                  "file":  "judges.json",
@@ -66,7 +72,8 @@
                                                        "judg",
                                                        "jdg",
                                                        "jgs"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "ruth":  {
                                "file":  "ruth.json",
@@ -75,7 +82,8 @@
                                "abbreviations":  [
                                                      "ru",
                                                      "rth"
-                                                 ]
+                                                 ],
+                               "testament":  "old"
                            },
                   "1-samuel":  {
                                    "file":  "1-samuel.json",
@@ -85,7 +93,8 @@
                                                          "1sam",
                                                          "1sm",
                                                          "1samuel"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "2-samuel":  {
                                    "file":  "2-samuel.json",
@@ -95,7 +104,8 @@
                                                          "2sam",
                                                          "2sm",
                                                          "2samuel"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "1-kings":  {
                                   "file":  "1-kings.json",
@@ -103,7 +113,8 @@
                                   "chapters":  22,
                                   "abbreviations":  [
                                                         "1kgs"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "2-kings":  {
                                   "file":  "2-kings.json",
@@ -111,7 +122,8 @@
                                   "chapters":  25,
                                   "abbreviations":  [
                                                         "2kgs"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "1-chronicles":  {
                                        "file":  "1-chronicles.json",
@@ -121,7 +133,8 @@
                                                              "1par",
                                                              "1chr",
                                                              "1chron"
-                                                         ]
+                                                         ],
+                                       "testament":  "old"
                                    },
                   "2-chronicles":  {
                                        "file":  "2-chronicles.json",
@@ -131,7 +144,8 @@
                                                              "2par",
                                                              "2chr",
                                                              "2chron"
-                                                         ]
+                                                         ],
+                                       "testament":  "old"
                                    },
                   "ezra":  {
                                "file":  "ezra.json",
@@ -139,7 +153,8 @@
                                "chapters":  10,
                                "abbreviations":  [
                                                      "ezr"
-                                                 ]
+                                                 ],
+                               "testament":  "old"
                            },
                   "nehemiah":  {
                                    "file":  "nehemiah.json",
@@ -147,7 +162,8 @@
                                    "chapters":  13,
                                    "abbreviations":  [
                                                          "neh"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "tobit":  {
                                 "file":  "tobit.json",
@@ -156,7 +172,8 @@
                                 "abbreviations":  [
                                                       "tob",
                                                       "tb"
-                                                  ]
+                                                  ],
+                                "testament":  "old"
                             },
                   "judith":  {
                                  "file":  "judith.json",
@@ -165,7 +182,8 @@
                                  "abbreviations":  [
                                                        "jdt",
                                                        "jud"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "esther":  {
                                  "file":  "esther.json",
@@ -174,7 +192,8 @@
                                  "abbreviations":  [
                                                        "est",
                                                        "esth"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "job":  {
                               "file":  "job.json",
@@ -182,7 +201,8 @@
                               "chapters":  42,
                               "abbreviations":  [
                                                     "jb"
-                                                ]
+                                                ],
+                              "testament":  "old"
                           },
                   "psalms":  {
                                  "file":  "psalms.json",
@@ -193,7 +213,8 @@
                                                        "psa",
                                                        "psalm",
                                                        "pss"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "proverbs":  {
                                    "file":  "proverbs.json",
@@ -203,7 +224,8 @@
                                                          "prov",
                                                          "prv",
                                                          "pr"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "ecclesiastes":  {
                                        "file":  "ecclesiastes.json",
@@ -214,7 +236,8 @@
                                                              "eccles",
                                                              "qoh",
                                                              "ec"
-                                                         ]
+                                                         ],
+                                       "testament":  "old"
                                    },
                   "song-of-songs":  {
                                         "file":  "song-of-songs.json",
@@ -225,7 +248,8 @@
                                                               "song",
                                                               "songofsolomon",
                                                               "sg"
-                                                          ]
+                                                          ],
+                                        "testament":  "old"
                                     },
                   "wisdom":  {
                                  "file":  "wisdom.json",
@@ -234,7 +258,8 @@
                                  "abbreviations":  [
                                                        "wis",
                                                        "ws"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "sirach":  {
                                  "file":  "sirach.json",
@@ -243,7 +268,8 @@
                                  "abbreviations":  [
                                                        "sir",
                                                        "ecclus"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "isaiah":  {
                                  "file":  "isaiah.json",
@@ -252,7 +278,8 @@
                                  "abbreviations":  [
                                                        "is",
                                                        "isa"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "jeremiah":  {
                                    "file":  "jeremiah.json",
@@ -261,7 +288,8 @@
                                    "abbreviations":  [
                                                          "jer",
                                                          "jr"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "lamentations":  {
                                        "file":  "lamentations.json",
@@ -270,7 +298,8 @@
                                        "abbreviations":  [
                                                              "lam",
                                                              "la"
-                                                         ]
+                                                         ],
+                                       "testament":  "old"
                                    },
                   "baruch":  {
                                  "file":  "baruch.json",
@@ -279,7 +308,8 @@
                                  "abbreviations":  [
                                                        "bar",
                                                        "ba"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "ezekiel":  {
                                   "file":  "ezekiel.json",
@@ -289,7 +319,8 @@
                                                         "ez",
                                                         "ezek",
                                                         "ezec"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "daniel":  {
                                  "file":  "daniel.json",
@@ -298,7 +329,8 @@
                                  "abbreviations":  [
                                                        "dan",
                                                        "dn"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "hosea":  {
                                 "file":  "hosea.json",
@@ -307,7 +339,8 @@
                                 "abbreviations":  [
                                                       "os",
                                                       "hos"
-                                                  ]
+                                                  ],
+                                "testament":  "old"
                             },
                   "joel":  {
                                "file":  "joel.json",
@@ -315,7 +348,8 @@
                                "chapters":  3,
                                "abbreviations":  [
                                                      "jl"
-                                                 ]
+                                                 ],
+                               "testament":  "old"
                            },
                   "amos":  {
                                "file":  "amos.json",
@@ -323,7 +357,8 @@
                                "chapters":  9,
                                "abbreviations":  [
                                                      "am"
-                                                 ]
+                                                 ],
+                               "testament":  "old"
                            },
                   "obadiah":  {
                                   "file":  "obadiah.json",
@@ -333,7 +368,8 @@
                                                         "abd",
                                                         "obad",
                                                         "ob"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "jonah":  {
                                 "file":  "jonah.json",
@@ -341,7 +377,8 @@
                                 "chapters":  4,
                                 "abbreviations":  [
                                                       "jon"
-                                                  ]
+                                                  ],
+                                "testament":  "old"
                             },
                   "micah":  {
                                 "file":  "micah.json",
@@ -350,7 +387,8 @@
                                 "abbreviations":  [
                                                       "mic",
                                                       "mi"
-                                                  ]
+                                                  ],
+                                "testament":  "old"
                             },
                   "nahum":  {
                                 "file":  "nahum.json",
@@ -359,7 +397,8 @@
                                 "abbreviations":  [
                                                       "na",
                                                       "nah"
-                                                  ]
+                                                  ],
+                                "testament":  "old"
                             },
                   "habakkuk":  {
                                    "file":  "habakkuk.json",
@@ -368,7 +407,8 @@
                                    "abbreviations":  [
                                                          "hab",
                                                          "hb"
-                                                     ]
+                                                     ],
+                                   "testament":  "old"
                                },
                   "zephaniah":  {
                                     "file":  "zephaniah.json",
@@ -378,7 +418,8 @@
                                                           "soph",
                                                           "zeph",
                                                           "zep"
-                                                      ]
+                                                      ],
+                                    "testament":  "old"
                                 },
                   "haggai":  {
                                  "file":  "haggai.json",
@@ -388,7 +429,8 @@
                                                        "agg",
                                                        "hag",
                                                        "hg"
-                                                   ]
+                                                   ],
+                                 "testament":  "old"
                              },
                   "zechariah":  {
                                     "file":  "zechariah.json",
@@ -398,7 +440,8 @@
                                                           "zach",
                                                           "zech",
                                                           "zec"
-                                                      ]
+                                                      ],
+                                    "testament":  "old"
                                 },
                   "malachi":  {
                                   "file":  "malachi.json",
@@ -406,7 +449,8 @@
                                   "chapters":  4,
                                   "abbreviations":  [
                                                         "mal"
-                                                    ]
+                                                    ],
+                                  "testament":  "old"
                               },
                   "1-maccabees":  {
                                       "file":  "1-maccabees.json",
@@ -416,7 +460,8 @@
                                                             "1mac",
                                                             "1macc",
                                                             "1mc"
-                                                        ]
+                                                        ],
+                                      "testament":  "old"
                                   },
                   "2-maccabees":  {
                                       "file":  "2-maccabees.json",
@@ -426,7 +471,8 @@
                                                             "2mac",
                                                             "2macc",
                                                             "2mc"
-                                                        ]
+                                                        ],
+                                      "testament":  "old"
                                   },
                   "matthew":  {
                                   "file":  "matthew.json",
@@ -436,7 +482,8 @@
                                                         "mt",
                                                         "matt",
                                                         "mat"
-                                                    ]
+                                                    ],
+                                  "testament":  "new"
                               },
                   "mark":  {
                                "file":  "mark.json",
@@ -446,7 +493,8 @@
                                                      "mk",
                                                      "mar",
                                                      "mrk"
-                                                 ]
+                                                 ],
+                               "testament":  "new"
                            },
                   "luke":  {
                                "file":  "luke.json",
@@ -455,7 +503,8 @@
                                "abbreviations":  [
                                                      "lk",
                                                      "luk"
-                                                 ]
+                                                 ],
+                               "testament":  "new"
                            },
                   "john":  {
                                "file":  "john.json",
@@ -465,7 +514,8 @@
                                                      "jn",
                                                      "joh",
                                                      "jhn"
-                                                 ]
+                                                 ],
+                               "testament":  "new"
                            },
                   "acts":  {
                                "file":  "acts.json",
@@ -474,7 +524,8 @@
                                "abbreviations":  [
                                                      "ac",
                                                      "act"
-                                                 ]
+                                                 ],
+                               "testament":  "new"
                            },
                   "romans":  {
                                  "file":  "romans.json",
@@ -484,7 +535,8 @@
                                                        "rom",
                                                        "rm",
                                                        "ro"
-                                                   ]
+                                                   ],
+                                 "testament":  "new"
                              },
                   "1-corinthians":  {
                                         "file":  "1-corinthians.json",
@@ -493,7 +545,8 @@
                                         "abbreviations":  [
                                                               "1cor",
                                                               "1co"
-                                                          ]
+                                                          ],
+                                        "testament":  "new"
                                     },
                   "2-corinthians":  {
                                         "file":  "2-corinthians.json",
@@ -502,7 +555,8 @@
                                         "abbreviations":  [
                                                               "2cor",
                                                               "2co"
-                                                          ]
+                                                          ],
+                                        "testament":  "new"
                                     },
                   "galatians":  {
                                     "file":  "galatians.json",
@@ -511,7 +565,8 @@
                                     "abbreviations":  [
                                                           "gal",
                                                           "ga"
-                                                      ]
+                                                      ],
+                                    "testament":  "new"
                                 },
                   "ephesians":  {
                                     "file":  "ephesians.json",
@@ -519,7 +574,8 @@
                                     "chapters":  6,
                                     "abbreviations":  [
                                                           "eph"
-                                                      ]
+                                                      ],
+                                    "testament":  "new"
                                 },
                   "philippians":  {
                                       "file":  "philippians.json",
@@ -528,7 +584,8 @@
                                       "abbreviations":  [
                                                             "phil",
                                                             "php"
-                                                        ]
+                                                        ],
+                                      "testament":  "new"
                                   },
                   "colossians":  {
                                      "file":  "colossians.json",
@@ -536,7 +593,8 @@
                                      "chapters":  4,
                                      "abbreviations":  [
                                                            "col"
-                                                       ]
+                                                       ],
+                                     "testament":  "new"
                                  },
                   "1-thessalonians":  {
                                           "file":  "1-thessalonians.json",
@@ -546,7 +604,8 @@
                                                                 "1thess",
                                                                 "1thes",
                                                                 "1th"
-                                                            ]
+                                                            ],
+                                          "testament":  "new"
                                       },
                   "2-thessalonians":  {
                                           "file":  "2-thessalonians.json",
@@ -556,7 +615,8 @@
                                                                 "2thess",
                                                                 "2thes",
                                                                 "2th"
-                                                            ]
+                                                            ],
+                                          "testament":  "new"
                                       },
                   "1-timothy":  {
                                     "file":  "1-timothy.json",
@@ -565,7 +625,8 @@
                                     "abbreviations":  [
                                                           "1tim",
                                                           "1tm"
-                                                      ]
+                                                      ],
+                                    "testament":  "new"
                                 },
                   "2-timothy":  {
                                     "file":  "2-timothy.json",
@@ -574,7 +635,8 @@
                                     "abbreviations":  [
                                                           "2tim",
                                                           "2tm"
-                                                      ]
+                                                      ],
+                                    "testament":  "new"
                                 },
                   "titus":  {
                                 "file":  "titus.json",
@@ -583,7 +645,8 @@
                                 "abbreviations":  [
                                                       "tit",
                                                       "ti"
-                                                  ]
+                                                  ],
+                                "testament":  "new"
                             },
                   "philemon":  {
                                    "file":  "philemon.json",
@@ -593,7 +656,8 @@
                                                          "phlm",
                                                          "philem",
                                                          "phm"
-                                                     ]
+                                                     ],
+                                   "testament":  "new"
                                },
                   "hebrews":  {
                                   "file":  "hebrews.json",
@@ -601,7 +665,8 @@
                                   "chapters":  13,
                                   "abbreviations":  [
                                                         "heb"
-                                                    ]
+                                                    ],
+                                  "testament":  "new"
                               },
                   "james":  {
                                 "file":  "james.json",
@@ -610,7 +675,8 @@
                                 "abbreviations":  [
                                                       "jas",
                                                       "jm"
-                                                  ]
+                                                  ],
+                                "testament":  "new"
                             },
                   "1-peter":  {
                                   "file":  "1-peter.json",
@@ -619,7 +685,8 @@
                                   "abbreviations":  [
                                                         "1pet",
                                                         "1pt"
-                                                    ]
+                                                    ],
+                                  "testament":  "new"
                               },
                   "2-peter":  {
                                   "file":  "2-peter.json",
@@ -628,7 +695,8 @@
                                   "abbreviations":  [
                                                         "2pet",
                                                         "2pt"
-                                                    ]
+                                                    ],
+                                  "testament":  "new"
                               },
                   "1-john":  {
                                  "file":  "1-john.json",
@@ -637,7 +705,8 @@
                                  "abbreviations":  [
                                                        "1jn",
                                                        "1jo"
-                                                   ]
+                                                   ],
+                                 "testament":  "new"
                              },
                   "2-john":  {
                                  "file":  "2-john.json",
@@ -646,7 +715,8 @@
                                  "abbreviations":  [
                                                        "2jn",
                                                        "2jo"
-                                                   ]
+                                                   ],
+                                 "testament":  "new"
                              },
                   "3-john":  {
                                  "file":  "3-john.json",
@@ -655,7 +725,8 @@
                                  "abbreviations":  [
                                                        "3jn",
                                                        "3jo"
-                                                   ]
+                                                   ],
+                                 "testament":  "new"
                              },
                   "jude":  {
                                "file":  "jude.json",
@@ -664,7 +735,8 @@
                                "abbreviations":  [
                                                      "jude",
                                                      "jd"
-                                                 ]
+                                                 ],
+                               "testament":  "new"
                            },
                   "revelation":  {
                                      "file":  "revelation.json",
@@ -676,7 +748,8 @@
                                                            "rev",
                                                            "rv",
                                                            "revelations"
-                                                       ]
+                                                       ],
+                                     "testament":  "new"
                                  }
               }
 }

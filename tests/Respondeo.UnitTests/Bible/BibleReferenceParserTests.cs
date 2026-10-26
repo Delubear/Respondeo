@@ -17,19 +17,19 @@ public class BibleReferenceParserTests
     [InlineData("I Cor 13", "1-corinthians", 13, null, null)]
     [InlineData("1Jn 4:8", "1-john", 4, 8, null)]
     [InlineData("Ps 22", "psalms", 22, null, null)]
-    [InlineData("Isaiah 53", "isaie", 53, null, null)]
-    [InlineData("Isaias 53:5", "isaie", 53, 5, null)]
-    [InlineData("Rev 21", "apocalypse", 21, null, null)]
-    [InlineData("Sirach 2", "ecclesiasticus", 2, null, null)]
-    [InlineData("1 Kings 3", "1-kings", 3, null, null)]
-    [InlineData("1 Samuel 3", "1-kings", 3, null, null)]
-    [InlineData("Song of Songs 2", "canticle-of-canticles", 2, null, null)]
+    [InlineData("Isaiah 53", "isaiah", 53, null, null)]
+    [InlineData("Isaias 53:5", "isaiah", 53, 5, null)]
+    [InlineData("Rev 21", "revelation", 21, null, null)]
+    [InlineData("Sirach 2", "sirach", 2, null, null)]
+    [InlineData("1 Kings 3", "1-samuel", 3, null, null)]
+    [InlineData("1 Samuel 3", "1-samuel", 3, null, null)]
+    [InlineData("Song of Songs 2", "song-of-songs", 2, null, null)]
     public void Parses_references(string input, string slug, int chapter, int? verse, int? end)
     {
         var reference = Parse(input);
 
         Assert.NotNull(reference);
-        Assert.Equal(slug, reference.Book.FileSlug);
+        Assert.Equal(slug, reference.Book.Slug);
         Assert.Equal(chapter, reference.Chapter);
         Assert.Equal(verse, reference.Verse);
         Assert.Equal(end, reference.EndVerse);
@@ -48,16 +48,16 @@ public class BibleReferenceParserTests
         Assert.Equal("bible/drb/john/3?v=16", Parse("Jn 3:16")!.Href);
 
     [Theory]
-    [InlineData("1 Kings 1", "drb", "1-kings", "bible/drb/1-kings/1")]
-    [InlineData("1 Kings 1", "cpdv", "3-kings", "bible/cpdv/1-kings/1")]
-    [InlineData("1 Kgs 1", "cpdv", "3-kings", "bible/cpdv/1-kings/1")]
-    [InlineData("3 Kings 1", "drb", "3-kings", "bible/drb/3-kings/1")]
-    [InlineData("1 Samuel 1", "cpdv", "1-kings", "bible/cpdv/1-samuel/1")]
-    [InlineData("1 Samuel 1", "drb", "1-kings", "bible/drb/1-kings/1")]
-    public void Resolves_books_by_translation_naming(string input, string translation, string fileSlug, string href)
+    [InlineData("1 Kings 1", "drb", "1-samuel", "bible/drb/1-kings/1")]
+    [InlineData("1 Kings 1", "cpdv", "1-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("1 Kgs 1", "cpdv", "1-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("3 Kings 1", "drb", "1-kings", "bible/drb/3-kings/1")]
+    [InlineData("1 Samuel 1", "cpdv", "1-samuel", "bible/cpdv/1-samuel/1")]
+    [InlineData("1 Samuel 1", "drb", "1-samuel", "bible/drb/1-kings/1")]
+    public void Resolves_books_by_translation_naming(string input, string translation, string key, string href)
     {
         var reference = Parse(input, translation)!;
-        Assert.Equal(fileSlug, reference.Book.FileSlug);
+        Assert.Equal(key, reference.Book.Slug);
         Assert.Equal(href, reference.Href);
     }
 
