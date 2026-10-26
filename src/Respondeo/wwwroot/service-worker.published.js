@@ -84,7 +84,7 @@ function isPackAsset(url) {
 
 function packAssets(pack) {
     return self.assetsManifest.assets.filter(asset =>
-        asset.url.startsWith(prefix)) && !isCorePackException(asset.url));
+        packs[pack].some(prefix => asset.url.startsWith(prefix)) && !isCorePackException(asset.url));
 }
 
 async function postToClients(message) {

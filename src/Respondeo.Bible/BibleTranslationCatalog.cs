@@ -15,7 +15,20 @@ public sealed class BibleTranslationCatalog(HttpClient http) : IBibleTranslation
 
     private Task<IReadOnlyList<BibleTranslation>>? _load;
 
-    public Task<IReadOnlyList<BibleTranslation>> GetAllAsync() => _load ??= LoadAsync();
+    public Task<IReadOnlyList<BibleTranslation>> GetAllAsync() => _load ??= LoadWithRetryAsync();
+
+    private async Task<IReadOnlyList<BibleTranslation>> LoadWithRetryAsync()
+    {
+        try
+        {
+            return await LoadAsync();
+        }
+        catch
+        {
+            _load = null;
+            throw;
+        }
+    }
 
     public async Task<BibleTranslation> GetDefaultAsync() => (await GetAllAsync())[0];
 
