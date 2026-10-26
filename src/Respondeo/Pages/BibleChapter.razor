@@ -1,6 +1,6 @@
 @page "/bible/{Book}"
 @page "/bible/{Book}/{Chapter:int}"
-@inject IBibleText Bible
+@inject IBibleChapterReader Reader
 @inject IBreadcrumbTrail Trail
 @inject NavigationInterop Navigation
 @inject IBibleTranslationService Translations
@@ -59,48 +59,9 @@ else
 
     private string? Heading => _book is null ? null : $"{_translation.BookName(_book)} {Chapter}";
 
-    private (string Href, string Label)? Previous
-    {
-        get
-        {
-            if (_book is null) return null;
-            var count = _translation.ChapterCount(_book);
-            if (Chapter > 1 && count > 0)
-            {
-                var target = Math.Min(Chapter - 1, count);
-                return ($"bible/{_book.Slug}/{target}", $"{_translation.BookName(_book)} {target}");
-            }
+    private ChapterLink? Previous => _book is null ? null : BibleChapterNavigation.Previous(_book, Chapter, _translation);
 
-            var books = _translation.Books();
-            var prior = BibleBooks.All.Take(IndexOf(_book)).LastOrDefault(books.Contains);
-            if (prior is null) return null;
-            var last = _translation.ChapterCount(prior);
-            return ($"bible/{prior.Slug}/{last}", $"{_translation.BookName(prior)} {last}");
-        }
-    }
-
-    private (string Href, string Label)? Next
-    {
-        get
-        {
-            if (_book is null) return null;
-            if (Chapter < _translation.ChapterCount(_book)) return ($"bible/{_book.Slug}/{Chapter + 1}", $"{_translation.BookName(_book)} {Chapter + 1}");
-            var books = _translation.Books();
-            var following = BibleBooks.All.Skip(IndexOf(_book) + 1).FirstOrDefault(books.Contains);
-            if (following is null) return null;
-            return ($"bible/{following.Slug}/1", $"{_translation.BookName(following)} 1");
-        }
-    }
-
-    private static int IndexOf(BibleBook book)
-    {
-        for (var i = 0; i < BibleBooks.All.Count; i++)
-        {
-            if (BibleBooks.All[i] == book) return i;
-        }
-
-        return -1;
-    }
+    private ChapterLink? Next => _book is null ? null : BibleChapterNavigation.Next(_book, Chapter, _translation);
 
     protected override async Task OnInitializedAsync() => await Trail.ClearAsync();
 
@@ -121,27 +82,11 @@ else
         }
 
         var translation = Translations.Current;
-        IReadOnlyList<BibleVerse>? verses = null;
-        var unavailable = false;
-        if (_book is not null && Chapter >= 1 && Chapter <= _book.ChapterCount)
-        {
-            verses = await Bible.GetChapterAsync(_book.Slug, Chapter, translation);
-            if (verses is null)
-            {
-                foreach (var other in Enum.GetValues<BibleTranslation>())
-                {
-                    if (other != translation && await Bible.GetChapterAsync(_book.Slug, Chapter, other) is not null)
-                    {
-                        unavailable = true;
-                        break;
-                    }
-                }
-            }
-        }
+        var result = await Reader.LoadAsync(_book, Chapter, translation);
 
         _translation = translation;
-        _verses = verses;
-        _unavailable = unavailable;
+        _verses = result.Verses;
+        _unavailable = result.Unavailable;
         _loading = false;
         _highlight = VerseSelection.Parse(VerseQuery);
         _pendingScroll = !_highlight.IsEmpty && _verses is not null;

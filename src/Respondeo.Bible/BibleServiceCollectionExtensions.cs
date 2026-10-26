@@ -1,5 +1,3 @@
-using Respondeo.Bible.Contracts;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Respondeo.Bible;
@@ -10,6 +8,7 @@ public static class BibleServiceCollectionExtensions
     public static IServiceCollection AddBible(this IServiceCollection services)
     {
         services.AddScoped<IBibleText, DouayRheimsBibleText>();
+        services.AddScoped<IBibleChapterReader, BibleChapterReader>();
         return services;
     }
 }
