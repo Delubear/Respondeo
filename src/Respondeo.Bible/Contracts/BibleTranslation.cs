@@ -16,8 +16,10 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
         string folder,
         string? description,
         IReadOnlyList<string> aliases,
+        bool usesVulgatePsalmNumbering,
         IReadOnlyDictionary<string, BibleTranslationBook> books)
     {
+        UsesVulgatePsalmNumbering = usesVulgatePsalmNumbering;
         Code = code;
         Name = name;
         ShortName = shortName;
@@ -46,7 +48,13 @@ public sealed class BibleTranslation : IEquatable<BibleTranslation>
     /// <summary>Additional codes that resolve to this translation.</summary>
     public IReadOnlyList<string> Aliases { get; }
 
-    /// <summary>Whether <paramref name="code"/> is this translation's code or one of its aliases.</summary>
+    /// <summary>
+    /// Whether the translation numbers the Psalms like the Greek/Latin Vulgate (e.g. Psalm 23 is its Psalm 22)
+    /// rather than like the Hebrew text that modern citations use. Set by <c>psalmNumbering</c> in <c>translations.json</c>.
+    /// </summary>
+    public bool UsesVulgatePsalmNumbering { get; }
+
+    /// <summary>Whether <paramref name="code"/> is
     public bool Matches(string? code)
     {
         var value = code?.Trim();

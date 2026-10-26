@@ -46,9 +46,15 @@ public sealed class BibleTranslationCatalog(HttpClient http) : IBibleTranslation
         entry.Folder,
         entry.Description,
         entry.Aliases ?? [],
+        entry.PsalmNumbering switch
+        {
+            "vulgate" => true,
+            "hebrew" => false,
+            _ => throw new InvalidOperationException($"Translation '{entry.Code}' must set psalmNumbering to \"hebrew\" or \"vulgate\"."),
+        },
         new Dictionary<string, BibleTranslationBook>(manifest?.Books ?? [], StringComparer.Ordinal));
 
-    private sealed record IndexEntry(string Code, string Name, string? ShortName, string Folder, string? Description, string[]? Aliases);
+    private sealed record IndexEntry(string Code, string Name, string? ShortName, string Folder, string? Description, string[]? Aliases, string? PsalmNumbering);
 
     private sealed record Manifest(Dictionary<string, BibleTranslationBook>? Books);
 }

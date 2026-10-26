@@ -38,7 +38,9 @@ foreach ($file in $files) {
 
 	$chapters = foreach ($c in (Get-Numbered $book)) {
 		$verses = foreach ($v in (Get-Numbered $c.Value)) {
-			$text = (([string]$v.Value) -replace [char]0x00A0, ' ' -replace '\s+', ' ').Trim()
+			' ' -replace '\s+', ' ').Trim()
+						# The source appends Hebrew psalm numbers such as "(23)" or "(116A)" to some verses; drop them.
+						$text = ($text -replace '\s*\(\d+[AB]?\)$', '').Trim()
 			if ($text) { [ordered]@{ verse = [int]$v.Name; text = $text } }
 		}
 		[ordered]@{ chapter = [int]$c.Name; verses = @($verses) }

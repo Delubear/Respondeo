@@ -8,6 +8,7 @@
         "name":  "Douay-Rheims",
         "shortName":  "Douay-Rheims",
         "folder":  "douay-rheims",
+        "psalmNumbering":  "vulgate",
         "description":  "The Douay-Rheims is the classic English Catholic translation of the Latin Vulgate (1582-1610), as revised by Bishop Challoner in the 1750s. It is public domain and approved for Catholic use."
     },
     {
@@ -18,6 +19,7 @@
         "name":  "Catholic Public Domain Version",
         "shortName":  "CPDV",
         "folder":  "cpdv",
+        "psalmNumbering":  "vulgate",
         "description":  "The Catholic Public Domain Version is a modern translation of the Vulgate by Ronald L. Conte Jr. It is public domain but unofficial: it carries no imprimatur."
     }
 ]

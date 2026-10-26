@@ -29,7 +29,7 @@ internal static class BibleCitation
         }
 
         var slug = book.Slug;
-        var isPsalm = slug == "psalms";
+        var convertPsalms = slug == "psalms" && translation.UsesVulgatePsalmNumbering;
         var spans = new List<VerseSpan>();
         var chapter = 0;
 
@@ -53,17 +53,13 @@ internal static class BibleCitation
                 return null;
             }
 
-            if (isPsalm)
+            if (convertPsalms)
             {
-                if (!TryAddPsalm(spans, startChapter, startVerse, endChapter, endVerse))
-                {
-                    return null;
-                }
+                (startChapter, startVerse) = HebrewToVulgatePsalm(startChapter, startVerse);
+                (endChapter, endVerse) = HebrewToVulgatePsalm(endChapter, endVerse);
             }
-            else
-            {
-                spans.Add(new VerseSpan(startChapter, startVerse, endChapter, endVerse));
-            }
+
+            spans.Add(new VerseSpan(startChapter, startVerse, endChapter, endVerse));
         }
 
         return spans.Count == 0 ? null : new BiblePassage(slug, spans);
@@ -87,43 +83,30 @@ internal static class BibleCitation
         return int.TryParse(text.TrimEnd('a', 'b', 'c'), out verse);
     }
 
-    private static bool TryAddPsalm(List<VerseSpan> spans, int startChapter, int startVerse, int endChapter, int endVerse)
+    /// <summary>
+    /// Converts a Hebrew-numbered psalm point (as cited) to the Vulgate numbering. The Vulgate merges
+    /// Hebrew 9+10 and 114+115, and splits Hebrew 116 and 147, so most psalms in between are one lower.
+    /// </summary>
+    private static (int Chapter, int Verse) HebrewToVulgatePsalm(int psalm, int verse)
     {
-        if (startChapter != endChapter)
+        var (chapter, verseShift) = (psalm, verse) switch
         {
-            return false;
-        }
-
-        // Psalms split or merged between the Hebrew and Vulgate numbering need verse shifts.
-        var (chapter, offset) = (startChapter, startVerse) switch
-        {
-            (116, >= 10) => (115, 9),
-            (147, >= 12) => (147, 11),
-            (9, _) => (9, 0),
-            (10, _) => (9, -21),
-            (114, _) => (113, 0),
-            (115, _) => (113, -8),
-            _ => (VulgateNumber(startChapter), 0),
+            (<= 8, _) => (psalm, 0),
+            (9, _) => (9, 0),                  // Hebrew 9 is the first half of Vulgate 9
+            (10, _) => (9, 21),                // Hebrew 10:1 is Vulgate 9:22
+            (<= 113, _) => (psalm - 1, 0),
+            (114, _) => (113, 0),              // Hebrew 114 is the first half of Vulgate 113
+            (115, _) => (113, 8),              // Hebrew 115:1 is Vulgate 113:9
+            (116, <= 9) => (114, 0),           // Hebrew 116:1-9 is Vulgate 114
+            (116, _) => (115, -9),             // Hebrew 116:10 is Vulgate 115:1
+            (<= 146, _) => (psalm - 1, 0),
+            (147, <= 11) => (146, 0),          // Hebrew 147:1-11 is Vulgate 146
+            (147, _) => (147, -11),            // Hebrew 147:12 is Vulgate 147:1
+            _ => (psalm, 0),
         };
 
-        if (chapter == 0)
-        {
-            return false;
-        }
-
-        spans.Add(new VerseSpan(chapter, startVerse - offset, chapter, endVerse - offset));
-        return true;
+        return (chapter, verse == EndOfChapter ? EndOfChapter : verse + verseShift);
     }
-
-    private static int VulgateNumber(int hebrew) => hebrew switch
-    {
-        <= 8 => hebrew,
-        <= 113 => hebrew - 1,
-        116 => 114,
-        <= 146 => hebrew - 1,
-        147 => 146,
-        _ => hebrew,
-    };
 
     private static readonly Regex Pattern = new(@"^(?<book>(?:\d\s)?[A-Za-z][A-Za-z ]*?)\s+(?<refs>\d.*)$", RegexOptions.Compiled);
 
