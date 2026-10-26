@@ -37,11 +37,11 @@ public class BibleTranslationTests
         var books = manifest.RootElement.GetProperty("books");
         foreach (var book in BibleBooks.All.Where(b => b.Testament != BibleTestament.Appendix))
         {
-            Assert.True(books.TryGetProperty(book.FileSlug, out var entry), $"Missing CPDV manifest entry for {book.FileSlug}");
+            Assert.True(books.TryGetProperty(book.Slug, out var entry), $"Missing CPDV manifest entry for {book.Slug}");
             var path = Path.Combine(folder, entry.GetProperty("file").GetString()!);
-            Assert.True(File.Exists(path), $"Missing CPDV file for {book.FileSlug}");
+            Assert.True(File.Exists(path), $"Missing CPDV file for {book.Slug}");
             using var doc = JsonDocument.Parse(File.ReadAllText(path));
-            Assert.True(doc.RootElement.GetProperty("chapters").GetArrayLength() > 0, $"Empty CPDV file for {book.FileSlug}");
+            Assert.True(doc.RootElement.GetProperty("chapters").GetArrayLength() > 0, $"Empty CPDV file for {book.Slug}");
         }
     }
 

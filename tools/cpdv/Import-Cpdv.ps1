@@ -1,6 +1,7 @@
 # Imports the public-domain Catholic Public Domain Version (Ronald L. Conte Jr.) from the
 # yoarikso/cpdvbible dataset into src/Respondeo.Bible/wwwroot/cpdv/{slug}.json, using the same
-# schema as the Douay-Rheims files. CPDV book order matches the Douay-Rheims order, so files map by index.
+# schema as the Douay-Rheims files, plus a manifest.json keyed by the same CPDV (modern) book slugs.
+# Source files are numbered in canonical order, so they map to slugs by index.
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -10,14 +11,17 @@ New-Item -ItemType Directory -Force -Path $out | Out-Null
 $api = 'https://api.github.com/repos/yoarikso/cpdvbible/contents/cpdv-json?ref=master'
 $files = (Invoke-RestMethod $api) | Where-Object { $_.name -match '^(OT|NT)-(\d+)_' }
 
-$oldSlugs = @('genesis', 'exodus', 'leviticus', 'numbers', 'deuteronomy', 'josue', 'judges', 'ruth', '1-kings', '2-kings',
-	'3-kings', '4-kings', '1-paralipomenon', '2-paralipomenon', '1-esdras', '2-esdras', 'tobias', 'judith', 'esther', 'job',
-	'psalms', 'proverbs', 'ecclesiastes', 'canticle-of-canticles', 'wisdom', 'ecclesiasticus', 'isaie', 'jeremie',
-	'lamentations', 'baruch', 'ezechiel', 'daniel', 'osee', 'joel', 'amos', 'abdias', 'jonas', 'micheas', 'nahum', 'habacuc',
-	'sophonias', 'aggeus', 'zacharias', 'malachie', '1-machabees', '2-machabees')
-$newSlugs = @('matthew', 'mark', 'luke', 'john', 'acts', 'romans', '1-corinthians', '2-corinthians', 'galatians', 'ephesians',
-	'philippians', 'colossians', '1-thessalonians', '2-thessalonians', '1-timothy', '2-timothy', 'titus', 'philemon', 'hebrews',
-	'james', '1-peter', '2-peter', '1-john', '2-john', '3-john', 'jude', 'apocalypse')
+$oldBooks = @('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
+	'1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther', 'Job',
+	'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach', 'Isaiah', 'Jeremiah',
+	'Lamentations', 'Baruch', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk',
+	'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', '1 Maccabees', '2 Maccabees')
+$newBooks = @('Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians',
+	'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
+	'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation')
+
+function Get-Slug($name) { $name.ToLowerInvariant().Replace(' ', '-') }
+$imported = @{}
 
 $client = New-Object Net.WebClient
 $client.Encoding = [Text.Encoding]::UTF8
@@ -29,7 +33,7 @@ function Get-Numbered($object) {
 foreach ($file in $files) {
 	$null = $file.name -match '^(OT|NT)-(\d+)_'
 	$index = [int]$Matches[2] - 1
-	$slug = if ($Matches[1] -eq 'OT') { $oldSlugs[$index] } else { $newSlugs[$index] }
+	$slug = Get-Slug $(if ($Matches[1] -eq 'OT') { $oldBooks[$index] } else { $newBooks[$index] })
 	$book = $client.DownloadString($file.download_url) | ConvertFrom-Json
 
 	$chapters = foreach ($c in (Get-Numbered $book)) {
@@ -42,5 +46,16 @@ foreach ($file in $files) {
 
 	$json = [ordered]@{ chapters = @($chapters) } | ConvertTo-Json -Depth 5 -Compress
 	[IO.File]::WriteAllText((Join-Path $out "$slug.json"), $json, (New-Object Text.UTF8Encoding $false))
+	$imported[$slug] = $true
 	Write-Host "$($file.name) -> $slug.json ($(@($chapters).Count) chapters)"
 }
+
+# Manifest in canonical order, keyed by CPDV slug and listing only books present in the source dataset.
+$books = [ordered]@{}
+foreach ($name in $oldBooks + $newBooks) {
+	$slug = Get-Slug $name
+	if ($imported.ContainsKey($slug)) { $books[$slug] = [ordered]@{ file = "$slug.json"; name = $name } }
+}
+$manifest = [ordered]@{ books = $books } | ConvertTo-Json -Depth 4
+[IO.File]::WriteAllText((Join-Path $out 'manifest.json'), $manifest, (New-Object Text.UTF8Encoding $false))
+Write-Host "manifest.json ($($books.Count) books)"
