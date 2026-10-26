@@ -53,13 +53,13 @@ public static class BibleTranslations
     };
 
     /// <summary>Whether the translation includes the book at all.</summary>
-    public static bool Contains(this BibleTranslation translation, BibleBook book) => translation != BibleTranslation.Cpdv || !CpdvMissingBooks.Contains(book.Slug);
+    public static bool Contains(this BibleTranslation translation, BibleBook book) => translation != BibleTranslation.Cpdv || !CpdvMissingBooks.Contains(book.FileSlug);
 
     /// <summary>The number of chapters the translation has for the book (0 when the book is absent).</summary>
     public static int ChapterCount(this BibleTranslation translation, BibleBook book)
     {
         if (!translation.Contains(book)) return 0;
-        return translation == BibleTranslation.Cpdv && CpdvChapterCounts.TryGetValue(book.Slug, out var count) ? count : book.ChapterCount;
+        return translation == BibleTranslation.Cpdv && CpdvChapterCounts.TryGetValue(book.FileSlug, out var count) ? count : book.ChapterCount;
     }
 
     /// <summary>The book's name as the translation titles it: the Douay name for Douay-Rheims, the common modern name otherwise.</summary>

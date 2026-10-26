@@ -1,13 +1,16 @@
 namespace Respondeo.Bible.Contracts;
 
 /// <summary>A book of the Douay-Rheims Bible.</summary>
-/// <param name="Slug">The route and data-file identifier (e.g. <c>isaie</c>).</param>
+/// <param name="FileSlug">The Douay-Rheims data-file identifier (e.g. <c>isaie</c>).</param>
 /// <param name="Name">The Douay-Rheims display name.</param>
 /// <param name="ModernName">The common modern name when it differs from <paramref name="Name"/>.</param>
 /// <param name="Testament">Old or New Testament.</param>
 /// <param name="ChapterCount">The number of chapters in the bundled text.</param>
-public sealed record BibleBook(string Slug, string Name, string? ModernName, BibleTestament Testament, int ChapterCount)
+public sealed record BibleBook(string FileSlug, string Name, string? ModernName, BibleTestament Testament, int ChapterCount)
 {
+    /// <summary>The route identifier, derived from the modern name (e.g. <c>isaiah</c>).</summary>
+    public string Slug => (ModernName ?? Name).ToLowerInvariant().Replace(' ', '-');
+
     /// <summary>The name shown to readers: the common modern name, falling back to the Douay-Rheims name.</summary>
     public string DisplayName => ModernName ?? Name;
 
@@ -112,7 +115,13 @@ public static class BibleBooks
     ];
 
     /// <summary>Finds a book by its slug, or <c>null</c> when the slug is unknown.</summary>
-    public static BibleBook? Find(string? slug) => All.FirstOrDefault(b => string.Equals(b.Slug, slug, StringComparison.OrdinalIgnoreCase));
+    public static BibleBook? Find(string? slug) =>
+        All.FirstOrDefault(b => string.Equals(b.Slug, slug, StringComparison.OrdinalIgnoreCase)) ??
+        All.FirstOrDefault(b => string.Equals(b.FileSlug, slug, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>Finds a book by its Douay-Rheims data-file slug.</summary>
+    public static BibleBook? FindByFileSlug(string? slug) =>
+        All.FirstOrDefault(b => string.Equals(b.FileSlug, slug, StringComparison.OrdinalIgnoreCase));
 
     private static BibleBook Old(string slug, string name, string? modern, int chapters) => new(slug, name, modern, BibleTestament.Old, chapters);
 

@@ -164,12 +164,13 @@ public static class BibleReferenceParser
         {
             lookup.TryAdd(Squash(book.Name), book);
             lookup.TryAdd(Squash(book.Slug), book);
+            lookup.TryAdd(Squash(book.FileSlug), book);
         }
 
         foreach (var book in BibleBooks.All)
         {
             if (book.ModernName is not null) lookup.TryAdd(Squash(book.ModernName), book);
-            if (Abbreviations.TryGetValue(book.Slug, out var abbreviations))
+            if (Abbreviations.TryGetValue(book.FileSlug, out var abbreviations))
             {
                 foreach (var abbreviation in abbreviations) lookup.TryAdd(abbreviation, book);
             }

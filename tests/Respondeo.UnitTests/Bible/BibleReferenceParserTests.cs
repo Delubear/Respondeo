@@ -25,7 +25,7 @@ public class BibleReferenceParserTests
         var reference = BibleReferenceParser.Parse(input);
 
         Assert.NotNull(reference);
-        Assert.Equal(slug, reference.Book.Slug);
+        Assert.Equal(slug, reference.Book.FileSlug);
         Assert.Equal(chapter, reference.Chapter);
         Assert.Equal(verse, reference.Verse);
         Assert.Equal(end, reference.EndVerse);

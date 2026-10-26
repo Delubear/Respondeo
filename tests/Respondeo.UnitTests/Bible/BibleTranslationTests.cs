@@ -35,10 +35,10 @@ public class BibleTranslationTests
         var folder = Path.Combine(FindRepoRoot(), "src", "Respondeo.Bible", "wwwroot", "cpdv");
         foreach (var book in BibleBooks.All.Where(b => b.Testament != BibleTestament.Appendix))
         {
-            var path = Path.Combine(folder, $"{book.Slug}.json");
-            Assert.True(File.Exists(path), $"Missing CPDV file for {book.Slug}");
+            var path = Path.Combine(folder, $"{book.FileSlug}.json");
+            Assert.True(File.Exists(path), $"Missing CPDV file for {book.FileSlug}");
             using var doc = JsonDocument.Parse(File.ReadAllText(path));
-            Assert.True(doc.RootElement.GetProperty("chapters").GetArrayLength() > 0, $"Empty CPDV file for {book.Slug}");
+            Assert.True(doc.RootElement.GetProperty("chapters").GetArrayLength() > 0, $"Empty CPDV file for {book.FileSlug}");
         }
     }
 

@@ -24,7 +24,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
             return null;
         }
 
-        var book = await LoadBookAsync(known.Slug, translation);
+        var book = await LoadBookAsync(known.FileSlug, translation);
         var match = book?.Chapters?.FirstOrDefault(c => c.Chapter == chapter);
         if (match?.Verses is null)
         {
