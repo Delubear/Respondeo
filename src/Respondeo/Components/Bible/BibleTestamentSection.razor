@@ -12,7 +12,7 @@
         {
             var book = Books[i];
             <li>
-                <a class="bible__book-link" href="bible/@book.Slug">
+                <a class="bible__book-link" href="@Translation.ChapterHref(book, 1)">
                     <span class="bible__book-number">@(i + 1)</span>
                     <span>
                         @Translation.BookName(book)

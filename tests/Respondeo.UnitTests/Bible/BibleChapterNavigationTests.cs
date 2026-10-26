@@ -18,7 +18,7 @@ public class BibleChapterNavigationTests
     {
         var first = BibleBooks.All.First(b => Translation.Books().Contains(b));
         var next = BibleChapterNavigation.Next(first, 1, Translation);
-        Assert.Equal($"bible/{first.Slug}/2", next?.Href);
+        Assert.Equal($"bible/cpdv/{first.Slug}/2", next?.Href);
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class BibleChapterNavigationTests
         var books = BibleBooks.All.Where(b => Translation.Books().Contains(b)).ToList();
         var last = Translation.ChapterCount(books[0]);
         var next = BibleChapterNavigation.Next(books[0], last, Translation);
-        Assert.Equal($"bible/{books[1].Slug}/1", next?.Href);
+        Assert.Equal($"bible/cpdv/{books[1].Slug}/1", next?.Href);
     }
 
     [Fact]
@@ -35,6 +35,16 @@ public class BibleChapterNavigationTests
     {
         var books = BibleBooks.All.Where(b => Translation.Books().Contains(b)).ToList();
         var previous = BibleChapterNavigation.Previous(books[1], 1, Translation);
-        Assert.Equal($"bible/{books[0].Slug}/{Translation.ChapterCount(books[0])}", previous?.Href);
+        Assert.Equal($"bible/cpdv/{books[0].Slug}/{Translation.ChapterCount(books[0])}", previous?.Href);
+    }
+
+    [Fact]
+    public void Slugs_AreScopedPerTranslation()
+    {
+        var cpdvBook = BibleTranslation.Cpdv.FindBook("1-kings");
+        Assert.NotNull(cpdvBook);
+        Assert.Equal("bible/cpdv/1-kings/1", BibleTranslation.Cpdv.ChapterHref(cpdvBook, 1));
+        Assert.Equal(cpdvBook, BibleTranslation.DouayRheims.FindBook(BibleTranslation.DouayRheims.Slug(cpdvBook)));
+        Assert.StartsWith("bible/drb/", BibleTranslation.DouayRheims.ChapterHref(cpdvBook, 1));
     }
 }

@@ -3,6 +3,7 @@
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
 @inject BrowseState Browse
+@inject IBibleText BibleText
 @inject BrowseStateInterop BrowseJs
 
 <PageShell Title="Holy Bible" Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
@@ -22,7 +23,7 @@
 
     @if (IsSearching)
     {
-        var reference = BibleReferenceParser.Parse(_query);
+        var reference = BibleReferenceParser.Parse(_query, _translation, _abbreviations);
         @if (reference is not null)
         {
             <a class="bible__match-link bible__reference-card" href="@reference.Href">
@@ -57,10 +58,13 @@
 
     private BibleTranslation _translation;
 
+    private IReadOnlyDictionary<string, IReadOnlyList<string>>? _abbreviations;
+
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
     {
         await Translations.SetAsync(translation);
         _translation = translation;
+        _abbreviations = await BibleText.GetAbbreviationsAsync(translation);
         Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code()), replace: true);
     }
 
@@ -103,6 +107,7 @@
         }
 
         _translation = Translations.Current;
+        _abbreviations = await BibleText.GetAbbreviationsAsync(_translation);
         await Trail.ClearAsync();
     }
 
@@ -119,13 +124,13 @@
     private void OnSearchSubmitted(string value)
     {
         _query = value ?? "";
-        if (BibleReferenceParser.Parse(_query) is { } reference)
+        if (BibleReferenceParser.Parse(_query, _translation, _abbreviations) is { } reference)
         {
             Nav.NavigateTo(reference.Href);
         }
         else if (Matches() is [var only])
         {
-            Nav.NavigateTo($"bible/{only.Slug}");
+            Nav.NavigateTo(_translation.ChapterHref(only, 1));
         }
     }
 

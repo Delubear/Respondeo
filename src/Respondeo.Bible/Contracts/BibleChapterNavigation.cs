@@ -29,7 +29,7 @@ public static class BibleChapterNavigation
     }
 
     private static ChapterLink Link(BibleBook book, int chapter, BibleTranslation translation) =>
-        new($"bible/{book.Slug}/{chapter}", $"{translation.BookName(book)} {chapter}");
+        new(translation.ChapterHref(book, chapter), $"{translation.BookName(book)} {chapter}");
 
     private static int IndexOf(BibleBook book)
     {

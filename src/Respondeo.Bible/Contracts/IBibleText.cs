@@ -15,4 +15,7 @@ public interface IBibleText
     /// or <c>null</c> when it cannot be loaded or that translation lacks the chapter.
     /// </summary>
     Task<IReadOnlyList<BibleVerse>?> GetChapterAsync(string bookSlug, int chapter, BibleTranslation translation = BibleTranslation.DouayRheims);
+
+    /// <summary>The book abbreviations declared in the translation's manifest, keyed by modern slug (empty when it cannot be loaded).</summary>
+    Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation);
 }

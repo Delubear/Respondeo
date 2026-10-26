@@ -13,7 +13,7 @@ else
         @foreach (var book in Books)
         {
             <li>
-                <a class="bible__match-link" href="bible/@book.Slug">
+                <a class="bible__match-link" href="@Translation.ChapterHref(book, 1)">
                     <span class="bible__match-title">@Translation.BookName(book)</span>
                     @if (Translation.BookNameClarification(book) is { } modern)
                     {

@@ -1,5 +1,5 @@
-@page "/bible/{Book}"
-@page "/bible/{Book}/{Chapter:int}"
+@page "/bible/{TranslationCode}/{Book}"
+@page "/bible/{TranslationCode}/{Book}/{Chapter:int}"
 @inject IBibleChapterReader Reader
 @inject IBreadcrumbTrail Trail
 @inject NavigationInterop Navigation
@@ -44,7 +44,7 @@ else
     [Parameter] public string Book { get; set; } = "";
     [Parameter] public int Chapter { get; set; }
     [SupplyParameterFromQuery(Name = "v")] public string? VerseQuery { get; set; }
-    [SupplyParameterFromQuery(Name = "tr")] public string? TranslationCode { get; set; }
+    [Parameter] public string TranslationCode { get; set; } = "";
 
     private bool _translationLoaded;
     private BibleTranslation _translation;
@@ -69,19 +69,33 @@ else
     {
         if (_verses is null && !_unavailable) _loading = true;
         if (Chapter == 0) Chapter = 1;
-        _book = BibleBooks.Find(Book);
         if (!_translationLoaded)
         {
             await Translations.InitializeAsync();
             _translationLoaded = true;
         }
 
-        if (BibleTranslations.Parse(TranslationCode) is { } requested && requested != Translations.Current)
+        if (BibleTranslations.Parse(TranslationCode) is not { } requested)
         {
-            await Translations.SetAsync(requested);
+            _book = null;
+            _verses = null;
+            _unavailable = false;
+            _loading = false;
+            return;
         }
 
-        var translation = Translations.Current;
+        if (requested != Translations.Current) await Translations.SetAsync(requested);
+
+        var translation = requested;
+        _book = translation.FindBook(Book);
+        if (_book is null)
+        {
+            _verses = null;
+            _unavailable = false;
+            _loading = false;
+            return;
+        }
+
         var result = await Reader.LoadAsync(_book, Chapter, translation);
 
         _translation = translation;
@@ -95,7 +109,9 @@ else
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
     {
         await Translations.SetAsync(translation);
-        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tr", translation.Code()), replace: true);
+        if (_book is null) return;
+        var chapter = Math.Min(Chapter, Math.Max(1, translation.ChapterCount(_book)));
+        Nav.NavigateTo(translation.ChapterHref(_book, chapter, VerseQuery), replace: true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

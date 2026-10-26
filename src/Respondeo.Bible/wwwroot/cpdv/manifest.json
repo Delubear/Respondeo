@@ -1,296 +1,609 @@
-{
+﻿{
     "books":  {
                   "genesis":  {
                                   "file":  "genesis.json",
-                                  "name":  "Genesis"
+                                  "name":  "Genesis",
+                                  "abbreviations":  [
+                                                        "gen",
+                                                        "gn",
+                                                        "ge"
+                                                    ]
                               },
                   "exodus":  {
                                  "file":  "exodus.json",
-                                 "name":  "Exodus"
+                                 "name":  "Exodus",
+                                 "abbreviations":  [
+                                                       "ex",
+                                                       "exod",
+                                                       "exo"
+                                                   ]
                              },
                   "leviticus":  {
                                     "file":  "leviticus.json",
-                                    "name":  "Leviticus"
+                                    "name":  "Leviticus",
+                                    "abbreviations":  [
+                                                          "lev",
+                                                          "lv"
+                                                      ]
                                 },
                   "numbers":  {
                                   "file":  "numbers.json",
-                                  "name":  "Numbers"
+                                  "name":  "Numbers",
+                                  "abbreviations":  [
+                                                        "num",
+                                                        "nm",
+                                                        "nb"
+                                                    ]
                               },
                   "deuteronomy":  {
                                       "file":  "deuteronomy.json",
-                                      "name":  "Deuteronomy"
+                                      "name":  "Deuteronomy",
+                                      "abbreviations":  [
+                                                            "deut",
+                                                            "dt",
+                                                            "deu"
+                                                        ]
                                   },
                   "joshua":  {
                                  "file":  "joshua.json",
-                                 "name":  "Joshua"
+                                 "name":  "Joshua",
+                                 "abbreviations":  [
+                                                       "jos",
+                                                       "josh"
+                                                   ]
                              },
                   "judges":  {
                                  "file":  "judges.json",
-                                 "name":  "Judges"
+                                 "name":  "Judges",
+                                 "abbreviations":  [
+                                                       "judg",
+                                                       "jdg",
+                                                       "jgs"
+                                                   ]
                              },
                   "ruth":  {
                                "file":  "ruth.json",
-                               "name":  "Ruth"
+                               "name":  "Ruth",
+                               "abbreviations":  [
+                                                     "ru",
+                                                     "rth"
+                                                 ]
                            },
                   "1-samuel":  {
                                    "file":  "1-samuel.json",
-                                   "name":  "1 Samuel"
+                                   "name":  "1 Samuel",
+                                   "abbreviations":  [
+                                                         "1sam",
+                                                         "1sm",
+                                                         "1samuel"
+                                                     ]
                                },
                   "2-samuel":  {
                                    "file":  "2-samuel.json",
-                                   "name":  "2 Samuel"
+                                   "name":  "2 Samuel",
+                                   "abbreviations":  [
+                                                         "2sam",
+                                                         "2sm",
+                                                         "2samuel"
+                                                     ]
                                },
                   "1-kings":  {
                                   "file":  "1-kings.json",
-                                  "name":  "1 Kings"
+                                  "name":  "1 Kings",
+                                  "abbreviations":  [
+                                                        "1kgs"
+                                                    ]
                               },
                   "2-kings":  {
                                   "file":  "2-kings.json",
-                                  "name":  "2 Kings"
+                                  "name":  "2 Kings",
+                                  "abbreviations":  [
+                                                        "2kgs"
+                                                    ]
                               },
                   "1-chronicles":  {
                                        "file":  "1-chronicles.json",
-                                       "name":  "1 Chronicles"
+                                       "name":  "1 Chronicles",
+                                       "abbreviations":  [
+                                                             "1par",
+                                                             "1chr",
+                                                             "1chron"
+                                                         ]
                                    },
                   "2-chronicles":  {
                                        "file":  "2-chronicles.json",
-                                       "name":  "2 Chronicles"
+                                       "name":  "2 Chronicles",
+                                       "abbreviations":  [
+                                                             "2par",
+                                                             "2chr",
+                                                             "2chron"
+                                                         ]
                                    },
                   "ezra":  {
                                "file":  "ezra.json",
-                               "name":  "Ezra"
+                               "name":  "Ezra",
+                               "abbreviations":  [
+                                                     "ezr"
+                                                 ]
                            },
                   "nehemiah":  {
                                    "file":  "nehemiah.json",
-                                   "name":  "Nehemiah"
+                                   "name":  "Nehemiah",
+                                   "abbreviations":  [
+                                                         "neh"
+                                                     ]
                                },
                   "tobit":  {
                                 "file":  "tobit.json",
-                                "name":  "Tobit"
+                                "name":  "Tobit",
+                                "abbreviations":  [
+                                                      "tob",
+                                                      "tb"
+                                                  ]
                             },
                   "judith":  {
                                  "file":  "judith.json",
-                                 "name":  "Judith"
+                                 "name":  "Judith",
+                                 "abbreviations":  [
+                                                       "jdt",
+                                                       "jud"
+                                                   ]
                              },
                   "esther":  {
                                  "file":  "esther.json",
-                                 "name":  "Esther"
+                                 "name":  "Esther",
+                                 "abbreviations":  [
+                                                       "est",
+                                                       "esth"
+                                                   ]
                              },
                   "job":  {
                               "file":  "job.json",
-                              "name":  "Job"
+                              "name":  "Job",
+                              "abbreviations":  [
+                                                    "jb"
+                                                ]
                           },
                   "psalms":  {
                                  "file":  "psalms.json",
-                                 "name":  "Psalms"
+                                 "name":  "Psalms",
+                                 "abbreviations":  [
+                                                       "ps",
+                                                       "psa",
+                                                       "psalm",
+                                                       "pss"
+                                                   ]
                              },
                   "proverbs":  {
                                    "file":  "proverbs.json",
-                                   "name":  "Proverbs"
+                                   "name":  "Proverbs",
+                                   "abbreviations":  [
+                                                         "prov",
+                                                         "prv",
+                                                         "pr"
+                                                     ]
                                },
                   "ecclesiastes":  {
                                        "file":  "ecclesiastes.json",
-                                       "name":  "Ecclesiastes"
+                                       "name":  "Ecclesiastes",
+                                       "abbreviations":  [
+                                                             "eccl",
+                                                             "eccles",
+                                                             "qoh",
+                                                             "ec"
+                                                         ]
                                    },
                   "song-of-songs":  {
                                         "file":  "song-of-songs.json",
-                                        "name":  "Song of Songs"
+                                        "name":  "Song of Songs",
+                                        "abbreviations":  [
+                                                              "cant",
+                                                              "song",
+                                                              "songofsolomon",
+                                                              "sg"
+                                                          ]
                                     },
                   "wisdom":  {
                                  "file":  "wisdom.json",
-                                 "name":  "Wisdom"
+                                 "name":  "Wisdom",
+                                 "abbreviations":  [
+                                                       "wis",
+                                                       "ws"
+                                                   ]
                              },
                   "sirach":  {
                                  "file":  "sirach.json",
-                                 "name":  "Sirach"
+                                 "name":  "Sirach",
+                                 "abbreviations":  [
+                                                       "sir",
+                                                       "ecclus"
+                                                   ]
                              },
                   "isaiah":  {
                                  "file":  "isaiah.json",
-                                 "name":  "Isaiah"
+                                 "name":  "Isaiah",
+                                 "abbreviations":  [
+                                                       "is",
+                                                       "isa"
+                                                   ]
                              },
                   "jeremiah":  {
                                    "file":  "jeremiah.json",
-                                   "name":  "Jeremiah"
+                                   "name":  "Jeremiah",
+                                   "abbreviations":  [
+                                                         "jer",
+                                                         "jr"
+                                                     ]
                                },
                   "lamentations":  {
                                        "file":  "lamentations.json",
-                                       "name":  "Lamentations"
+                                       "name":  "Lamentations",
+                                       "abbreviations":  [
+                                                             "lam",
+                                                             "la"
+                                                         ]
                                    },
                   "baruch":  {
                                  "file":  "baruch.json",
-                                 "name":  "Baruch"
+                                 "name":  "Baruch",
+                                 "abbreviations":  [
+                                                       "bar",
+                                                       "ba"
+                                                   ]
                              },
                   "ezekiel":  {
                                   "file":  "ezekiel.json",
-                                  "name":  "Ezekiel"
+                                  "name":  "Ezekiel",
+                                  "abbreviations":  [
+                                                        "ez",
+                                                        "ezek",
+                                                        "ezec"
+                                                    ]
                               },
                   "daniel":  {
                                  "file":  "daniel.json",
-                                 "name":  "Daniel"
+                                 "name":  "Daniel",
+                                 "abbreviations":  [
+                                                       "dan",
+                                                       "dn"
+                                                   ]
                              },
                   "hosea":  {
                                 "file":  "hosea.json",
-                                "name":  "Hosea"
+                                "name":  "Hosea",
+                                "abbreviations":  [
+                                                      "os",
+                                                      "hos"
+                                                  ]
                             },
                   "joel":  {
                                "file":  "joel.json",
-                               "name":  "Joel"
+                               "name":  "Joel",
+                               "abbreviations":  [
+                                                     "jl"
+                                                 ]
                            },
                   "amos":  {
                                "file":  "amos.json",
-                               "name":  "Amos"
+                               "name":  "Amos",
+                               "abbreviations":  [
+                                                     "am"
+                                                 ]
                            },
                   "obadiah":  {
                                   "file":  "obadiah.json",
-                                  "name":  "Obadiah"
+                                  "name":  "Obadiah",
+                                  "abbreviations":  [
+                                                        "abd",
+                                                        "obad",
+                                                        "ob"
+                                                    ]
                               },
                   "jonah":  {
                                 "file":  "jonah.json",
-                                "name":  "Jonah"
+                                "name":  "Jonah",
+                                "abbreviations":  [
+                                                      "jon"
+                                                  ]
                             },
                   "micah":  {
                                 "file":  "micah.json",
-                                "name":  "Micah"
+                                "name":  "Micah",
+                                "abbreviations":  [
+                                                      "mic",
+                                                      "mi"
+                                                  ]
                             },
                   "nahum":  {
                                 "file":  "nahum.json",
-                                "name":  "Nahum"
+                                "name":  "Nahum",
+                                "abbreviations":  [
+                                                      "na",
+                                                      "nah"
+                                                  ]
                             },
                   "habakkuk":  {
                                    "file":  "habakkuk.json",
-                                   "name":  "Habakkuk"
+                                   "name":  "Habakkuk",
+                                   "abbreviations":  [
+                                                         "hab",
+                                                         "hb"
+                                                     ]
                                },
                   "zephaniah":  {
                                     "file":  "zephaniah.json",
-                                    "name":  "Zephaniah"
+                                    "name":  "Zephaniah",
+                                    "abbreviations":  [
+                                                          "soph",
+                                                          "zeph",
+                                                          "zep"
+                                                      ]
                                 },
                   "haggai":  {
                                  "file":  "haggai.json",
-                                 "name":  "Haggai"
+                                 "name":  "Haggai",
+                                 "abbreviations":  [
+                                                       "agg",
+                                                       "hag",
+                                                       "hg"
+                                                   ]
                              },
                   "zechariah":  {
                                     "file":  "zechariah.json",
-                                    "name":  "Zechariah"
+                                    "name":  "Zechariah",
+                                    "abbreviations":  [
+                                                          "zach",
+                                                          "zech",
+                                                          "zec"
+                                                      ]
                                 },
                   "malachi":  {
                                   "file":  "malachi.json",
-                                  "name":  "Malachi"
+                                  "name":  "Malachi",
+                                  "abbreviations":  [
+                                                        "mal"
+                                                    ]
                               },
                   "1-maccabees":  {
                                       "file":  "1-maccabees.json",
-                                      "name":  "1 Maccabees"
+                                      "name":  "1 Maccabees",
+                                      "abbreviations":  [
+                                                            "1mac",
+                                                            "1macc",
+                                                            "1mc"
+                                                        ]
                                   },
                   "2-maccabees":  {
                                       "file":  "2-maccabees.json",
-                                      "name":  "2 Maccabees"
+                                      "name":  "2 Maccabees",
+                                      "abbreviations":  [
+                                                            "2mac",
+                                                            "2macc",
+                                                            "2mc"
+                                                        ]
                                   },
                   "matthew":  {
                                   "file":  "matthew.json",
-                                  "name":  "Matthew"
+                                  "name":  "Matthew",
+                                  "abbreviations":  [
+                                                        "mt",
+                                                        "matt",
+                                                        "mat"
+                                                    ]
                               },
                   "mark":  {
                                "file":  "mark.json",
-                               "name":  "Mark"
+                               "name":  "Mark",
+                               "abbreviations":  [
+                                                     "mk",
+                                                     "mar",
+                                                     "mrk"
+                                                 ]
                            },
                   "luke":  {
                                "file":  "luke.json",
-                               "name":  "Luke"
+                               "name":  "Luke",
+                               "abbreviations":  [
+                                                     "lk",
+                                                     "luk"
+                                                 ]
                            },
                   "john":  {
                                "file":  "john.json",
-                               "name":  "John"
+                               "name":  "John",
+                               "abbreviations":  [
+                                                     "jn",
+                                                     "joh",
+                                                     "jhn"
+                                                 ]
                            },
                   "acts":  {
                                "file":  "acts.json",
-                               "name":  "Acts"
+                               "name":  "Acts",
+                               "abbreviations":  [
+                                                     "ac",
+                                                     "act"
+                                                 ]
                            },
                   "romans":  {
                                  "file":  "romans.json",
-                                 "name":  "Romans"
+                                 "name":  "Romans",
+                                 "abbreviations":  [
+                                                       "rom",
+                                                       "rm",
+                                                       "ro"
+                                                   ]
                              },
                   "1-corinthians":  {
                                         "file":  "1-corinthians.json",
-                                        "name":  "1 Corinthians"
+                                        "name":  "1 Corinthians",
+                                        "abbreviations":  [
+                                                              "1cor",
+                                                              "1co"
+                                                          ]
                                     },
                   "2-corinthians":  {
                                         "file":  "2-corinthians.json",
-                                        "name":  "2 Corinthians"
+                                        "name":  "2 Corinthians",
+                                        "abbreviations":  [
+                                                              "2cor",
+                                                              "2co"
+                                                          ]
                                     },
                   "galatians":  {
                                     "file":  "galatians.json",
-                                    "name":  "Galatians"
+                                    "name":  "Galatians",
+                                    "abbreviations":  [
+                                                          "gal",
+                                                          "ga"
+                                                      ]
                                 },
                   "ephesians":  {
                                     "file":  "ephesians.json",
-                                    "name":  "Ephesians"
+                                    "name":  "Ephesians",
+                                    "abbreviations":  [
+                                                          "eph"
+                                                      ]
                                 },
                   "philippians":  {
                                       "file":  "philippians.json",
-                                      "name":  "Philippians"
+                                      "name":  "Philippians",
+                                      "abbreviations":  [
+                                                            "phil",
+                                                            "php"
+                                                        ]
                                   },
                   "colossians":  {
                                      "file":  "colossians.json",
-                                     "name":  "Colossians"
+                                     "name":  "Colossians",
+                                     "abbreviations":  [
+                                                           "col"
+                                                       ]
                                  },
                   "1-thessalonians":  {
                                           "file":  "1-thessalonians.json",
-                                          "name":  "1 Thessalonians"
+                                          "name":  "1 Thessalonians",
+                                          "abbreviations":  [
+                                                                "1thess",
+                                                                "1thes",
+                                                                "1th"
+                                                            ]
                                       },
                   "2-thessalonians":  {
                                           "file":  "2-thessalonians.json",
-                                          "name":  "2 Thessalonians"
+                                          "name":  "2 Thessalonians",
+                                          "abbreviations":  [
+                                                                "2thess",
+                                                                "2thes",
+                                                                "2th"
+                                                            ]
                                       },
                   "1-timothy":  {
                                     "file":  "1-timothy.json",
-                                    "name":  "1 Timothy"
+                                    "name":  "1 Timothy",
+                                    "abbreviations":  [
+                                                          "1tim",
+                                                          "1tm"
+                                                      ]
                                 },
                   "2-timothy":  {
                                     "file":  "2-timothy.json",
-                                    "name":  "2 Timothy"
+                                    "name":  "2 Timothy",
+                                    "abbreviations":  [
+                                                          "2tim",
+                                                          "2tm"
+                                                      ]
                                 },
                   "titus":  {
                                 "file":  "titus.json",
-                                "name":  "Titus"
+                                "name":  "Titus",
+                                "abbreviations":  [
+                                                      "tit",
+                                                      "ti"
+                                                  ]
                             },
                   "philemon":  {
                                    "file":  "philemon.json",
-                                   "name":  "Philemon"
+                                   "name":  "Philemon",
+                                   "abbreviations":  [
+                                                         "phlm",
+                                                         "philem",
+                                                         "phm"
+                                                     ]
                                },
                   "hebrews":  {
                                   "file":  "hebrews.json",
-                                  "name":  "Hebrews"
+                                  "name":  "Hebrews",
+                                  "abbreviations":  [
+                                                        "heb"
+                                                    ]
                               },
                   "james":  {
                                 "file":  "james.json",
-                                "name":  "James"
+                                "name":  "James",
+                                "abbreviations":  [
+                                                      "jas",
+                                                      "jm"
+                                                  ]
                             },
                   "1-peter":  {
                                   "file":  "1-peter.json",
-                                  "name":  "1 Peter"
+                                  "name":  "1 Peter",
+                                  "abbreviations":  [
+                                                        "1pet",
+                                                        "1pt"
+                                                    ]
                               },
                   "2-peter":  {
                                   "file":  "2-peter.json",
-                                  "name":  "2 Peter"
+                                  "name":  "2 Peter",
+                                  "abbreviations":  [
+                                                        "2pet",
+                                                        "2pt"
+                                                    ]
                               },
                   "1-john":  {
                                  "file":  "1-john.json",
-                                 "name":  "1 John"
+                                 "name":  "1 John",
+                                 "abbreviations":  [
+                                                       "1jn",
+                                                       "1jo"
+                                                   ]
                              },
                   "2-john":  {
                                  "file":  "2-john.json",
-                                 "name":  "2 John"
+                                 "name":  "2 John",
+                                 "abbreviations":  [
+                                                       "2jn",
+                                                       "2jo"
+                                                   ]
                              },
                   "3-john":  {
                                  "file":  "3-john.json",
-                                 "name":  "3 John"
+                                 "name":  "3 John",
+                                 "abbreviations":  [
+                                                       "3jn",
+                                                       "3jo"
+                                                   ]
                              },
                   "jude":  {
                                "file":  "jude.json",
-                               "name":  "Jude"
+                               "name":  "Jude",
+                               "abbreviations":  [
+                                                     "jude",
+                                                     "jd"
+                                                 ]
                            },
                   "revelation":  {
                                      "file":  "revelation.json",
-                                     "name":  "Revelation"
+                                     "name":  "Revelation",
+                                     "abbreviations":  [
+                                                           "apoc",
+                                                           "ap",
+                                                           "rev",
+                                                           "rv",
+                                                           "revelations"
+                                                       ]
                                  }
               }
 }

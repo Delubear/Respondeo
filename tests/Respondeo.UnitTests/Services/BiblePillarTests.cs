@@ -7,7 +7,7 @@ public class BiblePillarTests
 {
     [Theory]
     [InlineData("bible", SitePillars.BibleId)]
-    [InlineData("bible/genesis/1", SitePillars.BibleId)]
+    [InlineData("bible/drb/genesis/1", SitePillars.BibleId)]
     [InlineData("summa", SitePillars.SummaId)]
     [InlineData("discover/prayers", SitePillars.DiscoverId)]
     [InlineData("", SitePillars.JourneyId)]

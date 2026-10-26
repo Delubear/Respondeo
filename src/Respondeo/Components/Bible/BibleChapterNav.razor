@@ -2,7 +2,7 @@
     @for (var i = 1; i <= Translation.ChapterCount(Book); i++)
     {
         var number = i;
-        <a href="@($"bible/{Book.Slug}/{number}")" class="bible-chapters__link" aria-current="@(number == Current ? "page" : null)">@number</a>
+        <a href="@Translation.ChapterHref(Book, number)" class="bible-chapters__link" aria-current="@(number == Current ? "page" : null)">@number</a>
     }
 </nav>
 

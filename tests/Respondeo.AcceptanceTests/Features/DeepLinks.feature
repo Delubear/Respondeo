@@ -15,7 +15,7 @@ Feature: Deep links
 	  | discover/prayers  |
 	  | summa             |
 	  | bible             |
-	  | bible/john/3      |
+	  | bible/drb/john/3  |
 	  | discover/prayers/act-of-contrition                     |
 	  | discover/saints/augustine-of-hippo                     |
 	  | discover/articles/sacrament-anointing                  |

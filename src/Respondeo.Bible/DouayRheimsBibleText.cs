@@ -73,6 +73,15 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
         return text.Length == 0 ? null : text.ToString().TrimEnd();
     }
 
+    public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> GetAbbreviationsAsync(BibleTranslation translation)
+    {
+        var manifest = await LoadManifestAsync(translation);
+        return (manifest?.Books ?? []).ToDictionary(
+            kv => kv.Key,
+            kv => (IReadOnlyList<string>)(kv.Value.Abbreviations ?? []),
+            StringComparer.Ordinal);
+    }
+
     private async Task<BookFile?> LoadBookAsync(string slug, BibleTranslation translation)
     {
         var manifest = await LoadManifestAsync(translation);
@@ -121,7 +130,7 @@ internal sealed class DouayRheimsBibleText(HttpClient http) : IBibleText
 
     private sealed record Manifest(Dictionary<string, ManifestEntry>? Books);
 
-    private sealed record ManifestEntry(string? File, string? Name);
+    private sealed record ManifestEntry(string? File, string? Name, string[]? Abbreviations);
 
     private sealed record BookFile(List<ChapterFile>? Chapters);
 

@@ -23,7 +23,7 @@ Feature: Bible reader
   Scenario: The pager moves to the next chapter
 	When I open the Bible chapter "john/3"
 	And I follow the next chapter link
-	Then the address bar should end with "bible/john/4"
+	Then the address bar should end with "/john/4"
 
   Scenario: An unknown chapter shows a not-found message
 	When I open the Bible chapter "john/999"

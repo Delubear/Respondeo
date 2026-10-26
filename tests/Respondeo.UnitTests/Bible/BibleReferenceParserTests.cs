@@ -5,6 +5,29 @@ namespace Respondeo.UnitTests.Bible;
 
 public class BibleReferenceParserTests
 {
+    private static readonly Dictionary<BibleTranslation, IReadOnlyDictionary<string, IReadOnlyList<string>>> Abbreviations =
+        BibleTranslations.All.ToDictionary(t => t, LoadAbbreviations);
+
+    private static BibleReference? Parse(string input, BibleTranslation translation = BibleTranslation.DouayRheims) =>
+        BibleReferenceParser.Parse(input, translation, Abbreviations[translation]);
+
+    private static IReadOnlyDictionary<string, IReadOnlyList<string>> LoadAbbreviations(BibleTranslation translation)
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "Respondeo.slnx"))) dir = dir.Parent;
+        var path = Path.Combine(dir!.FullName, "src", "Respondeo.Bible", "wwwroot", translation.Folder(), "manifest.json");
+        using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+        var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.Ordinal);
+        foreach (var book in doc.RootElement.GetProperty("books").EnumerateObject())
+        {
+            result[book.Name] = book.Value.TryGetProperty("abbreviations", out var a)
+                ? [.. a.EnumerateArray().Select(e => e.GetString()!)]
+                : [];
+        }
+
+        return result;
+    }
+
     [Theory]
     [InlineData("John 3", "john", 3, null, null)]
     [InlineData("Jn 3:16", "john", 3, 16, null)]
@@ -22,7 +45,7 @@ public class BibleReferenceParserTests
     [InlineData("Song of Songs 2", "canticle-of-canticles", 2, null, null)]
     public void Parses_references(string input, string slug, int chapter, int? verse, int? end)
     {
-        var reference = BibleReferenceParser.Parse(input);
+        var reference = Parse(input);
 
         Assert.NotNull(reference);
         Assert.Equal(slug, reference.Book.FileSlug);
@@ -37,19 +60,37 @@ public class BibleReferenceParserTests
     [InlineData("John 22")]
     [InlineData("Nothing 3")]
     [InlineData("love one another")]
-    public void Rejects_non_references(string input) => Assert.Null(BibleReferenceParser.Parse(input));
+    public void Rejects_non_references(string input) => Assert.Null(Parse(input));
 
     [Fact]
     public void Builds_verse_href() =>
-        Assert.Equal("bible/john/3?v=16", BibleReferenceParser.Parse("Jn 3:16")!.Href);
+        Assert.Equal("bible/drb/john/3?v=16", Parse("Jn 3:16")!.Href);
 
     [Theory]
-    [InlineData("Jn 3:5-7,16", "bible/john/3?v=5-7,16", "John 3:5-7,16")]
-    [InlineData("1 Cor 13:4-7", "bible/1-corinthians/13?v=4-7", "1 Corinthians 13:4-7")]
-    [InlineData("Jn 3:16, 5", "bible/john/3?v=5,16", "John 3:5,16")]
+    [InlineData("1 Kings 1", BibleTranslation.DouayRheims, "1-kings", "bible/drb/1-kings/1")]
+    [InlineData("1 Kings 1", BibleTranslation.Cpdv, "3-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("1 Kgs 1", BibleTranslation.Cpdv, "3-kings", "bible/cpdv/1-kings/1")]
+    [InlineData("3 Kings 1", BibleTranslation.DouayRheims, "3-kings", "bible/drb/3-kings/1")]
+    [InlineData("1 Samuel 1", BibleTranslation.Cpdv, "1-kings", "bible/cpdv/1-samuel/1")]
+    [InlineData("1 Samuel 1", BibleTranslation.DouayRheims, "1-kings", "bible/drb/1-kings/1")]
+    public void Resolves_books_by_translation_naming(string input, BibleTranslation translation, string fileSlug, string href)
+    {
+        var reference = Parse(input, translation)!;
+        Assert.Equal(fileSlug, reference.Book.FileSlug);
+        Assert.Equal(href, reference.Href);
+    }
+
+    [Fact]
+    public void Rejects_books_missing_from_translation() =>
+        Assert.Null(Parse("Prayer of Manasses 1", BibleTranslation.Cpdv));
+
+    [Theory]
+    [InlineData("Jn 3:5-7,16", "bible/drb/john/3?v=5-7,16", "John 3:5-7,16")]
+    [InlineData("1 Cor 13:4-7", "bible/drb/1-corinthians/13?v=4-7", "1 Corinthians 13:4-7")]
+    [InlineData("Jn 3:16, 5", "bible/drb/john/3?v=5,16", "John 3:5,16")]
     public void Builds_multi_range_href(string input, string href, string label)
     {
-        var reference = BibleReferenceParser.Parse(input)!;
+        var reference = Parse(input)!;
         Assert.Equal(href, reference.Href);
         Assert.Equal(label, reference.Label);
     }

@@ -90,7 +90,7 @@ internal static class SitemapGenerator
         {
             for (var chapter = 1; chapter <= book.ChapterCount; chapter++)
             {
-                routes.Add($"bible/{book.Slug}/{chapter}", JoinTitle($"{book.Name} {chapter}", "Holy Bible"),
+                routes.Add(BibleTranslation.DouayRheims.ChapterHref(book, chapter), JoinTitle($"{book.Name} {chapter}", "Holy Bible"),
                     $"Read {book.Name} chapter {chapter} in the Douay-Rheims Bible.");
             }
         }

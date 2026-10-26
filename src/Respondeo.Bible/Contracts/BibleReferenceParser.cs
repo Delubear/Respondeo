@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,123 +14,69 @@ public sealed record BibleReference(BibleBook Book, int Chapter, int? Verse, int
 
     /// <summary>A display label using the common modern book name.</summary>
     public string Label => Verses.IsEmpty
-        ? $"{Book.DisplayName} {Chapter}"
-        : $"{Book.DisplayName} {Chapter}:{Verses}";
+        ? $"{Translation.BookName(Book)} {Chapter}"
+        : $"{Translation.BookName(Book)} {Chapter}:{Verses}";
 
-    /// <summary>The app-relative route to the chapter, with the verse selection in the query string.</summary>
-    public string Href => Verses.IsEmpty
-        ? $"bible/{Book.Slug}/{Chapter}"
-        : $"bible/{Book.Slug}/{Chapter}?v={Verses}";
+    /// <summary>The translation whose book naming the reference was resolved against.</summary>
+    public BibleTranslation Translation { get; init; } = BibleTranslation.DouayRheims;
+
+    /// <summary>The app-relative route to the chapter in <see cref="Translation"/>, with the verse selection in the query string.</summary>
+    public string Href => Translation.ChapterHref(Book, Chapter, Verses.IsEmpty ? null : Verses.ToString());
 }
 
-/// <summary>Parses free-text passage references (e.g. <c>Jn 3:16</c>, <c>1 Cor 13</c>, <c>Ps 22</c>) against the Douay-Rheims canon.</summary>
+/// <summary>Parses free-text passage references (e.g. <c>Jn 3:16</c>, <c>1 Cor 13</c>, <c>Ps 22</c>) using the book naming of the selected translation.</summary>
 public static class BibleReferenceParser
 {
-    // Extra abbreviations keyed by slug. Full names, modern names and slugs are added automatically.
-    private static readonly Dictionary<string, string[]> Abbreviations = new()
-    {
-        ["genesis"] = ["gen", "gn", "ge"],
-        ["exodus"] = ["ex", "exod", "exo"],
-        ["leviticus"] = ["lev", "lv"],
-        ["numbers"] = ["num", "nm", "nb"],
-        ["deuteronomy"] = ["deut", "dt", "deu"],
-        ["josue"] = ["jos", "josh"],
-        ["judges"] = ["judg", "jdg", "jgs"],
-        ["ruth"] = ["ru", "rth"],
-        ["1-kings"] = ["1kgs", "1sam", "1sm", "1samuel"],
-        ["2-kings"] = ["2kgs", "2sam", "2sm", "2samuel"],
-        ["3-kings"] = ["3kgs"],
-        ["4-kings"] = ["4kgs"],
-        ["1-paralipomenon"] = ["1par", "1chr", "1chron"],
-        ["2-paralipomenon"] = ["2par", "2chr", "2chron"],
-        ["1-esdras"] = ["1esd", "ezr"],
-        ["2-esdras"] = ["2esd", "neh"],
-        ["3-esdras"] = ["3esd"],
-        ["4-esdras"] = ["4esd"],
-        ["prayer-of-manasses"] = ["prman", "manasses", "manasseh"],
-        ["tobias"] = ["tob", "tb"],
-        ["judith"] = ["jdt", "jud"],
-        ["esther"] = ["est", "esth"],
-        ["job"] = ["jb"],
-        ["psalms"] = ["ps", "psa", "psalm", "pss"],
-        ["proverbs"] = ["prov", "prv", "pr"],
-        ["ecclesiastes"] = ["eccl", "eccles", "qoh", "ec"],
-        ["canticle-of-canticles"] = ["cant", "song", "songofsolomon", "sg"],
-        ["wisdom"] = ["wis", "ws"],
-        ["ecclesiasticus"] = ["sir", "ecclus"],
-        ["isaie"] = ["is", "isa"],
-        ["jeremie"] = ["jer", "jr"],
-        ["lamentations"] = ["lam", "la"],
-        ["baruch"] = ["bar", "ba"],
-        ["ezechiel"] = ["ez", "ezek", "ezec"],
-        ["daniel"] = ["dan", "dn"],
-        ["osee"] = ["os", "hos"],
-        ["joel"] = ["jl"],
-        ["amos"] = ["am"],
-        ["abdias"] = ["abd", "obad", "ob"],
-        ["jonas"] = ["jon"],
-        ["micheas"] = ["mic", "mi"],
-        ["nahum"] = ["na", "nah"],
-        ["habacuc"] = ["hab", "hb"],
-        ["sophonias"] = ["soph", "zeph", "zep"],
-        ["aggeus"] = ["agg", "hag", "hg"],
-        ["zacharias"] = ["zach", "zech", "zec"],
-        ["malachie"] = ["mal"],
-        ["1-machabees"] = ["1mac", "1macc", "1mc"],
-        ["2-machabees"] = ["2mac", "2macc", "2mc"],
-        ["matthew"] = ["mt", "matt", "mat"],
-        ["mark"] = ["mk", "mar", "mrk"],
-        ["luke"] = ["lk", "luk"],
-        ["john"] = ["jn", "joh", "jhn"],
-        ["acts"] = ["ac", "act"],
-        ["romans"] = ["rom", "rm", "ro"],
-        ["1-corinthians"] = ["1cor", "1co"],
-        ["2-corinthians"] = ["2cor", "2co"],
-        ["galatians"] = ["gal", "ga"],
-        ["ephesians"] = ["eph"],
-        ["philippians"] = ["phil", "php"],
-        ["colossians"] = ["col"],
-        ["1-thessalonians"] = ["1thess", "1thes", "1th"],
-        ["2-thessalonians"] = ["2thess", "2thes", "2th"],
-        ["1-timothy"] = ["1tim", "1tm"],
-        ["2-timothy"] = ["2tim", "2tm"],
-        ["titus"] = ["tit", "ti"],
-        ["philemon"] = ["phlm", "philem", "phm"],
-        ["hebrews"] = ["heb"],
-        ["james"] = ["jas", "jm"],
-        ["1-peter"] = ["1pet", "1pt"],
-        ["2-peter"] = ["2pet", "2pt"],
-        ["1-john"] = ["1jn", "1jo"],
-        ["2-john"] = ["2jn", "2jo"],
-        ["3-john"] = ["3jn", "3jo"],
-        ["jude"] = ["jude", "jd"],
-        ["apocalypse"] = ["apoc", "ap", "rev", "rv", "revelations"],
-    };
+    // Book names collide across translations ("1 Kings" is 1 Samuel in the Douay-Rheims but 3 Kings in modern Bibles),
+    // so each translation gets its own lookup in which its own naming wins.
+    private static readonly ConditionalWeakTable<IReadOnlyDictionary<string, IReadOnlyList<string>>, Dictionary<BibleTranslation, Dictionary<string, BibleBook>>> Lookups = new();
 
-    // The Douay-Rheims meaning wins when a key is shared (e.g. "1kings" = 1 Samuel), because Douay names are registered first.
-    private static readonly Dictionary<string, BibleBook> Lookup = BuildLookup();
+    private static readonly IReadOnlyDictionary<string, IReadOnlyList<string>> NoAbbreviations =
+        new Dictionary<string, IReadOnlyList<string>>(StringComparer.Ordinal);
 
-    /// <summary>Parses <paramref name="input"/> as a chapter or verse reference; returns <c>null</c> for anything else, including a bare book name.</summary>
-    public static BibleReference? Parse(string? input)
+    /// <summary>
+    /// Parses <paramref name="input"/> as a chapter or verse reference using the book naming of <paramref name="translation"/>
+    /// and the <paramref name="abbreviations"/> from its manifest (see <see cref="IBibleText.GetAbbreviationsAsync"/>);
+    /// returns <c>null</c> for anything else, including a bare book name or a book the translation lacks.
+    /// </summary>
+    public static BibleReference? Parse(
+        string? input,
+        BibleTranslation translation = BibleTranslation.DouayRheims,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? abbreviations = null)
     {
+        var byTranslation = Lookups.GetValue(abbreviations ?? NoAbbreviations, _ => []);
+        Dictionary<string, BibleBook> lookup;
+        lock (byTranslation)
+        {
+            if (!byTranslation.TryGetValue(translation, out lookup!))
+            {
+                lookup = BuildLookup(translation, abbreviations ?? NoAbbreviations);
+                byTranslation[translation] = lookup;
+            }
+        }
+
         if (string.IsNullOrWhiteSpace(input)) return null;
 
         var match = ReferencePattern.Match(input.Trim());
         if (!match.Success) return null;
 
         var key = NormalizeBook(match.Groups["prefix"].Value, match.Groups["name"].Value);
-        if (!Lookup.TryGetValue(key, out var book)) return null;
+        if (!lookup.TryGetValue(key, out var book)) return null;
 
         var chapter = int.Parse(match.Groups["chapter"].Value);
-        if (chapter < 1 || chapter > book.ChapterCount) return null;
+        if (chapter < 1 || chapter > translation.ChapterCount(book)) return null;
 
-        if (!match.Groups["verses"].Success) return new BibleReference(book, chapter, null, null);
+        if (!match.Groups["verses"].Success) return new BibleReference(book, chapter, null, null) { Translation = translation };
 
         var selection = VerseSelection.Parse(match.Groups["verses"].Value);
         if (selection.IsEmpty) return null;
 
         var first = selection.Ranges[0];
-        return new BibleReference(book, chapter, first.Start, first.End > first.Start ? first.End : null) { Verses = selection };
+        return new BibleReference(book, chapter, first.Start, first.End > first.Start ? first.End : null)
+        {
+            Verses = selection,
+            Translation = translation,
+        };
     }
 
     private static string NormalizeBook(string prefix, string name)
@@ -157,23 +104,33 @@ public static class BibleReferenceParser
         return sb.ToString();
     }
 
-    private static Dictionary<string, BibleBook> BuildLookup()
+    private static Dictionary<string, BibleBook> BuildLookup(
+        BibleTranslation translation,
+        IReadOnlyDictionary<string, IReadOnlyList<string>> manifestAbbreviations)
     {
+        var books = BibleBooks.All.Where(b => translation.Contains(b)).ToList();
         var lookup = new Dictionary<string, BibleBook>(StringComparer.Ordinal);
-        foreach (var book in BibleBooks.All)
+
+        // The translation's own names and slugs are registered first so they win any collision.
+        foreach (var book in books)
+        {
+            lookup.TryAdd(Squash(translation.BookName(book)), book);
+            lookup.TryAdd(Squash(translation.Slug(book)), book);
+        }
+
+        // Abbreviations come from the translation's manifest, so their meaning follows its naming tradition.
+        foreach (var (slug, abbreviations) in manifestAbbreviations)
+        {
+            if (books.FirstOrDefault(b => b.Slug == slug) is not { } book) continue;
+            foreach (var abbreviation in abbreviations) lookup.TryAdd(Squash(abbreviation), book);
+        }
+
+        foreach (var book in books)
         {
             lookup.TryAdd(Squash(book.Name), book);
             lookup.TryAdd(Squash(book.Slug), book);
             lookup.TryAdd(Squash(book.FileSlug), book);
-        }
-
-        foreach (var book in BibleBooks.All)
-        {
             if (book.ModernName is not null) lookup.TryAdd(Squash(book.ModernName), book);
-            if (Abbreviations.TryGetValue(book.FileSlug, out var abbreviations))
-            {
-                foreach (var abbreviation in abbreviations) lookup.TryAdd(abbreviation, book);
-            }
         }
 
         return lookup;

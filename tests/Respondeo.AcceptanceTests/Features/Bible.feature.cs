@@ -268,7 +268,7 @@ namespace Respondeo.AcceptanceTests.Features
  await testRunner.AndAsync("I follow the next chapter link", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 26
- await testRunner.ThenAsync("the address bar should end with \"bible/john/4\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the address bar should end with \"/john/4\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
