@@ -33,9 +33,12 @@ public class BibleTranslationTests
     public void CpdvData_CoversEveryCanonicalBook()
     {
         var folder = Path.Combine(FindRepoRoot(), "src", "Respondeo.Bible", "wwwroot", "cpdv");
+        using var manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(folder, "manifest.json")));
+        var books = manifest.RootElement.GetProperty("books");
         foreach (var book in BibleBooks.All.Where(b => b.Testament != BibleTestament.Appendix))
         {
-            var path = Path.Combine(folder, $"{book.FileSlug}.json");
+            Assert.True(books.TryGetProperty(book.FileSlug, out var entry), $"Missing CPDV manifest entry for {book.FileSlug}");
+            var path = Path.Combine(folder, entry.GetProperty("file").GetString()!);
             Assert.True(File.Exists(path), $"Missing CPDV file for {book.FileSlug}");
             using var doc = JsonDocument.Parse(File.ReadAllText(path));
             Assert.True(doc.RootElement.GetProperty("chapters").GetArrayLength() > 0, $"Empty CPDV file for {book.FileSlug}");

@@ -1,0 +1,296 @@
+﻿{
+    "books":  {
+                  "genesis":  {
+                                  "file":  "genesis.json",
+                                  "name":  "Genesis"
+                              },
+                  "exodus":  {
+                                 "file":  "exodus.json",
+                                 "name":  "Exodus"
+                             },
+                  "leviticus":  {
+                                    "file":  "leviticus.json",
+                                    "name":  "Leviticus"
+                                },
+                  "numbers":  {
+                                  "file":  "numbers.json",
+                                  "name":  "Numbers"
+                              },
+                  "deuteronomy":  {
+                                      "file":  "deuteronomy.json",
+                                      "name":  "Deuteronomy"
+                                  },
+                  "josue":  {
+                                "file":  "joshua.json",
+                                "name":  "Joshua"
+                            },
+                  "judges":  {
+                                 "file":  "judges.json",
+                                 "name":  "Judges"
+                             },
+                  "ruth":  {
+                               "file":  "ruth.json",
+                               "name":  "Ruth"
+                           },
+                  "1-kings":  {
+                                  "file":  "1-samuel.json",
+                                  "name":  "1 Samuel"
+                              },
+                  "2-kings":  {
+                                  "file":  "2-samuel.json",
+                                  "name":  "2 Samuel"
+                              },
+                  "3-kings":  {
+                                  "file":  "1-kings.json",
+                                  "name":  "1 Kings"
+                              },
+                  "4-kings":  {
+                                  "file":  "2-kings.json",
+                                  "name":  "2 Kings"
+                              },
+                  "1-paralipomenon":  {
+                                          "file":  "1-chronicles.json",
+                                          "name":  "1 Chronicles"
+                                      },
+                  "2-paralipomenon":  {
+                                          "file":  "2-chronicles.json",
+                                          "name":  "2 Chronicles"
+                                      },
+                  "1-esdras":  {
+                                   "file":  "ezra.json",
+                                   "name":  "Ezra"
+                               },
+                  "2-esdras":  {
+                                   "file":  "nehemiah.json",
+                                   "name":  "Nehemiah"
+                               },
+                  "tobias":  {
+                                 "file":  "tobit.json",
+                                 "name":  "Tobit"
+                             },
+                  "judith":  {
+                                 "file":  "judith.json",
+                                 "name":  "Judith"
+                             },
+                  "esther":  {
+                                 "file":  "esther.json",
+                                 "name":  "Esther"
+                             },
+                  "job":  {
+                              "file":  "job.json",
+                              "name":  "Job"
+                          },
+                  "psalms":  {
+                                 "file":  "psalms.json",
+                                 "name":  "Psalms"
+                             },
+                  "proverbs":  {
+                                   "file":  "proverbs.json",
+                                   "name":  "Proverbs"
+                               },
+                  "ecclesiastes":  {
+                                       "file":  "ecclesiastes.json",
+                                       "name":  "Ecclesiastes"
+                                   },
+                  "canticle-of-canticles":  {
+                                                "file":  "song-of-songs.json",
+                                                "name":  "Song of Songs"
+                                            },
+                  "wisdom":  {
+                                 "file":  "wisdom.json",
+                                 "name":  "Wisdom"
+                             },
+                  "ecclesiasticus":  {
+                                         "file":  "sirach.json",
+                                         "name":  "Sirach"
+                                     },
+                  "isaie":  {
+                                "file":  "isaiah.json",
+                                "name":  "Isaiah"
+                            },
+                  "jeremie":  {
+                                  "file":  "jeremiah.json",
+                                  "name":  "Jeremiah"
+                              },
+                  "lamentations":  {
+                                       "file":  "lamentations.json",
+                                       "name":  "Lamentations"
+                                   },
+                  "baruch":  {
+                                 "file":  "baruch.json",
+                                 "name":  "Baruch"
+                             },
+                  "ezechiel":  {
+                                   "file":  "ezekiel.json",
+                                   "name":  "Ezekiel"
+                               },
+                  "daniel":  {
+                                 "file":  "daniel.json",
+                                 "name":  "Daniel"
+                             },
+                  "osee":  {
+                               "file":  "hosea.json",
+                               "name":  "Hosea"
+                           },
+                  "joel":  {
+                               "file":  "joel.json",
+                               "name":  "Joel"
+                           },
+                  "amos":  {
+                               "file":  "amos.json",
+                               "name":  "Amos"
+                           },
+                  "abdias":  {
+                                 "file":  "obadiah.json",
+                                 "name":  "Obadiah"
+                             },
+                  "jonas":  {
+                                "file":  "jonah.json",
+                                "name":  "Jonah"
+                            },
+                  "micheas":  {
+                                  "file":  "micah.json",
+                                  "name":  "Micah"
+                              },
+                  "nahum":  {
+                                "file":  "nahum.json",
+                                "name":  "Nahum"
+                            },
+                  "habacuc":  {
+                                  "file":  "habakkuk.json",
+                                  "name":  "Habakkuk"
+                              },
+                  "sophonias":  {
+                                    "file":  "zephaniah.json",
+                                    "name":  "Zephaniah"
+                                },
+                  "aggeus":  {
+                                 "file":  "haggai.json",
+                                 "name":  "Haggai"
+                             },
+                  "zacharias":  {
+                                    "file":  "zechariah.json",
+                                    "name":  "Zechariah"
+                                },
+                  "malachie":  {
+                                   "file":  "malachi.json",
+                                   "name":  "Malachi"
+                               },
+                  "1-machabees":  {
+                                      "file":  "1-maccabees.json",
+                                      "name":  "1 Maccabees"
+                                  },
+                  "2-machabees":  {
+                                      "file":  "2-maccabees.json",
+                                      "name":  "2 Maccabees"
+                                  },
+                  "matthew":  {
+                                  "file":  "matthew.json",
+                                  "name":  "Matthew"
+                              },
+                  "mark":  {
+                               "file":  "mark.json",
+                               "name":  "Mark"
+                           },
+                  "luke":  {
+                               "file":  "luke.json",
+                               "name":  "Luke"
+                           },
+                  "john":  {
+                               "file":  "john.json",
+                               "name":  "John"
+                           },
+                  "acts":  {
+                               "file":  "acts.json",
+                               "name":  "Acts"
+                           },
+                  "romans":  {
+                                 "file":  "romans.json",
+                                 "name":  "Romans"
+                             },
+                  "1-corinthians":  {
+                                        "file":  "1-corinthians.json",
+                                        "name":  "1 Corinthians"
+                                    },
+                  "2-corinthians":  {
+                                        "file":  "2-corinthians.json",
+                                        "name":  "2 Corinthians"
+                                    },
+                  "galatians":  {
+                                    "file":  "galatians.json",
+                                    "name":  "Galatians"
+                                },
+                  "ephesians":  {
+                                    "file":  "ephesians.json",
+                                    "name":  "Ephesians"
+                                },
+                  "philippians":  {
+                                      "file":  "philippians.json",
+                                      "name":  "Philippians"
+                                  },
+                  "colossians":  {
+                                     "file":  "colossians.json",
+                                     "name":  "Colossians"
+                                 },
+                  "1-thessalonians":  {
+                                          "file":  "1-thessalonians.json",
+                                          "name":  "1 Thessalonians"
+                                      },
+                  "2-thessalonians":  {
+                                          "file":  "2-thessalonians.json",
+                                          "name":  "2 Thessalonians"
+                                      },
+                  "1-timothy":  {
+                                    "file":  "1-timothy.json",
+                                    "name":  "1 Timothy"
+                                },
+                  "2-timothy":  {
+                                    "file":  "2-timothy.json",
+                                    "name":  "2 Timothy"
+                                },
+                  "titus":  {
+                                "file":  "titus.json",
+                                "name":  "Titus"
+                            },
+                  "philemon":  {
+                                   "file":  "philemon.json",
+                                   "name":  "Philemon"
+                               },
+                  "hebrews":  {
+                                  "file":  "hebrews.json",
+                                  "name":  "Hebrews"
+                              },
+                  "james":  {
+                                "file":  "james.json",
+                                "name":  "James"
+                            },
+                  "1-peter":  {
+                                  "file":  "1-peter.json",
+                                  "name":  "1 Peter"
+                              },
+                  "2-peter":  {
+                                  "file":  "2-peter.json",
+                                  "name":  "2 Peter"
+                              },
+                  "1-john":  {
+                                 "file":  "1-john.json",
+                                 "name":  "1 John"
+                             },
+                  "2-john":  {
+                                 "file":  "2-john.json",
+                                 "name":  "2 John"
+                             },
+                  "3-john":  {
+                                 "file":  "3-john.json",
+                                 "name":  "3 John"
+                             },
+                  "jude":  {
+                               "file":  "jude.json",
+                               "name":  "Jude"
+                           },
+                  "apocalypse":  {
+                                     "file":  "revelation.json",
+                                     "name":  "Revelation"
+                                 }
+              }
+}
