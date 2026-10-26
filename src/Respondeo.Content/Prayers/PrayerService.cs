@@ -71,12 +71,11 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
     private Task<Catalog> Load() => _catalog.GetAsync(async () =>
     {
         var loaded = (await LoadManifestAsync(PrayersRoot, ManifestPath)).ToList();
-        PairTranslations(loaded);
-
-        // Every prayer (including Latin) stays addressable by id, but only the primary-language,
+        // Expand embeds first so paired LatinHtml includes expanded embeds. Every prayer (including Latin) stays addressable by id, but only the primary-language,
         // listed prayers appear in the browse index so translations and contextual fragments (e.g. Dominican versicles) are not shown as standalone catalog rows.
         var map = loaded.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
         ExpandPrayerReferences(loaded, map);
+        PairTranslations(loaded);
         var summaries = loaded
             .Where(IsPrimaryLanguage)
             .Where(p => !p.Unlisted)
