@@ -2,7 +2,7 @@
     Renders a floating circular button that stacks above the back-to-top control, plus a native <dialog>, so it is reachable on the Summa home and on every question page (covering shared links).
     It explains the classic article structure and the meaning of the project name. *@
 
-<FloatingGuide Title="How to read the Summa" Eyebrow="A short orientation" AriaLabel="How to read the Summa">
+<FloatingGuide OrbKey="@OrbLauncher.Summa" HideTrigger="HideTrigger" Title="How to read the Summa" Eyebrow="A short orientation" AriaLabel="How to read the Summa">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor"
              xmlns="http://www.w3.org/2000/svg">
@@ -140,3 +140,7 @@
     </Footer>
 </FloatingGuide>
 
+
+@code {
+    [Parameter] public bool HideTrigger { get; set; }
+}

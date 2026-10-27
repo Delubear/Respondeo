@@ -1,4 +1,5 @@
 using Respondeo.LiturgyOfTheHours;
+using Respondeo.Services;
 
 namespace Respondeo.Navigation;
 
@@ -59,6 +60,31 @@ public static class SiteMap
                 entries.Add(new(href, label, children));
             }
         }
+    }
+
+    /// <summary>Prefix marking a pin that opens a floating help orb's dialog instead of navigating.</summary>
+    public const string OrbPrefix = "orb:";
+
+    /// <summary>The pinnable help orbs, honoring the feature flags.</summary>
+    public static IReadOnlyList<Entry> Guides(FeatureFlags features)
+    {
+        var guides = new List<Entry>();
+        if (features.DiscoverPillar)
+        {
+            guides.Add(new(OrbPrefix + OrbLauncher.Liturgical, "Today in the Church"));
+            if (features.PrayerFeature)
+            {
+                guides.Add(new(OrbPrefix + OrbLauncher.Prayers, "Guide to Prayers"));
+            }
+
+            if (features.SaintsFeature)
+            {
+                guides.Add(new(OrbPrefix + OrbLauncher.Saints, "Reading the saints"));
+            }
+        }
+
+        guides.Add(new(OrbPrefix + OrbLauncher.Summa, "How to read the Summa"));
+        return guides;
     }
 
     /// <summary>Finds the entry for an href anywhere in the site map, or null when it is not present.</summary>

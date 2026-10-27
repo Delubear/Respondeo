@@ -1,4 +1,5 @@
 @inject IJSRuntime JS
+@inject Respondeo.Services.OrbLauncher Launcher
 @implements IAsyncDisposable
 @using Respondeo.Services
 
@@ -6,6 +7,8 @@
     Each use supplies its own icon, dialog body, and footer; the trigger geometry, stacking,
     and scroll lifecycle live here so the Summa guide, Prayer guide, and Today-in-the-Church orb stay visually identical. *@
 
+@if (!HideTrigger)
+{
 <button type="button"
         class="float-circle @TriggerClass @(Raised ? "is-raised" : string.Empty) @(_stacked ? "is-stacked" : string.Empty)"
         @onclick="OpenAsync"
@@ -13,6 +16,7 @@
         title="@(Tooltip ?? AriaLabel)">
     <span class="float-circle__mark" aria-hidden="true">@Icon</span>
 </button>
+}
 
 <Dialog @ref="_dialog" Title="@Title" Eyebrow="@Eyebrow" MaxWidth="@MaxWidth" Class="@DialogClass">
     <ChildContent>
@@ -57,10 +61,31 @@
 
     private FloatingGuideContext Context => new(CloseAsync);
 
+    /// <summary>The key a pinned quick-menu entry uses to open this guide's dialog.</summary>
+    [Parameter] public string? OrbKey { get; set; }
+
+    /// <summary>When true, only the dialog renders (the guide was mounted just to be opened from the quick menu).</summary>
+    [Parameter] public bool HideTrigger { get; set; }
+
+    protected override void OnInitialized() => Launcher.Requested += OnRequested;
+
+    private void OnRequested(string key)
+    {
+        if (Launcher.TryConsume(OrbKey))
+        {
+            _ = InvokeAsync(OpenAsync);
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            if (Launcher.TryConsume(OrbKey))
+            {
+                await OpenAsync();
+            }
+
             _scroll = new ScrollSubscription(JS);
             await _scroll.StartAsync(OnScroll);
         }
@@ -97,6 +122,7 @@
 
     public async ValueTask DisposeAsync()
     {
+        Launcher.Requested -= OnRequested;
         if (_scroll is not null)
         {
             await _scroll.DisposeAsync();

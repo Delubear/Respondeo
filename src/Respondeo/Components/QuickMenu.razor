@@ -5,6 +5,7 @@
 @inject Respondeo.Services.FeatureFlags Features
 @inject Respondeo.Services.OfflinePacks Packs
 @inject ITextSizeService TextSizes
+@inject OrbLauncher Launcher
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -44,6 +45,15 @@
 					}
 				</ul>
 			</section>
+			<section class="quick-menu__section">
+				<h3 class="quick-menu__heading">Guides</h3>
+				<ul class="quick-menu__list">
+					@foreach (var guide in _guides)
+					{
+						@RenderEntry(guide, false)
+					}
+				</ul>
+			</section>
 			<div class="quick-menu__footer">
 				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = false">Done</button>
 			</div>
@@ -76,7 +86,7 @@
 								}
 								else
 								{
-									<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+									@RenderLink(entry)
 								}
 							</li>
 						}
@@ -150,6 +160,18 @@
 	private bool _focusPanel;
 	private IReadOnlyList<SiteMap.Entry> _entries = [];
 	private List<SiteMap.Entry> _pinned = [];
+	private IReadOnlyList<SiteMap.Entry> _guides = [];
+
+	private RenderFragment RenderLink(SiteMap.Entry entry) =>
+		entry.Href.StartsWith(SiteMap.OrbPrefix, StringComparison.Ordinal)
+			? @<button type="button" class="quick-menu__link quick-menu__link--button" @onclick="() => OpenOrb(entry.Href)">@entry.Label</button>
+			: @<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>;
+
+	private async Task OpenOrb(string href)
+	{
+		await Close();
+		Launcher.Request(href[SiteMap.OrbPrefix.Length..]);
+	}
 
 	private RenderFragment RenderEntry(SiteMap.Entry entry, bool withChildren) =>
 		@<li class="quick-menu__item">
@@ -160,7 +182,7 @@
 						@onclick="() => Pins.TogglePinAsync(entry.Href)">
 					<svg class="quick-menu__pin-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6z" /><path d="M12 14v7" /></svg>
 				</button>
-				<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>
+				@RenderLink(entry)
 			</div>
 			@if (withChildren && entry.Children is { Count: > 0 } children)
 			{
@@ -176,6 +198,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		_entries = SiteMap.Build(Features);
+		_guides = SiteMap.Guides(Features);
 		Refresh();
 		Pins.Changed += OnPinsChanged;
 		Packs.Changed += OnPacksChanged;
@@ -215,7 +238,7 @@
 	}
 
 	private void Refresh() =>
-		_pinned = Pins.Pins.Select(h => SiteMap.Find(_entries, h)).OfType<SiteMap.Entry>().ToList();
+		_pinned = Pins.Pins.Select(h => SiteMap.Find([.. _entries, .. _guides], h)).OfType<SiteMap.Entry>().ToList();
 
 	private void Open()
 	{

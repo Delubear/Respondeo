@@ -6,6 +6,7 @@
 @inject ISeasonalPortrait Portrait
 @inject IDayWatcher DayWatcher
 @inject IJSRuntime JS
+@inject OrbLauncher OrbLauncher
 
 <div class="page page--inner @(_mastheadExpanded ? "page--masthead-open" : null)">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -69,21 +70,21 @@
    within its area and animates only on true first appearance. The liturgical orb is one instance
    spanning every Discover-area route; it merely slides when its Raised state changes. Which orbs
    show on which route is declared in FloatingGuideRoutes (the single source of truth). *@
-@if (_guides.ShowLiturgicalOrb)
+@if (_guides.ShowLiturgicalOrb || _forcedOrb == OrbLauncher.Liturgical)
 {
-    <LiturgicalOrb Raised="_guides.LiturgicalOrbRaised" />
+    <LiturgicalOrb Raised="_guides.LiturgicalOrbRaised" HideTrigger="!_guides.ShowLiturgicalOrb" />
 }
-@if (_guides.ShowPrayerGuide)
+@if (_guides.ShowPrayerGuide || _forcedOrb == OrbLauncher.Prayers)
 {
-    <GuideToPrayers />
+    <GuideToPrayers HideTrigger="!_guides.ShowPrayerGuide" />
 }
-@if (_guides.ShowSaintGlossary)
+@if (_guides.ShowSaintGlossary || _forcedOrb == OrbLauncher.Saints)
 {
-    <SaintGlossaryOrb />
+    <SaintGlossaryOrb HideTrigger="!_guides.ShowSaintGlossary" />
 }
-@if (_guides.ShowSummaGuide)
+@if (_guides.ShowSummaGuide || _forcedOrb == OrbLauncher.Summa)
 {
-    <SummaGuide />
+    <SummaGuide HideTrigger="!_guides.ShowSummaGuide" />
 }
 
 @code {
@@ -114,6 +115,7 @@
     {
         UpdateGuides();
         Nav.LocationChanged += OnLocationChanged;
+        OrbLauncher.Requested += OnOrbRequested;
         DayWatcher.DayChanged += OnDayChanged;
     }
 
@@ -134,8 +136,18 @@
     // (which reads the date live) picks up the new day's image.
     private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
 
+    // An orb opened from a pinned quick-menu entry on a route that doesn't show it is mounted trigger-less until the next navigation.
+    private string? _forcedOrb;
+
+    private void OnOrbRequested(string key)
+    {
+        _forcedOrb = key;
+        InvokeAsync(StateHasChanged);
+    }
+
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        _forcedOrb = null;
         UpdateGuides();
         StateHasChanged();
         await AnnounceAsync();
@@ -165,6 +177,7 @@
     public void Dispose()
     {
         Nav.LocationChanged -= OnLocationChanged;
+        OrbLauncher.Requested -= OnOrbRequested;
         DayWatcher.DayChanged -= OnDayChanged;
         _selfRef?.Dispose();
     }

@@ -2,7 +2,7 @@
     plus a native <dialog>, so it is reachable on the prayers home and on every prayer page (covering shared links). It explains the versicle/response (V./R.) notation and
    how to pray a litany and a novena. *@
 
-<FloatingGuide Title="Guide to Prayers" Eyebrow="A short orientation" AriaLabel="Guide to prayers">
+<FloatingGuide OrbKey="@OrbLauncher.Prayers" HideTrigger="HideTrigger" Title="Guide to Prayers" Eyebrow="A short orientation" AriaLabel="Guide to prayers">
     <Icon>
         <svg aria-hidden="true" viewBox="5 3 22 26" fill="currentColor"
              xmlns="http://www.w3.org/2000/svg">
@@ -82,3 +82,7 @@
     </Footer>
 </FloatingGuide>
 
+
+@code {
+    [Parameter] public bool HideTrigger { get; set; }
+}

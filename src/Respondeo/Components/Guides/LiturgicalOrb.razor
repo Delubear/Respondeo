@@ -10,7 +10,7 @@
 @inject ICalendarPreference Preference
 @implements IDisposable
 
-<FloatingGuide Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
+<FloatingGuide OrbKey="@OrbLauncher.Liturgical" HideTrigger="HideTrigger" Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
                AriaLabel="@($"Today in the Church: {_view.SeasonName}")" Tooltip="Today in the Church"
                DialogClass="dialog--liturgy" Raised="Raised" OnOpening="SyncToToday">
     <Icon>
@@ -171,6 +171,8 @@
     /// When true, the orb sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
     /// </summary>
     [Parameter] public bool Raised { get; set; }
+
+    [Parameter] public bool HideTrigger { get; set; }
 
     private bool IsUs => Preference.Options.Region == CalendarRegion.UnitedStates;
 
