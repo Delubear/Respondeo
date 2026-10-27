@@ -189,6 +189,11 @@
 .liturgy__swatch--rose { background: var(--lit-rose); }
 .liturgy__swatch--black { background: var(--lit-black); }
 
+.liturgy__swatch--white,
+.liturgy__swatch--rose {
+    box-shadow: inset 0 0 0 1px var(--rule);
+}
+
 /* ---------- Calendar menu ---------- */
 
 /* Footer row: the calendar setting on the left, the Close action on the right. */

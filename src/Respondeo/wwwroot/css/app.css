@@ -103,7 +103,7 @@
 
 :root {
     color-scheme: light;
-    --ink: #111111;
+    --ink: #1a1814;
     --ink-soft: #333333;
     --parchment: #ffffff;
     --parchment-hover: #ffffff;
@@ -133,7 +133,7 @@
     --masthead-bg: #111111;
     --masthead-fg: #ffffff;
     --masthead-fg-soft: #cfcfcf;
-    --masthead-rule: #ffffff;
+    --masthead-rule: #5a5650;
     --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
     --display: 'Cinzel', 'EB Garamond', Georgia, serif;
     /* Two standard content measures used site-wide. --w-read is the prose/reading column (optimal
