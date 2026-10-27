@@ -1,7 +1,12 @@
 /* The catechetical explanation shown above the words in the info dialog. */
 .devotion__explanation {
     color: var(--ink);
-    font-size: 1rem;
+    font-size: calc(1rem * var(--reader-scale, 1));
+    line-height: 1.6;
+}
+
+.devotion__words {
+    font-size: calc(1rem * var(--reader-scale, 1));
     line-height: 1.6;
 }
 
@@ -17,5 +22,5 @@
 
 .devotion__words ::deep .devotion__stacked-prayer-title {
     margin: 0 0 0.5rem;
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--reader-scale, 1));
 }

@@ -24,6 +24,9 @@ public static class AppServiceRegistration
         // Preferred light/dark theme (localStorage).
         services.AddScoped<IThemeService, ThemeService>();
 
+        // Reader's preferred text size (localStorage).
+        services.AddScoped<ITextSizeService, TextSizeService>();
+
         // Pinned quick-menu destinations (localStorage).
         services.AddScoped<IPinService, PinService>();
 

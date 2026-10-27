@@ -147,7 +147,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 7
- await testRunner.WhenAsync("I open the Bible chapter \"john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 8
  await testRunner.ThenAsync("I should see verse 16 of the chapter", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -175,7 +175,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 11
- await testRunner.WhenAsync("I open the Bible chapter \"john/3?v=16\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3?v=16\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 12
  await testRunner.ThenAsync("only verses \"16\" should be highlighted", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -203,7 +203,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 15
- await testRunner.WhenAsync("I open the Bible chapter \"john/3?v=5-7,16\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3?v=5-7,16\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 16
  await testRunner.ThenAsync("only verses \"5,6,7,16\" should be highlighted", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -231,7 +231,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 19
- await testRunner.WhenAsync("I open the Bible chapter \"john/3?v=x\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3?v=x\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 20
  await testRunner.ThenAsync("I should see verse 16 of the chapter", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -262,7 +262,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 24
- await testRunner.WhenAsync("I open the Bible chapter \"john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 25
  await testRunner.AndAsync("I follow the next chapter link", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
@@ -293,7 +293,7 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 29
- await testRunner.WhenAsync("I open the Bible chapter \"john/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 30
  await testRunner.ThenAsync("I should see the chapter not found message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

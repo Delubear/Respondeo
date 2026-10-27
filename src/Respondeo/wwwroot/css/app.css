@@ -167,7 +167,8 @@
     --z-prompt: 60;
     --z-float: 1000;
     --z-skip: 2000;
-    /* Modular type scale (~1.2 ratio) for UI chrome; prose keeps its own rhythm. */
+    /* Modular type scale (~1.2 ratio) for UI chrome; prose keeps its own rhythm.
+       scales .content-body, ledes, skeptic notes and Summa prologues via --reader-scale. */
     --fs-xs: 0.75rem;
     --fs-sm: 0.875rem;
     --fs-md: 1rem;
@@ -184,6 +185,20 @@
     /* Breakpoints (custom properties cannot be used in @media, so this is the reference list):
        40rem = phone/bottom-sheet layout (the standard mobile breakpoint); 36rem = narrow prose
        tweaks; 58rem = Stage reel wide layout. Nav components use content-driven widths. */
+}
+
+/* ---------- Reader text size ---------- */
+/* Scales only article/page content (.content-body), never the UI chrome. */
+html[data-textsize="large"] {
+    --reader-scale: 1.125;
+}
+
+html[data-textsize="larger"] {
+    --reader-scale: 1.25;
+}
+
+html[data-textsize="largest"] {
+    --reader-scale: 1.4;
 }
 
 /* ---------- Dark theme ---------- */
@@ -1154,7 +1169,7 @@ input[type="search"]::-webkit-search-cancel-button {
    different font-size/line-height here; they are intentionally unified so content reads the same
    everywhere. */
 .content-body {
-    font-size: 1.1rem;
+    font-size: calc(1.1rem * var(--reader-scale, 1));
     line-height: 1.7;
     color: var(--ink);
 }
@@ -1165,7 +1180,7 @@ input[type="search"]::-webkit-search-cancel-button {
    headings, quotes, code, lists, and paragraphs identically. */
 .content-body h2 {
     margin-top: 2rem;
-    font-size: 1.4rem;
+    font-size: calc(1.4rem * var(--reader-scale, 1));
 }
 
 .content-body p {
@@ -1221,7 +1236,7 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 100%;
     margin: 1.5rem 0;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--reader-scale, 1));
     display: block;
     overflow-x: auto;
 }
@@ -1269,7 +1284,7 @@ input[type="search"]::-webkit-search-cancel-button {
         width: 100%;
         max-width: 100%;
         overflow-x: auto;
-        font-size: 0.95rem;
+        font-size: calc(0.95rem * var(--reader-scale, 1));
     }
 
     /* A comparison table can still carry several records, so even transposed it may be wider than the

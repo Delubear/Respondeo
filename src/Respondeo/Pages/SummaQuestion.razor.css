@@ -2,6 +2,7 @@
 
 .summa-question__prologue {
     color: var(--ink-soft);
+    font-size: calc(1rem * var(--reader-scale, 1));
     font-style: italic;
     margin-bottom: 1.5rem;
 }

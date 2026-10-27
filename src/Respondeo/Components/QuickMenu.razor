@@ -4,6 +4,7 @@
 @inject IDevotionService DevotionService
 @inject Respondeo.Services.FeatureFlags Features
 @inject Respondeo.Services.OfflinePacks Packs
+@inject ITextSizeService TextSizes
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -123,6 +124,18 @@
 					</div>
 				}
 			</section>
+			<section class="quick-menu__section quick-menu__section--textsize">
+				<h3 class="quick-menu__heading" id="quick-menu-textsize">Article text size</h3>
+				<div class="quick-menu__textsize" role="group" aria-labelledby="quick-menu-textsize">
+					@foreach (var size in Enum.GetValues<TextSize>())
+					{
+						var s = size;
+						<button type="button" class="quick-menu__textsize-btn quick-menu__textsize-btn--@s.ToString().ToLowerInvariant()"
+								aria-pressed="@(TextSizes.Current == s ? "true" : "false")" aria-label="@($"{s} text")" title="@s.ToString()"
+								@onclick="() => TextSizes.SetAsync(s)">A</button>
+					}
+				</div>
+			</section>
 		}
 	</nav>
 }
@@ -183,6 +196,7 @@
 		if (firstRender)
 		{
 			await Pins.InitializeAsync();
+			await TextSizes.InitializeAsync();
 			await Packs.StartAsync();
 		}
 

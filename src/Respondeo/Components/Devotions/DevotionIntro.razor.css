@@ -1,6 +1,7 @@
 /* Devotion intro + mystery-set chooser */
 .devotion__intro-body {
     color: var(--ink-soft);
+    font-size: calc(1rem * var(--reader-scale, 1));
     line-height: 1.6;
     max-width: 42rem;
     margin-bottom: 1.5rem;

@@ -52,7 +52,7 @@
 
 .devotion__hint {
     color: var(--ink-soft);
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--reader-scale, 1));
     margin: 0 0 0.85rem;
     flex: 0 0 auto;
 }
@@ -99,7 +99,7 @@
     /* Trim the hint to a single quiet line so it doesn't cost a full text block
        of vertical space above the list. */
     .devotion__hint {
-        font-size: 0.82rem;
+        font-size: calc(0.82rem * var(--reader-scale, 1));
         margin-bottom: 0.5rem;
     }
 
