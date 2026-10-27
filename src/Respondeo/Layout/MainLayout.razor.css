@@ -14,6 +14,13 @@
     padding: 1.75rem 1rem 1.25rem;
 }
 
+/* The pillar nav (with the Discover dropdown) is a sibling of .masthead, so the stacking
+   context must sit on their shared wrapper to lift the dropdown above the sticky breadcrumb. */
+.masthead-zone {
+    position: relative;
+    z-index: calc(var(--z-sticky) + 1);
+}
+
 .masthead__brand {
     display: inline-flex;
     align-items: center;
