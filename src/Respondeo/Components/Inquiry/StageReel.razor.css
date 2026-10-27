@@ -20,8 +20,6 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    /* Room left/right so the first and last cards can still center. No vertical padding so the
-       question sits close under the "What speaks to you?" prompt and the cue sits close above the dots. */
     padding: 0 40%;
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */

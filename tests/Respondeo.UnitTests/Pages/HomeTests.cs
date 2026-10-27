@@ -80,7 +80,7 @@ public class HomeTests : TestContext
     {
         var cut = RenderComponent<Home>();
 
-        Assert.Equal("What speaks to you?", cut.Find("p.reel__prompt").TextContent);
+        Assert.Equal("Which question is yours?", cut.Find("p.reel__prompt").TextContent);
     }
 
     [Fact]
