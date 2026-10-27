@@ -15,10 +15,11 @@
     justify-content: center;
     gap: 0.4rem 0.6rem;
     position: relative;
-    z-index: 2;
+    /* Must clear the masthead's stacking context (sticky + 1), which the Aquinas portrait overflows from. */
+    z-index: calc(var(--z-sticky) + 2);
 }
 
-/* With the Summa|Bible capsule present, lay out as [before | pair | after] with equal side tracks
+/* With the Summa
    so the divider between Summa and Bible sits at the exact horizontal center. */
 .pillarnav__list--paired {
     display: grid;
