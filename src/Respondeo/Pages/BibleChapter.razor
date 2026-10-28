@@ -24,7 +24,7 @@ else if (_translation is null || _book is null || (_verses is null && !_unavaila
 }
 else
 {
-    <article class="content-article">
+    <article @key="_fadeGeneration" class="content-article bible-chapter @(_entered ? null : "bible-chapter--enter")">
         <PillarHeader Eyebrow="@(_translation.BookNameClarification(_book) is { } modern ? $"{_translation.ShortName} · {modern}" : _translation.ShortName)" Title="@Heading" />
         <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
         <BibleChapterNav Book="_book" Translation="_translation" Current="Chapter" />
@@ -38,7 +38,7 @@ else
             <BibleChapterText Verses="_verses" Highlight="_highlight" />
         }
 
-        <BiblePager Previous="Previous" Next="Next" />
+        <BiblePager Previous="Previous" Next="Next" OnNavigate="() => _replayFade = true" />
     </article>
 }
 
@@ -48,7 +48,6 @@ else
     [SupplyParameterFromQuery(Name = "v")] public string? VerseQuery { get; set; }
     [Parameter] public string TranslationCode { get; set; } = "";
 
-    private bool _translationLoaded;
     private BibleTranslation? _translation;
     private bool _unavailable;
 
@@ -59,23 +58,28 @@ else
     private IReadOnlyList<BibleVerse>? _verses;
     private bool _loading = true;
 
+    // The fade plays only for the first chapter shown after arriving on this page (e.g. from the book list);
+    // later chapter or translation switches swap the text in place without animation.
+    private bool _entered;
+    private string? _enteredBook;
+    private bool _replayFade;
+
+    // Bumped on every fade so the article is a new element; toggling the class on the same element can be
+    // coalesced into one frame by the browser, which then never restarts the animation.
+    private int _fadeGeneration;
+
     private string? Heading => _book is null || _translation is null ? null : $"{_translation.BookName(_book)} {Chapter}";
 
     private ChapterLink? Previous => _book is null || _translation is null ? null : BibleChapterNavigation.Previous(_book, Chapter, _translation);
 
     private ChapterLink? Next => _book is null || _translation is null ? null : BibleChapterNavigation.Next(_book, Chapter, _translation);
 
-    protected override async Task OnInitializedAsync() => await Trail.ClearAsync();
-
+    // Everything awaited before the state is ready completes synchronously when RoutePrefetcher has warmed the caches,
+    // so the first render is the finished chapter; browser-storage writes (truly async JS calls) happen afterwards.
     protected override async Task OnParametersSetAsync()
     {
         if (_verses is null && !_unavailable) _loading = true;
         if (Chapter == 0) Chapter = 1;
-        if (!_translationLoaded)
-        {
-            await Translations.InitializeAsync();
-            _translationLoaded = true;
-        }
 
         if (await AllTranslations.FindAsync(TranslationCode) is not { } requested)
         {
@@ -86,9 +90,15 @@ else
             return;
         }
 
-        if (requested != Translations.Current) await Translations.SetAsync(requested);
-
         var translation = requested;
+        if (_replayFade || !string.Equals(_enteredBook, Book, StringComparison.OrdinalIgnoreCase))
+        {
+            _replayFade = false;
+            _enteredBook = Book;
+            _entered = false;
+            _fadeGeneration++;
+        }
+
         _book = translation.FindBook(Book);
         if (_book is null)
         {
@@ -110,6 +120,8 @@ else
         {
             Scroll.Claim();
         }
+
+        if (requested != Translations.Current) await Translations.SetAsync(requested);
     }
 
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
@@ -122,6 +134,8 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender) await Trail.ClearAsync();
+        if (!_loading) _entered = true;
         if (_pendingScroll && !_loading)
         {
             _pendingScroll = false;
