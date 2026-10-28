@@ -55,6 +55,7 @@ public class StageTests : TestContext
         Services.AddSingleton(flow);
 
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
+        this.AddScrollCoordinator();
     }
 
     [Fact]
@@ -90,6 +91,7 @@ public class StageTests : TestContext
 
         Services.AddSingleton(Substitute.For<IInquiryFlow>());
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
+        this.AddScrollCoordinator();
 
         var cut = RenderComponent<Stage>(p => p.Add(c => c.Slug, "coming-home"));
 

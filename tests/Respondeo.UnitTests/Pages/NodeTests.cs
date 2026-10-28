@@ -50,6 +50,7 @@ public class NodeTests : TestContext
         Services.AddSingleton(flow);
         Services.AddSingleton(_trail);
         Services.AddSingleton(Substitute.For<IVisitedNodes>());
+        this.AddScrollCoordinator();
 
         // The Breadcrumb component imports ./js/breadcrumb.js on first render for the scroll/fade behavior.
         var breadcrumbModule = JSInterop.SetupModule("./js/breadcrumb.js");

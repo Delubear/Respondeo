@@ -65,6 +65,7 @@ public class SummaQuestionTests : TestContext
         Services.AddScoped<NavigationInterop>();
         Services.AddScoped<SummaRefInterop>();
         Services.AddScoped<DialogInterop>();
+        this.AddScrollCoordinator();
     }
 
     [Fact]
