@@ -102,13 +102,16 @@
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
     protected override void OnInitialized()
     {
-        UpdateGuides();
         Nav.LocationChanged += OnLocationChanged;
         OrbLauncher.Requested += OnOrbRequested;
         DayWatcher.DayChanged += OnDayChanged;
     }
 
-    // Start the day watcher once the renderer is live (JS interop is unavailable during OnInitialized).
+    // The router re-renders the layout (new @Body) for every navigation, but it handles LocationChanged before this
+    // layout does, so resolving orbs in OnLocationChanged left them one page behind. Resolve them on each render instead.
+    protected override void OnParametersSet() => UpdateGuides();
+
+    // Start the day watcher once
     // It listens for the tab becoming visible again and re-checks the date, so a tab left open overnight
     // refreshes the moment the user returns to it.
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -142,7 +145,6 @@
         // No StateHasChanged here: the router re-renders the layout once the destination is ready. Rendering now would
         // run OnAfterRenderAsync while the old page is still in @Body, applying the scroll landing to it (a visible flash).
         _forcedOrb = null;
-        UpdateGuides();
         await AnnounceAsync();
     }
 
