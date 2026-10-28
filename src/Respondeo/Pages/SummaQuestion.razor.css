@@ -63,7 +63,7 @@
 /* ---------- Prologue cross-reference links (injected via MarkupString in this page) ---------- */
 /* The prologue renders directly in the page, so ::deep reaches its injected links here. The article
    panels render inside the AccordionItem child, so their .summa-ref/.summa-cue rules live globally in
-   app.css instead. */
+   css/components.css instead. */
 .summa-question__prologue ::deep .summa-ref {
     color: var(--accent);
     text-decoration: none;

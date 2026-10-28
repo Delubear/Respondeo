@@ -97,7 +97,7 @@ precache everything, so there is nothing left to fetch at runtime.
   [`service-worker.published.js`](../src/Respondeo/wwwroot/service-worker.published.js) handles by
   calling `self.skipWaiting()`; the resulting `controllerchange` triggers a single reload into the
   new build. The banner styles (`.pwa-update`) are in
-  [`wwwroot/css/app.css`](../src/Respondeo/wwwroot/css/app.css).
+  [`wwwroot/css/`](../src/Respondeo/wwwroot/css/).
 - **Expected console warnings.** Once installed, DevTools may log preload messages for the framework
   files, e.g. *"a preload ... is found, but is not used because it is a cross-world service worker
   resource mismatch"* and *"preloaded ... but not used within a few seconds"*. These are benign:

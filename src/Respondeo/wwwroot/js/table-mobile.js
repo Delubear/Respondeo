@@ -3,7 +3,7 @@
 // A Markdown table is row-major in the DOM: the header is the first row and every data record is a
 // row beneath it. On a narrow screen that grid is too wide to read, so this module builds a
 // *transposed* companion table where the original header row becomes a left-hand label column and
-// each original data row becomes its own column. CSS (see app.css) shows the original on desktop
+// each original data row becomes its own column. CSS (see css/content.css) shows the original on desktop
 // and the transposed copy on mobile.
 //
 // Progressive enhancement: if this module never runs the original table still renders and scrolls

@@ -1,0 +1,304 @@
+/* ---------- Embedded media directives ---------- */
+/* Video (youtube), PDF, and button embeds are generated into content body HTML by the content
+   pipeline, so the same markup appears inside every content renderer (Inquiry nodes, accordion
+   sections, miracle pages, etc.). These classes are globally unique, so the styling lives here once
+   rather than being duplicated behind ::deep in each component's scoped CSS. */
+.video-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 1.5rem 0;
+    border: 1px solid var(--rule);
+    background: #000;
+}
+
+.video-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Click-to-load façade: full-bleed thumbnail button with a centered play glyph. */
+.video-facade__play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000;
+}
+
+.video-facade__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity var(--dur-2) var(--ease-page);
+}
+
+.video-facade__play:hover .video-facade__thumb,
+.video-facade__play:focus-visible .video-facade__thumb {
+    opacity: 1;
+}
+
+.video-facade__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4rem;
+    height: 2.8rem;
+    border-radius: 0.6rem;
+    background: var(--accent);
+    opacity: 0.92;
+}
+
+.video-facade__icon::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    border-style: solid;
+    border-width: 0.7rem 0 0.7rem 1.1rem;
+    border-color: transparent transparent transparent #fff;
+}
+
+.video-facade__play:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.pdf-embed {
+    margin: 1.5rem 0;
+    border: 1px solid var(--rule);
+    background: var(--parchment);
+}
+
+.pdf-embed iframe {
+    display: block;
+    width: 100%;
+    height: 32rem;
+    border: 0;
+}
+
+.content-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+/* ---------- Content body images & tables ---------- */
+/* Images and tables are generic tags emitted into content body HTML by the content pipeline, so
+   the same markup appears inside every content renderer (Inquiry nodes, accordion sections,
+   discover articles, miracle pages, etc.). Each renderer keeps its own semantic class for
+   page-specific typography (in its scoped .razor.css), but they all also carry the shared
+   .content-body marker so this one set of rules styles their content HTML consistently without
+   leaking onto chrome elsewhere on the page. */
+
+/* Shared base reading behavior for every content body. Individual pages used to set slightly
+   different font-size/line-height here; they are intentionally unified so content reads the same
+   everywhere. */
+.content-body {
+    font-size: calc(1.1rem * var(--reader-scale, 1));
+    line-height: 1.7;
+    color: var(--ink);
+}
+
+/* Shared element styling for the HTML the content pipeline injects via MarkupString. Because app.css
+   is global (unlike the scoped .razor.css files) these rules reach those runtime children directly,
+   so every content surface (inquiry nodes, discover/miracle/summa articles, accordion panels) renders
+   headings, quotes, code, lists, and paragraphs identically. */
+.content-body h2 {
+    margin-top: 2rem;
+    font-size: calc(1.4rem * var(--reader-scale, 1));
+}
+
+.content-body p {
+    margin: 0 0 1rem;
+}
+
+.content-body blockquote,
+.devotion__explanation blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+    border-left: 4px solid var(--accent);
+    background: var(--parchment);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.content-body code {
+    background: var(--code-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.content-body :is(ol, ul) {
+    padding-left: 1.4rem;
+}
+
+/* Fleuron section break: replace the default rule with a centered printer's mark (a leaf/aldus
+   ornament) in gold, the way a printed book separates passages. The <hr> keeps its semantic meaning
+   for assistive tech while reading as ornament rather than a plain line. */
+.content-body hr {
+    border: 0;
+    margin: 2.5rem 0;
+    text-align: center;
+    line-height: 1;
+}
+
+.content-body hr::before {
+    content: "\2767";
+    font-size: 1.6rem;
+    color: var(--gold);
+}
+
+.content-body img:not(.video-facade__thumb) {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border: 1px solid var(--rule);
+}
+
+.content-body table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    font-size: calc(0.95rem * var(--reader-scale, 1));
+    display: block;
+    overflow-x: auto;
+}
+
+.content-body :is(th, td) {
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Zebra striping keeps rows legible when the cell background would otherwise sit too close to the
+   page background. */
+.content-body tbody tr:nth-child(even) {
+    background: var(--code-bg);
+}
+
+.content-body thead th {
+    background: var(--parchment);
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+}
+
+.content-body tbody th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* table-mobile.js builds a transposed companion right after each content table (original columns
+   become rows). On desktop the companion is hidden and the original grid shows; on mobile we swap
+   them so the comparison reads as a narrow label -> value table instead of an unreadable wide grid.
+   If the script never runs the original simply scrolls horizontally, so nothing is lost. */
+.content-body .table--transposed {
+    display: none;
+}
+
+/* On narrow screens show the transposed companion instead of the wide original. */
+@media (max-width: 36rem) {
+    .content-body > table:not(.table--transposed) {
+        display: none;
+    }
+
+    .content-body .table--transposed {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        font-size: calc(0.95rem * var(--reader-scale, 1));
+    }
+
+    /* A comparison table can still carry several records, so even transposed it may be wider than the
+       viewport. table-layout: fixed divides the width evenly and lets sentence cells wrap; a shared
+       min-width keeps columns legible, with internal horizontal scroll as the graceful last resort so
+       the table never pushes the page wider than the screen. */
+    .content-body .table--transposed > tbody {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .content-body .table--transposed :is(th, td) {
+        min-width: 7rem;
+        padding: 0.5rem 0.6rem;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    /* The transposed table's first column is the label column (original headers). Give it the same
+       accent treatment the header row carried so the comparison keeps its visual anchor. */
+    .content-body .table--transposed th[scope="row"] {
+        background: var(--parchment);
+        white-space: normal;
+        border-right: 2px solid var(--accent);
+    }
+}
+
+/* ------------------------------------------------------------
+   Embedded prayer references
+   A devotion (e.g. a novena) can link to another prayer with
+   [Our Father](prayer:our-father); PrayerService expands that link
+   into a .prayer-embed holding the referenced prayer's full text.
+   It is styled to read as part of the devotion's natural flow, not
+   as a boxed callout. These rules are global because the markup is
+   injected as a raw MarkupString and scoped component CSS cannot
+   reach it.
+   ------------------------------------------------------------ */
+.prayer-embed {
+    margin: 1.25rem 0;
+}
+
+.prayer-embed__label {
+    margin: 0 0 0.1rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.prayer-embed__text > p:first-child {
+    margin-top: 0;
+}
+
+.prayer-embed__text > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Quoted prayer references
+   A saint profile, article, or miracle can link a prayer with
+   [Stay With Me, Lord](prayer:stay-with-me-lord) on its own line;
+   DetailPage expands it into a .prayer-quote blockquote holding the
+   prayer's full text, attributed with a link to the prayer's page.
+   Its look comes from the shared .content-body blockquote rule. */
+.prayer-quote__text > p:last-child {
+    margin-bottom: 0.5rem;
+}
+
+.prayer-quote__source {
+    margin: 0;
+    font-size: 0.9rem;
+    font-style: normal;
+    text-align: right;
+}
+
+/* Lock page scroll while the quick menu drawer is open so scrolling the drawer never moves the page behind it. */
+html:has(.quick-menu),
+body:has(.quick-menu) {
+  overflow: hidden;
+}

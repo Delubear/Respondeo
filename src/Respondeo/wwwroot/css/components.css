@@ -1,0 +1,312 @@
+/* ---------- Shared label/separator utilities ---------- */
+/* .eyebrow is the site-wide "kicker" label treatment: a small, uppercased, letter-spaced display
+   caption that sits above a title or beside a value (meta labels, section numbers, latin titles,
+   etc.). Previously each area reimplemented this with slightly drifted letter-spacing; it is now
+   one source of truth. font-size and color stay locally overridable for the few contexts that need
+   a different scale or accent color (e.g. .pillar__eyebrow uses the accent). */
+.eyebrow {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    color: var(--rubric);
+}
+
+/* .section-rule is the standard "new section below a hairline" separator used at the foot of detail
+   pages and between major page regions: top margin, top padding, and a single rule. */
+.section-rule {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+
+/* The .guide-subhead heading is scoped to GuideSection (GuideSection.razor.css). */
+
+/* Shared dialog-body patterns for the floating guides/orbs (Summa, Prayers, Today in the Church,
+   Saints glossary). One source of truth so every guide reads identically; use a per-component class
+   only when a guide needs something genuinely unique (Summa ref chips, liturgy swatches, etc.).
+
+   The .guide-list, .guide-term and .guide-steps rules below stay global because their selectors cross
+   component boundaries (the <ul>/<ol> is authored in GuideList/GuideSteps while the <li>, marker and
+   .guide-term span are authored in GuideItem/GuideStep), and .guide-term is also hand-written in
+   SummaGuide's TermContent. Scoped CSS stamps only the authoring component's elements, so these would
+   break if isolated. The single-author rules (.guide-subhead, .guide-cue, .guide-latin) have moved to
+   their components' .razor.css files. */
+
+/* A left-indented list whose items lead with a bold term followed by a description. The bold lead can
+   be a <strong> or a .guide-term span. */
+.guide-list {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+    color: var(--ink);
+}
+
+.guide-list li {
+    margin-bottom: 0.6rem;
+}
+
+.guide-term {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* A numbered list with circular step markers, used for ordered walkthroughs inside a guide. */
+.guide-steps {
+    list-style: none;
+    counter-reset: guide-step;
+    margin: 0;
+    padding: 0;
+}
+
+.guide-steps > li {
+    counter-increment: guide-step;
+    position: relative;
+    padding: 0 0 1rem 2.2rem;
+}
+
+.guide-steps > li::before {
+    content: counter(guide-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 1px solid var(--rule);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* The .guide-cue lead is scoped to GuideStep (GuideStep.razor.css).
+   The .guide-latin annotation is scoped to GuideLatin (GuideLatin.razor.css). */
+
+/* Shared detail-article scaffolding: the centered reading column, the stacked content sections,
+   their display headings, and the muted "sources / further reading" list. Previously each detail
+   page (discover article, etc.) reimplemented these with its own BEM prefix; they are now one
+   source of truth so every reading surface shares the same measure, rhythm, and type. */
+.content-article {
+    max-width: var(--w-read);
+    margin: 0 auto;
+    /* The layout's .content__inner already supplies the page's bottom gutter, so this surface only
+       needs its own top rhythm; adding bottom padding here doubled the space below the footer. */
+    padding: 1rem 0 0;
+}
+
+/* When the article follows a breadcrumb, that breadcrumb already supplies the top gutter (its
+   margin-bottom), so the article's own top padding would double the space. Drop it in that case. */
+.breadcrumb + .content-article {
+    padding-top: 0;
+}
+
+/* On desktop, pages without a breadcrumb (home, section landings) need extra breathing room below
+   the masthead; pages with one already get it from the breadcrumb's own padding and margin. */
+@media (min-width: 40.0625rem) {
+    body .content__inner:not(:has(.breadcrumb)) {
+        padding-top: 1.5rem;
+    }
+}
+
+/* Centered variant used for "not found" / empty article surfaces, so the title lines up with the
+   already-centered .empty-state message below it. */
+.content-article--empty {
+    text-align: center;
+}
+
+.content-section {
+    margin-bottom: 1.5rem;
+}
+
+/* Illuminated-manuscript drop cap on the opening paragraph of long-form reading pages: Inquiry
+   nodes, articles, saints, and miracles. A floated first letter is used everywhere (rather than
+   initial-letter) so the cap renders the same in every browser. */
+article.content-article > .content-body > p:first-of-type::first-letter,
+article.node > .content-body > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    font-family: var(--display);
+    font-size: 3.6em;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 0.8;
+    color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Shared collapsible accordion: one source of truth for every "sections"
+   surface (inquiry node sections and Summa question articles). The component
+   version (SectionAccordion) renders a <button> trigger; the Summa question
+   renders a native <details>/<summary> so deep-linking keeps working. Both use
+   these classes so the collapsible rows look identical. Panels also carry the
+   shared .content-body marker, so their body typography comes from that system.
+   --------------------------------------------------------------------------- */
+.accordion {
+    margin: 2rem 0;
+    border-top: 1px solid var(--rule);
+}
+
+.accordion__item {
+    border-bottom: 1px solid var(--rule);
+}
+
+#question-top {
+    scroll-margin-top: 5rem;
+}
+
+/* Details-mode rows are deep-link targets (e.g. #article-N); land the row's number and title at the
+   top with only a hairline of breathing room so the previous article doesn't show above it. */
+details.accordion__item {
+    scroll-margin-top: 2.5rem;
+}
+
+.accordion__heading {
+    margin: 0;
+    font-family: var(--serif);
+}
+
+/* Hide the native disclosure triangle on <details>/<summary> triggers; the
+   +/- marker renders our own indicator. */
+summary.accordion__trigger {
+    list-style: none;
+}
+
+summary.accordion__trigger::-webkit-details-marker {
+    display: none;
+}
+
+.accordion__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 0.25rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 1.15rem;
+    line-height: 1.3;
+    transition: color var(--dur-2) var(--ease-page);
+}
+
+.accordion__trigger:hover {
+    color: var(--accent);
+}
+
+.accordion__trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.accordion__item--open .accordion__trigger,
+details.accordion__item[open] > .accordion__trigger {
+    color: var(--accent);
+}
+
+.accordion__marker {
+    flex: 0 0 auto;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--ink-soft);
+}
+
+.accordion__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.accordion__summary {
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.accordion__panel {
+    padding: 0.25rem 0.25rem 1.5rem;
+}
+
+.accordion__panel > :first-child {
+    margin-top: 0;
+}
+
+/* Summa cross-reference links and section cues inside accordion panels. The Summa question renders its
+   article bodies inside the AccordionItem child component, so these injected-HTML rules must be global
+   (scoped ::deep can't reach a grandchild's content). The prologue, which renders directly in the page,
+   keeps its own scoped copy in SummaQuestion.razor.css. */
+.accordion__panel .summa-ref {
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+    border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.accordion__panel .summa-ref:hover,
+.accordion__panel .summa-ref:focus-visible {
+    border-bottom-color: var(--accent);
+}
+
+/* Section cues (Objection / Reply / On the contrary / I answer that) rendered from neutral tokens at
+   read time, so restyling never needs a corpus regen. */
+.accordion__panel .summa-cue {
+    font-weight: 700;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.6rem 1.4rem;
+    font-family: var(--display);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border: 1px solid var(--ink);
+    cursor: pointer;
+}
+
+.btn:hover {
+    text-decoration: none;
+    background: var(--parchment);
+    color: var(--ink);
+}
+
+/* On small screens the virtual keyboard shrinks the viewport, which pins any position:fixed
+   control (the floating guide circles and back-to-top arrow) to a strip just above the keyboard where
+   it reads as a stray colored block. Hide those floating controls while a text field is focused.
+   Scope this to text-entry fields (and textareas) only: checkboxes, radios, and other non-keyboard
+   inputs also match :focus but open no keyboard, so they must not hide the orbs (e.g. filter
+   checkboxes on the browse pages). */
+@media (max-width: 40rem) {
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .back-to-top,
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .float-circle,
+    body:has(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):focus, textarea:focus) .quick-menu__toggle {
+        display: none;
+    }
+}
+
+/* On phones the install prompt is a near full-width bar pinned to the bottom, so the floating
+   circle controls (back-to-top arrow and the guide circles) overlap and block its action
+   buttons. While the prompt is visible, hide those controls so the prompt is fully tappable;
+   they reappear once the prompt is installed or dismissed. */
+@media (max-width: 40rem) {
+    body:has(.install-prompt) .back-to-top,
+    body:has(.install-prompt) .float-circle,
+    body:has(.install-prompt) .quick-menu__toggle {
+        display: none;
+    }
+}

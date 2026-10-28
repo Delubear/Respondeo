@@ -1,0 +1,249 @@
+/* ---------- Responsive ---------- */
+@media (max-width: 40rem) {
+    html, body {
+        font-size: 1.05rem;
+    }
+}
+
+/* ---------- Journey landing pages ---------- */
+.landing {
+    max-width: var(--w-read);
+    margin-inline: auto;
+}
+
+.landing__title {
+    margin: 0 0 0.5rem;
+}
+
+.landing__lede {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 42rem;
+}
+
+.landing__placeholder {
+    margin-top: 2rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+/* ---------- PWA update prompt ---------- */
+/* Shown by index.html when a new service worker is waiting. Fixed to the bottom so it never
+   disrupts the reading column; hidden until the .is-visible class is added by the update script. */
+.pwa-update {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    z-index: var(--z-float);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: min(28rem, 100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    padding: 0.75rem 1rem;
+    transform: translate(-50%, 150%);
+    background: var(--parchment);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    box-shadow: 0 0.5rem 1.5rem var(--shadow);
+    font-family: var(--serif);
+    font-size: var(--fs-md);
+    opacity: 0;
+    transition: transform var(--dur-3) var(--ease-page), opacity var(--dur-3) var(--ease-page);
+}
+
+.pwa-update.is-visible {
+    transform: translate(-50%, 0);
+    opacity: 1;
+}
+
+.pwa-update__text {
+    flex: 1 1 auto;
+    color: var(--ink-soft);
+}
+
+.pwa-update__reload {
+    padding: 0.35rem 0.85rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 0.35rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pwa-update__reload:hover {
+    filter: brightness(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pwa-update {
+        transition: opacity var(--dur-3) var(--ease-page);
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Shared pillar header: one source of truth for every pillar's page header
+   (Inquiry/Home, Summa, Discover browse, Miracles, and the detail pages). Each
+   pillar wraps its intro in `.pillar` > `.pillar__header` with an optional
+   `.pillar__eyebrow`, a `.pillar__title`, and a `.pillar__lede`, so spacing and
+   type stay identical across pillars and only need to change in one place.
+   --------------------------------------------------------------------------- */
+.pillar {
+    max-width: var(--w-wide);
+    margin-inline: auto;
+}
+
+.pillar__title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Discover pillar: prayers, devotions, and articles for living the faith.
+   --------------------------------------------------------------------------- */
+
+/* Wide centered reading column for detail surfaces whose content is layout rather than prose —
+   the Prayer detail and the Devotion intro/player, whose card grids and bead lists want the roomier
+   60rem measure. Long-form prose surfaces (articles, miracles) use the tighter .content-article
+   measure instead so their body text keeps an optimal line length. */
+.reading-wide {
+    max-width: var(--w-wide);
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+}
+
+/* Browse listings (articles, prayers, devotions, miracles index) reuse the shared .pillar width so
+   the filter rail and results can breathe. .pillar already supplies the centered width/margin; this
+   only adds the bottom gutter. The top padding is intentionally omitted so the browse header starts
+   at the same height as the Inquiry hero (the .pillar__header supplies its own 1rem top padding). */
+.browse {
+    padding-bottom: 3rem;
+}
+
+/* Shared browse chrome: a filter rail beside a results column, a results toolbar, and a sort control.
+   These are GLOBAL, generic utilities reused across the Prayers, Devotions, Articles, Miracles, and
+   Discover browse pages, so they are not scoped to any single component. The search box lives in its
+   own SearchBox component (SearchBox.razor.css). Other component-owned styles live in their own
+   .razor.css files (PrayerDetail, DevotionPlayer). */
+
+/* Generic empty/no-results message, shared across browse pages and the Summa search view. */
+.empty-state {
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* Show the pointer (hand) cursor on the native "clear search" X across all search boxes. */
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+
+/* Muted result-count line, shared by the browse toolbar and the Summa search view. */
+.results-count {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+}
+
+
+/* ---------- Mobile layout fill ----------
+   On phones, the immersive devotion praying view needs the shell's content chain to be a flex
+   column so it can flex to fill the leftover viewport height (instead of guessing a subtracted
+   chrome height) and let min-height:0 propagate down to its internally-scrolling list. This is
+   gated to immersive mode: applying it to every page turned normal block flow into a min-height:0
+   flex column, which broke width/scroll measurement on pages like the Home reel and let the column
+   scroll vertically past the footer. */
+@media (max-width: 40rem) {
+    body.is-immersive .content {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    body.is-immersive .content__inner {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}
+
+/* ---------- Immersive devotion mode ----------
+   While the reader is actively praying a devotion, DevotionPlayer toggles body.is-immersive so the
+   surrounding chrome steps aside and the prayer thread gets nearly the whole viewport. Only applied
+   on phones, where the stacked masthead/nav/footer otherwise claim most of the screen; desktops keep
+   their full chrome. These rules live here (not in a scoped stylesheet) because the nav and footer are
+   separate components, so a global selector is needed to reach them all. */
+@media (max-width: 40rem) {
+    body.is-immersive .masthead,
+    body.is-immersive .pillarnav,
+    body.is-immersive .mastnav,
+    body.is-immersive .breadcrumb,
+    body.is-immersive .quick-menu__toggle,
+    body.is-immersive .colophon {
+        display: none;
+    }
+
+    /* Bound the shell to the viewport so the praying view's list scrolls internally instead of
+       growing the whole page. Without a fixed height, .page (min-height:100vh) grows past the screen
+       when a Rosary is long, the body scrolls, and the reader lands mid-page (missing the hint/top
+       bead) with "Leave" stranded at the bottom. Locking the height lets min-height:0 propagate so
+       .devotion__list's overflow-y:auto actually takes effect, pinning the hint at top and exit at
+       bottom. Only safe in immersive mode, where all chrome is hidden. */
+    body.is-immersive .page {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    body.is-immersive .content__inner {
+        padding: 0.4rem 1rem env(safe-area-inset-bottom, 0px);
+    }
+
+    /* The praying view carries a second ThemeToggle (the masthead's is hidden here). It rides in the
+       exit row and is off-screen unless immersive. Targeted globally because .theme-toggle belongs to
+       the ThemeToggle component's own scope, so a scoped DevotionPlayer rule can't reach it. */
+    .devotion__exit-theme {
+        display: none;
+    }
+
+    body.is-immersive .devotion__exit {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.is-immersive .devotion__exit-theme {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0.25rem;
+    }
+
+    /* Reset the shared toggle from its masthead-corner absolute positioning/colors to sit in the exit
+       row and read against the paper background. It stays flush to the row's right edge (via the
+       wrapper above) so "Leave" remains truly centered in the full width. */
+    body.is-immersive .devotion__exit-theme .theme-toggle {
+        position: static;
+        top: auto;
+        right: auto;
+        color: var(--ink-soft);
+    }
+
+    body.is-immersive .devotion__exit-theme .theme-toggle:hover {
+        color: var(--accent);
+        border-color: var(--rule);
+        background: var(--parchment);
+    }
+}

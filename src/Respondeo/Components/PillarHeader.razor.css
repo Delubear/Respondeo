@@ -1,7 +1,7 @@
 /* Component-owned styles for the shared pillar header. These rules style markup rendered only by
    PillarHeader.razor (the .pillar__header wrapper, the .pillar__eyebrow kicker, and the .pillar__lede),
    so they live here as scoped CSS. The .pillar section wrapper and the .pillar__title heading stay in
-   app.css because other pages reuse them outside this component (e.g. the various "not found" headers). */
+   css/layout.css because other pages reuse them outside this component (e.g. the various "not found" headers). */
 .pillar__header {
     display: flex;
     flex-direction: column;
