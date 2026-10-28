@@ -25,6 +25,44 @@
     font: inherit;
 }
 
+.search-box__field {
+    position: relative;
+    max-width: 28rem;
+    margin-inline: auto;
+}
+
+.search-box__input--with-suffix {
+    padding-right: 2.75rem;
+}
+
+.search-box__suffix {
+    position: absolute;
+    top: 50%;
+    right: 0.35rem;
+    transform: translateY(-50%);
+    display: flex;
+}
+
+.search-box__suffix ::deep button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.3rem;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.search-box__suffix ::deep button:hover,
+.search-box__suffix ::deep button:focus-visible {
+    color: var(--accent);
+    background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
 .search-box__input:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;

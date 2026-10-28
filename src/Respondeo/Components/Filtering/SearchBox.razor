@@ -2,7 +2,14 @@
 
 <div class="search-box">
     <label class="search-box__label" for="@Id">@Label</label>
-    <input id="@Id" class="search-box__input" type="search" placeholder="@Placeholder" value="@_value" @oninput="OnInput" @onkeydown="OnKeyDown" />
+    <div class="search-box__field">
+        <input id="@Id" class="search-box__input @(Suffix is not null ? "search-box__input--with-suffix" : null)" type="search" placeholder="@Placeholder"
+               value="@_value" @oninput="OnInput" @onkeydown="OnKeyDown" />
+        @if (Suffix is not null)
+        {
+            <span class="search-box__suffix">@Suffix</span>
+        }
+    </div>
 </div>
 
 @code {
@@ -15,6 +22,9 @@
     [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
 
     [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>Optional content (e.g. an icon button) rendered inside the input's trailing edge.</summary>
+    [Parameter] public RenderFragment? Suffix { get; set; }
 
     /// <summary>The current query text. Kept in sync with the input between renders.</summary>
     [Parameter] public string Value { get; set; } = string.Empty;
