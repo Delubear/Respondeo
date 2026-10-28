@@ -20,12 +20,21 @@ namespace Respondeo.Services.Navigation;
 /// </remarks>
 public sealed class ScrollCoordinator : IDisposable
 {
+    private const string TopTarget = "top";
+    private const string ContentTarget = "content";
+
     private readonly NavigationManager _nav;
     private readonly NavigationIntent _intent;
     private readonly IJSRuntime _js;
+
+    // The last location processed by Sync.
     private string _lastPath;
     private string _lastUri;
+
+    // The default landing for the current navigation: still waiting on the layout (_pending, unless _claimed),
+    // or held by a page that finishes loading late (_deferred).
     private string? _pending;
+    private string? _deferred;
     private bool _claimed;
 
     public ScrollCoordinator(NavigationManager nav, NavigationIntent intent, IJSRuntime js)
@@ -63,11 +72,11 @@ public sealed class ScrollCoordinator : IDisposable
         if (samePage)
         {
             _pending = null;
-            _ = _js.InvokeVoidAsync("respondeoScroll.land", "content", true);
+            _ = _js.InvokeVoidAsync("respondeoScroll.land", ContentTarget, true);
             return;
         }
 
-        _pending = resetToTop ? "top" : "content";
+        _pending = resetToTop ? TopTarget : ContentTarget;
     }
 
     /// <summary>Marks the current navigation's landing as owned by the page, so the layout skips the default.</summary>
@@ -91,26 +100,19 @@ public sealed class ScrollCoordinator : IDisposable
     /// <summary>Applies a landing held by <see cref="Defer"/>.</summary>
     public ValueTask ApplyDeferredAsync()
     {
-        if (_deferred is null)
+        if (_deferred is not null)
         {
-            return ValueTask.CompletedTask;
+            LandNow(_deferred, center: false);
         }
 
-        var target = _deferred;
-        _deferred = null;
-        _pending = null;
-        Land(target, false, false);
         return ValueTask.CompletedTask;
     }
-
-    private string? _deferred;
 
     /// <summary>Lands instantly on the element with <paramref name="id"/> (or centers it when <paramref name="center"/> is set).</summary>
     /// <remarks>Uses synchronous in-process interop so the scroll runs in the same task as the render, before the browser can paint the new content at the old scroll position.</remarks>
     public ValueTask LandAtAsync(string id, bool center = false)
     {
-        _pending = null;
-        Land(id, false, center);
+        LandNow(id, center);
         return ValueTask.CompletedTask;
     }
 
@@ -118,19 +120,20 @@ public sealed class ScrollCoordinator : IDisposable
     public ValueTask ApplyDefaultAsync()
     {
         Sync();
-        if (_pending is null || _claimed)
+        if (_pending is not null && !_claimed)
         {
-            return ValueTask.CompletedTask;
+            LandNow(_pending, center: false);
         }
 
-        var target = _pending;
-        _pending = null;
-        Land(target, false, false);
         return ValueTask.CompletedTask;
     }
 
-    private void Land(string target, bool smooth, bool center)
+    // Settles the current navigation's landing: whatever lands now consumes any pending or deferred default.
+    private void LandNow(string target, bool center)
     {
+        _pending = null;
+        _deferred = null;
+        const bool smooth = false;
         if (_js is IJSInProcessRuntime inProcess)
         {
             inProcess.InvokeVoid("respondeoScroll.land", target, smooth, center);

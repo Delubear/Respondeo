@@ -1,8 +1,8 @@
 // Site-wide browser helpers for Respondeo.
 //
 // These are loaded after the theme anti-flash snippet in index.html (which must stay inline
-// so it runs before first paint). Everything here is invoked at runtime â€” via JS interop from
-// Blazor components or a delegated DOM listener â€” so it has no before-paint timing constraint.
+// so it runs before first paint). Everything here is invoked at runtime (via JS interop from
+// Blazor components or a delegated DOM listener), so it has no before-paint timing constraint.
 
 // Updates the address bar without triggering a Blazor navigation (no focus shift or scroll).
 // Used to keep accordion state shareable while staying put on the page.
@@ -60,9 +60,14 @@ window.respondeoFocusContent = function () {
     };
 })();
 
-// All window scrolling lives here.
-// because callers only invoke it after the target has rendered (see ScrollCoordinator.cs).
+// All window scrolling lives here. Landings measure the target synchronously (no waiting on layout)
+// because callers only invoke them after the target has rendered (see ScrollCoordinator.cs).
 window.respondeoScroll = (function () {
+    // How long a remembered position (restore) wins over a generic top/content landing.
+    var RESTORE_PRIORITY_MS = 500;
+    // Frame budgets for the rAF loops that chase a moving or not-yet-reachable target.
+    var HOLD_STILL_FRAMES = 10;
+    var MAX_CHASE_FRAMES = 60;
     var reduced = function () {
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     };
@@ -125,7 +130,7 @@ window.respondeoScroll = (function () {
                 still++;
             }
 
-            if (still >= 10 || ++frames >= 60) {
+            if (still >= HOLD_STILL_FRAMES || ++frames >= MAX_CHASE_FRAMES) {
                 stop();
                 return;
             }
@@ -144,7 +149,7 @@ window.respondeoScroll = (function () {
         land: function (target, smooth, center) {
             // A browse list just restored the reader's remembered position (Back); don't override it
             // with the generic page-top/content landing, whichever of the two runs first.
-            if ((target === 'top' || target === 'content') && performance.now() - restoredAt < 500) {
+            if ((target === 'top' || target === 'content') && performance.now() - restoredAt < RESTORE_PRIORITY_MS) {
                 return;
             }
 
@@ -217,7 +222,7 @@ window.respondeoScroll = (function () {
             var frames = 0;
             (function tick() {
                 window.scrollTo({ top: target, behavior: 'auto' });
-                if (Math.abs(window.scrollY - target) > 1 && ++frames < 60) {
+                if (Math.abs(window.scrollY - target) > 1 && ++frames < MAX_CHASE_FRAMES) {
                     requestAnimationFrame(tick);
                 }
             })();
