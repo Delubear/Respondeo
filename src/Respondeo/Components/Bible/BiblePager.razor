@@ -1,3 +1,5 @@
+@inject NavigationManager Nav
+
 <nav class="bible-pager" aria-label="Chapter navigation">
     @if (Previous is { } prev)
     {
@@ -10,7 +12,6 @@
 </nav>
 
 @code {
-    [Inject] private NavigationManager Nav { get; set; } = default!;
     [Parameter] public ChapterLink? Previous { get; set; }
     [Parameter] public ChapterLink? Next { get; set; }
     [Parameter] public EventCallback OnNavigate { get; set; }
