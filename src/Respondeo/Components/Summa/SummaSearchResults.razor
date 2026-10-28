@@ -16,7 +16,8 @@ else
             @($"{Matches.Count} result(s)")
         }
     </p>
-    <ul class="summa__match-list">
+    @* Same key as the browse list, so a result clicked from a search is remembered and restored on Back. *@
+    <ul class="summa__match-list" data-browse-scroll="summa">
         @foreach (var match in Matches)
         {
             <li class="summa__match">

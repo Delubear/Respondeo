@@ -42,6 +42,10 @@ public static class AppServiceRegistration
 
         // Whether a navigation should reset to the top (masthead nav) or scroll to content (cards/articles).
         services.AddScoped<NavigationIntent>();
+        services.AddScoped<ScrollCoordinator>();
+
+        // Loads a destination page's data before the router swaps to it, so pages render complete instead of showing a Loading placeholder.
+        services.AddScoped<RoutePrefetcher>();
 
         // Transient browse view state (search text + facet filters), scoped per area path.
         services.AddScoped<BrowseState>();

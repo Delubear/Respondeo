@@ -6,6 +6,7 @@
 @inject IBibleTranslationService Translations
 @inject NavigationManager Nav
 @inject IBibleTranslations AllTranslations
+@inject ScrollCoordinator Scroll
 
 <PageShell Description="@($"{Heading} in the {_translation?.Name}.")" 
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
@@ -105,6 +106,10 @@ else
         _loading = false;
         _highlight = VerseSelection.Parse(VerseQuery);
         _pendingScroll = !_highlight.IsEmpty && _verses is not null;
+        if (_pendingScroll)
+        {
+            Scroll.Claim();
+        }
     }
 
     private async Task OnTranslationChangedAsync(BibleTranslation translation)
@@ -120,7 +125,7 @@ else
         if (_pendingScroll && !_loading)
         {
             _pendingScroll = false;
-            await Navigation.ScrollToVerseAsync($"v{_highlight.First}");
+            await Scroll.LandAtAsync($"v{_highlight.First}", center: true);
         }
     }
 }

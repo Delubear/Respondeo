@@ -1,6 +1,7 @@
 @page "/{Slug}"
 @inject IContentService Content
 @inject IInquiryFlow Flow
+@inject ScrollCoordinator Scroll
 
 @if (_isKnownStage)
 {
@@ -59,7 +60,12 @@ else
 		}
 
 		_label = item.Label;
-		_loading = true;
+
+		// The stage loads after the layout's post-navigation render; hold the landing until the content is on the page,
+		// otherwise it scrolls a too-short page and stops short of the content (leaving the sub-navigation showing).
+		Scroll.Defer();
+		_landPending = true;
+		_loading = _node is null;
 		_node = await Content.GetByIdAsync(item.Href);
 		var stages = await Flow.GetStagesAsync();
 		_kicker = stages.FirstOrDefault(s => string.Equals(s.Id, item.Href, StringComparison.OrdinalIgnoreCase))?.Kicker;
@@ -77,5 +83,16 @@ else
 		_objectionsLabel = isObstacles ? "the obstacles" : "the objections";
 		_objectionsSubject = isObstacles ? "reasons people hold back" : "arguments against this stage";
 		_loading = false;
+	}
+
+	private bool _landPending;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (_landPending && !_loading)
+		{
+			_landPending = false;
+			await Scroll.ApplyDeferredAsync();
+		}
 	}
 }

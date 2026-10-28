@@ -1,8 +1,8 @@
 // Site-wide browser helpers for Respondeo.
 //
 // These are loaded after the theme anti-flash snippet in index.html (which must stay inline
-// so it runs before first paint). Everything here is invoked at runtime — via JS interop from
-// Blazor components or a delegated DOM listener — so it has no before-paint timing constraint.
+// so it runs before first paint). Everything here is invoked at runtime â€” via JS interop from
+// Blazor components or a delegated DOM listener â€” so it has no before-paint timing constraint.
 
 // Updates the address bar without triggering a Blazor navigation (no focus shift or scroll).
 // Used to keep accordion state shareable while staying put on the page.
@@ -38,112 +38,178 @@ window.respondeoAccessibility = {
     }
 };
 
-// Brings an element into view. Both helpers wait for layout to settle before measuring: on long
-// pages a freshly opened (or deep-linked) section has its body injected as raw HTML, so its final
-// height/position isn't known on the first frame - a double rAF lets the browser finish laying it
-// out first. Both also respect prefers-reduced-motion.
-window.respondeoScroll = {
-    // Run `apply(el, reduce)` for element `id` once layout has settled.
-    _afterLayout: function (id, apply) {
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                var el = document.getElementById(id);
-                if (el) {
-                    apply(el, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-                }
-            });
-        });
-    },
-    // Smoothly scrolls the WINDOW to reveal a section, offsetting the sticky breadcrumb so the
-    // header isn't left hidden underneath it. Used to reveal a freshly opened accordion section (or
-    // a deep-linked one on load) when it sits below the fold.
-    intoView: function (id) {
-        this._afterLayout(id, function (el, reduce) {
-            // A route change starts a ~500ms jumpToContent settle that keeps re-pinning the content
-            // top; cancel it so this deep-link scroll isn't dragged back.
-            if (window.respondeoCancelScrollSettle) {
-                window.respondeoCancelScrollSettle();
-            }
-            var breadcrumb = document.querySelector('.breadcrumb');
-            // Leave the sticky breadcrumb's height above the target so its header (and the first
-            // line or two of content) stays visible rather than landing flush against - or tucked
-            // just under - the sticky bar.
-            var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
-            var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
-        });
-    },
-    // Centers an element within its nearest scrollable ancestor via native scrollIntoView. Unlike
-    // intoView (which moves the window), this also works inside an inner scroll container such as
-    // the devotion player's .devotion__list in immersive mode.
-    centreInParent: function (id) {
-        this._afterLayout(id, function (el, reduce) {
-            if (typeof el.scrollIntoView === 'function') {
-                el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
-            }
-        });
-    },
-    // Jumps the WINDOW to a deep-linked element (e.g. a Bible verse) after navigation. A one-shot
-    // scroll loses to the route-change settle and FocusOnNavigate's reset, so - like
-    // respondeoScrollRestore - this re-applies the target across a short settle window and bails if
-    // the visitor scrolls themselves.
-    toVerse: function (id) {
-        var settleFrames = 20;
-        var maxFrames = 90;
-        var frame = 0;
-        var reached = 0;
-        var userScrolled = false;
-
-        function onUserScroll() {
-            userScrolled = true;
-        }
-        window.addEventListener('wheel', onUserScroll, { passive: true, once: true });
-        window.addEventListener('touchmove', onUserScroll, { passive: true, once: true });
-        window.addEventListener('keydown', onUserScroll, { once: true });
-
-        function cleanup() {
-            window.removeEventListener('wheel', onUserScroll);
-            window.removeEventListener('touchmove', onUserScroll);
-            window.removeEventListener('keydown', onUserScroll);
-        }
-
-        (function tick() {
-            if (userScrolled) {
-                cleanup();
-                return;
-            }
-
-            if (window.respondeoCancelScrollSettle) {
-                window.respondeoCancelScrollSettle();
-            }
-
-            frame++;
-            var el = document.getElementById(id);
-            if (el) {
-                var breadcrumb = document.querySelector('.breadcrumb');
-                var offset = (breadcrumb ? breadcrumb.getBoundingClientRect().height : 0) + Math.max(48, Math.round(window.innerHeight * 0.2));
-                var target = Math.max(el.getBoundingClientRect().top + window.pageYOffset - offset, 0);
-                var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                window.scrollTo(0, Math.min(target, Math.max(maxScroll, 0)));
-
-                if (maxScroll >= target) {
-                    reached++;
-                    if (reached >= settleFrames) {
-                        cleanup();
-                        return;
-                    }
-                }
-            }
-
-            if (frame >= maxFrames) {
-                cleanup();
-                return;
-            }
-
-            requestAnimationFrame(tick);
-        })();
+// Focuses the main content region after navigation (for screen readers) without scrolling it into view.
+window.respondeoFocusContent = function () {
+    var el = document.getElementById('content');
+    if (el) {
+        el.focus({ preventScroll: true });
     }
 };
+
+// All window scrolling lives here. Every call is a single scroll - no settle loops, no re-asserting -
+// because callers only invoke it after the target has rendered (see ScrollCoordinator.cs).
+window.respondeoScroll = (function () {
+    var reduced = function () {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    };
+
+    // Document-relative top of the content region. Uses the layout offset (offsetTop chain), not
+    // getBoundingClientRect(), because the sticky breadcrumb's rect reads 0 once it is pinned.
+    function contentTop() {
+        var content = document.querySelector('.content');
+        if (!content) {
+            return 0;
+        }
+
+        var top = 0;
+        for (var node = content; node; node = node.offsetParent) {
+            top += node.offsetTop;
+        }
+
+        var inner = content.querySelector('.content__inner');
+        if (inner && inner.querySelector('.breadcrumb')) {
+            top += parseFloat(getComputedStyle(inner).paddingTop) || 0;
+        }
+        return top;
+    }
+
+    function scrollWindow(top, smooth) {
+        // Any explicit scroll supersedes a content hold still running from the last navigation.
+        if (stopHold) {
+            stopHold();
+        }
+        window.scrollTo({ top: Math.max(top, 0), behavior: smooth && !reduced() ? 'smooth' : 'auto' });
+    }
+
+    // Leaving Home, the masthead shrinks from its tall home layout to the slim inner layout over a short
+    // transition, which moves the content region up after we've scrolled to it. Follow it until it stops
+    // moving (or the reader takes over) so the landing ends past the sub-navigation.
+    var stopHold = null;
+    var restoredAt = -Infinity;
+    function holdContent() {
+        if (stopHold) {
+            stopHold();
+        }
+
+        var still = 0;
+        var frames = 0;
+        var rafId = 0;
+        var events = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+        var stop = function () {
+            cancelAnimationFrame(rafId);
+            events.forEach(function (type) { window.removeEventListener(type, stop, true); });
+            stopHold = null;
+        };
+        // Re-apply whenever we're not at the content top: it can move (masthead resizing) or be
+        // unreachable at first (the page still too short, so the browser clamped the scroll).
+        var tick = function () {
+            var top = contentTop();
+            if (Math.abs(window.scrollY - top) > 1) {
+                still = 0;
+                window.scrollTo(0, top);
+            } else {
+                still++;
+            }
+
+            if (still >= 10 || ++frames >= 60) {
+                stop();
+                return;
+            }
+            rafId = requestAnimationFrame(tick);
+        };
+
+        events.forEach(function (type) { window.addEventListener(type, stop, { capture: true, passive: true }); });
+        stopHold = stop;
+        rafId = requestAnimationFrame(tick);
+    }
+
+    return {
+        // Lands on `target`: 'top' (page top), 'content' (content region), or an element id.
+        // Instant unless `smooth`; `center` centers the element instead of aligning its top
+        // (CSS scroll-margin-top keeps aligned targets clear of the sticky breadcrumb).
+        land: function (target, smooth, center) {
+            // A browse list just restored the reader's remembered position (Back); don't override it
+            // with the generic page-top/content landing, whichever of the two runs first.
+            if ((target === 'top' || target === 'content') && performance.now() - restoredAt < 500) {
+                return;
+            }
+
+            if (target === 'top') {
+                scrollWindow(0, smooth);
+                return;
+            }
+
+            if (target === 'content') {
+                scrollWindow(contentTop(), smooth);
+                holdContent();
+                return;
+            }
+
+            var el = document.getElementById(target);
+            if (!el) {
+                return;
+            }
+
+            if (center) {
+                if (stopHold) {
+                    stopHold();
+                }
+                el.scrollIntoView({ block: 'center', behavior: smooth && !reduced() ? 'smooth' : 'auto' });
+                return;
+            }
+
+            // Measure the layout position (offsetTop chain), not scrollIntoView/getBoundingClientRect:
+            // an entering page's fade-and-rise transform would otherwise make us overshoot.
+            var top = 0;
+            for (var node = el; node; node = node.offsetParent) {
+                top += node.offsetTop;
+            }
+            scrollWindow(top - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0), smooth);
+        },
+        // Smoothly brings element `id` into view after an in-page change (opening an article/section).
+        // Runs on the next frame so the just-opened content has laid out. Short reveals glide; long
+        // jumps are instant so they don't lurch past the masthead.
+        reveal: function (id) {
+            requestAnimationFrame(function () {
+                var el = document.getElementById(id);
+                if (!el) {
+                    return;
+                }
+
+                var breadcrumb = document.querySelector('.breadcrumb');
+                var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
+                var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+                scrollWindow(top, Math.abs(top - window.pageYOffset) <= window.innerHeight);
+            });
+        },
+        // Centers element `id` within its scrollable parent (e.g. the devotion player's list).
+        centreInParent: function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ block: 'center', behavior: reduced() ? 'auto' : 'smooth' });
+            }
+        },
+        top: function () {
+            scrollWindow(0, true);
+        },
+        // Returns to a remembered position (Back to a browse list). Cancels any content hold and
+        // retries briefly while the list grows tall enough to reach the position.
+        restore: function (target) {
+            restoredAt = performance.now();
+            if (stopHold) {
+                stopHold();
+            }
+
+            var frames = 0;
+            (function tick() {
+                window.scrollTo(0, target);
+                if (Math.abs(window.scrollY - target) > 1 && ++frames < 60) {
+                    requestAnimationFrame(tick);
+                }
+            })();
+        }
+    };
+})();
 
 // Opens/closes a native <dialog> by element reference. Native dialogs give us focus trapping,
 // Esc-to-close and the ::backdrop for free; Blazor just needs to call the methods via interop.
@@ -240,9 +306,9 @@ window.respondeoTally = {
     }
 };
 
-// Click-to-load for YouTube embeds. Author content renders a lightweight "façade" (thumbnail + play button);
+// Click-to-load for YouTube embeds. Author content renders a lightweight "facades" (thumbnail + play button);
 // the heavy YouTube player is only injected when the visitor actually clicks play, so opening an article makes no YouTube requests.
-// A single delegated listener covers all current and future façades (content is injected as raw HTML, so per-element Blazor handlers wouldn't bind).
+// A single delegated listener covers all current and future facades (content is injected as raw HTML, so per-element Blazor handlers wouldn't bind).
 document.addEventListener('click', function (e) {
     var facade = e.target.closest ? e.target.closest('.video-facade') : null;
     if (!facade || facade.dataset.loaded) {

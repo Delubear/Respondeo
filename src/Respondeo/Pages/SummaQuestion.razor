@@ -8,6 +8,7 @@
 @inject NavigationManager Nav
 @inject NavigationInterop Navigation
 @inject SummaRefInterop SummaRef
+@inject ScrollCoordinator Scroll
 
 <PageShell Title="@_question?.Title" FallbackTitle="Question" Description="@_seoDescription" Article="true" SeoReady="@(_question is not null)"
            TabTitle="@SiteMeta.JoinTitle(_question?.Title, "Summa Theologiae")"
@@ -25,7 +26,7 @@ else if (_question is null)
 }
 else
 {
-    <article class="content-article">
+    <article id="question-top" class="content-article summa-question" @key="_question.Id">
         <PillarHeader Eyebrow="@($"{PartTitle}{(string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}")} {(_question.IsPrologue ? $"\u00B7 {_question.Title}" : $"\u00B7 Question {_question.Number}")}")"
                       Title="@_question.Title" />
 
@@ -96,7 +97,7 @@ else
     private SummaQuestionContent? _question;
     private string PartTitle = string.Empty;
     private string? _treatise;
-    private bool _loading = true;
+    private bool _loading;
     private bool _scrolledToFragment;
 
     // Concise meta description for this question, assembled by the presenter from the question's articles so search results summarize the specific points Aquinas treats.
@@ -138,12 +139,19 @@ else
             StateHasChanged();
         }
 
-        await Navigation.ScrollIntoViewAsync(fragment);
+        await Navigation.RevealAsync(fragment);
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         if (_loading || _question is null)
+        {
+            return;
+        }
+
+        // A link to a different question fires this before the new question loads; let the normal load path handle it.
+        var path = Nav.ToBaseRelativePath(e.Location).Split('#', '?')[0];
+        if (!string.Equals(path, $"summa/{Id}", StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -166,7 +174,7 @@ else
             StateHasChanged();
         }
 
-        await Navigation.ScrollIntoViewAsync(fragment);
+        await Navigation.RevealAsync(fragment);
     }
 
     public void Dispose()
@@ -187,19 +195,34 @@ else
             return;
         }
 
-        _loading = true;
+        // This page lands itself (on its title or deep-linked article) once it renders, instead of the layout's default.
+        Scroll.Claim();
+
+        // Only show the placeholder on a cold load.
+        // until the next one is ready so it swaps in one render instead of flashing the placeholder or a half-reset old page.
+        var questionTask = Summa.GetQuestionAsync(Parts.ToStorageId(Id));
+        _loading = _question is null && !questionTask.IsCompletedSuccessfully;
+        var question = await questionTask;
+        var view = await Presenter.BuildAsync(question);
+
+        _question = question;
         _scrolledToFragment = false;
         _openArticles.Clear();
-        _question = await Summa.GetQuestionAsync(Parts.ToStorageId(Id));
+
+        // Open a deep-linked article up front so it is part of the first full render and the anchor jump lands on it directly.
+        if (SummaFragment.TryGetArticleNumber(new Uri(Nav.Uri).Fragment.TrimStart('#'), out var deepLinked))
+        {
+            _openArticles.Add(deepLinked);
+        }
 
         // The presenter assembles the part context, SEO description, and ancestor part in one pass.
-        var view = await Presenter.BuildAsync(_question);
         PartTitle = view.PartTitle;
         _treatise = view.Treatise;
         _seoDescription = view.SeoDescription;
         _crumbs = BuildPartCrumbs(view.Part);
 
-        await ResolveReferenceOriginAsync();
+        // Resolve the back crumb synchronously so a cached question renders complete in one pass (no second render, no flicker).
+        (_backHref, _backLabel) = Presenter.BuildBackCrumb(SummaRef.TakeOrigin(), Id);
         _loading = false;
     }
 
@@ -207,21 +230,6 @@ else
     private static IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaPart? part)
     {
         return part is null ? Array.Empty<Breadcrumb.Crumb>() : [new Breadcrumb.Crumb(part.Key, part.Title, Plain: true)];
-    }
-
-    // Reads (and consumes) the cross-reference origin recorded when a summa-ref link was clicked,
-    // then asks the presenter to map it into a back crumb deep-linking to the origin article.
-    private async Task ResolveReferenceOriginAsync()
-    {
-        var origin = await SummaRef.ReadOriginAsync();
-
-        // Consume it so a later refresh or normal browse doesn't keep showing the back crumb.
-        if (origin is not null)
-        {
-            await SummaRef.ClearOriginAsync();
-        }
-
-        (_backHref, _backLabel) = Presenter.BuildBackCrumb(origin, Id);
     }
 
     // Toggles a panel open/closed from its own summary. Prevents the native <details> toggle so our set stays the single source of truth for the open/closed marker.
@@ -241,7 +249,7 @@ else
         var fragment = SummaFragment.ArticleAnchor(articleNumber);
         await Navigation.ReplaceUrlAsync($"summa/{Id}#{fragment}");
         StateHasChanged();
-        await Navigation.ScrollIntoViewAsync(fragment);
+        await Navigation.RevealAsync(fragment);
     }
 
     // The articles render only after the question content loads, so a "#article-N" fragment in the URL has nothing to open/scroll to at initial navigation.
@@ -260,6 +268,10 @@ else
         }
 
         _scrolledToFragment = true;
-        await OpenFragmentTargetAsync();
+
+        // The page rendered complete from prefetched data, so land like a plain anchor link: the deep-linked article
+        // (opened in the same pass) or, by default, the question title.
+        var fragment = new Uri(Nav.Uri).Fragment.TrimStart('#');
+        await Scroll.LandAtAsync(string.IsNullOrEmpty(fragment) ? "question-top" : fragment);
     }
 }

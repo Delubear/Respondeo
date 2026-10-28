@@ -34,7 +34,7 @@ public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
         _subscription = await _module.InvokeAsync<int>("register", _ref);
     }
 
-    /// <summary>Invokes a parameterless void export on the scroll module (e.g. <c>scrollToTop</c>).</summary>
+    /// <summary>Invokes a parameterless void export on the scroll module.</summary>
     public ValueTask InvokeVoidAsync(string identifier) => _module is null ? ValueTask.CompletedTask : _module.InvokeVoidAsync(identifier);
 
     /// <summary>Invoked by scroll.js on every scroll; forwards the metrics to the component callback.</summary>

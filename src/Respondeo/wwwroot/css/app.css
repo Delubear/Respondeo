@@ -476,10 +476,14 @@ article.node > .content-body > p:first-of-type::first-letter {
     border-bottom: 1px solid var(--rule);
 }
 
-/* Details-mode rows are deep-link targets (e.g. #article-N), so keep them clear of a sticky header
-   when scrolled into view. */
-details.accordion__item {
+#question-top {
     scroll-margin-top: 5rem;
+}
+
+/* Details-mode rows are deep-link targets (e.g. #article-N); land the row's number and title at the
+   top with only a hairline of breathing room so the previous article doesn't show above it. */
+details.accordion__item {
+    scroll-margin-top: 2.5rem;
 }
 
 .accordion__heading {

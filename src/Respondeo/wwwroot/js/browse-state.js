@@ -50,9 +50,8 @@ window.respondeoBrowseState = (function () {
                 sessionStorage.setItem(SCROLL_PREFIX + key, String(Math.round(window.scrollY)));
             } catch (e) { }
         },
-        // Restores the remembered scroll position for a list by delegating to the shared restore
-        // helper (window.respondeoScrollRestore), which polls across a settle window to survive both
-        // the async content height and Blazor's <FocusOnNavigate> reset. See scroll-store.js.
+        // Restores the remembered scroll position for a list via the shared helper
+        // (window.respondeoScrollRestore). The page calls this after its content has rendered.
         restoreScroll: function (key) {
             window.respondeoScrollRestore(readScroll(key));
         },

@@ -1,5 +1,29 @@
 /* ---------- Summa question page ---------- */
 
+/* Same gentle fade + rise as Inquiry nodes: keyed on the question id in the markup, so moving to another
+   question re-mounts the article and replays this, turning the content swap into a deliberate page turn. */
+.summa-question {
+    animation: summa-question-enter var(--dur-4) var(--ease-page) both;
+}
+
+@keyframes summa-question-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .summa-question {
+        animation: none;
+    }
+}
+
 .summa-question__prologue {
     color: var(--ink-soft);
     font-size: calc(1rem * var(--reader-scale, 1));

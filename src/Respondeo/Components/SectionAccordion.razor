@@ -120,7 +120,7 @@
             var target = _scrollToId;
             _scrollToId = null;
             // Smoothly bring the opened section into view (deep link on load or a normal open whose expanded content runs past the bottom of the viewport).
-            await Navigation.ScrollIntoViewAsync(target);
+            await Navigation.RevealAsync(target);
         }
 
         // The open panel's body is injected as a MarkupString, so any tables only exist once it has rendered.

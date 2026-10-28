@@ -3,6 +3,7 @@
 @inject NavigationManager Nav
 @inject IBreadcrumbTrail Trail
 @inject IVisitedNodes Visited
+@inject ScrollCoordinator Scroll
 
 <PageShell Title="@(_node?.Title ?? _breadcrumb.CurrentTitle)" Description="@_node?.Summary" Article="true" SeoReady="@(_node is not null)"
            Crumbs="_breadcrumb.Ancestors" StageHref="@_breadcrumb.RootHref" StageLabel="@_breadcrumb.RootLabel" />
@@ -33,8 +34,14 @@ else
     private bool _loading = true;
     private BreadcrumbContext _breadcrumb = BreadcrumbContext.ForCurrent(null);
 
+    private bool _landPending;
+
     protected override async Task OnParametersSetAsync()
     {
+        // The node finishes loading after the layout's post-navigation render (it awaits the trail/visited stores),
+        // so the layout's default landing would run against the previous content. Land ourselves once the node renders.
+        Scroll.Defer();
+        _landPending = true;
         // Resolve everything into locals before touching the fields the UI binds to.
         // Content is typically cached, so swapping atomically at the end keeps the current node on screen during the load instead of blanking to the spinner,
         // which removes the flash/flicker when moving between nodes.
@@ -73,9 +80,18 @@ else
         _loading = false;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_landPending && !_loading)
+        {
+            _landPending = false;
+            await Scroll.ApplyDeferredAsync();
+        }
+    }
+
     private async Task<IReadOnlyList<Breadcrumb.Crumb>> BuildBreadcrumbAsync(string id, string? stage)
     {
-        // The trail resets per stage, so every node it returns belongs to the current stage.
+        // The trail resets per stage
         var trail = await Trail.VisitAsync(id, stage);
 
         // The trail includes the current node as its last element; the rest are ancestors.

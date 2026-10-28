@@ -1,6 +1,14 @@
-<Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+@inject RoutePrefetcher Prefetcher
+
+<Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)" OnNavigateAsync="OnNavigateAsync">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="#content" />
+        <FocusContent RouteData="@routeData" />
     </Found>
 </Router>
+
+@code {
+    // The router awaits this before swapping routes, so the current page stays on screen until the destination's data is cached
+    // and the new page renders complete in one pass.
+    private Task OnNavigateAsync(NavigationContext context) => Prefetcher.PrefetchAsync(context.Path);
+}

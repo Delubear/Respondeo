@@ -1,8 +1,5 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-@inject NavigationManager Nav
-@inject NavigationIntent NavIntent
-@using Respondeo.Services
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
 
@@ -16,16 +13,6 @@
     private ScrollSubscription? _scroll;
 
     private string ProgressStyle => _progress.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "%";
-
-    protected override void OnInitialized()
-    {
-        Nav.LocationChanged += OnLocationChanged;
-        _lastPath = PathOf(Nav.Uri);
-    }
-
-    private string? _lastPath;
-
-    private static string PathOf(string uri) => uri.Split('?', '#')[0];
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,35 +30,10 @@
         StateHasChanged();
     }
 
-    private async Task ScrollToTopAsync()
-    {
-        if (_scroll is not null)
-        {
-            await _scroll.InvokeVoidAsync("scrollToTop");
-        }
-    }
-
-    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
-    {
-        if (_scroll is null)
-        {
-            return;
-        }
-
-        // The masthead nav tabs and content cards can target the same route, so the destination URL alone cannot distinguish them.
-        // The masthead nav flags its clicks as top-level, which resets to the very top.
-        // Everything else — entry cards, node/article navigation — scrolls down to the content region so the reader lands on their breadcrumb trail.
-        var resetToTop = NavIntent.ConsumeResetToTop();
-        var path = PathOf(e.Location);
-        var samePage = path == _lastPath;
-        _lastPath = path;
-        _ = _scroll.InvokeVoidAsync(resetToTop ? "jumpToTop" : samePage ? "smoothToContent" : "jumpToContent");
-    }
+    private async Task ScrollToTopAsync() => await JS.InvokeVoidAsync("respondeoScroll.top");
 
     public async ValueTask DisposeAsync()
     {
-        Nav.LocationChanged -= OnLocationChanged;
-
         if (_scroll is not null)
         {
             await _scroll.DisposeAsync();

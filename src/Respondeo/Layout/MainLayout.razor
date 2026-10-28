@@ -7,6 +7,7 @@
 @inject IDayWatcher DayWatcher
 @inject IJSRuntime JS
 @inject OrbLauncher OrbLauncher
+@inject ScrollCoordinator Scroll
 
 <div class="page page--inner @(_mastheadExpanded ? "page--masthead-open" : null)">
     <a class="skip-link" href="#content">Skip to content</a>
@@ -124,6 +125,9 @@
     // refreshes the moment the user returns to it.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // The router has just rendered the destination into @Body (from prefetched data): land it, unless the page claimed its own landing.
+        await Scroll.ApplyDefaultAsync();
+
         if (firstRender)
         {
             await DayWatcher.StartAsync();
@@ -136,7 +140,7 @@
     // (which reads the date live) picks up the new day's image.
     private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
 
-    // An orb opened from a pinned quick-menu entry on a route that doesn't show it is mounted trigger-less until the next navigation.
+    // An orb opened from a pinned quick-menu entry
     private string? _forcedOrb;
 
     private void OnOrbRequested(string key)

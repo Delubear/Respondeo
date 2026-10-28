@@ -19,10 +19,8 @@ public sealed class NavigationInterop(IJSRuntime js)
     /// </summary>
     public ValueTask ReplaceUrlAsync(string url) => js.InvokeVoidAsync("respondeoUrl.replace", url);
 
-    /// <summary>Smoothly scrolls the element named by <paramref name="target"/> (id or fragment) into view.</summary>
-    public ValueTask ScrollIntoViewAsync(string target) => js.InvokeVoidAsync("respondeoScroll.intoView", target);
-
-    public ValueTask ScrollToVerseAsync(string id) => js.InvokeVoidAsync("respondeoScroll.toVerse", id);
+    /// <summary>Brings the element with <paramref name="id"/> into view after an in-page change (opening a section or article).</summary>
+    public ValueTask RevealAsync(string id) => js.InvokeVoidAsync("respondeoScroll.reveal", id);
 
     /// <summary>Centers the element with <paramref name="elementId"/> within its scrollable parent.</summary>
     public ValueTask CentreInParentAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.centreInParent", elementId);
