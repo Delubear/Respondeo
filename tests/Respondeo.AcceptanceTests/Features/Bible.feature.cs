@@ -274,14 +274,14 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="An unknown chapter shows a not-found message")]
+        [Xunit.SkippableFactAttribute(DisplayName="The pager replays the chapter fade")]
         [Xunit.TraitAttribute("FeatureTitle", "Bible reader")]
-        [Xunit.TraitAttribute("Description", "An unknown chapter shows a not-found message")]
-        public async global::System.Threading.Tasks.Task AnUnknownChapterShowsANot_FoundMessage()
+        [Xunit.TraitAttribute("Description", "The pager replays the chapter fade")]
+        public async global::System.Threading.Tasks.Task ThePagerReplaysTheChapterFade()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("An unknown chapter shows a not-found message", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The pager replays the chapter fade", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 28
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -293,9 +293,83 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 29
- await testRunner.WhenAsync("I open the Bible chapter \"drb/john/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 30
+    await testRunner.AndAsync("I mark the current chapter article", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 31
+    await testRunner.AndAsync("I follow the next chapter link", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 32
+    await testRunner.ThenAsync("the address bar should end with \"/john/4\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 33
+    await testRunner.AndAsync("the chapter article should be replaced", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="A chapter link swaps the text in place")]
+        [Xunit.TraitAttribute("FeatureTitle", "Bible reader")]
+        [Xunit.TraitAttribute("Description", "A chapter link swaps the text in place")]
+        public async global::System.Threading.Tasks.Task AChapterLinkSwapsTheTextInPlace()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("A chapter link swaps the text in place", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 35
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 36
+    await testRunner.WhenAsync("I open the Bible chapter \"drb/john/3\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 37
+    await testRunner.AndAsync("I mark the current chapter article", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 38
+    await testRunner.AndAsync("I follow the chapter link \"5\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 39
+    await testRunner.ThenAsync("the address bar should end with \"/john/5\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 40
+    await testRunner.AndAsync("the chapter article should be kept", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="An unknown chapter shows a not-found message")]
+        [Xunit.TraitAttribute("FeatureTitle", "Bible reader")]
+        [Xunit.TraitAttribute("Description", "An unknown chapter shows a not-found message")]
+        public async global::System.Threading.Tasks.Task AnUnknownChapterShowsANot_FoundMessage()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("An unknown chapter shows a not-found message", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 42
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 43
+ await testRunner.WhenAsync("I open the Bible chapter \"drb/john/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 44
  await testRunner.ThenAsync("I should see the chapter not found message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

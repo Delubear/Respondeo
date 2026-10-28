@@ -25,6 +25,20 @@ Feature: Bible reader
 	And I follow the next chapter link
 	Then the address bar should end with "/john/4"
 
+  Scenario: The pager replays the chapter fade
+    When I open the Bible chapter "drb/john/3"
+    And I mark the current chapter article
+    And I follow the next chapter link
+    Then the address bar should end with "/john/4"
+    And the chapter article should be replaced
+
+  Scenario: A chapter link swaps the text in place
+    When I open the Bible chapter "drb/john/3"
+    And I mark the current chapter article
+    And I follow the chapter link "5"
+    Then the address bar should end with "/john/5"
+    And the chapter article should be kept
+
   Scenario: An unknown chapter shows a not-found message
 	When I open the Bible chapter "drb/john/999"
 	Then I should see the chapter not found message

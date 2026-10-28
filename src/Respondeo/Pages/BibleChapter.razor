@@ -2,7 +2,6 @@
 @page "/bible/{TranslationCode}/{Book}/{Chapter:int}"
 @inject IBibleChapterReader Reader
 @inject IBreadcrumbTrail Trail
-@inject NavigationInterop Navigation
 @inject IBibleTranslationService Translations
 @inject NavigationManager Nav
 @inject IBibleTranslations AllTranslations
@@ -24,7 +23,7 @@ else if (_translation is null || _book is null || (_verses is null && !_unavaila
 }
 else
 {
-    <article @key="_fadeGeneration" class="content-article bible-chapter @(_entered ? null : "bible-chapter--enter")">
+    <article @key="_fade.Generation" class="content-article bible-chapter @(_fade.Entered ? null : "bible-chapter--enter")">
         <PillarHeader Eyebrow="@(_translation.BookNameClarification(_book) is { } modern ? $"{_translation.ShortName} · {modern}" : _translation.ShortName)" Title="@Heading" />
         <BibleTranslationToggle Value="_translation" ValueChanged="OnTranslationChangedAsync" />
         <BibleChapterNav Book="_book" Translation="_translation" Current="Chapter" />
@@ -38,7 +37,7 @@ else
             <BibleChapterText Verses="_verses" Highlight="_highlight" />
         }
 
-        <BiblePager Previous="Previous" Next="Next" OnNavigate="() => _replayFade = true" />
+        <BiblePager Previous="Previous" Next="Next" OnNavigate="_fade.RequestReplay" />
     </article>
 }
 
@@ -58,15 +57,7 @@ else
     private IReadOnlyList<BibleVerse>? _verses;
     private bool _loading = true;
 
-    // The fade plays only for the first chapter shown after arriving on this page (e.g. from the book list);
-    // later chapter or translation switches swap the text in place without animation.
-    private bool _entered;
-    private string? _enteredBook;
-    private bool _replayFade;
-
-    // Bumped on every fade so the article is a new element; toggling the class on the same element can be
-    // coalesced into one frame by the browser, which then never restarts the animation.
-    private int _fadeGeneration;
+    private readonly ChapterFade _fade = new();
 
     private string? Heading => _book is null || _translation is null ? null : $"{_translation.BookName(_book)} {Chapter}";
 
@@ -91,13 +82,7 @@ else
         }
 
         var translation = requested;
-        if (_replayFade || !string.Equals(_enteredBook, Book, StringComparison.OrdinalIgnoreCase))
-        {
-            _replayFade = false;
-            _enteredBook = Book;
-            _entered = false;
-            _fadeGeneration++;
-        }
+        _fade.Arrive(Book);
 
         _book = translation.FindBook(Book);
         if (_book is null)
@@ -135,11 +120,38 @@ else
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender) await Trail.ClearAsync();
-        if (!_loading) _entered = true;
+        if (!_loading) _fade.MarkEntered();
         if (_pendingScroll && !_loading)
         {
             _pendingScroll = false;
             await Scroll.LandAtAsync($"v{_highlight.First}", center: true);
         }
+    }
+
+    // The fade plays only for the first chapter shown after arriving on this page (e.g. from the book list) or after
+    // a pager click; chapter-link or translation switches swap the text in place without animation.
+    private sealed class ChapterFade
+    {
+        private string? _book;
+        private bool _replay;
+
+        public bool Entered { get; private set; }
+
+        // Bumped on every fade so the article is a new element; toggling the class on the same element can be
+        // coalesced into one frame by the browser, which then never restarts the animation.
+        public int Generation { get; private set; }
+
+        public void RequestReplay() => _replay = true;
+
+        public void Arrive(string book)
+        {
+            if (!_replay && string.Equals(_book, book, StringComparison.OrdinalIgnoreCase)) return;
+            _replay = false;
+            _book = book;
+            Entered = false;
+            Generation++;
+        }
+
+        public void MarkEntered() => Entered = true;
     }
 }

@@ -43,6 +43,28 @@ public sealed class BibleSteps(PlaywrightContext context)
     [When("I follow the next chapter link")]
     public async Task WhenIFollowTheNextChapterLink() => await Page.Locator(".bible-pager__next").ClickAsync();
 
+    [When("I mark the current chapter article")]
+    public async Task WhenIMarkTheCurrentChapterArticle() =>
+        await Page.EvaluateAsync("document.querySelector('.bible-chapter').dataset.mark = 'old'");
+
+    [When("I follow the chapter link {string}")]
+    public async Task WhenIFollowTheChapterLink(string number) =>
+        await Page.Locator(".bible-chapters").GetByRole(AriaRole.Link, new() { Name = number, Exact = true }).ClickAsync();
+
+    [Then("the chapter article should be replaced")]
+    public async Task ThenTheChapterArticleShouldBeReplaced()
+    {
+        await Assertions.Expect(Page.Locator(".bible-chapter[data-mark='old']")).ToHaveCountAsync(0);
+        await Assertions.Expect(Page.Locator(".bible-chapter").First).ToBeVisibleAsync();
+    }
+
+    [Then("the chapter article should be kept")]
+    public async Task ThenTheChapterArticleShouldBeKept()
+    {
+        await Assertions.Expect(Page.Locator(".bible-chapters__link[aria-current='page']")).ToHaveTextAsync("5");
+        await Assertions.Expect(Page.Locator(".bible-chapter[data-mark='old']")).ToHaveCountAsync(1);
+    }
+
     [Then("I should see the chapter not found message")]
     public async Task ThenIShouldSeeTheChapterNotFoundMessage() =>
         await Assertions.Expect(Page.GetByText("Chapter not found")).ToBeVisibleAsync();
