@@ -1,3 +1,4 @@
+using Respondeo.Bible.Contracts;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Summa.Contracts;
 
@@ -15,7 +16,9 @@ public sealed class RoutePrefetcher(
     IMiracleService miracles,
     IPrayerService prayers,
     ISummaService summa,
-    ISummaPartCatalog parts)
+    ISummaPartCatalog parts,
+    IBibleTranslations bibleTranslations,
+    IBibleChapterReader bibleReader)
 {
     public async Task PrefetchAsync(string path)
     {
@@ -27,6 +30,12 @@ public sealed class RoutePrefetcher(
             {
                 case ["summa", var id]:
                     await Task.WhenAll(summa.GetQuestionAsync(parts.ToStorageId(parts.Canonicalize(id) ?? id)), summa.GetIndexAsync());
+                    break;
+                case ["bible", var code, var book]:
+                    await PrefetchBibleChapterAsync(code, book, 1);
+                    break;
+                case ["bible", var code, var book, var chapter] when int.TryParse(chapter, out var number):
+                    await PrefetchBibleChapterAsync(code, book, number);
                     break;
                 case ["discover", "articles", var id]:
                     await Task.WhenAll(articles.GetArticleAsync(id), prayers.GetIndexAsync());
@@ -49,5 +58,11 @@ public sealed class RoutePrefetcher(
         {
             // A failed prefetch just means the page loads its own data (and shows its own error/not-found state).
         }
+    }
+
+    private async Task PrefetchBibleChapterAsync(string code, string book, int chapter)
+    {
+        if (await bibleTranslations.FindAsync(code) is not { } translation) return;
+        await bibleReader.LoadAsync(translation.FindBook(book), chapter, translation);
     }
 }

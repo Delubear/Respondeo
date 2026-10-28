@@ -24,6 +24,7 @@ public sealed class ScrollCoordinator : IDisposable
     private readonly NavigationIntent _intent;
     private readonly IJSRuntime _js;
     private string _lastPath;
+    private string _lastUri;
     private string? _pending;
     private bool _claimed;
 
@@ -32,16 +33,29 @@ public sealed class ScrollCoordinator : IDisposable
         _nav = nav;
         _intent = intent;
         _js = js;
+        _lastUri = nav.Uri;
         _lastPath = PathOf(nav.Uri);
         _nav.LocationChanged += OnLocationChanged;
     }
 
     private static string PathOf(string uri) => uri.Split('?', '#')[0];
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e) => Sync();
+
+    // The router may re-render the destination page (which calls Claim/Defer) before this service's LocationChanged handler runs,
+    // so every entry point first processes the current location once; otherwise a page would act on the previous navigation's landing.
+    private void Sync()
     {
+        var uri = _nav.Uri;
+        if (uri == _lastUri)
+        {
+            return;
+        }
+
+        _lastUri = uri;
+        _deferred = null;
         var resetToTop = _intent.ConsumeResetToTop();
-        var path = PathOf(e.Location);
+        var path = PathOf(uri);
         var samePage = path == _lastPath;
         _lastPath = path;
         _claimed = false;
@@ -57,7 +71,11 @@ public sealed class ScrollCoordinator : IDisposable
     }
 
     /// <summary>Marks the current navigation's landing as owned by the page, so the layout skips the default.</summary>
-    public void Claim() => _claimed = true;
+    public void Claim()
+    {
+        Sync();
+        _claimed = true;
+    }
 
     /// <summary>
     /// For pages that finish loading after the layout's post-navigation render: holds the default landing (top or content)
@@ -65,6 +83,7 @@ public sealed class ScrollCoordinator : IDisposable
     /// </summary>
     public void Defer()
     {
+        Sync();
         _deferred = _pending;
         _claimed = true;
     }
@@ -98,6 +117,7 @@ public sealed class ScrollCoordinator : IDisposable
     /// <summary>Applies the default landing for the last navigation, unless a page claimed it. Called by the layout after each render.</summary>
     public ValueTask ApplyDefaultAsync()
     {
+        Sync();
         if (_pending is null || _claimed)
         {
             return ValueTask.CompletedTask;
