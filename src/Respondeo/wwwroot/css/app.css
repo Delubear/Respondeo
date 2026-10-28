@@ -434,6 +434,14 @@ h1, h2, h3 {
     padding-top: 0;
 }
 
+/* On desktop, pages without a breadcrumb (home, section landings) need extra breathing room below
+   the masthead; pages with one already get it from the breadcrumb's own padding and margin. */
+@media (min-width: 40.0625rem) {
+    body .content__inner:not(:has(.breadcrumb)) {
+        padding-top: 1.5rem;
+    }
+}
+
 /* Centered variant used for "not found" / empty article surfaces, so the title lines up with the
    already-centered .empty-state message below it. */
 .content-article--empty {
