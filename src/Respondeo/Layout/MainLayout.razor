@@ -2,7 +2,7 @@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject AccessibilityInterop Accessibility
-@inject Respondeo.Services.FeatureFlags Features
+@inject FeatureFlags Features
 @inject ISeasonalPortrait Portrait
 @inject IDayWatcher DayWatcher
 @inject IJSRuntime JS
@@ -48,19 +48,7 @@
         </div>
     </main>
 
-    <footer class="colophon">
-        <p>
-            Presented in the spirit of St. Thomas Aquinas.
-            Curated for study, not a substitute for the Magisterium of the Catholic Church.
-        </p>
-        <p class="colophon__meta">
-            <a href="thanks">Thanks &amp; sources</a>
-            <span class="colophon__sep" aria-hidden="true">&middot;</span>
-            <a href="https://github.com/Delubear/Respondeo" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
-            <span class="colophon__sep" aria-hidden="true">&middot;</span>
-            <Feedback LinkText="Report an issue or share feedback" />
-        </p>
-    </footer>
+    <Colophon />
 
     <InstallPrompt />
     <OfflinePackPrompt />
@@ -187,4 +175,3 @@
         _selfRef?.Dispose();
     }
 }
-
