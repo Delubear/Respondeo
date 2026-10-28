@@ -97,8 +97,8 @@ else
     private SummaQuestionContent? _question;
     private string PartTitle = string.Empty;
     private string? _treatise;
-    private bool _loading;
-    private bool _scrolledToFragment;
+    private bool _loading = true;
+    private bool _landPending;
 
     // Concise meta description for this question, assembled by the presenter from the question's articles so search results summarize the specific points Aquinas treats.
     private string _seoDescription = SiteMeta.DefaultDescription;
@@ -195,18 +195,14 @@ else
             return;
         }
 
-        // This page lands itself (on its title or deep-linked article) once it renders, instead of the layout's default.
-        Scroll.Claim();
+        // Same as an Inquiry node: hold the default landing until the new question has rendered.
+        Scroll.Defer();
+        _landPending = true;
 
-        // Only show the placeholder on a cold load.
-        // until the next one is ready so it swaps in one render instead of flashing the placeholder or a half-reset old page.
-        var questionTask = Summa.GetQuestionAsync(Parts.ToStorageId(Id));
-        _loading = _question is null && !questionTask.IsCompletedSuccessfully;
-        var question = await questionTask;
+        var question = await Summa.GetQuestionAsync(Parts.ToStorageId(Id));
         var view = await Presenter.BuildAsync(question);
 
         _question = question;
-        _scrolledToFragment = false;
         _openArticles.Clear();
 
         // Open a deep-linked article up front so it is part of the first full render and the anchor jump lands on it directly.
@@ -262,16 +258,19 @@ else
             await SummaRef.RegisterPageAsync(_selfRef);
         }
 
-        if (_loading || _question is null || _scrolledToFragment)
+        if (!_landPending || _loading)
         {
             return;
         }
 
-        _scrolledToFragment = true;
+        _landPending = false;
 
-        // The page rendered complete from prefetched data, so land like a plain anchor link: the deep-linked article
-        // (opened in the same pass) or, by default, the question title.
+        // Land exactly like an Inquiry page, unless the URL names a deep-linked article.
         var fragment = new Uri(Nav.Uri).Fragment.TrimStart('#');
-        await Scroll.LandAtAsync(string.IsNullOrEmpty(fragment) ? "question-top" : fragment);
+        await Scroll.ApplyDeferredAsync();
+        if (!string.IsNullOrEmpty(fragment))
+        {
+            await Scroll.LandAtAsync(fragment);
+        }
     }
 }

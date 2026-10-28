@@ -46,7 +46,21 @@ window.respondeoFocusContent = function () {
     }
 };
 
-// All window scrolling lives here. Every call is a single scroll - no settle loops, no re-asserting -
+// Blazor resets scroll with window.scrollTo(0, 0) on the first render batch after a link navigation. That batch can be
+// the layout reacting to LocationChanged while the router is still awaiting OnNavigateAsync, so the OLD page gets painted
+// at the top for a frame (a visible flash). ScrollCoordinator owns every landing, so swallow that positional (0, 0) call;
+// all app scrolling below uses the options-object form.
+(function () {
+    var nativeScrollTo = window.scrollTo.bind(window);
+    window.scrollTo = function (x, y) {
+        if (arguments.length === 2 && x === 0 && y === 0) {
+            return;
+        }
+        nativeScrollTo.apply(window, arguments);
+    };
+})();
+
+// All window scrolling lives here.
 // because callers only invoke it after the target has rendered (see ScrollCoordinator.cs).
 window.respondeoScroll = (function () {
     var reduced = function () {
@@ -106,7 +120,7 @@ window.respondeoScroll = (function () {
             var top = contentTop();
             if (Math.abs(window.scrollY - top) > 1) {
                 still = 0;
-                window.scrollTo(0, top);
+                window.scrollTo({ top: top, behavior: 'auto' });
             } else {
                 still++;
             }
@@ -202,7 +216,7 @@ window.respondeoScroll = (function () {
 
             var frames = 0;
             (function tick() {
-                window.scrollTo(0, target);
+                window.scrollTo({ top: target, behavior: 'auto' });
                 if (Math.abs(window.scrollY - target) > 1 && ++frames < 60) {
                     requestAnimationFrame(tick);
                 }

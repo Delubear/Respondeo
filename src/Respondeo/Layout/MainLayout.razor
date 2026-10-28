@@ -151,9 +151,10 @@
 
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        // No StateHasChanged here: the router re-renders the layout once the destination is ready. Rendering now would
+        // run OnAfterRenderAsync while the old page is still in @Body, applying the scroll landing to it (a visible flash).
         _forcedOrb = null;
         UpdateGuides();
-        StateHasChanged();
         await AnnounceAsync();
     }
 
