@@ -59,6 +59,11 @@ window.respondeoScroll = {
     // a deep-linked one on load) when it sits below the fold.
     intoView: function (id) {
         this._afterLayout(id, function (el, reduce) {
+            // A route change starts a ~500ms jumpToContent settle that keeps re-pinning the content
+            // top; cancel it so this deep-link scroll isn't dragged back.
+            if (window.respondeoCancelScrollSettle) {
+                window.respondeoCancelScrollSettle();
+            }
             var breadcrumb = document.querySelector('.breadcrumb');
             // Leave the sticky breadcrumb's height above the target so its header (and the first
             // line or two of content) stays visible rather than landing flush against - or tucked
