@@ -55,26 +55,7 @@
     <Microsoft.AspNetCore.Components.Sections.SectionOutlet SectionName="quick-menu" />
 </div>
 
-@* Floating orbs live here (not in the pages) so each persists as a single element across navigation
-   within its area and animates only on true first appearance. The liturgical orb is one instance
-   spanning every Discover-area route; it merely slides when its Raised state changes. Which orbs
-   show on which route is declared in FloatingGuideRoutes (the single source of truth). *@
-@if (_guides.ShowLiturgicalOrb || _forcedOrb == OrbLauncher.Liturgical)
-{
-    <LiturgicalOrb Raised="_guides.LiturgicalOrbRaised" HideTrigger="!_guides.ShowLiturgicalOrb" />
-}
-@if (_guides.ShowPrayerGuide || _forcedOrb == OrbLauncher.Prayers)
-{
-    <GuideToPrayers HideTrigger="!_guides.ShowPrayerGuide" />
-}
-@if (_guides.ShowSaintGlossary || _forcedOrb == OrbLauncher.Saints)
-{
-    <SaintGlossaryOrb HideTrigger="!_guides.ShowSaintGlossary" />
-}
-@if (_guides.ShowSummaGuide || _forcedOrb == OrbLauncher.Summa)
-{
-    <SummaGuide HideTrigger="!_guides.ShowSummaGuide" />
-}
+<FloatingGuides Guides="_guides" ForcedOrb="_forcedOrb" />
 
 @code {
     // Which floating orbs the current route shows. Orbs live here (not in the pages) so an orb that applies
