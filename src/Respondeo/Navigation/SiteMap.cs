@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Components;
 using Respondeo.LiturgyOfTheHours;
-using Respondeo.Services;
+using Respondeo.Services.Summa;
 
 namespace Respondeo.Navigation;
 
@@ -13,7 +14,8 @@ public static class SiteMap
     /// <param name="Href">The relative route (empty string is Home).</param>
     /// <param name="Label">The visible link text.</param>
     /// <param name="Children">Nested destinations shown beneath this one (e.g. each devotion or hour).</param>
-    public sealed record Entry(string Href, string Label, IReadOnlyList<Entry>? Children = null);
+    /// <param name="Action">When set, the link runs this action (resolving services from the provider) instead of navigating; Href remains the pin key.</param>
+    public sealed record Entry(string Href, string Label, IReadOnlyList<Entry>? Children = null, Func<IServiceProvider, Task>? Action = null);
 
     /// <summary>The href of the Devotions entry, whose children are loaded at runtime.</summary>
     public const string DevotionsHref = "discover/devotions";
@@ -34,7 +36,10 @@ public static class SiteMap
                 new("why-the-church", "Why the Church"),
                 new("coming-home", "Coming Home"),
             ]),
-            new(Href(SitePillars.SummaId), "Summa"),
+            new(Href(SitePillars.SummaId), "Summa",
+            [
+                new("summa/random", "Random Summa Article", Action: OpenRandomSummaAsync)
+            ]),
             new(Href(SitePillars.BibleId), "Bible"),
         };
 
@@ -71,19 +76,19 @@ public static class SiteMap
         var guides = new List<Entry>();
         if (features.DiscoverPillar)
         {
-            guides.Add(new(OrbPrefix + OrbLauncher.Liturgical, "Today in the Church"));
+            guides.Add(Orb(OrbLauncher.Liturgical, "Today in the Church"));
             if (features.PrayerFeature)
             {
-                guides.Add(new(OrbPrefix + OrbLauncher.Prayers, "Guide to Prayers"));
+                guides.Add(Orb(OrbLauncher.Prayers, "Guide to Prayers"));
             }
 
             if (features.SaintsFeature)
             {
-                guides.Add(new(OrbPrefix + OrbLauncher.Saints, "Reading the saints"));
+                guides.Add(Orb(OrbLauncher.Saints, "Reading the saints"));
             }
         }
 
-        guides.Add(new(OrbPrefix + OrbLauncher.Summa, "How to read the Summa"));
+        guides.Add(Orb(OrbLauncher.Summa, "How to read the Summa"));
         return guides;
     }
 
@@ -93,6 +98,16 @@ public static class SiteMap
 
     private static IEnumerable<Entry> Flatten(IEnumerable<Entry> entries) =>
         entries.SelectMany(e => new[] { e }.Concat(Flatten(e.Children ?? [])));
+
+    private static Entry Orb(string id, string label) =>
+        new(OrbPrefix + id, label, Action: sp =>
+        {
+            sp.GetRequiredService<OrbLauncher>().Request(id);
+            return Task.CompletedTask;
+        });
+
+    private static async Task OpenRandomSummaAsync(IServiceProvider sp) =>
+        sp.GetRequiredService<NavigationManager>().NavigateTo(await sp.GetRequiredService<RandomSummaArticle>().PickUrlAsync() ?? "summa");
 
     private static string Href(string pillarId) => SitePillars.Items.First(p => p.Id == pillarId).Href;
 }

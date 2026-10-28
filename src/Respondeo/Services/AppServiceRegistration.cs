@@ -57,6 +57,7 @@ public static class AppServiceRegistration
 
         // Title/treatise search over the Summa index.
         services.AddScoped<SummaSearch>();
+        services.AddScoped<RandomSummaArticle>();
 
         // Facet/search/sort logic (plus card presentation where applicable) for each Discover catalog.
         services.AddScoped<PrayerBrowse>();

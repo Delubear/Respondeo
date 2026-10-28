@@ -5,7 +5,7 @@
 @inject Respondeo.Services.FeatureFlags Features
 @inject Respondeo.Services.OfflinePacks Packs
 @inject ITextSizeService TextSizes
-@inject OrbLauncher Launcher
+@inject IServiceProvider Services
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -163,14 +163,14 @@
 	private IReadOnlyList<SiteMap.Entry> _guides = [];
 
 	private RenderFragment RenderLink(SiteMap.Entry entry) =>
-		entry.Href.StartsWith(SiteMap.OrbPrefix, StringComparison.Ordinal)
-			? @<button type="button" class="quick-menu__link quick-menu__link--button" @onclick="() => OpenOrb(entry.Href)">@entry.Label</button>
+		entry.Action is { } action
+			? @<button type="button" class="quick-menu__link quick-menu__link--button" @onclick="() => Run(action)">@entry.Label</button>
 			: @<a class="quick-menu__link" href="@entry.Href" @onclick="Close">@entry.Label</a>;
 
-	private async Task OpenOrb(string href)
+	private async Task Run(Func<IServiceProvider, Task> action)
 	{
 		await Close();
-		Launcher.Request(href[SiteMap.OrbPrefix.Length..]);
+		await action(Services);
 	}
 
 	private RenderFragment RenderEntry(SiteMap.Entry entry, bool withChildren) =>

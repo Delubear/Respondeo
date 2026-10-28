@@ -59,6 +59,7 @@ public class SummaTests : TestContext
         Services.AddScoped<BrowseState>();
         Services.AddScoped<BrowseStateInterop>();
         Services.AddScoped<SummaSearch>();
+        Services.AddScoped<RandomSummaArticle>();
         Services.AddScoped<DialogInterop>();
         Services.AddScoped<OfflinePacksInterop>();
         Services.AddScoped<OfflinePacks>();

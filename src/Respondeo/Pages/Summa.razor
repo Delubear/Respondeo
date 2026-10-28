@@ -4,8 +4,8 @@
 @inject BrowseState Browse
 @inject BrowseStateInterop BrowseJs
 @inject SummaSearch Search
-@inject ISummaPartCatalog Parts
 @inject NavigationManager Nav
+@inject RandomSummaArticle RandomArticle
 
 <PageShell Title="Summa Theologiae"
          Description="Read St. Thomas Aquinas's Summa Theologiae online \u2014 browse by part and question, with cross-references and plain-language guidance." />
@@ -79,16 +79,14 @@
 
     private bool IsSearching => _query.Trim().Length > 0;
 
-    private void OpenRandomArticle()
+    // Picks directly and navigates to the chosen article.
+    private async Task OpenRandomArticle()
     {
-        var articles = _entries.Where(e => e.ArticleNumber is not null).ToArray();
-        if (articles.Length == 0)
+        var url = await RandomArticle.PickUrlAsync();
+        if (url is not null)
         {
-            return;
+            Nav.NavigateTo(url);
         }
-
-        var pick = articles[Random.Shared.Next(articles.Length)];
-        Nav.NavigateTo($"summa/{Parts.ToUrlId(pick.QuestionId)}#article-{pick.ArticleNumber}");
     }
 
     protected override async Task OnInitializedAsync()
