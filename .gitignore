@@ -370,3 +370,4 @@ FodyWeavers.xsd
 # graphify output (keep only the build/excludes config)
 graphify-out/*
 !graphify-out/.graphify_build.json
+!graphify-out/graph.json

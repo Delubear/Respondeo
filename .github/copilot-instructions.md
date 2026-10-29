@@ -48,4 +48,9 @@
 - Use the Respondeo.AcceptanceTests project for visual/E2E/acceptance tests rather than scaffolding a new one.
 
 ## Miracle Article Guidelines
-- When writing Respondeo miracle articles (especially Eucharistic miracles), do not fault a reported miracle for lacking a "controlled trial" or "independent replication" — that is a category error, since a miracle is a singular act of God, not a repeatable experiment. Instead, distinguish what science can address (authenticity of the relic/sample, competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
+competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
+
+## Codebase navigation (Graphify)
+- For architecture, dependency, or "where is X used / what calls Y" questions, query the Graphify knowledge graph in `graphify-out/` first, then verify findings against the source.
+- After refactors or structural changes (file moves, renames, new services or components), update the Graphify graph so it does not go stale.
+- `graphify-out/` is not committed; if it is missing or outdated, regenerate it before relying on it.
