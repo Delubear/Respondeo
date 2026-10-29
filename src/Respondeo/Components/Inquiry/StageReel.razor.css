@@ -461,11 +461,11 @@
     }
 
     .reel__q-sub {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
     }
 
     .reel__q-cue {
-        font-size: 0.78rem;
+        font-size: 0.8rem;
     }
 
     /* Icon circles at ≤640px: pin to the reel edges, well clear of the 18rem card. */
