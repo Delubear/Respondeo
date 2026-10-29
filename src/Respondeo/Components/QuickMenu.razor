@@ -12,7 +12,7 @@
 	<span aria-hidden="true">&#9776;</span>
 </button>
 
-<Microsoft.AspNetCore.Components.Sections.SectionContent SectionName="quick-menu">
+<SectionContent SectionName="quick-menu">
 @if (_open)
 {
 	<div class="quick-menu__backdrop @(_closing ? "quick-menu__backdrop--closing" : null)" @onclick="Close"></div>
@@ -149,7 +149,7 @@
 		}
 	</nav>
 }
-</Microsoft.AspNetCore.Components.Sections.SectionContent>
+</SectionContent>
 
 @code {
 	private bool _open;
