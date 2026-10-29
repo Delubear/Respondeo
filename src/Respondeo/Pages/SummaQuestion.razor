@@ -27,8 +27,7 @@ else if (_question is null)
 else
 {
     <article id="question-top" class="content-article summa-question fade-enter" @key="_question.Id">
-        <PillarHeader Eyebrow="@($"{PartTitle}{(string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}")} {(_question.IsPrologue ? $"\u00B7 {_question.Title}" : $"\u00B7 Question {_question.Number}")}")"
-                      Title="@_question.Title" />
+        <PillarHeader Eyebrow="@Eyebrow" Title="@_question.Title" />
 
         @if (!string.IsNullOrWhiteSpace(_question.PrologueHtml))
         {
@@ -39,51 +38,35 @@ else
 
         @if (!_question.IsPrologue)
         {
-        <nav class="summa-question__toc" aria-label="Articles in this question">
-            <ol class="summa-question__toc-list">
+            <nav class="summa-question__toc" aria-label="Articles in this question">
+                <ol class="summa-question__toc-list">
+                    @foreach (var article in _question.Articles)
+                    {
+                        <li class="summa-question__toc-item">
+                            <a href="@($"summa/{Id}#article-{article.Number}")" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
+                                Article @article.Number. @article.Title
+                            </a>
+                        </li>
+                    }
+                </ol>
+            </nav>
+
+            <div class="accordion">
                 @foreach (var article in _question.Articles)
                 {
-                    <li class="summa-question__toc-item">
-                        <a href="@($"summa/{Id}#article-{article.Number}")" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
-                            Article @article.Number. @article.Title
-                        </a>
-                    </li>
+                    <AccordionItem Mode="AccordionItem.AccordionTriggerMode.Details"
+                                   Open="_openArticles.Contains(article.Number)"
+                                   Id="@($"article-{article.Number}")"
+                                   Eyebrow="@($"Article {article.Number}")"
+                                   Title="@article.Title"
+                                   OnToggle="() => ToggleArticle(article.Number)">
+                        @foreach (var section in ArticleSections(article))
+                        {
+                            @((MarkupString)References.Expand(section, article.Number))
+                        }
+                    </AccordionItem>
                 }
-            </ol>
-        </nav>
-
-        <div class="accordion">
-        @foreach (var article in _question.Articles)
-        {
-            <AccordionItem Mode="AccordionItem.AccordionTriggerMode.Details"
-                           Open="_openArticles.Contains(article.Number)"
-                           Id="@($"article-{article.Number}")"
-                           Eyebrow="@($"Article {article.Number}")"
-                           Title="@article.Title"
-                           OnToggle="() => ToggleArticle(article.Number)">
-                @if (!string.IsNullOrEmpty(article.PreambleHtml))
-                {
-                    @((MarkupString)References.Expand(article.PreambleHtml, article.Number))
-                }
-                @foreach (var objection in article.Objections)
-                {
-                    @((MarkupString)References.Expand(objection.Html, article.Number))
-                }
-                @if (!string.IsNullOrEmpty(article.SedContraHtml))
-                {
-                    @((MarkupString)References.Expand(article.SedContraHtml, article.Number))
-                }
-                @if (!string.IsNullOrEmpty(article.RespondeoHtml))
-                {
-                    @((MarkupString)References.Expand(article.RespondeoHtml, article.Number))
-                }
-                @foreach (var reply in article.Replies)
-                {
-                    @((MarkupString)References.Expand(reply.Html, article.Number))
-                }
-            </AccordionItem>
-        }
-        </div>
+            </div>
         }
 
         <BackLink Href="summa" Label="All questions" />
@@ -95,7 +78,7 @@ else
     [Parameter] public string Id { get; set; } = string.Empty;
 
     private SummaQuestionContent? _question;
-    private string PartTitle = string.Empty;
+    private string _partTitle = string.Empty;
     private string? _treatise;
     private bool _loading = true;
     private bool _landPending;
@@ -212,7 +195,7 @@ else
         }
 
         // The presenter assembles the part context, SEO description, and ancestor part in one pass.
-        PartTitle = view.PartTitle;
+        _partTitle = view.PartTitle;
         _treatise = view.Treatise;
         _seoDescription = view.SeoDescription;
         _crumbs = BuildPartCrumbs(view.Part);
@@ -222,7 +205,29 @@ else
         _loading = false;
     }
 
-    // Maps the presenter's Part ancestor into a plain (non-linked) breadcrumb crumb; there is no dedicated part landing page. Falls back to no crumb when the part is unknown.
+    // Header eyebrow: "Part · Treatise · Question N" (or the prologue title in place of the question number).
+    private string Eyebrow
+    {
+        get
+        {
+            if (_question is null) return _partTitle;
+            var treatise = string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}";
+            var position = _question.IsPrologue ? _question.Title : $"Question {_question.Number}";
+            return $"{_partTitle}{treatise} \u00B7 {position}";
+        }
+    }
+
+    // An article's sections in reading order: preamble, objections, sed contra, respondeo, replies.
+    private static IEnumerable<string> ArticleSections(SummaArticleContent article)
+    {
+        if (!string.IsNullOrEmpty(article.PreambleHtml)) yield return article.PreambleHtml;
+        foreach (var objection in article.Objections) yield return objection.Html;
+        if (!string.IsNullOrEmpty(article.SedContraHtml)) yield return article.SedContraHtml;
+        if (!string.IsNullOrEmpty(article.RespondeoHtml)) yield return article.RespondeoHtml;
+        foreach (var reply in article.Replies) yield return reply.Html;
+    }
+
+    // Maps the presenter's Part ancestor
     private static IReadOnlyList<Breadcrumb.Crumb> BuildPartCrumbs(SummaPart? part)
     {
         return part is null ? Array.Empty<Breadcrumb.Crumb>() : [new Breadcrumb.Crumb(part.Key, part.Title, Plain: true)];
