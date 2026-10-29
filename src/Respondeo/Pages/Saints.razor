@@ -128,8 +128,11 @@
         _selectedReligiousOrders = new HashSet<string>(_browse.GetFilter("order"), StringComparer.OrdinalIgnoreCase);
         _selectedCanonizations = new HashSet<string>(_browse.GetFilter("canonization"), StringComparer.OrdinalIgnoreCase);
 
-        _facets = await SaintService.GetFacetsAsync();
-        var index = await SaintService.GetIndexAsync();
+        var facetsTask = SaintService.GetFacetsAsync();
+        var indexTask = SaintService.GetIndexAsync();
+        await Task.WhenAll(facetsTask, indexTask);
+        _facets = await facetsTask;
+        var index = await indexTask;
         _all = index.Entries;
 
         // Cards whose saint's fixed-date feast is today get a subtle golden shimmer.

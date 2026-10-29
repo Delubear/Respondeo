@@ -92,8 +92,11 @@
         _selectedApprovals = new HashSet<string>(_browse.GetFilter("approval"), StringComparer.OrdinalIgnoreCase);
         _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
 
-        _facets = await MiracleService.GetFacetsAsync();
-        var index = await MiracleService.GetIndexAsync();
+        var facetsTask = MiracleService.GetFacetsAsync();
+        var indexTask = MiracleService.GetIndexAsync();
+        await Task.WhenAll(facetsTask, indexTask);
+        _facets = await facetsTask;
+        var index = await indexTask;
         _all = index.Entries;
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.

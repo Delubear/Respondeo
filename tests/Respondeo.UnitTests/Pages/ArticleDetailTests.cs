@@ -47,6 +47,27 @@ public class ArticleDetailTests : TestContext
     }
 
     [Fact]
+    public void Fades_the_article_in_once_loaded()
+    {
+        _articles.GetArticleAsync("the-sacraments").Returns(SampleArticle());
+
+        var cut = RenderComponent<ArticleDetail>(p => p.Add(c => c.Id, "the-sacraments"));
+
+        Assert.Contains("fade-enter", cut.Find("article.content-article").ClassList);
+    }
+
+    [Fact]
+    public void Shows_no_faded_content_while_loading()
+    {
+        var pending = new TaskCompletionSource<Article?>();
+        _articles.GetArticleAsync("the-sacraments").Returns(pending.Task);
+
+        var cut = RenderComponent<ArticleDetail>(p => p.Add(c => c.Id, "the-sacraments"));
+
+        Assert.Empty(cut.FindAll(".fade-enter"));
+    }
+
+    [Fact]
     public void Renders_sources_with_links()
     {
         _articles.GetArticleAsync("the-sacraments").Returns(SampleArticle());

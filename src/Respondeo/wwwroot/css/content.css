@@ -302,3 +302,28 @@ html:has(.quick-menu),
 body:has(.quick-menu) {
   overflow: hidden;
 }
+
+/* ---------- Page enter fade ---------- */
+/* Gentle fade + rise for content that appears once its data has loaded (Discover lists, detail pages, players).
+   The animation runs once when the element is inserted, so it replays only when the content is re-created. */
+.fade-enter {
+    animation: fade-enter var(--dur-4) var(--ease-page) both;
+}
+
+@keyframes fade-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-enter {
+        animation: none;
+    }
+}

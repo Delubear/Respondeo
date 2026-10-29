@@ -37,11 +37,23 @@ public sealed class RoutePrefetcher(
                 case ["bible", var code, var book, var chapter] when int.TryParse(chapter, out var number):
                     await PrefetchBibleChapterAsync(code, book, number);
                     break;
+                case ["discover", "articles"]:
+                    await articles.GetIndexAsync();
+                    break;
+                case ["discover", "saints"]:
+                    await Task.WhenAll(saints.GetFacetsAsync(), saints.GetIndexAsync());
+                    break;
+                case ["discover", "prayers"]:
+                    await prayers.GetIndexAsync();
+                    break;
                 case ["discover", "articles", var id]:
                     await Task.WhenAll(articles.GetArticleAsync(id), prayers.GetIndexAsync());
                     break;
                 case ["discover", "saints", var id]:
                     await Task.WhenAll(saints.GetFacetsAsync(), saints.GetByIdAsync(id), prayers.GetIndexAsync());
+                    break;
+                case ["discover", "miracles"]:
+                    await Task.WhenAll(miracles.GetFacetsAsync(), miracles.GetIndexAsync());
                     break;
                 case ["discover", "miracles", var id]:
                     await Task.WhenAll(miracles.GetFacetsAsync(), miracles.GetByIdAsync(id), prayers.GetIndexAsync());

@@ -18,6 +18,16 @@ public class FilterLayoutTests : TestContext
     }
 
     [Fact]
+    public void Fades_the_grid_in_when_it_first_appears()
+    {
+        var cut = RenderComponent<FilterLayout>(p => p
+            .Add(c => c.Rail, b => b.AddMarkupContent(0, "<div>filters</div>"))
+            .Add(c => c.ChildContent, b => b.AddMarkupContent(0, "<div>results</div>")));
+
+        Assert.Contains("fade-enter", cut.Find("div.filter-layout").ClassList);
+    }
+
+    [Fact]
     public void Omits_the_search_box_when_no_search_is_supplied()
     {
         var cut = RenderComponent<FilterLayout>(p => p
