@@ -457,7 +457,15 @@
        small/thin. Nudge the size floor up so mobile feels as solid as desktop. Weight is left at the
        desktop value: Cinzel ships only 400/600, so bumping it would jump to a heavier 600 face. */
     .reel__q-text {
-        font-size: clamp(1.3rem, 1.15rem + 1vw, 1.5rem);
+        font-size: clamp(1.45rem, 1.3rem + 1vw, 1.6rem);
+    }
+
+    .reel__q-sub {
+        font-size: 1.05rem;
+    }
+
+    .reel__q-cue {
+        font-size: 0.78rem;
     }
 
     /* Icon circles at ≤640px: pin to the reel edges, well clear of the 18rem card. */
