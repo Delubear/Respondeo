@@ -8,8 +8,10 @@
     padding: 1.3rem 1.4rem;
     color: var(--ink);
     box-shadow: var(--shadow-sm);
-    transition: transform var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page), background var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page);
+    transition: top var(--dur-2) var(--ease-page), box-shadow var(--dur-2) var(--ease-page),
+        background var(--dur-2) var(--ease-page), border-color var(--dur-2) var(--ease-page);
     position: relative;
+    top: 0;
 }
 
 /* A hairline accent along the top edge that warms up on hover, giving the flat card a touch of depth
@@ -33,9 +35,11 @@ button.card {
     cursor: pointer;
 }
 
+/* The lift animates `top` instead of `transform`: a transform promotes the card to its own compositor
+   layer, which switches Chromium to grayscale antialiasing and dulls the text. */
 .card:hover {
     text-decoration: none;
-    transform: translateY(-3px);
+    top: -3px;
     box-shadow: var(--shadow-lift);
     background: var(--parchment-hover);
     border-color: color-mix(in srgb, var(--accent) 35%, var(--rule));

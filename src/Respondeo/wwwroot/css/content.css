@@ -305,9 +305,11 @@ body:has(.quick-menu) {
 
 /* ---------- Page enter fade ---------- */
 /* Gentle fade + rise for content that appears once its data has loaded (Discover lists, detail pages, players).
-   The animation runs once when the element is inserted, so it replays only when the content is re-created. */
+   The animation runs once when the element is inserted, so it replays only when the content is re-created.
+   Fill mode is `backwards`, not `both`: a retained end-state transform would keep the subtree on its own
+   compositor layer, which makes Chromium switch its text to grayscale antialiasing (visibly heavier/darker). */
 .fade-enter {
-    animation: fade-enter var(--dur-4) var(--ease-page) both;
+    animation: fade-enter var(--dur-4) var(--ease-page) backwards;
 }
 
 @keyframes fade-enter {
