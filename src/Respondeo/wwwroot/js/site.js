@@ -186,8 +186,8 @@ window.respondeoScroll = (function () {
             scrollWindow(top - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0), smooth);
         },
         // Smoothly brings element `id` into view after an in-page change (opening an article/section).
-        // Runs on the next frame so the just-opened content has laid out. Short reveals glide; long
-        // jumps are instant so they don't lurch past the masthead.
+        // Runs on the next frame so the just-opened content has laid out. Always glides (scrollWindow
+        // still honors reduced motion).
         reveal: function (id) {
             requestAnimationFrame(function () {
                 var el = document.getElementById(id);
@@ -198,7 +198,7 @@ window.respondeoScroll = (function () {
                 var breadcrumb = document.querySelector('.breadcrumb');
                 var offset = breadcrumb ? breadcrumb.getBoundingClientRect().height : 0;
                 var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-                scrollWindow(top, Math.abs(top - window.pageYOffset) <= window.innerHeight);
+                scrollWindow(top, true);
             });
         },
         // Centers element `id` within its scrollable parent (e.g. the devotion player's list).
