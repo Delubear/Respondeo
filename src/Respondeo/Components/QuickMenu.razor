@@ -170,11 +170,6 @@
 	private async Task Run(Func<IServiceProvider, Task> action)
 	{
 		await Close();
-
-		// Flush the closed menu out of the DOM before the action opens a modal. On touch devices the drawer's
-		// backdrop and focused panel otherwise linger over the newly shown dialog and swallow or dismiss it.
-		StateHasChanged();
-		await Task.Delay(50);
 		await action(Services);
 	}
 
