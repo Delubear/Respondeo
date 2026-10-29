@@ -177,7 +177,7 @@
 		@<li class="quick-menu__item">
 			<div class="quick-menu__row">
 				<button type="button" class="quick-menu__pin @(Pins.IsPinned(entry.Href) ? "quick-menu__pin--on" : null)"
-						aria-pressed
+						aria-pressed="@(Pins.IsPinned(entry.Href) ? "true" : "false")"
 						aria-label="@((Pins.IsPinned(entry.Href) ? "Unpin " : "Pin ") + entry.Label)"
 						@onclick="() => Pins.TogglePinAsync(entry.Href)">
 					<svg class="quick-menu__pin-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6z" /><path d="M12 14v7" /></svg>
