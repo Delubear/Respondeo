@@ -26,7 +26,7 @@ else if (_question is null)
 }
 else
 {
-    <article id="question-top" class="content-article summa-question" @key="_question.Id">
+    <article id="question-top" class="content-article summa-question fade-enter" @key="_question.Id">
         <PillarHeader Eyebrow="@($"{PartTitle}{(string.IsNullOrWhiteSpace(_treatise) ? null : $" \u00B7 {_treatise}")} {(_question.IsPrologue ? $"\u00B7 {_question.Title}" : $"\u00B7 Question {_question.Number}")}")"
                       Title="@_question.Title" />
 
