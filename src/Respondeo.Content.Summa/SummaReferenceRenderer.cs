@@ -59,116 +59,74 @@ internal sealed partial class SummaReferenceRenderer(ISummaPartMap parts) : ISum
         return html;
     }
 
-    private string ExpandReferences(string html)
+    // Runs a token regex only when its marker is present, avoiding regex work on the common token-free paragraph.
+    private static string ReplaceTokens(string html, string marker, Regex regex, MatchEvaluator evaluator) =>
+        html.Contains(marker, StringComparison.Ordinal) ? regex.Replace(html, evaluator) : html;
+
+    private string QuestionHref(string partId, int questionNumber) => $"summa/{PartSlug(partId)}-q{questionNumber:D3}";
+
+    private string ExpandReferences(string html) => ReplaceTokens(html, "{{sref|", TokenRegex(), match =>
     {
-        if (!html.Contains("{{sref|", StringComparison.Ordinal))
+        var kind = match.Groups["kind"].Value;
+        var partId = match.Groups["part"].Value;
+        var questionNumber = int.Parse(match.Groups["q"].Value);
+        var articles = match.Groups["a"].Value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        var questionHref = QuestionHref(partId, questionNumber);
+        var prefix = kind == "qp" ? $"{PartLabel(partId)}, " : string.Empty;
+
+        if (articles.Length == 0)
         {
-            return html;
+            // Question-only reference.
+            return Anchor(questionHref, $"{prefix}Q. {questionNumber}");
         }
 
-        return TokenRegex().Replace(html, match =>
-        {
-            var kind = match.Groups["kind"].Value;
-            var partId = match.Groups["part"].Value;
-            var questionNumber = int.Parse(match.Groups["q"].Value);
-            var articles = match.Groups["a"].Value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            var questionHref = $"summa/{PartSlug(partId)}-q{questionNumber:D3}";
-
-            if (kind == "a")
-            {
-                // Same-question article reference: render each cited article as its own link,
-                // e.g. "AA[1],3" -> "A. 1, A. 3" with both numbers clickable.
-                return string.Join(", ", articles.Select(a => Anchor($"{questionHref}#article-{a}", $"A. {a}")));
-            }
-
-            var prefix = kind == "qp" ? $"{PartLabel(partId)}, " : string.Empty;
-
-            if (articles.Length == 0)
-            {
-                // Question-only reference.
-                return Anchor(questionHref, $"{prefix}Q. {questionNumber}");
-            }
-
-            // Question + one or more articles: the first link carries the question label, and each additional cited article is rendered as its own trailing link.
-            var links = new List<string>
-            {
-                Anchor($"{questionHref}#article-{articles[0]}", $"{prefix}Q. {questionNumber}, A. {articles[0]}"),
-            };
-
-            for (var i = 1; i < articles.Length; i++)
-            {
-                links.Add(Anchor($"{questionHref}#article-{articles[i]}", $"A. {articles[i]}"));
-            }
-
-            return string.Join(", ", links);
-        });
-    }
+        // Each cited article is its own link. For question references (not same-question "a" references) the first link also carries the question label,
+        // e.g. "Q. 2, A. 1, A. 3"; same-question references render as "A. 1, A. 3".
+        return string.Join(", ", articles.Select((a, i) => Anchor(
+            $"{questionHref}#article-{a}",
+            i == 0 && kind != "a" ? $"{prefix}Q. {questionNumber}, A. {a}" : $"A. {a}")));
+    });
 
     private static string Anchor(string href, string display) => $"<a class=\"summa-ref\" href=\"{href}\">{display}</a>";
 
-    private string ExpandCitations(string html)
+    // Shared by {{scite}} and {{sobj}}: the deep link to a cited objection/reply and its short "obj. N"/"ad N" label.
+    private (string PartId, int QuestionNumber, string Article, string Href, string Cite) ReadDeepLink(Match match)
     {
-        if (!html.Contains("{{scite|", StringComparison.Ordinal))
-        {
-            return html;
-        }
+        var partId = match.Groups["part"].Value;
+        var questionNumber = int.Parse(match.Groups["q"].Value);
+        var article = match.Groups["a"].Value;
+        var kind = match.Groups["kind"].Value;
+        var number = match.Groups["n"].Value;
 
-        return CiteRegex().Replace(html, match =>
-        {
-            var label = match.Groups["label"].Value;
-            var partId = match.Groups["part"].Value;
-            var questionNumber = int.Parse(match.Groups["q"].Value);
-            var article = match.Groups["a"].Value;
-            var kind = match.Groups["kind"].Value;
-            var number = match.Groups["n"].Value;
-
-            var fragment = $"article-{article}-{kind}-{number}";
-            var href = $"summa/{PartSlug(partId)}-q{questionNumber:D3}#{fragment}";
-
-            var cite = kind == "reply" ? $"ad&nbsp;{number}" : $"obj.&nbsp;{number}";
-            var display = label switch
-            {
-                "self" => cite,
-                "a" => $"A.&nbsp;{article}, {cite}",
-                "qp" => $"{PartLabel(partId)}, Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
-                _ => $"Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
-            };
-
-            return Anchor(href, display);
-        });
+        var href = $"{QuestionHref(partId, questionNumber)}#article-{article}-{kind}-{number}";
+        var cite = kind == "reply" ? $"ad&nbsp;{number}" : $"obj.&nbsp;{number}";
+        return (partId, questionNumber, article, href, cite);
     }
 
-    private string ExpandObjections(string html)
+    private string ExpandCitations(string html) => ReplaceTokens(html, "{{scite|", CiteRegex(), match =>
     {
-        if (!html.Contains("{{sobj|", StringComparison.Ordinal))
+        var (partId, questionNumber, article, href, cite) = ReadDeepLink(match);
+        var display = match.Groups["label"].Value switch
         {
-            return html;
-        }
+            "self" => cite,
+            "a" => $"A.&nbsp;{article}, {cite}",
+            "qp" => $"{PartLabel(partId)}, Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
+            _ => $"Q.&nbsp;{questionNumber}, A.&nbsp;{article}, {cite}",
+        };
 
-        return ObjectionRegex().Replace(html, match =>
-        {
-            var partId = match.Groups["part"].Value;
-            var questionNumber = int.Parse(match.Groups["q"].Value);
-            var article = match.Groups["a"].Value;
-            var kind = match.Groups["kind"].Value;
-            var number = match.Groups["n"].Value;
+        return Anchor(href, display);
+    });
 
-            var fragment = $"article-{article}-{kind}-{number}";
-            var href = $"summa/{PartSlug(partId)}-q{questionNumber:D3}#{fragment}";
-            var label = kind == "reply" ? $"ad&nbsp;{number}" : $"obj.&nbsp;{number}";
-            return ", " + Anchor(href, label);
-        });
-    }
+    private string ExpandObjections(string html) => ReplaceTokens(html, "{{sobj|", ObjectionRegex(), match =>
+    {
+        var (_, _, _, href, cite) = ReadDeepLink(match);
+        return ", " + Anchor(href, cite);
+    });
 
     private static string ExpandCues(string html, int? articleNumber)
     {
-        if (!html.Contains("{{scue|", StringComparison.Ordinal))
-        {
-            return html;
-        }
-
-        return CueRegex().Replace(html, match =>
+        return ReplaceTokens(html, "{{scue|", CueRegex(), match =>
         {
             var kind = match.Groups["kind"].Value;
             var number = match.Groups["n"].Success ? match.Groups["n"].Value : string.Empty;
