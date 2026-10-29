@@ -9,23 +9,24 @@ namespace Respondeo.Services.Browse;
 /// </summary>
 public sealed class MiracleBrowse
 {
+    public static readonly Facet<MiracleIndexEntry> TypeFacet = Facet<MiracleIndexEntry>.Multi("type", m => m.Types);
+    public static readonly Facet<MiracleIndexEntry> ApprovalFacet = Facet<MiracleIndexEntry>.Single("approval", m => m.Approval);
+    public static readonly Facet<MiracleIndexEntry> RegionFacet = Facet<MiracleIndexEntry>.Single("region", m => m.Region);
+
+    /// <summary>Every filterable miracle facet, in rail order.</summary>
+    public static readonly IReadOnlyList<Facet<MiracleIndexEntry>> AllFacets = [TypeFacet, ApprovalFacet, RegionFacet];
+
     /// <summary>The distinct category (kind) slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Types(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        [.. entries.SelectMany(m => m.Types)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Category, StringComparer.CurrentCultureIgnoreCase)];
+        FacetFilter.Options(entries, TypeFacet, facets.Category);
 
     /// <summary>The distinct approval slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Approvals(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        [.. entries.Select(m => m.Approval)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Approval, StringComparer.CurrentCultureIgnoreCase)];
+        FacetFilter.Options(entries, ApprovalFacet, facets.Approval);
 
     /// <summary>The distinct region slugs that occur in the catalog, ordered by display label.</summary>
     public IReadOnlyList<string> Regions(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets) =>
-        [.. entries.Select(m => m.Region)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)];
+        FacetFilter.Options(entries, RegionFacet, facets.Region);
 
     /// <summary>
     /// Applies the active facets, free-text query, and sort to the catalog.
@@ -41,16 +42,43 @@ public sealed class MiracleBrowse
         IReadOnlySet<string> selectedRegions,
         SortOption<MiracleIndexEntry> sort)
     {
-        var term = query?.Trim() ?? string.Empty;
+        var byKey = new Dictionary<string, IReadOnlySet<string>>
+        {
+            [TypeFacet.Key] = selectedTypes,
+            [ApprovalFacet.Key] = selectedApprovals,
+            [RegionFacet.Key] = selectedRegions,
+        };
 
-        var results = entries.Where(m =>
-            (selectedTypes.Count == 0 || m.Types.Any(selectedTypes.Contains))
-            && (selectedApprovals.Count == 0 || selectedApprovals.Contains(m.Approval))
-            && (selectedRegions.Count == 0 || selectedRegions.Contains(m.Region))
-            && Matches(m, term, facets));
+        return Filter(entries, facets, query, key => byKey[key], sort);
+    }
+
+    /// <summary>Applies the facet selections (looked up by facet key), query, and sort; <paramref name="exceptKey"/> skips one facet so its option counts can be computed.</summary>
+    public IReadOnlyList<MiracleIndexEntry> Filter(
+        IReadOnlyList<MiracleIndexEntry> entries,
+        MiracleFacetCatalog facets,
+        string query,
+        Func<string, IReadOnlySet<string>> selected,
+        SortOption<MiracleIndexEntry> sort,
+        string? exceptKey = null)
+    {
+        var term = query?.Trim() ?? string.Empty;
+        var results = FacetFilter.Apply(entries, AllFacets, selected, exceptKey).Where(m => Matches(m, term, facets));
 
         return [.. sort.Apply(results)];
     }
+
+    /// <summary>The display-label lookup for the facet with the given key.</summary>
+    public static Func<string, string> Label(MiracleFacetCatalog facets, string key) => key switch
+    {
+        _ when key == TypeFacet.Key => facets.Category,
+        _ when key == ApprovalFacet.Key => facets.Approval,
+        _ when key == RegionFacet.Key => facets.Region,
+        _ => v => v,
+    };
+
+    /// <summary>The distinct option slugs of <paramref name="facet"/> that occur in the catalog, ordered by display label.</summary>
+    public IReadOnlyList<string> Options(IEnumerable<MiracleIndexEntry> entries, MiracleFacetCatalog facets, Facet<MiracleIndexEntry> facet) =>
+        FacetFilter.Options(entries, facet, Label(facets, facet.Key));
 
     private static bool Matches(MiracleIndexEntry m, string query, MiracleFacetCatalog facets)
     {

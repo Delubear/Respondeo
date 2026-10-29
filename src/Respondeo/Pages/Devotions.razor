@@ -30,16 +30,18 @@
     {
         <FilterLayout>
             <Search>
-                <SearchBox Id="devotion-search" Label="Search devotions" Placeholder="e.g. Rosary, chaplet, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
+                <SearchBox Id="devotion-search" Label="Search devotions" Placeholder="e.g. Rosary, chaplet, mercy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                @if (_kinds.Count > 0)
-                {
-                    <TopicFilter Title="Kind" Topics="_kindLabels" Selected="_selectedKinds"
-                                 SelectedChanged="OnKindsChanged" Counts="KindCounts" />
-                }
-                <ClearFiltersButton Active="_selectedKinds.Count > 0" OnClear="ClearFilters" />
-            </Rail>
+				@foreach (var (facet, title) in _rail)
+				{
+					@if (Options(facet).Count > 0)
+					{
+						<TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" Counts="Counts(facet)" />
+					}
+				}
+				<ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
+</Rail>
             <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_devotions?.Count ?? 0" Noun="devotions" EmptyMessage="No devotions match your search.">
                 <Sort>
@@ -58,90 +60,91 @@
 </section>
 
 @code {
-    // Optional shareable-link filters, e.g. discover/devotions?kind=chaplet. Read once on load; the URL is never updated.
-    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
-    [SupplyParameterFromQuery(Name = "kind")] public string[]? LinkKinds { get; set; }
+	// Optional shareable-link filters, e.g. discover/devotions?kind=chaplet. Read once on load; the URL is never updated.
+	[SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+	[SupplyParameterFromQuery(Name = "kind")] public string[]? LinkKinds { get; set; }
 
-    private IReadOnlyList<DevotionSummary>? _devotions;
-    private string _query = string.Empty;
+	private IReadOnlyList<DevotionSummary>? _devotions;
+	private Dictionary<string, IReadOnlyList<string>> _options = new();
+	private readonly Dictionary<string, IReadOnlySet<string>> _selected = new();
+	private string _sortKey = _sortOptions[0].Key;
+	private BrowseSection _browse = default!;
 
-    private string _sortKey = _sortOptions[0].Key;
+	// The rail, in display order. Each facet's key is also its shareable-link query name (see the Link* parameters above).
+	private static readonly (Facet<DevotionSummary> Facet, string Title)[] _rail = [ (DevotionBrowse.KindFacet, "Kind"), ];
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
-    private static readonly SortOption<DevotionSummary>[] _sortOptions =
-    [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-    ];
+	// Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
+	private static readonly SortOption<DevotionSummary>[] _sortOptions =
+	[
+		new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+		new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+	];
 
-    private IReadOnlyList<string> _kinds = [];
-    private IReadOnlyList<string> _kindLabels = [];
-    private IReadOnlySet<string> _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private BrowseSection _browse = default!;
+	protected override async Task OnInitializedAsync()
+	{
+		await Trail.ClearAsync();
+		_browse = Browse.Section("discover/devotions", () => BrowseJs.ClearAsync("devotions"));
+		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { [DevotionBrowse.KindFacet.Key] = LinkKinds });
+		foreach (var facet in DevotionBrowse.AllFacets)
+		{
+			_selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
+		}
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Trail.ClearAsync();
-        _browse = Browse.Section("discover/devotions", () => BrowseJs.ClearAsync("devotions"));
-        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["kind"] = LinkKinds });
-        _query = _browse.Query;
-        _selectedKinds = new HashSet<string>(_browse.GetFilter("kind"), StringComparer.OrdinalIgnoreCase);
+		_devotions = await DevotionService.GetIndexAsync();
+		_options = DevotionBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_devotions, f));
+	}
 
-        var devotions = await DevotionService.GetIndexAsync();
-        _devotions = devotions;
+	// After the list first renders, ask JS to restore the remembered scroll position.
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await BrowseJs.RestoreScrollAsync("devotions");
+		}
+	}
 
-        _kinds = Browser.Kinds(_devotions);
-        _kindLabels = Browser.KindLabels(_kinds);
-    }
+	private void OnSearchChanged(string value) => _browse.Query = value;
 
-    // After the list first renders, ask JS to restore the remembered scroll position.
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await BrowseJs.RestoreScrollAsync("devotions");
-        }
-    }
+	private void OnSortChanged(string value) => _sortKey = value;
 
-    private void OnSearchChanged(string value)
-    {
-        _query = value;
-        _browse.Query = _query;
-    }
+	private static readonly IReadOnlySet<string> None = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void OnSortChanged(string value) => _sortKey = value;
+	private IReadOnlyList<string> Options(Facet<DevotionSummary> facet) => _options.GetValueOrDefault(facet.Key) ?? [];
 
-    private void OnKindsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedKinds = selected;
-        _browse.SetFilter("kind", selected);
-    }
+	private IReadOnlySet<string> Selected(string key) => _selected.GetValueOrDefault(key) ?? None;
 
-    private void ClearFilters()
-    {
-        _selectedKinds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _browse.SetFilter("kind", _selectedKinds);
-    }
+	private void OnFacetChanged(string key, IReadOnlySet<string> selected)
+	{
+		_selected[key] = selected;
+		_browse.SetFilter(key, selected);
+	}
 
-    // Turns a kind slug (e.g. "rosary") into a display tag (e.g. "Rosary").
-    private IReadOnlyList<DevotionSummary> Filtered =>
-        _devotions is null ? [] : Browser.Filter(_devotions, _query, _selectedKinds, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+	private void ClearFilters()
+	{
+		_selected.Clear();
+		_browse.Clear();
+	}
 
-    // Kind counts apply only the search (kind is the sole facet); kinds are selected by display label, so count by label.
-    private IReadOnlyDictionary<string, int> KindCounts =>
-        FacetCounts.Of(Browser.Filter(_devotions ?? [], _query, new HashSet<string>(), _sortOptions[0]), d => Browser.FormatKind(d.Kind) ?? d.Kind);
+	private SortOption<DevotionSummary> CurrentSort => _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
 
-    // The card's meta pills: just the kind tag. The draft/unvetted state is shown by the card's
-    // "In progress" ribbon (via Status), so it is deliberately not duplicated as a pill here.
-    private IReadOnlyList<string> KindPills(DevotionSummary d)
-    {
-        var pills = new List<string>();
-        var kind = Browser.FormatKind(d.Kind);
-        if (!string.IsNullOrWhiteSpace(kind))
-        {
-            pills.Add(kind);
-        }
+	private IReadOnlyList<DevotionSummary> Filtered =>
+		_devotions is null ? [] : Browser.Filter(_devotions, _browse.Query, Selected, CurrentSort);
 
-        return pills;
-    }
+	// Each facet's counts apply the search and every other facet, but not its own selection.
+	private IReadOnlyDictionary<string, int> Counts(Facet<DevotionSummary> facet) =>
+		FacetFilter.Counts(Browser.Filter(_devotions ?? [], _browse.Query, Selected, _sortOptions[0], exceptKey: facet.Key), facet);
+
+	// The card's meta pills: just the kind tag. The draft/unvetted state is shown by the card's
+	// "In progress" ribbon (via Status), so it is deliberately not duplicated as a pill here.
+	private IReadOnlyList<string> KindPills(DevotionSummary d)
+	{
+		var pills = new List<string>();
+		var kind = Browser.FormatKind(d.Kind);
+		if (!string.IsNullOrWhiteSpace(kind))
+		{
+			pills.Add(kind);
+		}
+
+		return pills;
+	}
 }

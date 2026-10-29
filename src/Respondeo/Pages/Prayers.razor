@@ -25,19 +25,18 @@
     {
         <FilterLayout>
             <Search>
-                <SearchBox Id="prayer-search" Label="Search prayers" Placeholder="e.g. Hail Mary, Creed, mercy..." Value="@_query" ValueChanged="OnSearchChanged" />
+                <SearchBox Id="prayer-search" Label="Search prayers" Placeholder="e.g. Hail Mary, Creed, mercy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                @if (_categories.Count > 0)
-                {
-                    <TopicFilter Title="Category" Topics="_categoryLabels" Selected="_selectedCategories" SelectedChanged="OnCategoriesChanged" Counts="CategoryCounts" />
-                }
-                @if (_tags.Count > 0)
-                {
-                    <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged" DisplayLabel="TagLabel.Format" Counts="TagCounts" />
-                }
-                <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
-            </Rail>
+				@foreach (var (facet, title) in _rail)
+				{
+					@if (Options(facet).Count > 0)
+					{
+						<TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="PrayerBrowse.Label(facet.Key)" Counts="Counts(facet)" />
+					}
+				}
+				<ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
+</Rail>
             <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_prayers?.Count ?? 0" Noun="prayers" EmptyMessage="No prayers match your search.">
                 <Sort>
@@ -56,105 +55,85 @@
 </section>
 
 @code {
-    // Optional shareable-link filters, e.g. discover/prayers?category=marian&tag=mercy. Read once on load; the URL is never updated.
-    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
-    [SupplyParameterFromQuery(Name = "category")] public string[]? LinkCategories { get; set; }
-    [SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
+	// Optional shareable-link filters, e.g. discover/prayers?category=marian&tag=mercy. Read once on load; the URL is never updated.
+	[SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+	[SupplyParameterFromQuery(Name = "category")] public string[]? LinkCategories { get; set; }
+	[SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
 
-    private IReadOnlyList<PrayerSummary>? _prayers;
-    private string _query = string.Empty;
+	private IReadOnlyList<PrayerSummary>? _prayers;
+	private Dictionary<string, IReadOnlyList<string>> _options = new();
+	private readonly Dictionary<string, IReadOnlySet<string>> _selected = new();
+	private string _sortKey = _sortOptions[0].Key;
+	private BrowseSection _browse = default!;
 
-    private string _sortKey = _sortOptions[0].Key;
+	// The rail, in display order. Each facet's key is also its remembered-state key.
+	private static readonly (Facet<PrayerSummary> Facet, string Title)[] _rail = 
+	[
+		(PrayerBrowse.CategoryFacet, "Category"),
+		(PrayerBrowse.TagFacet, "Tags"),
+	];
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
-    private static readonly SortOption<PrayerSummary>[] _sortOptions =
-    [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-    ];
+	// Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
+	private static readonly SortOption<PrayerSummary>[] _sortOptions =
+	[
+		new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+		new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+	];
 
-    // Facet option lists derived from the loaded index (only values that actually occur).
-    private IReadOnlyList<string> _categories = [];
-    private IReadOnlyList<string> _categoryLabels = [];
-    private IReadOnlyList<string> _tags = [];
+	protected override async Task OnInitializedAsync()
+	{
+		await Trail.ClearAsync();
+		_browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
+		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
+		{
+			[PrayerBrowse.CategoryFacet.Key] = LinkCategories,
+			[PrayerBrowse.TagFacet.Key] = LinkTags,
+		});
+		foreach (var facet in PrayerBrowse.AllFacets)
+		{
+			_selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
+		}
 
-    private IReadOnlySet<string> _selectedCategories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private BrowseSection _browse = default!;
+		_prayers = await PrayerService.GetIndexAsync();
+		_options = PrayerBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_prayers, f));
+	}
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Trail.ClearAsync();
-        _browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
-        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["category"] = LinkCategories, ["tags"] = LinkTags });
-        _query = _browse.Query;
-        _selectedCategories = new HashSet<string>(_browse.GetFilter("category"), StringComparer.OrdinalIgnoreCase);
-        _selectedTags = new HashSet<string>(_browse.GetFilter("tags"), StringComparer.OrdinalIgnoreCase);
+	// After the list first renders, ask JS to restore the remembered scroll position (the helper polls across frames until the async content is tall enough to honor the target).
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await BrowseJs.RestoreScrollAsync("prayers");
+		}
+	}
 
-        var prayers = await PrayerService.GetIndexAsync();
-        _prayers = prayers;
+	private void OnSearchChanged(string value) => _browse.Query = value;
 
-        _categories = Browser.Categories(_prayers);
-        _categoryLabels = Browser.CategoryLabels(_categories);
-        _tags = Browser.Tags(_prayers);
-    }
+	private void OnSortChanged(string value) => _sortKey = value;
 
-    // After the list first renders, ask JS to restore the remembered scroll position (the helper polls across frames until the async content is tall enough to honor the target).
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await BrowseJs.RestoreScrollAsync("prayers");
-        }
-    }
+	private static readonly IReadOnlySet<string> None = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void OnSearchChanged(string value)
-    {
-        _query = value;
-        _browse.Query = _query;
-    }
+	private IReadOnlyList<string> Options(Facet<PrayerSummary> facet) => _options.GetValueOrDefault(facet.Key) ?? [];
 
-    private void OnSortChanged(string value) => _sortKey = value;
+	private IReadOnlySet<string> Selected(string key) => _selected.GetValueOrDefault(key) ?? None;
 
-    private void OnCategoriesChanged(IReadOnlySet<string> selected)
-    {
-        _selectedCategories = selected;
-        _browse.SetFilter("category", selected);
-    }
+	private void OnFacetChanged(string key, IReadOnlySet<string> selected)
+	{
+		_selected[key] = selected;
+		_browse.SetFilter(key, selected);
+	}
 
-    private void OnTagsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedTags = selected;
-        _browse.SetFilter("tags", selected);
-    }
+	private void ClearFilters()
+	{
+		_selected.Clear();
+		_browse.Clear();
+	}
 
-    private bool HasActiveFilters => _selectedCategories.Count > 0 || _selectedTags.Count > 0;
+	private SortOption<PrayerSummary> CurrentSort => _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
 
-    private void ClearFilters()
-    {
-        _selectedCategories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _browse.SetFilter("category", _selectedCategories);
-        _browse.SetFilter("tags", _selectedTags);
-    }
+	private IReadOnlyList<PrayerSummary> Filtered => _prayers is null ? [] : Browser.Filter(_prayers, _browse.Query, Selected, CurrentSort);
 
-    private IReadOnlyList<PrayerSummary> Filtered =>
-        _prayers is null
-            ? []
-            : Browser.Filter(
-                _prayers,
-                _query,
-                _selectedCategories,
-                _selectedTags,
-                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
-
-    // Each facet's counts apply the other facet and the search, so an option shows what picking it would add.
-    private static readonly IReadOnlySet<string> None = new HashSet<string>();
-
-    // Categories are selected by display label, so count by label too.
-    private IReadOnlyDictionary<string, int> CategoryCounts =>
-        FacetCounts.Of(Browser.Filter(_prayers ?? [], _query, None, _selectedTags, _sortOptions[0]), p => Browser.FormatCategory(p.Category) ?? p.Category);
-
-    private IReadOnlyDictionary<string, int> TagCounts =>
-        FacetCounts.Of(Browser.Filter(_prayers ?? [], _query, _selectedCategories, None, _sortOptions[0]), p => p.Tags);
+	// Each facet's counts apply the search and every other facet, but not its own selection.
+	private IReadOnlyDictionary<string, int> Counts(Facet<PrayerSummary> facet) =>
+		FacetFilter.Counts(Browser.Filter(_prayers ?? [], _browse.Query, Selected, _sortOptions[0], exceptKey: facet.Key), facet);
 }

@@ -11,10 +11,20 @@ public sealed class PrayerBrowse
     /// <summary>The neutral bucket that carries no pill and is never offered as a filterable facet.</summary>
     private const string OtherCategory = "other";
 
+    /// <summary>Categories are selected by their display label, so the facet's values are labels (null for the neutral bucket).</summary>
+    public static readonly Facet<PrayerSummary> CategoryFacet = Facet<PrayerSummary>.Single("category", p => Format(p.Category));
+    public static readonly Facet<PrayerSummary> TagFacet = Facet<PrayerSummary>.Multi("tags", p => p.Tags);
+
+    /// <summary>Every filterable prayer facet, in rail order.</summary>
+    public static readonly IReadOnlyList<Facet<PrayerSummary>> AllFacets = [CategoryFacet, TagFacet];
+
     /// <summary>
     /// Turns a category slug (e.g. "marian") into a display label (e.g. "Marian"), or null for the blank / "other" bucket so those prayers simply carry no pill.
     /// </summary>
-    public string? FormatCategory(string category) => string.IsNullOrWhiteSpace(category) || category == OtherCategory ? null : char.ToUpperInvariant(category[0]) + category[1..];
+    public string? FormatCategory(string category) => Format(category);
+
+    private static string? Format(string category) =>
+        string.IsNullOrWhiteSpace(category) || category == OtherCategory ? null : char.ToUpperInvariant(category[0]) + category[1..];
 
     /// <summary>
     /// The distinct, alphabetically ordered category slugs that actually occur in the index, excluding the neutral "other" bucket so only meaningful facets are offered.
@@ -29,14 +39,17 @@ public sealed class PrayerBrowse
     public IReadOnlyList<string> CategoryLabels(IEnumerable<string> categories) => [.. categories.Select(c => FormatCategory(c) ?? c)];
 
     /// <summary>The distinct, alphabetically ordered tags that occur across the index.</summary>
-    public IReadOnlyList<string> Tags(IEnumerable<PrayerSummary> prayers) =>
-        [.. prayers.SelectMany(p => p.Tags)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Tags(IEnumerable<PrayerSummary> prayers) => FacetFilter.Options(prayers, TagFacet, t => t);
+
+    /// <summary>The display-label lookup for the facet with the given key (category values are already labels).</summary>
+    public static Func<string, string> Label(string key) => key == TagFacet.Key ? TagLabel.Format : c => c;
+
+    /// <summary>The distinct option values of <paramref name="facet"/> that occur in the index, ordered by value.</summary>
+    public IReadOnlyList<string> Options(IEnumerable<PrayerSummary> prayers, Facet<PrayerSummary> facet) => FacetFilter.Options(prayers, facet, v => v);
 
     /// <summary>
     /// Applies the active facets, free-text query, and sort to the index.
-    /// Categories are selected by their display label (matched back to the slug); tags OR within the facet and AND across facets;
+    /// Categories are selected by their display label; tags OR within the facet and AND across facets;
     /// the query matches title, Latin title, summary, tags, and category label.
     /// </summary>
     public IReadOnlyList<PrayerSummary> Filter(
@@ -44,21 +57,18 @@ public sealed class PrayerBrowse
         string query,
         IReadOnlySet<string> selectedCategories,
         IReadOnlySet<string> selectedTags,
-        SortOption<PrayerSummary> sort)
+        SortOption<PrayerSummary> sort) =>
+        Filter(prayers, query, key => key == CategoryFacet.Key ? selectedCategories : selectedTags, sort);
+
+    /// <summary>Applies the facet selections (looked up by facet key), query, and sort; <paramref name="exceptKey"/> skips one facet so its option counts can be computed.</summary>
+    public IReadOnlyList<PrayerSummary> Filter(
+        IReadOnlyList<PrayerSummary> prayers,
+        string query,
+        Func<string, IReadOnlySet<string>> selected,
+        SortOption<PrayerSummary> sort,
+        string? exceptKey = null)
     {
-        IEnumerable<PrayerSummary> results = prayers;
-
-        // Categories are chosen by their display label; match back to the underlying slug.
-        if (selectedCategories.Count > 0)
-        {
-            results = results.Where(p => selectedCategories.Contains(FormatCategory(p.Category) ?? p.Category));
-        }
-
-        // Tags: OR within the facet (match any selected tag), consistent with the articles browse.
-        if (selectedTags.Count > 0)
-        {
-            results = results.Where(p => p.Tags.Any(t => selectedTags.Contains(t)));
-        }
+        var results = FacetFilter.Apply(prayers, AllFacets, selected, exceptKey);
 
         if (!string.IsNullOrWhiteSpace(query))
         {

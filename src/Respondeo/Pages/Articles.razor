@@ -28,16 +28,18 @@
     {
         <FilterLayout>
             <Search>
-                <SearchBox Id="article-search" Label="Search articles" Placeholder="e.g. Confession, Eucharist, prayer..." Value="@_query" ValueChanged="OnSearchChanged" />
+                <SearchBox Id="article-search" Label="Search articles" Placeholder="e.g. Confession, Eucharist, prayer..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                @if (_tags.Count > 0)
-                {
-                    <TopicFilter Title="Tags" Topics="_tags" Selected="_selectedTags" SelectedChanged="OnTagsChanged"
-                                 DisplayLabel="TagLabel.Format" Counts="TagCounts" />
-                }
-                <ClearFiltersButton Active="HasActiveFilters" OnClear="ClearFilters" />
-            </Rail>
+				@foreach (var (facet, title) in _rail)
+				{
+					@if (Options(facet).Count > 0)
+					{
+						<TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="ArticleBrowse.Label(facet.Key)" Counts="Counts(facet)" />
+					}
+				}
+				<ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
+</Rail>
             <ChildContent>
             <FilterResults FilteredCount="Filtered.Count" TotalCount="_articles?.Count ?? 0" Noun="articles" EmptyMessage="No articles match your search.">
                 <Sort>
@@ -56,74 +58,77 @@
 </section>
 
 @code {
-    // Optional shareable-link filters, e.g. discover/articles?tag=confession&q=sin. Read once on load; the URL is never updated.
-    [SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
-    [SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
+	// Optional shareable-link filters, e.g. discover/articles?tag=confession&q=sin. Read once on load; the URL is never updated.
+	[SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
+	[SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
 
-    private IReadOnlyList<ArticleRow>? _articles;
-    private string _query = string.Empty;
+	private IReadOnlyList<ArticleRow>? _articles;
+	private Dictionary<string, IReadOnlyList<string>> _options = new();
+	private readonly Dictionary<string, IReadOnlySet<string>> _selected = new();
+	private string _sortKey = _sortOptions[0].Key;
+	private BrowseSection _browse = default!;
 
-    private string _sortKey = _sortOptions[0].Key;
+	// The rail, in display order. Each facet's key is also its shareable-link query name (see the Link* parameters above).
+	private static readonly (Facet<ArticleRow> Facet, string Title)[] _rail = [ (ArticleBrowse.TagFacet, "Tags"), ];
 
-    // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
-    private static readonly SortOption<ArticleRow>[] _sortOptions =
-    [
-        new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-        new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
-    ];
+	// Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync.
+	private static readonly SortOption<ArticleRow>[] _sortOptions =
+	[
+		new("title-asc", "Title (A\u2013Z)", rows => rows.OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+		new("title-desc", "Title (Z\u2013A)", rows => rows.OrderByDescending(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)),
+	];
 
-    private IReadOnlySet<string> _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private BrowseSection _browse = default!;
+	protected override async Task OnInitializedAsync()
+	{
+		await Trail.ClearAsync();
+		_browse = Browse.Section("discover/articles", () => BrowseJs.ClearAsync("articles"));
+		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { [ArticleBrowse.TagFacet.Key] = LinkTags });
+		foreach (var facet in ArticleBrowse.AllFacets)
+		{
+			_selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
+		}
 
-    private IReadOnlyList<string> _tags => Browser.Tags(_articles ?? []);
+		var articles = await ArticleService.GetIndexAsync();
+		_articles = Browser.BuildRows(articles);
+		_options = ArticleBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_articles, f));
+	}
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Trail.ClearAsync();
-        _browse = Browse.Section("discover/articles", () => BrowseJs.ClearAsync("articles"));
-        _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { ["tag"] = LinkTags });
-        _query = _browse.Query;
-        _selectedTags = new HashSet<string>(_browse.GetFilter("tag"), StringComparer.OrdinalIgnoreCase);
+	// After the list first renders, ask JS to restore the remembered scroll position.
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await BrowseJs.RestoreScrollAsync("articles");
+		}
+	}
 
-        var articles = await ArticleService.GetIndexAsync();
-        _articles = Browser.BuildRows(articles);
-    }
+	private void OnSearchChanged(string value) => _browse.Query = value;
 
-    // After the list first renders, ask JS to restore the remembered scroll position.
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await BrowseJs.RestoreScrollAsync("articles");
-        }
-    }
+	private void OnSortChanged(string value) => _sortKey = value;
 
-    private void OnSearchChanged(string value)
-    {
-        _query = value;
-        _browse.Query = _query;
-    }
+	private static readonly IReadOnlySet<string> None = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void OnSortChanged(string value) => _sortKey = value;
+	private IReadOnlyList<string> Options(Facet<ArticleRow> facet) => _options.GetValueOrDefault(facet.Key) ?? [];
 
-    private void OnTagsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedTags = selected;
-        _browse.SetFilter("tag", selected);
-    }
+	private IReadOnlySet<string> Selected(string key) => _selected.GetValueOrDefault(key) ?? None;
 
-    private bool HasActiveFilters => _selectedTags.Count > 0;
+	private void OnFacetChanged(string key, IReadOnlySet<string> selected)
+	{
+		_selected[key] = selected;
+		_browse.SetFilter(key, selected);
+	}
 
-    private void ClearFilters()
-    {
-        _selectedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _browse.SetFilter("tag", _selectedTags);
-    }
+	private void ClearFilters()
+	{
+		_selected.Clear();
+		_browse.Clear();
+	}
 
-    private IReadOnlyList<ArticleRow> Filtered =>
-        _articles is null ? [] : Browser.Filter(_articles, _query, _selectedTags, _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+	private SortOption<ArticleRow> CurrentSort => _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
 
-    // Tag counts apply only the search (tags are the sole facet).
-    private IReadOnlyDictionary<string, int> TagCounts =>
-        FacetCounts.Of(Browser.Filter(_articles ?? [], _query, new HashSet<string>(), _sortOptions[0]), a => a.Tags);
+	private IReadOnlyList<ArticleRow> Filtered => _articles is null ? [] : Browser.Filter(_articles, _browse.Query, Selected, CurrentSort);
+
+	// Each facet's counts apply the search and every other facet, but not its own selection.
+	private IReadOnlyDictionary<string, int> Counts(Facet<ArticleRow> facet) =>
+		FacetFilter.Counts(Browser.Filter(_articles ?? [], _browse.Query, Selected, _sortOptions[0], exceptKey: facet.Key), facet);
 }

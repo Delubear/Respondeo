@@ -24,12 +24,19 @@ public sealed class ArticleBrowse
             .Select(a => new ArticleRow(a.Id, a.Title, a.SortValue, a.Summary, FormatPill(a.Topic), a.Tags, ContentRoutes.ArticleHref(a.Id), a.IsUnvetted))
             .OrderBy(a => a.SortValue, StringComparer.CurrentCultureIgnoreCase)];
 
+    public static readonly Facet<ArticleRow> TagFacet = Facet<ArticleRow>.Multi("tag", a => a.Tags);
+
+    /// <summary>Every filterable article facet, in rail order.</summary>
+    public static readonly IReadOnlyList<Facet<ArticleRow>> AllFacets = [TagFacet];
+
     /// <summary>The distinct, alphabetically ordered tags that occur across the rows.</summary>
-    public IReadOnlyList<string> Tags(IEnumerable<ArticleRow> rows) =>
-        [.. rows.SelectMany(a => a.Tags)
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(t => t, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Tags(IEnumerable<ArticleRow> rows) => FacetFilter.Options(rows, TagFacet, t => t);
+
+    /// <summary>The display-label lookup for the facet with the given key.</summary>
+    public static Func<string, string> Label(string key) => TagLabel.Format;
+
+    /// <summary>The distinct option values of <paramref name="facet"/> that occur across the rows, ordered by display label.</summary>
+    public IReadOnlyList<string> Options(IEnumerable<ArticleRow> rows, Facet<ArticleRow> facet) => FacetFilter.Options(rows, facet, t => t);
 
     /// <summary>
     /// Display-only pill for a Discover article: capitalizes the topic slug, or null for the neutral "general" / blank bucket so unlabelled articles simply carry no pill.
@@ -40,15 +47,18 @@ public sealed class ArticleBrowse
     /// Applies the active tag facet, free-text query, and sort to the rows. Tags OR within the facet
     /// and AND across facets; the query matches title, summary, tags, and the pill.
     /// </summary>
-    public IReadOnlyList<ArticleRow> Filter(IReadOnlyList<ArticleRow> rows, string query, IReadOnlySet<string> selectedTags, SortOption<ArticleRow> sort)
-    {
-        IEnumerable<ArticleRow> results = rows;
+    public IReadOnlyList<ArticleRow> Filter(IReadOnlyList<ArticleRow> rows, string query, IReadOnlySet<string> selectedTags, SortOption<ArticleRow> sort) =>
+        Filter(rows, query, _ => selectedTags, sort);
 
-        // Tags: OR within the facet (match any selected tag), AND with the other facets.
-        if (selectedTags.Count > 0)
-        {
-            results = results.Where(a => a.Tags.Any(t => selectedTags.Contains(t)));
-        }
+    /// <summary>Applies the facet selections (looked up by facet key), query, and sort; <paramref name="exceptKey"/> skips one facet so its option counts can be computed.</summary>
+    public IReadOnlyList<ArticleRow> Filter(
+        IReadOnlyList<ArticleRow> rows,
+        string query,
+        Func<string, IReadOnlySet<string>> selected,
+        SortOption<ArticleRow> sort,
+        string? exceptKey = null)
+    {
+        var results = FacetFilter.Apply(rows, AllFacets, selected, exceptKey);
 
         if (!string.IsNullOrWhiteSpace(query))
         {

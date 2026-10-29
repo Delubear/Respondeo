@@ -23,48 +23,55 @@ public sealed class SaintBrowse
         return index < 0 ? _eraOrder.Length : index;
     }
 
+    public static readonly Facet<SaintIndexEntry> EraFacet = Facet<SaintIndexEntry>.Single("era", s => s.Era);
+    public static readonly Facet<SaintIndexEntry> RegionFacet = Facet<SaintIndexEntry>.Single("region", s => s.Region);
+    public static readonly Facet<SaintIndexEntry> StateOfLifeFacet = Facet<SaintIndexEntry>.Multi("state", s => s.StatesOfLife);
+    public static readonly Facet<SaintIndexEntry> DesignationFacet = Facet<SaintIndexEntry>.Multi("designation", s => s.Designations);
+    public static readonly Facet<SaintIndexEntry> SexFacet = Facet<SaintIndexEntry>.Single("sex", s => s.Sex);
+    public static readonly Facet<SaintIndexEntry> ReligiousOrderFacet = Facet<SaintIndexEntry>.Multi("order", s => s.ReligiousOrders);
+    public static readonly Facet<SaintIndexEntry> CanonizationFacet = Facet<SaintIndexEntry>.Multi("canonization", s => s.Canonizations);
+
+    /// <summary>Every filterable saint facet, in rail order. Keys double as shareable-link query names and remembered-state keys.</summary>
+    public static readonly IReadOnlyList<Facet<SaintIndexEntry>> AllFacets =
+        [EraFacet, RegionFacet, StateOfLifeFacet, DesignationFacet, SexFacet, ReligiousOrderFacet, CanonizationFacet];
+
+    /// <summary>The display-label lookup for a facet key.</summary>
+    public static Func<string, string> Label(SaintFacetCatalog facets, string key) => key switch
+    {
+        _ when key == EraFacet.Key => facets.Era,
+        _ when key == RegionFacet.Key => facets.Region,
+        _ when key == StateOfLifeFacet.Key => facets.StateOfLife,
+        _ when key == DesignationFacet.Key => facets.Designation,
+        _ when key == SexFacet.Key => facets.Sex,
+        _ when key == ReligiousOrderFacet.Key => facets.ReligiousOrder,
+        _ when key == CanonizationFacet.Key => facets.Canonization,
+        _ => v => v,
+    };
+
+    /// <summary>The distinct values of a facet that occur in the catalog, ordered by display label.</summary>
+    public IReadOnlyList<string> Options(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets, Facet<SaintIndexEntry> facet) =>
+        FacetFilter.Options(entries, facet, Label(facets, facet.Key));
+
     /// <summary>The distinct era slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> Eras(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.Select(s => s.Era)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Era, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Eras(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, EraFacet);
 
     /// <summary>The distinct region slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> Regions(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.Select(s => s.Region)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Region, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Regions(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, RegionFacet);
 
     /// <summary>The distinct state-of-life slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> StatesOfLife(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.SelectMany(s => s.StatesOfLife)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.StateOfLife, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> StatesOfLife(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, StateOfLifeFacet);
 
     /// <summary>The distinct designation slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> Designations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.SelectMany(s => s.Designations)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Designation, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Designations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, DesignationFacet);
 
     /// <summary>The distinct sex slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> Sexes(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.Select(s => s.Sex)
-            .Where(s => !string.IsNullOrWhiteSpace(s))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Sex, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Sexes(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, SexFacet);
 
     /// <summary>The distinct religious-order slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> ReligiousOrders(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.SelectMany(s => s.ReligiousOrders)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.ReligiousOrder, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> ReligiousOrders(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, ReligiousOrderFacet);
 
     /// <summary>The distinct canonization slugs that occur in the catalog, ordered by display label.</summary>
-    public IReadOnlyList<string> Canonizations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) =>
-        [.. entries.SelectMany(s => s.Canonizations)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(facets.Canonization, StringComparer.CurrentCultureIgnoreCase)];
+    public IReadOnlyList<string> Canonizations(IEnumerable<SaintIndexEntry> entries, SaintFacetCatalog facets) => Options(entries, facets, CanonizationFacet);
 
     /// <summary>
     /// Applies the active facets, free-text query, and sort to the catalog.
@@ -85,18 +92,34 @@ public sealed class SaintBrowse
         IReadOnlySet<string> selectedCanonizations,
         SortOption<SaintIndexEntry> sort)
     {
+        var byKey = new Dictionary<string, IReadOnlySet<string>>
+        {
+            [EraFacet.Key] = selectedEras,
+            [RegionFacet.Key] = selectedRegions,
+            [StateOfLifeFacet.Key] = selectedStatesOfLife,
+            [DesignationFacet.Key] = selectedDesignations,
+            [SexFacet.Key] = selectedSexes,
+            [ReligiousOrderFacet.Key] = selectedReligiousOrders,
+            [CanonizationFacet.Key] = selectedCanonizations,
+        };
+
+        return Filter(entries, facets, query, key => byKey[key], sort);
+    }
+
+    /// <summary>
+    /// Applies every facet's selection (looked up by facet key), the free-text query, and the sort.
+    /// When <paramref name="exceptKey"/> is given, that facet's own selection is ignored, which is what per-option counts need.
+    /// </summary>
+    public IReadOnlyList<SaintIndexEntry> Filter(
+        IReadOnlyList<SaintIndexEntry> entries,
+        SaintFacetCatalog facets,
+        string query,
+        Func<string, IReadOnlySet<string>> selected,
+        SortOption<SaintIndexEntry> sort,
+        string? exceptKey = null)
+    {
         var term = query?.Trim() ?? string.Empty;
-
-        var results = entries.Where(s =>
-            (selectedEras.Count == 0 || selectedEras.Contains(s.Era))
-            && (selectedRegions.Count == 0 || selectedRegions.Contains(s.Region))
-            && (selectedStatesOfLife.Count == 0 || s.StatesOfLife.Any(selectedStatesOfLife.Contains))
-            && (selectedDesignations.Count == 0 || s.Designations.Any(selectedDesignations.Contains))
-            && (selectedSexes.Count == 0 || selectedSexes.Contains(s.Sex))
-            && (selectedReligiousOrders.Count == 0 || s.ReligiousOrders.Any(selectedReligiousOrders.Contains))
-            && (selectedCanonizations.Count == 0 || s.Canonizations.Any(selectedCanonizations.Contains))
-            && Matches(s, term, facets));
-
+        var results = FacetFilter.Apply(entries, AllFacets, selected, exceptKey).Where(s => Matches(s, term, facets));
         return [.. sort.Apply(results)];
     }
 

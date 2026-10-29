@@ -29,9 +29,10 @@
                 <SearchBox Id="miracles-search" Label="Search miracles" Placeholder="e.g. Lanciano, healing, Italy..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                <TopicFilter Title="Kind" Topics="_types" Selected="_selectedTypes" SelectedChanged="OnTypesChanged" DisplayLabel="_facets.Category" Counts="TypeCounts" />
-                <TopicFilter Title="Church's judgment" Topics="_approvals" Selected="_selectedApprovals" SelectedChanged="OnApprovalsChanged" DisplayLabel="_facets.Approval" Counts="ApprovalCounts" />
-                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" Counts="RegionCounts" />
+                @foreach (var (facet, title) in _rail)
+                {
+                    <TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="MiracleBrowse.Label(_facets, facet.Key)" Counts="Counts(facet)" />
+                }
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
             <ChildContent>
@@ -59,15 +60,19 @@
     [SupplyParameterFromQuery(Name = "region")] public string[]? LinkRegions { get; set; }
 
     private IReadOnlyList<MiracleIndexEntry>? _all;
-    private IReadOnlyList<string> _types = [];
-    private IReadOnlyList<string> _approvals = [];
-    private IReadOnlyList<string> _regions = [];
+    private Dictionary<string, IReadOnlyList<string>> _options = new();
+    private readonly Dictionary<string, IReadOnlySet<string>> _selected = new();
     private MiracleFacetCatalog _facets = MiracleFacetCatalog.Empty;
     private string _sortKey = _sortOptions[0].Key;
     private BrowseSection _browse = default!;
-    private IReadOnlySet<string> _selectedTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedApprovals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    // The rail, in display order. Each facet's key is also its shareable-link query name (see the Link* parameters above).
+    private static readonly (Facet<MiracleIndexEntry> Facet, string Title)[] _rail =
+    [
+        (MiracleBrowse.TypeFacet, "Kind"),
+        (MiracleBrowse.ApprovalFacet, "Church's judgment"),
+        (MiracleBrowse.RegionFacet, "Region"),
+    ];
 
     // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
     private static readonly SortOption<MiracleIndexEntry>[] _sortOptions =
@@ -84,13 +89,14 @@
         _browse = Browse.Section("discover/miracles", () => BrowseJs.ClearAsync("miracles"));
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
         {
-            ["type"] = LinkTypes,
-            ["approval"] = LinkApprovals,
-            ["region"] = LinkRegions,
+            [MiracleBrowse.TypeFacet.Key] = LinkTypes,
+            [MiracleBrowse.ApprovalFacet.Key] = LinkApprovals,
+            [MiracleBrowse.RegionFacet.Key] = LinkRegions,
         });
-        _selectedTypes = new HashSet<string>(_browse.GetFilter("type"), StringComparer.OrdinalIgnoreCase);
-        _selectedApprovals = new HashSet<string>(_browse.GetFilter("approval"), StringComparer.OrdinalIgnoreCase);
-        _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
+        foreach (var facet in MiracleBrowse.AllFacets)
+        {
+            _selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
+        }
 
         var facetsTask = MiracleService.GetFacetsAsync();
         var indexTask = MiracleService.GetIndexAsync();
@@ -100,9 +106,7 @@
         _all = index.Entries;
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.
-        _types = Browser.Types(_all, _facets);
-        _approvals = Browser.Approvals(_all, _facets);
-        _regions = Browser.Regions(_all, _facets);
+        _options = MiracleBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_all, _facets, f));
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -118,54 +122,30 @@
 
     private void OnSortChanged(string value) => _sortKey = value;
 
-    private void OnTypesChanged(IReadOnlySet<string> selected)
-    {
-        _selectedTypes = selected;
-        _browse.SetFilter("type", selected);
-    }
+    private static readonly IReadOnlySet<string> None = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void OnApprovalsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedApprovals = selected;
-        _browse.SetFilter("approval", selected);
-    }
+    private IReadOnlyList<string> Options(Facet<MiracleIndexEntry> facet) => _options.GetValueOrDefault(facet.Key) ?? [];
 
-    private void OnRegionsChanged(IReadOnlySet<string> selected)
+    private IReadOnlySet<string> Selected(string key) => _selected.GetValueOrDefault(key) ?? None;
+
+    private void OnFacetChanged(string key, IReadOnlySet<string> selected)
     {
-        _selectedRegions = selected;
-        _browse.SetFilter("region", selected);
+        _selected[key] = selected;
+        _browse.SetFilter(key, selected);
     }
 
     private void ClearFilters()
     {
-        _selectedTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedApprovals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selected.Clear();
         _browse.Clear();
     }
 
+    private SortOption<MiracleIndexEntry> CurrentSort => _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
+
     // A miracle matches when it satisfies every active facet group (intersection across groups, union within a group) and its title/summary/country/tags contain the search query.
-    private IReadOnlyList<MiracleIndexEntry> Filtered =>
-        _all is null
-            ? Array.Empty<MiracleIndexEntry>()
-            : Browser.Filter(
-                _all,
-                _facets,
-                _browse.Query,
-                _selectedTypes,
-                _selectedApprovals,
-                _selectedRegions,
-                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+    private IReadOnlyList<MiracleIndexEntry> Filtered => _all is null ? [] : Browser.Filter(_all, _facets, _browse.Query, Selected, CurrentSort);
 
-    // Each facet's counts apply every OTHER active filter (and the search), so an option shows what picking it would add.
-    private static readonly IReadOnlySet<string> None = new HashSet<string>();
-
-    private IReadOnlyDictionary<string, int> TypeCounts =>
-        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, None, _selectedApprovals, _selectedRegions, _sortOptions[0]), m => m.Types);
-
-    private IReadOnlyDictionary<string, int> ApprovalCounts =>
-        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, _selectedTypes, None, _selectedRegions, _sortOptions[0]), m => m.Approval);
-
-    private IReadOnlyDictionary<string, int> RegionCounts =>
-        FacetCounts.Of(Browser.Filter(_all ?? [], _facets, _browse.Query, _selectedTypes, _selectedApprovals, None, _sortOptions[0]), m => m.Region);
+    // Counts for one facet apply every OTHER active filter and the search, so each option shows what picking it would add.
+    private IReadOnlyDictionary<string, int> Counts(Facet<MiracleIndexEntry> facet) =>
+        FacetFilter.Counts(Browser.Filter(_all ?? [], _facets, _browse.Query, Selected, _sortOptions[0], exceptKey: facet.Key), facet);
 }

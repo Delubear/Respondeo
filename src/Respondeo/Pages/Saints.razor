@@ -32,13 +32,10 @@
                 <SearchBox Id="saints-search" Label="Search saints" Placeholder="e.g. Francis, missions, Africa..." Value="@_browse.Query" ValueChanged="OnSearchChanged" />
             </Search>
             <Rail>
-                <TopicFilter Title="Era" Topics="_eras" Selected="_selectedEras" SelectedChanged="OnErasChanged" DisplayLabel="_facets.Era" Counts="Counts(0)" />
-                <TopicFilter Title="Region" Topics="_regions" Selected="_selectedRegions" SelectedChanged="OnRegionsChanged" DisplayLabel="_facets.Region" Counts="Counts(1)" />
-                <TopicFilter Title="State of life" Topics="_statesOfLife" Selected="_selectedStatesOfLife" SelectedChanged="OnStatesOfLifeChanged" DisplayLabel="_facets.StateOfLife" Counts="Counts(2)" />
-                <TopicFilter Title="Designation" Topics="_designations" Selected="_selectedDesignations" SelectedChanged="OnDesignationsChanged" DisplayLabel="_facets.Designation" Counts="Counts(3)" />
-                <TopicFilter Title="Sex" Topics="_sexes" Selected="_selectedSexes" SelectedChanged="OnSexesChanged" DisplayLabel="_facets.Sex" Counts="Counts(4)" />
-                <TopicFilter Title="Religious order" Topics="_religiousOrders" Selected="_selectedReligiousOrders" SelectedChanged="OnReligiousOrdersChanged" DisplayLabel="_facets.ReligiousOrder" Counts="Counts(5)" />
-                <TopicFilter Title="Canonization" Topics="_canonizations" Selected="_selectedCanonizations" SelectedChanged="OnCanonizationsChanged" DisplayLabel="_facets.Canonization" Counts="Counts(6)" />
+                @foreach (var (facet, title) in _rail)
+                {
+                    <TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="SaintBrowse.Label(_facets, facet.Key)" Counts="Counts(facet)" />
+                }
                 <ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
             </Rail>
             <ChildContent>
@@ -77,24 +74,24 @@
     [SupplyParameterFromQuery(Name = "canonization")] public string[]? LinkCanonizations { get; set; }
 
     private IReadOnlyList<SaintIndexEntry>? _all;
-    private IReadOnlyList<string> _eras = [];
-    private IReadOnlyList<string> _regions = [];
-    private IReadOnlyList<string> _statesOfLife = [];
-    private IReadOnlyList<string> _designations = [];
-    private IReadOnlyList<string> _sexes = [];
-    private IReadOnlyList<string> _religiousOrders = [];
-    private IReadOnlyList<string> _canonizations = [];
+    private Dictionary<string, IReadOnlyList<string>> _options = new();
+    private readonly Dictionary<string, IReadOnlySet<string>> _selected = new();
     private IReadOnlySet<string> _feastIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
     private string _sortKey = _sortOptions[0].Key;
     private BrowseSection _browse = default!;
-    private IReadOnlySet<string> _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedDesignations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedSexes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedReligiousOrders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    private IReadOnlySet<string> _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    // The rail, in display order. Each facet's key is also its shareable-link query name (see the Link* parameters above).
+    private static readonly (Facet<SaintIndexEntry> Facet, string Title)[] _rail =
+    [
+        (SaintBrowse.EraFacet, "Era"),
+        (SaintBrowse.RegionFacet, "Region"),
+        (SaintBrowse.StateOfLifeFacet, "State of life"),
+        (SaintBrowse.DesignationFacet, "Designation"),
+        (SaintBrowse.SexFacet, "Sex"),
+        (SaintBrowse.ReligiousOrderFacet, "Religious order"),
+        (SaintBrowse.CanonizationFacet, "Canonization"),
+    ];
 
     // Each sort option carries its own ordering, so the modes are declared once here and the dropdown, current selection, and Filtered logic all stay in sync. Adding a mode is one line.
     private static readonly SortOption<SaintIndexEntry>[] _sortOptions =
@@ -112,21 +109,18 @@
         _browse = Browse.Section("discover/saints", () => BrowseJs.ClearAsync("saints"));
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
         {
-            ["era"] = LinkEras,
-            ["region"] = LinkRegions,
-            ["state"] = LinkStates,
-            ["designation"] = LinkDesignations,
-            ["sex"] = LinkSexes,
-            ["order"] = LinkOrders,
-            ["canonization"] = LinkCanonizations,
+            [SaintBrowse.EraFacet.Key] = LinkEras,
+            [SaintBrowse.RegionFacet.Key] = LinkRegions,
+            [SaintBrowse.StateOfLifeFacet.Key] = LinkStates,
+            [SaintBrowse.DesignationFacet.Key] = LinkDesignations,
+            [SaintBrowse.SexFacet.Key] = LinkSexes,
+            [SaintBrowse.ReligiousOrderFacet.Key] = LinkOrders,
+            [SaintBrowse.CanonizationFacet.Key] = LinkCanonizations,
         });
-        _selectedEras = new HashSet<string>(_browse.GetFilter("era"), StringComparer.OrdinalIgnoreCase);
-        _selectedRegions = new HashSet<string>(_browse.GetFilter("region"), StringComparer.OrdinalIgnoreCase);
-        _selectedStatesOfLife = new HashSet<string>(_browse.GetFilter("state"), StringComparer.OrdinalIgnoreCase);
-        _selectedDesignations = new HashSet<string>(_browse.GetFilter("designation"), StringComparer.OrdinalIgnoreCase);
-        _selectedSexes = new HashSet<string>(_browse.GetFilter("sex"), StringComparer.OrdinalIgnoreCase);
-        _selectedReligiousOrders = new HashSet<string>(_browse.GetFilter("order"), StringComparer.OrdinalIgnoreCase);
-        _selectedCanonizations = new HashSet<string>(_browse.GetFilter("canonization"), StringComparer.OrdinalIgnoreCase);
+        foreach (var facet in SaintBrowse.AllFacets)
+        {
+            _selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
+        }
 
         var facetsTask = SaintService.GetFacetsAsync();
         var indexTask = SaintService.GetIndexAsync();
@@ -139,13 +133,7 @@
         _feastIds = await FeastOfTheDay.GetTodayFeastIdsAsync();
 
         // Only surface facet options that actually occur in the catalog, in a stable display order.
-        _eras = Browser.Eras(_all, _facets);
-        _regions = Browser.Regions(_all, _facets);
-        _statesOfLife = Browser.StatesOfLife(_all, _facets);
-        _designations = Browser.Designations(_all, _facets);
-        _sexes = Browser.Sexes(_all, _facets);
-        _religiousOrders = Browser.ReligiousOrders(_all, _facets);
-        _canonizations = Browser.Canonizations(_all, _facets);
+        _options = SaintBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_all, _facets, f));
     }
 
     // After the list first renders, ask JS to restore the remembered scroll position.
@@ -174,105 +162,30 @@
 
     private void OnSortChanged(string value) => _sortKey = value;
 
-    private void OnErasChanged(IReadOnlySet<string> selected)
-    {
-        _selectedEras = selected;
-        _browse.SetFilter("era", selected);
-    }
+    private static readonly IReadOnlySet<string> None = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void OnRegionsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedRegions = selected;
-        _browse.SetFilter("region", selected);
-    }
+    private IReadOnlyList<string> Options(Facet<SaintIndexEntry> facet) => _options.GetValueOrDefault(facet.Key) ?? [];
 
-    private void OnStatesOfLifeChanged(IReadOnlySet<string> selected)
-    {
-        _selectedStatesOfLife = selected;
-        _browse.SetFilter("state", selected);
-    }
+    private IReadOnlySet<string> Selected(string key) => _selected.GetValueOrDefault(key) ?? None;
 
-    private void OnCanonizationsChanged(IReadOnlySet<string> selected)
+    private void OnFacetChanged(string key, IReadOnlySet<string> selected)
     {
-        _selectedCanonizations = selected;
-        _browse.SetFilter("canonization", selected);
-    }
-
-    private void OnDesignationsChanged(IReadOnlySet<string> selected)
-    {
-        _selectedDesignations = selected;
-        _browse.SetFilter("designation", selected);
-    }
-
-    private void OnSexesChanged(IReadOnlySet<string> selected)
-    {
-        _selectedSexes = selected;
-        _browse.SetFilter("sex", selected);
-    }
-
-    private void OnReligiousOrdersChanged(IReadOnlySet<string> selected)
-    {
-        _selectedReligiousOrders = selected;
-        _browse.SetFilter("order", selected);
+        _selected[key] = selected;
+        _browse.SetFilter(key, selected);
     }
 
     private void ClearFilters()
     {
-        _selectedEras = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedStatesOfLife = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedDesignations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedSexes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedReligiousOrders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        _selectedCanonizations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        _selected.Clear();
         _browse.Clear();
     }
 
+    private SortOption<SaintIndexEntry> CurrentSort => _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0];
+
     // A saint matches when it satisfies every active facet group (intersection across groups, union within a group) and its title/summary/dates/tags contain the search query.
-    private IReadOnlyList<SaintIndexEntry> Filtered =>
-        _all is null
-            ? Array.Empty<SaintIndexEntry>()
-            : Browser.Filter(
-                _all,
-                _facets,
-                _browse.Query,
-                _selectedEras,
-                _selectedRegions,
-                _selectedStatesOfLife,
-                _selectedDesignations,
-                _selectedSexes,
-                _selectedReligiousOrders,
-                _selectedCanonizations,
-                _sortOptions.FirstOrDefault(o => o.Key == _sortKey) ?? _sortOptions[0]);
+    private IReadOnlyList<SaintIndexEntry> Filtered => _all is null ? [] : Browser.Filter(_all, _facets, _browse.Query, Selected, CurrentSort);
 
-    private static readonly IReadOnlySet<string> None = new HashSet<string>();
-
-    // Counts for one facet group (by position in the rail) apply every OTHER active filter and the search,
-    // so each option shows what picking it would add.
-    private IReadOnlyDictionary<string, int> Counts(int facet)
-    {
-        var rows = Browser.Filter(
-            _all ?? [],
-            _facets,
-            _browse.Query,
-            facet == 0 ? None : _selectedEras,
-            facet == 1 ? None : _selectedRegions,
-            facet == 2 ? None : _selectedStatesOfLife,
-            facet == 3 ? None : _selectedDesignations,
-            facet == 4 ? None : _selectedSexes,
-            facet == 5 ? None : _selectedReligiousOrders,
-            facet == 6 ? None : _selectedCanonizations,
-            _sortOptions[0]);
-
-        return facet switch
-        {
-            0 => FacetCounts.Of(rows, s => s.Era),
-            1 => FacetCounts.Of(rows, s => s.Region),
-            2 => FacetCounts.Of(rows, s => s.StatesOfLife),
-            3 => FacetCounts.Of(rows, s => s.Designations),
-            4 => FacetCounts.Of(rows, s => s.Sex),
-            5 => FacetCounts.Of(rows, s => s.ReligiousOrders),
-            _ => FacetCounts.Of(rows, s => s.Canonizations),
-        };
-    }
+    // Counts for one facet apply every OTHER active filter and the search, so each option shows what picking it would add.
+    private IReadOnlyDictionary<string, int> Counts(Facet<SaintIndexEntry> facet) =>
+        FacetFilter.Counts(Browser.Filter(_all ?? [], _facets, _browse.Query, Selected, _sortOptions[0], exceptKey: facet.Key), facet);
 }
