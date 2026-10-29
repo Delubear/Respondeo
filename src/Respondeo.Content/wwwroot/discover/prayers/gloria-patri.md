@@ -2,12 +2,12 @@
 id: gloria-patri
 title: "Gloria Patri"
 summary: "The Latin of the Glory Be."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: la
 translationKey: glory-be
 tags:
-  - basic
-  - rosary
   - trinity
   - latin
 ---

@@ -2,12 +2,12 @@
 id: glory-be
 title: "Glory Be"
 summary: "The Doxology: praise to the Holy Trinity."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: en
 translationKey: glory-be
 tags:
-  - basic
-  - rosary
   - trinity
 ---
 

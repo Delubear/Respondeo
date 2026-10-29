@@ -3,13 +3,14 @@ id: stay-with-me-lord
 title: "Stay With Me, Lord"
 sortKey: "Stay With Me, Lord"
 summary: "St. Padre Pio's prayer after Holy Communion, asking Christ to remain with the soul through life, death, and eternity."
-category: daily
+prayedAt:
+  - daily
+  - mass
 language: en
 translationKey: stay-with-me-lord
 tags:
   - eucharist
-  - communion
-  - padre pio
+  - padre-pio
 ---
 
 Stay with me, Lord,

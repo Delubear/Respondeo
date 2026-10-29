@@ -2,12 +2,12 @@
 id: hail-mary
 title: "Hail Mary"
 summary: "The angelic salutation joined to the Church's petition to the Mother of God."
-category: marian
+prayedAt:
+  - daily
+  - rosary
 language: en
 translationKey: hail-mary
 tags:
-  - basic
-  - rosary
   - marian
 ---
 

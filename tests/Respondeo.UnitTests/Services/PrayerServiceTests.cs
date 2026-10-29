@@ -15,7 +15,8 @@ public class PrayerServiceTests
         id: hail-mary
         title: "Hail Mary"
         summary: The angelic salutation.
-        category: Marian
+        prayedAt:
+          - Rosary
         language: en
         translationKey: hail-mary
         tags:
@@ -31,7 +32,8 @@ public class PrayerServiceTests
         id: ave-maria
         title: "Ave Maria"
         summary: The Latin of the Hail Mary.
-        category: Marian
+        prayedAt:
+          - Rosary
         language: la
         translationKey: hail-mary
         tags:
@@ -46,7 +48,8 @@ public class PrayerServiceTests
         id: dominican-versicle
         title: "O God, Come to My Assistance"
         summary: A contextual versicle.
-        category: Marian
+        prayedAt:
+          - Rosary
         language: en
         translationKey: dominican-versicle
         unlisted: true
@@ -62,7 +65,6 @@ public class PrayerServiceTests
         id: novena
         title: "A Novena"
         summary: A nine-day prayer that references the Hail Mary.
-        category: novena
         language: en
         unlisted: true
         ---
@@ -74,7 +76,7 @@ public class PrayerServiceTests
         [Unknown Prayer](prayer:missing)
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content/discover/prayers/prayers-manifest.json";
+    private const string ManifestPath = "_content/Respondeo.Content/discover/prayers/manifest.json";
     private const string HailMaryPath = "_content/Respondeo.Content/discover/prayers/hail-mary.md";
     private const string HailMaryLatinPath = "_content/Respondeo.Content/discover/prayers/ave-maria.md";
     private const string UnlistedPath = "_content/Respondeo.Content/discover/prayers/dominican-versicle.md";
@@ -106,7 +108,7 @@ public class PrayerServiceTests
         // and the unlisted versicle is excluded from the browse index.
         var prayer = Assert.Single(index);
         Assert.Equal("hail-mary", prayer.Id);
-        Assert.Equal("marian", prayer.Category);
+        Assert.Equal(["rosary"], prayer.PrayedAt);
     }
 
     [Fact]
@@ -197,7 +199,6 @@ public class PrayerServiceTests
             id: multi
             title: "A Compound Devotion"
             summary: References several prayers, including an unlisted one.
-            category: devotion
             language: en
             unlisted: true
             ---

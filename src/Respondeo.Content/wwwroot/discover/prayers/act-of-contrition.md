@@ -3,12 +3,13 @@ id: act-of-contrition
 title: "The Act of Contrition"
 sortKey: "Act of Contrition"
 summary: "A prayer of sorrow for sin, prayed by the penitent in the Sacrament of Penance."
-category: daily
+prayedAt:
+  - daily
+  - confession
 language: en
 translationKey: act-of-contrition
 tags:
   - penitential
-  - confession
 ---
 
 O my God,

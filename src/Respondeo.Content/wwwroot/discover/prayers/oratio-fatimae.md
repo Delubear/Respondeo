@@ -2,11 +2,11 @@
 id: oratio-fatimae
 title: "Oratio Fátimae"
 summary: "The Latin of the Fatima Prayer, added after each decade of the Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: la
 translationKey: fatima-prayer
 tags:
-  - rosary
   - marian
   - fatima
   - latin

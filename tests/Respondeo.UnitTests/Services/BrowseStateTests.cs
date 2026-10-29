@@ -77,10 +77,10 @@ public class BrowseStateTests
         using var state = new BrowseState(nav);
         var prayers = state.Section("discover/prayers");
 
-        prayers.SetFilter("category", new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "marian" });
+        prayers.SetFilter("prayedAt", new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "rosary" });
         prayers.SetFilter("tags", new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "rosary", "basic" });
 
-        Assert.Contains("marian", prayers.GetFilter("category"));
+        Assert.Contains("rosary", prayers.GetFilter("prayedAt"));
         Assert.Equal(2, prayers.GetFilter("tags").Count);
         Assert.Empty(prayers.GetFilter("missing"));
     }
@@ -122,13 +122,13 @@ public class BrowseStateTests
         using var state = new BrowseState(nav);
         var prayers = state.Section("discover/prayers", () => { calls.Add("exit"); return ValueTask.CompletedTask; });
         prayers.Query = "hail";
-        prayers.SetFilter("category", new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "marian" });
+        prayers.SetFilter("prayedAt", new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "rosary" });
 
         // Individual prayer pages live under discover/prayers and still count as "in the section".
         nav.NavigateTo("discover/prayers/hail-mary");
 
         Assert.Equal("hail", prayers.Query);
-        Assert.Contains("marian", prayers.GetFilter("category"));
+        Assert.Contains("rosary", prayers.GetFilter("prayedAt"));
         Assert.Empty(calls);
     }
 

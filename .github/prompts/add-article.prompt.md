@@ -18,5 +18,5 @@ do all of the following:
    Catechism / councils / Scripture where relevant; respect the Summa citation style from
    [`.github/copilot-instructions.md`](../copilot-instructions.md).
 3. Set `reviewStatus: unvetted` if the draft has not been theologically reviewed.
-4. Register the file name in `articles/articles-manifest.json`.
+4. Register the file name in `articles/manifest.json`.
 5. Build and run the `Respondeo.UnitTests` Content tests; fix any failures.

@@ -2,12 +2,12 @@
 id: rosary-versicle-pray-for-us
 title: "Pray for Us, O Holy Mother of God"
 summary: "The versicle and response prayed after the Hail Holy Queen in the Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: en
 translationKey: rosary-versicle-pray-for-us
 unlisted: true
 tags:
-  - rosary
   - marian
 ---
 

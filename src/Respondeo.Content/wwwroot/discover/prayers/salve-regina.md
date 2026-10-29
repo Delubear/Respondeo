@@ -2,11 +2,11 @@
 id: salve-regina
 title: "Salve Regina"
 summary: "The Latin of the Hail Holy Queen."
-category: marian
+prayedAt:
+  - rosary
 language: la
 translationKey: hail-holy-queen
 tags:
-  - rosary
   - marian
   - antiphon
   - latin

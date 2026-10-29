@@ -3,12 +3,12 @@ id: apostles-creed
 title: "The Apostles' Creed"
 sortKey: "Apostles' Creed"
 summary: "The ancient baptismal profession of the Church's faith."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: en
 translationKey: apostles-creed
 tags:
-  - basic
-  - rosary
   - creed
 ---
 

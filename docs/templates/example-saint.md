@@ -3,7 +3,7 @@
 # EXAMPLE SAINT FILE — copy this as a starting point for a new Discover saint.
 # Lives in src/Respondeo.Content/wwwroot/discover/saints/.
 # After copying: give it a unique `id` (matching the file name stem), edit the
-# body, and add the file name to saints/saints-manifest.json so SaintService
+# body, and add the file name to saints/manifest.json so SaintService
 # will load it.
 #
 # The typed facet fields below (era, region, patronages, …) power the browse

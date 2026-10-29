@@ -3,7 +3,7 @@
 # EXAMPLE MIRACLE FILE — copy this as a starting point for a new Discover miracle.
 # Lives in src/Respondeo.Content/wwwroot/discover/miracles/.
 # After copying: give it a unique `id` (matching the file name stem), edit the
-# body, and add the file name to miracles/miracles-manifest.json so MiracleService
+# body, and add the file name to miracles/manifest.json so MiracleService
 # will load it.
 #
 # The typed facet fields below (types, approval, region, …) power the browse

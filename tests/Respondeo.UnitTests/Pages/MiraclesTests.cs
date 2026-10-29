@@ -64,7 +64,7 @@ public class MiraclesTests : TestContext
     {
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content/discover/miracles/miracles-manifest.json"] = ManifestJson,
+            ["_content/Respondeo.Content/discover/miracles/manifest.json"] = ManifestJson,
             [$"{Root}/facets.json"] = FacetsJson,
             [$"{Root}/lanciano-eucharistic-miracle.md"] = LancianoMd,
             [$"{Root}/our-lady-of-guadalupe.md"] = GuadalupeMd,

@@ -2,12 +2,12 @@
 id: dominican-versicle-divinum-auxilium
 title: "Divínum Auxílium Máneat Semper Nobíscum"
 summary: "The Latin of the concluding versicle of the Dominican Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: la
 translationKey: dominican-versicle-assistance-departed
 unlisted: true
 tags:
-  - rosary
   - marian
   - dominican
   - latin

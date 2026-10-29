@@ -2,12 +2,12 @@
 id: dominican-versicle-queen
 title: "Queen of the Most Holy Rosary"
 summary: "The versicle and response prayed after the Hail Holy Queen in the Dominican Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: en
 translationKey: dominican-versicle-queen
 unlisted: true
 tags:
-  - rosary
   - marian
   - dominican
 ---

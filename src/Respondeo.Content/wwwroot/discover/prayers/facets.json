@@ -1,0 +1,32 @@
+{
+  "prayedAt": {
+    "adoration": "Adoration",
+    "chaplet": "Chaplet",
+    "confession": "Confession",
+    "daily": "Daily",
+    "mass": "Mass",
+    "rosary": "Rosary"
+  },
+  "tags": {
+    "angelus": "Angelus",
+    "antiphon": "Antiphon",
+    "benediction": "Benediction",
+    "blessing": "Blessing",
+    "creed": "Creed",
+    "devotional": "Devotional",
+    "divine-mercy": "Divine Mercy",
+    "dominical": "Dominical",
+    "dominican": "Dominican",
+    "eucharist": "Eucharist",
+    "fatima": "Fatima",
+    "latin": "Latin",
+    "litany": "Litany",
+    "marian": "Marian",
+    "novena": "Novena",
+    "padre-pio": "Padre Pio",
+    "penitential": "Penitential",
+    "praise": "Praise",
+    "sacred-heart": "Sacred Heart",
+    "trinity": "Trinity"
+  }
+}

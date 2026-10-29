@@ -2,11 +2,12 @@
 id: confiteor-latin
 title: "Confiteor"
 summary: "The Latin of the Penitential Act."
-category: mass
+prayedAt:
+  - mass
+  - confession
 language: la
 translationKey: confiteor
 tags:
-  - mass
   - penitential
   - latin
 ---

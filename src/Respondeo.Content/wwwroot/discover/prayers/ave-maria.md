@@ -2,12 +2,12 @@
 id: ave-maria
 title: "Ave Maria"
 summary: "The Latin of the Hail Mary."
-category: marian
+prayedAt:
+  - daily
+  - rosary
 language: la
 translationKey: hail-mary
 tags:
-  - basic
-  - rosary
   - marian
   - latin
 ---

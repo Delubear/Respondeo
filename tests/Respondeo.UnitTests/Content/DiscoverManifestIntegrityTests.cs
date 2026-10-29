@@ -16,10 +16,10 @@ public class DiscoverManifestIntegrityTests
     // ignore when scanning the folder (manifests and data files are not content items).
     public static TheoryData<string, string, string[]> ContentTypes() => new()
     {
-        { "prayers", "*.md", new[] { "prayers-manifest.json" } },
-        { "articles", "*.md", new[] { "articles-manifest.json" } },
-        { "miracles", "*.md", new[] { "miracles-manifest.json", "facets.json" } },
-        { "devotions", "*.json", new[] { "devotions-manifest.json" } },
+        { "prayers", "*.md", new[] { "manifest.json", "facets.json" } },
+        { "articles", "*.md", new[] { "manifest.json" } },
+        { "miracles", "*.md", new[] { "manifest.json", "facets.json" } },
+        { "devotions", "*.json", new[] { "manifest.json" } },
     };
 
     private static string DiscoverDirectory([CallerFilePath] string thisFile = "")
@@ -31,7 +31,7 @@ public class DiscoverManifestIntegrityTests
 
     private static IReadOnlyList<string> ReadManifestFiles(string typeDir, string folder)
     {
-        var manifestPath = Path.Combine(typeDir, $"{folder}-manifest.json");
+        var manifestPath = Path.Combine(typeDir, "manifest.json");
         var json = File.ReadAllText(manifestPath);
         var manifest = JsonSerializer.Deserialize<ContentManifest>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
@@ -53,7 +53,7 @@ public class DiscoverManifestIntegrityTests
             .Where(f => !File.Exists(Path.Combine(typeDir, f)))
             .ToList();
 
-        Assert.True(missing.Count == 0, $"{folder}-manifest.json lists files that do not exist: {string.Join(", ", missing)}");
+        Assert.True(missing.Count == 0, $"{folder}/manifest.json lists files that do not exist: {string.Join(", ", missing)}");
     }
 
     [Theory]
@@ -78,7 +78,7 @@ public class DiscoverManifestIntegrityTests
             .Where(f => !listed.Contains(f!))
             .ToList();
 
-        Assert.True(unlisted.Count == 0, $"{folder} files exist that are not listed in {folder}-manifest.json: {string.Join(", ", unlisted)}");
+        Assert.True(unlisted.Count == 0, $"{folder} files exist that are not listed in {folder}/manifest.json: {string.Join(", ", unlisted)}");
     }
 
     private sealed class ContentManifest

@@ -2,7 +2,8 @@
 id: angelus
 title: "The Angelus"
 summary: "The traditional Marian devotion honoring the Incarnation, prayed at morning, noon, and evening."
-category: marian
+prayedAt:
+  - daily
 language: en
 translationKey: angelus
 tags:

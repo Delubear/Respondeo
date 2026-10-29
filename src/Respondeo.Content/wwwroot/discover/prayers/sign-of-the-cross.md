@@ -3,11 +3,11 @@ id: sign-of-the-cross
 title: "The Sign of the Cross"
 sortKey: "Sign of the Cross"
 summary: "The gesture and words with which Catholic prayer begins and ends."
-category: daily
+prayedAt:
+  - daily
 language: en
 translationKey: sign-of-the-cross
 tags:
-  - basic
   - blessing
 ---
 

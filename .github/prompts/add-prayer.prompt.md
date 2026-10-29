@@ -21,5 +21,5 @@ do all of the following:
    line between sections, `Amen.` on its own line.
 3. If a Latin companion is requested, create a second `language: la` file sharing the same
    `translationKey`, broken at the same sense lines.
-4. Register every new file name in `prayers/prayers-manifest.json`.
+4. Register every new file name in `prayers/manifest.json`.
 5. Build and run the `Respondeo.UnitTests` Content tests; fix any failures.

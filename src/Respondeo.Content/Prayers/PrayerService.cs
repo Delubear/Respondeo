@@ -16,10 +16,12 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
     MarkdownContentLoader<PrayerFrontMatter, PrayerDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IPrayerService
 {
     private const string PrayersRoot = DiscoverRoot + "/prayers";
-    private const string ManifestPath = PrayersRoot + "/prayers-manifest.json";
+    private const string ManifestPath = PrayersRoot + "/manifest.json";
+    private const string FacetsPath = PrayersRoot + "/facets.json";
 
     private readonly PrayerParser _parser = new(html);
     private readonly AsyncInitCache<Catalog> _catalog = new();
+    private readonly AsyncInitCache<PrayerFacetCatalog> _facets = new();
 
     // Markdig renders "[Label](prayer:some-id)" as an anchor whose href is the raw "prayer:some-id" scheme.
     // Match that anchor (optionally wrapped in its own <p>) so a reference on its own line is replaced cleanly by the embedded prayer block.
@@ -41,6 +43,10 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
         var catalog = await Load();
         return catalog.Prayers.TryGetValue(id, out var prayer) ? prayer.ToContract() : null;
     }
+
+    /// <inheritdoc />
+    public Task<PrayerFacetCatalog> GetFacetsAsync() =>
+        _facets.GetAsync(() => LoadFacetsAsync<FacetsDto, PrayerFacetCatalog>(FacetsPath, dto => dto.ToCatalog(), PrayerFacetCatalog.Empty));
 
     /// <inheritdoc />
     public async Task<string> QuotePrayerReferencesAsync(string html)
@@ -134,6 +140,18 @@ internal sealed class PrayerService(HttpClient http, IContentHtmlRenderer html) 
                 prayer.LatinTitle = latin.Title;
             }
         }
+    }
+
+    private sealed class FacetsDto
+    {
+        public Dictionary<string, string> PrayedAt { get; set; } = new();
+        public Dictionary<string, string> Tags { get; set; } = new();
+
+        public PrayerFacetCatalog ToCatalog() => new()
+        {
+            PrayedAt = new Dictionary<string, string>(PrayedAt, StringComparer.OrdinalIgnoreCase),
+            Tags = new Dictionary<string, string>(Tags, StringComparer.OrdinalIgnoreCase),
+        };
     }
 
     private sealed record Catalog(Dictionary<string, PrayerDocument> Prayers, IReadOnlyList<PrayerSummary> Summaries);

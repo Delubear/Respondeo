@@ -46,5 +46,5 @@ do all of the following:
    `religiousOrders: [dominican]`. `patronages` is searchable/shown but is not a filter facet.
 4. Write the body as `## `-sectioned Markdown (e.g. His/Her life / The Little Way / Why it matters).
    Present facts honestly; set `reviewStatus: unvetted` for AI-drafted or not-yet-reviewed profiles.
-5. Register the file name in `saints/saints-manifest.json`.
+5. Register the file name in `saints/manifest.json`.
 6. Build and run the `Respondeo.UnitTests` Content tests; fix any failures.

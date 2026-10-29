@@ -3,11 +3,11 @@ id: gloria
 title: "The Gloria"
 sortKey: "Gloria"
 summary: "The great hymn of praise sung on Sundays and feasts."
-category: mass
+prayedAt:
+  - mass
 language: en
 translationKey: gloria
 tags:
-  - mass
   - praise
 ---
 

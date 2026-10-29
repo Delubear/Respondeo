@@ -2,12 +2,12 @@
 id: pater-noster
 title: "Pater Noster"
 summary: "The Latin of the Our Father."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: la
 translationKey: our-father
 tags:
-  - basic
-  - rosary
   - dominical
   - latin
 ---

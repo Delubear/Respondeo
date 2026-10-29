@@ -47,7 +47,7 @@ public class DevotionsTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            [$"{Root}/devotions-manifest.json"] = ManifestJson,
+            [$"{Root}/manifest.json"] = ManifestJson,
             [$"{Root}/holy-rosary.json"] = RosaryJson,
             [$"{Root}/divine-mercy-chaplet.json"] = ChapletJson,
         });

@@ -16,7 +16,7 @@ internal sealed class SaintService(HttpClient http, IContentHtmlRenderer html) :
     MarkdownContentLoader<SaintFrontMatter, SaintRecordDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), ISaintService
 {
     private const string SaintsRoot = DiscoverRoot + "/saints";
-    private const string ManifestPath = SaintsRoot + "/saints-manifest.json";
+    private const string ManifestPath = SaintsRoot + "/manifest.json";
     private const string FacetsPath = SaintsRoot + "/facets.json";
 
     private readonly SaintParser _parser = new(html);

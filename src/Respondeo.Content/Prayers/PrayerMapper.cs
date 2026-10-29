@@ -15,7 +15,7 @@ internal static class PrayerMapper
         LatinTitle = document.LatinTitle,
         SortValue = document.SortValue,
         Summary = document.Summary,
-        Category = document.Category,
+        PrayedAt = document.PrayedAt,
         Language = document.Language,
         TranslationKey = document.TranslationKey,
         Html = document.Html,
@@ -31,7 +31,7 @@ internal static class PrayerMapper
         LatinTitle = document.LatinTitle,
         SortValue = document.SortValue,
         Summary = document.Summary,
-        Category = document.Category,
+        PrayedAt = document.PrayedAt,
         Tags = document.Tags,
     };
 }

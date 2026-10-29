@@ -15,7 +15,7 @@ internal sealed class ArticleService(HttpClient http, IContentHtmlRenderer html)
     MarkdownContentLoader<ArticleFrontMatter, ArticleDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IArticleService
 {
     private const string ArticlesRoot = DiscoverRoot + "/articles";
-    private const string ManifestPath = ArticlesRoot + "/articles-manifest.json";
+    private const string ManifestPath = ArticlesRoot + "/manifest.json";
 
     private readonly ArticleParser _parser = new(html);
     private readonly AsyncInitCache<Catalog> _catalog = new();

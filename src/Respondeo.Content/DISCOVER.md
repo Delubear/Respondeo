@@ -14,11 +14,11 @@ kinds of content:
 | **Saints** | Markdown (`.md`) | `wwwroot/discover/saints/` | A saint profile with typed facet metadata. |
 
 Every new file must be registered in its per-type manifest
-([`wwwroot/discover/prayers/prayers-manifest.json`](wwwroot/discover/prayers/prayers-manifest.json),
-[`wwwroot/discover/devotions/devotions-manifest.json`](wwwroot/discover/devotions/devotions-manifest.json),
-[`wwwroot/discover/articles/articles-manifest.json`](wwwroot/discover/articles/articles-manifest.json),
-[`wwwroot/discover/miracles/miracles-manifest.json`](wwwroot/discover/miracles/miracles-manifest.json),
-[`wwwroot/discover/saints/saints-manifest.json`](wwwroot/discover/saints/saints-manifest.json)) to be loaded.
+([`wwwroot/discover/prayers/manifest.json`](wwwroot/discover/prayers/manifest.json),
+[`wwwroot/discover/devotions/manifest.json`](wwwroot/discover/devotions/manifest.json),
+[`wwwroot/discover/articles/manifest.json`](wwwroot/discover/articles/manifest.json),
+[`wwwroot/discover/miracles/manifest.json`](wwwroot/discover/miracles/manifest.json),
+[`wwwroot/discover/saints/manifest.json`](wwwroot/discover/saints/manifest.json)) to be loaded.
 
 Ready-to-copy templates live under [`docs/templates/`](../../docs/templates):
 [`example-prayer.md`](../../docs/templates/example-prayer.md),
@@ -52,12 +52,12 @@ A prayer is a Markdown file: YAML front-matter between `---` lines, then the pra
 id: hail-mary
 title: "Hail Mary"
 summary: The angelic salutation joined to the Church's petition to the Mother of God.
-category: marian
+prayedAt:
+  - daily
+  - rosary
 language: en
 translationKey: hail-mary
 tags:
-  - basic
-  - rosary
   - marian
 attribution: "Traditional English text (public domain)."
 ---
@@ -75,15 +75,20 @@ death. Amen.
 | `title` | Yes | Display title shown on cards and the prayer page. |
 | `sortKey` | No | Filing key used when the browse page sorts by title. Set it when the display title should sort differently from how it reads (e.g. a title leading with an article: `title: "The Angelus"` with `sortKey: "Angelus"`). Defaults to `title`. |
 | `summary` | No | One-line description used on cards and previews. |
-| `category` | No | Category slug used for browse filtering (e.g. `marian`, `daily`, `mass`). Defaults to `other` (hidden from the filter). |
+| `prayedAt` | No | List of occasions the prayer is prayed at (`daily`, `mass`, `rosary`, `chaplet`, `adoration`, `confession`), drives the "Prayed at" filter; the first value is the card pill. |
 | `language` | No | Language of this text (`en`, `la`, …). Defaults to `en`. |
 | `translationKey` | No | Shared key that pairs a prayer with its translation(s). Two files with the same key are the same prayer in different languages; the service shows the Latin alongside the vernacular. |
-| `tags` | No | Free-text tags used for search **and** the Tags browse filter. |
+| `tags` | No | Subject tags (e.g. `marian`, `eucharist`, `divine-mercy`) and prayer forms (`litany`, `novena`, `creed`, `antiphon`) used for search **and** the Tags browse filter. Do not repeat a prayed-at occasion as a tag. |
 | `attribution` | No | Source / translation credit shown for copyright care. |
 
 **Pairing a Latin original with its English:** give both files the same `translationKey` and set each
 file's `language`. The English (`en`) file is the primary entry; the Latin (`la`) text is folded into
 it as `LatinHtml`.
+
+**Facet labels (`prayers/facets.json`):** every `prayedAt` and `tags` slug is displayed through the label
+map in `facets.json` (`{ "prayedAt": { "rosary": "Rosary" }, "tags": { "divine-mercy": "Divine Mercy" } }`).
+When you introduce a new slug, add its label there; when you retire one, remove it.
+`PrayerFacetIntegrityTests` fails if a slug used in a prayer has no label, or if a label is defined but unused.
 
 ---
 
@@ -279,8 +284,8 @@ Sections are formed by `## ` headings in the body; write normal Markdown beneath
 1. Create the file in the matching folder (`prayers/`, `devotions/`, `articles/`, or `miracles/`)
    with `id` matching the file name stem.
 2. Register the file name in that content type's manifest
-   (`prayers/prayers-manifest.json`, `devotions/devotions-manifest.json`,
-   `articles/articles-manifest.json`, or `miracles/miracles-manifest.json`).
+   (`prayers/manifest.json`, `devotions/manifest.json`,
+   `articles/manifest.json`, or `miracles/manifest.json`).
 3. For devotions, confirm every `prayerId` refers to an existing prayer file.
 4. For paired translations, give both files the same `translationKey` and set each `language`.
 5. Run the app and verify the item lists, filters, and detail page render correctly.

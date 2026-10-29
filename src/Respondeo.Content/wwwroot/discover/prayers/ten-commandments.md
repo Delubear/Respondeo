@@ -3,12 +3,10 @@ id: ten-commandments
 title: "The Ten Commandments"
 sortKey: "Ten Commandments"
 summary: "The law God gave to Moses on Sinai, in the traditional catechetical form; a trustworthy mirror for examining one's conscience."
-category: daily
+prayedAt:
+  - confession
 language: en
 translationKey: ten-commandments
-tags:
-  - basic
-  - confession
 ---
 
 I am the Lord thy God;

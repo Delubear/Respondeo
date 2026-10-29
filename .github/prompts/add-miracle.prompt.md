@@ -21,5 +21,5 @@ do all of the following:
    - `region`: `europe`, `north-america`, `latin-america`, `africa`, `asia`, `middle-east`, `oceania`, `unknown`
 3. Write the body as `## `-sectioned Markdown (e.g. What happened / How the Church regards it / Why
    it matters). Present approval status honestly; set `reviewStatus: unvetted` for unverified accounts.
-4. Register the file name in `miracles/miracles-manifest.json`.
+4. Register the file name in `miracles/manifest.json`.
 5. Build and run the `Respondeo.UnitTests` Content tests; fix any failures.

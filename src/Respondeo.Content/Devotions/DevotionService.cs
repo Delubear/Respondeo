@@ -15,7 +15,7 @@ internal sealed class DevotionService(HttpClient http, IContentHtmlRenderer html
     : ContentCatalogLoader(new ContentFetcher(http, ContentCachePolicy.Immutable)), IDevotionService
 {
     private const string DevotionsRoot = DiscoverRoot + "/devotions";
-    private const string ManifestPath = DevotionsRoot + "/devotions-manifest.json";
+    private const string ManifestPath = DevotionsRoot + "/manifest.json";
 
     private readonly DevotionParser _parser = new(html);
     private readonly AsyncInitCache<Catalog> _catalog = new();

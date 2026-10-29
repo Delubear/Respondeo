@@ -17,7 +17,7 @@ internal sealed class PrayerDocument
 
     public string Summary { get; init; } = string.Empty;
 
-    public string Category { get; init; } = "other";
+    public IReadOnlyList<string> PrayedAt { get; init; } = [];
 
     public string Language { get; init; } = "en";
 

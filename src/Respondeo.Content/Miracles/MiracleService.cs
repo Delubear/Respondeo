@@ -16,7 +16,7 @@ internal sealed class MiracleService(HttpClient http, IContentHtmlRenderer html)
     MarkdownContentLoader<MiracleFrontMatter, MiracleRecordDocument>(new ContentFetcher(http, ContentCachePolicy.Immutable), new FrontMatterReader()), IMiracleService
 {
     private const string MiraclesRoot = DiscoverRoot + "/miracles";
-    private const string ManifestPath = MiraclesRoot + "/miracles-manifest.json";
+    private const string ManifestPath = MiraclesRoot + "/manifest.json";
     private const string FacetsPath = MiraclesRoot + "/facets.json";
 
     private readonly MiracleParser _parser = new(html);

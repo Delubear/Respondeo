@@ -2,12 +2,12 @@
 id: dominican-versicle-deus-in-adiutorium
 title: "Deus, in Adiutórium Meum Inténde"
 summary: "The Latin of the second versicle that opens the Dominican Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: la
 translationKey: dominican-versicle-assistance
 unlisted: true
 tags:
-  - rosary
   - marian
   - dominican
   - latin

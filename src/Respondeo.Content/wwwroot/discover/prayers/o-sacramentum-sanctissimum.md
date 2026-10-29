@@ -3,14 +3,14 @@ id: o-sacramentum-sanctissimum
 title: "O Sacraméntum Sanctíssimum"
 sortKey: "Sacramentum Sanctissimum"
 summary: "The Latin of the traditional Eucharistic aspiration of praise and thanksgiving, prayed after Benediction of the Blessed Sacrament."
-category: daily
+prayedAt:
+  - daily
+  - adoration
 language: la
 translationKey: o-sacrament-most-holy
 tags:
   - eucharist
-  - blessed sacrament
   - benediction
-  - adoration
   - latin
 ---
 

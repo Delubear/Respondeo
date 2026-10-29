@@ -2,12 +2,11 @@
 id: agnus-dei
 title: "Agnus Dei"
 summary: "The Latin of the Lamb of God."
-category: mass
+prayedAt:
+  - mass
 language: la
 translationKey: lamb-of-god
 tags:
-  - mass
-  - communion
   - latin
 ---
 

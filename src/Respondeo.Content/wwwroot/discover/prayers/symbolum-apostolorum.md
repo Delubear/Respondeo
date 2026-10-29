@@ -2,12 +2,12 @@
 id: symbolum-apostolorum
 title: "Symbolum Apostolorum"
 summary: "The Latin of the Apostles' Creed."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: la
 translationKey: apostles-creed
 tags:
-  - basic
-  - rosary
   - creed
   - latin
 ---

@@ -2,12 +2,12 @@
 id: our-father
 title: "Our Father"
 summary: "The Lord's Prayer, given by Christ himself (Matthew 6:9&ndash;13)."
-category: daily
+prayedAt:
+  - daily
+  - rosary
 language: en
 translationKey: our-father
 tags:
-  - basic
-  - rosary
   - dominical
 ---
 

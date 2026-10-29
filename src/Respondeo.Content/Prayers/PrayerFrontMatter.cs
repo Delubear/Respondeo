@@ -10,8 +10,8 @@ namespace Respondeo.Content.Prayers;
 /// </summary>
 internal sealed class PrayerFrontMatter : ContentFrontMatterBase
 {
-    [YamlMember(Alias = "category")]
-    public string Category { get; set; } = string.Empty;
+    [YamlMember(Alias = "prayedAt")]
+    public List<string> PrayedAt { get; set; } = [];
 
     [YamlMember(Alias = "language")]
     public string Language { get; set; } = string.Empty;

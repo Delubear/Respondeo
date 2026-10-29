@@ -54,7 +54,7 @@ public class MiracleServiceTests
         The Virgin appeared to St. Juan Diego.
         """;
 
-    private const string ManifestPath = "_content/Respondeo.Content/discover/miracles/miracles-manifest.json";
+    private const string ManifestPath = "_content/Respondeo.Content/discover/miracles/manifest.json";
     private const string LancianoPath = "_content/Respondeo.Content/discover/miracles/lanciano-eucharistic-miracle.md";
     private const string GuadalupePath = "_content/Respondeo.Content/discover/miracles/our-lady-of-guadalupe.md";
 

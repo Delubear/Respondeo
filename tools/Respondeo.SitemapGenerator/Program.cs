@@ -139,7 +139,7 @@ internal static class SitemapGenerator
     }
 
     // 3. Miracle detail pages. The id is the file name without its .md extension.
-    // Miracles are listed in miracles/miracles-manifest.json under a "files" array.
+    // Miracles are listed in miracles/manifest.json under a "files" array.
     private static void CollectMiracleRoutes(RouteSet routes, string discoverRoot, string miraclesManifestPath)
     {
         if (!File.Exists(miraclesManifestPath))
@@ -156,7 +156,7 @@ internal static class SitemapGenerator
     }
 
     // 3b. Saint detail pages. The id is the file name without its .md extension.
-    // Saints are listed in saints/saints-manifest.json under a "files" array.
+    // Saints are listed in saints/manifest.json under a "files" array.
     private static void CollectSaintRoutes(RouteSet routes, string saintsManifestPath)
     {
         if (!File.Exists(saintsManifestPath))
@@ -501,11 +501,11 @@ internal readonly record struct ContentPaths(
             ContentRoot: contentRoot,
             ContentManifest: Path.Combine(contentRoot, "manifest.json"),
             DiscoverRoot: discoverRoot,
-            PrayersManifest: Path.Combine(discoverRoot, "prayers", "prayers-manifest.json"),
-            DevotionsManifest: Path.Combine(discoverRoot, "devotions", "devotions-manifest.json"),
-            ArticlesManifest: Path.Combine(discoverRoot, "articles", "articles-manifest.json"),
-            MiraclesManifest: Path.Combine(discoverRoot, "miracles", "miracles-manifest.json"),
-            SaintsManifest: Path.Combine(discoverRoot, "saints", "saints-manifest.json"));
+            PrayersManifest: Path.Combine(discoverRoot, "prayers", "manifest.json"),
+            DevotionsManifest: Path.Combine(discoverRoot, "devotions", "manifest.json"),
+            ArticlesManifest: Path.Combine(discoverRoot, "articles", "manifest.json"),
+            MiraclesManifest: Path.Combine(discoverRoot, "miracles", "manifest.json"),
+            SaintsManifest: Path.Combine(discoverRoot, "saints", "manifest.json"));
     }
 }
 

@@ -2,12 +2,12 @@
 id: symbolum-nicaenum
 title: "Symbolum Nicaenum"
 summary: "The Latin of the Nicene Creed."
-category: daily
+prayedAt:
+  - daily
+  - mass
 language: la
 translationKey: nicene-creed
 tags:
-  - basic
-  - mass
   - creed
   - latin
 ---

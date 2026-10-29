@@ -32,7 +32,7 @@
 				{
 					@if (Options(facet).Count > 0)
 					{
-						<TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="PrayerBrowse.Label(facet.Key)" Counts="Counts(facet)" />
+						<TopicFilter Title="@title" Topics="Options(facet)" Selected="Selected(facet.Key)" SelectedChanged="set => OnFacetChanged(facet.Key, set)" DisplayLabel="Browser.Label(facet.Key)" Counts="Counts(facet)" />
 					}
 				}
 				<ClearFiltersButton Active="_browse.HasActiveFilters" OnClear="ClearFilters" />
@@ -45,7 +45,7 @@
                 <ChildContent>
                     @foreach (var p in Filtered)
                     {
-                        <Card Href="@ContentRoutes.PrayerHref(p.Id)" Title="@p.Title" Subtitle="@p.LatinTitle" Pills="@(new[] { Browser.FormatCategory(p.Category) })" Summary="@p.Summary" Cta="Pray &rarr;" Level="2" />
+                        <Card Href="@ContentRoutes.PrayerHref(p.Id)" Title="@p.Title" Subtitle="@p.LatinTitle" Pills="@(new[] { Browser.PrimaryPrayedAt(p) })" Summary="@p.Summary" Cta="Pray &rarr;" Level="2" />
                     }
                 </ChildContent>
             </FilterResults>
@@ -55,9 +55,9 @@
 </section>
 
 @code {
-	// Optional shareable-link filters, e.g. discover/prayers?category=marian&tag=mercy. Read once on load; the URL is never updated.
+	// Optional shareable-link filters, e.g. discover/prayers?prayedAt=rosary&tag=mercy. Read once on load; the URL is never updated.
 	[SupplyParameterFromQuery(Name = "q")] public string? LinkQuery { get; set; }
-	[SupplyParameterFromQuery(Name = "category")] public string[]? LinkCategories { get; set; }
+	[SupplyParameterFromQuery(Name = "prayedAt")] public string[]? LinkPrayedAt { get; set; }
 	[SupplyParameterFromQuery(Name = "tag")] public string[]? LinkTags { get; set; }
 
 	private IReadOnlyList<PrayerSummary>? _prayers;
@@ -69,7 +69,7 @@
 	// The rail, in display order. Each facet's key is also its remembered-state key.
 	private static readonly (Facet<PrayerSummary> Facet, string Title)[] _rail = 
 	[
-		(PrayerBrowse.CategoryFacet, "Category"),
+		(PrayerBrowse.PrayedAtFacet, "Prayed at"),
 		(PrayerBrowse.TagFacet, "Tags"),
 	];
 
@@ -86,7 +86,7 @@
 		_browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
 		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
 		{
-			[PrayerBrowse.CategoryFacet.Key] = LinkCategories,
+			[PrayerBrowse.PrayedAtFacet.Key] = LinkPrayedAt,
 			[PrayerBrowse.TagFacet.Key] = LinkTags,
 		});
 		foreach (var facet in PrayerBrowse.AllFacets)
@@ -94,6 +94,7 @@
 			_selected[facet.Key] = new HashSet<string>(_browse.GetFilter(facet.Key), StringComparer.OrdinalIgnoreCase);
 		}
 
+		Browser.Facets = await PrayerService.GetFacetsAsync() ?? PrayerFacetCatalog.Empty;
 		_prayers = await PrayerService.GetIndexAsync();
 		_options = PrayerBrowse.AllFacets.ToDictionary(f => f.Key, f => Browser.Options(_prayers, f));
 	}

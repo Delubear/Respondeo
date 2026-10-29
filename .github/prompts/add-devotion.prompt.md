@@ -19,5 +19,5 @@ do all of the following:
    `discover/prayers/`. If a prayer is missing, add it first (see add-prayer) and register it.
 3. Use valid `bead` markers on steps: `cross`, `medal`, `large`, `small`, `between` (omit for
    non-bead steps).
-4. Register the file name in `devotions/devotions-manifest.json`.
+4. Register the file name in `devotions/manifest.json`.
 5. Build and run the `Respondeo.UnitTests` Content tests; fix any failures.

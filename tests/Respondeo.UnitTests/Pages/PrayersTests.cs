@@ -1,4 +1,4 @@
-using Bunit;
+﻿using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -37,7 +37,7 @@ public class PrayersTests : TestContext
             Id = "hail-mary",
             Title = "Hail Mary",
             Summary = "The angelic salutation.",
-            Category = "marian",
+            PrayedAt = ["rosary"],
             Tags = ["rosary", "marian"],
         },
         new PrayerSummary
@@ -45,7 +45,7 @@ public class PrayersTests : TestContext
             Id = "our-father",
             Title = "Our Father",
             Summary = "The prayer the Lord taught.",
-            Category = "basic",
+            PrayedAt = ["daily"],
             Tags = ["basic"],
         },
     ];
@@ -66,7 +66,7 @@ public class PrayersTests : TestContext
         var cut = RenderComponent<Prayers>();
 
         var sidebarTitles = cut.FindAll("h2.filter-rail__title").Select(h => h.TextContent.Trim()).ToList();
-        Assert.Contains("Category", sidebarTitles);
+        Assert.Contains("Prayed at", sidebarTitles);
         Assert.Contains("Tags", sidebarTitles);
     }
 
@@ -86,11 +86,11 @@ public class PrayersTests : TestContext
     }
 
     [Fact]
-    public void Search_by_category_label_filters_to_matching_prayers()
+    public void Search_by_prayed_at_label_filters_to_matching_prayers()
     {
         var cut = RenderComponent<Prayers>();
 
-        cut.Find("input#prayer-search").Input("Marian");
+        cut.Find("input#prayer-search").Input("Rosary");
 
         cut.WaitForAssertion(() =>
         {

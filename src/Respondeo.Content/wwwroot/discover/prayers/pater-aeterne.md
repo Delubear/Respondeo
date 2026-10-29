@@ -2,12 +2,12 @@
 id: pater-aeterne
 title: "Pater Aetérne"
 summary: "The Latin of the offering prayed on the Our Father beads of the Chaplet of Divine Mercy."
-category: chaplet
+prayedAt:
+  - chaplet
 language: la
 translationKey: divine-mercy-eternal-father
 tags:
   - divine-mercy
-  - chaplet
   - latin
 ---
 

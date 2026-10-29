@@ -56,7 +56,7 @@ public class ArticlesTests : TestContext
 
         var handler = new StubHandler(new Dictionary<string, string>
         {
-            ["_content/Respondeo.Content/discover/articles/articles-manifest.json"] = DiscoverManifest,
+            ["_content/Respondeo.Content/discover/articles/manifest.json"] = DiscoverManifest,
             ["_content/Respondeo.Content/discover/articles/confession.md"] = ConfessionMd,
             ["_content/Respondeo.Content/discover/articles/eucharist.md"] = EucharistMd,
             ["_content/Respondeo.Content/inquiry/manifest.json"] = ContentManifest,

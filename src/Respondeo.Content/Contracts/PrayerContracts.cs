@@ -26,8 +26,8 @@ public sealed class PrayerSummary
     /// <summary>Short one-line description for cards and previews.</summary>
     public string Summary { get; init; } = string.Empty;
 
-    /// <summary>The category slug the prayer belongs to (e.g. "marian", "daily", "mass").</summary>
-    public string Category { get; init; } = "other";
+    /// <summary>The occasions the prayer is prayed at (e.g. "daily", "mass", "rosary"), in display order.</summary>
+    public IReadOnlyList<string> PrayedAt { get; init; } = [];
 
     /// <summary>Free-text tags for extra searchable categorization.</summary>
     public IReadOnlyList<string> Tags { get; init; } = [];
@@ -53,8 +53,8 @@ public sealed class Prayer
     /// <summary>Short one-line description.</summary>
     public string Summary { get; init; } = string.Empty;
 
-    /// <summary>The category slug the prayer belongs to.</summary>
-    public string Category { get; init; } = "other";
+    /// <summary>The occasions the prayer is prayed at (e.g. "daily", "mass", "rosary"), in display order.</summary>
+    public IReadOnlyList<string> PrayedAt { get; init; } = [];
 
     /// <summary>The language of this prayer's text (e.g. "en", "la"). Defaults to "en".</summary>
     public string Language { get; init; } = "en";

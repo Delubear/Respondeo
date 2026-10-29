@@ -15,11 +15,11 @@ contract. Ready-to-copy templates live under `docs/templates/`.
 1. **File name stem must equal the `id`.** `hail-mary.md` has `id: hail-mary`.
 2. **Register the new file in its manifest** — this is the most-forgotten step and is enforced by a
    unit test:
-   - prayers -> `prayers/prayers-manifest.json`
-   - devotions -> `devotions/devotions-manifest.json`
-   - articles -> `articles/articles-manifest.json`
-   - miracles -> `miracles/miracles-manifest.json`
-   - saints -> `saints/saints-manifest.json`
+   - prayers -> `prayers/manifest.json`
+   - devotions -> `devotions/manifest.json`
+   - articles -> `articles/manifest.json`
+   - miracles -> `miracles/manifest.json`
+   - saints -> `saints/manifest.json`
 3. **Copyright care:** only catalog prayers/texts that are public-domain or traditional. When a
    translation credit is required, add an `attribution` line.
 4. **`id` / slug:** lowercase, hyphenated, stable.

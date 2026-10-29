@@ -5,7 +5,14 @@ namespace Respondeo.UnitTests.Services;
 
 public class PrayerBrowseTests
 {
-    private readonly PrayerBrowse _browse = new();
+    private readonly PrayerBrowse _browse = new()
+    {
+        Facets = new PrayerFacetCatalog
+        {
+            PrayedAt = new Dictionary<string, string> { ["daily"] = "Daily", ["mass"] = "Holy Mass", ["rosary"] = "Rosary" },
+            Tags = new Dictionary<string, string> { ["marian"] = "Marian", ["dominical"] = "Dominical" },
+        },
+    };
 
     private static readonly SortOption<PrayerSummary> SortAsc =
         new("title-asc", "Title (A–Z)", rows => rows.OrderBy(p => p.SortValue, StringComparer.CurrentCultureIgnoreCase));
@@ -17,98 +24,94 @@ public class PrayerBrowseTests
             Id = "hail-mary",
             Title = "Hail Mary",
             LatinTitle = "Ave Maria",
-            Summary = "The angelic salutation.",
-            Category = "marian",
-            Tags = ["rosary", "marian"],
-        },
-        new PrayerSummary
-        {
-            Id = "our-father",
-            Title = "Our Father",
-            Summary = "The prayer the Lord taught.",
-            Category = "basic",
-            Tags = ["basic"],
-        },
-        new PrayerSummary
-        {
-            Id = "unsorted",
-            Title = "A Nameless Prayer",
-            Summary = "No particular category.",
-            Category = "other",
-            Tags = [],
-        },
-    ];
+			Summary = "The angelic salutation.",
+			PrayedAt = ["daily", "rosary"],
+			Tags = ["marian"],
+		},
+		new PrayerSummary
+		{
+			Id = "our-father",
+			Title = "Our Father",
+			Summary = "The prayer the Lord taught.",
+			PrayedAt = ["mass"],
+			Tags = ["dominical"],
+		},
+		new PrayerSummary
+		{
+			Id = "unsorted",
+			Title = "A Nameless Prayer",
+			Summary = "No particular occasion.",
+			PrayedAt = [],
+			Tags = [],
+		},
+	];
 
-    [Fact]
-    public void FormatCategory_capitalizes_a_slug()
-    {
-        Assert.Equal("Marian", _browse.FormatCategory("marian"));
-    }
+	[Fact]
+	public void Labels_come_from_the_catalog_and_humanize_unmapped_slugs()
+	{
+		var prayedAt = _browse.Label(PrayerBrowse.PrayedAtFacet.Key);
 
-    [Theory]
-    [InlineData("other")]
-    [InlineData("")]
-    [InlineData(" ")]
-    public void FormatCategory_returns_null_for_the_neutral_bucket(string category)
-    {
-        Assert.Null(_browse.FormatCategory(category));
-    }
+		Assert.Equal("Holy Mass", prayedAt("mass"));
+		Assert.Equal("Night prayer", prayedAt("night-prayer"));
+		Assert.Equal("Marian", _browse.Label(PrayerBrowse.TagFacet.Key)("marian"));
+	}
 
-    [Fact]
-    public void Categories_excludes_other_and_is_sorted()
-    {
-        var categories = _browse.Categories(SampleIndex());
+	[Fact]
+	public void PrimaryPrayedAt_is_the_first_occasion_or_null()
+	{
+		var index = SampleIndex();
 
-        Assert.Equal(["basic", "marian"], categories);
-    }
+		Assert.Equal("Daily", _browse.PrimaryPrayedAt(index[0]));
+		Assert.Null(_browse.PrimaryPrayedAt(index[2]));
+	}
 
-    [Fact]
-    public void CategoryLabels_are_display_formatted()
-    {
-        var labels = _browse.CategoryLabels(["basic", "marian"]);
+	[Fact]
+	public void PrayedAt_options_are_slugs_sorted_by_label()
+	{
+		var options = _browse.Options(SampleIndex(), PrayerBrowse.PrayedAtFacet);
 
-        Assert.Equal(["Basic", "Marian"], labels);
-    }
+		Assert.Equal(["daily", "mass", "rosary"], options);
+	}
 
-    [Fact]
-    public void Tags_are_distinct_and_sorted()
-    {
-        var tags = _browse.Tags(SampleIndex());
+	[Fact]
+	public void Tags_are_distinct_and_sorted()
+	{
+		var tags = _browse.Tags(SampleIndex());
 
-        Assert.Equal(["basic", "marian", "rosary"], tags);
-    }
+		Assert.Equal(["dominical", "marian"], tags);
+	}
 
-    [Fact]
-    public void Filter_without_criteria_returns_all_sorted_by_title()
-    {
-        var results = _browse.Filter(SampleIndex(), "", Empty(), Empty(), SortAsc);
+	[Fact]
+	public void Filter_without_criteria_returns_all_sorted_by_title()
+	{
+		var results = _browse.Filter(SampleIndex(), "", Empty(), Empty(), SortAsc);
 
-        Assert.Equal(["A Nameless Prayer", "Hail Mary", "Our Father"], results.Select(p => p.Title));
-    }
+		Assert.Equal(["A Nameless Prayer", "Hail Mary", "Our Father"], results.Select(p => p.Title));
+	}
 
-    [Fact]
-    public void Filter_by_category_matches_the_display_label()
-    {
-        var results = _browse.Filter(SampleIndex(), "", Selected("Marian"), Empty(), SortAsc);
+	[Fact]
+	public void Filter_by_prayed_at_matches_any_occasion_slug()
+	{
+		var results = _browse.Filter(SampleIndex(), "", Selected("rosary"), Empty(), SortAsc);
 
-        Assert.Equal(["hail-mary"], results.Select(p => p.Id));
-    }
+		Assert.Equal(["hail-mary"], results.Select(p => p.Id));
+	}
 
-    [Fact]
-    public void Filter_by_tag_matches_any_selected_tag()
-    {
-        var results = _browse.Filter(SampleIndex(), "", Empty(), Selected("rosary"), SortAsc);
+	[Fact]
+	public void Filter_by_tag_matches_any_selected_tag()
+	{
+		var results = _browse.Filter(SampleIndex(), "", Empty(), Selected("marian"), SortAsc);
 
-        Assert.Equal(["hail-mary"], results.Select(p => p.Id));
-    }
+		Assert.Equal(["hail-mary"], results.Select(p => p.Id));
+	}
 
-    [Fact]
-    public void Filter_by_query_matches_title_summary_tags_and_category()
-    {
-        Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "angelic", Empty(), Empty(), SortAsc).Select(p => p.Id));
-        Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "rosary", Empty(), Empty(), SortAsc).Select(p => p.Id));
-        Assert.Equal(["our-father"], _browse.Filter(SampleIndex(), "basic", Empty(), Empty(), SortAsc).Select(p => p.Id));
-    }
+	[Fact]
+	public void Filter_by_query_matches_title_summary_tags_and_prayed_at()
+	{
+		Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "angelic", Empty(), Empty(), SortAsc).Select(p => p.Id));
+		Assert.Equal(["hail-mary"], _browse.Filter(SampleIndex(), "marian", Empty(), Empty(), SortAsc).Select(p => p.Id));
+		Assert.Equal(["our-father"], _browse.Filter(SampleIndex(), "holy mass", Empty(), Empty(), SortAsc).Select(p => p.Id));
+	}
 
     [Fact]
     public void Filter_by_query_matches_the_latin_title()

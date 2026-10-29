@@ -2,7 +2,8 @@
 id: angelus-domini
 title: "Angelus Domini"
 summary: "The Latin of the Angelus."
-category: marian
+prayedAt:
+  - daily
 language: la
 translationKey: angelus
 tags:

@@ -3,14 +3,14 @@ id: o-sacrament-most-holy
 title: "O Sacrament Most Holy"
 sortKey: "Sacrament Most Holy"
 summary: "The traditional Eucharistic aspiration of praise and thanksgiving, prayed after Benediction of the Blessed Sacrament."
-category: daily
+prayedAt:
+  - daily
+  - adoration
 language: en
 translationKey: o-sacrament-most-holy
 tags:
   - eucharist
-  - blessed sacrament
   - benediction
-  - adoration
 ---
 
 O Sacrament most holy,

@@ -70,7 +70,7 @@ public class SaintServiceTests
         """;
 
     private const string Root = "_content/Respondeo.Content/discover/saints";
-    private const string ManifestPath = Root + "/saints-manifest.json";
+    private const string ManifestPath = Root + "/manifest.json";
     private const string FacetsPath = Root + "/facets.json";
     private const string FrancisPath = Root + "/francis-of-assisi.md";
     private const string TheresePath = Root + "/therese-of-lisieux.md";

@@ -2,11 +2,11 @@
 id: hail-holy-queen
 title: "Hail Holy Queen"
 summary: "The Salve Regina: the concluding antiphon of the Rosary."
-category: marian
+prayedAt:
+  - rosary
 language: en
 translationKey: hail-holy-queen
 tags:
-  - rosary
   - marian
   - antiphon
 ---

@@ -3,12 +3,10 @@ id: beatitudes
 title: "The Beatitudes"
 sortKey: "Beatitudes"
 summary: "Christ's blessings from the Sermon on the Mount (Matthew 5:3-10, Douay-Rheims), the portrait of the life He calls us to."
-category: daily
+prayedAt:
+  - confession
 language: en
 translationKey: beatitudes
-tags:
-  - basic
-  - confession
 ---
 
 Blessed are the poor in spirit:

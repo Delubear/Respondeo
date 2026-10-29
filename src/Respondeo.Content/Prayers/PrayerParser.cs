@@ -27,7 +27,7 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
         Title = meta.Title,
         SortValue = meta.SortValue,
         Summary = meta.Summary,
-        Category = NormalizeSlug(meta.Category, "other"),
+        PrayedAt = [.. meta.PrayedAt.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim().ToLowerInvariant()).Distinct()],
         Language = NormalizeSlug(meta.Language, "en"),
         TranslationKey = string.IsNullOrWhiteSpace(meta.TranslationKey) ? null : meta.TranslationKey.Trim(),
         Html = html.ToHtmlPreservingLineBreaks(AnnotateVersicleMarkers(body.Trim())),

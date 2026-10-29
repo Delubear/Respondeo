@@ -2,12 +2,12 @@
 id: dominican-versicle-assistance-departed
 title: "May the Divine Assistance Remain Always with Us"
 summary: "The concluding versicle and response of the Dominican Rosary, prayed after the closing collect."
-category: marian
+prayedAt:
+  - rosary
 language: en
 translationKey: dominican-versicle-assistance-departed
 unlisted: true
 tags:
-  - rosary
   - marian
   - dominican
 ---
