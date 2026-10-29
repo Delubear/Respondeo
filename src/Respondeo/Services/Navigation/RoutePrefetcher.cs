@@ -1,6 +1,7 @@
 using Respondeo.Bible.Contracts;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Summa.Contracts;
+using Respondeo.Navigation;
 
 namespace Respondeo.Services.Navigation;
 
@@ -22,43 +23,43 @@ public sealed class RoutePrefetcher(
 {
     public async Task PrefetchAsync(string path)
     {
-        var segments = path.Split('?', '#')[0].Trim('/').Split('/', StringSplitOptions.RemoveEmptyEntries);
+        var segments = RoutePath.Segments(path);
 
         try
         {
             switch (segments)
             {
-                case ["summa", var id]:
+                case [RoutePath.Summa, var id]:
                     await Task.WhenAll(summa.GetQuestionAsync(parts.ToStorageId(parts.Canonicalize(id) ?? id)), summa.GetIndexAsync());
                     break;
-                case ["bible", var code, var book]:
+                case [RoutePath.Bible, var code, var book]:
                     await PrefetchBibleChapterAsync(code, book, 1);
                     break;
-                case ["bible", var code, var book, var chapter] when int.TryParse(chapter, out var number):
+                case [RoutePath.Bible, var code, var book, var chapter] when int.TryParse(chapter, out var number):
                     await PrefetchBibleChapterAsync(code, book, number);
                     break;
-                case ["discover", "articles"]:
+                case [RoutePath.Discover, RoutePath.Articles]:
                     await articles.GetIndexAsync();
                     break;
-                case ["discover", "saints"]:
+                case [RoutePath.Discover, RoutePath.Saints]:
                     await Task.WhenAll(saints.GetFacetsAsync(), saints.GetIndexAsync());
                     break;
-                case ["discover", "prayers"]:
+                case [RoutePath.Discover, RoutePath.Prayers]:
                     await prayers.GetIndexAsync();
                     break;
-                case ["discover", "articles", var id]:
+                case [RoutePath.Discover, RoutePath.Articles, var id]:
                     await Task.WhenAll(articles.GetArticleAsync(id), prayers.GetIndexAsync());
                     break;
-                case ["discover", "saints", var id]:
+                case [RoutePath.Discover, RoutePath.Saints, var id]:
                     await Task.WhenAll(saints.GetFacetsAsync(), saints.GetByIdAsync(id), prayers.GetIndexAsync());
                     break;
-                case ["discover", "miracles"]:
+                case [RoutePath.Discover, RoutePath.Miracles]:
                     await Task.WhenAll(miracles.GetFacetsAsync(), miracles.GetIndexAsync());
                     break;
-                case ["discover", "miracles", var id]:
+                case [RoutePath.Discover, RoutePath.Miracles, var id]:
                     await Task.WhenAll(miracles.GetFacetsAsync(), miracles.GetByIdAsync(id), prayers.GetIndexAsync());
                     break;
-                case ["discover", "prayers", var id]:
+                case [RoutePath.Discover, RoutePath.Prayers, var id]:
                     await prayers.GetPrayerAsync(id);
                     break;
                 case [_, var id]:

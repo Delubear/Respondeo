@@ -26,16 +26,22 @@ public sealed record FloatingGuideState(
 public static class FloatingGuideRoutes
 {
     /// <summary>Discover-area browse pages that show only the base (unraised) liturgical orb.</summary>
-    private static readonly string[] LiturgicalBaseRoutes = ["discover", "discover/miracles", "discover/devotions", "discover/articles"];
+    private static readonly string[] LiturgicalBaseRoutes =
+    [
+        RoutePath.Discover,
+        $"{RoutePath.Discover}/{RoutePath.Miracles}",
+        $"{RoutePath.Discover}/{RoutePath.Devotions}",
+        $"{RoutePath.Discover}/{RoutePath.Articles}",
+    ];
 
     /// <summary>Prayer browse route. Its detail pages nest beneath it.</summary>
-    private const string PrayersBrowse = "discover/prayers";
+    private const string PrayersBrowse = $"{RoutePath.Discover}/{RoutePath.Prayers}";
 
     /// <summary>Saint browse route. Its detail pages nest beneath it.</summary>
-    private const string SaintsBrowse = "discover/saints";
+    private const string SaintsBrowse = $"{RoutePath.Discover}/{RoutePath.Saints}";
 
     /// <summary>Summa browse route. Its question pages nest beneath it.</summary>
-    private const string SummaBrowse = "summa";
+    private const string SummaBrowse = RoutePath.Summa;
 
     /// <summary>
     /// Resolves which orbs a route shows. The prayers and saints browse pages raise the liturgical orb above their sibling guide;
@@ -65,17 +71,7 @@ public static class FloatingGuideRoutes
     /// <summary>
     /// Normalizes a relative URL to a comparable route key: drops any query/fragment, trims slashes, and lower-cases. Safe to call on an already-normalized value.
     /// </summary>
-    public static string Normalize(string relativePath)
-    {
-        var path = relativePath;
-        var cut = path.IndexOfAny(['?', '#']);
-        if (cut >= 0)
-        {
-            path = path[..cut];
-        }
-
-        return path.Trim('/').ToLowerInvariant();
-    }
+    public static string Normalize(string relativePath) => RoutePath.StripQueryAndFragment(relativePath).ToLowerInvariant();
 
     /// <summary>True when <paramref name="route"/> is the browse route itself or one of its nested detail routes.</summary>
     private static bool IsIn(string route, string browseRoute) => route == browseRoute || route.StartsWith($"{browseRoute}/", StringComparison.Ordinal);
