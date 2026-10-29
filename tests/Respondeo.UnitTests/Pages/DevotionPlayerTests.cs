@@ -168,6 +168,46 @@ public class DevotionPlayerTests : TestContext
     }
 
     [Fact]
+    public void Opening_the_current_steps_book_marks_it_prayed()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        cut.FindAll(".devotion__prayer-book").ToList()[0].Click();
+
+        Assert.Single(cut.FindAll(".devotion__prayer-row.is-done"));
+    }
+
+    [Fact]
+    public void Opening_a_later_steps_book_shows_its_text_without_marking_anything()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        cut.FindAll(".devotion__prayer-book").ToList()[2].Click();
+
+        Assert.Contains("Hail Mary", cut.Find(".dialog__title").TextContent);
+        Assert.Contains("Hail Mary...", cut.Find(".dialog__body").TextContent);
+        Assert.Empty(cut.FindAll(".devotion__prayer-row.is-done"));
+    }
+
+    [Fact]
+    public void Opening_another_prayer_replaces_the_dialog_contents()
+    {
+        ArrangeSimpleDevotion();
+        var cut = RenderComponent<DevotionPlayer>(p => p.Add(c => c.Id, "divine-mercy-chaplet"));
+        cut.Find("button.card").Click();
+
+        cut.FindAll(".devotion__prayer-book").ToList()[0].Click();
+        cut.FindAll(".devotion__prayer-book").ToList()[1].Click();
+
+        Assert.Contains("Hail Mary", cut.Find(".dialog__title").TextContent);
+        Assert.DoesNotContain("Our Father...", cut.Find(".dialog__body").TextContent);
+    }
+
+    [Fact]
     public void Shows_a_not_found_message_for_a_missing_devotion()
     {
         _devotions.GetDevotionAsync("nope").Returns((Devotion?)null);

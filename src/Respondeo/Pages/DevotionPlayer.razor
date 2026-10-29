@@ -55,7 +55,7 @@ else
         </div>
     </section>
 
-    <DevotionPrayerDialog @ref="_prayerDialog" Title="@_openPrayerTitle" ExplanationHtml="@_openExplanationHtml" PrayerHtml="@_openPrayerHtml" />
+    <DevotionPrayerDialog @ref="_prayerDialog" Title="@_openView?.Title" ExplanationHtml="@_openView?.ExplanationHtml" PrayerHtml="@_openView?.PrayerHtml" />
 }
 
 @code {
@@ -86,9 +86,7 @@ else
     private DevotionProgress? _savedProgress;
 
     private DevotionPrayerDialog? _prayerDialog;
-    private string? _openPrayerTitle;
-    private string? _openPrayerHtml;
-    private string? _openExplanationHtml;
+    private DevotionPrayerView? _openView;
 
     // When true, the thread shows each prayer's Latin name (and the book opens its Latin text). Only offered when the devotion declares LatinAvailable.
     private bool _showLatin;
@@ -274,14 +272,7 @@ else
 
     private async Task OpenPrayer(DevotionBead bead)
     {
-        var view = DevotionPrayerView.ForPrayer(bead, _showLatin);
-        _openPrayerTitle = view.Title;
-        _openPrayerHtml = view.PrayerHtml;
-        _openExplanationHtml = view.ExplanationHtml;
-        if (_prayerDialog is not null)
-        {
-            await _prayerDialog.ShowAsync();
-        }
+        await ShowDialogAsync(DevotionPrayerView.ForPrayer(bead, _showLatin));
 
         // Reading the words of the current step counts as praying it: mark it complete so opening the book keeps the thread moving without a separate tap on the step itself.
         if (bead.IsPrayer && bead.PrayerOrdinal == _session!.CompletedCount)
@@ -293,21 +284,15 @@ else
     // Opens the info dialog for a section banner: an explanation only, with no words to pray and no completion side effect (a section is not a step the reader marks).
     private async Task OpenInfo(DevotionBead bead)
     {
-        var view = DevotionPrayerView.ForInfo(bead);
-        _openPrayerTitle = view.Title;
-        _openPrayerHtml = view.PrayerHtml;
-        _openExplanationHtml = view.ExplanationHtml;
+        await ShowDialogAsync(DevotionPrayerView.ForInfo(bead));
+    }
+
+    private async Task ShowDialogAsync(DevotionPrayerView view)
+    {
+        _openView = view;
         if (_prayerDialog is not null)
         {
             await _prayerDialog.ShowAsync();
-        }
-    }
-
-    private async Task ClosePrayer()
-    {
-        if (_prayerDialog is not null)
-        {
-            await _prayerDialog.CloseAsync();
         }
     }
 
