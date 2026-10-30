@@ -100,6 +100,15 @@ public sealed record OfficeStep(OfficeStepKind Kind, string Title)
 
     /// <summary>True when <see cref="Text"/> or <see cref="Antiphon"/> comes from the licensed texts and must carry the acknowledgment.</summary>
     public bool IsLicensedText { get; init; }
+
+    /// <summary>
+    /// The stanzas of a responsorial psalm, as canonical (modern-numbered) citations. The antiphon is repeated after each
+    /// stanza and after the doxology. Each translation maps the citations to its own numbering, so stanzas are translation-agnostic.
+    /// </summary>
+    public IReadOnlyList<PsalmodyReference>? Stanzas { get; init; }
+
+    /// <summary>Alternative elements the user may choose between, e.g. the Invitatory psalms.</summary>
+    public IReadOnlyList<OfficeStep>? Options { get; init; }
 }
 
 /// <summary>A link to an official or authoritative online source for the full texts of the hour.</summary>

@@ -36,6 +36,13 @@ internal static class BibleCitation
         foreach (var part in match.Groups["refs"].Value.Split([',', ';'], StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
         {
             var bounds = part.Split('-', StringSplitOptions.TrimEntries);
+            if (chapter == 0 && bounds.Length == 1 && !part.Contains(':') && int.TryParse(part, out var wholeChapter))
+            {
+                var (from, _) = convertPsalms ? HebrewToVulgatePsalm(wholeChapter, 1) : (wholeChapter, 1);
+                spans.Add(new VerseSpan(from, 1, from, EndOfChapter));
+                continue;
+            }
+
             if (bounds.Length > 2 || !TryPoint(bounds[0], ref chapter, out var startChapter, out var startVerse))
             {
                 return null;

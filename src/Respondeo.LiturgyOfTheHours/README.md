@@ -73,7 +73,16 @@ intercessions, and collects) from a single JSON content file, so a license only 
   static asset. It still ships inside the public WASM bundle, so it is publicly readable in principle; confirm this is acceptable under the license.
 - **Lookup keys**, most specific first: `{season}/w{week}/{weekday}/{hour}/{element}`, `{hour}/{element}`, `{element}`.
   Elements: `hymn`, `psalm-antiphon-1..3`, `reading`, `responsory`, `gospel-canticle` (antiphon), `intercessions`, `collect`.
-- **Acknowledgment.** The file's `acknowledgment` string is shown under any hour that displays licensed text. Put the exact wording ICEL requires there.
+- **Acknowledgment.** The file's `acknowledgment` string is shown directly under the hour's title and again at the end of the page whenever
+  licensed text is displayed. ICEL's "Use of ICEL Materials on Global Computer Networks" policy requires it on the first and last
+  pages/frames displaying the text. It must name the text, carry ©, the year, ICEL's corporate title, and "All rights reserved", e.g.
+  "Excerpts from the English translation of *The Liturgy of the Hours* © 1974, International Commission on English in the Liturgy Corporation. All rights reserved."
+- **Fail closed.** If a non-sample file's acknowledgment lacks ©, ICEL, or "All rights reserved" (`HoursAcknowledgment.IsValid`),
+  no licensed text is shown and the player falls back to official-source links.
+- **Policy conditions (Internet use, no written permission needed).** Only texts approved by the bishops' conference, confirmed by the Holy See,
+  and promulgated may be used, and they must be followed exactly. The site must charge no fee to access it or the texts.
+  The site must not use the ICEL name in a way that implies affiliation, sponsorship, or endorsement. ICEL may terminate or modify this permission.
+  The permission covers the website only, not other forms such as apps or print. Questions go to the ICEL Secretariat: permission@eliturgy.org.
 - **Presentation.** Text keeps its authored sense lines; antiphons are marked with a red *Ant.* and repeated after the psalm or canticle;
   psalm headings give both numberings. The psalm text itself stays the public-domain Douay-Rheims until the Grail Psalms are licensed from GIA.
 

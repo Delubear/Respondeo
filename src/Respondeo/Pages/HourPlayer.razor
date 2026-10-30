@@ -17,6 +17,10 @@ else
     <section class="reading-wide hourplayer fade-enter">
         <h1 class="hourplayer__title">@_office.Title</h1>
         <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
+        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
+        {
+            <p class="hourplayer__ack" role="note">@_office.Acknowledgment</p>
+        }
         <ConstructionNotice Area="the Liturgy of the Hours" />
         @if (_office.IsSampleContent)
         {
@@ -70,8 +74,65 @@ else
                             {
                                 <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
                             }
+                            @if (step.Options is { Count: > 0 } options)
+                            {
+                                <div class="hourplayer__options">
+                                    @for (var optionIndex = 0; optionIndex < options.Count; optionIndex++)
+                                    {
+                                        var option = options[optionIndex];
+                                        var optionKey = (index, optionIndex);
+                                        <details class="hourplayer__option">
+                                            <summary>
+                                                @option.Title@(" ")
+                                                @if (option.Reference?.DouayCitation is { } optionDouay)
+                                                {
+                                                    <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
+                                                }
+                                            </summary>
+                                            @if (option.Explanation is not null)
+                                            {
+                                                <p class="hourplayer__explain">@option.Explanation</p>
+                                            }
+                                            @if (option.Antiphon is not null)
+                                            {
+                                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                                            }
+                                            @if (option.Text is not null)
+                                            {
+                                                <p class="hourplayer__text">@option.Text</p>
+                                            }
+                                            else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
+                                            {
+                                                @foreach (var stanza in stanzas)
+                                                {
+                                                    <p class="hourplayer__text">@stanza</p>
+                                                    @if (option.Antiphon is not null)
+                                                    {
+                                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                                                    }
+                                                }
+                                                <p class="hourplayer__text">@GloryBe</p>
+                                                @if (option.Antiphon is not null)
+                                                {
+                                                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                                                }
+                                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
+                                            }
+                                            else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
+                                            {
+                                                <p class="hourplayer__text">@optionPassage</p>
+                                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
+                                            }
+                                            else if (option.UseOfficialText)
+                                            {
+                                                <p class="hourplayer__official">Read the text from an official source below.</p>
+                                            }
+                                        </details>
+                                    }
+                                </div>
+                            }
                         }
-                        else if (step.Text is not null || step.Explanation is not null)
+                        else if (step.Text is not null || step.Explanation is not null || step.Options is not null)
                         {
                             <button type="button" class="hourplayer__peek" @onclick="() => _expanded = index">Show text</button>
                         }
@@ -93,14 +154,14 @@ else
             }
         </ul>
 
-        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
-        {
-            <p class="hourplayer__ack">@_office.Acknowledgment</p>
-        }
-
         <div class="hourplayer__exit">
             <a href="discover/hours">Choose another hour</a>
         </div>
+
+        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
+        {
+            <p class="hourplayer__ack hourplayer__ack--end" role="note">@_office.Acknowledgment</p>
+        }
     </section>
 }
 
@@ -120,6 +181,8 @@ else
         "Glory be to the Father, and to the Son, and to the Holy Spirit,\nas it was in the beginning, is now, and ever shall be,\nworld without end. Amen.";
 
     private Dictionary<int, string> _passages = [];
+    private Dictionary<(int Step, int Option), string> _optionPassages = [];
+    private Dictionary<(int Step, int Option), List<string>> _optionStanzas = [];
 
     protected override async Task OnParametersSetAsync()
     {
@@ -135,6 +198,8 @@ else
         _completed = 0;
         _expanded = -1;
         _passages = [];
+        _optionPassages = [];
+        _optionStanzas = [];
 
         if (_office is null)
         {
@@ -142,6 +207,8 @@ else
         }
 
         var passages = new Dictionary<int, string>();
+        var optionPassages = new Dictionary<(int Step, int Option), string>();
+        var optionStanzas = new Dictionary<(int Step, int Option), List<string>>();
         for (var i = 0; i < _office.Steps.Count; i++)
         {
             var step = _office.Steps[i];
@@ -149,9 +216,45 @@ else
             {
                 passages[i] = step.Kind == OfficeStepKind.Reading ? text : text + "\n\n" + GloryBe;
             }
+
+            if (step.Options is { } stepOptions)
+            {
+                for (var j = 0; j < stepOptions.Count; j++)
+                {
+                    var option = stepOptions[j];
+                    if (option.Text is null && option.Stanzas is { Count: > 0 } stanzaRefs)
+                    {
+                        List<string>? texts = [];
+                        foreach (var stanzaRef in stanzaRefs)
+                        {
+                            if (await Bible.GetPassageAsync(stanzaRef.Citation) is not { } stanzaText)
+                            {
+                                texts = null;
+                                break;
+                            }
+
+                            texts.Add(stanzaText);
+                        }
+
+                        if (texts is not null)
+                        {
+                            optionStanzas[(i, j)] = texts;
+                            continue;
+                        }
+                    }
+
+                    if (option.Text is null && option.Reference is { } optionReference
+                        && await Bible.GetPassageAsync(optionReference.Citation) is { } optionText)
+                    {
+                        optionPassages[(i, j)] = optionText + "\n\n" + GloryBe;
+                    }
+                }
+            }
         }
 
         _passages = passages;
+        _optionPassages = optionPassages;
+        _optionStanzas = optionStanzas;
     }
 
     private void Toggle(int index)

@@ -151,6 +151,10 @@
     font-weight: 600;
 }
 
+[data-theme="dark"] .hourplayer__rubric {
+    color: #ef6b6f;
+}
+
 .hourplayer__antiphon {
     margin: 0.5rem 0.5rem 0;
     white-space: pre-line;
@@ -169,7 +173,23 @@
 
 .hourplayer__ack {
     max-width: 42rem;
-    margin: 1.5rem auto 0;
+    margin: 0.5rem 0 1rem;
     color: var(--ink-soft);
     font-size: 0.8rem;
+}
+
+.hourplayer__options {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.hourplayer__option {
+    border-left: 2px solid currentColor;
+    padding-left: 0.75rem;
+}
+
+.hourplayer__option > summary {
+    cursor: pointer;
+    font-weight: 600;
 }

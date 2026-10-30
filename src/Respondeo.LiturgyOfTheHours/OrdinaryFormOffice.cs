@@ -112,7 +112,8 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
             new(OfficeStepKind.Versicle, "Introductory Verse")
             {
                 Text = "V. Lord, open my lips.\nR. And my mouth will proclaim your praise.",
-                Explanation = "When Morning Prayer is the first hour of the day, it opens with the Invitatory (Psalm 95, 100, 67, or 24) instead of \"O God, come to my assistance.\"",
+                Explanation = "When Morning Prayer is the first hour of the day, it opens with the Invitatory (Psalm 95, 100, 67, or 24) instead of \"O God, come to my assistance.\" Expand a psalm below to view it.",
+                Options = InvitatoryPsalms(),
             },
             Hymn("Morning Prayer"),
         };
@@ -237,6 +238,37 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
     {
         Text = $"{OrdinaryTexts.Invitation}\n\n{OrdinaryTexts.AlleluiaNote}",
         Explanation = "Make the Sign of the Cross. Each hour opens by asking God's help to pray (Psalm 70:2).",
+    };
+
+    private static IReadOnlyList<OfficeStep> InvitatoryPsalms() =>
+    [
+        InvitatoryPsalm("Psalm 95", "The customary Invitatory psalm, a call to praise and to hear God's voice today."),
+        InvitatoryPsalm("Psalm 100", "May replace Psalm 95: all the earth is called to serve the Lord with gladness."),
+        InvitatoryPsalm("Psalm 67", "May replace Psalm 95: a prayer that all the nations may praise God."),
+        InvitatoryPsalm("Psalm 24", "May replace Psalm 95: the King of glory enters his holy place."),
+    ];
+
+    /// <summary>Stanza verse ranges (modern numbering) for each invitatory psalm, so any translation can supply its own text.</summary>
+    internal static readonly IReadOnlyDictionary<string, string[]> InvitatoryStanzaRanges = new Dictionary<string, string[]>
+    {
+        ["Psalm 95"] = ["1-2", "3-5", "6-7", "8-9", "10-11"],
+        ["Psalm 100"] = ["1-2", "3", "4", "5"],
+        ["Psalm 67"] = ["2-3", "4-5", "6-7", "8"],
+        ["Psalm 24"] = ["1-2", "3-4", "5-6", "7-8", "9-10"],
+    };
+
+    private static PsalmodyReference[]? InvitatoryStanzas(string citation) =>
+        InvitatoryStanzaRanges.TryGetValue(citation, out var ranges)
+            ? ranges.Select(range => $"{citation}:{range}").Select(c => new PsalmodyReference(c, Psalter.DouayCitation(c))).ToArray()
+            : null;
+
+    private static OfficeStep InvitatoryPsalm(string citation, string explanation) => new(OfficeStepKind.Psalm, citation)
+    {
+        Reference = new PsalmodyReference(citation, Psalter.DouayCitation(citation)),
+        Stanzas = InvitatoryStanzas(citation),
+        UseOfficialText = true,
+        Explanation = explanation,
+        Antiphon = "Come, let us worship the Lord, the King who is to come. (Sample antiphon; use the approved text of the day.)",
     };
 
     private static OfficeStep Hymn(string hour) => ProperStep(OfficeStepKind.Hymn, "Hymn", $"A hymn suited to {hour} and to the day or season.");

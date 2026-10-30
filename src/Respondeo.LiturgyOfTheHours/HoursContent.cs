@@ -33,6 +33,22 @@ internal sealed record HoursContentFile
     public Dictionary<string, LicensedText> Texts { get; init; } = [];
 }
 
+/// <summary>Checks that an acknowledgment carries the elements ICEL's publication policy requires.</summary>
+public static class HoursAcknowledgment
+{
+    /// <summary>
+    /// True when the text has the copyright symbol, ICEL's corporate title (full or abbreviated), and "All rights reserved".
+    /// Licensed texts are never shown without such an acknowledgment.
+    /// </summary>
+    public static bool IsValid(string? acknowledgment) =>
+        !string.IsNullOrWhiteSpace(acknowledgment)
+        && acknowledgment.Contains('©')
+        && (acknowledgment.Contains("International Commission on English in the Liturgy", StringComparison.Ordinal)
+            || acknowledgment.Contains("International Committee on English in the Liturgy", StringComparison.Ordinal)
+            || acknowledgment.Contains("ICEL", StringComparison.Ordinal))
+        && acknowledgment.Contains("All rights reserved", StringComparison.OrdinalIgnoreCase);
+}
+
 /// <summary>Supplies licensed proper texts for the office.</summary>
 public interface IHoursTextProvider
 {
@@ -59,6 +75,11 @@ internal sealed class EmbeddedHoursTextProvider : IHoursTextProvider
 
     public LicensedText? Find(IEnumerable<string> keys)
     {
+        if (!IsSample && !HoursAcknowledgment.IsValid(Acknowledgment))
+        {
+            return null;
+        }
+
         foreach (var key in keys)
         {
             if (Content.Value.Texts.TryGetValue(key, out var text))

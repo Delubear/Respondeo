@@ -44,6 +44,20 @@ public class BibleCitationPsalmTests
     }
 
     [Theory]
+    [InlineData(95, 94)]
+    [InlineData(100, 99)]
+    [InlineData(67, 66)]
+    [InlineData(24, 23)]
+    public void WholePsalm_ParsesToWholeVulgateChapter(int hebrew, int vulgate)
+    {
+        var translation = TestBible.All.Single(t => t.Code == "drb");
+        var passage = BibleCitation.Parse($"Psalm {hebrew}", translation);
+
+        Assert.NotNull(passage);
+        Assert.Equal(new VerseSpan(vulgate, 1, vulgate, BibleCitation.EndOfChapter), Assert.Single(passage.Spans));
+    }
+
+    [Theory]
     [InlineData("Psalm 116:1-19", 114, 1, 115, 10)]
     [InlineData("Psalm 147:1-20", 146, 1, 147, 9)]
     [InlineData("Psalm 9:1-10:18", 9, 1, 9, 39)]
@@ -63,7 +77,8 @@ public class BibleCitationPsalmTests
         Assert.Equal(new VerseSpan(15, 1, 15, 1), Assert.Single(BibleCitation.Parse("Exodus 15:1", TestBible.Drb)!.Spans));
 
     [Fact]
-    public void WholeChapter_ReturnsNull() => Assert.Null(BibleCitation.Parse("Psalm 23", TestBible.Drb));
+    public void WholeChapter_SpansEntireChapter() =>
+        Assert.Equal(new VerseSpan(22, 1, 22, BibleCitation.EndOfChapter), Assert.Single(BibleCitation.Parse("Psalm 23", TestBible.Drb)!.Spans));
 
     [Fact]
     public void CpdvData_HasNoHebrewNumberingMarkers()

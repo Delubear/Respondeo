@@ -6,6 +6,32 @@ namespace Respondeo.UnitTests.LiturgyOfTheHours;
 
 public class LiturgyOfTheHoursTests
 {
+    [Theory]
+    [InlineData("Excerpts from the English translation of The Roman Missal © 2010, International Commission on English in the Liturgy Corporation. All rights reserved.", true)]
+    [InlineData("The English translation of The Liturgy of the Hours © 1974, ICEL. All rights reserved.", true)]
+    [InlineData("The English translation of The Liturgy of the Hours 1974, ICEL. All rights reserved.", false)]
+    [InlineData("The English translation of The Liturgy of the Hours © 1974. All rights reserved.", false)]
+    [InlineData("The English translation of The Liturgy of the Hours © 1974, ICEL.", false)]
+    [InlineData("", false)]
+    [InlineData(null, false)]
+    public void HoursAcknowledgment_RequiresIcelElements(string? acknowledgment, bool expected) =>
+        Assert.Equal(expected, HoursAcknowledgment.IsValid(acknowledgment));
+
+    [Fact]
+    public void MorningPrayer_InvitatoryOptions_HaveCanonicalStanzas()
+    {
+        var office = Hours().Compose(new DateOnly(2025, 1, 15), Hour.MorningPrayer);
+        var options = office.Steps.Where(s => s.Options is not null).SelectMany(s => s.Options!).Where(o => o.Reference is not null).ToList();
+
+        Assert.NotEmpty(options);
+        foreach (var option in options)
+        {
+            Assert.NotNull(option.Stanzas);
+            Assert.NotEmpty(option.Stanzas);
+            Assert.All(option.Stanzas, s => Assert.StartsWith(option.Reference!.Citation + ":", s.Citation));
+        }
+    }
+
     [Fact]
     public void PsalterWeek_FirstSundayOfAdvent_IsWeekOne() =>
         Assert.Equal(1, PsalterWeek.For(new DateOnly(2024, 12, 1), LiturgicalSeason.Advent));

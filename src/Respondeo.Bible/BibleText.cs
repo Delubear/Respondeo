@@ -19,8 +19,8 @@ internal sealed class BibleText(HttpClient http, IBibleTranslations translations
         }
 
         return [.. match.Verses
-            .Where(v => !string.IsNullOrWhiteSpace(v.Text))
-            .Select(v => new BibleVerse(v.Verse, v.Text!.Trim()))];
+            .Select(v => new BibleVerse(v.Verse, CleanVerse(bookSlug, chapter, v.Verse, v.Text)))
+            .Where(v => v.Text.Length > 0)];
     }
 
     public async Task<string?> GetPassageAsync(string citation)
@@ -47,9 +47,10 @@ internal sealed class BibleText(HttpClient http, IBibleTranslations translations
                 {
                     var afterStart = chapter.Chapter > span.Chapter || verse.Verse >= span.StartVerse;
                     var beforeEnd = chapter.Chapter < span.EndChapter || verse.Verse <= span.EndVerse;
-                    if (afterStart && beforeEnd && !string.IsNullOrWhiteSpace(verse.Text))
+                    var cleaned = CleanVerse(passage.BookSlug, chapter.Chapter, verse.Verse, verse.Text);
+                    if (afterStart && beforeEnd && cleaned.Length > 0)
                     {
-                        text.AppendLine(verse.Text.Trim());
+                        text.AppendLine(cleaned);
                     }
                 }
             }
@@ -57,6 +58,65 @@ internal sealed class BibleText(HttpClient http, IBibleTranslations translations
 
         return text.Length == 0 ? null : text.ToString().TrimEnd();
     }
+
+    private static string CleanVerse(string bookSlug, int chapter, int verse, string? text)
+    {
+        var trimmed = text?.Trim() ?? string.Empty;
+        return bookSlug == "psalms" ? CleanPsalmVerse(chapter, verse, trimmed) : trimmed;
+    }
+
+    /// <summary>Psalms whose leading verses are entirely superscription in the Douay-Rheims numbering.</summary>
+    private static readonly Dictionary<int, int> PsalmTitleVerseCount = new()
+    {
+        [33] = 1, [50] = 2, [51] = 2, [53] = 2, [59] = 2, [71] = 1,
+    };
+
+    /// <summary>Removes a psalm's superscription from the given verse, returning an empty string when the verse is wholly title.</summary>
+    internal static string CleanPsalmVerse(int chapter, int verse, string text)
+    {
+        if (PsalmTitleVerseCount.TryGetValue(chapter, out var count) && verse <= count)
+        {
+            return string.Empty;
+        }
+
+        if (verse != 1)
+        {
+            return text;
+        }
+
+        var marker = chapter switch
+        {
+            17 => "and he said:",
+            96 => "restored again to him.",
+            _ => null,
+        };
+        if (marker is not null)
+        {
+            var index = text.IndexOf(marker, StringComparison.Ordinal);
+            return index < 0 ? text : text[(index + marker.Length)..].TrimStart();
+        }
+
+        return StripPsalmTitle(text);
+    }
+
+    /// <summary>Removes leading psalm superscriptions (e.g. "Unto the end, the Psalm of David."), which liturgical books omit.</summary>
+    internal static string StripPsalmTitle(string text)
+    {
+        while (true)
+        {
+            var match = PsalmTitle.Match(text);
+            if (!match.Success)
+            {
+                return text;
+            }
+
+            text = text[match.Length..].TrimStart();
+        }
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex PsalmTitle = new(
+        @"^[^.:;?!]{0,160}?\b(psalm|canticle|unto the end|inscription|david himself|asaph|sons of core|understanding|alleluia|prayer of|degrees)\b[^.:;?!]{0,160}?\.(\s+|$)",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
     private async Task<BookFile?> LoadBookAsync(string slug, BibleTranslation translation)
     {

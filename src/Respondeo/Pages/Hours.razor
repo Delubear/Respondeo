@@ -11,11 +11,6 @@
 
     <ConstructionNotice Area="the Liturgy of the Hours" />
 
-    <label class="hours__date">
-        Date
-        <input type="date" value="@_date.ToString("yyyy-MM-dd")" @onchange="OnDateChanged" />
-    </label>
-
     <CardGrid>
         @foreach (var hour in Enum.GetValues<Hour>())
         {
@@ -29,21 +24,13 @@
 </section>
 
 @code {
-    private DateOnly _date = DateOnly.FromDateTime(DateTime.Now);
+    private readonly DateOnly _date = DateOnly.FromDateTime(DateTime.Now);
     private readonly Hour _suggested = DateTime.Now.Hour switch
     {
         < 12 => Hour.MorningPrayer,
         < 20 => Hour.EveningPrayer,
         _ => Hour.NightPrayer,
     };
-
-    private void OnDateChanged(ChangeEventArgs e)
-    {
-        if (DateOnly.TryParse(e.Value?.ToString(), out var date))
-        {
-            _date = date;
-        }
-    }
 
     internal static string Slug(Hour hour) => hour switch
     {
