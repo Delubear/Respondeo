@@ -22,7 +22,7 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 		var day = firstVespers ? tomorrow : today;
 		var week = PsalterWeek.For(today.Date, today.Season, calendar.Options?.Region == CalendarRegion.UnitedStates);
 
-		var context = new HourContext(hour, today, day, firstVespers, NightCycleDay(today, firstVespers));
+		var context = new HourContext(hour, today, day, firstVespers, NightCycleDay(today, firstVespers), week);
 		var psalmody = hour switch
 		{
 			Hour.MorningPrayer => MorningPsalmody(today, week),
@@ -141,7 +141,7 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 	}
 
 	/// <summary>The facts about the day a template needs: the hour, the civil day, the day whose office is prayed, and the night cycle.</summary>
-	private sealed record HourContext(Hour Hour, LiturgicalDay Today, LiturgicalDay Day, bool FirstVespers, DayOfWeek NightCycleDay);
+	private sealed record HourContext(Hour Hour, LiturgicalDay Today, LiturgicalDay Day, bool FirstVespers, DayOfWeek NightCycleDay, int Week);
 
 	private static List<OfficeStep> BuildSteps(HourTemplate template, HourContext context, IReadOnlyList<string> psalmody)
 	{
@@ -176,11 +176,21 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 							? format.Replace("{celebration}", celebration.Name, StringComparison.Ordinal)
 							: step.Explanation));
 					break;
+				case StepSource.ShortReading:
+					steps.Add(ShortReadingCitation(context) is { } citation
+						? new OfficeStep(step.Kind, step.Title)
+						{
+							Reference = new PsalmodyReference(citation),
+							UseOfficialText = false,
+							Explanation = step.Explanation,
+						}
+						: ProperStep(step.Kind, step.Title, step.FallbackExplanation ?? step.Explanation));
+					break;
 				case StepSource.NightReading:
 					steps.Add(new OfficeStep(step.Kind, step.Title)
 					{
 						Reference = new PsalmodyReference(Psalter.NightPsalmody(context.NightCycleDay).Reading),
-						UseOfficialText = true,
+						UseOfficialText = false,
 						Explanation = step.Explanation,
 					});
 					break;
@@ -199,6 +209,24 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 		}
 
 		return steps;
+	}
+
+	/// <summary>The psalter short reading, used only on Ordinary Time days that are not solemnities or feasts (First Vespers follows the coming Sunday).</summary>
+	private static string? ShortReadingCitation(HourContext context)
+	{
+		if (context.Today.Season != LiturgicalSeason.OrdinaryTime || IsFestal(context.Day))
+		{
+			return null;
+		}
+
+		if (context.FirstVespers)
+		{
+			return context.Day.Date.DayOfWeek == DayOfWeek.Sunday
+				? Psalter.ShortReading(Hour.EveningPrayer, NextSundayWeek(context.Today, context.Week), DayOfWeek.Saturday)
+				: null;
+		}
+
+		return Psalter.ShortReading(context.Hour, context.Week, context.Today.Date.DayOfWeek);
 	}
 
 	private static IReadOnlyList<OfficeStep> InvitatoryPsalms()

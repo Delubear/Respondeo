@@ -50,7 +50,12 @@ internal static partial class OfficeData
 }
 
 /// <summary>The four-week psalter: citations keyed by week (index 0-3) and lower-case day name.</summary>
-internal sealed record PsalterData(IReadOnlyList<Dictionary<string, string[]>> Morning, IReadOnlyList<Dictionary<string, string[]>> Evening, Dictionary<string, NightPsalmodyData> Night);
+internal sealed record PsalterData(
+    IReadOnlyList<Dictionary<string, string[]>> Morning,
+    IReadOnlyList<Dictionary<string, string[]>> Evening,
+    Dictionary<string, NightPsalmodyData> Night,
+    IReadOnlyList<Dictionary<string, string>>? MorningReadings = null,
+    IReadOnlyList<Dictionary<string, string>>? EveningReadings = null);
 
 internal sealed record NightPsalmodyData(string[] Psalms, string Reading);
 
@@ -109,6 +114,9 @@ internal enum StepSource
 
     [JsonStringEnumMemberName("collect")]
     Collect,
+
+    [JsonStringEnumMemberName("short-reading")]
+    ShortReading,
 
     [JsonStringEnumMemberName("night-reading")]
     NightReading,

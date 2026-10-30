@@ -85,6 +85,23 @@ public class LiturgyOfTheHoursTests
         Hours().Compose(date, Hour.NightPrayer).Steps.First(s => s.Kind == kind);
 
     [Fact]
+    public void MorningPrayer_OrdinaryFeria_ShowsPsalterShortReadingInDouayRheims()
+    {
+        var reading = Hours().Compose(new DateOnly(2026, 1, 21), Hour.MorningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
+
+        Assert.False(reading.UseOfficialText);
+        Assert.Equal("Romans 8:35, 37", reading.Reference?.Citation);
+    }
+
+    [Fact]
+    public void EveningPrayer_Advent_FallsBackToProperReading()
+    {
+        var reading = Hours().Compose(new DateOnly(2025, 12, 3), Hour.EveningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
+
+        Assert.Null(reading.Reference);
+    }
+
+    [Fact]
     public void NightPrayer_OrdinaryMonday_UsesPublicDomainConcludingPrayer()
     {
         var prayer = NightStep(new DateOnly(2025, 7, 14), OfficeStepKind.Prayer);

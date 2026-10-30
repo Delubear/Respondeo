@@ -16,6 +16,13 @@ internal static class Psalter
 		return (night.Psalms, night.Reading);
 	}
 
+	/// <summary>The citation of the Ordinary Time ferial short reading for Morning or Evening Prayer, or null when none is recorded.</summary>
+	public static string? ShortReading(Hour hour, int week, DayOfWeek day)
+	{
+		var readings = hour == Hour.MorningPrayer ? OfficeData.Psalter.MorningReadings : OfficeData.Psalter.EveningReadings;
+		return readings is not null && week >= 1 && week <= readings.Count && readings[week - 1].TryGetValue(Key(day), out var citation) ? citation : null;
+	}
+
 	public static bool IsCanticle(string citation) => !citation.StartsWith("Psalm ", StringComparison.Ordinal);
 
 	/// <summary>Converts a modern (Hebrew) psalm citation into the bundled translation's numbering for display.</summary>

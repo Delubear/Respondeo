@@ -50,7 +50,11 @@
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Morning Prayer and to the day or season." },
         { "source": "psalmody" },
-        { "kind": "Reading", "title": "Reading", "source": "proper", "explanation": "A short passage of Scripture proper to the day or season." },
+        {
+          "kind": "Reading", "title": "Reading", "source": "short-reading",
+          "explanation": "A short passage of Scripture from the psalter for this day. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below.",
+          "fallbackExplanation": "A short passage of Scripture proper to the day or season."
+        },
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
         {
           "kind": "GospelCanticle", "title": "Canticle of Zechariah (Benedictus)", "source": "fixed", "reference": "Luke 1:68-79", "text": [ "{benedictus}" ],
@@ -76,7 +80,11 @@
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Evening Prayer and to the day or season." },
         { "source": "psalmody" },
-        { "kind": "Reading", "title": "Reading", "source": "proper", "explanation": "A short passage of Scripture proper to the day or season." },
+        {
+          "kind": "Reading", "title": "Reading", "source": "short-reading",
+          "explanation": "A short passage of Scripture from the psalter for this day. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below.",
+          "fallbackExplanation": "A short passage of Scripture proper to the day or season."
+        },
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
         {
           "kind": "GospelCanticle", "title": "Canticle of Mary (Magnificat)", "source": "fixed", "reference": "Luke 1:46-55", "text": [ "{magnificat}" ],
@@ -106,7 +114,7 @@
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Night Prayer and to the day or season." },
         { "source": "psalmody" },
-        { "kind": "Reading", "title": "Reading", "source": "night-reading", "explanation": "A brief reading fixed for this night of the week." },
+        { "kind": "Reading", "title": "Reading", "source": "night-reading", "explanation": "A brief reading fixed for this night of the week. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below." },
         {
           "kind": "Responsory", "title": "Responsory", "source": "fixed", "text": [ "{night-responsory}" ],
           "explanation": "Christ's own words from the Cross (Luke 23:46; Psalm 31:6), entrusting ourselves to the Father as we go to rest.",
