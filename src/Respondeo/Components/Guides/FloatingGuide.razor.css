@@ -7,7 +7,7 @@
     position: fixed;
     right: 1.25rem;
     bottom: 4.75rem;
-    z-index
+    z-index: var(--z-float);
     display: inline-flex;
     align-items: center;
     justify-content: center;
