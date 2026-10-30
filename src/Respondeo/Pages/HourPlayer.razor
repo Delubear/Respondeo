@@ -47,17 +47,13 @@ else
                         <div class="hourplayer__body">
                             <div class="hourplayer__section">
                                 <h2 class="hourplayer__section-title">@part</h2>
-                                <button type="button" class="hourplayer__section-info" aria-expanded="@_openInfo.Contains(part)"
-                                        aria-label="@($"About the {part}")" title="About this part" @onclick="() => ToggleInfo(part)">
+                                <button type="button" class="hourplayer__section-info" aria-haspopup
+                                        aria-label="@($"About the {part}")" title="About this part" @onclick="() => ShowInfoAsync(part)">
                                     <svg viewBox="0 0 24 24" aria-hidden="true">
                                         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 11h2v6h-2z" />
                                     </svg>
                                 </button>
                             </div>
-                            @if (_openInfo.Contains(part))
-                            {
-                                <p class="hourplayer__info">@PartInfo(part)</p>
-                            }
                         </div>
                     </li>
                 }
@@ -169,10 +165,6 @@ else
                                     }
                                 </div>
                             }
-                            @if (index == _completed)
-                            {
-                                <button type="button" class="hourplayer__continue" @onclick="() => Toggle(index)">Continue</button>
-                            }
                             </div>
                         }
                     </div>
@@ -219,6 +211,8 @@ else
         {
             <p class="hourplayer__ack hourplayer__ack--end" role="note">@_office.Acknowledgment</p>
         }
+
+        <DevotionPrayerDialog @ref="_infoDialog" Title="@_infoTitle" ExplanationHtml="@_infoHtml" />
     </section>
 }
 
@@ -327,13 +321,19 @@ else
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
     }
 
-    private readonly HashSet<string> _openInfo = [];
+    private DevotionPrayerDialog? _infoDialog;
+    private string? _infoTitle;
+    private string? _infoHtml;
 
-    private void ToggleInfo(string part)
+    private async Task ShowInfoAsync(string part)
     {
-        if (!_openInfo.Remove(part))
+        _infoTitle = part;
+        _infoHtml = "<p>" + System.Net.WebUtility.HtmlEncode(PartInfo(part)) + "</p>";
+        StateHasChanged();
+        await Task.Yield();
+        if (_infoDialog is not null)
         {
-            _openInfo.Add(part);
+            await _infoDialog.ShowAsync();
         }
     }
 
@@ -342,6 +342,13 @@ else
         if (index == _completed)
         {
             Toggle(index);
+        }
+        else if (index > _completed)
+        {
+            _completed = index;
+            _expanded = -1;
+            _scroll = true;
+            _announcement = $"{_completed} of {_office!.Steps.Count} steps prayed.";
         }
         else
         {
