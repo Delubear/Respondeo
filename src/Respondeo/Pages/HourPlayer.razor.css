@@ -144,3 +144,32 @@
 .hourplayer__exit {
     margin: 2rem 0 1rem;
 }
+
+/* Liturgical book conventions: rubrics and the antiphon marker in red, texts kept in their authored sense lines. */
+.hourplayer__rubric {
+    color: var(--liturgical-red, #a4161a);
+    font-weight: 600;
+}
+
+.hourplayer__antiphon {
+    margin: 0.5rem 0.5rem 0;
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.hourplayer__sample {
+    max-width: 42rem;
+    margin: 1rem auto;
+    padding: 0.6rem 0.9rem;
+    border: 1px dashed var(--gold);
+    border-radius: 0.25rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+}
+
+.hourplayer__ack {
+    max-width: 42rem;
+    margin: 1.5rem auto 0;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+}

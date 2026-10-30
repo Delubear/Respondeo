@@ -94,6 +94,12 @@ public sealed record OfficeStep(OfficeStepKind Kind, string Title)
 
     /// <summary>True when the official, copyrighted text should be taken from <see cref="Office.OfficialSources"/>.</summary>
     public bool UseOfficialText { get; init; }
+
+    /// <summary>The antiphon said before and after a psalm or canticle, from the licensed (or sample) texts.</summary>
+    public string? Antiphon { get; init; }
+
+    /// <summary>True when <see cref="Text"/> or <see cref="Antiphon"/> comes from the licensed texts and must carry the acknowledgment.</summary>
+    public bool IsLicensedText { get; init; }
 }
 
 /// <summary>A link to an official or authoritative online source for the full texts of the hour.</summary>
@@ -115,6 +121,12 @@ public sealed record Office(DateOnly Date, Hour Hour, string Title, LiturgicalDa
 
     /// <summary>Links to official sources for the full copyrighted texts.</summary>
     public IReadOnlyList<OfficialSource> OfficialSources { get; init; } = [];
+
+    /// <summary>The copyright acknowledgment required wherever licensed texts are shown.</summary>
+    public string? Acknowledgment { get; init; }
+
+    /// <summary>True when the proper texts are invented placeholders rather than the licensed translation.</summary>
+    public bool IsSampleContent { get; init; }
 }
 
 /// <summary>

@@ -78,4 +78,15 @@ public class LiturgyOfTheHoursTests
     [Fact]
     public void NightPrayer_EasterTime_UsesHaecDiesResponsory() =>
         Assert.Contains("Haec dies", NightStep(new DateOnly(2025, 5, 6), OfficeStepKind.Responsory).Text);
+
+    [Fact]
+    public void MorningPrayer_DefaultBuild_UsesMarkedSampleContent()
+    {
+        var office = Hours().Compose(new DateOnly(2025, 7, 14), Hour.MorningPrayer);
+
+        Assert.True(office.IsSampleContent);
+        Assert.False(string.IsNullOrWhiteSpace(office.Acknowledgment));
+        Assert.Contains("Sample", office.Steps.First(s => s.Kind == OfficeStepKind.Hymn).Text);
+        Assert.All(office.Steps.Where(s => s.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle), s => Assert.NotNull(s.Antiphon));
+    }
 }

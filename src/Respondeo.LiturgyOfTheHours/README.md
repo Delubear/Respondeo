@@ -58,6 +58,25 @@ Respondeo therefore uses a hybrid approach:
   so readers never mistake it for the approved liturgical text.
 - Never paraphrase a copyrighted translation closely enough to be a derivative of it.
 
+### Licensed-content pipeline (prepared for an ICEL license)
+
+The engine already composes the licensed proper texts (hymns, psalm and Gospel canticle antiphons, readings, responsories,
+intercessions, and collects) from a single JSON content file, so a license only changes the data, never the code.
+
+- **Never committed.** Licensed texts stay out of this public repository. `.gitignore` excludes `.licensed/` and any `hours-content.json`.
+- **Sample by default.** Local and fork builds embed `SampleContent/hours-content.sample.json`: invented placeholder wording,
+  flagged `"isSample": true`, which makes the player show a "sample text" notice. It is never the ICEL text or a paraphrase of it.
+- **Injected at deploy.** `deploy.yml` checks out the private repository `Delubear/Respondeo-HoursContent` (secret `HOURS_CONTENT_TOKEN`)
+  into `.licensed/hours/` and publishes with `-p:HoursLicensedContentPath=.../hours-content.json`.
+  Without the secret, the deployment falls back to the sample file.
+- **Embedded, not served as a file.** The content is compiled into the assembly as an embedded resource, so it is not a separately downloadable
+  static asset. It still ships inside the public WASM bundle, so it is publicly readable in principle; confirm this is acceptable under the license.
+- **Lookup keys**, most specific first: `{season}/w{week}/{weekday}/{hour}/{element}`, `{hour}/{element}`, `{element}`.
+  Elements: `hymn`, `psalm-antiphon-1..3`, `reading`, `responsory`, `gospel-canticle` (antiphon), `intercessions`, `collect`.
+- **Acknowledgment.** The file's `acknowledgment` string is shown under any hour that displays licensed text. Put the exact wording ICEL requires there.
+- **Presentation.** Text keeps its authored sense lines; antiphons are marked with a red *Ant.* and repeated after the psalm or canticle;
+  psalm headings give both numberings. The psalm text itself stays the public-domain Douay-Rheims until the Grail Psalms are licensed from GIA.
+
 ### Official sources we link to
 
 - Universalis: https://universalis.com

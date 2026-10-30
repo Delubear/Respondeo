@@ -20,6 +20,8 @@ jobs:
   build:
     name: Build & Verify
     runs-on: ubuntu-latest
+    env:
+      HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
     outputs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
     steps:
@@ -117,9 +119,26 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo/wwwroot/sitemap.xml
 
+      # Licensed Liturgy of the Hours texts (ICEL) live in a private repository and are never committed here.
+      # When HOURS_CONTENT_TOKEN is configured, check them out beside the source and embed them at publish;
+      # otherwise the build embeds the invented sample texts.
+      - name: Checkout licensed Hours content
+        id: hours
+        if: steps.filter.outputs.code-changed == 'true' && env.HOURS_CONTENT_TOKEN != ''
+        uses: actions/checkout@v5
+        with:
+          repository: Delubear/Respondeo-HoursContent
+          token: ${{ secrets.HOURS_CONTENT_TOKEN }}
+          path: .licensed/hours
+
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
+        run: |
+          if [ -f .licensed/hours/hours-content.json ]; then
+            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release "-p:HoursLicensedContentPath=$GITHUB_WORKSPACE/.licensed/hours/hours-content.json"
+          else
+            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
+          fi
 
       # The site is served from the custom apex domain (respondeo.faith), so it
       # lives at the domain root and <base href="/"> (as authored) is correct.

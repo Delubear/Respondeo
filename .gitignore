@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Licensed (ICEL) Liturgy of the Hours texts: injected by CI from a private repository, never committed.
+.licensed/
+**/hours-content.json
+
 # User-specific files
 *.rsuser
 *.suo

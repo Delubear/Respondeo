@@ -8,7 +8,7 @@ namespace Respondeo.LiturgyOfTheHours;
 /// solemnities and feasts take the Sunday psalmody of Week I at Morning Prayer, memorials and ferias take the psalmody of the current psalter week,
 /// Sundays and solemnities begin with First Vespers the evening before, and Night Prayer follows a weekly cycle (with the Sunday forms after either Vespers).
 /// </summary>
-internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar) : IOfficeForm
+internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTextProvider texts) : IOfficeForm
 {
     public OfficeForm Form => OfficeForm.OrdinaryForm1970;
 
@@ -27,11 +27,54 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar) : IOffice
             _ => NightPrayer(today, firstVespers),
         };
 
-        return new Office(date, hour, Title(hour, day, firstVespers), day, week, steps)
+        return new Office(date, hour, Title(hour, day, firstVespers), day, week, ApplyLicensedTexts(steps, hour, day, week))
         {
             IsFirstVespers = firstVespers,
             OfficialSources = Sources(date, hour),
+            Acknowledgment = texts.Acknowledgment,
+            IsSampleContent = texts.IsSample,
         };
+    }
+
+    /// <summary>Fills proper elements from the licensed (or sample) texts, most specific key first.</summary>
+    private List<OfficeStep> ApplyLicensedTexts(List<OfficeStep> steps, Hour hour, LiturgicalDay day, int week)
+    {
+        var hourKey = hour switch { Hour.MorningPrayer => "morning", Hour.EveningPrayer => "evening", _ => "night" };
+        var prefix = $"{day.Season.ToString().ToLowerInvariant()}/w{week}/{day.Date.DayOfWeek.ToString().ToLowerInvariant()}/{hourKey}";
+        var psalm = 0;
+        var result = new List<OfficeStep>(steps.Count);
+
+        foreach (var step in steps)
+        {
+            var element = step.Kind switch
+            {
+                OfficeStepKind.Psalm or OfficeStepKind.Canticle => $"psalm-antiphon-{++psalm}",
+                OfficeStepKind.Hymn => "hymn",
+                OfficeStepKind.Reading => "reading",
+                OfficeStepKind.Responsory when step.Text is null => "responsory",
+                OfficeStepKind.GospelCanticle when hour != Hour.NightPrayer => "gospel-canticle",
+                OfficeStepKind.Intercessions => "intercessions",
+                OfficeStepKind.Prayer when step.Text is null && hour != Hour.NightPrayer => "collect",
+                _ => null,
+            };
+
+            var licensed = element is null ? null : texts.Find([$"{prefix}/{element}", $"{hourKey}/{element}", element]);
+            if (licensed is null)
+            {
+                result.Add(step);
+                continue;
+            }
+
+            result.Add(step with
+            {
+                Text = string.IsNullOrEmpty(licensed.Text) ? step.Text : licensed.Text,
+                Antiphon = licensed.Antiphon ?? step.Antiphon,
+                UseOfficialText = false,
+                IsLicensedText = true,
+            });
+        }
+
+        return result;
     }
 
     internal static bool BeginsWithFirstVespers(LiturgicalDay today, LiturgicalDay tomorrow)

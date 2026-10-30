@@ -21,18 +21,21 @@ public static class BibleReferences
             return null;
         }
 
+        var verses = colon < 0 ? string.Empty : rest[colon..];
+        var firstVerse = colon < 0 || !int.TryParse(new string(rest[(colon + 1)..].TakeWhile(char.IsDigit).ToArray()), out var v) ? 1 : v;
+
         var douay = number switch
         {
             <= 8 => number,
             9 or 10 => 9,
             <= 113 => number - 1,
             114 or 115 => 113,
-            116 => 114,
+            116 => firstVerse >= 10 ? 115 : 114,
             <= 146 => number - 1,
-            147 => 146,
+            147 => firstVerse >= 12 ? 147 : 146,
             _ => number,
         };
 
-        return douay == number ? null : $"Psalm {douay} (Douay-Rheims)";
+        return douay == number ? null : $"Psalm {douay}{verses}";
     }
 }

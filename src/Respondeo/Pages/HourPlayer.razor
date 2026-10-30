@@ -18,6 +18,12 @@ else
         <h1 class="hourplayer__title">@_office.Title</h1>
         <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
         <ConstructionNotice Area="the Liturgy of the Hours" />
+        @if (_office.IsSampleContent)
+        {
+            <p class="hourplayer__sample" role="note">
+                The hymns, antiphons, readings, responsories, intercessions, and prayers shown here are sample placeholder text, not the approved translation.
+            </p>
+        }
         <p class="hourplayer__hint">Select each step to mark it prayed, in order.</p>
 
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
@@ -34,7 +40,7 @@ else
                             <span class="hourplayer__step-title">@step.Title</span>
                             @if (step.Reference?.DouayCitation is { } douay)
                             {
-                                <span class="hourplayer__ref">@douay</span>
+                                <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @douay)</span>
                             }
                         </button>
                         @if (index == _completed || index == _expanded)
@@ -43,6 +49,10 @@ else
                             {
                                 <p class="hourplayer__explain">@step.Explanation</p>
                             }
+                            @if (step.Antiphon is not null)
+                            {
+                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
+                            }
                             @if (step.Text is not null)
                             {
                                 <p class="hourplayer__text">@step.Text</p>
@@ -50,11 +60,15 @@ else
                             else if (_passages.TryGetValue(index, out var passage))
                             {
                                 <p class="hourplayer__text">@passage</p>
-                                <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
                             }
                             else if (step.UseOfficialText)
                             {
                                 <p class="hourplayer__official">Read today's text from an official source below.</p>
+                            }
+                            @if (step.Antiphon is not null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle))
+                            {
+                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
                             }
                         }
                         else if (step.Text is not null || step.Explanation is not null)
@@ -78,6 +92,11 @@ else
                 <li><a href="@source.Url" target="_blank" rel="noopener">@source.Name</a></li>
             }
         </ul>
+
+        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
+        {
+            <p class="hourplayer__ack">@_office.Acknowledgment</p>
+        }
 
         <div class="hourplayer__exit">
             <a href="discover/hours">Choose another hour</a>

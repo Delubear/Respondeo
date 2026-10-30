@@ -9,6 +9,20 @@
 	<SupportedPlatform Include="browser" />
   </ItemGroup>
 
+  <!--
+	Licensed ICEL texts are never committed. CI checks them out from a private repository and passes
+	-p:HoursLicensedContentPath=<file>; every other build embeds the invented sample file instead.
+  -->
+  <PropertyGroup>
+	<HoursContentFile>SampleContent/hours-content.sample.json</HoursContentFile>
+	<HoursContentFile Condition="'$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Remove="SampleContent/**" />
+	<EmbeddedResource Include="$(HoursContentFile)" LogicalName="Respondeo.LiturgyOfTheHours.Content.json" />
+  </ItemGroup>
+
   <ItemGroup>
 	<InternalsVisibleTo Include="Respondeo.UnitTests" />
   </ItemGroup>

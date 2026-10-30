@@ -1,0 +1,31 @@
+{
+  // SAMPLE CONTENT: every text below is invented placeholder wording, written only to exercise the layout.
+  // It is NOT the ICEL translation and must never be presented as such.
+  // The deployment build replaces this file with the licensed texts (see src/Respondeo.LiturgyOfTheHours/README.md).
+  // Keys are tried from most to least specific: "{season}/w{week}/{weekday}/{hour}/{element}", "{hour}/{element}", "{element}".
+  "isSample": true,
+  "acknowledgment": "Sample text for layout testing only. Not the approved liturgical translation.",
+  "texts": {
+    "hymn": {
+      "text": "Sample hymn, first stanza, line one,\nsample hymn, first stanza, line two,\nsample hymn, first stanza, line three,\nsample hymn, first stanza, line four.\n\nSample hymn, second stanza, line one,\nsample hymn, second stanza, line two,\nsample hymn, second stanza, line three,\nsample hymn, second stanza, line four. Amen."
+    },
+    "psalm-antiphon-1": { "text": "", "antiphon": "Sample antiphon for the first psalm." },
+    "psalm-antiphon-2": { "text": "", "antiphon": "Sample antiphon for the second psalm or canticle." },
+    "psalm-antiphon-3": { "text": "", "antiphon": "Sample antiphon for the third psalm or canticle." },
+    "morning/reading": { "text": "Sample short reading for Morning Prayer. In the licensed edition this is a brief passage of Scripture proper to the day." },
+    "evening/reading": { "text": "Sample short reading for Evening Prayer. In the licensed edition this is a brief passage of Scripture proper to the day." },
+    "night/reading": { "text": "Sample short reading for Night Prayer, fixed for this night of the week." },
+    "responsory": {
+      "text": "Sample responsory, first part, * sample responsory, second part.\n— Sample responsory, first part, * sample responsory, second part.\nSample verse of the responsory,\n— sample responsory, second part.\nGlory to the Father, and to the Son, and to the Holy Spirit.\n— Sample responsory, first part, * sample responsory, second part."
+    },
+    "morning/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Zechariah." },
+    "evening/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Mary." },
+    "morning/intercessions": {
+      "text": "Sample introduction to the intercessions:\nSample response, repeated after each petition.\n\nSample first petition,\n— sample conclusion of the first petition.\n\nSample second petition,\n— sample conclusion of the second petition."
+    },
+    "evening/intercessions": {
+      "text": "Sample introduction to the intercessions:\nSample response, repeated after each petition.\n\nSample first petition,\n— sample conclusion of the first petition.\n\nSample final petition for the faithful departed,\n— sample conclusion of the final petition."
+    },
+    "collect": { "text": "Sample concluding prayer, first clause,\nsample concluding prayer, second clause,\nthrough our Lord Jesus Christ, your Son,\nwho lives and reigns with you in the unity of the Holy Spirit,\nGod, for ever and ever.\n\nAmen." }
+  }
+}

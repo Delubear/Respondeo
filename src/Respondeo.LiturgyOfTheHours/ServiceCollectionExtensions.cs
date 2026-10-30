@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
     /// <summary>Registers the Liturgy of the Hours engine (post-1970 form) as scoped, matching the scoped liturgical calendar.</summary>
     public static IServiceCollection AddRespondeoHours(this IServiceCollection services)
     {
+        services.AddSingleton<IHoursTextProvider, EmbeddedHoursTextProvider>();
         services.AddScoped<IOfficeForm, OrdinaryFormOffice>();
         services.AddScoped<ILiturgyOfTheHours, HoursEngine>();
 
