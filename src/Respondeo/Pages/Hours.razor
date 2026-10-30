@@ -14,7 +14,7 @@
     <CardGrid>
         @foreach (var hour in Enum.GetValues<Hour>())
         {
-            <Card Href="@($"discover/hours/{Slug(hour)}?date={_date:yyyy-MM-dd}")"
+            <Card Href="@($"discover/hours/{Slug(hour)}")"
                   Title="@Label(hour)"
                   Summary="@Subtitle(hour)"
                   Pills="@(hour == _suggested ? ["Now"] : null)"

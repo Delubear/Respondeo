@@ -57,11 +57,10 @@ else
                         </div>
                     </li>
                 }
-                <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)"
+                <li class="hourplayer__step @StepStatus(index)"
                     id="@(index == _completed ? "hour-current-step" : null)" aria-current="@(index == _completed ? "step" : null)">
                     <span class="hourplayer__marker hourplayer__marker--@(step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle ? "large" : "small")" aria-hidden="true"></span>
                     <div class="hourplayer__body">
-                        <div class="hourplayer__row @(index < _completed ? "is-done" : index == _completed ? "is-current" : "is-upcoming")">
                         <button type="button" class="hourplayer__head" aria-expanded="@(index == _completed || index == _expanded)" @onclick="() => HeadClick(index)">
                             <span class="@TitleClass(step.Kind)">@step.Title</span>
                             @if (step.Reference?.DouayCitation is { } douay)
@@ -79,7 +78,6 @@ else
                                 </svg>
                             </button>
                         }
-                        </div>
                         @if (index == _completed || index == _expanded)
                         {
                             <div class="hourplayer__content">
@@ -218,7 +216,6 @@ else
 
 @code {
     [Parameter] public string Slug { get; set; } = string.Empty;
-    [SupplyParameterFromQuery] public string? Date { get; set; }
 
     private static readonly Breadcrumb.Crumb[] _crumbs = [new("hours", "Liturgy of the Hours", Href: "discover/hours")];
 
@@ -237,7 +234,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _date = DateOnly.TryParse(Date, out var d) ? d : DateOnly.FromDateTime(DateTime.Now);
+        _date = DateOnly.FromDateTime(DateTime.Now);
         Hour? hour = Slug.ToLowerInvariant() switch
         {
             "morning" => Hour.MorningPrayer,
@@ -408,6 +405,12 @@ else
         kind is OfficeStepKind.Rubric or OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle
             ? "hourplayer__step-title hourplayer__step-title--rubric"
             : "hourplayer__step-title";
+
+    private string StepStatus(int index) =>
+        index < _completed ? "is-done"
+        : index == _completed ? "is-current"
+        : index == _completed + 1 ? "is-next"
+        : "is-upcoming";
 
     private static RenderFragment RenderText(string text) => builder =>
     {

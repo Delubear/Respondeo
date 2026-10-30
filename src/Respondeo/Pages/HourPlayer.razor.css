@@ -80,12 +80,33 @@
 }
 
 .hourplayer__body {
-	padding: 0.3rem 0 0.3rem 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	margin: 0.3rem 0 0.3rem 0.5rem;
 	min-width: 0;
+	border: 1px solid var(--rule);
+	border-radius: 0.5rem;
+	background: var(--paper);
+	overflow: hidden;
+	transition: border-color var(--dur-2) var(--ease-page), opacity var(--dur-2) var(--ease-page);
+}
+
+.hourplayer__body > .hourplayer__content {
+	flex: 1 0 100%;
+}
+
+/* Section banners are headings, not cards. */
+.hourplayer__banner .hourplayer__body {
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	overflow: visible;
 }
 
 /* A section header introducing a part of the Hour, matching the devotion section banner. */
 .hourplayer__section {
+	flex: 1 1 100%;
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -121,28 +142,22 @@
 	fill: currentColor;
 }
 
-/* Each step is a card button with a trailing book button, like a devotion prayer row. */
-.hourplayer__row {
-	display: flex;
-	align-items: stretch;
-	border: 1px solid var(--rule);
-	border-radius: 0.5rem;
-	background: var(--paper);
-	overflow: hidden;
-	transition: border-color var(--dur-2) var(--ease-page), opacity var(--dur-2) var(--ease-page);
-}
-
-.hourplayer__row.is-current {
-	border-color: var(--accent);
-	box-shadow: inset 0 0 0 1px var(--accent);
-}
-
-.hourplayer__row.is-upcoming {
+.hourplayer__step.is-upcoming .hourplayer__body {
 	opacity: 0.55;
 }
 
+.hourplayer__step.is-next .hourplayer__body {
+	opacity: 1;
+	border-color: var(--gold);
+}
+
+.hourplayer__step.is-next .hourplayer__marker::after {
+	border-color: var(--gold);
+}
+
 .hourplayer__head {
-	flex: 1 1 auto;
+	flex: 1 1 0;
+	min-width: 0;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
@@ -166,6 +181,7 @@
 .hourplayer__step-title {
 	font-family: var(--display);
 	font-size: 1.1rem;
+	overflow-wrap: anywhere;
 }
 
 .hourplayer__step.is-done .hourplayer__step-title {
@@ -251,7 +267,7 @@
 	}
 
 	.hourplayer__body {
-		padding: 0.25rem 0 0.25rem 0.35rem;
+		margin-left: 0.35rem;
 	}
 
 	.hourplayer__head {
