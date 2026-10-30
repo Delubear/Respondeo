@@ -1,0 +1,138 @@
+// The order and presentation of each hour of the post-1970 Liturgy of the Hours.
+// Rules of precedence (first vespers, psalter week, festal psalmody) stay in OrdinaryFormOffice; this file holds what is shown.
+//
+// Each step has a "kind" (OfficeStepKind), a "title", an "explanation", and a "source":
+//   fixed            "text" is shown (lines; {key} embeds a text from ordinary-texts.json)
+//   proper           the copyrighted text proper to the day is read from official sources (or the licensed texts)
+//   psalmody         the psalms and canticles of the psalter for the day
+//   collect          the concluding prayer; "celebrationExplanation" is used when the day has a celebration ({celebration} is its name)
+//   night-reading    the short reading fixed for the night of the week
+//   night-prayer     the Latin concluding prayer for the night; falls back to proper when none is verified
+//   marian-antiphon  the seasonal antiphon to Our Lady
+// "seasons" overrides text/explanation for the named liturgical seasons; "reference" is a fixed Scripture citation;
+// "invitatory" attaches the Invitatory psalms as options.
+{
+  "titles": {
+    "MorningPrayer": "Morning Prayer: {day}",
+    "EveningPrayer": "Evening Prayer: {day}",
+    "EveningPrayerFirstVespers": "Evening Prayer I: {day}",
+    "NightPrayer": "Night Prayer: {day}",
+    "NightPrayerFirstVespers": "Night Prayer after Evening Prayer I: {day}"
+  },
+
+  "psalmodyExplanation": "Psalmody {n}: pray with its antiphon before and after, concluding with the Glory Be.",
+
+  "invitatory": {
+    "antiphon": "Come, let us worship the Lord, the King who is to come. (Sample antiphon; use the approved text of the day.)",
+    // Stanza verse ranges use modern numbering, so any translation can supply its own text.
+    "psalms": [
+      { "citation": "Psalm 95", "explanation": "The customary Invitatory psalm, a call to praise and to hear God's voice today.", "stanzas": [ "1-2", "3-5", "6-7", "8-9", "10-11" ] },
+      { "citation": "Psalm 100", "explanation": "May replace Psalm 95: all the earth is called to serve the Lord with gladness.", "stanzas": [ "1-2", "3", "4", "5" ] },
+      { "citation": "Psalm 67", "explanation": "May replace Psalm 95: a prayer that all the nations may praise God.", "stanzas": [ "2-3", "4-5", "6-7", "8" ] },
+      { "citation": "Psalm 24", "explanation": "May replace Psalm 95: the King of glory enters his holy place.", "stanzas": [ "1-2", "3-4", "5-6", "7-8", "9-10" ] }
+    ]
+  },
+
+  // {date} is formatted yyyyMMdd; {page} is the hour's page name.
+  "officialSources": [
+    { "name": "Universalis", "url": "https://universalis.com/{date}/{page}.htm" },
+    { "name": "Divine Office", "url": "https://divineoffice.org/" },
+    { "name": "iBreviary", "url": "https://www.ibreviary.com/m2/breviario.php" }
+  ],
+
+  "hours": {
+    "MorningPrayer": {
+      "page": "lauds",
+      "steps": [
+        {
+          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitatory-verse}" ], "invitatory": true,
+          "explanation": "When Morning Prayer is the first hour of the day, it opens with the Invitatory (Psalm 95, 100, 67, or 24) instead of \"O God, come to my assistance.\" Expand a psalm below to view it."
+        },
+        { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Morning Prayer and to the day or season." },
+        { "source": "psalmody" },
+        { "kind": "Reading", "title": "Reading", "source": "proper", "explanation": "A short passage of Scripture proper to the day or season." },
+        { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
+        {
+          "kind": "GospelCanticle", "title": "Canticle of Zechariah (Benedictus)", "source": "fixed", "reference": "Luke 1:68-79", "text": [ "{benedictus}" ],
+          "explanation": "Zechariah's song at the birth of John the Baptist greets Christ, the dawn from on high. Pray it with the antiphon proper to the day, making the Sign of the Cross at the start."
+        },
+        { "kind": "Intercessions", "title": "Intercessions", "source": "proper", "explanation": "Morning intercessions consecrate the day and its work to God." },
+        { "kind": "LordsPrayer", "title": "The Lord's Prayer", "source": "fixed", "text": [ "{lords-prayer}" ] },
+        {
+          "kind": "Prayer", "title": "Concluding Prayer", "source": "collect",
+          "explanation": "The collect proper to the day, or of the psalter week in Ordinary Time.",
+          "celebrationExplanation": "The collect proper to {celebration}."
+        },
+        { "kind": "Conclusion", "title": "Dismissal", "source": "fixed", "text": [ "{dismissal}" ] }
+      ]
+    },
+
+    "EveningPrayer": {
+      "page": "vespers",
+      "steps": [
+        {
+          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
+          "explanation": "Make the Sign of the Cross. Each hour opens by asking God's help to pray (Psalm 70:2)."
+        },
+        { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Evening Prayer and to the day or season." },
+        { "source": "psalmody" },
+        { "kind": "Reading", "title": "Reading", "source": "proper", "explanation": "A short passage of Scripture proper to the day or season." },
+        { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
+        {
+          "kind": "GospelCanticle", "title": "Canticle of Mary (Magnificat)", "source": "fixed", "reference": "Luke 1:46-55", "text": [ "{magnificat}" ],
+          "explanation": "Our Lady's song of praise is the high point of Evening Prayer, giving thanks for the salvation God has worked. Pray it with the antiphon proper to the day, making the Sign of the Cross at the start."
+        },
+        { "kind": "Intercessions", "title": "Intercessions", "source": "proper", "explanation": "Evening intercessions; the last petition is always for the faithful departed." },
+        { "kind": "LordsPrayer", "title": "The Lord's Prayer", "source": "fixed", "text": [ "{lords-prayer}" ] },
+        {
+          "kind": "Prayer", "title": "Concluding Prayer", "source": "collect",
+          "explanation": "The collect proper to the day, or of the psalter week in Ordinary Time.",
+          "celebrationExplanation": "The collect proper to {celebration}."
+        },
+        { "kind": "Conclusion", "title": "Dismissal", "source": "fixed", "text": [ "{dismissal}" ] }
+      ]
+    },
+
+    "NightPrayer": {
+      "page": "comp",
+      "steps": [
+        {
+          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
+          "explanation": "Make the Sign of the Cross. Each hour opens by asking God's help to pray (Psalm 70:2)."
+        },
+        {
+          "kind": "Examen", "title": "Examination of Conscience", "source": "fixed", "text": [ "{examen}" ],
+          "explanation": "Night Prayer begins by looking back over the day in God's presence and asking forgiveness before sleep."
+        },
+        { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Night Prayer and to the day or season." },
+        { "source": "psalmody" },
+        { "kind": "Reading", "title": "Reading", "source": "night-reading", "explanation": "A brief reading fixed for this night of the week." },
+        {
+          "kind": "Responsory", "title": "Responsory", "source": "fixed", "text": [ "{night-responsory}" ],
+          "explanation": "Christ's own words from the Cross (Luke 23:46; Psalm 31:6), entrusting ourselves to the Father as we go to rest.",
+          "seasons": {
+            "Easter": {
+              "text": [ "{easter-night-responsory}" ],
+              "explanation": "In Easter Time the responsory gives way to the Easter verse from Psalm 118 (117), celebrating the day of the Resurrection."
+            }
+          }
+        },
+        {
+          "kind": "GospelCanticle", "title": "Canticle of Simeon (Nunc Dimittis)", "source": "fixed", "reference": "Luke 2:29-32",
+          "text": [ "Antiphon: {night-antiphon}", "", "{nunc-dimittis}", "", "Antiphon: {night-antiphon}" ],
+          "explanation": "Simeon, having seen the Christ, is ready to depart in peace; so we entrust our sleep, and one day our death, to the Lord."
+        },
+        {
+          "kind": "Prayer", "title": "Concluding Prayer", "source": "night-prayer",
+          "explanation": "The prayer fixed for this night of the week, given in the Latin of the typical edition.",
+          "fallbackExplanation": "A short prayer fixed for this night of the week."
+        },
+        { "kind": "Conclusion", "title": "Blessing", "source": "fixed", "text": [ "{night-blessing}" ] },
+        {
+          "kind": "MarianAntiphon", "source": "marian-antiphon",
+          "explanation": "The day ends with an antiphon to Our Lady. Any of the Marian antiphons may be used; this one is traditional for the season."
+        }
+      ]
+    }
+  }
+}

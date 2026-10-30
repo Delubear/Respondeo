@@ -24,6 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+	<None Remove="Data/**" />
+	<EmbeddedResource Include="Data/psalter.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Psalter.json" />
+	<EmbeddedResource Include="Data/ordinary-texts.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json" />
+	<EmbeddedResource Include="Data/hours.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Hours.json" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<InternalsVisibleTo Include="Respondeo.UnitTests" />
   </ItemGroup>
 

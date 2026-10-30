@@ -1,0 +1,273 @@
+// Fixed, public-domain texts of the Office: traditional ordinary prayers and Douay-Rheims Scripture.
+// Each text is a list of lines (an empty string is a blank line). A line may embed another text as {key}.
+// Proper antiphons, hymns, readings, and collects in the modern English edition are copyrighted and are read from official sources instead.
+{
+  "texts": {
+    "glory-be": [
+      "Glory be to the Father, and to the Son, and to the Holy Spirit,",
+      "as it was in the beginning, is now, and ever shall be,",
+      "world without end. Amen."
+    ],
+    "invitation": [
+      "V. O God, come to my assistance.",
+      "R. O Lord, make haste to help me.",
+      "",
+      "{glory-be}"
+    ],
+    "alleluia-note": [ "Outside Lent, add: Alleluia." ],
+    "invitatory-verse": [
+      "V. Lord, open my lips.",
+      "R. And my mouth will proclaim your praise."
+    ],
+    "lords-prayer": [
+      "Our Father, who art in heaven,",
+      "hallowed be thy name;",
+      "thy kingdom come;",
+      "thy will be done on earth as it is in heaven.",
+      "Give us this day our daily bread;",
+      "and forgive us our trespasses,",
+      "as we forgive those who trespass against us;",
+      "and lead us not into temptation,",
+      "but deliver us from evil.",
+      "",
+      "Amen."
+    ],
+    "benedictus": [
+      "Blessed be the Lord God of Israel;",
+      "because he hath visited and wrought the redemption of his people:",
+      "And hath raised up a horn of salvation to us,",
+      "in the house of David his servant:",
+      "As he spoke by the mouth of his holy prophets,",
+      "who are from the beginning:",
+      "Salvation from our enemies,",
+      "and from the hand of all that hate us:",
+      "To perform mercy to our fathers,",
+      "and to remember his holy testament,",
+      "The oath, which he swore to Abraham our father,",
+      "that he would grant to us,",
+      "That being delivered from the hand of our enemies,",
+      "we may serve him without fear,",
+      "In holiness and justice before him,",
+      "all our days.",
+      "And thou, child, shalt be called the prophet of the Highest:",
+      "for thou shalt go before the face of the Lord to prepare his ways:",
+      "To give knowledge of salvation to his people,",
+      "unto the remission of their sins:",
+      "Through the bowels of the mercy of our God,",
+      "in which the Orient from on high hath visited us:",
+      "To enlighten them that sit in darkness, and in the shadow of death:",
+      "to direct our feet into the way of peace.",
+      "",
+      "{glory-be}"
+    ],
+    "magnificat": [
+      "My soul doth magnify the Lord.",
+      "And my spirit hath rejoiced in God my Saviour.",
+      "Because he hath regarded the humility of his handmaid;",
+      "for behold from henceforth all generations shall call me blessed.",
+      "Because he that is mighty hath done great things to me;",
+      "and holy is his name.",
+      "And his mercy is from generation unto generations,",
+      "to them that fear him.",
+      "He hath shewed might in his arm:",
+      "he hath scattered the proud in the conceit of their heart.",
+      "He hath put down the mighty from their seat,",
+      "and hath exalted the humble.",
+      "He hath filled the hungry with good things;",
+      "and the rich he hath sent empty away.",
+      "He hath received Israel his servant,",
+      "being mindful of his mercy:",
+      "As he spoke to our fathers,",
+      "to Abraham and to his seed for ever.",
+      "",
+      "{glory-be}"
+    ],
+    "nunc-dimittis": [
+      "Now thou dost dismiss thy servant, O Lord,",
+      "according to thy word in peace;",
+      "Because my eyes have seen thy salvation,",
+      "which thou hast prepared before the face of all peoples:",
+      "A light to the revelation of the Gentiles,",
+      "and the glory of thy people Israel.",
+      "",
+      "{glory-be}"
+    ],
+    "night-antiphon": [
+      "Salva nos, Domine, vigilantes,",
+      "custodi nos dormientes;",
+      "ut vigilemus cum Christo,",
+      "et requiescamus in pace.",
+      "",
+      "(Unofficial translation: Save us, O Lord, while we wake, guard us while we sleep;",
+      "that we may watch with Christ, and rest in peace.)"
+    ],
+    "night-responsory": [
+      "V. Into thy hands, O Lord, I commend my spirit.",
+      "R. Into thy hands, O Lord, I commend my spirit.",
+      "V. Thou hast redeemed us, O Lord, God of truth.",
+      "R. I commend my spirit.",
+      "V. Glory be to the Father, and to the Son, and to the Holy Spirit.",
+      "R. Into thy hands, O Lord, I commend my spirit."
+    ],
+    "easter-night-responsory": [
+      "Haec dies quam fecit Dominus:",
+      "exsultemus et laetemur in ea, alleluia.",
+      "",
+      "(Douay-Rheims, Psalm 117:24: This is the day which the Lord hath made: let us be glad and rejoice therein, alleluia.)"
+    ],
+    "night-blessing": [
+      "May the all-powerful Lord grant us a restful night and a peaceful death.",
+      "",
+      "Amen."
+    ],
+    "dismissal": [
+      "May the Lord bless us, protect us from all evil, and bring us to everlasting life.",
+      "",
+      "Amen."
+    ],
+    "examen": [
+      "Pause in silence to review the day: give thanks for its graces, and ask pardon for your sins.",
+      "",
+      "I confess to almighty God",
+      "and to you, my brothers and sisters,",
+      "that I have greatly sinned,",
+      "in my thoughts and in my words,",
+      "in what I have done and in what I have failed to do,",
+      "through my fault, through my fault,",
+      "through my most grievous fault;",
+      "therefore I ask blessed Mary ever-Virgin,",
+      "all the Angels and Saints,",
+      "and you, my brothers and sisters,",
+      "to pray for me to the Lord our God.",
+      "",
+      "May almighty God have mercy on us,",
+      "forgive us our sins,",
+      "and bring us to everlasting life.",
+      "",
+      "Amen."
+    ],
+    "salve-regina": [
+      "Hail, holy Queen, Mother of mercy,",
+      "our life, our sweetness and our hope.",
+      "To thee do we cry, poor banished children of Eve;",
+      "to thee do we send up our sighs,",
+      "mourning and weeping in this valley of tears.",
+      "Turn then, most gracious advocate,",
+      "thine eyes of mercy toward us;",
+      "and after this our exile,",
+      "show unto us the blessed fruit of thy womb, Jesus.",
+      "O clement, O loving, O sweet Virgin Mary."
+    ],
+    "regina-caeli": [
+      "Queen of Heaven, rejoice, alleluia.",
+      "For he whom thou didst merit to bear, alleluia,",
+      "has risen, as he said, alleluia.",
+      "Pray for us to God, alleluia."
+    ],
+    "alma-redemptoris": [
+      "Loving Mother of the Redeemer,",
+      "gate of heaven, star of the sea,",
+      "assist thy people who have fallen yet strive to rise again.",
+      "To the wonderment of nature thou didst bear thy Creator,",
+      "yet remained a virgin after as before.",
+      "Thou who received Gabriel's joyful greeting,",
+      "have pity on us poor sinners."
+    ],
+    "ave-regina-caelorum": [
+      "Hail, O Queen of Heaven enthroned.",
+      "Hail, by angels mistress owned.",
+      "Root of Jesse, Gate of morn,",
+      "whence the world's true light was born:",
+      "Glorious Virgin, joy to thee,",
+      "loveliest whom in heaven they see:",
+      "Fairest thou where all are fair,",
+      "plead with Christ our sins to spare."
+    ]
+  },
+
+  // Concluding prayers of Night Prayer from the Latin typical edition, keyed by the night of the weekly cycle.
+  // Saturday is the form after Evening Prayer I of Sunday; Sunday is the form after Evening Prayer II.
+  // Nights without a verified Latin text fall back to the official source.
+  "nightConcludingPrayers": {
+    "saturday": [
+      "Visita, quaesumus, Domine, habitationem istam,",
+      "et omnes insidias inimici ab ea longe repelle;",
+      "Angeli tui sancti habitent in ea, qui nos in pace custodiant;",
+      "et benedictio tua sit super nos semper.",
+      "Per Christum Dominum nostrum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Visit, we beseech thee, O Lord, this dwelling, and drive far from it all the snares of the enemy;",
+      "let thy holy Angels dwell herein to keep us in peace; and may thy blessing be upon us always. Through Christ our Lord. Amen.)"
+    ],
+    "sunday": [
+      "Mysterium resurrectionis Domini hodie celebrantes,",
+      "humiliter te, Domine, deprecamur,",
+      "ut in tua pace securi quiescamus,",
+      "et in tua laude laeti resurgamus.",
+      "Per Christum Dominum nostrum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Having celebrated today the mystery of the Lord's resurrection, we humbly beseech thee, O Lord,",
+      "that we may rest secure in thy peace and rise joyful in thy praise. Through Christ our Lord. Amen.)"
+    ],
+    "monday": [
+      "Corporibus nostris, Domine, praebe quietem salubrem,",
+      "et seminatam hodie laboris instantia segetem",
+      "fac caelesti semine germinare.",
+      "Per Christum Dominum nostrum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Grant our bodies, O Lord, wholesome rest,",
+      "and make the harvest sown today by our labor spring up as heavenly seed. Through Christ our Lord. Amen.)"
+    ],
+    "tuesday": [
+      "Illumina, quaesumus, Domine Deus, tenebras nostras,",
+      "et totius noctis insidias tu a nobis repelle propitius.",
+      "Per Christum Dominum nostrum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Enlighten our darkness, we beseech thee, O Lord God,",
+      "and in thy mercy drive from us all the snares of the night. Through Christ our Lord. Amen.)"
+    ],
+    "wednesday": [
+      "Domine Iesu Christe, qui mitis es et humilis corde,",
+      "iugum suave et onus leve sequentibus te proponis:",
+      "suscipe, quaesumus, propositiones et opera hodiernae diei,",
+      "et requiem nobis concede noctis,",
+      "ut in tuo semper servitio promptiores efficiamur.",
+      "Qui vivis et regnas in saecula saeculorum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Lord Jesus Christ, meek and humble of heart, who offerest to thy followers a sweet yoke and a light burden:",
+      "receive, we beseech thee, the resolutions and works of this day, and grant us rest this night,",
+      "that we may be ever more ready in thy service. Who livest and reignest for ever and ever. Amen.)"
+    ],
+    "friday": [
+      "Da nobis, omnipotens Deus,",
+      "ita Unigenito Filio tuo in morte coniungi,",
+      "quatenus per eius sepulcrum ad gloriam resurrectionis valeamus pertingere.",
+      "Qui vivit et regnat in saecula saeculorum.",
+      "",
+      "Amen.",
+      "",
+      "(Unofficial translation: Grant us, almighty God, so to be united with thine only-begotten Son in his death,",
+      "that through his burial we may come to the glory of the resurrection. Who liveth and reigneth for ever and ever. Amen.)"
+    ]
+  },
+
+  // The final antiphon to Our Lady. The first rule that matches the day is used; a rule with no conditions always matches.
+  // Dates are month-day ("02-01"); months are 1-12.
+  "marianAntiphons": [
+    { "title": "Regina Caeli", "text": "regina-caeli", "seasons": [ "Easter" ] },
+    { "title": "Alma Redemptoris Mater", "text": "alma-redemptoris", "seasons": [ "Advent", "Christmas" ] },
+    { "title": "Ave Regina Caelorum", "text": "ave-regina-caelorum", "seasons": [ "Lent" ] },
+    { "title": "Alma Redemptoris Mater", "text": "alma-redemptoris", "months": [ 1 ], "dates": [ "02-01" ] },
+    { "title": "Salve Regina", "text": "salve-regina" }
+  ]
+}
