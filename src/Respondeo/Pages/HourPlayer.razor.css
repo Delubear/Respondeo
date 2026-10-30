@@ -155,6 +155,41 @@
     color: #ef6b6f;
 }
 
+/* Versicle/response markers are built in code, so they lack the scope attribute; reach them through ::deep. */
+.hourplayer__text ::deep .hourplayer__rubric {
+    color: var(--liturgical-red, #a4161a);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .hourplayer__text ::deep .hourplayer__rubric {
+    color: #ef6b6f;
+}
+
+.hourplayer__part {
+    margin: 0.75rem 0.5rem 0;
+    color: var(--liturgical-red, #a4161a);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hourplayer__step-title--rubric,
+.hourplayer__step-title--rubric + .hourplayer__ref {
+    color: var(--liturgical-red, #a4161a);
+}
+
+[data-theme="dark"] .hourplayer__part,
+[data-theme="dark"] .hourplayer__step-title--rubric,
+[data-theme="dark"] .hourplayer__step-title--rubric + .hourplayer__ref {
+    color: #ef6b6f;
+}
+
+.hourplayer__step.is-done .hourplayer__step-title--rubric,
+.hourplayer__step.is-done .hourplayer__step-title--rubric + .hourplayer__ref {
+    color: var(--ink-soft);
+}
+
 .hourplayer__antiphon {
     margin: 0.5rem 0.5rem 0;
     white-space: pre-line;

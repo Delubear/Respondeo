@@ -40,8 +40,12 @@ else
                 <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)">
                     <span class="hourplayer__marker" aria-hidden="true"></span>
                     <div class="hourplayer__body">
+                        @if (PartLabel(step.Kind) is { } part && (index == 0 || PartLabel(_office.Steps[index - 1].Kind) != part))
+                        {
+                            <p class="hourplayer__part">@part</p>
+                        }
                         <button type="button" class="hourplayer__head" aria-pressed="@(index < _completed)" @onclick="() => Toggle(index)">
-                            <span class="hourplayer__step-title">@step.Title</span>
+                            <span class="@TitleClass(step.Kind)">@step.Title</span>
                             @if (step.Reference?.DouayCitation is { } douay)
                             {
                                 <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @douay)</span>
@@ -59,11 +63,11 @@ else
                             }
                             @if (step.Text is not null)
                             {
-                                <p class="hourplayer__text">@step.Text</p>
+                                <p class="hourplayer__text">@RenderText(step.Text)</p>
                             }
                             else if (_passages.TryGetValue(index, out var passage))
                             {
-                                <p class="hourplayer__text">@passage</p>
+                                <p class="hourplayer__text">@RenderText(passage)</p>
                                 <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
                             }
                             else if (step.UseOfficialText)
@@ -99,7 +103,7 @@ else
                                             }
                                             @if (option.Text is not null)
                                             {
-                                                <p class="hourplayer__text">@option.Text</p>
+                                                <p class="hourplayer__text">@RenderText(option.Text)</p>
                                             }
                                             else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
                                             {
@@ -120,7 +124,7 @@ else
                                             }
                                             else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
                                             {
-                                                <p class="hourplayer__text">@optionPassage</p>
+                                                <p class="hourplayer__text">@RenderText(optionPassage)</p>
                                                 <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
                                             }
                                             else if (option.UseOfficialText)
@@ -265,6 +269,46 @@ else
             ? "All steps prayed."
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
     }
+
+    private static string? PartLabel(OfficeStepKind kind) => kind switch
+    {
+        OfficeStepKind.Hymn => "Hymn",
+        OfficeStepKind.Psalm or OfficeStepKind.Canticle => "Psalmody",
+        OfficeStepKind.Reading => "Reading",
+        OfficeStepKind.Responsory => "Responsory",
+        OfficeStepKind.GospelCanticle => "Gospel Canticle",
+        OfficeStepKind.Intercessions => "Intercessions",
+        OfficeStepKind.Prayer => "Concluding Prayer",
+        OfficeStepKind.Conclusion => "Dismissal",
+        _ => null,
+    };
+
+    private static string TitleClass(OfficeStepKind kind) =>
+        kind is OfficeStepKind.Rubric or OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle
+            ? "hourplayer__step-title hourplayer__step-title--rubric"
+            : "hourplayer__step-title";
+
+    private static RenderFragment RenderText(string text) => builder =>
+    {
+        var seq = 0;
+        var start = 0;
+        for (var i = 0; i < text.Length; i++)
+        {
+            if (text[i] is not ('\u2123' or '\u211F'))
+            {
+                continue;
+            }
+
+            builder.AddContent(seq++, text[start..i]);
+            builder.OpenElement(seq++, "span");
+            builder.AddAttribute(seq++, "class", "hourplayer__rubric");
+            builder.AddContent(seq++, text[i].ToString());
+            builder.CloseElement();
+            start = i + 1;
+        }
+
+        builder.AddContent(seq, text[start..]);
+    };
 
     private static string ToRoman(int n) => n switch { 1 => "I", 2 => "II", 3 => "III", _ => "IV" };
 }
