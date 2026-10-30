@@ -177,7 +177,7 @@ else
             </span>
             <span class="hourplayer__progress-nav">
                 <button type="button" class="hourplayer__nav" disabled="@(_completed == 0)" @onclick="Back">Back</button>
-                <button type="button" class="hourplayer__nav hourplayer__nav--next" disabled="@(_completed >= _office.Steps.Count)" @onclick="() => Toggle(_completed)">Next</button>
+                <button type="button" class="hourplayer__nav" disabled="@(_completed >= _office.Steps.Count)" @onclick="Next">Next</button>
             </span>
         </div>
 
@@ -312,7 +312,6 @@ else
     {
         _completed = index < _completed ? index : index + 1;
         _expanded = -1;
-        _scroll = true;
         _announcement = _completed >= _office!.Steps.Count
             ? "All steps prayed."
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
@@ -340,16 +339,11 @@ else
         {
             Toggle(index);
         }
-        else if (index > _completed)
+        else
         {
             _completed = index;
             _expanded = -1;
-            _scroll = true;
             _announcement = $"{_completed} of {_office!.Steps.Count} steps prayed.";
-        }
-        else
-        {
-            _expanded = _expanded == index ? -1 : index;
         }
     }
 
@@ -370,6 +364,16 @@ else
         if (_completed > 0)
         {
             Toggle(_completed - 1);
+            _scroll = true;
+        }
+    }
+
+    private void Next()
+    {
+        if (_completed < _office!.Steps.Count)
+        {
+            Toggle(_completed);
+            _scroll = true;
         }
     }
 
@@ -380,7 +384,8 @@ else
         if (_scroll)
         {
             _scroll = false;
-            await JS.InvokeVoidAsync("eval", "document.getElementById('hour-current-step')?.scrollIntoView({block:'nearest',behavior:'smooth'})");
+            await JS.InvokeVoidAsync("eval",
+                "(()=>{const e=document.getElementById('hour-current-step');if(e){e.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}})()");
         }
     }
 

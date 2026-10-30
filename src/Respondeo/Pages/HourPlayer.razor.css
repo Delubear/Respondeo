@@ -282,10 +282,52 @@
 		width: 3.25rem;
 	}
 
-	.hourplayer__content {
-		padding: 0.5rem 0.25rem 0.75rem;
 	}
-}
+
+	/* Plain rows divided by a rule instead of boxed cards, and a slim thread, on every screen size. */
+	.hourplayer__step {
+		grid-template-columns: 1.25rem 1fr;
+	}
+
+	.hourplayer__step:not(.hourplayer__banner) .hourplayer__body {
+		margin: 0 0 0 0.25rem;
+		border: none;
+		border-bottom: 1px solid var(--rule);
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.hourplayer__step.is-next .hourplayer__step-title {
+		color: var(--accent);
+	}
+
+	.hourplayer__marker--large::after {
+		width: 0.85rem;
+		height: 0.85rem;
+	}
+
+	.hourplayer__marker--small::after {
+		width: 0.55rem;
+		height: 0.55rem;
+	}
+
+	.hourplayer__head {
+		padding: 0.65rem 0.25rem;
+	}
+
+	.hourplayer__book {
+		width: 2.5rem;
+		border-left: none;
+	}
+
+	.hourplayer__content {
+		padding: 0.25rem 0.25rem 0.75rem;
+	}
+
+	/* Leave the previous step's tail in view so the reader keeps their place. */
+	.hourplayer__step[aria-current] {
+		scroll-margin-top: 25vh;
+	}
 
 .hourplayer {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
