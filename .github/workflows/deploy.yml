@@ -131,11 +131,17 @@ jobs:
           token: ${{ secrets.HOURS_CONTENT_TOKEN }}
           path: .licensed/hours
 
+      - name: Validate licensed Hours content
+        if: steps.hours.outcome == 'success'
+        env:
+          HOURS_CONTENT_DIR: ${{ github.workspace }}/.licensed/hours
+        run: dotnet test tests/Respondeo.UnitTests -c Release --filter "FullyQualifiedName~HoursContentFileTests"
+
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
         run: |
-          if [ -f .licensed/hours/hours-content.json ]; then
-            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release "-p:HoursLicensedContentPath=$GITHUB_WORKSPACE/.licensed/hours/hours-content.json"
+          if [ -d .licensed/hours ]; then
+            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release "-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours"
           else
             dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
           fi

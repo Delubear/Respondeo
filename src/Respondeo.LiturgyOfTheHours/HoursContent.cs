@@ -28,10 +28,85 @@ internal sealed record HoursContentFile
     [JsonPropertyName("acknowledgment")]
     public string Acknowledgment { get; init; } = string.Empty;
 
+    /// <summary>The content schema version; files with an unsupported version are rejected.</summary>
+    [JsonPropertyName("schemaVersion")]
+    public int SchemaVersion { get; init; } = 1;
+
+    /// <summary>Celebration metadata keyed by celebration id, e.g. which common supplies missing propers.</summary>
+    [JsonPropertyName("celebrations")]
+    public Dictionary<string, HoursCelebration> Celebrations { get; init; } = [];
+
     /// <summary>Texts keyed from most to least specific, e.g. "ordinary/w2/monday/morning/hymn", "morning/hymn", "hymn".</summary>
     [JsonPropertyName("texts")]
     public Dictionary<string, LicensedText> Texts { get; init; } = [];
+
+    /// <summary>The highest schema version this build understands.</summary>
+    internal const int SupportedSchemaVersion = 2;
+
+    /// <summary>
+    /// Merges several content files into one. Every file must share a supported schema version,
+    /// and a text or celebration key may be defined only once across all files.
+    /// The merged content is a sample unless at least one file declares licensed texts.
+    /// </summary>
+    internal static HoursContentFile Merge(IEnumerable<(string Name, HoursContentFile File)> files)
+    {
+        var texts = new Dictionary<string, LicensedText>(StringComparer.Ordinal);
+        var celebrations = new Dictionary<string, HoursCelebration>(StringComparer.Ordinal);
+        var isSample = true;
+        var acknowledgment = string.Empty;
+        var schemaVersion = 1;
+        var any = false;
+
+        foreach (var (name, file) in files)
+        {
+            if (file.SchemaVersion < 1 || file.SchemaVersion > SupportedSchemaVersion)
+            {
+                throw new InvalidDataException(
+                    $"Hours content file '{name}' declares schemaVersion {file.SchemaVersion}; this build supports 1 to {SupportedSchemaVersion}.");
+            }
+
+            any = true;
+            schemaVersion = Math.Max(schemaVersion, file.SchemaVersion);
+            isSample &= file.IsSample;
+
+            if (string.IsNullOrWhiteSpace(acknowledgment) && !string.IsNullOrWhiteSpace(file.Acknowledgment))
+            {
+                acknowledgment = file.Acknowledgment;
+            }
+
+            foreach (var (key, text) in file.Texts)
+            {
+                if (!texts.TryAdd(key, text))
+                {
+                    throw new InvalidDataException($"Hours content key '{key}' is defined more than once (again in '{name}').");
+                }
+            }
+
+            foreach (var (id, celebration) in file.Celebrations)
+            {
+                if (!celebrations.TryAdd(id, celebration))
+                {
+                    throw new InvalidDataException($"Hours celebration '{id}' is defined more than once (again in '{name}').");
+                }
+            }
+        }
+
+        return any
+            ? new HoursContentFile
+            {
+                IsSample = isSample,
+                Acknowledgment = acknowledgment,
+                SchemaVersion = schemaVersion,
+                Celebrations = celebrations,
+                Texts = texts,
+            }
+            : new HoursContentFile();
+    }
 }
+
+/// <summary>Metadata for one celebration in the content.</summary>
+/// <param name="Common">The common (e.g. "martyrs", "virgins") whose texts fill in what the proper lacks.</param>
+public sealed record HoursCelebration(string? Common = null);
 
 /// <summary>Checks that an acknowledgment carries the elements ICEL's publication policy requires.</summary>
 public static class HoursAcknowledgment
@@ -60,12 +135,17 @@ public interface IHoursTextProvider
 
     /// <summary>Returns the first text found among the keys, tried in order, or null.</summary>
     LicensedText? Find(IEnumerable<string> keys);
+
+    /// <summary>Returns the celebration metadata for an id, or null.</summary>
+    HoursCelebration? FindCelebration(string id) => null;
 }
 
 /// <summary>Reads the single content file embedded in this assembly.</summary>
 internal sealed class EmbeddedHoursTextProvider : IHoursTextProvider
 {
-    internal const string ResourceName = "Respondeo.LiturgyOfTheHours.Content.json";
+    internal const string ResourcePrefix = "Respondeo.LiturgyOfTheHours.Content.";
+
+    internal const string ResourceName = ResourcePrefix + "json";
 
     private static readonly Lazy<HoursContentFile> Content = new(Load);
 
@@ -93,12 +173,27 @@ internal sealed class EmbeddedHoursTextProvider : IHoursTextProvider
 
     private static HoursContentFile Load()
     {
-        using var stream = typeof(EmbeddedHoursTextProvider).Assembly.GetManifestResourceStream(ResourceName);
+        var assembly = typeof(EmbeddedHoursTextProvider).Assembly;
+        var names = assembly.GetManifestResourceNames()
+            .Where(name => name.StartsWith(ResourcePrefix, StringComparison.Ordinal)
+                && name.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
+                && !name.EndsWith(".schema.json", StringComparison.OrdinalIgnoreCase))
+            .Order(StringComparer.Ordinal);
 
-        return stream is null
-            ? new HoursContentFile()
-            : JsonSerializer.Deserialize<HoursContentFile>(stream, Options) ?? new HoursContentFile();
+        return HoursContentFile.Merge(names.Select(name =>
+        {
+            using var stream = assembly.GetManifestResourceStream(name)!;
+            return (name, Parse(stream));
+        }).ToList());
     }
+
+    /// <summary>Deserializes one content file with the loader's options.</summary>
+    internal static HoursContentFile Parse(Stream stream) =>
+        JsonSerializer.Deserialize<HoursContentFile>(stream, Options) ?? new HoursContentFile();
+
+    /// <summary>Returns the celebration metadata for an id, or null.</summary>
+    public HoursCelebration? FindCelebration(string id) =>
+        Content.Value.Celebrations.TryGetValue(id, out var celebration) ? celebration : null;
 
     private static readonly JsonSerializerOptions Options = new()
     {

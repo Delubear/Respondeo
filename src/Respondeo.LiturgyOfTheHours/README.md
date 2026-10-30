@@ -61,17 +61,24 @@ Respondeo therefore uses a hybrid approach:
 ### Licensed-content pipeline (prepared for an ICEL license)
 
 The engine already composes the licensed proper texts (hymns, psalm and Gospel canticle antiphons, readings, responsories,
-intercessions, and collects) from a single JSON content file, so a license only changes the data, never the code.
+intercessions, and collects) from a directory of JSON content files, so a license only changes the data, never the code.
+
+- **Directory of files.** Every `*.json` file in the content directory (except `*.schema.json`) is embedded and merged in ordinal file-name order,
+  so a full liturgical year can be split by season, psalter week, sanctoral month, and commons. A key defined in two files is a build-time error.
+  Files declare `schemaVersion` (currently 2) and are described by `hours-content.schema.json`.
 
 - **Never committed.** Licensed texts stay out of this public repository. `.gitignore` excludes `.licensed/` and any `hours-content.json`.
-- **Sample by default.** Local and fork builds embed `SampleContent/hours-content.sample.json`: invented placeholder wording,
+Local and fork builds embed `SampleContent/hours/*.sample.json`: invented placeholder wording,
   flagged `"isSample": true`, which makes the player show a "sample text" notice. It is never the ICEL text or a paraphrase of it.
 - **Injected at deploy.** `deploy.yml` checks out the private repository `Delubear/Respondeo-HoursContent` (secret `HOURS_CONTENT_TOKEN`)
-  into `.licensed/hours/` and publishes with `-p:HoursLicensedContentPath=.../hours-content.json`.
-  Without the secret, the deployment falls back to the sample file.
+  into `.licensed/hours/`, validates it with `HoursContentFileTests` (`HOURS_CONTENT_DIR`), and publishes with `-p:HoursLicensedContentDir=.../.licensed/hours`.
+  Without the secret, the deployment falls back to the sample files.
 - **Embedded, not served as a file.** The content is compiled into the assembly as an embedded resource, so it is not a separately downloadable
   static asset. It still ships inside the public WASM bundle, so it is publicly readable in principle; confirm this is acceptable under the license.
-- **Lookup keys**, most specific first: `{season}/w{week}/{weekday}/{hour}/{element}`, `{hour}/{element}`, `{element}`.
+- **Lookup keys**, most specific first: `proper/{celebration}/{hour}/{element}`, `proper/{celebration}/{element}`,
+  `common/{common}/{hour}/{element}`, `common/{common}/{element}`, `{season}/w{week}/{weekday}/{hour}/{element}`, `{hour}/{element}`, `{element}`.
+  `{celebration}` is the celebration name slugified with diacritics removed (e.g. `saint-therese-of-the-child-jesus`);
+  the `celebrations` map assigns a celebration its common (e.g. `"our-lady-of-lourdes": { "common": "blessed-virgin-mary" }`).
   Elements: `hymn`, `psalm-antiphon-1..3`, `reading`, `responsory`, `gospel-canticle` (antiphon), `intercessions`, `collect`.
 - **Acknowledgment.** The file's `acknowledgment` string is shown directly under the hour's title and again at the end of the page whenever
   licensed text is displayed. ICEL's "Use of ICEL Materials on Global Computer Networks" policy requires it on the first and last

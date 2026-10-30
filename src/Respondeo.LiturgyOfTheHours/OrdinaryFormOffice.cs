@@ -63,7 +63,7 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 				_ => null,
 			};
 
-			var licensed = element is null ? null : texts.Find([$"{prefix}/{element}", $"{hourKey}/{element}", element]);
+			var licensed = element is null ? null : texts.Find(LicensedKeys(day, prefix, hourKey, element));
 			if (licensed is null)
 			{
 				result.Add(step);
@@ -80,6 +80,48 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 		}
 
 		return result;
+	}
+
+	/// <summary>
+	/// Keys for one element, most specific first: the celebration's proper, then its common, then the ferial psalter.
+	/// </summary>
+	private IEnumerable<string> LicensedKeys(LiturgicalDay day, string prefix, string hourKey, string element)
+	{
+		if (day.Celebration is { } celebration)
+		{
+			var id = CelebrationId(celebration.Name);
+			yield return $"proper/{id}/{hourKey}/{element}";
+			yield return $"proper/{id}/{element}";
+
+			if (texts.FindCelebration(id)?.Common is { Length: > 0 } common)
+			{
+				yield return $"common/{common}/{hourKey}/{element}";
+				yield return $"common/{common}/{element}";
+			}
+		}
+
+		yield return $"{prefix}/{element}";
+		yield return $"{hourKey}/{element}";
+		yield return element;
+	}
+
+	/// <summary>Turns a celebration name into a content id, e.g. "Saint Agnes, Virgin and Martyr" becomes "saint-agnes-virgin-and-martyr".</summary>
+	internal static string CelebrationId(string name)
+	{
+		var builder = new System.Text.StringBuilder(name.Length);
+		foreach (var c in name.Normalize(System.Text.NormalizationForm.FormD))
+		{
+			if (char.IsLetterOrDigit(c))
+			{
+				builder.Append(char.ToLowerInvariant(c));
+			}
+			else if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark && builder.Length > 0 && builder[^1] != '-')
+			{
+				builder.Append('-');
+			}
+		}
+
+		return builder.ToString().TrimEnd('-');
 	}
 
 	internal static bool BeginsWithFirstVespers(LiturgicalDay today, LiturgicalDay tomorrow)

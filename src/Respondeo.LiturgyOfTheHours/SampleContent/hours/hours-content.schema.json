@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://respondeo.app/schemas/hours-content.schema.json",
+  "title": "Respondeo Liturgy of the Hours content file",
+  "description": "One file of proper texts. Several files may be merged; text keys and celebration ids must be unique across all files.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": {
+      "description": "Content schema version. This build supports 1 to 2.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2,
+      "default": 1
+    },
+    "isSample": {
+      "description": "True for invented placeholder text; false only for licensed texts.",
+      "type": "boolean",
+      "default": true
+    },
+    "acknowledgment": {
+      "description": "Copyright acknowledgment displayed with licensed texts (must include ©, ICEL, and 'All rights reserved').",
+      "type": "string"
+    },
+    "celebrations": {
+      "description": "Celebration metadata keyed by celebration id.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "common": {
+            "description": "The common (e.g. martyrs, virgins) whose texts fill in what the proper lacks.",
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "texts": {
+      "description": "Texts keyed from most to least specific, e.g. 'ordinary/w2/monday/morning/hymn', 'morning/hymn', 'hymn'.",
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9-]+(/[a-z0-9-]+)*$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": {
+          "text": { "description": "The text, with line breaks preserved.", "type": "string" },
+          "antiphon": { "description": "The antiphon said before and after.", "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

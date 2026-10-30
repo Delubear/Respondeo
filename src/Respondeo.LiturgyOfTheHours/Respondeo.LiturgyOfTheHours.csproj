@@ -11,20 +11,26 @@
 
   <!--
 	Licensed ICEL texts are never committed. CI checks them out from a private repository and passes
-	-p:HoursLicensedContentPath=<file>; every other build embeds the invented sample file instead.
+	-p:HoursLicensedContentDir=<directory> (every *.json in it, except *.schema.json, is embedded and merged),
+	or the older single-file -p:HoursLicensedContentPath=<file>. Every other build embeds the invented sample directory.
   -->
   <PropertyGroup>
-	<HoursContentFile>SampleContent/hours-content.sample.json</HoursContentFile>
-	<HoursContentFile Condition="'$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentFile>
+	<HoursContentDir>SampleContent/hours</HoursContentDir>
+	<HoursContentDir Condition="'$(HoursLicensedContentDir)' != '' And Exists('$(HoursLicensedContentDir)')">$(HoursLicensedContentDir)</HoursContentDir>
+	<HoursContentSingleFile
+		Condition="'$(HoursLicensedContentDir)' == '' And '$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
 	<None Remove="SampleContent/**" />
-	<EmbeddedResource Include="$(HoursContentFile)" LogicalName="Respondeo.LiturgyOfTheHours.Content.json" />
+	<HoursContentItem Include="$(HoursContentDir)/**/*.json" Exclude="$(HoursContentDir)/**/*.schema.json" Condition="'$(HoursContentSingleFile)' == ''" />
+	<HoursContentItem Include="$(HoursContentSingleFile)" Condition="'$(HoursContentSingleFile)' != ''" />
+	<EmbeddedResource Include="@(HoursContentItem)" LogicalName="Respondeo.LiturgyOfTheHours.Content.%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
 	<None Remove="Data/**" />
+	<Content Include="SampleContent\hours-content.schema.json" />
 	<EmbeddedResource Include="Data/psalter.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Psalter.json" />
 	<EmbeddedResource Include="Data/ordinary-texts.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json" />
 	<EmbeddedResource Include="Data/hours.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Hours.json" />

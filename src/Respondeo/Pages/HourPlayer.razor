@@ -1,4 +1,4 @@
-@page "/discover/hours/{Slug}"
+﻿@page "/discover/hours/{Slug}"
 @using Respondeo.LiturgyOfTheHours
 @inject ILiturgyOfTheHours Office
 @inject IBibleText Bible
@@ -40,7 +40,8 @@ else
                 <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)">
                     <span class="hourplayer__marker" aria-hidden="true"></span>
                     <div class="hourplayer__body">
-                        @if (PartLabel(step.Kind) is { } part && (index == 0 || PartLabel(_office.Steps[index - 1].Kind) != part))
+                        @if (PartLabel(step) is { } part && !string.Equals(part, step.Title, StringComparison.OrdinalIgnoreCase)
+                                                    && (index == 0 || PartLabel(_office.Steps[index - 1]) != part))
                         {
                             <p class="hourplayer__part">@part</p>
                         }
@@ -270,8 +271,9 @@ else
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
     }
 
-    private static string? PartLabel(OfficeStepKind kind) => kind switch
+    private static string? PartLabel(OfficeStep step) => step.Kind switch
     {
+        OfficeStepKind.Versicle when step.Options is { Count: > 0 } => "Invitatory",
         OfficeStepKind.Hymn => "Hymn",
         OfficeStepKind.Psalm or OfficeStepKind.Canticle => "Psalmody",
         OfficeStepKind.Reading => "Reading",

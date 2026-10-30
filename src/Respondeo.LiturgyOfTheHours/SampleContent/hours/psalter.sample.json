@@ -1,8 +1,11 @@
 {
   // SAMPLE CONTENT: every text below is invented placeholder wording, written only to exercise the layout.
   // It is NOT the ICEL translation and must never be presented as such.
-  // The deployment build replaces this file with the licensed texts (see src/Respondeo.LiturgyOfTheHours/README.md).
-  // Keys are tried from most to least specific: "{season}/w{week}/{weekday}/{hour}/{element}", "{hour}/{element}", "{element}".
+  // The deployment build replaces this directory with the licensed texts (see src/Respondeo.LiturgyOfTheHours/README.md).
+  // Keys are tried from most to least specific: "proper/{celebration}/...", "common/{common}/...",
+  // "{season}/w{week}/{weekday}/{hour}/{element}", "{hour}/{element}", "{element}".
+  "$schema": "./hours-content.schema.json",
+  "schemaVersion": 2,
   "isSample": true,
   "acknowledgment": "Sample text for layout testing only. Not the approved liturgical translation.",
   "texts": {

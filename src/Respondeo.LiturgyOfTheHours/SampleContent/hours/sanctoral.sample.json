@@ -1,0 +1,16 @@
+{
+  // SAMPLE CONTENT: invented placeholder wording that shows how a proper and its common are laid out.
+  // It is NOT the ICEL translation and must never be presented as such.
+  "$schema": "./hours-content.schema.json",
+  "schemaVersion": 2,
+  "isSample": true,
+  "celebrations": {
+    "saint-agnes-virgin-and-martyr": { "common": "virgins" }
+  },
+  "texts": {
+    "proper/saint-agnes-virgin-and-martyr/collect": {
+      "text": "Sample proper concluding prayer for this memorial,\nthrough our Lord Jesus Christ, your Son,\nwho lives and reigns with you in the unity of the Holy Spirit,\nGod, for ever and ever.\n\nAmen."
+    },
+    "common/virgins/morning/gospel-canticle": { "text": "", "antiphon": "Sample antiphon from the common of virgins." }
+  }
+}
