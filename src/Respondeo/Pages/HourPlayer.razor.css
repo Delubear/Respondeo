@@ -9,131 +9,375 @@
 }
 
 .hourplayer__list {
-    list-style: none;
-    margin: 1.5rem auto;
-    padding: 0;
-    max-width: 42rem;
-    text-align: left;
+	list-style: none;
+	margin: 1.5rem auto;
+	padding: 0.25rem 0.25rem 0.25rem 0;
+	width: 100%;
+	max-width: 42rem;
+	text-align: left;
 }
 
-/* Two-column row mirroring the devotion thread: marker on the left, content on the right. */
+/* The devotion thread: a marker column on the left joined by a vertical line, content on the right. */
 .hourplayer__step {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    align-items: stretch;
+	display: grid;
+	grid-template-columns: 2.5rem 1fr;
+	align-items: stretch;
+	margin: 0;
 }
 
 .hourplayer__marker {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    padding-top: 0.85rem;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 1.05rem;
 }
 
 .hourplayer__marker::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
-    background: var(--rule);
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 2px;
+	transform: translateX(-50%);
+	background: var(--rule);
 }
 
-.hourplayer__marker::after {
-    content: "";
-    position: relative;
-    z-index: 1;
-    width: 0.9rem;
-    height: 0.9rem;
-    border-radius: 50%;
-    background: var(--paper);
-    border: 2px solid var(--ink-soft);
+.hourplayer__marker--large::after,
+.hourplayer__marker--small::after {
+	content: "";
+	position: relative;
+	z-index: 1;
+	border-radius: 50%;
+	background: var(--paper);
+	border: 2px solid var(--ink-soft);
+}
+
+.hourplayer__marker--large::after {
+	width: 1.15rem;
+	height: 1.15rem;
+}
+
+.hourplayer__marker--small::after {
+	width: 0.7rem;
+	height: 0.7rem;
+	margin-top: 0.22rem;
+}
+
+.hourplayer__step.is-done .hourplayer__marker::before {
+	background: var(--gold);
 }
 
 .hourplayer__step.is-done .hourplayer__marker::after {
-    background: var(--gold);
-    border-color: var(--gold);
+	background: var(--gold);
+	border-color: var(--gold);
 }
 
 .hourplayer__step.is-current .hourplayer__marker::after {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px var(--gold-bright);
+	border-color: var(--gold);
+	box-shadow: 0 0 0 3px var(--gold-bright);
 }
 
 .hourplayer__body {
-    padding: 0.4rem 0 0.9rem;
-    min-width: 0;
+	padding: 0.3rem 0 0.3rem 0.5rem;
+	min-width: 0;
+}
+
+/* A section header introducing a part of the Hour, matching the devotion section banner. */
+.hourplayer__section {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 1.25rem 0 0.5rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 2px solid var(--accent);
+}
+
+.hourplayer__section-title {
+	font-family: var(--display);
+	font-size: 1.25rem;
+	color: var(--ink);
+	margin: 0;
+}
+
+.hourplayer__section-info {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: var(--accent);
+	cursor: pointer;
+}
+
+.hourplayer__section-info svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	fill: currentColor;
+}
+
+/* Each step is a card button with a trailing book button, like a devotion prayer row. */
+.hourplayer__row {
+	display: flex;
+	align-items: stretch;
+	border: 1px solid var(--rule);
+	border-radius: 0.5rem;
+	background: var(--paper);
+	overflow: hidden;
+	transition: border-color var(--dur-2) var(--ease-page), opacity var(--dur-2) var(--ease-page);
+}
+
+.hourplayer__row.is-current {
+	border-color: var(--accent);
+	box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.hourplayer__row.is-upcoming {
+	opacity: 0.55;
 }
 
 .hourplayer__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem 0.75rem;
-    width: 100%;
-    padding: 0.35rem 0.5rem;
-    border: 0;
-    border-radius: 0.25rem;
-    background: none;
-    color: inherit;
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
+	flex: 1 1 auto;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.15rem 0.75rem;
+	padding: 0.6rem 0.9rem;
+	border: none;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition: background var(--dur-2) var(--ease-page);
 }
 
 .hourplayer__head:hover,
 .hourplayer__head:focus-visible {
-    background: color-mix(in srgb, var(--gold) 12%, transparent);
+	background: var(--parchment);
+	outline: none;
 }
 
 .hourplayer__step-title {
-    font-weight: 600;
+	font-family: var(--display);
+	font-size: 1.1rem;
 }
 
 .hourplayer__step.is-done .hourplayer__step-title {
-    color: var(--ink-soft);
+	color: var(--ink-soft);
 }
 
 .hourplayer__ref {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
+	color: var(--ink-soft);
+	font-size: 0.8rem;
+	font-style: italic;
+}
+
+.hourplayer__book {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	border: none;
+	border-left: 1px solid var(--rule);
+	background: transparent;
+	color: var(--ink-soft);
+	cursor: pointer;
+	transition: background var(--dur-2) var(--ease-page), color var(--dur-2) var(--ease-page);
+}
+
+.hourplayer__book:hover,
+.hourplayer__book:focus-visible,
+.hourplayer__book[aria-expanded="true"] {
+	background: var(--parchment);
+	color: var(--accent);
+	outline: none;
+}
+
+.hourplayer__book svg {
+	width: 1.35rem;
+	height: 1.35rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+/* The expanded words flow plainly beneath the card, with no quote-block framing. */
+.hourplayer__content {
+	padding: 0.5rem 0.9rem 0.75rem;
+	font-size: 1.05rem;
 }
 
 .hourplayer__explain,
 .hourplayer__official {
-    margin: 0.25rem 0.5rem;
-    color: var(--ink-soft);
-    font-style: italic;
+	margin: 0.25rem 0;
+	color: var(--ink-soft);
+	font-style: italic;
 }
 
 .hourplayer__text {
-    margin: 0.5rem 0.5rem 0;
-    white-space: pre-line;
-    line-height: 1.6;
+	margin: 0.5rem 0 0;
+	white-space: pre-line;
+	line-height: 1.6;
 }
 
 .hourplayer__translation {
-    margin: 0.25rem 0.5rem 0;
-    font-size: 0.8rem;
-    opacity: 0.75;
+	margin: 0.25rem 0 0;
+	font-size: 0.8rem;
+	opacity: 0.75;
 }
 
-.hourplayer__peek {
-    margin: 0 0.5rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--gold);
-    font: inherit;
+@media (max-width: 40rem) {
+	/* Immersive mode locks the shell to the viewport, so the hour scrolls internally; the sticky
+	   progress bar pins to the bottom of this scroller. Edge to edge like the devotion player. */
+	body.is-immersive .hourplayer {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: auto;
+		margin-inline: -1rem;
+		padding-inline: 1rem;
+	}
+
+	.hourplayer__step {
+		grid-template-columns: 2rem 1fr;
+	}
+
+	.hourplayer__body {
+		padding: 0.25rem 0 0.25rem 0.35rem;
+	}
+
+	.hourplayer__head {
+		padding: 0.8rem 0.75rem;
+	}
+
+	.hourplayer__step-title {
+		font-size: 1.05rem;
+	}
+
+	.hourplayer__book {
+		width: 3.25rem;
+	}
+
+	.hourplayer__content {
+		padding: 0.5rem 0.25rem 0.75rem;
+	}
+}
+
+.hourplayer__progress {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin: 1rem 0 0;
+    padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 0.08);
+    border: 1px solid var(--rule);
+    border-radius: 0.375rem;
+    background: var(--paper);
+}
+
+.hourplayer__step {
+    scroll-margin-top: 1.5rem;
+    scroll-margin-bottom: 6rem;
+}
+
+.hourplayer__info {
+    margin: 0.25rem 0 0.5rem;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}
+
+.hourplayer__continue {
+    display: block;
+    margin: 1rem 0 0 auto;
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 0.375rem;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--body);
     font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity var(--dur-2) var(--ease-page);
+}
+
+.hourplayer__continue:hover,
+.hourplayer__continue:focus-visible {
+    opacity: 0.85;
+}
+
+.hourplayer__progress-label {
+    font-weight: 600;
+}
+
+.hourplayer__progress-track {
+    flex: 1 1 8rem;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--rule);
+    overflow: hidden;
+}
+
+.hourplayer__progress-fill {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.2s ease;
+}
+
+.hourplayer__progress-nav {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.hourplayer__nav {
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9rem;
     cursor: pointer;
 }
 
-.hourplayer__done {
-    font-weight: 600;
+.hourplayer__nav--next {
+    border-color: var(--gold);
     color: var(--gold);
+}
+
+.hourplayer__nav:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.hourplayer__banner {
+    list-style: none;
+}
+
+.hourplayer__done {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--gold);
+    border-radius: 0.375rem;
+    text-align: center;
+}
+
+.hourplayer__done p {
+    margin: 0.25rem 0;
 }
 
 .hourplayer__sources {
@@ -165,21 +409,11 @@
     color: #ef6b6f;
 }
 
-.hourplayer__part {
-    margin: 0.75rem 0.5rem 0;
-    color: var(--liturgical-red, #a4161a);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
 .hourplayer__step-title--rubric,
 .hourplayer__step-title--rubric + .hourplayer__ref {
     color: var(--liturgical-red, #a4161a);
 }
 
-[data-theme="dark"] .hourplayer__part,
 [data-theme="dark"] .hourplayer__step-title--rubric,
 [data-theme="dark"] .hourplayer__step-title--rubric + .hourplayer__ref {
     color: #ef6b6f;
@@ -191,7 +425,7 @@
 }
 
 .hourplayer__antiphon {
-    margin: 0.5rem 0.5rem 0;
+    margin: 0.5rem 0 0;
     white-space: pre-line;
     line-height: 1.6;
 }
@@ -220,7 +454,7 @@
 }
 
 .hourplayer__option {
-    border-left: 2px solid currentColor;
+    border-left: 2px solid var(--rule);
     padding-left: 0.75rem;
 }
 

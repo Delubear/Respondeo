@@ -143,6 +143,8 @@ internal sealed record StepTemplate
 
     public string? Reference { get; init; }
 
+    public string? Antiphon { get; init; }
+
     public bool Invitatory { get; init; }
 
     public string? CelebrationExplanation { get; init; }

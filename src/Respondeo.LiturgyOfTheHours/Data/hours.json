@@ -127,7 +127,8 @@
         },
         {
           "kind": "GospelCanticle", "title": "Canticle of Simeon (Nunc Dimittis)", "source": "fixed", "reference": "Luke 2:29-32",
-          "text": [ "Antiphon: {night-antiphon}", "", "{nunc-dimittis}", "", "Antiphon: {night-antiphon}" ],
+          "antiphon": "{night-antiphon}",
+          "text": [ "{nunc-dimittis}" ],
           "explanation": "Simeon, having seen the Christ, is ready to depart in peace; so we entrust our sleep, and one day our death, to the Lord."
         },
         {

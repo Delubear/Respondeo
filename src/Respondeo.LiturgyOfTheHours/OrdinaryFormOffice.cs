@@ -204,6 +204,7 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 						Text = OfficeData.ResolveText(step.Text ?? []),
 						Reference = step.Reference is null ? null : new PsalmodyReference(step.Reference),
 						Explanation = step.Explanation,
+						Antiphon = step.Antiphon is null ? null : OfficeData.ResolveText([step.Antiphon]),
 						Options = step.Invitatory ? InvitatoryPsalms() : null,
 					});
 					break;

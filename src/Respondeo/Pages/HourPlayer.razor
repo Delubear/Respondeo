@@ -1,7 +1,10 @@
-﻿@page "/discover/hours/{Slug}"
+@page "/discover/hours/{Slug}"
 @using Respondeo.LiturgyOfTheHours
 @inject ILiturgyOfTheHours Office
 @inject IBibleText Bible
+@inject IJSRuntime JS
+@inject ImmersiveInterop Immersive
+@implements IAsyncDisposable
 
 <PageShell Title="@_office?.Title" FallbackTitle="Liturgy of the Hours" Description="Pray the Liturgy of the Hours step by step." Article="true" SeoReady="@(_office is not null)"
            StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
@@ -37,23 +40,53 @@ else
             {
                 var index = i;
                 var step = _office.Steps[i];
-                <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)">
-                    <span class="hourplayer__marker" aria-hidden="true"></span>
+                @if (PartLabel(step) is { } part && (index == 0 || PartLabel(_office.Steps[index - 1]) != part))
+                {
+                    <li class="hourplayer__step hourplayer__banner @(index < _completed ? "is-done" : null)">
+                        <span class="hourplayer__marker" aria-hidden="true"></span>
+                        <div class="hourplayer__body">
+                            <div class="hourplayer__section">
+                                <h2 class="hourplayer__section-title">@part</h2>
+                                <button type="button" class="hourplayer__section-info" aria-expanded="@_openInfo.Contains(part)"
+                                        aria-label="@($"About the {part}")" title="About this part" @onclick="() => ToggleInfo(part)">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 11h2v6h-2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            @if (_openInfo.Contains(part))
+                            {
+                                <p class="hourplayer__info">@PartInfo(part)</p>
+                            }
+                        </div>
+                    </li>
+                }
+                <li class="hourplayer__step @(index < _completed ? "is-done" : null) @(index == _completed ? "is-current" : null)"
+                    id="@(index == _completed ? "hour-current-step" : null)" aria-current="@(index == _completed ? "step" : null)">
+                    <span class="hourplayer__marker hourplayer__marker--@(step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle ? "large" : "small")" aria-hidden="true"></span>
                     <div class="hourplayer__body">
-                        @if (PartLabel(step) is { } part && !string.Equals(part, step.Title, StringComparison.OrdinalIgnoreCase)
-                                                    && (index == 0 || PartLabel(_office.Steps[index - 1]) != part))
-                        {
-                            <p class="hourplayer__part">@part</p>
-                        }
-                        <button type="button" class="hourplayer__head" aria-pressed="@(index < _completed)" @onclick="() => Toggle(index)">
+                        <div class="hourplayer__row @(index < _completed ? "is-done" : index == _completed ? "is-current" : "is-upcoming")">
+                        <button type="button" class="hourplayer__head" aria-expanded="@(index == _completed || index == _expanded)" @onclick="() => HeadClick(index)">
                             <span class="@TitleClass(step.Kind)">@step.Title</span>
                             @if (step.Reference?.DouayCitation is { } douay)
                             {
                                 <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @douay)</span>
                             }
                         </button>
+                        @if (index != _completed && HasText(index, step))
+                        {
+                            <button type="button" class="hourplayer__book" aria-expanded="@(index == _expanded)"
+                                    aria-label="@($"{(index == _expanded ? "Hide" : "Read")} the words of {step.Title}")" title="Read the text"
+                                    @onclick="() => _expanded = _expanded == index ? -1 : index">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 6.5C10.6 5.4 8.6 4.75 6.25 4.75c-1 0-1.95.12-2.75.32v12.6c.8-.2 1.75-.32 2.75-.32 2.35 0 4.35.65 5.75 1.75 1.4-1.1 3.4-1.75 5.75-1.75 1 0 1.95.12 2.75.32V5.07c-.8-.2-1.75-.32-2.75-.32C15.4 4.75 13.4 5.4 12 6.5zm0 0v11.5" />
+                                </svg>
+                            </button>
+                        }
+                        </div>
                         @if (index == _completed || index == _expanded)
                         {
+                            <div class="hourplayer__content">
                             @if (step.Explanation is not null)
                             {
                                 <p class="hourplayer__explain">@step.Explanation</p>
@@ -136,19 +169,34 @@ else
                                     }
                                 </div>
                             }
-                        }
-                        else if (step.Text is not null || step.Explanation is not null || step.Options is not null)
-                        {
-                            <button type="button" class="hourplayer__peek" @onclick="() => _expanded = index">Show text</button>
+                            @if (index == _completed)
+                            {
+                                <button type="button" class="hourplayer__continue" @onclick="() => Toggle(index)">Continue</button>
+                            }
+                            </div>
                         }
                     </div>
                 </li>
             }
         </ol>
 
+        <div class="hourplayer__progress" role="group" aria-label="Progress">
+            <span class="hourplayer__progress-label">@CurrentPart() &middot; @Math.Min(_completed, _office.Steps.Count) of @_office.Steps.Count</span>
+            <span class="hourplayer__progress-track" aria-hidden="true">
+                <span class="hourplayer__progress-fill" style="width: @(100 * _completed / Math.Max(1, _office.Steps.Count))%"></span>
+            </span>
+            <span class="hourplayer__progress-nav">
+                <button type="button" class="hourplayer__nav" disabled="@(_completed == 0)" @onclick="Back">Back</button>
+                <button type="button" class="hourplayer__nav hourplayer__nav--next" disabled="@(_completed >= _office.Steps.Count)" @onclick="() => Toggle(_completed)">Next</button>
+            </span>
+        </div>
+
         @if (_completed >= _office.Steps.Count)
         {
-            <p class="hourplayer__done">Thanks be to God. You have prayed @_office.Title.</p>
+            <div class="hourplayer__done">
+                <p class="eyebrow">Thanks be to God</p>
+                <p>You have prayed @_office.Title.</p>
+            </div>
         }
 
         <h2 class="hourplayer__sources-title">Official texts</h2>
@@ -159,8 +207,12 @@ else
             }
         </ul>
 
-        <div class="hourplayer__exit">
+        <div class="hourplayer__exit devotion__exit">
             <a href="discover/hours">Choose another hour</a>
+            @* Only shown in immersive mode, where the masthead (and its theme toggle) is hidden. Hidden by CSS elsewhere. *@
+            <span class="devotion__exit-theme">
+                <ThemeToggle />
+            </span>
         </div>
 
         @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
@@ -208,8 +260,11 @@ else
 
         if (_office is null)
         {
+            await SetImmersiveAsync(false);
             return;
         }
+
+        await SetImmersiveAsync(true);
 
         var passages = new Dictionary<int, string>();
         var optionPassages = new Dictionary<(int Step, int Option), string>();
@@ -266,23 +321,80 @@ else
     {
         _completed = index < _completed ? index : index + 1;
         _expanded = -1;
+        _scroll = true;
         _announcement = _completed >= _office!.Steps.Count
             ? "All steps prayed."
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
     }
 
+    private readonly HashSet<string> _openInfo = [];
+
+    private void ToggleInfo(string part)
+    {
+        if (!_openInfo.Remove(part))
+        {
+            _openInfo.Add(part);
+        }
+    }
+
+    private void HeadClick(int index)
+    {
+        if (index == _completed)
+        {
+            Toggle(index);
+        }
+        else
+        {
+            _expanded = _expanded == index ? -1 : index;
+        }
+    }
+
+    private static string PartInfo(string part) => part switch
+    {
+        "Introduction" => "The Hour opens by asking God's help and, at the first Hour of the day, with the Invitatory calling us to praise.",
+        "Hymn" => "A hymn sets the tone of the Hour and the season.",
+        "Psalmody" => "The heart of the Hour: psalms and canticles prayed with their antiphons, each ending with the Glory Be.",
+        "Word of God" => "A short reading from Scripture, followed by a responsory that lets the word sink in.",
+        "Gospel Canticle" => "A canticle from the Gospel of Luke, the high point of Morning, Evening, or Night Prayer.",
+        "Prayers" => "Intercessions, the Our Father, and the concluding prayer gather up the needs of the Church and the world.",
+        "Conclusion" => "The Hour closes with a blessing or, at night, an antiphon to the Blessed Virgin Mary.",
+        _ => "",
+    };
+
+    private void Back()
+    {
+        if (_completed > 0)
+        {
+            Toggle(_completed - 1);
+        }
+    }
+
+    private bool _scroll;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_scroll)
+        {
+            _scroll = false;
+            await JS.InvokeVoidAsync("eval", "document.getElementById('hour-current-step')?.scrollIntoView({block:'nearest',behavior:'smooth'})");
+        }
+    }
+
+    private string CurrentPart() =>
+        _completed < _office!.Steps.Count ? PartLabel(_office.Steps[_completed]) ?? _office.Steps[_completed].Title : "Complete";
+
+    private bool HasText(int index, OfficeStep step) =>
+        step.Text is not null || step.Explanation is not null || step.Options is not null || step.Antiphon is not null
+        || _passages.ContainsKey(index) || step.UseOfficialText;
+
     private static string? PartLabel(OfficeStep step) => step.Kind switch
     {
-        OfficeStepKind.Versicle when step.Options is { Count: > 0 } => "Invitatory",
         OfficeStepKind.Hymn => "Hymn",
         OfficeStepKind.Psalm or OfficeStepKind.Canticle => "Psalmody",
-        OfficeStepKind.Reading => "Reading",
-        OfficeStepKind.Responsory => "Responsory",
+        OfficeStepKind.Reading or OfficeStepKind.Responsory => "Word of God",
         OfficeStepKind.GospelCanticle => "Gospel Canticle",
-        OfficeStepKind.Intercessions => "Intercessions",
-        OfficeStepKind.Prayer => "Concluding Prayer",
-        OfficeStepKind.Conclusion => "Dismissal",
-        _ => null,
+        OfficeStepKind.Intercessions or OfficeStepKind.LordsPrayer or OfficeStepKind.Prayer => "Prayers",
+        OfficeStepKind.Conclusion or OfficeStepKind.MarianAntiphon => "Conclusion", _ => "Introduction",
     };
 
     private static string TitleClass(OfficeStepKind kind) =>
@@ -313,4 +425,19 @@ else
     };
 
     private static string ToRoman(int n) => n switch { 1 => "I", 2 => "II", 3 => "III", _ => "IV" };
+
+    // Like the devotion player, the praying view hides the site chrome on phones (CSS gates it to small screens).
+    private async Task SetImmersiveAsync(bool on)
+    {
+        try
+        {
+            await (on ? Immersive.EnterAsync() : Immersive.LeaveAsync());
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit going away during teardown; the class resets on next load anyway.
+        }
+    }
+
+    public async ValueTask DisposeAsync() => await SetImmersiveAsync(false);
 }
