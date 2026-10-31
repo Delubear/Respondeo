@@ -206,6 +206,7 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 						Explanation = step.Explanation,
 						Antiphon = step.Antiphon is null ? null : OfficeData.ResolveText([step.Antiphon]),
 						Options = step.Invitatory ? InvitatoryPsalms() : null,
+						IntroText = step.Invitatory ? OfficeData.ResolveText(["{invitation}", "{alleluia-note}"]) : null,
 					});
 					break;
 				case StepSource.Proper:

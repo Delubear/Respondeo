@@ -61,6 +61,11 @@
                                @onchange="() => SetModeAsync(InvitatoryMode.Cycle)" />
                         Cycle through them, one per day
                     </label>
+                    <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.None)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.None)" />
+                        None (already prayed at an earlier Hour; open with "O God, come to my assistance")
+                    </label>
                 </fieldset>
                 </GuideSection>
 

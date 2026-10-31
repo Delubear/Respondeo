@@ -109,6 +109,9 @@ public sealed record OfficeStep(OfficeStepKind Kind, string Title)
 
     /// <summary>Alternative elements the user may choose between, e.g. the Invitatory psalms.</summary>
     public IReadOnlyList<OfficeStep>? Options { get; init; }
+
+    /// <summary>The usual opening ("O God, come to my assistance") used instead of the Invitatory when it was already prayed at another Hour.</summary>
+    public string? IntroText { get; init; }
 }
 
 /// <summary>A link to an official or authoritative online source for the full texts of the hour.</summary>

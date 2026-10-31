@@ -14,6 +14,9 @@ public enum InvitatoryMode
 
     /// <summary>Rotate through the options in order, one per day.</summary>
     Cycle,
+
+    /// <summary>Skip the Invitatory (already prayed at an earlier Hour) and open with "O God, come to my assistance".</summary>
+    None,
 }
 
 /// <summary>
@@ -31,7 +34,7 @@ public static class InvitatorySelector
     public static IReadOnlyList<int> Select(
         IReadOnlyList<OfficeStep> options, InvitatoryMode mode, string? specificKey, int cycleIndex, Random random)
     {
-        if (options.Count == 0)
+        if (options.Count == 0 || mode == InvitatoryMode.None)
         {
             return [];
         }

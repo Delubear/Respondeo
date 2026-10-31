@@ -89,6 +89,13 @@ else
                         @if (_open.Contains(index))
                         {
                             <div class="hourplayer__content">
+                            @if (step.IntroText is not null && Settings.Current.InvitatoryMode == InvitatoryMode.None)
+                            {
+                                <p class="hourplayer__explain" role="note">The Invitatory was already prayed at an earlier Hour today, so this Hour opens with the usual introduction.</p>
+                                <p class="hourplayer__text">@RenderText(step.IntroText)</p>
+                            }
+                            else
+                            {
                             @if (step.Explanation is not null)
                             {
                                 <p class="hourplayer__explain" role="note">@step.Explanation</p>
@@ -152,7 +159,7 @@ else
                                                     }
                                                 }
                                                 <p class="hourplayer__text">@GloryBe</p>
-                                                @if (option.Antiphon is not null)
+                                                @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
                                                 {
                                                     <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
                                                 }
@@ -170,6 +177,7 @@ else
                                         </details>
                                     }
                                 </div>
+                            }
                             }
                             </div>
                         }
