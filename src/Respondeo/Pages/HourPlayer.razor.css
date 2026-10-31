@@ -240,13 +240,22 @@
 	}
 }
 
-/* The expanded words flow
 .hourplayer__content {
 	padding: 0.5rem 0.9rem 0.75rem;
 	font-size: 1.05rem;
 }
 
-.hourplayer__explain,
+.hourplayer__explain {
+	margin: 0.25rem 0 0.75rem;
+	padding: 0.15rem 0 0.15rem 0.6rem;
+	border-left: 3px solid #a51c1c;
+	color: #a51c1c;
+	font-family: system-ui, sans-serif;
+	font-size: 0.85rem;
+	font-style: italic;
+	line-height: 1.4;
+}
+
 .hourplayer__official {
 	margin: 0.25rem 0;
 	color: var(--ink-soft);
@@ -260,9 +269,14 @@
 }
 
 .hourplayer__translation {
-	margin: 0.25rem 0 0;
-	font-size: 0.8rem;
-	opacity: 0.75;
+	margin: 0.75rem 0 0;
+	padding-top: 0.35rem;
+	border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+	font-family: system-ui, sans-serif;
+	font-size: 0.75rem;
+	font-style: italic;
+	text-align: right;
+	color: var(--ink-soft);
 }
 
 @media (max-width: 40rem) {

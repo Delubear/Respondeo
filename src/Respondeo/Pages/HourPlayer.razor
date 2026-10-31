@@ -88,7 +88,7 @@ else
                             <div class="hourplayer__content">
                             @if (step.Explanation is not null)
                             {
-                                <p class="hourplayer__explain">@step.Explanation</p>
+                                <p class="hourplayer__explain" role="note">@step.Explanation</p>
                             }
                             @if (step.Antiphon is not null)
                             {
@@ -101,7 +101,7 @@ else
                             else if (_passages.TryGetValue(index, out var passage))
                             {
                                 <p class="hourplayer__text">@RenderText(passage)</p>
-                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
+                                <p class="hourplayer__translation">Douay-Rheims translation</p>
                             }
                             else if (step.UseOfficialText)
                             {
@@ -128,7 +128,7 @@ else
                                             </summary>
                                             @if (option.Explanation is not null)
                                             {
-                                                <p class="hourplayer__explain">@option.Explanation</p>
+                                                <p class="hourplayer__explain" role="note">@option.Explanation</p>
                                             }
                                             @if (option.Antiphon is not null)
                                             {
@@ -153,12 +153,12 @@ else
                                                 {
                                                     <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
                                                 }
-                                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
+                                                <p class="hourplayer__translation">Douay-Rheims translation</p>
                                             }
                                             else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
                                             {
                                                 <p class="hourplayer__text">@RenderText(optionPassage)</p>
-                                                <p class="hourplayer__translation">Douay-Rheims translation (Vulgate numbering)</p>
+                                                <p class="hourplayer__translation">Douay-Rheims translation</p>
                                             }
                                             else if (option.UseOfficialText)
                                             {
