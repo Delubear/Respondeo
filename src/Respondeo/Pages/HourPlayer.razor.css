@@ -194,7 +194,7 @@
 	font-style: italic;
 }
 
-.hourplayer__book {
+.hourplayer__toggle {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
@@ -208,15 +208,15 @@
 	transition: background var(--dur-2) var(--ease-page), color var(--dur-2) var(--ease-page);
 }
 
-.hourplayer__book:hover,
-.hourplayer__book:focus-visible,
-.hourplayer__book[aria-expanded="true"] {
+.hourplayer__toggle:hover,
+.hourplayer__toggle:focus-visible,
+.hourplayer__toggle[aria-expanded="true"] {
 	background: var(--parchment);
 	color: var(--accent);
 	outline: none;
 }
 
-.hourplayer__book svg {
+.hourplayer__toggle svg {
 	width: 1.35rem;
 	height: 1.35rem;
 	fill: none;
@@ -224,9 +224,20 @@
 	stroke-width: 1.6;
 	stroke-linecap: round;
 	stroke-linejoin: round;
+	transition: transform var(--dur-2) var(--ease-page);
 }
 
-/* The expanded words flow plainly beneath the card, with no quote-block framing. */
+.hourplayer__toggle[aria-expanded="true"] svg {
+	transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hourplayer__toggle svg {
+		transition: none;
+	}
+}
+
+/* The expanded words flow
 .hourplayer__content {
 	padding: 0.5rem 0.9rem 0.75rem;
 	font-size: 1.05rem;
@@ -278,7 +289,7 @@
 		font-size: 1.05rem;
 	}
 
-	.hourplayer__book {
+	.hourplayer__toggle {
 		width: 3.25rem;
 	}
 
@@ -315,7 +326,7 @@
 		padding: 0.65rem 0.25rem;
 	}
 
-	.hourplayer__book {
+	.hourplayer__toggle {
 		width: 2.5rem;
 		border-left: none;
 	}
