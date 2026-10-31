@@ -61,7 +61,7 @@ else
                     id="@(index == _completed ? "hour-current-step" : null)" aria-current="@(index == _completed ? "step" : null)">
                     <span class="hourplayer__marker hourplayer__marker--@(step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle ? "large" : "small")" aria-hidden="true"></span>
                     <div class="hourplayer__body">
-                        <button type="button" class="hourplayer__head" aria-expanded="@(index == _completed || index == _expanded)" @onclick="() => HeadClick(index)">
+                        <button type="button" class="hourplayer__head" aria-expanded="@_open.Contains(index)" @onclick="() => HeadClick(index)">
                             <span class="@TitleClass(step.Kind)">@step.Title</span>
                             @if (step.Reference?.DouayCitation is { } douay)
                             {
@@ -70,15 +70,15 @@ else
                         </button>
                         @if (index != _completed && HasText(index, step))
                         {
-                            <button type="button" class="hourplayer__book" aria-expanded="@(index == _expanded)"
-                                    aria-label="@($"{(index == _expanded ? "Hide" : "Read")} the words of {step.Title}")" title="Read the text"
-                                    @onclick="() => _expanded = _expanded == index ? -1 : index">
+                            <button type="button" class="hourplayer__book" aria-expanded="@_open.Contains(index)"
+                                    aria-label="@($"{(_open.Contains(index) ? "Hide" : "Read")} the words of {step.Title}")" title="Read the text"
+                                    @onclick="() => ToggleOpen(index)">
                                 <svg viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M12 6.5C10.6 5.4 8.6 4.75 6.25 4.75c-1 0-1.95.12-2.75.32v12.6c.8-.2 1.75-.32 2.75-.32 2.35 0 4.35.65 5.75 1.75 1.4-1.1 3.4-1.75 5.75-1.75 1 0 1.95.12 2.75.32V5.07c-.8-.2-1.75-.32-2.75-.32C15.4 4.75 13.4 5.4 12 6.5zm0 0v11.5" />
                                 </svg>
                             </button>
                         }
-                        @if (index == _completed || index == _expanded)
+                        @if (_open.Contains(index))
                         {
                             <div class="hourplayer__content">
                             @if (step.Explanation is not null)
@@ -222,7 +222,7 @@ else
     private Office? _office;
     private DateOnly _date;
     private int _completed;
-    private int _expanded = -1;
+    private readonly HashSet<int> _open = [];
     private string? _announcement;
 
     private const string GloryBe =
@@ -244,7 +244,8 @@ else
         };
         _office = hour is { } h ? Office.Compose(_date, h) : null;
         _completed = 0;
-        _expanded = -1;
+        _open.Clear();
+        _open.Add(0);
         _passages = [];
         _optionPassages = [];
         _optionStanzas = [];
@@ -311,7 +312,7 @@ else
     private void Toggle(int index)
     {
         _completed = index < _completed ? index : index + 1;
-        _expanded = -1;
+        _open.Add(_completed);
         _announcement = _completed >= _office!.Steps.Count
             ? "All steps prayed."
             : $"{_completed} of {_office.Steps.Count} steps prayed.";
@@ -342,8 +343,16 @@ else
         else
         {
             _completed = index;
-            _expanded = -1;
+            _open.Add(index);
             _announcement = $"{_completed} of {_office!.Steps.Count} steps prayed.";
+        }
+    }
+
+    private void ToggleOpen(int index)
+    {
+        if (!_open.Remove(index))
+        {
+            _open.Add(index);
         }
     }
 
