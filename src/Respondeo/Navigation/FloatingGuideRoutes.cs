@@ -10,7 +10,7 @@ namespace Respondeo.Navigation;
 /// <param name="ShowPrayerGuide">Whether the "guide to prayers" orb is rendered.</param>
 /// <param name="ShowSaintGlossary">Whether the saint glossary orb is rendered.</param>
 /// <param name="ShowSummaGuide">Whether the "how to read the Summa" guide is rendered.</param>
-/// <param name="ShowHourSettings">Whether the Liturgy of the Hours settings orb is rendered (desktop only; phones use the player's bottom bar).</param>
+/// <param name="ShowHourSettings">Whether the Liturgy of the Hours settings orb is rendered.</param>
 public sealed record FloatingGuideState(
     bool ShowLiturgicalOrb,
     bool LiturgicalOrbRaised,

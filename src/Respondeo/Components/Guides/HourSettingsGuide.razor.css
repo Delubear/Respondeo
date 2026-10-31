@@ -38,9 +38,3 @@
     font-weight: 600;
     text-decoration: none;
 }
-
-@media (max-width: 40rem) {
-    .hour-settings-guide ::deep .hour-settings-orb {
-        display: none;
-    }
-}
