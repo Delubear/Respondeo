@@ -71,7 +71,7 @@ public static class FloatingGuideRoutes
             ShowPrayerGuide: prayers,
             ShowSaintGlossary: saints,
             ShowSummaGuide: summa,
-            ShowHourSettings: route.StartsWith($"{HoursBrowse}/", StringComparison.Ordinal));
+            ShowHourSettings: route == HoursBrowse || route.StartsWith($"{HoursBrowse}/", StringComparison.Ordinal));
     }
 
     /// <summary>
