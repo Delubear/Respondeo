@@ -89,96 +89,96 @@ else
                         @if (_open.Contains(index))
                         {
                             <div class="hourplayer__content">
-                            @if (step.IntroText is not null && Settings.Current.InvitatoryMode == InvitatoryMode.None)
-                            {
-                                <p class="hourplayer__explain" role="note">The Invitatory was already prayed at an earlier Hour today, so this Hour opens with the usual introduction.</p>
-                                <p class="hourplayer__text">@RenderText(step.IntroText)</p>
-                            }
-                            else
-                            {
-                            @if (step.Explanation is not null)
-                            {
-                                <p class="hourplayer__explain" role="note">@step.Explanation</p>
-                            }
-                            @if (step.Antiphon is not null)
-                            {
-                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
-                            }
-                            @if (step.Text is not null)
-                            {
-                                <p class="hourplayer__text">@RenderText(step.Text)</p>
-                            }
-                            else if (_passages.TryGetValue(index, out var passage))
-                            {
-                                <p class="hourplayer__text">@RenderText(passage)</p>
-                                <p class="hourplayer__translation">Douay-Rheims translation</p>
-                            }
-                            else if (step.UseOfficialText)
-                            {
-                                <p class="hourplayer__official">Read today's text from an official source below.</p>
-                            }
-                            @if (step.Antiphon is not null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle))
-                            {
-                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
-                            }
-                            @if (step.Options is { Count: > 0 } options)
-                            {
-                                <div class="hourplayer__options">
-                                    @foreach (var optionIndex in VisibleOptions(index, options))
+                                @if (step.IntroText is not null && Settings.Current.InvitatoryMode == InvitatoryMode.None)
+                                {
+                                    <p class="hourplayer__explain" role="note">The Invitatory was already prayed at an earlier Hour today, so this Hour opens with the usual introduction.</p>
+                                    <p class="hourplayer__text">@RenderText(step.IntroText)</p>
+                                }
+                                else
+                                {
+                                    @if (step.Explanation is not null)
                                     {
-                                        var option = options[optionIndex];
-                                        var optionKey = (index, optionIndex);
-                                        <details class="hourplayer__option">
-                                            <summary>
-                                                @option.Title@(" ")
-                                                @if (option.Reference?.DouayCitation is { } optionDouay)
-                                                {
-                                                    <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
-                                                }
-                                            </summary>
-                                            @if (option.Explanation is not null)
+                                        <p class="hourplayer__explain" role="note">@step.Explanation</p>
+                                    }
+                                    @if (step.Antiphon is not null)
+                                    {
+                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
+                                    }
+                                    @if (step.Text is not null)
+                                    {
+                                        <p class="hourplayer__text">@RenderText(step.Text)</p>
+                                    }
+                                    else if (_passages.TryGetValue(index, out var passage))
+                                    {
+                                        <p class="hourplayer__text">@RenderText(passage)</p>
+                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                    }
+                                    else if (step.UseOfficialText)
+                                    {
+                                        <p class="hourplayer__official">Read today's text from an official source below.</p>
+                                    }
+                                    @if (step.Antiphon is not null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle))
+                                    {
+                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
+                                    }
+                                    @if (step.Options is { Count: > 0 } options)
+                                    {
+                                        <div class="hourplayer__options">
+                                            @foreach (var optionIndex in VisibleOptions(index, options))
                                             {
-                                                <p class="hourplayer__explain" role="note">@option.Explanation</p>
-                                            }
-                                            @if (option.Antiphon is not null)
-                                            {
-                                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
-                                            }
-                                            @if (option.Text is not null)
-                                            {
-                                                <p class="hourplayer__text">@RenderText(option.Text)</p>
-                                            }
-                                            else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
-                                            {
-                                                @foreach (var stanza in stanzas)
-                                                {
-                                                    <p class="hourplayer__text">@stanza</p>
-                                                    @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+                                                var option = options[optionIndex];
+                                                var optionKey = (index, optionIndex);
+                                                <details class="hourplayer__option">
+                                                    <summary>
+                                                        @option.Title@(" ")
+                                                        @if (option.Reference?.DouayCitation is { } optionDouay)
+                                                        {
+                                                            <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
+                                                        }
+                                                    </summary>
+                                                    @if (option.Explanation is not null)
+                                                    {
+                                                        <p class="hourplayer__explain" role="note">@option.Explanation</p>
+                                                    }
+                                                    @if (option.Antiphon is not null)
                                                     {
                                                         <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
                                                     }
-                                                }
-                                                <p class="hourplayer__text">@GloryBe</p>
-                                                @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
-                                                {
-                                                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
-                                                }
-                                                <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                                    @if (option.Text is not null)
+                                                    {
+                                                        <p class="hourplayer__text">@RenderText(option.Text)</p>
+                                                    }
+                                                    else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
+                                                    {
+                                                        @foreach (var stanza in stanzas)
+                                                        {
+                                                            <p class="hourplayer__text">@stanza</p>
+                                                            @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+                                                            {
+                                                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                                                            }
+                                                        }
+                                                        <p class="hourplayer__text">@GloryBe</p>
+                                                        @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+                                                        {
+                                                            <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                                                        }
+                                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                                    }
+                                                    else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
+                                                    {
+                                                        <p class="hourplayer__text">@RenderText(optionPassage)</p>
+                                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                                    }
+                                                    else if (option.UseOfficialText)
+                                                    {
+                                                        <p class="hourplayer__official">Read the text from an official source below.</p>
+                                                    }
+                                                </details>
                                             }
-                                            else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
-                                            {
-                                                <p class="hourplayer__text">@RenderText(optionPassage)</p>
-                                                <p class="hourplayer__translation">Douay-Rheims translation</p>
-                                            }
-                                            else if (option.UseOfficialText)
-                                            {
-                                                <p class="hourplayer__official">Read the text from an official source below.</p>
-                                            }
-                                        </details>
+                                        </div>
                                     }
-                                </div>
-                            }
-                            }
+                                }
                             </div>
                         }
                     </div>
@@ -191,15 +191,23 @@ else
             <span class="hourplayer__progress-track" aria-hidden="true">
                 <span class="hourplayer__progress-fill" style="width: @(100 * _completed / Math.Max(1, _office.Steps.Count))%"></span>
             </span>
-            <button type="button" class="hourplayer__settings" aria-label="Hour settings" title="Hour settings"
-                    @onclick="() => Launcher.Request(OrbLauncher.HourSettings)">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7 7 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 2h-3.84a.5.5 0 0 0-.49.42l-.36 2.54a7 7 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.66 8.48a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54a.5.5 0 0 0 .49.42h3.84a.5.5 0 0 0 .49-.42l.36-2.54a7 7 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
-                </svg>
-            </button>
-            <span class="hourplayer__progress-nav">
-                <button type="button" class="hourplayer__nav" disabled="@(_completed == 0)" @onclick="Back">Back</button>
-                <button type="button" class="hourplayer__nav" disabled="@(_completed >= _office.Steps.Count)" @onclick="Next">Next</button>
+            <span class="hourplayer__progress-tools">
+                <span class="hourplayer__theme">
+                    <ThemeToggle />
+                </span>
+                <button type="button" class="hourplayer__settings" aria-label="Hour settings" title="Hour settings"
+                        @onclick="() => Launcher.Request(OrbLauncher.HourSettings)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7 7 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 2h-3.84a.5.5 0 0 0-.49.42l-.36 2.54a7 7 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.66 8.48a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54a.5.5 0 0 0 .49.42h3.84a.5.5 0 0 0 .49-.42l.36-2.54a7 7 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
+                    </svg>
+                </button>
+            </span>
+            <span class="hourplayer__progress-row">
+                <a class="hourplayer__nav hourplayer__leave" href="discover/hours">Leave</a>
+                <span class="hourplayer__progress-nav">
+                    <button type="button" class="hourplayer__nav" disabled="@(_completed == 0)" @onclick="Back">Back</button>
+                    <button type="button" class="hourplayer__nav" disabled="@(_completed >= _office.Steps.Count)" @onclick="Next">Next</button>
+                </span>
             </span>
         </div>
 
@@ -218,14 +226,6 @@ else
                 <li><a href="@source.Url" target="_blank" rel="noopener">@source.Name</a></li>
             }
         </ul>
-
-        <div class="hourplayer__exit devotion__exit">
-            <a href="discover/hours">Choose another hour</a>
-            @* Only shown in immersive mode, where the masthead (and its theme toggle) is hidden. Hidden by CSS elsewhere. *@
-            <span class="devotion__exit-theme">
-                <ThemeToggle />
-            </span>
-        </div>
 
         @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
         {
@@ -488,7 +488,8 @@ else
         OfficeStepKind.Reading or OfficeStepKind.Responsory => "Word of God",
         OfficeStepKind.GospelCanticle => "Gospel Canticle",
         OfficeStepKind.Intercessions or OfficeStepKind.LordsPrayer or OfficeStepKind.Prayer => "Prayers",
-        OfficeStepKind.Conclusion or OfficeStepKind.MarianAntiphon => "Conclusion", _ => "Introduction",
+        OfficeStepKind.Conclusion or OfficeStepKind.MarianAntiphon => "Conclusion",
+        _ => "Introduction",
     };
 
     private static string TitleClass(OfficeStepKind kind) =>

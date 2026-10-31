@@ -248,8 +248,8 @@
 .hourplayer__explain {
 	margin: 0.25rem 0 0.75rem;
 	padding: 0.15rem 0 0.15rem 0.6rem;
-	border-left: 3px solid #a51c1c;
-	color: #a51c1c;
+	border-left: 3px solid var(--rubric);
+	color: var(--rubric);
 	font-family: system-ui, sans-serif;
 	font-size: 0.85rem;
 	font-style: italic;
@@ -396,7 +396,8 @@
 }
 
 .hourplayer__progress-track {
-    flex: 1 1 8rem;
+    flex: 1 1 0;
+    min-width: 3rem;
     height: 4px;
     border-radius: 2px;
     background: var(--rule);
@@ -408,6 +409,50 @@
     height: 100%;
     background: var(--gold);
     transition: width 0.2s ease;
+}
+
+.hourplayer__progress-row {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hourplayer__leave {
+    margin-right: auto;
+    text-decoration: none;
+}
+
+.hourplayer__progress-tools {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.hourplayer__theme {
+    display: inline-flex;
+}
+
+.hourplayer__theme ::deep .theme-toggle,
+.hourplayer__theme ::deep .theme-toggle:hover {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    border-color: var(--rule);
+}
+
+.hourplayer__theme ::deep .theme-toggle {
+    color: var(--ink-soft);
+}
+
+.hourplayer__theme ::deep .theme-toggle:hover {
+    color: var(--accent);
+    background: var(--parchment);
 }
 
 .hourplayer__progress-nav {
@@ -446,6 +491,8 @@
 }
 
 .hourplayer__nav {
+    display: inline-flex;
+    align-items: center;
     padding: 0.3rem 0.9rem;
     border: 1px solid var(--rule);
     border-radius: 999px;

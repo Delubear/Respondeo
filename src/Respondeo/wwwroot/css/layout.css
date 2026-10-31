@@ -189,7 +189,8 @@ input[type="search"]::-webkit-search-cancel-button {
     body.is-immersive .mastnav,
     body.is-immersive .breadcrumb,
     body.is-immersive .quick-menu__toggle,
-    body.is-immersive .colophon {
+    body.is-immersive .colophon,
+    body.is-immersive .hour-settings-orb {
         display: none;
     }
 
