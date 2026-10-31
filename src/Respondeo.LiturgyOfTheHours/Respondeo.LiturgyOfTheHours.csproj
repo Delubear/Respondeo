@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<AssemblyName>Respondeo.LiturgyOfTheHours</AssemblyName>
@@ -17,8 +17,7 @@
   <PropertyGroup>
 	<HoursContentDir>SampleContent/hours</HoursContentDir>
 	<HoursContentDir Condition="'$(HoursLicensedContentDir)' != '' And Exists('$(HoursLicensedContentDir)')">$(HoursLicensedContentDir)</HoursContentDir>
-	<HoursContentSingleFile
-		Condition="'$(HoursLicensedContentDir)' == '' And '$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentSingleFile>
+	<HoursContentSingleFile Condition="'$(HoursLicensedContentDir)' == '' And '$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +29,7 @@
 
   <ItemGroup>
 	<None Remove="Data/**" />
-	<Content Include="SampleContent\hours-content.schema.json" />
+	<None Include="SampleContent\hours\hours-content.schema.json" />
 	<EmbeddedResource Include="Data/psalter.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Psalter.json" />
 	<EmbeddedResource Include="Data/ordinary-texts.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json" />
 	<EmbeddedResource Include="Data/hours.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Hours.json" />
