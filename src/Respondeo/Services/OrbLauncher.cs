@@ -9,6 +9,7 @@ public sealed class OrbLauncher
     public const string Prayers = "prayers";
     public const string Saints = "saints";
     public const string Summa = "summa";
+    public const string HourSettings = "hour-settings";
 
     /// <summary>The orb waiting to be opened by a guide that has not mounted yet.</summary>
     public string? Pending { get; private set; }

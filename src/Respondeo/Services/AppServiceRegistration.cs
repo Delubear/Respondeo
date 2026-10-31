@@ -27,6 +27,9 @@ public static class AppServiceRegistration
         // Reader's preferred text size (localStorage).
         services.AddScoped<ITextSizeService, TextSizeService>();
 
+        // Liturgy of the Hours player preferences (localStorage).
+        services.AddScoped<IHourPlayerSettingsService, HourPlayerSettingsService>();
+
         // Pinned quick-menu destinations (localStorage).
         services.AddScoped<IPinService, PinService>();
         services.AddScoped<OrbLauncher>();

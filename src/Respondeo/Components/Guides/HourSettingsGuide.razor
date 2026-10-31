@@ -1,0 +1,110 @@
+@* The Liturgy of the Hours settings, shown as a floating guide orb on desktop.
+    On mobile the trigger is hidden and the dialog is opened from the player's gear button through OrbLauncher. *@
+
+@using Respondeo.LiturgyOfTheHours
+@inject IHourPlayerSettingsService Settings
+@inject ITextSizeService TextSizes
+@implements IDisposable
+
+<div class="hour-settings-guide">
+    <FloatingGuide OrbKey="@OrbLauncher.HourSettings" TriggerClass="hour-settings-orb" Title="Hour settings" Eyebrow="Liturgy of the Hours"
+                   AriaLabel="Hour settings" Tooltip="Hour settings" MaxWidth="34rem" DialogClass="dialog--hour-settings">
+        <Icon>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7 7 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 2h-3.84a.5.5 0 0 0-.49.42l-.36 2.54a7 7 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.66 8.48a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54a.5.5 0 0 0 .49.42h3.84a.5.5 0 0 0 .49-.42l.36-2.54a7 7 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
+            </svg>
+        </Icon>
+        <ChildContent>
+            <div class="hoursettings">
+                <div class="hoursettings__section">
+                    <label class="hoursettings__check">
+                        <input type="checkbox" checked="@Settings.Current.ExpandAll"
+                               @onchange="e => Settings.UpdateAsync(s => s with { ExpandAll = e.Value is true })" />
+                        Expand all parts by default
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="checkbox" checked="@Settings.Current.AntiphonAtStartOnly"
+                               @onchange="e => Settings.UpdateAsync(s => s with { AntiphonAtStartOnly = e.Value is true })" />
+                        Say the invitatory antiphon only at the start
+                    </label>
+                </div>
+
+                <div class="hoursettings__section">
+                    <h3 class="hoursettings__heading" id="hoursettings-textsize">Text size</h3>
+                    <div class="hoursettings__sizes" role="group" aria-labelledby="hoursettings-textsize">
+                        @foreach (var s in Enum.GetValues<TextSize>())
+                        {
+                            <button type="button" class="hoursettings__size hoursettings__size--@s.ToString().ToLowerInvariant()"
+                                    aria-pressed="@(TextSizes.Current == s ? "true" : "false")" aria-label="@($"{s} text")"
+                                    title="@s.ToString()" @onclick="() => TextSizes.SetAsync(s)">A</button>
+                        }
+                    </div>
+                </div>
+
+                <fieldset class="hoursettings__section hoursettings__fieldset">
+                    <legend class="hoursettings__heading">Invitatory psalm</legend>
+                    <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.ShowAll)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.ShowAll)" />
+                        Show all options
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Specific)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.Specific)" />
+                        Always use
+                        <select class="hoursettings__select" aria-label="Invitatory psalm to always use" value="@SpecificPsalm"
+                                @onchange="e => SetSpecificAsync(e.Value as string)">
+                            @foreach (var psalm in InvitatoryPsalmChoices)
+                            {
+                                <option value="@psalm">@psalm</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Random)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.Random)" />
+                        Pick one at random
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Cycle)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.Cycle)" />
+                        Cycle through them, one per day
+                    </label>
+                </fieldset>
+
+                <div class="hoursettings__section">
+                    <h3 class="hoursettings__heading">Reading the Hours</h3>
+                    <p><abbr class="hoursettings__rubric" title="Versicle">&#x2123;</abbr> marks the <em>versicle</em>,
+                        the line said by the leader (or by one side of the choir).</p>
+                    <p><abbr class="hoursettings__rubric" title="Response">&#x211F;</abbr> marks the <em>response</em>,
+                        said by everyone in reply. Praying alone, you say both.</p>
+                    <p><span class="hoursettings__rubric">Ant.</span> marks an antiphon, said before and after a psalm or canticle.</p>
+                </div>
+            </div>
+        </ChildContent>
+    </FloatingGuide>
+</div>
+
+@code {
+    private static readonly IReadOnlyList<string> DefaultChoices = ["Psalm 95", "Psalm 100", "Psalm 67", "Psalm 24"];
+
+    [Parameter] public IReadOnlyList<string> InvitatoryPsalmChoices { get; set; } = DefaultChoices;
+
+    private InvitatoryMode Mode => Settings.Current.InvitatoryMode;
+
+    private string SpecificPsalm => Settings.Current.InvitatoryPsalm ?? InvitatoryPsalmChoices.FirstOrDefault() ?? string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Settings.Changed += OnChanged;
+        await Settings.LoadAsync();
+    }
+
+    private void OnChanged() => _ = InvokeAsync(StateHasChanged);
+
+    private Task SetModeAsync(InvitatoryMode mode) => Settings.UpdateAsync(s => s with { InvitatoryMode = mode, InvitatoryPsalm = s.InvitatoryPsalm ?? SpecificPsalm });
+
+    private Task SetSpecificAsync(string? psalm) => Settings.UpdateAsync(s => s with { InvitatoryMode = InvitatoryMode.Specific, InvitatoryPsalm = psalm });
+
+    public void Dispose() => Settings.Changed -= OnChanged;
+}

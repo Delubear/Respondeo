@@ -4,6 +4,9 @@
 @inject IBibleText Bible
 @inject IJSRuntime JS
 @inject ImmersiveInterop Immersive
+@inject IHourPlayerSettingsService Settings
+@inject OrbLauncher Launcher
+@inject Func<DateOnly> Today
 @implements IAsyncDisposable
 
 <PageShell Title="@_office?.Title" FallbackTitle="Liturgy of the Hours" Description="Pray the Liturgy of the Hours step by step." Article="true" SeoReady="@(_office is not null)"
@@ -114,7 +117,7 @@ else
                             @if (step.Options is { Count: > 0 } options)
                             {
                                 <div class="hourplayer__options">
-                                    @for (var optionIndex = 0; optionIndex < options.Count; optionIndex++)
+                                    @foreach (var optionIndex in VisibleOptions(index, options))
                                     {
                                         var option = options[optionIndex];
                                         var optionKey = (index, optionIndex);
@@ -143,7 +146,7 @@ else
                                                 @foreach (var stanza in stanzas)
                                                 {
                                                     <p class="hourplayer__text">@stanza</p>
-                                                    @if (option.Antiphon is not null)
+                                                    @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
                                                     {
                                                         <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
                                                     }
@@ -180,6 +183,12 @@ else
             <span class="hourplayer__progress-track" aria-hidden="true">
                 <span class="hourplayer__progress-fill" style="width: @(100 * _completed / Math.Max(1, _office.Steps.Count))%"></span>
             </span>
+            <button type="button" class="hourplayer__settings" aria-label="Hour settings" title="Hour settings"
+                    @onclick="() => Launcher.Request(OrbLauncher.HourSettings)">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7 7 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 2h-3.84a.5.5 0 0 0-.49.42l-.36 2.54a7 7 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.66 8.48a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54a.5.5 0 0 0 .49.42h3.84a.5.5 0 0 0 .49-.42l.36-2.54a7 7 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
+                </svg>
+            </button>
             <span class="hourplayer__progress-nav">
                 <button type="button" class="hourplayer__nav" disabled="@(_completed == 0)" @onclick="Back">Back</button>
                 <button type="button" class="hourplayer__nav" disabled="@(_completed >= _office.Steps.Count)" @onclick="Next">Next</button>
@@ -251,6 +260,9 @@ else
         _completed = 0;
         _open.Clear();
         _open.Add(0);
+        _randomPicks.Clear();
+        await Settings.LoadAsync();
+        await AdvanceInvitatoryCycleAsync();
         _passages = [];
         _optionPassages = [];
         _optionStanzas = [];
@@ -312,6 +324,57 @@ else
         _passages = passages;
         _optionPassages = optionPassages;
         _optionStanzas = optionStanzas;
+
+        if (Settings.Current.ExpandAll)
+        {
+            for (var i = 0; i < _office.Steps.Count; i++)
+            {
+                if (HasText(i, _office.Steps[i]))
+                {
+                    _open.Add(i);
+                }
+            }
+        }
+    }
+
+    private readonly Dictionary<int, int> _randomPicks = [];
+
+    protected override void OnInitialized() => Settings.Changed += OnSettingsChanged;
+
+    private void OnSettingsChanged() => _ = InvokeAsync(StateHasChanged);
+
+    // Advances the daily invitatory cycle once per calendar day so the day's psalm stays the same on every visit.
+    private async Task AdvanceInvitatoryCycleAsync()
+    {
+        var current = Settings.Current;
+        var count = _office?.Steps.FirstOrDefault(s => s.Options is { Count: > 0 })?.Options!.Count ?? 0;
+        if (current.InvitatoryMode != InvitatoryMode.Cycle || count == 0)
+        {
+            return;
+        }
+
+        var (index, date) = InvitatorySelector.AdvanceCycle(current.InvitatoryCycleIndex, current.InvitatoryCycleDate, Today(), count);
+        if (index != current.InvitatoryCycleIndex || date != current.InvitatoryCycleDate)
+        {
+            await Settings.UpdateAsync(s => s with { InvitatoryCycleIndex = index, InvitatoryCycleDate = date });
+        }
+    }
+
+    private IReadOnlyList<int> VisibleOptions(int stepIndex, IReadOnlyList<OfficeStep> options)
+    {
+        var current = Settings.Current;
+        if (current.InvitatoryMode == InvitatoryMode.Random)
+        {
+            if (!_randomPicks.TryGetValue(stepIndex, out var pick) || pick >= options.Count)
+            {
+                pick = InvitatorySelector.Select(options, InvitatoryMode.Random, null, 0, Random.Shared)[0];
+                _randomPicks[stepIndex] = pick;
+            }
+
+            return [pick];
+        }
+
+        return InvitatorySelector.Select(options, current.InvitatoryMode, current.InvitatoryPsalm, current.InvitatoryCycleIndex, Random.Shared);
     }
 
     private void Toggle(int index)
@@ -443,8 +506,9 @@ else
             }
 
             builder.AddContent(seq++, text[start..i]);
-            builder.OpenElement(seq++, "span");
+            builder.OpenElement(seq++, "abbr");
             builder.AddAttribute(seq++, "class", "hourplayer__rubric");
+            builder.AddAttribute(seq++, "title", text[i] == '\u2123' ? "Versicle" : "Response");
             builder.AddContent(seq++, text[i].ToString());
             builder.CloseElement();
             start = i + 1;
@@ -468,6 +532,10 @@ else
         }
     }
 
-    public async ValueTask DisposeAsync() => await SetImmersiveAsync(false);
+    public async ValueTask DisposeAsync()
+    {
+        Settings.Changed -= OnSettingsChanged;
+        await SetImmersiveAsync(false);
+    }
     private string Expanded(int i) => _open.Contains(i) ? "true" : "false";
 }

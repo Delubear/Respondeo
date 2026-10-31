@@ -10,12 +10,14 @@ namespace Respondeo.Navigation;
 /// <param name="ShowPrayerGuide">Whether the "guide to prayers" orb is rendered.</param>
 /// <param name="ShowSaintGlossary">Whether the saint glossary orb is rendered.</param>
 /// <param name="ShowSummaGuide">Whether the "how to read the Summa" guide is rendered.</param>
+/// <param name="ShowHourSettings">Whether the Liturgy of the Hours settings orb is rendered (desktop only; phones use the player's bottom bar).</param>
 public sealed record FloatingGuideState(
     bool ShowLiturgicalOrb,
     bool LiturgicalOrbRaised,
     bool ShowPrayerGuide,
     bool ShowSaintGlossary,
-    bool ShowSummaGuide);
+    bool ShowSummaGuide,
+    bool ShowHourSettings = false);
 
 /// <summary>
 /// Single source of truth for which floating guides/orbs appear on which routes.
@@ -43,6 +45,9 @@ public static class FloatingGuideRoutes
     /// <summary>Summa browse route. Its question pages nest beneath it.</summary>
     private const string SummaBrowse = RoutePath.Summa;
 
+    /// <summary>Liturgy of the Hours browse route. Its hour player pages nest beneath it.</summary>
+    private const string HoursBrowse = $"{RoutePath.Discover}/hours";
+
     /// <summary>
     /// Resolves which orbs a route shows. The prayers and saints browse pages raise the liturgical orb above their sibling guide;
     /// their detail pages keep only the sibling guide.
@@ -65,7 +70,8 @@ public static class FloatingGuideRoutes
             LiturgicalOrbRaised: liturgicalRaised,
             ShowPrayerGuide: prayers,
             ShowSaintGlossary: saints,
-            ShowSummaGuide: summa);
+            ShowSummaGuide: summa,
+            ShowHourSettings: route.StartsWith($"{HoursBrowse}/", StringComparison.Ordinal));
     }
 
     /// <summary>
