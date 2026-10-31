@@ -209,11 +209,14 @@
 }
 
 .hourplayer__toggle:hover,
-.hourplayer__toggle:focus-visible,
-.hourplayer__toggle[aria-expanded="true"] {
+.hourplayer__toggle:focus-visible {
 	background: var(--parchment);
 	color: var(--accent);
 	outline: none;
+}
+
+.hourplayer__toggle[aria-expanded="true"] {
+	color: var(--accent);
 }
 
 .hourplayer__toggle svg {
