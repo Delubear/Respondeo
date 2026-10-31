@@ -369,39 +369,6 @@
     background: color-mix(in srgb, currentColor 10%, transparent);
 }
 
-.quick-menu__textsize {
-    display: flex;
-    gap: .5rem;
-}
-
-.quick-menu__textsize-btn {
-    flex: 1;
-    height: 2.5rem;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--ink);
-    font-family: inherit;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.quick-menu__textsize-btn--default { font-size: .9rem; }
-.quick-menu__textsize-btn--large { font-size: 1.05rem; }
-.quick-menu__textsize-btn--larger { font-size: 1.2rem; }
-.quick-menu__textsize-btn--largest { font-size: 1.4rem; }
-
-.quick-menu__textsize-btn:hover,
-.quick-menu__textsize-btn:focus-visible {
-    background: color-mix(in srgb, currentColor 10%, transparent);
-}
-
-.quick-menu__textsize-btn[aria-pressed="true"] {
-    border-color: var(--accent);
-    color: var(--accent);
-    font-weight: 700;
-}
-
 .quick-menu__footer {
     position: sticky;
     bottom: -2rem;

@@ -1,0 +1,23 @@
+@inject ITextSizeService TextSizes
+
+<div class="textsize-picker" role="group" aria-label="@AriaLabel" aria-labelledby="@AriaLabelledBy">
+    @foreach (var size in Enum.GetValues<TextSize>())
+    {
+        var s = size;
+        <button type="button" class="textsize-picker__btn textsize-picker__btn--@s.ToString().ToLowerInvariant()"
+                aria-pressed="@(TextSizes.Current == s ? "true" : "false")" aria-label="@($"{s} text")" title="@s.ToString()"
+                @onclick="() => TextSizes.SetAsync(s)">A</button>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Accessible label for the group; ignored when <see cref="AriaLabelledBy"/> is set.
+    /// </summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>
+    /// Id of an element that labels the group.
+    /// </summary>
+    [Parameter] public string? AriaLabelledBy { get; set; }
+}

@@ -9,19 +9,11 @@
 }
 
 .hoursettings__fieldset {
+    display: grid;
+    gap: .6rem;
     border: 0;
     margin: 0;
     padding: 0;
-}
-
-.hoursettings__heading {
-    margin: 0;
-    padding: 0;
-    font-size: .8rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--color-muted, inherit);
 }
 
 .hoursettings__check {
@@ -36,32 +28,6 @@
     font: inherit;
     padding: .15rem .35rem;
 }
-
-.hoursettings__sizes {
-    display: flex;
-    gap: .5rem;
-}
-
-.hoursettings__size {
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid currentColor;
-    border-radius: 999px;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.hoursettings__size[aria-pressed="true"] {
-    background: var(--color-accent, currentColor);
-    color: var(--color-bg, #fff);
-}
-
-.hoursettings__size--default { font-size: .9rem; }
-.hoursettings__size--large { font-size: 1.05rem; }
-.hoursettings__size--larger { font-size: 1.2rem; }
-.hoursettings__size--largest { font-size: 1.35rem; }
 
 .hoursettings p {
     margin: 0;

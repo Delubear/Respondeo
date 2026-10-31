@@ -1,0 +1,32 @@
+.textsize-picker {
+    display: flex;
+    gap: .5rem;
+}
+
+.textsize-picker__btn {
+    flex: 1;
+    height: 2.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.textsize-picker__btn--default { font-size: .9rem; }
+.textsize-picker__btn--large { font-size: 1.05rem; }
+.textsize-picker__btn--larger { font-size: 1.2rem; }
+.textsize-picker__btn--largest { font-size: 1.4rem; }
+
+.textsize-picker__btn:hover,
+.textsize-picker__btn:focus-visible {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.textsize-picker__btn[aria-pressed="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+}

@@ -3,7 +3,6 @@
 
 @using Respondeo.LiturgyOfTheHours
 @inject IHourPlayerSettingsService Settings
-@inject ITextSizeService TextSizes
 @implements IDisposable
 
 <div class="hour-settings-guide">
@@ -29,20 +28,12 @@
                     </label>
                 </div>
 
-                <div class="hoursettings__section">
-                    <h3 class="hoursettings__heading" id="hoursettings-textsize">Text size</h3>
-                    <div class="hoursettings__sizes" role="group" aria-labelledby="hoursettings-textsize">
-                        @foreach (var s in Enum.GetValues<TextSize>())
-                        {
-                            <button type="button" class="hoursettings__size hoursettings__size--@s.ToString().ToLowerInvariant()"
-                                    aria-pressed="@(TextSizes.Current == s ? "true" : "false")" aria-label="@($"{s} text")"
-                                    title="@s.ToString()" @onclick="() => TextSizes.SetAsync(s)">A</button>
-                        }
-                    </div>
-                </div>
+                <GuideSection Title="Text size">
+                    <TextSizePicker AriaLabel="Text size" />
+                </GuideSection>
 
-                <fieldset class="hoursettings__section hoursettings__fieldset">
-                    <legend class="hoursettings__heading">Invitatory psalm</legend>
+                <GuideSection Title="Invitatory psalm">
+                <fieldset class="hoursettings__fieldset" aria-label="Invitatory psalm">
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.ShowAll)"
                                @onchange="() => SetModeAsync(InvitatoryMode.ShowAll)" />
@@ -71,17 +62,17 @@
                         Cycle through them, one per day
                     </label>
                 </fieldset>
+                </GuideSection>
 
-                <div class="hoursettings__section">
-                    <h3 class="hoursettings__heading">Reading the Hours</h3>
-                    <p><abbr class="hoursettings__rubric" title="Versicle">&#x2123;</abbr> marks the <em>versicle</em>,
-                        the line said by the leader (or by one side of the choir).</p>
-                    <p><abbr class="hoursettings__rubric" title="Response">&#x211F;</abbr> marks the <em>response</em>,
-                        said by everyone in reply. Praying alone, you say both.</p>
-                    <p><span class="hoursettings__rubric">Ant.</span> marks an antiphon, said before and after a psalm or canticle.</p>
-                </div>
+                <GuideSection Title="Reading the Hours">
+                    <p><span class="hoursettings__rubric">V.</span> marks the <em>versicle</em>, the line said by the leader (or by one side of the choir).</p>
+                    <p><span class="hoursettings__rubric">R.</span> marks the <em>response</em>, said by everyone in reply. Praying alone, you say both.</p>
+                </GuideSection>
             </div>
         </ChildContent>
+        <Footer>
+            <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+        </Footer>
     </FloatingGuide>
 </div>
 

@@ -136,15 +136,7 @@
 			</section>
 			<section class="quick-menu__section quick-menu__section--textsize">
 				<h3 class="quick-menu__heading" id="quick-menu-textsize">Article text size</h3>
-				<div class="quick-menu__textsize" role="group" aria-labelledby="quick-menu-textsize">
-					@foreach (var size in Enum.GetValues<TextSize>())
-					{
-						var s = size;
-						<button type="button" class="quick-menu__textsize-btn quick-menu__textsize-btn--@s.ToString().ToLowerInvariant()"
-								aria-pressed="@(TextSizes.Current == s ? "true" : "false")" aria-label="@($"{s} text")" title="@s.ToString()"
-								@onclick="() => TextSizes.SetAsync(s)">A</button>
-					}
-				</div>
+				<TextSizePicker AriaLabelledBy="quick-menu-textsize" />
 			</section>
 		}
 	</nav>
