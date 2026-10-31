@@ -51,6 +51,7 @@
 competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
 
 ## Codebase navigation (Graphify)
+- Use the Graphify knowledge graph (graphify-out/) proactively for locating code, tracing usages, and checking cross-component impact, not only for explicit architecture questions.
 - For architecture, dependency, or "where is X used / what calls Y" questions, query the Graphify knowledge graph in `graphify-out/` first, then verify findings against the source.
 - After refactors or structural changes (file moves, renames, new services or components), update the Graphify graph so it does not go stale.
 - `graphify-out/` is not committed; if it is missing or outdated, regenerate it before relying on it.
