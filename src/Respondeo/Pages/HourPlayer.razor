@@ -63,6 +63,10 @@ else
                     <div class="hourplayer__body">
                         <button type="button" class="hourplayer__head" aria-expanded="@_open.Contains(index)" @onclick="() => HeadClick(index)">
                             <span class="@TitleClass(step.Kind)">@step.Title</span>
+                            @if (step.Kind == OfficeStepKind.Reading && step.Reference?.Citation is { } cite && cite != step.Title)
+                            {
+                                <span class="hourplayer__ref">@cite</span>
+                            }
                             @if (step.Reference?.DouayCitation is { } douay)
                             {
                                 <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @douay)</span>
