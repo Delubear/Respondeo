@@ -61,8 +61,8 @@ public static class FloatingGuideRoutes
         var saints = IsIn(route, SaintsBrowse);
         var summa = IsIn(route, SummaBrowse);
 
-        // The orb only raises on the browse pages, where it stacks above the prayer/saint guide.
-        var liturgicalRaised = route == PrayersBrowse || route == SaintsBrowse;
+        // The orb only raises on the browse pages, where it stacks above the prayer/saint/hour-settings guide.
+        var liturgicalRaised = route == PrayersBrowse || route == SaintsBrowse || route == HoursBrowse;
         var liturgicalBase = Array.IndexOf(LiturgicalBaseRoutes, route) >= 0;
 
         return new FloatingGuideState(
