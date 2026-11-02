@@ -30,6 +30,26 @@
                 </div>
                 </GuideSection>
 
+                <GuideSection Title="Marks">
+                <div class="hoursettings__section">
+                    <label class="hoursettings__check">
+                        <input type="checkbox" checked="@Settings.Current.ShowVersicleResponseMarks"
+                               @onchange="e => Settings.UpdateAsync(s => s with { ShowVersicleResponseMarks = e.Value is true })" />
+                        <span class="hoursettings__label">Show &#8483; &#8479; (versicle / response)</span>
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="checkbox" checked="@Settings.Current.ShowPsalmPauseMarks"
+                               @onchange="e => Settings.UpdateAsync(s => s with { ShowPsalmPauseMarks = e.Value is true })" />
+                        <span class="hoursettings__label">Show * &#8224; (psalm pauses)</span>
+                    </label>
+                    <label class="hoursettings__check">
+                        <input type="checkbox" checked="@Settings.Current.ShowCrossMarks"
+                               @onchange="e => Settings.UpdateAsync(s => s with { ShowCrossMarks = e.Value is true })" />
+                        <span class="hoursettings__label">Show &#10016; (sign of the cross)</span>
+                    </label>
+                </div>
+                </GuideSection>
+
                 <GuideSection Title="Text size">
                     <TextSizePicker AriaLabel="Text size" />
                 </GuideSection>
@@ -72,8 +92,11 @@
                 </GuideSection>
 
                 <GuideSection Title="Reading the Hours">
-                    <p><span class="hoursettings__rubric">V.</span> marks the <em>versicle</em>, the line said by the leader (or by one side of the choir).</p>
-                    <p><span class="hoursettings__rubric">R.</span> marks the <em>response</em>, said by everyone in reply. Praying alone, you say both.</p>
+                    <p><span class="hoursettings__rubric">℣</span> marks the <em>versicle</em>, the line said by the leader (or by one side of the choir).</p>
+                    <p><span class="hoursettings__rubric">℟</span> marks the <em>response</em>, said by everyone in reply. Praying alone, you say both.</p>
+                    <p><span class="hoursettings__rubric">*</span> marks the <em>mediant</em>: pause briefly at the middle of a psalm verse.</p>
+                    <p><span class="hoursettings__rubric">†</span> marks the <em>flex</em>: a short pause within a long first half-verse.</p>
+                    <p><span class="hoursettings__rubric">✠</span> means make the sign of the cross.</p>
                 </GuideSection>
             </div>
         </ChildContent>

@@ -27,6 +27,15 @@ public sealed record HourPlayerSettings
 
     /// <summary>The day the cycle index was last advanced.</summary>
     public DateOnly? InvitatoryCycleDate { get; init; }
+
+    /// <summary>Show the versicle and response marks (℣ ℟).</summary>
+    public bool ShowVersicleResponseMarks { get; init; } = true;
+
+    /// <summary>Show the psalm pause marks: mediant (*) and flex (†).</summary>
+    public bool ShowPsalmPauseMarks { get; init; } = true;
+
+    /// <summary>Show the sign-of-the-cross mark (✠).</summary>
+    public bool ShowCrossMarks { get; init; } = true;
 }
 
 /// <summary>

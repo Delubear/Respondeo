@@ -4,6 +4,7 @@
   // The deployment build replaces this directory with the licensed texts (see src/Respondeo.LiturgyOfTheHours/README.md).
   // Keys are tried from most to least specific: "proper/{celebration}/...", "common/{common}/...",
   // "{season}/w{week}/{weekday}/{hour}/{element}", "{hour}/{element}", "{element}".
+  // Breviary marks (rendered in red): ℣ versicle, ℟ response, * mediant pause, † flex, ✠ sign of the cross.
   "$schema": "./hours-content.schema.json",
   "schemaVersion": 2,
   "isSample": true,
@@ -12,14 +13,17 @@
     "hymn": {
       "text": "Sample hymn, first stanza, line one,\nsample hymn, first stanza, line two,\nsample hymn, first stanza, line three,\nsample hymn, first stanza, line four.\n\nSample hymn, second stanza, line one,\nsample hymn, second stanza, line two,\nsample hymn, second stanza, line three,\nsample hymn, second stanza, line four. Amen."
     },
-    "psalm-antiphon-1": { "text": "", "antiphon": "Sample antiphon for the first psalm." },
-    "psalm-antiphon-2": { "text": "", "antiphon": "Sample antiphon for the second psalm or canticle." },
-    "psalm-antiphon-3": { "text": "", "antiphon": "Sample antiphon for the third psalm or canticle." },
+    "psalm-antiphon-1": { "text": "", "antiphon": "Sample antiphon for the first psalm, * with its second half." },
+    "psalm-antiphon-2": { "text": "", "antiphon": "Sample antiphon for the second psalm * or canticle." },
+    "psalm-antiphon-3": { "text": "", "antiphon": "Sample antiphon for the third psalm * or canticle." },
     "responsory": {
       "text": "Sample responsory, first part, * sample responsory, second part.\n— Sample responsory, first part, * sample responsory, second part.\nSample verse of the responsory,\n— sample responsory, second part.\nGlory to the Father, and to the Son, and to the Holy Spirit.\n— Sample responsory, first part, * sample responsory, second part."
     },
-    "morning/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Zechariah." },
-    "evening/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Mary." },
+    "morning/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Zechariah, * second half." },
+    "evening/gospel-canticle": { "text": "", "antiphon": "Sample antiphon for the Canticle of Mary, * second half." },
+    "sample/marked-psalm": {
+      "text": "✠ Sample psalm verse, first half, * sample psalm verse, second half.\nSample long verse, opening clause, †\nsample long verse, continuing clause, * sample long verse, second half.\nSample psalm verse, first half, * sample psalm verse, second half."
+    },
     "morning/intercessions": {
       "text": "Sample introduction to the intercessions:\nSample response, repeated after each petition.\n\nSample first petition,\n— sample conclusion of the first petition.\n\nSample second petition,\n— sample conclusion of the second petition."
     },

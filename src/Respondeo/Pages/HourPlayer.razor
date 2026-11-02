@@ -102,7 +102,7 @@ else
                                     }
                                     @if (step.Antiphon is not null)
                                     {
-                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
+                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(step.Antiphon)</p>
                                     }
                                     @if (step.Text is not null)
                                     {
@@ -119,7 +119,7 @@ else
                                     }
                                     @if (step.Antiphon is not null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle))
                                     {
-                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @step.Antiphon</p>
+                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(step.Antiphon)</p>
                                     }
                                     @if (step.Options is { Count: > 0 } options)
                                     {
@@ -204,7 +204,7 @@ else
     private string? _announcement;
 
     private const string GloryBe =
-        "Glory be to the Father, and to the Son, and to the Holy Spirit,\nas it was in the beginning, is now, and ever shall be,\nworld without end. Amen.";
+        "Glory be to the Father, and to the Son, * and to the Holy Spirit,\nas it was in the beginning, is now, * and ever shall be,\nworld without end. Amen.";
 
     private Dictionary<int, string> _passages = [];
     private Dictionary<(int Step, int Option), string> _optionPassages = [];
@@ -327,7 +327,7 @@ else
             }
             @if (option.Antiphon is not null)
             {
-                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
             }
             @if (option.Text is not null)
             {
@@ -340,13 +340,13 @@ else
                     <p class="hourplayer__text">@stanza</p>
                     @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
                     {
-                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
                     }
                 }
-                <p class="hourplayer__text">@GloryBe</p>
+                <p class="hourplayer__text">@RenderText(GloryBe)</p>
                 @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
                 {
-                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
                 }
                 <p class="hourplayer__translation">Douay-Rheims translation</p>
             }
@@ -513,27 +513,51 @@ else
         : index == _completed + 1 ? "is-next"
         : "is-upcoming";
 
-    private static RenderFragment RenderText(string text) => builder =>
+    private bool IsMarkVisible(BreviarySymbol kind) => kind switch
     {
-        var seq = 0;
-        var start = 0;
-        for (var i = 0; i < text.Length; i++)
+        BreviarySymbol.Versicle or BreviarySymbol.Response => Settings.Current.ShowVersicleResponseMarks,
+        BreviarySymbol.Mediant or BreviarySymbol.Flexa => Settings.Current.ShowPsalmPauseMarks,
+        BreviarySymbol.Cross => Settings.Current.ShowCrossMarks,
+        _ => true,
+    };
+
+    private RenderFragment RenderText(string text) => builder =>
+    {
+        BreviarySymbol? skippedKind = null;
+        foreach (var segment in BreviaryText.Tokenize(text))
         {
-            if (text[i] is not ('\u2123' or '\u211F'))
+            if (segment.Kind != BreviarySymbol.Text && !IsMarkVisible(segment.Kind))
             {
+                skippedKind = segment.Kind;
                 continue;
             }
 
-            builder.AddContent(seq++, text[start..i]);
-            builder.OpenElement(seq++, "abbr");
-            builder.AddAttribute(seq++, "class", "hourplayer__rubric");
-            builder.AddAttribute(seq++, "title", text[i] == '\u2123' ? "Versicle" : "Response");
-            builder.AddContent(seq++, text[i].ToString());
-            builder.CloseElement();
-            start = i + 1;
+            var skipped = skippedKind;
+            skippedKind = null;
+            switch (segment.Kind)
+            {
+                case BreviarySymbol.Text:
+                    builder.AddContent(0, skipped switch
+                    {
+                        BreviarySymbol.Versicle or BreviarySymbol.Response => segment.Text.TrimStart('.', ' '),
+                        not null => segment.Text.TrimStart(' '),
+                        _ => segment.Text,
+                    });
+                    break;
+                case BreviarySymbol.Versicle or BreviarySymbol.Response:
+                    builder.OpenElement(1, "span");
+                    builder.AddAttribute(2, "class", "hourplayer__rubric");
+                    builder.AddContent(4, segment.Text);
+                    builder.CloseElement();
+                    break;
+                default:
+                    builder.OpenElement(5, "span");
+                    builder.AddAttribute(6, "class", $"hourplayer__sym hourplayer__sym--{segment.Kind.ToString().ToLowerInvariant()}");
+                    builder.AddContent(8, segment.Text);
+                    builder.CloseElement();
+                    break;
+            }
         }
-
-        builder.AddContent(seq, text[start..]);
     };
 
     private static string ToRoman(int n) => n switch { 1 => "I", 2 => "II", 3 => "III", _ => "IV" };

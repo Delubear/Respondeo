@@ -385,11 +385,6 @@
     fill: currentColor;
 }
 
-.hourplayer__text
-    text-decoration: none;
-    cursor: help;
-}
-
 .hourplayer__banner {
     list-style: none;
 }
@@ -426,6 +421,20 @@
 }
 
 /* Versicle/response markers are built in code, so they lack the scope attribute; reach them through ::deep. */
+::deep .hourplayer__sym {
+    color: var(--liturgical-red, #a4161a);
+    font-weight: 600;
+}
+
+::deep .hourplayer__sym--mediant
+::deep .hourplayer__sym--flexa {
+    margin-inline: 0.15em;
+}
+
+[data-theme="dark"] ::deep .hourplayer__sym {
+    color: #ef6b6f;
+}
+
 .hourplayer__text ::deep .hourplayer__rubric {
     color: var(--liturgical-red, #a4161a);
     font-weight: 600;
