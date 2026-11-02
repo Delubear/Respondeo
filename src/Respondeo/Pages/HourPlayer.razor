@@ -65,7 +65,7 @@ else
                     <span class="hourplayer__marker hourplayer__marker--@(step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle ? "large" : "small")" aria-hidden="true"></span>
                     <div class="hourplayer__body">
                         <button type="button" class="hourplayer__head" aria-expanded="@Expanded(index)" @onclick="() => HeadClick(index)">
-                            <span class="@TitleClass(step.Kind)">@step.Title</span>
+                            <span class="hourplayer__step-title hourplayer__step-title--rubric">@step.Title</span>
                             @if (step.Kind == OfficeStepKind.Reading && step.Reference?.Citation is { } cite && cite != step.Title)
                             {
                                 <span class="hourplayer__ref">@cite</span>
@@ -479,11 +479,6 @@ else
         OfficeStepKind.Conclusion or OfficeStepKind.MarianAntiphon => "Conclusion",
         _ => "Introduction",
     };
-
-    private static string TitleClass(OfficeStepKind kind) =>
-        kind is OfficeStepKind.Rubric or OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle
-            ? "hourplayer__step-title hourplayer__step-title--rubric"
-            : "hourplayer__step-title";
 
     private string StepStatus(int index) =>
         index < _completed ? "is-done"
