@@ -9,15 +9,15 @@
       "world without end. Amen."
     ],
     "invitation": [
-      "℣ ✠ O God, come to my assistance.",
-      "℟ O Lord, make haste to help me.",
+      "{{V}} {{cross}} O God, come to my assistance.",
+      "{{R}} O Lord, make haste to help me.",
       "",
       "{glory-be}"
     ],
     "alleluia-note": [ "Outside Lent, add: Alleluia." ],
     "invitatory-verse": [
-      "℣ ✠ Lord, open my lips.",
-      "℟ And my mouth will proclaim your praise."
+      "{{V}} {{cross}} Lord, open my lips.",
+      "{{R}} And my mouth will proclaim your praise."
     ],
     "lords-prayer": [
       "Our Father, who art in heaven,",
@@ -31,7 +31,7 @@
       "but deliver us from evil."
     ],
     "benedictus": [
-      "✠ Blessed be the Lord God of Israel;",
+      "{{cross}} Blessed be the Lord God of Israel;",
       "because he hath visited and wrought the redemption of his people:",
       "And hath raised up a horn of salvation to us,",
       "in the house of David his servant:",
@@ -59,7 +59,7 @@
       "{glory-be}"
     ],
     "magnificat": [
-      "✠ My soul doth magnify the Lord.",
+      "{{cross}} My soul doth magnify the Lord.",
       "And my spirit hath rejoiced in God my Saviour.",
       "Because he hath regarded the humility of his handmaid;",
       "for behold from henceforth all generations shall call me blessed.",
@@ -81,7 +81,7 @@
       "{glory-be}"
     ],
     "nunc-dimittis": [
-      "✠ Now thou dost dismiss thy servant, O Lord,",
+      "{{cross}} Now thou dost dismiss thy servant, O Lord,",
       "according to thy word in peace;",
       "Because my eyes have seen thy salvation,",
       "which thou hast prepared before the face of all peoples:",
@@ -100,12 +100,12 @@
       "that we may watch with Christ, and rest in peace.)"
     ],
     "night-responsory": [
-      "℣ Into thy hands, O Lord, I commend my spirit.",
-      "℟ Into thy hands, O Lord, I commend my spirit.",
-      "℣ Thou hast redeemed us, O Lord, God of truth.",
-      "℟ I commend my spirit.",
-      "℣ Glory be to the Father, and to the Son, and to the Holy Spirit.",
-      "℟ Into thy hands, O Lord, I commend my spirit."
+      "{{V}} Into thy hands, O Lord, I commend my spirit.",
+      "{{R}} Into thy hands, O Lord, I commend my spirit.",
+      "{{V}} Thou hast redeemed us, O Lord, God of truth.",
+      "{{R}} I commend my spirit.",
+      "{{V}} Glory be to the Father, and to the Son, and to the Holy Spirit.",
+      "{{R}} Into thy hands, O Lord, I commend my spirit."
     ],
     "easter-night-responsory": [
       "Haec dies quam fecit Dominus:",
@@ -116,12 +116,12 @@
     "night-blessing": [
       "May the all-powerful Lord grant us a restful night and a peaceful death.",
       "",
-      "℟ Amen."
+      "{{R}} Amen."
     ],
     "dismissal": [
-      "✠ May the Lord bless us, protect us from all evil, and bring us to everlasting life.",
+      "{{cross}} May the Lord bless us, protect us from all evil, and bring us to everlasting life.",
       "",
-      "℟ Amen."
+      "{{R}} Amen."
     ],
     "examen": [
       "Pause in silence to review the day: give thanks for its graces, and ask pardon for your sins.",

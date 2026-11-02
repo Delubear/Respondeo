@@ -34,7 +34,9 @@ internal static partial class OfficeData
     public static HoursData Hours => LazyHours.Value;
 
     /// <summary>Joins text lines with newlines, expanding each <c>{key}</c> with the named text from ordinary-texts.json.</summary>
-    public static string ResolveText(IEnumerable<string> lines) => TextReference().Replace(string.Join('\n', lines), match => Text(match.Groups[1].Value));
+    /// <remarks>Breviary tokens such as <c>{{cross}}</c> are expanded first so they are never mistaken for text references.</remarks>
+    public static string ResolveText(IEnumerable<string> lines) =>
+        TextReference().Replace(BreviaryText.ExpandTokens(string.Join('\n', lines)), match => Text(match.Groups[1].Value));
 
     /// <summary>The named fixed text, with any embedded texts expanded.</summary>
     public static string Text(string key) => Texts.Texts.TryGetValue(key, out var lines) ? ResolveText(lines) : throw new KeyNotFoundException($"Unknown ordinary text '{key}'.");

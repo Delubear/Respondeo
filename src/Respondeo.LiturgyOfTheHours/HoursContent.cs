@@ -164,7 +164,7 @@ internal sealed class EmbeddedHoursTextProvider : IHoursTextProvider
         {
             if (Content.Value.Texts.TryGetValue(key, out var text))
             {
-                return text;
+                return text with { Text = BreviaryText.ExpandTokens(text.Text), Antiphon = BreviaryText.ExpandTokens(text.Antiphon) };
             }
         }
 

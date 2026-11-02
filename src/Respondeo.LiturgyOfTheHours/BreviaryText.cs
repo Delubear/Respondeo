@@ -25,6 +25,36 @@ public static class BreviaryText
     public const char Flexa = '\u2020';
     public const char Cross = '\u2720';
 
+    /// <summary>The source tokens that content JSON uses in place of the raw glyphs, mapped to the glyph each one renders as.</summary>
+    public static readonly IReadOnlyDictionary<string, char> Tokens = new Dictionary<string, char>(StringComparer.Ordinal)
+    {
+        ["{{V}}"] = Versicle,
+        ["{{R}}"] = Response,
+        ["{{star}}"] = Mediant,
+        ["{{dagger}}"] = Flexa,
+        ["{{cross}}"] = Cross,
+    };
+
+    /// <summary>The glyphs that content JSON must spell as tokens rather than write directly.</summary>
+    public static readonly IReadOnlyList<char> TokenOnlyGlyphs = [Versicle, Response, Flexa, Cross];
+
+    /// <summary>Replaces each <c>{{V}}</c>, <c>{{R}}</c>, <c>{{star}}</c>, <c>{{dagger}}</c> and <c>{{cross}}</c> token with its glyph.</summary>
+    [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull(nameof(text))]
+    public static string? ExpandTokens(string? text)
+    {
+        if (string.IsNullOrEmpty(text) || !text.Contains("{{", StringComparison.Ordinal))
+        {
+            return text;
+        }
+
+        foreach (var (token, glyph) in Tokens)
+        {
+            text = text.Replace(token, glyph.ToString(), StringComparison.Ordinal);
+        }
+
+        return text;
+    }
+
     public static BreviarySymbol Classify(char c) => c switch
     {
         Versicle => BreviarySymbol.Versicle,
@@ -43,6 +73,7 @@ public static class BreviaryText
             return segments;
         }
 
+        text = ExpandTokens(text);
         var start = 0;
         for (var i = 0; i < text.Length; i++)
         {
