@@ -15,18 +15,20 @@
         </Icon>
         <ChildContent>
             <div class="hoursettings">
+                <GuideSection Title="Display">
                 <div class="hoursettings__section">
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.ExpandAll"
                                @onchange="e => Settings.UpdateAsync(s => s with { ExpandAll = e.Value is true })" />
-                        Expand all parts by default
+                        <span class="hoursettings__label">Expand all parts by default</span>
                     </label>
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.AntiphonAtStartOnly"
                                @onchange="e => Settings.UpdateAsync(s => s with { AntiphonAtStartOnly = e.Value is true })" />
-                        Say the invitatory antiphon only at the start
+                        <span class="hoursettings__label">Say the invitatory antiphon only at the start</span>
                     </label>
                 </div>
+                </GuideSection>
 
                 <GuideSection Title="Text size">
                     <TextSizePicker AriaLabel="Text size" />
@@ -37,12 +39,12 @@
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.ShowAll)"
                                @onchange="() => SetModeAsync(InvitatoryMode.ShowAll)" />
-                        Show all options
+                        <span class="hoursettings__label">Show all options</span>
                     </label>
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Specific)"
                                @onchange="() => SetModeAsync(InvitatoryMode.Specific)" />
-                        Always use
+                        <span>Always use</span>
                         <select class="hoursettings__select" aria-label="Invitatory psalm to always use" value="@SpecificPsalm"
                                 @onchange="e => SetSpecificAsync(e.Value as string)">
                             @foreach (var psalm in InvitatoryPsalmChoices)
@@ -54,17 +56,17 @@
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Random)"
                                @onchange="() => SetModeAsync(InvitatoryMode.Random)" />
-                        Pick one at random
+                        <span class="hoursettings__label">Pick one at random</span>
                     </label>
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.Cycle)"
                                @onchange="() => SetModeAsync(InvitatoryMode.Cycle)" />
-                        Cycle through them, one per day
+                        <span class="hoursettings__label">Cycle through them, one per day</span>
                     </label>
                     <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.None)"
                                @onchange="() => SetModeAsync(InvitatoryMode.None)" />
-                        None (already prayed at an earlier Hour; open with "O God, come to my assistance")
+                        <span class="hoursettings__label">None (already prayed at an earlier Hour; open with "O God, come to my assistance")</span>
                     </label>
                 </fieldset>
                 </GuideSection>

@@ -1,6 +1,5 @@
 .hoursettings {
-    display: grid;
-    gap: 1.25rem;
+    display: block;
 }
 
 .hoursettings__section {
@@ -18,19 +17,27 @@
 
 .hoursettings__check {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
     gap: .5rem;
     cursor: pointer;
 }
 
-.hoursettings__select {
-    font: inherit;
-    padding: .15rem .35rem;
+.hoursettings__check input {
+    flex-shrink: 0;
 }
 
-.hoursettings p {
-    margin: 0;
+.hoursettings__label {
+    flex: 1;
+    min-width: 0;
+}
+
+.hoursettings__select {
+    font: inherit;
+    padding: .35rem .5rem;
+    border: 1px solid var(--rule);
+    border-radius: .4rem;
+    background: var(--parchment);
+    color: var(--ink);
 }
 
 .hoursettings__rubric {

@@ -3,6 +3,10 @@
 
 /* ---------- Dialog panel ---------- */
 
+.liturgy {
+    padding-top: 1rem;
+}
+
 .liturgy__status {
     display: flex;
     flex-wrap: wrap;
