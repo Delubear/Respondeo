@@ -58,7 +58,7 @@ public sealed class DevotionSteps(PlaywrightContext context)
     [Then("I should see a way to leave the devotion")]
     public async Task ThenIShouldSeeAWayToLeaveTheDevotion()
     {
-        var leave = Page.Locator(".devotion__exit a[href='discover/devotions']");
+        var leave = Page.Locator("a.playerbar__leave[href='discover/devotions']");
         Assert.True(await leave.First.IsVisibleAsync(), "Expected a link to leave the devotion.");
     }
 }
