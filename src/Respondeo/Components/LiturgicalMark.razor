@@ -1,0 +1,31 @@
+@using Respondeo.LiturgyOfTheHours
+
+<span class="vr-mark @Class" aria-label="@Label">@Glyph</span>
+
+@code {
+    [Parameter, EditorRequired]
+    public BreviarySymbol Symbol { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private char Glyph => Symbol switch
+    {
+        BreviarySymbol.Versicle => BreviaryText.Versicle,
+        BreviarySymbol.Response => BreviaryText.Response,
+        BreviarySymbol.Mediant => BreviaryText.Mediant,
+        BreviarySymbol.Flexa => BreviaryText.Flexa,
+        BreviarySymbol.Cross => BreviaryText.Cross,
+        _ => ' ',
+    };
+
+    private string Label => Symbol switch
+    {
+        BreviarySymbol.Versicle => "versicle",
+        BreviarySymbol.Response => "response",
+        BreviarySymbol.Mediant => "mediant",
+        BreviarySymbol.Flexa => "flex",
+        BreviarySymbol.Cross => "sign of the cross",
+        _ => string.Empty,
+    };
+}

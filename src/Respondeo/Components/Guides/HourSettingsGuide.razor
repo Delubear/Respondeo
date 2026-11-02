@@ -35,7 +35,7 @@
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.ShowVersicleResponseMarks"
                                @onchange="e => Settings.UpdateAsync(s => s with { ShowVersicleResponseMarks = e.Value is true })" />
-                        <span class="hoursettings__label">Show &#8483; &#8479; (versicle / response)</span>
+                        Show <LiturgicalMark Symbol="BreviarySymbol.Versicle" /> <LiturgicalMark Symbol="BreviarySymbol.Response" /> (versicle / response)
                     </label>
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.ShowPsalmPauseMarks"
@@ -92,11 +92,11 @@
                 </GuideSection>
 
                 <GuideSection Title="Reading the Hours">
-                    <p><span class="hoursettings__rubric">℣</span> marks the <em>versicle</em>, the line said by the leader (or by one side of the choir).</p>
-                    <p><span class="hoursettings__rubric">℟</span> marks the <em>response</em>, said by everyone in reply. Praying alone, you say both.</p>
+                    <LiturgicalMark Symbol="BreviarySymbol.Versicle" Class="hoursettings__rubric" />
+                    <LiturgicalMark Symbol="BreviarySymbol.Response" Class="hoursettings__rubric" />
                     <p><span class="hoursettings__rubric">*</span> marks the <em>mediant</em>: pause briefly at the middle of a psalm verse.</p>
-                    <p><span class="hoursettings__rubric">†</span> marks the <em>flex</em>: a short pause within a long first half-verse.</p>
-                    <p><span class="hoursettings__rubric">✠</span> means make the sign of the cross.</p>
+                    <LiturgicalMark Symbol="BreviarySymbol.Flexa" Class="hoursettings__rubric" />
+                    <LiturgicalMark Symbol="BreviarySymbol.Cross" Class="hoursettings__rubric" />
                 </GuideSection>
             </div>
         </ChildContent>

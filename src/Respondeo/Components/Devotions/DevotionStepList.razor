@@ -137,8 +137,8 @@
     // A short "who says this" badge for liturgical steps: the versicle/response marks for priest and people, or a readable word for the rest.
     private static string RoleLabel(string? role) => role switch
     {
-        "priest" => "\u2123",   // ℣ — versicle
-        "people" => "\u211F",   // ℟ — response
+        "priest" => BreviaryText.Versicle.ToString(),
+        "people" => BreviaryText.Response.ToString(),
         "all" => "All",
         "reader" => "Reader",
         _ => string.Empty,
