@@ -26,9 +26,9 @@ public class PrayerParserTests
 
         Assert.NotNull(prayer);
         // Markdig would otherwise treat "V."/"R." as ordered-list markers and drop them; the parser
-        // escapes the dot so the markers survive as literal text.
-        Assert.Contains("V.", prayer!.Html);
-        Assert.Contains("R.", prayer.Html);
+        // replaces them with the red breviary versicle/response symbols.
+        Assert.Contains("<span class=\"vr-mark\">\u2123</span>", prayer!.Html);
+        Assert.Contains("<span class=\"vr-mark\">\u211F</span>", prayer.Html);
         Assert.DoesNotContain("<ol", prayer.Html);
     }
 

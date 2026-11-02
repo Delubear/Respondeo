@@ -39,8 +39,9 @@ internal sealed class PrayerParser(IContentHtmlRenderer html)
     private static string NormalizeSlug(string? slug, string fallback) => string.IsNullOrWhiteSpace(slug) ? fallback : slug.Trim().ToLowerInvariant();
 
     // Lines that open with a versicle/response marker ("V." / "R.") would otherwise be parsed by Markdig as ordered-list items (e.g. <ol type="I">),
-    // dropping the literal marker. Escaping the dot keeps "V." and "R." as plain text so the prayer reads as verse, not a numbered list.
-    private static readonly Regex VersicleMarker = new(@"(?m)^(\s*[VR])\.(\s)", RegexOptions.Compiled);
+    // dropping the literal marker. They are replaced with the red breviary symbols (U+2123 / U+211F) used in the Liturgy of the Hours.
+    private static readonly Regex VersicleMarker = new(@"(?m)^(\s*)([VR])\.(\s)", RegexOptions.Compiled);
 
-    private static string AnnotateVersicleMarkers(string body) => VersicleMarker.Replace(body, "$1\\.$2");
+    private static string AnnotateVersicleMarkers(string body) => VersicleMarker.Replace(body, m =>
+        $"{m.Groups[1].Value}<span class=\"vr-mark\">{(m.Groups[2].Value == "V" ? "\u2123" : "\u211F")}</span>{m.Groups[3].Value}");
 }

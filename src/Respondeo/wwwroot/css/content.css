@@ -329,3 +329,9 @@ body:has(.quick-menu) {
         animation: none;
     }
 }
+
+/* Red versicle/response marks (U+2123 / U+211F), matching the breviary rubric color used in the Liturgy of the Hours. */
+.vr-mark {
+    color: var(--color-liturgical-red, #a0262d);
+    font-weight: 600;
+}

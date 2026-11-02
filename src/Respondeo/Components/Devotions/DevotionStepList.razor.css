@@ -220,6 +220,12 @@
     color: var(--accent);
 }
 
+.devotion__role--priest,
+.devotion__role--people {
+    color: var(--color-liturgical-red, #a0262d);
+    font-size: 0.95rem;
+}
+
 .devotion__role--all,
 .devotion__role--reader {
     font-size: 0.68rem;
