@@ -34,18 +34,19 @@ else
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
         <DevotionStepList Session="_session" ShowLatin="_showLatin" OnToggle="ToggleComplete" OnOpenPrayer="OpenPrayer" OnOpenInfo="OpenInfo" />
-
-        @* Pinned progress bar shared with the Liturgy of the Hours player. *@
-        <PlayerProgressBar Label="@ProgressLabel()" Completed="_session!.CompletedCount" Total="_session.PrayerCount"
-                           LeaveHref="discover/devotions" OnBack="Back" OnNext="Next">
-            <Tools>
-                @if (_devotion.LatinAvailable)
-                {
-                    <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
-                }
-            </Tools>
-        </PlayerProgressBar>
     </section>
+
+    @* Pinned progress bar shared with the Liturgy of the Hours player. Kept outside the fade-enter section: its
+       entry transform would otherwise anchor the fixed bar to the section until the animation ends, so it jumped. *@
+    <PlayerProgressBar Label="@ProgressLabel()" Completed="_session!.CompletedCount" Total="_session.PrayerCount"
+                       LeaveHref="discover/devotions" OnBack="Back" OnNext="Next">
+        <Tools>
+            @if (_devotion.LatinAvailable)
+            {
+                <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
+            }
+        </Tools>
+    </PlayerProgressBar>
 
     <DevotionPrayerDialog @ref="_prayerDialog" Title="@_openView?.Title" ExplanationHtml="@_openView?.ExplanationHtml" PrayerHtml="@_openView?.PrayerHtml" />
 }
