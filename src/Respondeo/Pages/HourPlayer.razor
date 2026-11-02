@@ -123,58 +123,26 @@ else
                                     }
                                     @if (step.Options is { Count: > 0 } options)
                                     {
+                                        var visible = VisibleOptions(index, options);
+                                        var stepIndex = index;
                                         <div class="hourplayer__options">
-                                            @foreach (var optionIndex in VisibleOptions(index, options))
+                                            @if (visible.Count > 1)
                                             {
-                                                var option = options[optionIndex];
-                                                var optionKey = (index, optionIndex);
-                                                <details class="hourplayer__option">
-                                                    <summary>
-                                                        @option.Title@(" ")
-                                                        @if (option.Reference?.DouayCitation is { } optionDouay)
-                                                        {
-                                                            <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
-                                                        }
-                                                    </summary>
-                                                    @if (option.Explanation is not null)
+                                                var chosen = ChosenOption(stepIndex, visible);
+                                                <div class="hourplayer__picker" role="group" aria-label="@($"Choose the {step.Title} psalm")">
+                                                    @foreach (var optionIndex in visible)
                                                     {
-                                                        <p class="hourplayer__explain" role="note">@option.Explanation</p>
+                                                        var oi = optionIndex;
+                                                        <button type="button" class="hourplayer__picker-btn"
+                                                                aria-pressed="@(oi == chosen ? "true" : "false")"
+                                                                @onclick="() => _chosenOptions[stepIndex] = oi">@options[oi].Title</button>
                                                     }
-                                                    @if (option.Antiphon is not null)
-                                                    {
-                                                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
-                                                    }
-                                                    @if (option.Text is not null)
-                                                    {
-                                                        <p class="hourplayer__text">@RenderText(option.Text)</p>
-                                                    }
-                                                    else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
-                                                    {
-                                                        @foreach (var stanza in stanzas)
-                                                        {
-                                                            <p class="hourplayer__text">@stanza</p>
-                                                            @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
-                                                            {
-                                                                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
-                                                            }
-                                                        }
-                                                        <p class="hourplayer__text">@GloryBe</p>
-                                                        @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
-                                                        {
-                                                            <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
-                                                        }
-                                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
-                                                    }
-                                                    else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
-                                                    {
-                                                        <p class="hourplayer__text">@RenderText(optionPassage)</p>
-                                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
-                                                    }
-                                                    else if (option.UseOfficialText)
-                                                    {
-                                                        <p class="hourplayer__official">Read the text from an official source below.</p>
-                                                    }
-                                                </details>
+                                                </div>
+                                                @RenderOption(stepIndex, chosen, options[chosen])
+                                            }
+                                            else if (visible.Count == 1)
+                                            {
+                                                @RenderOption(stepIndex, visible[0], options[visible[0]])
                                             }
                                         </div>
                                     }
@@ -257,6 +225,7 @@ else
         _open.Clear();
         _open.Add(0);
         _randomPicks.Clear();
+        _chosenOptions.Clear();
         await Settings.LoadAsync();
         await AdvanceInvitatoryCycleAsync();
         _passages = [];
@@ -334,6 +303,64 @@ else
     }
 
     private readonly Dictionary<int, int> _randomPicks = [];
+
+    // The reader's current pick per step when several options are offered (Show all).
+    private readonly Dictionary<int, int> _chosenOptions = [];
+
+    private int ChosenOption(int stepIndex, IReadOnlyList<int> visible) =>
+        _chosenOptions.TryGetValue(stepIndex, out var pick) && visible.Contains(pick) ? pick : visible[0];
+
+    private RenderFragment RenderOption(int stepIndex, int optionIndex, OfficeStep option) => __builder =>
+    {
+        var optionKey = (stepIndex, optionIndex);
+        <div class="hourplayer__option">
+            <p class="hourplayer__option-title">
+                @option.Title@(" ")
+                @if (option.Reference?.DouayCitation is { } optionDouay)
+                {
+                    <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
+                }
+            </p>
+            @if (option.Explanation is not null)
+            {
+                <p class="hourplayer__explain" role="note">@option.Explanation</p>
+            }
+            @if (option.Antiphon is not null)
+            {
+                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+            }
+            @if (option.Text is not null)
+            {
+                <p class="hourplayer__text">@RenderText(option.Text)</p>
+            }
+            else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
+            {
+                @foreach (var stanza in stanzas)
+                {
+                    <p class="hourplayer__text">@stanza</p>
+                    @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+                    {
+                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                    }
+                }
+                <p class="hourplayer__text">@GloryBe</p>
+                @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+                {
+                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @option.Antiphon</p>
+                }
+                <p class="hourplayer__translation">Douay-Rheims translation</p>
+            }
+            else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
+            {
+                <p class="hourplayer__text">@RenderText(optionPassage)</p>
+                <p class="hourplayer__translation">Douay-Rheims translation</p>
+            }
+            else if (option.UseOfficialText)
+            {
+                <p class="hourplayer__official">Read the text from an official source below.</p>
+            }
+        </div>
+    };
 
     protected override void OnInitialized() => Settings.Changed += OnSettingsChanged;
 
