@@ -50,6 +50,13 @@
 ## Miracle Article Guidelines
 competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
 
+## Editing discipline
+- Re-read the target lines immediately before every edit; never edit from an earlier read.
+- Keep replacements minimal: only changed lines plus the smallest unique context.
+- Never retype unchanged code from memory; split large edits.
+- Do not modify anything outside the requested change.
+- After editing, re-read the changed region and review `git diff` for unintended removals.
+
 ## Codebase navigation (Graphify)
 - Use the Graphify knowledge graph (graphify-out/) proactively for locating code, tracing usages, and checking cross-component impact, not only for explicit architecture questions.
 - For architecture, dependency, or "where is X used / what calls Y" questions, query the Graphify knowledge graph in `graphify-out/` first, then verify findings against the source.
