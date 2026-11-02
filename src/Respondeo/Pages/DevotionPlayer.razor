@@ -42,15 +42,32 @@ else
 
         <DevotionStepList Session="_session" ShowLatin="_showLatin" OnToggle="ToggleComplete" OnOpenPrayer="OpenPrayer" OnOpenInfo="OpenInfo" />
 
-        <div class="devotion__exit">
-            <a href="discover/devotions">Leave the devotion</a>
-            @* Only reachable in immersive mode, where the masthead (and its theme toggle) is hidden; kept beside the exit link so it stays out of the prayer flow. Hidden by CSS elsewhere. *@
-            <span class="devotion__exit-theme">
+        @* Pinned progress bar, matching the Liturgy of the Hours player: progress, tools, and Leave / Back / Next. *@
+        <div class="devotion__progress" role="group" aria-label="Progress">
+            <span class="devotion__progress-label" title="@ProgressLabel()">
+                <span class="devotion__progress-title">@ProgressLabel()</span>
+                <span class="devotion__progress-count">&middot; @_session!.CompletedCount of @_session.PrayerCount</span>
+            </span>
+            <span class="devotion__progress-track" aria-hidden="true">
+                <span class="devotion__progress-fill" style="width: @(100 * _session.CompletedCount / Math.Max(1, _session.PrayerCount))%"></span>
+            </span>
+            <span class="devotion__progress-tools">
                 @if (_devotion.LatinAvailable)
                 {
-                    <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
+                    <span class="devotion__lang-mini">
+                        <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
+                    </span>
                 }
-                <ThemeToggle />
+                <span class="devotion__theme">
+                    <ThemeToggle />
+                </span>
+            </span>
+            <span class="devotion__progress-row">
+                <a class="devotion__nav devotion__leave" href="discover/devotions">Leave</a>
+                <span class="devotion__progress-nav">
+                    <button type="button" class="devotion__nav" disabled="@(_session.CompletedCount == 0)" @onclick="Back">Back</button>
+                    <button type="button" class="devotion__nav" disabled="@_session.IsComplete" @onclick="Next">Next</button>
+                </span>
             </span>
         </div>
     </section>
@@ -271,6 +288,13 @@ else
                 break;
         }
     }
+
+    // The current step's title for the progress bar, or a closing word once the devotion is finished.
+    private string ProgressLabel() => _session!.IsComplete ? "Complete" : _session.CurrentStep?.PrayerTitle ?? "Prayer";
+
+    private Task Next() => _session!.IsComplete ? Task.CompletedTask : ToggleComplete(_session.CompletedCount);
+
+    private Task Back() => _session!.CompletedCount == 0 ? Task.CompletedTask : ToggleComplete(_session.CompletedCount - 1);
 
     private async Task OpenPrayer(DevotionBead bead)
     {

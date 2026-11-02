@@ -209,45 +209,4 @@ input[type="search"]::-webkit-search-cancel-button {
     body.is-immersive .content__inner {
         padding: 0.4rem 1rem env(safe-area-inset-bottom, 0px);
     }
-
-    /* The praying view carries a second ThemeToggle (the masthead's is hidden here). It rides in the
-       exit row and is off-screen unless immersive. Targeted globally because .theme-toggle belongs to
-       the ThemeToggle component's own scope, so a scoped DevotionPlayer rule can't reach it. */
-    .devotion__exit-theme {
-        display: none;
-    }
-
-    body.is-immersive .devotion__exit {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    body.is-immersive .devotion__exit-theme {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-top: 0.25rem;
-    }
-
-    /* Reset the shared toggle from its masthead-corner absolute positioning/colors to sit in the exit
-       row and read against the paper background. It stays flush to the row's right edge (via the
-       wrapper above) so "Leave" remains truly centered in the full width. */
-    body.is-immersive .devotion__exit-theme .theme-toggle {
-        position: static;
-        top: auto;
-        right: auto;
-        color: var(--ink-soft);
-    }
-
-    body.is-immersive .devotion__exit-theme .theme-toggle:hover {
-        color: var(--accent);
-        border-color: var(--rule);
-        background: var(--parchment);
-    }
 }
