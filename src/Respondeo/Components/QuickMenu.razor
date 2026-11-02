@@ -272,7 +272,9 @@
 	private double _dragY;
 	private bool _fromHeader;
 
-	private string? PanelStyle => !_tracking ? null
+	private string? PanelStyle =>
+		_closing ? $"--qm-from-x: {_dragX:0}px; --qm-from-y: {_dragY:0}px;"
+		: !_tracking ? null
 		: _dragY > 0 ? $"transform: translateY({_dragY:0}px); transition: none;"
 		: _dragX > 0 ? $"transform: translateX({_dragX:0}px); transition: none;"
 		: null;
@@ -331,13 +333,22 @@
 	{
 		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || _dragY > SwipeCloseThreshold);
 		_tracking = false;
-		_dragX = 0;
-		_dragY = 0;
 		_fromHeader = false;
 		if (shouldClose)
 		{
+			// Keep the drag offset so the closing animation continues from where the finger let go
+			// (Close resets it once the animation finishes).
+			if (!_horizontal)
+			{
+				_dragX = 0;
+			}
+
 			await Close();
+			return;
 		}
+
+		_dragX = 0;
+		_dragY = 0;
 	}
 
 	private int _dragIndex = -1;

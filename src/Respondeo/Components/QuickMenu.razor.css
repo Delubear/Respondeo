@@ -60,13 +60,14 @@
     to { opacity: 0; }
 }
 
+/* The --qm-from-* offsets let a swipe-to-close continue from where the finger released the panel. */
 @keyframes quick-menu-out {
-    from { transform: translateX(0); }
+    from { transform: translateX(var(--qm-from-x, 0px)); }
     to { transform: translateX(100%); }
 }
 
 @keyframes quick-menu-down {
-    from { transform: translateY(0); }
+    from { transform: translateY(var(--qm-from-y, 0px)); }
     to { transform: translateY(100%); }
 }
 
