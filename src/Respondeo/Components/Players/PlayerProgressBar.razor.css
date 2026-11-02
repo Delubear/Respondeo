@@ -1,0 +1,129 @@
+/* Pinned to the bottom of the viewport so progress and navigation are always at hand. */
+.playerbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 44rem);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 0.08);
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background: var(--paper);
+    text-align: left;
+}
+
+/* Label, track and tools always share one line: the title truncates rather than wrapping anything. */
+.playerbar__top {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.playerbar__label {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: inline-flex;
+    gap: 0.3em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.playerbar__title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playerbar__count {
+    flex: 0 0 auto;
+}
+
+.playerbar__track {
+    flex: 1 1 0;
+    min-width: 2rem;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--rule);
+    overflow: hidden;
+}
+
+.playerbar__fill {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.2s ease;
+}
+
+.playerbar__tools {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.playerbar__theme {
+    display: inline-flex;
+}
+
+.playerbar__theme ::deep .theme-toggle,
+.playerbar__theme ::deep .theme-toggle:hover {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    border-color: var(--rule);
+}
+
+.playerbar__theme ::deep .theme-toggle {
+    color: var(--ink-soft);
+}
+
+.playerbar__theme ::deep .theme-toggle:hover {
+    color: var(--accent);
+    background: var(--parchment);
+}
+
+.playerbar__row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.playerbar__leave {
+    margin-right: auto;
+    text-decoration: none;
+}
+
+.playerbar__nav-group {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.playerbar__nav {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.playerbar__nav:disabled {
+    opacity: 0.45;
+    cursor: default;
+}

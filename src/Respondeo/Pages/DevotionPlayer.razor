@@ -30,46 +30,21 @@ else
     <section class="reading-wide devotion--praying fade-enter">
         <p class="devotion__hint">Select each step to mark it done, in order. Open the book to read its text.</p>
 
-        @if (_devotion.LatinAvailable)
-        {
-            <div class="devotion__lang devotion__lang--inline">
-                <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" />
-            </div>
-        }
-
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
         <DevotionStepList Session="_session" ShowLatin="_showLatin" OnToggle="ToggleComplete" OnOpenPrayer="OpenPrayer" OnOpenInfo="OpenInfo" />
 
-        @* Pinned progress bar, matching the Liturgy of the Hours player: progress, tools, and Leave / Back / Next. *@
-        <div class="devotion__progress" role="group" aria-label="Progress">
-            <span class="devotion__progress-label" title="@ProgressLabel()">
-                <span class="devotion__progress-title">@ProgressLabel()</span>
-                <span class="devotion__progress-count">&middot; @_session!.CompletedCount of @_session.PrayerCount</span>
-            </span>
-            <span class="devotion__progress-track" aria-hidden="true">
-                <span class="devotion__progress-fill" style="width: @(100 * _session.CompletedCount / Math.Max(1, _session.PrayerCount))%"></span>
-            </span>
-            <span class="devotion__progress-tools">
+        @* Pinned progress bar shared with the Liturgy of the Hours player. *@
+        <PlayerProgressBar Label="@ProgressLabel()" Completed="_session!.CompletedCount" Total="_session.PrayerCount"
+                           LeaveHref="discover/devotions" OnBack="Back" OnNext="Next">
+            <Tools>
                 @if (_devotion.LatinAvailable)
                 {
-                    <span class="devotion__lang-mini">
-                        <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
-                    </span>
+                    <DevotionLanguageToggle ShowLatin="_showLatin" OnChange="SetLatin" Mini="true" />
                 }
-                <span class="devotion__theme">
-                    <ThemeToggle />
-                </span>
-            </span>
-            <span class="devotion__progress-row">
-                <a class="devotion__nav devotion__leave" href="discover/devotions">Leave</a>
-                <span class="devotion__progress-nav">
-                    <button type="button" class="devotion__nav" disabled="@(_session.CompletedCount == 0)" @onclick="Back">Back</button>
-                    <button type="button" class="devotion__nav" disabled="@_session.IsComplete" @onclick="Next">Next</button>
-                </span>
-            </span>
-        </div>
+            </Tools>
+        </PlayerProgressBar>
     </section>
 
     <DevotionPrayerDialog @ref="_prayerDialog" Title="@_openView?.Title" ExplanationHtml="@_openView?.ExplanationHtml" PrayerHtml="@_openView?.PrayerHtml" />
@@ -276,6 +251,8 @@ else
                 break;
 
             case DevotionToggleResult.SteppedBack:
+                // Move focus (and so the scroll position) back to the reopened step, mirroring Next.
+                _focusCurrentStep = true;
                 _announcement = _session.DescribeCurrentStep();
                 await SaveProgressAsync();
                 break;
@@ -290,7 +267,17 @@ else
     }
 
     // The current step's title for the progress bar, or a closing word once the devotion is finished.
-    private string ProgressLabel() => _session!.IsComplete ? "Complete" : _session.CurrentStep?.PrayerTitle ?? "Prayer";
+    private string ProgressLabel()
+    {
+        if (_session!.IsComplete)
+        {
+            return "Complete";
+        }
+
+        var step = _session.CurrentStep;
+        var title = _showLatin && !string.IsNullOrWhiteSpace(step?.PrayerLatinTitle) ? step.PrayerLatinTitle : step?.PrayerTitle;
+        return title ?? "Prayer";
+    }
 
     private Task Next() => _session!.IsComplete ? Task.CompletedTask : ToggleComplete(_session.CompletedCount);
 

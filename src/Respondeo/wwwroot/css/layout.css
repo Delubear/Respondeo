@@ -177,6 +177,11 @@ input[type="search"]::-webkit-search-cancel-button {
     }
 }
 
+/* Inside an hour the player's bar carries its own settings gear, so the floating orb steps aside on every screen size. */
+body.is-immersive .hour-settings-orb {
+    display: none;
+}
+
 /* ---------- Immersive devotion mode ----------
    While the reader is actively praying a devotion, DevotionPlayer toggles body.is-immersive so the
    surrounding chrome steps aside and the prayer thread gets nearly the whole viewport. Only applied
@@ -189,8 +194,7 @@ input[type="search"]::-webkit-search-cancel-button {
     body.is-immersive .mastnav,
     body.is-immersive .breadcrumb,
     body.is-immersive .quick-menu__toggle,
-    body.is-immersive .colophon,
-    body.is-immersive .hour-settings-orb {
+    body.is-immersive .colophon {
         display: none;
     }
 

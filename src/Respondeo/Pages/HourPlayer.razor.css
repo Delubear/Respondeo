@@ -310,10 +310,6 @@
 		width: 3.25rem;
 	}
 
-	.hourplayer__progress-nav {
-		margin-left: auto;
-	}
-
 	}
 
 	/* Plain rows divided by a rule instead of boxed cards, and a slim thread, on every screen size. */
@@ -365,104 +361,14 @@
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 
-/* Pinned to the bottom of the viewport so progress and navigation are always at hand. */
-.hourplayer__progress {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100%, 44rem);
-    z-index: 20;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 1rem;
-    margin: 0;
-    padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 12px rgb(0 0 0 / 0.08);
-    border: 1px solid var(--rule);
-    border-bottom: none;
-    border-radius: 0.5rem 0.5rem 0 0;
-    background: var(--paper);
-}
-
 .hourplayer__step {
     scroll-margin-top: 1.5rem;
     scroll-margin-bottom: 6rem;
 }
 
-.hourplayer__progress-label {
-    font-weight: 600;
-}
-
-.hourplayer__progress-track {
-    flex: 1 1 0;
-    min-width: 3rem;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--rule);
-    overflow: hidden;
-}
-
-.hourplayer__progress-fill {
-    display: block;
-    height: 100%;
-    background: var(--gold);
-    transition: width 0.2s ease;
-}
-
-.hourplayer__progress-row {
-    flex: 1 1 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.hourplayer__leave {
-    margin-right: auto;
-    text-decoration: none;
-}
-
-.hourplayer__progress-tools {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: auto;
-}
-
-.hourplayer__theme {
-    display: inline-flex;
-}
-
-.hourplayer__theme ::deep .theme-toggle,
-.hourplayer__theme ::deep .theme-toggle:hover {
-    position: static !important;
-    top: auto !important;
-    right: auto !important;
-    width: 2rem;
-    height: 2rem;
-    margin: 0;
-    border-color: var(--rule);
-}
-
-.hourplayer__theme ::deep .theme-toggle {
-    color: var(--ink-soft);
-}
-
-.hourplayer__theme ::deep .theme-toggle:hover {
-    color: var(--accent);
-    background: var(--parchment);
-}
-
-.hourplayer__progress-nav {
-    display: flex;
-    gap: 0.4rem;
-}
-
-/* The settings gear sits in the bottom bar on phones; desktop opens settings from its floating orb. */
+/* The settings gear in the bottom bar opens the hour settings dialog (the floating orb is hidden inside an hour). */
 .hourplayer__settings {
-    display: none;
+    display: inline-flex;
     width: 2rem;
     height: 2rem;
     padding: 0.3rem;
@@ -479,38 +385,9 @@
     fill: currentColor;
 }
 
-@media (max-width: 40rem) {
-    .hourplayer__settings {
-        display: inline-flex;
-    }
-}
-
-.hourplayer__text ::deep abbr.hourplayer__rubric {
+.hourplayer__text
     text-decoration: none;
     cursor: help;
-}
-
-.hourplayer__nav {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.3rem 0.9rem;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    background: none;
-    color: inherit;
-    font: inherit;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-.hourplayer__nav--next {
-    border-color: var(--gold);
-    color: var(--gold);
-}
-
-.hourplayer__nav:disabled {
-    opacity: 0.45;
-    cursor: default;
 }
 
 .hourplayer__banner {
