@@ -189,14 +189,16 @@ else
         _session!.Start(_selectedSetId, startCompleted);
         _started = true;
 
+        await SaveProgressAsync();
+        await EnterImmersiveAsync();
+
         // Resuming mid-thread: scroll the current step into view on the next render so the reader lands on their place rather than the top of a long devotion.
+        // Flagged only after immersive mode is applied: it swaps the scroll container, which would otherwise discard an earlier scroll.
         if (_session.CompletedCount > 0 && !_session.IsComplete)
         {
             _scrollToCurrentStep = true;
+            StateHasChanged();
         }
-
-        await SaveProgressAsync();
-        await EnterImmersiveAsync();
     }
 
     // Resumes the saved slot: reselect the stored set, rebuild the thread and restore the pointer.
