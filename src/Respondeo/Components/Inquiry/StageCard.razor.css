@@ -99,10 +99,15 @@
 }
 
 .stage-card__arrow {
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
     font-size: 1.4rem;
     line-height: 1;
     color: var(--accent);
     transition: transform var(--dur-2) var(--ease-page);
+    /* Cinzel is all caps with no descenders, so its visual center sits above the line box's;
+       lift the arrow to match. Uses `translate` so the hover `transform` nudge still applies. */
+    translate: 0 -0.1em;
 }
 
 .stage-card:hover .stage-card__arrow,
@@ -142,19 +147,21 @@
         justify-content: center;
         font-family: var(--display);
         text-transform: uppercase;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.12em;
         font-size: 0.8rem;
-        font-weight: 700;
+        font-weight: 500;
         color: var(--accent);
     }
 
     /* Position the arrow just past the end of "Begin" so the word stays optically centered;
-       the arrow no longer contributes to the group's width/centring. */
+       the arrow no longer contributes to the group's width/centring. Sized and spaced to match
+       the regular card's CTA arrow. */
     .stage-card__cta .stage-card__arrow {
         position: absolute;
         left: 100%;
-        margin-left: 0.4rem;
-        font-size: 1rem;
+        margin-left: 0.35rem;
+        font-size: 1em;
+        line-height: inherit;
     }
 }
 

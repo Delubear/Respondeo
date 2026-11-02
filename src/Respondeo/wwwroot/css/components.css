@@ -6,6 +6,7 @@
    a different scale or accent color (e.g. .pillar__eyebrow uses the accent). */
 .eyebrow {
     font-family: var(--display);
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-size: 0.8rem;

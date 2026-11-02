@@ -108,6 +108,7 @@ button.card {
 .card__cta {
     margin-top: auto;
     font-family: var(--display);
+    font-weight: 500;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -115,8 +116,12 @@ button.card {
     transition: letter-spacing var(--dur-2) var(--ease-page);
 }
 
+/* Neither Cinzel nor the EB Garamond subsets carry U+2192, so the arrow would otherwise fall back to a
+   hairline serif glyph; a sans-serif fallback gives it a solid stroke that matches the semibold label. */
 .card__cta-arrow {
     display: inline-block;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
     margin-left: 0.35rem;
     transition: transform var(--dur-2) var(--ease-page);
 }

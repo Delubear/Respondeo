@@ -35,9 +35,13 @@
     <link rel="preload" id="webassembly" />
     <!-- Self-hosted webfonts (@font-face rules live in css/base.css). Served as first-party assets
          so they are precached by the service worker and render identically offline. Preload the
-         primary body font (EB Garamond regular, latin subset) to avoid a flash of fallback text. -->
+         primary body font (EB Garamond regular, latin subset) and the Cinzel 500 eyebrow/CTA face
+                  to avoid a flash of fallback text. -->
     <link rel="preload" href="fonts/ebgaramond-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/ebgaramond-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/cinzel-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/cinzel-500-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/cinzel-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- The css/*.css stylesheets are fingerprinted at publish time by the FingerprintAppStylesheet
          task in Respondeo.csproj: it rewrites these hrefs to the content-hashed file names and keeps
          the PWA service-worker manifest in sync. Browsers can cache them forever yet always pick up
