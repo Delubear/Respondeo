@@ -209,6 +209,12 @@ window.respondeoScroll = (function () {
             }
         },
         top: function () {
+            // The orb fades out (pointer-events: none) once at the top, so touch browsers never
+            // deliver the release events; drop focus so it doesn't reappear looking pressed.
+            var active = document.activeElement;
+            if (active && typeof active.blur === 'function') {
+                active.blur();
+            }
             scrollWindow(0, true);
         },
         // Returns to a remembered position (Back to a browse list). Cancels any content hold and
