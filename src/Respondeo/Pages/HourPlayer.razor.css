@@ -280,12 +280,8 @@
 }
 
 @media (max-width: 40rem) {
-	/* Immersive mode locks the shell to the viewport, so the hour scrolls internally; the sticky
-	   progress bar pins to the bottom of this scroller. Edge to edge like the devotion player. */
+	/* Edge to edge like the devotion player. */
 	body.is-immersive .hourplayer {
-		flex: 1 1 auto;
-		min-height: 0;
-		overflow-y: auto;
 		margin-inline: -1rem;
 		padding-inline: 1rem;
 	}

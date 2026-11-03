@@ -22,6 +22,11 @@ public interface IThemeService
     Theme Current { get; }
 
     /// <summary>
+    /// Raised after the theme changes, so every toggle on the page (masthead, player bars) shows the same glyph.
+    /// </summary>
+    event Action? Changed;
+
+    /// <summary>
     /// Reads the persisted preference (falling back to the OS setting) and applies it to the document.
     /// </summary>
     Task InitializeAsync();
@@ -44,6 +49,8 @@ public sealed class ThemeService(IJSRuntime js) : IThemeService
 
     public Theme Current { get; private set; } = Theme.Light;
 
+    public event Action? Changed;
+
     public async Task InitializeAsync()
     {
         var stored = await _storage.GetAsync(StorageKey);
@@ -55,6 +62,7 @@ public sealed class ThemeService(IJSRuntime js) : IThemeService
         };
 
         await ApplyAsync();
+        Changed?.Invoke();
     }
 
     public async Task ToggleAsync()
@@ -62,6 +70,7 @@ public sealed class ThemeService(IJSRuntime js) : IThemeService
         Current = Current == Theme.Dark ? Theme.Light : Theme.Dark;
         await _storage.SetAsync(StorageKey, Name(Current));
         await ApplyAsync();
+        Changed?.Invoke();
     }
 
     private async Task ApplyAsync() => await js.InvokeVoidAsync("respondeoTheme.apply", Name(Current));

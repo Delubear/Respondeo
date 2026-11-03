@@ -25,6 +25,15 @@ public sealed class NavigationInterop(IJSRuntime js)
     /// <summary>Centers the element with <paramref name="elementId"/> within its scrollable parent.</summary>
     public ValueTask CentreInParentAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.centreInParent", elementId);
 
-    /// <summary>Moves keyboard focus to the element with <paramref name="elementId"/>.</summary>
+    /// <summary>Scrolls the element with <paramref name="elementId"/> to the top of the viewport, honoring its scroll-margin-top.</summary>
+    public ValueTask ScrollToStartAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.toStart", elementId);
+
+    /// <summary>Scrolls just enough to bring the element with <paramref name="elementId"/> fully into view (no-op when already visible).</summary>
+    public ValueTask ScrollToNearestAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.toNearest", elementId);
+
+    /// <summary>Scrolls the window back to the top.</summary>
+    public ValueTask ScrollToTopAsync() => js.InvokeVoidAsync("respondeoScroll.top");
+
+    /// <summary>Moves keyboard focus to the element with <paramref name="elementId"/> without scrolling.</summary>
     public ValueTask FocusAsync(string elementId) => js.InvokeVoidAsync("respondeoFocus.byId", elementId);
 }

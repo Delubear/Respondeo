@@ -1,15 +1,16 @@
-/* The step list scrolls within the space the flex column leaves it, so a long devotion (e.g. a full
-   Rosary) never stretches the page while a short one still fills down to the exit link. */
+/* The step list flows with the page; the whole page scrolls, even for a full Rosary. */
 .devotion__list {
     list-style: none;
     margin: 0 auto;
     padding: 0.25rem 0.25rem 0.25rem 0;
     width: 100%;
     max-width: 42rem;
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
     text-align: left;
+}
+
+/* Leave the step a little clear of the top edge when resuming lands it at the top. */
+.devotion__prayer-main {
+    scroll-margin-top: 6rem;
 }
 
 /* Each step is a two-column row: the rosary "thread" marker on the left, the content on the right. */

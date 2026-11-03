@@ -72,6 +72,12 @@ else
     // Set when resuming an in-progress devotion mid-thread so the next render scrolls the current step into view (the thread can be long, and the reader should land on their spot, not the top).
     private bool _scrollToCurrentStep;
 
+    // Set on Next/Back so the new current step is nudged into view only if it is hidden (e.g. under the bottom bar), without jumping it to the top.
+    private bool _revealCurrentStep;
+
+    // Set on a fresh start so the praying view opens at the top (its first section header), not at the intro screen's leftover scroll position.
+    private bool _scrollToTop;
+
     // Polite live-region text announcing progress to screen readers as steps are prayed. Non-visual users otherwise get no feedback that a step was marked, or that the devotion is complete.
     private string? _announcement;
 
@@ -130,38 +136,40 @@ else
         _loading = false;
     }
 
-    // After marking a step prayed, hand keyboard focus to the new current step so pressing Space or Enter walks forward through the thread instead of toggling the just-prayed step off again.
+    // After marking a step prayed, hand keyboard focus to the new current step so pressing Space or Enter walks forward through the thread instead of toggling the just-prayed step off again,
+    // and nudge that step into view only if it is hidden (e.g. under the bottom bar), so the page doesn't jump on every tap.
     // When the last step is prayed there is no current step, so focus falls to the "Leave the devotion" link.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_scrollToCurrentStep)
-        {
-            _scrollToCurrentStep = false;
-
-            try
-            {
-                await Navigation.CentreInParentAsync("devotion-current-step");
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit going away during teardown; nothing to scroll.
-            }
-        }
-
-        if (!_focusCurrentStep)
-        {
-            return;
-        }
-
-        _focusCurrentStep = false;
-
         try
         {
-            await Navigation.FocusAsync("devotion-current-step");
+            if (_scrollToTop)
+            {
+                _scrollToTop = false;
+                await Navigation.ScrollToTopAsync();
+            }
+
+            if (_scrollToCurrentStep)
+            {
+                _scrollToCurrentStep = false;
+                await Navigation.ScrollToStartAsync("devotion-current-step");
+            }
+
+            if (_revealCurrentStep)
+            {
+                _revealCurrentStep = false;
+                await Navigation.ScrollToNearestAsync("devotion-current-step");
+            }
+
+            if (_focusCurrentStep)
+            {
+                _focusCurrentStep = false;
+                await Navigation.FocusAsync("devotion-current-step");
+            }
         }
         catch (JSDisconnectedException)
         {
-            // Circuit going away during teardown; nothing to focus.
+            // Circuit going away during teardown; nothing to scroll or focus.
         }
     }
 
@@ -185,13 +193,17 @@ else
         await SaveProgressAsync();
         await EnterImmersiveAsync();
 
-        // Resuming mid-thread: scroll the current step into view on the next render so the reader lands on their place rather than the top of a long devotion.
-        // Flagged only after immersive mode is applied: it swaps the scroll container, which would otherwise discard an earlier scroll.
+        // Resuming mid-thread lands on the current step; a fresh start opens at the top so the first section header shows.
         if (_session.CompletedCount > 0 && !_session.IsComplete)
         {
             _scrollToCurrentStep = true;
-            StateHasChanged();
         }
+        else
+        {
+            _scrollToTop = true;
+        }
+
+        StateHasChanged();
     }
 
     // Resumes the saved slot: reselect the stored set, rebuild the thread and restore the pointer.
@@ -247,13 +259,15 @@ else
             case DevotionToggleResult.Advanced:
                 // Keyboard focus is still on the step just prayed. Move it forward to the new current step after this render so Space/Enter advances the thread rather than un-marking it.
                 _focusCurrentStep = true;
+                _revealCurrentStep = true;
                 _announcement = _session.DescribeCurrentStep();
                 await SaveProgressAsync();
                 break;
 
             case DevotionToggleResult.SteppedBack:
-                // Move focus (and so the scroll position) back to the reopened step, mirroring Next.
+                // Move focus and the scroll position back to the reopened step, mirroring Next.
                 _focusCurrentStep = true;
+                _revealCurrentStep = true;
                 _announcement = _session.DescribeCurrentStep();
                 await SaveProgressAsync();
                 break;

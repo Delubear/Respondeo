@@ -1,0 +1,58 @@
+@* The pinned bottom bar for reading a single prayer, styled like the player bar the devotion and Liturgy of the
+   Hours players use and shown on every screen size: Leave, an optional EN/LA switch (only when the prayer has a
+   Latin text), a text-size cycle and the theme toggle. On phones it also stands in for the hidden masthead. *@
+@inject ITextSizeService TextSizes
+@inject OrbLauncher Launcher
+
+<div class="readerbar" role="group" aria-label="Prayer tools">
+    <a class="readerbar__leave" href="@LeaveHref">
+        <span aria-hidden="true">&larr;</span> @LeaveLabel
+    </a>
+    <span class="readerbar__tools">
+        @* Phones only: stands in for the Guide to Prayers orb, which steps aside so it doesn't crowd the bar. *@
+        <button type="button" class="readerbar__guide" @onclick="OpenGuide" aria-label="Guide to prayers" title="Guide to prayers">
+            <span aria-hidden="true">?</span>
+        </button>
+        @if (LatinAvailable)
+        {
+            <DevotionLanguageToggle ShowLatin="ShowLatin" OnChange="OnLanguageChange" Mini="true" />
+        }
+        <button type="button" class="readerbar__size" @onclick="CycleSizeAsync"
+                aria-label="@($"Text size: {TextSizes.Current}. Change text size.")" title="Text size">
+            <span aria-hidden="true">A<span class="readerbar__size-big">A</span></span>
+        </button>
+        <span class="readerbar__theme">
+            <ThemeToggle />
+        </span>
+    </span>
+</div>
+
+@code {
+    /// <summary>Where Leave goes.</summary>
+    [Parameter, EditorRequired] public string LeaveHref { get; set; } = string.Empty;
+
+    /// <summary>Visible text of the Leave link.</summary>
+    [Parameter] public string LeaveLabel { get; set; } = "Prayers";
+
+    /// <summary>Whether the prayer offers a Latin text, which shows the EN/LA switch.</summary>
+    [Parameter] public bool LatinAvailable { get; set; }
+
+    /// <summary>Whether the Latin text is currently shown.</summary>
+    [Parameter] public bool ShowLatin { get; set; }
+
+    /// <summary>Raised with the newly chosen value when the reader switches language.</summary>
+    [Parameter] public EventCallback<bool> OnLanguageChange { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await TextSizes.InitializeAsync();
+            StateHasChanged();
+        }
+    }
+
+    private Task CycleSizeAsync() => TextSizes.CycleAsync();
+
+    private void OpenGuide() => Launcher.Request(OrbLauncher.Prayers);
+}

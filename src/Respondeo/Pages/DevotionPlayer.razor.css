@@ -1,60 +1,28 @@
 
-/* Devotion player. The praying view fills the height left below the masthead/breadcrumb and above
-   remaining space: no dead gap
-   content and no over-tall scroll area. */
+/* Devotion player. The praying view flows with the page: the whole page scrolls on every screen size,
+   and the pinned progress bar (PlayerProgressBar) stays at the foot of the screen. */
 .devotion--praying {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 13rem);
-    height: calc(100dvh - 13rem);
-    max-height: calc(100vh - 13rem);
-    max-height: calc(100dvh - 13rem);
-    text-align: center;
-}
-
-/* On desktop there is plenty of vertical room, so keep the scrolling list from stretching the full
-   height by reserving more space around it. */
-@media (min-width: 40.0625rem) {
-    .devotion--praying {
-        height: auto;
-        max-height: calc(100vh - 20rem);
-        max-height: calc(100dvh - 20rem);
-        margin-bottom: 6rem;
-    }
+	text-align: center;
 }
 
 .devotion__hint {
-    color: var(--ink-soft);
-    font-size: calc(0.95rem * var(--reader-scale, 1));
-    margin: 0 0 0.85rem;
-    flex: 0 0 auto;
+	color: var(--ink-soft);
+	font-size: calc(0.95rem * var(--reader-scale, 1));
+	margin: 0 0 0.85rem;
 }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 40rem) {
-    /* On a phone the content chain (.content/.content__inner) is a flex column filling the viewport,
-       so the praying section flexes to fill whatever height is left below the chrome instead of
-       subtracting a guessed value. This kills the dead background below the exit link regardless of
-       the real chrome height. In immersive mode the chrome is hidden, so the same rule simply fills
-       even more of the screen. Break out of the layout's side padding so rows run edge to edge. */
-    .devotion--praying {
-        height: auto;
-        max-height: none;
-        flex: 1 1 auto;
-        min-height: 0;
-        margin-inline: -1rem;
-        padding-inline: 1rem;
-    }
+	/* Break out of the layout's side padding so rows run edge to edge. */
+	.devotion--praying {
+		margin-inline: -1rem;
+		padding-inline: 1rem;
+	}
 
-    /* Trim the hint to a single quiet line so it doesn't cost a full text block
-       of vertical space above the list. */
-    .devotion__hint {
-        font-size: calc(0.82rem * var(--reader-scale, 1));
-        margin-bottom: 0.5rem;
-    }
-
-    /* Leave room beneath the list for the pinned progress bar. */
-    .devotion--praying {
-        padding-bottom: calc(6rem + env(safe-area-inset-bottom));
-    }
+	/* Trim the hint to a single quiet line so it doesn't cost a full text block
+	   of vertical space above the list. */
+	.devotion__hint {
+		font-size: calc(0.82rem * var(--reader-scale, 1));
+		margin-bottom: 0.5rem;
+	}
 }

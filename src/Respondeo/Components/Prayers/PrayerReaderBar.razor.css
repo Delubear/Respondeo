@@ -1,0 +1,97 @@
+/* Pinned to the bottom on every screen size, matching the devotion and hours player bar. */
+.readerbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 44rem);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.9rem calc(0.55rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 0.08);
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background: var(--paper);
+}
+
+.readerbar__leave {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-right: auto;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: inherit;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.readerbar__leave:focus-visible,
+.readerbar__guide:focus-visible,
+.readerbar__size:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.readerbar__tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.readerbar__size,
+.readerbar__guide {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: var(--display, inherit);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.readerbar__size-big {
+    font-size: 1.15em;
+}
+
+.readerbar__guide {
+    font-size: 0.95rem;
+}
+
+/* On desktop the Guide to Prayers orb stays, so the bar's guide button is phones-only. */
+@media (min-width: 40.0625rem) {
+    .readerbar__guide {
+        display: none;
+    }
+}
+
+.readerbar__theme {
+    display: inline-flex;
+}
+
+.readerbar__theme ::deep .theme-toggle,
+.readerbar__theme ::deep .theme-toggle:hover {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    border-color: var(--rule);
+}
+
+.readerbar__theme ::deep .theme-toggle {
+    color: var(--ink-soft);
+}

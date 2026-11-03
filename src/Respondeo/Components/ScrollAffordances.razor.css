@@ -45,6 +45,7 @@
     outline-offset: var(--focus-ring-offset);
 }
 
+
 /* Respect users who prefer reduced motion: drop the reveal transition. */
 @media (prefers-reduced-motion: reduce) {
     .scroll-progress,

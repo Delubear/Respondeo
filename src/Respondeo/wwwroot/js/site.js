@@ -208,6 +208,39 @@ window.respondeoScroll = (function () {
                 el.scrollIntoView({ block: 'center', behavior: reduced() ? 'auto' : 'smooth' });
             }
         },
+        // Scrolls element `id` to the top of the viewport (respecting its scroll-margin-top), the way the
+        // hour and devotion players advance: the current step lands just under the top, never under the
+        // pinned bottom bar.
+        toStart: function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' });
+            }
+        },
+        // Keeps element `id` inside a comfortable reading band: it must sit below the top edge and above
+        // the pinned bottom bar (.playerbar), with a little breathing room. If it is already inside the
+        // band nothing moves; otherwise the page glides so the element sits about a third of the way down
+        // the visible area, never pinned to the top and never hidden under the bar.
+        toNearest: function (id) {
+            var el = document.getElementById(id);
+            if (!el) {
+                return;
+            }
+
+            var bar = document.querySelector('.playerbar');
+            var barTop = bar ? bar.getBoundingClientRect().top : window.innerHeight;
+            var pad = 16;
+            var bandTop = pad;
+            var bandBottom = barTop - pad;
+            var rect = el.getBoundingClientRect();
+
+            if (rect.top >= bandTop && rect.bottom <= bandBottom) {
+                return;
+            }
+
+            var target = bandTop + (bandBottom - bandTop - rect.height) / 3;
+            scrollWindow(window.pageYOffset + rect.top - Math.max(target, bandTop), true);
+        },
         top: function () {
             // The orb fades out (pointer-events: none) once at the top, so touch browsers never
             // deliver the release events; drop focus so it doesn't reappear looking pressed.
@@ -281,15 +314,14 @@ window.respondeoImmersive = {
     }
 };
 
-// Focuses an element by id, keeping it in view. Used by the devotion player to move keyboard
+// Focuses an element by id without scrolling. Used by the devotion player to move keyboard
 // focus onto the next step after one is marked prayed, so pressing Space/Enter walks the thread
-// forward instead of toggling the same step off and on again. (Scrolling an element into view lives
-// in respondeoScroll; this object is purely about focus.)
+// forward instead of toggling the same step off and on again. (Scrolling lives in respondeoScroll.)
 window.respondeoFocus = {
     byId: function (id) {
         const el = document.getElementById(id);
         if (el && typeof el.focus === 'function') {
-            el.focus({ preventScroll: false });
+            el.focus({ preventScroll: true });
         }
     }
 };

@@ -1,24 +1,17 @@
 @page "/discover/prayers/{Id}"
+@implements IAsyncDisposable
 @inject IPrayerService Prayers
+@inject IPrayerLanguageService PrayerLanguage
+@inject ImmersiveInterop Immersive
 
 <DetailPage Loading="_loading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
             LoadingText="Opening the prayer…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
             ListHref="discover/prayers" BackLabel="Back to all prayers" NotFoundBackLabel="Return to all prayers"
             Tags="@(_prayer?.Tags ?? [])">
     <Body>
-        <div class="prayer__text">
-            @((MarkupString)_prayer!.Html)
+        <div class="prayer__text" lang="@(ShowingLatin ? "la" : null)">
+            @((MarkupString)(ShowingLatin ? _prayer!.LatinHtml! : _prayer!.Html))
         </div>
-
-        @if (!string.IsNullOrWhiteSpace(_prayer.LatinHtml))
-        {
-            <section class="prayer__latin section-rule">
-                <h2 class="prayer__latin-title eyebrow">In Latin</h2>
-                <div class="prayer__text">
-                    @((MarkupString)_prayer.LatinHtml)
-                </div>
-            </section>
-        }
 
         @if (!string.IsNullOrWhiteSpace(_prayer.Attribution))
         {
@@ -27,6 +20,11 @@
     </Body>
 </DetailPage>
 
+@if (!_loading && _prayer is not null)
+{
+    <PrayerReaderBar LeaveHref="discover/prayers" LeaveLabel="Prayers" LatinAvailable="HasLatin" ShowLatin="_showLatin" OnLanguageChange="SetLatin" />
+}
+
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
@@ -34,11 +32,50 @@
 
     private Prayer? _prayer;
     private bool _loading = true;
+    private bool _showLatin;
+    private bool _readerMode;
+
+    private bool HasLatin => !string.IsNullOrWhiteSpace(_prayer?.LatinHtml);
+
+    private bool ShowingLatin => _showLatin && HasLatin;
 
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
         _prayer = await Prayers.GetPrayerAsync(Id);
+        await PrayerLanguage.InitializeAsync();
+        _showLatin = PrayerLanguage.ShowLatin;
         _loading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Reader mode only applies to a loaded prayer; a not-found page keeps its chrome so the reader can navigate away.
+        var wanted = !_loading && _prayer is not null;
+        if (wanted == _readerMode)
+        {
+            return;
+        }
+
+        _readerMode = wanted;
+        await (wanted ? Immersive.EnterAsync() : Immersive.LeaveAsync());
+    }
+
+    private async Task SetLatin(bool latin)
+    {
+        _showLatin = latin;
+        await PrayerLanguage.SetAsync(latin);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await Immersive.LeaveAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit going away during teardown; nothing to restore.
+        }
     }
 }
