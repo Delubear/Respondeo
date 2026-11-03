@@ -211,6 +211,46 @@ window.respondeoScroll = (function () {
         // Scrolls element `id` to the top of the viewport (respecting its scroll-margin-top), the way the
         // hour and devotion players advance: the current step lands just under the top, never under the
         // pinned bottom bar.
+        // Like toStart, but for the hour player: lands on the part banner when the current step opens a new
+        // part, and re-checks once the glide ends. Content above can still be settling (expanded text,
+        // fonts) when the glide starts, which would otherwise leave the step short of its target.
+        toStepStart: function (id) {
+            var target = function () {
+                var el = document.getElementById(id);
+                if (!el) {
+                    return null;
+                }
+                var prev = el.previousElementSibling;
+                return prev && prev.classList.contains('hourplayer__banner') ? prev : el;
+            };
+            var go = function (smooth) {
+                var el = target();
+                if (el) {
+                    el.scrollIntoView({ block: 'start', behavior: smooth && !reduced() ? 'smooth' : 'auto' });
+                }
+            };
+            requestAnimationFrame(function () {
+                go(true);
+                var done = false;
+                var finish = function () {
+                    if (done) {
+                        return;
+                    }
+                    done = true;
+                    window.removeEventListener('scrollend', finish);
+                    var el = target();
+                    if (!el) {
+                        return;
+                    }
+                    var margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+                    if (Math.abs(el.getBoundingClientRect().top - margin) > 4) {
+                        go(false);
+                    }
+                };
+                window.addEventListener('scrollend', finish);
+                setTimeout(finish, 900);
+            });
+        },
         toStart: function (id) {
             var el = document.getElementById(id);
             if (el) {

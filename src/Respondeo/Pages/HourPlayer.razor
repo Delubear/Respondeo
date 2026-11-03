@@ -484,9 +484,8 @@ else
         if (_scroll)
         {
             _scroll = false;
-            // When the current step opens a new part, land on that part's banner so its heading stays in view.
-            await JS.InvokeVoidAsync("eval",
-                "(()=>{let e=document.getElementById('hour-current-step');if(!e)return;const p=e.previousElementSibling;if(p&&p.classList.contains('hourplayer__banner'))e=p;e.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})()");
+            // Lands on the part banner when the current step opens a new part, and corrects once layout settles.
+            await JS.InvokeVoidAsync("respondeoScroll.toStepStart", "hour-current-step");
         }
     }
 

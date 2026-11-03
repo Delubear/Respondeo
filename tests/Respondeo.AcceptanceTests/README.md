@@ -16,6 +16,7 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **Devotions.feature** — the devotions browser lists devotions, and opening one shows its intro and enters the praying guide.
 - **PrayerGuide.feature** — the Guide to Prayers explains the prayer notation and inline prayer references render in full.
 - **Saints.feature** — the saints browser lists saint cards and opening one shows the saint's profile.
+- **ImmersivePraying.feature** — single prayers, devotions, and the Liturgy of the Hours: the pinned bottom bar (leave, EN/LA, text size, theme, guide), the site chrome stepping aside on phones, and Next/Back keeping the current step in view.
 
 These are intentionally few and focused on the core journey. Unit and component tests
 (in `Respondeo.UnitTests`) cover the fine-grained logic.
