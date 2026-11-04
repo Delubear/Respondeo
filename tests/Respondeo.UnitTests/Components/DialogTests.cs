@@ -93,6 +93,6 @@ public class DialogTests : TestContext
 
         cut.Find(".dialog__close").Click();
 
-        Assert.Single(JSInterop.Invocations["respondeoDialog.close"]);
+        cut.WaitForAssertion(() => Assert.Single(JSInterop.Invocations["respondeoDialog.close"]));
     }
 }
