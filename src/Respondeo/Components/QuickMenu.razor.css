@@ -131,16 +131,7 @@
         animation-name: quick-menu-down;
     }
 
-    .quick-menu::before {
-        content: "";
-        display: block;
-        width: 2.5rem;
-        height: 0.3rem;
-        margin: 0 auto 0.6rem;
-        border-radius: 999px;
-        background: var(--rule);
     }
-}
 
 @media (prefers-reduced-motion: reduce) {
     .quick-menu,
@@ -150,11 +141,36 @@
 }
 
 .quick-menu__header {
+    position: sticky;
+    top: -1rem;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 0.5rem;
+    margin: -1rem -1.25rem 0;
+    padding: 1rem 1.25rem 0.5rem;
+    background: var(--paper);
     border-bottom: 1px solid var(--rule);
+}
+
+@media (max-width: 40rem) {
+    .quick-menu__header {
+        top: -0.6rem;
+        margin-top: -0.6rem;
+        padding-top: 1.4rem;
+    }
+
+    .quick-menu__header::before {
+        content: "";
+        position: absolute;
+        top: 0.5rem;
+        left: 50%;
+        width: 2.5rem;
+        height: 0.3rem;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: var(--rule);
+    }
 }
 
 .quick-menu__title {

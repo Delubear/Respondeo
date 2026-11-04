@@ -8,6 +8,7 @@
 @inject IServiceProvider Services
 @inject IThemeService Theme
 @inject QuickMenuLauncher Launcher
+@inject IJSRuntime JS
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -307,15 +308,18 @@
 	private bool _horizontal;
 	private double _dragY;
 	private bool _fromHeader;
+	private bool _atTop;
+	private bool _pulling;
+	private const double PullCloseThreshold = 140;
 
 	private string? PanelStyle =>
 		_closing ? $"--qm-from-x: {_dragX:0}px; --qm-from-y: {_dragY:0}px;"
 		: !_tracking ? null
-		: _dragY > 0 ? $"transform: translateY({_dragY:0}px); transition: none;"
+		: _pulling ? $"transform: translateY({_dragY:0}px); transition: none; overflow: hidden; touch-action: none;"
 		: _dragX > 0 ? $"transform: translateX({_dragX:0}px); transition: none;"
 		: null;
 
-	private void OnTouchStart(TouchEventArgs e)
+	private async Task OnTouchStart(TouchEventArgs e)
 	{
 		if (e.Touches.Length != 1)
 		{
@@ -327,6 +331,15 @@
 		_dragX = 0;
 		_horizontal = false;
 		_tracking = true;
+		_atTop = false;
+		try
+		{
+			// Read scrollTop at gesture start so a drag beginning at the top can pull the sheet closed.
+			_atTop = await JS.InvokeAsync<double>("Reflect.get", _panel, "scrollTop") <= 0;
+		}
+		catch (JSException)
+		{
+		}
 	}
 
 	private void OnTouchMove(TouchEventArgs e)
@@ -338,13 +351,21 @@
 
 		var dx = e.Touches[0].ClientX - _touchStartX;
 		var dy = e.Touches[0].ClientY - _touchStartY;
+		if (_pulling)
+		{
+			_dragY = Math.Max(0, dy);
+			return;
+		}
+
 		if (!_horizontal)
 		{
 			if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
 			{
-				if (_fromHeader && dy > 0)
+				if ((_fromHeader || _atTop) && dy > 0)
 				{
-					_dragY = dy;
+					_pulling = true;
+					_touchStartY += 10;
+					_dragY = Math.Max(0, dy - 10);
 					return;
 				}
 
@@ -367,8 +388,9 @@
 
 	private async Task OnTouchEnd(TouchEventArgs e)
 	{
-		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || _dragY > SwipeCloseThreshold);
+		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || (_pulling && _dragY > PullCloseThreshold));
 		_tracking = false;
+		_pulling = false;
 		_fromHeader = false;
 		if (shouldClose)
 		{
