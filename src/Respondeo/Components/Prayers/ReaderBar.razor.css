@@ -31,8 +31,7 @@
 }
 
 .readerbar__leave:focus-visible,
-.readerbar__guide:focus-visible,
-.readerbar__size:focus-visible {
+.readerbar__guide:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
@@ -43,7 +42,6 @@
     gap: 0.5rem;
 }
 
-.readerbar__size,
 .readerbar__guide {
     display: inline-flex;
     align-items: center;
@@ -62,36 +60,20 @@
     cursor: pointer;
 }
 
-.readerbar__size-big {
-    font-size: 1.15em;
-}
-
 .readerbar__guide {
     font-size: 0.95rem;
 }
 
-/* On desktop the Guide to Prayers orb stays, so the bar's guide button is phones-only. */
+/* On desktop the area's orb stays, so the bar's guide button is phones-only. */
 @media (min-width: 40.0625rem) {
     .readerbar__guide {
         display: none;
     }
 }
 
-.readerbar__theme {
-    display: inline-flex;
-}
-
-.readerbar__theme ::deep .theme-toggle,
-.readerbar__theme ::deep .theme-toggle:hover {
-    position: static !important;
-    top: auto !important;
-    right: auto !important;
-    width: 2rem;
-    height: 2rem;
-    margin: 0;
-    border-color: var(--rule);
-}
-
-.readerbar__theme ::deep .theme-toggle {
-    color: var(--ink-soft);
+/* Pages whose bar has nothing to offer on desktop (no Latin, orbs in place) show it on phones only. */
+@media (min-width: 40.0625rem) {
+    .readerbar--mobile {
+        display: none;
+    }
 }

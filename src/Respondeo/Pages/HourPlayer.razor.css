@@ -362,7 +362,7 @@
     scroll-margin-bottom: 6rem;
 }
 
-/* The settings gear in the bottom bar opens the hour settings dialog (the floating orb is hidden inside an hour). */
+/* The settings gear in the bottom bar opens the hour settings dialog on every screen size (there is no settings orb). */
 .hourplayer__settings {
     display: inline-flex;
     width: 2rem;

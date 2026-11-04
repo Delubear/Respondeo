@@ -52,12 +52,15 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     public Task ThenThePrayerTextShouldBeInEnglish() =>
         Page.WaitForFunctionAsync("() => document.querySelector('.prayer__text')?.innerText.includes('Hail Mary')");
 
-    [When("I change the text size from the reader bar")]
-    public Task WhenIChangeTheTextSizeFromTheReaderBar() => Page.Locator(".readerbar__size").ClickAsync();
+    [When("I open the quick menu from the reader bar")]
+    public Task WhenIOpenTheQuickMenuFromTheReaderBar() => Page.Locator(".readerbar .bar-menu").ClickAsync();
 
-    [Then("the document text size should not be the default")]
-    public Task ThenTheDocumentTextSizeShouldNotBeTheDefault() =>
-        Page.WaitForFunctionAsync("() => { const s = document.documentElement.getAttribute('data-textsize'); return s && s !== 'default'; }");
+    [Then("the quick menu should be open")]
+    public Task ThenTheQuickMenuShouldBeOpen() => Page.WaitForSelectorAsync("nav.quick-menu");
+
+    [When("I choose the dark theme in the quick menu")]
+    public Task WhenIChooseTheDarkThemeInTheQuickMenu() =>
+        Page.Locator(".quick-menu__theme-option", new() { HasText = "Dark" }).ClickAsync();
 
     [When("I leave the prayer from the reader bar")]
     public async Task WhenILeaveThePrayerFromTheReaderBar()
@@ -69,15 +72,6 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     [Then("I should be on the prayers browser")]
     public void ThenIShouldBeOnThePrayersBrowser() =>
         Assert.EndsWith("/discover/prayers", Page.Url.TrimEnd('/'));
-
-    [When("I toggle the theme from the reader bar")]
-    public Task WhenIToggleTheThemeFromTheReaderBar() => Page.Locator(".readerbar .theme-toggle").ClickAsync();
-
-    [Then("every theme toggle should offer the light theme")]
-    public Task ThenEveryThemeToggleShouldOfferTheLightTheme() =>
-        Page.WaitForFunctionAsync(
-            "() => { const t = [...document.querySelectorAll('.theme-toggle')];" +
-            " return t.length > 1 && t.every(b => b.getAttribute('aria-label') === 'Switch to light theme'); }");
 
     [When("I open the prayer guide from the reader bar")]
     public async Task WhenIOpenThePrayerGuideFromTheReaderBar()

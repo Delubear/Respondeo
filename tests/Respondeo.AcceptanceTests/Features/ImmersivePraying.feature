@@ -18,10 +18,11 @@ Feature: Immersive praying views
 	When I switch the prayer language
 	Then the prayer text should be in English
 
-  Scenario: The text size button cycles the reading size
-	Given I open the "discover/prayers/hail-mary" prayer directly
-	When I change the text size from the reader bar
-	Then the document text size should not be the default
+  Scenario: On a phone the reader bar opens the quick menu
+	Given I am on a phone-sized screen
+	And I open the "discover/prayers/hail-mary" prayer directly
+	When I open the quick menu from the reader bar
+	Then the quick menu should be open
 
   Scenario: Leaving a prayer restores the site chrome
 	Given I open the "discover/prayers/hail-mary" prayer directly
@@ -29,11 +30,12 @@ Feature: Immersive praying views
 	Then I should be on the prayers browser
 	And the page should not be in immersive mode
 
-  Scenario: The bar's theme button and the masthead's stay in step on desktop
-	Given I open the "discover/prayers/hail-mary" prayer directly
-	When I toggle the theme from the reader bar
+  Scenario: The quick menu's theme picker switches the theme
+	Given I am on a phone-sized screen
+	And I open the "discover/prayers/hail-mary" prayer directly
+	When I open the quick menu from the reader bar
+	And I choose the dark theme in the quick menu
 	Then the page should use the dark theme
-	And every theme toggle should offer the light theme
 
   Scenario: On a phone the site chrome steps aside for a prayer
 	Given I am on a phone-sized screen

@@ -152,11 +152,6 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 
-/* Inside an hour the player's bar carries its own settings gear, so the floating orb steps aside on every screen size. */
-body.is-immersive .hour-settings-orb {
-    display: none;
-}
-
 /* ---------- Immersive mode ----------
    While the reader is praying (a devotion, an hour, or a single prayer), the page toggles
    body.is-immersive. Each of these pages pins its own bar to the foot of the screen, so the page
@@ -183,5 +178,19 @@ body.is-immersive .content__inner {
     body.is-immersive .colophon,
     body.is-immersive .back-to-top {
         display: none;
+    }
+}
+
+/* Reading pages (saints, miracles, articles) pin a reader bar on phones that carries the guide and the quick menu,
+   so the floating orbs and the quick-menu toggle step aside there and the page leaves room for the bar. */
+@media (max-width: 40rem) {
+    body:has(.readerbar) .float-circle,
+    body:has(.readerbar) .quick-menu__toggle,
+    body:has(.readerbar) .back-to-top {
+        display: none;
+    }
+
+    body:has(.readerbar) .content__inner {
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
     }
 }

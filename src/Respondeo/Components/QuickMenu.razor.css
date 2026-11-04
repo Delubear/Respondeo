@@ -431,3 +431,30 @@
     text-align: left;
     cursor: pointer;
 }
+
+.quick-menu__theme {
+    display: flex;
+    gap: .5rem;
+}
+
+.quick-menu__theme-option {
+    flex: 1;
+    height: 2.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+}
+
+.quick-menu__theme-option:hover,
+.quick-menu__theme-option:focus-visible {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.quick-menu__theme-option[aria-checked="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+}

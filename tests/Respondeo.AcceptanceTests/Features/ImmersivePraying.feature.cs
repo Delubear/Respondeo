@@ -200,14 +200,14 @@ namespace Respondeo.AcceptanceTests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The text size button cycles the reading size")]
+        [Xunit.SkippableFactAttribute(DisplayName="On a phone the reader bar opens the quick menu")]
         [Xunit.TraitAttribute("FeatureTitle", "Immersive praying views")]
-        [Xunit.TraitAttribute("Description", "The text size button cycles the reading size")]
-        public async global::System.Threading.Tasks.Task TheTextSizeButtonCyclesTheReadingSize()
+        [Xunit.TraitAttribute("Description", "On a phone the reader bar opens the quick menu")]
+        public async global::System.Threading.Tasks.Task OnAPhoneTheReaderBarOpensTheQuickMenu()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The text size button cycles the reading size", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("On a phone the reader bar opens the quick menu", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 21
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -219,13 +219,16 @@ namespace Respondeo.AcceptanceTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 22
- await testRunner.GivenAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 23
- await testRunner.WhenAsync("I change the text size from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.AndAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 24
- await testRunner.ThenAsync("the document text size should not be the default", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.WhenAsync("I open the quick menu from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 25
+ await testRunner.ThenAsync("the quick menu should be open", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -239,7 +242,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Leaving a prayer restores the site chrome", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 26
+#line 27
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -249,31 +252,31 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 27
+#line 28
  await testRunner.GivenAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 29
  await testRunner.WhenAsync("I leave the prayer from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 30
  await testRunner.ThenAsync("I should be on the prayers browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 30
+#line 31
  await testRunner.AndAsync("the page should not be in immersive mode", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The bar\'s theme button and the masthead\'s stay in step on desktop")]
+        [Xunit.SkippableFactAttribute(DisplayName="The quick menu\'s theme picker switches the theme")]
         [Xunit.TraitAttribute("FeatureTitle", "Immersive praying views")]
-        [Xunit.TraitAttribute("Description", "The bar\'s theme button and the masthead\'s stay in step on desktop")]
-        public async global::System.Threading.Tasks.Task TheBarsThemeButtonAndTheMastheadsStayInStepOnDesktop()
+        [Xunit.TraitAttribute("Description", "The quick menu\'s theme picker switches the theme")]
+        public async global::System.Threading.Tasks.Task TheQuickMenusThemePickerSwitchesTheTheme()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The bar\'s theme button and the masthead\'s stay in step on desktop", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The quick menu\'s theme picker switches the theme", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 33
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -283,17 +286,20 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 33
- await testRunner.GivenAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
 #line 34
- await testRunner.WhenAsync("I toggle the theme from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 35
- await testRunner.ThenAsync("the page should use the dark theme", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.AndAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 36
- await testRunner.AndAsync("every theme toggle should offer the light theme", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+ await testRunner.WhenAsync("I open the quick menu from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 37
+ await testRunner.AndAsync("I choose the dark theme in the quick menu", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 38
+ await testRunner.ThenAsync("the page should use the dark theme", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -307,7 +313,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("On a phone the site chrome steps aside for a prayer", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 38
+#line 40
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -317,19 +323,19 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 39
+#line 41
  await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 40
+#line 42
  await testRunner.AndAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 43
  await testRunner.ThenAsync("the masthead should be hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 42
+#line 44
  await testRunner.AndAsync("the floating guide orb should be hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 45
  await testRunner.AndAsync("the back-to-top arrow should be hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -344,7 +350,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("On a phone the Guide to Prayers opens from the reader bar", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 45
+#line 47
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -354,16 +360,16 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 46
+#line 48
  await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 47
+#line 49
  await testRunner.AndAsync("I open the \"discover/prayers/hail-mary\" prayer directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 50
  await testRunner.WhenAsync("I open the prayer guide from the reader bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 51
  await testRunner.ThenAsync("the prayer guide dialog should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -378,7 +384,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Starting a devotion opens at the top of the thread", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 53
+#line 55
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -388,19 +394,19 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 54
+#line 56
  await testRunner.GivenAsync("I open the devotions browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 55
+#line 57
  await testRunner.WhenAsync("I choose the first devotion", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 56
+#line 58
  await testRunner.AndAsync("I begin praying", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 59
  await testRunner.ThenAsync("the page should be scrolled to the top", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 58
+#line 60
  await testRunner.AndAsync("the page should be in immersive mode", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -415,7 +421,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Next in a devotion keeps the current step clear of the bottom bar", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 60
+#line 62
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -425,25 +431,25 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 61
+#line 63
  await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 62
+#line 64
  await testRunner.AndAsync("I open the devotions browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 65
  await testRunner.WhenAsync("I choose the first devotion", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 64
+#line 66
  await testRunner.AndAsync("I begin praying", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 65
+#line 67
  await testRunner.AndAsync("I press Next 8 times in the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 66
+#line 68
  await testRunner.ThenAsync("the current devotion step should sit above the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 67
+#line 69
  await testRunner.AndAsync("the current devotion step should be below the top of the screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -458,7 +464,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Back in a devotion steps to the previous prayer", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 69
+#line 71
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -468,22 +474,22 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 70
+#line 72
  await testRunner.GivenAsync("I open the devotions browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 71
+#line 73
  await testRunner.WhenAsync("I choose the first devotion", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 74
  await testRunner.AndAsync("I begin praying", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 73
+#line 75
  await testRunner.AndAsync("I press Next 2 times in the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 76
  await testRunner.AndAsync("I press Back in the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 77
  await testRunner.ThenAsync("the player bar should show 1 completed step", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -498,7 +504,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("The back-to-top arrow stays hidden while praying a devotion", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 77
+#line 79
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -508,22 +514,22 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 78
+#line 80
  await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 79
+#line 81
  await testRunner.AndAsync("I open the devotions browser", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 82
  await testRunner.WhenAsync("I choose the first devotion", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 83
  await testRunner.AndAsync("I begin praying", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 82
+#line 84
  await testRunner.AndAsync("I press Next 8 times in the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 83
+#line 85
  await testRunner.ThenAsync("the back-to-top arrow should be hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -538,7 +544,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("An hour opens in immersive mode with the player bar", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 87
+#line 89
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -548,13 +554,13 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 88
+#line 90
  await testRunner.GivenAsync("I open the \"morning\" hour", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 89
+#line 91
  await testRunner.ThenAsync("the player bar should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 90
+#line 92
  await testRunner.AndAsync("the page should be in immersive mode", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -569,7 +575,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Next in an hour keeps the current step clear of the bottom bar", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 92
+#line 94
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -579,16 +585,16 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 93
+#line 95
  await testRunner.GivenAsync("I am on a phone-sized screen", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 94
+#line 96
  await testRunner.AndAsync("I open the \"morning\" hour", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 97
  await testRunner.WhenAsync("I press Next 3 times in the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 96
+#line 98
  await testRunner.ThenAsync("the current hour step should start above the player bar", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -603,7 +609,7 @@ namespace Respondeo.AcceptanceTests.Features
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Advancing into a new part of an hour keeps its heading in view", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 98
+#line 100
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -613,13 +619,13 @@ namespace Respondeo.AcceptanceTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 99
+#line 101
  await testRunner.GivenAsync("I open the \"morning\" hour", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 100
+#line 102
  await testRunner.WhenAsync("I advance until the current hour step starts a new part", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 101
+#line 103
  await testRunner.ThenAsync("that part\'s heading should be in the viewport", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

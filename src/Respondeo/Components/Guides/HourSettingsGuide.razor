@@ -1,12 +1,13 @@
-@* The Liturgy of the Hours settings, shown as a floating guide orb on desktop.
-    Inside an hour, the player's gear button can also open the dialog through OrbLauncher. *@
+@* The Liturgy of the Hours settings dialog. It has no orb of its own: the hour player's gear button opens it
+    through OrbLauncher on every screen size. *@
 
 @using Respondeo.LiturgyOfTheHours
 @inject IHourPlayerSettingsService Settings
 @implements IDisposable
 
 <div class="hour-settings-guide">
-    <FloatingGuide OrbKey="@OrbLauncher.HourSettings" TriggerClass="hour-settings-orb" Title="Hour settings" Eyebrow="Liturgy of the Hours"
+    <FloatingGuide OrbKey="@OrbLauncher.HourSettings" HideTrigger="true" TriggerClass="hour-settings-orb"
+                   Title="Hour settings" Eyebrow="Liturgy of the Hours"
                    AriaLabel="Hour settings" Tooltip="Hour settings" MaxWidth="34rem" DialogClass="dialog--hour-settings">
         <Icon>
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +36,7 @@
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.ShowVersicleResponseMarks"
                                @onchange="e => Settings.UpdateAsync(s => s with { ShowVersicleResponseMarks = e.Value is true })" />
-                        Show <LiturgicalMark Symbol="BreviarySymbol.Versicle" /> <LiturgicalMark Symbol="BreviarySymbol.Response" /> (versicle / response)
+                        <span class="hoursettings__label">Show <LiturgicalMark Symbol="BreviarySymbol.Versicle" /> <LiturgicalMark Symbol="BreviarySymbol.Response" /> (versicle / response)</span>
                     </label>
                     <label class="hoursettings__check">
                         <input type="checkbox" checked="@Settings.Current.ShowPsalmPauseMarks"
@@ -48,10 +49,6 @@
                         <span class="hoursettings__label">Show &#10016; (sign of the cross)</span>
                     </label>
                 </div>
-                </GuideSection>
-
-                <GuideSection Title="Text size">
-                    <TextSizePicker AriaLabel="Text size" />
                 </GuideSection>
 
                 <GuideSection Title="Invitatory psalm">
@@ -92,11 +89,11 @@
                 </GuideSection>
 
                 <GuideSection Title="Reading the Hours">
-                    <LiturgicalMark Symbol="BreviarySymbol.Versicle" Class="hoursettings__rubric" />
-                    <LiturgicalMark Symbol="BreviarySymbol.Response" Class="hoursettings__rubric" />
+                    <p><LiturgicalMark Symbol="BreviarySymbol.Versicle" Class="hoursettings__rubric" /> marks the <em>versicle</em>, the line said by the leader (or by one side of the choir).</p>
+                    <p><LiturgicalMark Symbol="BreviarySymbol.Response" Class="hoursettings__rubric" /> marks the <em>response</em>, said by everyone in reply. Praying alone, you say both.</p>
                     <p><span class="hoursettings__rubric">*</span> marks the <em>mediant</em>: pause briefly at the middle of a psalm verse.</p>
-                    <LiturgicalMark Symbol="BreviarySymbol.Flexa" Class="hoursettings__rubric" />
-                    <LiturgicalMark Symbol="BreviarySymbol.Cross" Class="hoursettings__rubric" />
+                    <p><LiturgicalMark Symbol="BreviarySymbol.Flexa" Class="hoursettings__rubric" /> marks the <em>flex</em>: a short pause within a long first half-verse.</p>
+                    <p><LiturgicalMark Symbol="BreviarySymbol.Cross" Class="hoursettings__rubric" /> means make the sign of the cross.</p>
                 </GuideSection>
             </div>
         </ChildContent>

@@ -1,0 +1,65 @@
+@* The pinned bottom bar for reading a single page (a prayer, saint, miracle or article), styled like the player
+   bar the devotion and Liturgy of the Hours players use: Leave, an optional guide button (phones only, standing in
+   for the area's orb), an optional EN/LA switch (only when the page has a Latin text), and on phones the quick-menu
+   button that stands in for the hidden masthead. MobileOnly bars hide entirely on desktop. *@
+@inject OrbLauncher Launcher
+
+<div class="readerbar @(MobileOnly ? "readerbar--mobile" : null)" role="group" aria-label="@AriaLabel">
+    <a class="readerbar__leave" href="@LeaveHref">
+        <span aria-hidden="true">&larr;</span> @LeaveLabel
+    </a>
+    <span class="readerbar__tools">
+        @if (GuideOrb is not null)
+        {
+            @* Phones only: stands in for the area's orb, which steps aside so it doesn't crowd the bar. *@
+            <button type="button" class="readerbar__guide" @onclick="OpenGuide" aria-label="@GuideLabel" title="@GuideLabel">
+                <span aria-hidden="true">@GuideGlyph</span>
+            </button>
+        }
+        @if (LatinAvailable)
+        {
+            <DevotionLanguageToggle ShowLatin="ShowLatin" OnChange="OnLanguageChange" Mini="true" />
+        }
+        <BarMenuButton />
+    </span>
+</div>
+
+@code {
+    /// <summary>Where Leave goes.</summary>
+    [Parameter, EditorRequired] public string LeaveHref { get; set; } = string.Empty;
+
+    /// <summary>Visible text of the Leave link.</summary>
+    [Parameter] public string LeaveLabel { get; set; } = "Prayers";
+
+    /// <summary>Accessible name of the bar.</summary>
+    [Parameter] public string AriaLabel { get; set; } = "Reading tools";
+
+    /// <summary>The orb the guide button opens on phones (an <see cref="OrbLauncher"/> key); null hides the button.</summary>
+    [Parameter] public string? GuideOrb { get; set; }
+
+    /// <summary>Accessible name of the guide button.</summary>
+    [Parameter] public string GuideLabel { get; set; } = "Guide";
+
+    /// <summary>Glyph shown on the guide button.</summary>
+    [Parameter] public string GuideGlyph { get; set; } = "?";
+
+    /// <summary>Whether the bar shows only on phones (pages with nothing for it to do on desktop).</summary>
+    [Parameter] public bool MobileOnly { get; set; }
+
+    /// <summary>Whether the page offers a Latin text, which shows the EN/LA switch.</summary>
+    [Parameter] public bool LatinAvailable { get; set; }
+
+    /// <summary>Whether the Latin text is currently shown.</summary>
+    [Parameter] public bool ShowLatin { get; set; }
+
+    /// <summary>Raised with the newly chosen value when the reader switches language.</summary>
+    [Parameter] public EventCallback<bool> OnLanguageChange { get; set; }
+
+    private void OpenGuide()
+    {
+        if (GuideOrb is not null)
+        {
+            Launcher.Request(GuideOrb);
+        }
+    }
+}

@@ -22,7 +22,9 @@
 
 @if (!_loading && _prayer is not null)
 {
-    <PrayerReaderBar LeaveHref="discover/prayers" LeaveLabel="Prayers" LatinAvailable="HasLatin" ShowLatin="_showLatin" OnLanguageChange="SetLatin" />
+    <ReaderBar LeaveHref="discover/prayers" LeaveLabel="Prayers" AriaLabel="Prayer tools"
+               GuideOrb="@OrbLauncher.Prayers" GuideLabel="Guide to prayers"
+               LatinAvailable="HasLatin" ShowLatin="_showLatin" OnLanguageChange="SetLatin" />
 }
 
 @code {

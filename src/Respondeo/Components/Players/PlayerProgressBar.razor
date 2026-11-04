@@ -1,6 +1,6 @@
 @* The pinned bottom bar shared by the guided players (Liturgy of the Hours, devotions): the current step and
-   count, a progress track, per-player tools beside the theme toggle, and Leave / Back / Next. One component keeps
-   both players' bars in sync. *@
+   count, a progress track, per-player tools beside the phone-only quick-menu button, and Leave / Back / Next. One
+   component keeps both players' bars in sync. *@
 <div class="playerbar" role="group" aria-label="Progress">
     <div class="playerbar__top">
         <span class="playerbar__label" title="@Label">
@@ -12,9 +12,7 @@
         </span>
         <span class="playerbar__tools">
             @Tools
-            <span class="playerbar__theme">
-                <ThemeToggle />
-            </span>
+            <BarMenuButton />
         </span>
     </div>
     <div class="playerbar__row">

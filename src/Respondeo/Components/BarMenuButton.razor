@@ -1,0 +1,7 @@
+@* The ☰ shown in reader and player bars on phones, where the masthead (and its quick-menu toggle) steps aside.
+   Desktop keeps the masthead toggle, so this button hides there. *@
+@inject QuickMenuLauncher Launcher
+
+<button type="button" class="bar-menu" @onclick="Launcher.Open" aria-haspopup="dialog" aria-label="Open the quick menu" title="Menu">
+    <span aria-hidden="true">&#9776;</span>
+</button>

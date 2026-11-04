@@ -70,30 +70,6 @@
     gap: 0.5rem;
 }
 
-.playerbar__theme {
-    display: inline-flex;
-}
-
-.playerbar__theme ::deep .theme-toggle,
-.playerbar__theme ::deep .theme-toggle:hover {
-    position: static !important;
-    top: auto !important;
-    right: auto !important;
-    width: 2rem;
-    height: 2rem;
-    margin: 0;
-    border-color: var(--rule);
-}
-
-.playerbar__theme ::deep .theme-toggle {
-    color: var(--ink-soft);
-}
-
-.playerbar__theme ::deep .theme-toggle:hover {
-    color: var(--accent);
-    background: var(--parchment);
-}
-
 .playerbar__row {
     display: flex;
     align-items: center;

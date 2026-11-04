@@ -33,6 +33,7 @@ public static class AppServiceRegistration
         // Pinned quick-menu destinations (localStorage).
         services.AddScoped<IPinService, PinService>();
         services.AddScoped<OrbLauncher>();
+        services.AddScoped<QuickMenuLauncher>();
 
         // Whether the reader prefers Latin prayer names in devotions (localStorage).
         services.AddScoped<IPrayerLanguageService, PrayerLanguageService>();
