@@ -27,15 +27,13 @@
 			<button type="button" class="quick-menu__close" @onclick="Close" aria-label="Close the quick menu">&times;</button>
 		</div>
 
+		<div class="quick-menu__body" @ref="_body">
 		@if (_managingOffline)
 		{
 			<section class="quick-menu__section">
 				<h3 class="quick-menu__heading">Offline reading</h3>
 				<OfflinePackControls ShowHeading="false" />
 			</section>
-			<div class="quick-menu__footer">
-				<button type="button" class="quick-menu__customize" @onclick="() => _managingOffline = false">Done</button>
-			</div>
 		}
 		else if (_customizing)
 		{
@@ -57,9 +55,6 @@
 					}
 				</ul>
 			</section>
-			<div class="quick-menu__footer">
-				<button type="button" class="quick-menu__customize" @onclick="() => _customizing = false">Done</button>
-			</div>
 		}
 		else
 		{
@@ -95,13 +90,7 @@
 						}
 					</ul>
 				}
-				@if (_reordering)
-				{
-					<div class="quick-menu__footer">
-						<button type="button" class="quick-menu__customize" @onclick="() => _reordering = false">Done</button>
-					</div>
-				}
-				else
+				@if (!_reordering)
 				{
 					<div class="quick-menu__actions">
 						<button type="button" class="quick-menu__icon-btn" aria-label="Customize" title="Customize"
@@ -154,10 +143,26 @@
 					</button>
 				</div>
 			</section>
-			<div class="quick-menu__footer">
-				<button type="button" class="quick-menu__customize" @onclick="Close">Close</button>
-			</div>
 		}
+		</div>
+		<div class="quick-menu__footer">
+			@if (_managingOffline)
+			{
+				<button type="button" class="btn" @onclick="() => _managingOffline = false">Done</button>
+			}
+			else if (_customizing)
+			{
+				<button type="button" class="btn" @onclick="() => _customizing = false">Done</button>
+			}
+			else if (_reordering)
+			{
+				<button type="button" class="btn" @onclick="() => _reordering = false">Done</button>
+			}
+			else
+			{
+				<button type="button" class="btn" @onclick="Close">Close</button>
+			}
+		</div>
 	</nav>
 }
 </SectionContent>
@@ -168,6 +173,7 @@
 	private bool _reordering;
 	private bool _managingOffline;
 	private ElementReference _panel;
+	private ElementReference _body;
 	private bool _focusPanel;
 	private IReadOnlyList<SiteMap.Entry> _entries = [];
 	private List<SiteMap.Entry> _pinned = [];
@@ -338,7 +344,7 @@
 		try
 		{
 			// Read scrollTop at gesture start so a drag beginning at the top can pull the sheet closed.
-			_atTop = await JS.InvokeAsync<double>("Reflect.get", _panel, "scrollTop") <= 0;
+			_atTop = await JS.InvokeAsync<double>("Reflect.get", _body, "scrollTop") <= 0;
 		}
 		catch (JSException)
 		{
