@@ -5,7 +5,8 @@
     {
         @if (Compact)
         {
-            <a href="@prev.Href" class="bible-pager__prev" aria-label="@PrevLabel(prev)" title="@PrevLabel(prev)" @onclick="() => GoAsync(prev.Href)" @onclick:preventDefault><span aria-hidden="true">&larr;</span><span class="bible-pager__text" aria-hidden="true">Prev</span></a>
+            <a href="@prev.Href" class="bible-pager__prev" aria-label="@PrevLabel(prev)" title="@PrevLabel(prev)"
+               @onclick="() => GoAsync(prev.Href)" @onclick:preventDefault><span aria-hidden="true">&larr;</span><span class="bible-pager__text" aria-hidden="true">Prev</span></a>
         }
         else
         {
@@ -20,7 +21,8 @@
     {
         @if (Compact)
         {
-            <a href="@next.Href" class="bible-pager__next" aria-label="@NextLabel(next)" title="@NextLabel(next)" @onclick="() => GoAsync(next.Href)" @onclick:preventDefault><span class="bible-pager__text" aria-hidden="true">Next</span><span aria-hidden="true">&rarr;</span></a>
+            <a href="@next.Href" class="bible-pager__next" aria-label="@NextLabel(next)" title="@NextLabel(next)"
+               @onclick="() => GoAsync(next.Href)" @onclick:preventDefault><span class="bible-pager__text" aria-hidden="true">Next</span><span aria-hidden="true">&rarr;</span></a>
         }
         else
         {

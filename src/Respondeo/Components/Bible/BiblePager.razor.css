@@ -36,19 +36,6 @@
     background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
-/* Phones keep the arrows only so the bar stays on one line. */
-@media (max-width: 30rem) {
-    .bible-pager__text {
-        display: none;
-    }
-
-    .bible-pager--compact .bible-pager__prev,
-    .bible-pager--compact .bible-pager__next,
-    .bible-pager__placeholder {
-        padding-inline: 0.6rem;
-    }
-}
-
 .bible-pager__placeholder {
     visibility: hidden;
 }
