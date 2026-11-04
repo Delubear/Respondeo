@@ -62,3 +62,9 @@
 - For architecture, dependency, or "where is X used / what calls Y" questions, query the Graphify knowledge graph in `graphify-out/` first, then verify findings against the source.
 - After refactors or structural changes (file moves, renames, new services or components), update the Graphify graph so it does not go stale.
 - `graphify-out/` is not committed; if it is missing or outdated, regenerate it before relying on it.
+
+## Agent editing discipline
+- Never edit a fragment of a line. Always replace complete lines or whole blocks (for example, an entire element, method, or markup block), and supply the full replacement text.
+- Before editing, read the exact current text of the target block so the replacement matches it precisely.
+- Do not abbreviate or elide any part of the replacement text; long lines must be written out in full.
+- After each edit, immediately verify it by building (or checking file errors) before moving on, so a corrupted edit is caught at once rather than in a later fix pass.
