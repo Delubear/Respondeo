@@ -8,6 +8,10 @@
     <a class="readerbar__leave" href="@LeaveHref">
         <span aria-hidden="true">&larr;</span> @LeaveLabel
     </a>
+    @if (ExtraActions is not null)
+    {
+        <span class="readerbar__extra">@ExtraActions</span>
+    }
     <span class="readerbar__tools">
         @if (GuideOrb is not null)
         {
@@ -30,6 +34,9 @@
 
     /// <summary>Visible text of the Leave link.</summary>
     [Parameter] public string LeaveLabel { get; set; } = "Prayers";
+
+    /// <summary>Page-specific controls shown between Leave and the tools (such as chapter navigation).</summary>
+    [Parameter] public RenderFragment? ExtraActions { get; set; }
 
     /// <summary>Accessible name of the bar.</summary>
     [Parameter] public string AriaLabel { get; set; } = "Reading tools";

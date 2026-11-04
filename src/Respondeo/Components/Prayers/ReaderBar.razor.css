@@ -36,6 +36,12 @@
     outline-offset: 2px;
 }
 
+.readerbar__extra {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
 .readerbar__tools {
     display: inline-flex;
     align-items: center;

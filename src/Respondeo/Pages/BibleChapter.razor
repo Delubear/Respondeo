@@ -36,9 +36,14 @@ else
         {
             <BibleChapterText Verses="_verses" Highlight="_highlight" />
         }
-
-        <BiblePager Previous="Previous" Next="Next" OnNavigate="_fade.RequestReplay" />
     </article>
+
+    <ReaderMode Active="true" />
+    <ReaderBar LeaveHref="bible" LeaveLabel="Bible" AriaLabel="Bible tools">
+        <ExtraActions>
+            <BiblePager Previous="Previous" Next="Next" OnNavigate="_fade.RequestReplay" Compact="true" />
+        </ExtraActions>
+    </ReaderBar>
 }
 
 @code {

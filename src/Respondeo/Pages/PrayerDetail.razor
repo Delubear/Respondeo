@@ -1,8 +1,6 @@
 @page "/discover/prayers/{Id}"
-@implements IAsyncDisposable
 @inject IPrayerService Prayers
 @inject IPrayerLanguageService PrayerLanguage
-@inject ImmersiveInterop Immersive
 
 <DetailPage Loading="_loading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
             LoadingText="Opening the prayer…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
@@ -22,7 +20,8 @@
 
 @if (!_loading && _prayer is not null)
 {
-    <ReaderBar LeaveHref="discover/prayers" LeaveLabel="Prayers" AriaLabel="Prayer tools"
+    <ReaderMode Active="true" />
+    <ReaderBar LeaveHref="discover/prayers"
                GuideOrb="@OrbLauncher.Prayers" GuideLabel="Guide to prayers"
                LatinAvailable="HasLatin" ShowLatin="_showLatin" OnLanguageChange="SetLatin" />
 }
@@ -35,7 +34,6 @@
     private Prayer? _prayer;
     private bool _loading = true;
     private bool _showLatin;
-    private bool _readerMode;
 
     private bool HasLatin => !string.IsNullOrWhiteSpace(_prayer?.LatinHtml);
 
@@ -50,34 +48,9 @@
         _loading = false;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        // Reader mode only applies to a loaded prayer; a not-found page keeps its chrome so the reader can navigate away.
-        var wanted = !_loading && _prayer is not null;
-        if (wanted == _readerMode)
-        {
-            return;
-        }
-
-        _readerMode = wanted;
-        await (wanted ? Immersive.EnterAsync() : Immersive.LeaveAsync());
-    }
-
     private async Task SetLatin(bool latin)
     {
         _showLatin = latin;
         await PrayerLanguage.SetAsync(latin);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        try
-        {
-            await Immersive.LeaveAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-            // Circuit going away during teardown; nothing to restore.
-        }
     }
 }

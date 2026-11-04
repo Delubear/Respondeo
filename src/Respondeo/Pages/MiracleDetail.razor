@@ -29,7 +29,11 @@
     </Facts>
 </DetailPage>
 
-<ReaderBar LeaveHref="discover/miracles" LeaveLabel="Miracles" AriaLabel="Miracle tools" MobileOnly="true" />
+@if (!_loading && _miracle is not null)
+{
+    <ReaderMode Active="true" />
+    <ReaderBar LeaveHref="discover/miracles" LeaveLabel="Miracles" AriaLabel="Miracle tools" />
+}
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;

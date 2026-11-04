@@ -22,6 +22,7 @@ public class PrayerDetailTests : TestContext
         Services.AddScoped<DialogInterop>();
         Services.AddScoped<ImmersiveInterop>();
         Services.AddSingleton<OrbLauncher>();
+        Services.AddSingleton<QuickMenuLauncher>();
         Services.AddSingleton(Substitute.For<IThemeService>());
         Services.AddSingleton(Substitute.For<ITextSizeService>());
         _language = Substitute.For<IPrayerLanguageService>();

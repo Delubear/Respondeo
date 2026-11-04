@@ -21,6 +21,9 @@ public class MiracleDetailTests : TestContext
         prayers.QuotePrayerReferencesAsync(Arg.Any<string>()).Returns(c => c.Arg<string>());
         Services.AddSingleton(prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
+        Services.AddScoped<ImmersiveInterop>();
+        Services.AddSingleton<OrbLauncher>();
+        Services.AddSingleton<QuickMenuLauncher>();
     }
 
     private static MiracleFacetCatalog Facets() => new()

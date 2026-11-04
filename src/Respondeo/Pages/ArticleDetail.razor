@@ -7,7 +7,11 @@
             IsUnvetted="@(_article?.IsUnvetted ?? false)" BodyHtml="@_article?.BodyHtml"
             Tags="@(_article?.Tags ?? [])" Sources="@(_article?.Sources ?? [])" />
 
-<ReaderBar LeaveHref="discover/articles" LeaveLabel="Articles" AriaLabel="Article tools" MobileOnly="true" />
+@if (!_loading && _article is not null)
+{
+    <ReaderMode Active="true" />
+    <ReaderBar LeaveHref="discover/articles" LeaveLabel="Articles" AriaLabel="Article tools" />
+}
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;

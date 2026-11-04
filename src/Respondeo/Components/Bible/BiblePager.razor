@@ -1,13 +1,35 @@
 @inject NavigationManager Nav
 
-<nav class="bible-pager" aria-label="Chapter navigation">
+<nav class="bible-pager @(Compact ? "bible-pager--compact" : null)" aria-label="Chapter navigation">
     @if (Previous is { } prev)
     {
-        <a href="@prev.Href" class="bible-pager__prev" @onclick="() => GoAsync(prev.Href)" @onclick:preventDefault>&larr; @prev.Label</a>
+        @if (Compact)
+        {
+            <a href="@prev.Href" class="bible-pager__prev" aria-label="@PrevLabel(prev)" title="@PrevLabel(prev)" @onclick="() => GoAsync(prev.Href)" @onclick:preventDefault><span aria-hidden="true">&larr;</span><span class="bible-pager__text" aria-hidden="true">Prev</span></a>
+        }
+        else
+        {
+            <a href="@prev.Href" class="bible-pager__prev" @onclick="() => GoAsync(prev.Href)" @onclick:preventDefault>&larr; @prev.Label</a>
+        }
+    }
+    else if (Compact)
+    {
+        <span class="bible-pager__placeholder" aria-hidden="true"></span>
     }
     @if (Next is { } next)
     {
-        <a href="@next.Href" class="bible-pager__next" @onclick="() => GoAsync(next.Href)" @onclick:preventDefault>@next.Label &rarr;</a>
+        @if (Compact)
+        {
+            <a href="@next.Href" class="bible-pager__next" aria-label="@NextLabel(next)" title="@NextLabel(next)" @onclick="() => GoAsync(next.Href)" @onclick:preventDefault><span class="bible-pager__text" aria-hidden="true">Next</span><span aria-hidden="true">&rarr;</span></a>
+        }
+        else
+        {
+            <a href="@next.Href" class="bible-pager__next" @onclick="() => GoAsync(next.Href)" @onclick:preventDefault>@next.Label &rarr;</a>
+        }
+    }
+    else if (Compact)
+    {
+        <span class="bible-pager__placeholder" aria-hidden="true"></span>
     }
 </nav>
 
@@ -15,6 +37,10 @@
     [Parameter] public ChapterLink? Previous { get; set; }
     [Parameter] public ChapterLink? Next { get; set; }
     [Parameter] public EventCallback OnNavigate { get; set; }
+    [Parameter] public bool Compact { get; set; }
+
+    private static string PrevLabel(ChapterLink link) => $"Previous chapter: {link.Label}";
+    private static string NextLabel(ChapterLink link) => $"Next chapter: {link.Label}";
 
     // Navigating in code guarantees OnNavigate runs before the route changes; a plain link races the router.
     private async Task GoAsync(string href)
