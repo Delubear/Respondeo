@@ -13,6 +13,55 @@
     background: rgba(17, 17, 17, 0.55);
 }
 
+.dialog[open] {
+    animation: dialog-in 0.2s ease-out;
+}
+
+.dialog[open]::backdrop {
+    animation: dialog-backdrop-in 0.2s ease-out;
+}
+
+@keyframes dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}
+
+@keyframes dialog-backdrop-in {
+    from {
+        opacity: 0;
+    }
+}
+
+.dialog--closing[open] {
+    animation: dialog-out 0.2s ease-in forwards;
+}
+
+.dialog--closing[open]::backdrop {
+    animation: dialog-backdrop-out 0.2s ease-in forwards;
+}
+
+@keyframes dialog-out {
+    to {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}
+
+@keyframes dialog-backdrop-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dialog[open],
+    .dialog[open]::backdrop {
+        animation: none;
+    }
+}
+
 .dialog__panel {
     display: flex;
     flex-direction: column;
@@ -94,6 +143,10 @@
         border-radius: 0.75rem 0.75rem 0 0;
     }
 
+    .dialog[open] {
+        animation: sheet-in 0.25s ease-out;
+    }
+
     .dialog__panel {
         max-height: 80vh;
         max-height: 80dvh;
@@ -107,7 +160,23 @@
     }
 
     .dialog__head {
-        padding: 1rem 1.25rem 0.85rem;
+        padding: 1.4rem 1.25rem 0.85rem;
+    }
+
+    .dialog__head::before {
+        content: "";
+        position: absolute;
+        top: 0.5rem;
+        left: 50%;
+        width: 2.5rem;
+        height: 0.3rem;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: var(--rule);
+    }
+
+    .dialog__close {
+        top: 1.1rem;
     }
 
     .dialog__body {
@@ -120,5 +189,33 @@
 
     .dialog__foot {
         padding: 0.85rem 1.25rem 1.25rem;
+    }
+}
+
+@keyframes sheet-in {
+    from {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes sheet-out {
+    from {
+        transform: translateY(var(--drag-y, 0px));
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
+@media (max-width: 40rem) {
+    .dialog--closing[open] {
+        animation: sheet-out 0.2s ease-in forwards;
+    }
+}
+
+@media (max-width: 40rem) and (prefers-reduced-motion: reduce) {
+    .dialog[open] {
+        animation: none;
     }
 }

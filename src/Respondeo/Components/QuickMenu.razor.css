@@ -22,9 +22,11 @@
     transition: background var(--dur-1) var(--ease-page), color var(--dur-1) var(--ease-page);
 }
 
-.quick-menu__toggle:hover {
-    background: var(--float-btn-bg-hover);
-    color: var(--float-btn-fg-hover);
+@media (hover: hover) {
+    .quick-menu__toggle:hover {
+        background: var(--float-btn-bg-hover);
+        color: var(--float-btn-fg-hover);
+    }
 }
 
 .quick-menu__toggle:focus-visible {

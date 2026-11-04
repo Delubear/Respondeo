@@ -35,9 +35,11 @@
     transform: translateY(0);
 }
 
-.back-to-top:hover {
-    background: var(--float-btn-bg-hover);
-    color: var(--float-btn-fg-hover);
+@media (hover: hover) {
+    .back-to-top:hover {
+        background: var(--float-btn-bg-hover);
+        color: var(--float-btn-fg-hover);
+    }
 }
 
 .back-to-top:focus-visible {

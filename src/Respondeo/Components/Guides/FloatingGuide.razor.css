@@ -53,9 +53,12 @@
     bottom: 11.75rem;
 }
 
-.float-circle:hover {
-    background: var(--float-btn-bg-hover);
-    color: var(--float-btn-fg-hover);
+/* Touch browsers keep :hover on the last-tapped element (blur does not clear it), so only apply hover on real pointers. */
+@media (hover: hover) {
+    .float-circle:hover {
+        background: var(--float-btn-bg-hover);
+        color: var(--float-btn-fg-hover);
+    }
 }
 
 .float-circle:focus-visible {

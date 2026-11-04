@@ -320,6 +320,14 @@ window.respondeoDialog = {
             this._lockScroll();
             if (!el._respondeoScrollLock) {
                 el._respondeoScrollLock = true;
+                el.addEventListener('cancel', e => {
+                    // Route Esc through the close button so the closing animation plays.
+                    const btn = el.querySelector('.dialog__close');
+                    if (btn) {
+                        e.preventDefault();
+                        btn.click();
+                    }
+                });
                 el.addEventListener('close', () => this._unlockScroll());
             }
         }

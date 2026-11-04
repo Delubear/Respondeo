@@ -1,12 +1,14 @@
 @inject DialogInterop Dialogs
+@inject IJSRuntime JS
 
 @* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free).
     Callers supply a title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close() methods through an @ref.
     The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
 
-<dialog @ref="_dialog" class="dialog @Class" aria-labelledby="@_titleId" style="@WidthStyle">
-    <div class="dialog__panel">
-        <header class="dialog__head">
+<dialog @ref="_dialog" class="dialog @(_closing ? "dialog--closing" : null) @Class" aria-labelledby="@_titleId" style="@DialogStyle">
+    <div class="dialog__panel"
+         @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
+        <header class="dialog__head" @ontouchstart="() => _fromHeader = true">
             @if (!string.IsNullOrWhiteSpace(Eyebrow))
             {
                 <p class="dialog__eyebrow">@Eyebrow</p>
@@ -15,7 +17,7 @@
             <button type="button" class="dialog__close" aria-label="Close" @onclick="Close">&times;</button>
         </header>
 
-        <div class="dialog__body">
+        <div class="dialog__body" @ref="_body">
             @ChildContent
         </div>
 
@@ -56,5 +58,101 @@
     public async Task Show() => await Dialogs.ShowAsync(_dialog);
 
     /// <summary>Closes the dialog if it is open.</summary>
-    public async Task Close() => await Dialogs.CloseAsync(_dialog);
+    public async Task Close()
+    {
+        if (_closing)
+        {
+            return;
+        }
+
+        _closing = true;
+        StateHasChanged();
+        await Task.Delay(200);
+        await Dialogs.CloseAsync(_dialog);
+        _closing = false;
+    }
+
+    private bool _closing;
+
+    private const double PullCloseThreshold = 140;
+    private ElementReference _body;
+    private double _touchStartX;
+    private double _touchStartY;
+    private double _dragY;
+    private bool _tracking;
+    private bool _pulling;
+    private bool _fromHeader;
+    private bool _atTop;
+
+    private double _closeFromY;
+
+    private string? DialogStyle =>
+        _closing && _closeFromY > 0 ? $"{WidthStyle}--drag-y: {_closeFromY:0}px;"
+        : _pulling ? $"{WidthStyle}transform: translateY({_dragY:0}px); transition: none; touch-action: none;" : WidthStyle;
+
+    private async Task OnTouchStart(TouchEventArgs e)
+    {
+        if (e.Touches.Length != 1)
+        {
+            return;
+        }
+
+        _touchStartX = e.Touches[0].ClientX;
+        _touchStartY = e.Touches[0].ClientY;
+        _tracking = true;
+        _atTop = false;
+        try
+        {
+            // Read scrollTop at gesture start so a drag beginning at the top can pull the sheet closed.
+            _atTop = await JS.InvokeAsync<double>("Reflect.get", _body, "scrollTop") <= 0;
+        }
+        catch (JSException)
+        {
+        }
+    }
+
+    private void OnTouchMove(TouchEventArgs e)
+    {
+        if (!_tracking || e.Touches.Length != 1)
+        {
+            return;
+        }
+
+        var dx = e.Touches[0].ClientX - _touchStartX;
+        var dy = e.Touches[0].ClientY - _touchStartY;
+        if (_pulling)
+        {
+            _dragY = Math.Max(0, dy);
+            return;
+        }
+
+        if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
+        {
+            if ((_fromHeader || _atTop) && dy > 0)
+            {
+                _pulling = true;
+                _touchStartY += 10;
+                _dragY = Math.Max(0, dy - 10);
+                return;
+            }
+
+            _tracking = false;
+        }
+    }
+
+    private async Task OnTouchEnd(TouchEventArgs e)
+    {
+        var shouldClose = _pulling && _dragY > PullCloseThreshold;
+        var releaseY = _dragY;
+        _tracking = false;
+        _pulling = false;
+        _fromHeader = false;
+        _dragY = 0;
+        if (shouldClose)
+        {
+            _closeFromY = releaseY;
+            await Close();
+            _closeFromY = 0;
+        }
+    }
 }
