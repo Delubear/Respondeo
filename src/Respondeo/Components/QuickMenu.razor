@@ -304,17 +304,13 @@
 		_managingOffline = false;
 		_dragIndex = -1;
 		_dragOffset = 0;
-		_dragX = 0;
 		_dragY = 0;
 		_tracking = false;
 	}
 
-	private const double SwipeCloseThreshold = 80;
 	private double _touchStartX;
 	private double _touchStartY;
-	private double _dragX;
 	private bool _tracking;
-	private bool _horizontal;
 	private double _dragY;
 	private bool _fromHeader;
 	private bool _atTop;
@@ -322,10 +318,8 @@
 	private const double PullCloseThreshold = 140;
 
 	private string? PanelStyle =>
-		_closing ? $"--qm-from-x: {_dragX:0}px; --qm-from-y: {_dragY:0}px;"
-		: !_tracking ? null
-		: _pulling ? $"transform: translateY({_dragY:0}px); transition: none; overflow: hidden; touch-action: none;"
-		: _dragX > 0 ? $"transform: translateX({_dragX:0}px); transition: none;"
+		_closing ? $"--qm-from-x: 0px; --qm-from-y: {_dragY:0}px;"
+		: _tracking && _pulling ? "transition: none; touch-action: none;"
 		: null;
 
 	private async Task OnTouchStart(TouchEventArgs e)
@@ -337,8 +331,6 @@
 
 		_touchStartX = e.Touches[0].ClientX;
 		_touchStartY = e.Touches[0].ClientY;
-		_dragX = 0;
-		_horizontal = false;
 		_tracking = true;
 		_atTop = false;
 		try
@@ -366,38 +358,27 @@
 			return;
 		}
 
-		if (!_horizontal)
+		if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
 		{
-			if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
+			if ((_fromHeader || _atTop) && dy > 0)
 			{
-				if ((_fromHeader || _atTop) && dy > 0)
-				{
-					_pulling = true;
-					_touchStartY += 10;
-					_dragY = Math.Max(0, dy - 10);
-					return;
-				}
-
-				if (_dragY <= 0)
-				{
-					_tracking = false;
-				}
-
+				_pulling = true;
+				_touchStartY += 10;
+				_dragY = Math.Max(0, dy - 10);
 				return;
 			}
 
-			_horizontal = Math.Abs(dx) > 10;
+			_tracking = false;
 		}
-
-		if (_horizontal)
+		else if (Math.Abs(dx) > 10)
 		{
-			_dragX = Math.Max(0, dx);
+			_tracking = false;
 		}
 	}
 
 	private async Task OnTouchEnd(TouchEventArgs e)
 	{
-		var shouldClose = _tracking && ((_horizontal && _dragX > SwipeCloseThreshold) || (_pulling && _dragY > PullCloseThreshold));
+		var shouldClose = _tracking && _pulling && _dragY > PullCloseThreshold;
 		_tracking = false;
 		_pulling = false;
 		_fromHeader = false;
@@ -405,16 +386,10 @@
 		{
 			// Keep the drag offset so the closing animation continues from where the finger let go
 			// (Close resets it once the animation finishes).
-			if (!_horizontal)
-			{
-				_dragX = 0;
-			}
-
 			await Close();
 			return;
 		}
 
-		_dragX = 0;
 		_dragY = 0;
 	}
 
