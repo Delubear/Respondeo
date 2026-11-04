@@ -159,6 +159,7 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
     [
         (3, 19, "Saint Joseph, Spouse of the Blessed Virgin Mary"),
         (3, 25, "The Annunciation of the Lord"),
+        (12, 8, "The Immaculate Conception of the Blessed Virgin Mary"),
     ];
 
     /// <summary>True when the given date is the ordinary date of a transferable solemnity that is impeded this year.</summary>
@@ -187,13 +188,19 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
         var original = new DateOnly(year, month, day);
         var easter = LiturgicalDates.Easter(year);
 
+        // Saint Joseph falling in Holy Week is anticipated to the Saturday before Palm Sunday.
+        if (month == 3 && day == 19 && original >= easter.AddDays(-7) && original < easter)
+        {
+            return easter.AddDays(-8);
+        }
+
         // Holy Week, the Triduum, and the Octave of Easter (Palm Sunday through Divine Mercy Sunday).
         if (original >= easter.AddDays(-7) && original <= easter.AddDays(7))
         {
             return easter.AddDays(8);
         }
 
-        if (original.DayOfWeek == DayOfWeek.Sunday && SeasonFor(original) == LiturgicalSeason.Lent)
+        if (original.DayOfWeek == DayOfWeek.Sunday && SeasonFor(original) is LiturgicalSeason.Lent or LiturgicalSeason.Advent)
         {
             return original.AddDays(1);
         }
