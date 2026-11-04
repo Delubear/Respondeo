@@ -58,7 +58,7 @@
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
         {
           "kind": "GospelCanticle", "title": "Canticle of Zechariah (Benedictus)", "source": "fixed", "reference": "Luke 1:68-79", "text": [ "{benedictus}" ],
-          "explanation": "Zechariah's song at the birth of John the Baptist greets Christ, the dawn from on high. Pray it with the antiphon proper to the day, making the Sign of the Cross at the start."
+          "explanation": "Zechariah's song at the birth of John the Baptist greets Christ, the dawn from on high. Pray it with the antiphon proper to the day."
         },
         { "kind": "Intercessions", "title": "Intercessions", "source": "proper", "explanation": "Morning intercessions consecrate the day and its work to God." },
         { "kind": "LordsPrayer", "title": "The Lord's Prayer", "source": "fixed", "text": [ "{lords-prayer}" ] },
@@ -76,7 +76,7 @@
       "steps": [
         {
           "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
-          "explanation": "Make the Sign of the Cross. Each hour opens by asking God's help to pray (Psalm 70:2)."
+          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2)."
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Evening Prayer and to the day or season." },
         { "source": "psalmody" },
@@ -88,7 +88,7 @@
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
         {
           "kind": "GospelCanticle", "title": "Canticle of Mary (Magnificat)", "source": "fixed", "reference": "Luke 1:46-55", "text": [ "{magnificat}" ],
-          "explanation": "Our Lady's song of praise is the high point of Evening Prayer, giving thanks for the salvation God has worked. Pray it with the antiphon proper to the day, making the Sign of the Cross at the start."
+          "explanation": "Our Lady's song of praise is the high point of Evening Prayer, giving thanks for the salvation God has worked. Pray it with the antiphon proper to the day."
         },
         { "kind": "Intercessions", "title": "Intercessions", "source": "proper", "explanation": "Evening intercessions; the last petition is always for the faithful departed." },
         { "kind": "LordsPrayer", "title": "The Lord's Prayer", "source": "fixed", "text": [ "{lords-prayer}" ] },
@@ -106,7 +106,7 @@
       "steps": [
         {
           "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
-          "explanation": "Make the Sign of the Cross. Each hour opens by asking God's help to pray (Psalm 70:2)."
+          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2)."
         },
         {
           "kind": "Examen", "title": "Examination of Conscience", "source": "fixed", "text": [ "{examen}" ],
