@@ -51,20 +51,13 @@
 - When writing Respondeo miracle articles (especially Eucharistic miracles), do not fault a reported miracle for lacking a "controlled trial" or "independent replication" — that is a category error, since a miracle is a singular act of God, not a repeatable experiment. Instead, distinguish what science can address (authenticity of the relic/sample, competence of the examination) from what it cannot (reproducing or witnessing the miraculous event itself).
 
 ## Editing discipline
-- Re-read the target lines immediately before every edit; never edit from an earlier read.
-- Keep replacements minimal: only changed lines plus the smallest unique context.
-- Never retype unchanged code from memory; split large edits.
+- Never edit a fragment of a line. Always replace complete lines or whole blocks (for example, an entire element, method, or markup block), written out in full without eliding anything.
+- Re-read the exact current text of the target lines immediately before every edit; never edit from an earlier read or from memory.
 - Do not modify anything outside the requested change.
-- After editing, re-read the changed region and review `git diff` for unintended removals.
+- After each edit, re-read the changed region, review `git diff` for unintended removals, and build (or check file errors) before moving on.
 
 ## Codebase navigation (Graphify)
 - Use the Graphify knowledge graph (graphify-out/) proactively for locating code, tracing usages, and checking cross-component impact, not only for explicit architecture questions.
 - For architecture, dependency, or "where is X used / what calls Y" questions, query the Graphify knowledge graph in `graphify-out/` first, then verify findings against the source.
 - After refactors or structural changes (file moves, renames, new services or components), update the Graphify graph so it does not go stale.
 - `graphify-out/` is not committed; if it is missing or outdated, regenerate it before relying on it.
-
-## Agent editing discipline
-- Never edit a fragment of a line. Always replace complete lines or whole blocks (for example, an entire element, method, or markup block), and supply the full replacement text.
-- Before editing, read the exact current text of the target block so the replacement matches it precisely.
-- Do not abbreviate or elide any part of the replacement text; long lines must be written out in full.
-- After each edit, immediately verify it by building (or checking file errors) before moving on, so a corrupted edit is caught at once rather than in a later fix pass.
