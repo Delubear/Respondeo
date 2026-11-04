@@ -1,6 +1,7 @@
 using Respondeo.Bible.Contracts;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Summa.Contracts;
+using Respondeo.LiturgyOfTheHours;
 using Respondeo.Navigation;
 
 namespace Respondeo.Services.Navigation;
@@ -19,7 +20,10 @@ public sealed class RoutePrefetcher(
     ISummaService summa,
     ISummaPartCatalog parts,
     IBibleTranslations bibleTranslations,
-    IBibleChapterReader bibleReader)
+    IBibleChapterReader bibleReader,
+    ILiturgyOfTheHours office,
+    IBibleText bibleText,
+    IHourPlayerSettingsService hourSettings)
 {
     public async Task PrefetchAsync(string path)
     {
@@ -62,6 +66,9 @@ public sealed class RoutePrefetcher(
                 case [RoutePath.Discover, RoutePath.Prayers, var id]:
                     await prayers.GetPrayerAsync(id);
                     break;
+                case [RoutePath.Discover, RoutePath.Hours, var slug]:
+                    await PrefetchHourAsync(slug);
+                    break;
                 case [_, var id]:
                     await content.GetByIdAsync(id);
                     break;
@@ -77,5 +84,34 @@ public sealed class RoutePrefetcher(
     {
         if (await bibleTranslations.FindAsync(code) is not { } translation) return;
         await bibleReader.LoadAsync(translation.FindBook(book), chapter, translation);
+    }
+
+    private async Task PrefetchHourAsync(string slug)
+    {
+        Hour? hour = slug.ToLowerInvariant() switch
+        {
+            "morning" => Hour.MorningPrayer,
+            "evening" => Hour.EveningPrayer,
+            "night" => Hour.NightPrayer,
+            _ => null,
+        };
+        if (hour is not { } h) return;
+
+        var composed = office.Compose(DateOnly.FromDateTime(DateTime.Now), h);
+        var citations = new List<string>();
+        foreach (var step in composed.Steps)
+        {
+            if (step.Text is null && step.Reference is { } reference) citations.Add(reference.Citation);
+            foreach (var option in step.Options ?? [])
+            {
+                if (option.Text is not null) continue;
+                if (option.Stanzas is { Count: > 0 } stanzas) citations.AddRange(stanzas.Select(s => s.Citation));
+                else if (option.Reference is { } optionReference) citations.Add(optionReference.Citation);
+            }
+        }
+
+        var tasks = new List<Task> { hourSettings.LoadAsync() };
+        tasks.AddRange(citations.Distinct().Select(c => (Task)bibleText.GetPassageAsync(c)));
+        await Task.WhenAll(tasks);
     }
 }

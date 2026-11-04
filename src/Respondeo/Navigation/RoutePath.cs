@@ -9,6 +9,7 @@ public static class RoutePath
     public const string Summa = "summa";
     public const string Bible = "bible";
     public const string Discover = "discover";
+    public const string Hours = "hours";
     public const string Articles = "articles";
     public const string Saints = "saints";
     public const string Prayers = "prayers";
