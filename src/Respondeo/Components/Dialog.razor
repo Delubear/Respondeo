@@ -5,7 +5,8 @@
     Callers supply a title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close() methods through an @ref.
     The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
 
-<dialog @ref="_dialog" class="dialog @(_closing ? "dialog--closing" : null) @Class" aria-labelledby="@_titleId" style="@DialogStyle">
+<dialog @ref="_dialog" class="dialog @(_closing ? "dialog--closing" : null) @Class" aria-labelledby="@_titleId" style="@DialogStyle"
+        @onclose="OnNativeClose">
     <div class="dialog__panel"
          @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
         <header class="dialog__head" @ontouchstart="() => _fromHeader = true">
@@ -51,6 +52,14 @@
 
     /// <summary>Optional max-width for the dialog (any CSS length). Defaults to the shared value.</summary>
     [Parameter] public string? MaxWidth { get; set; }
+
+    /// <summary>Raised after the dialog closes, whether by Close(), Esc or the pull gesture.</summary>
+    [Parameter] public EventCallback OnClosed { get; set; }
+
+    /// <summary>When true, the pull-to-close gesture is ignored (e.g. while a row is being dragged).</summary>
+    [Parameter] public bool SuppressPull { get; set; }
+
+    private Task OnNativeClose() => OnClosed.InvokeAsync();
 
     private string? WidthStyle => string.IsNullOrWhiteSpace(MaxWidth) ? null : $"--dialog-max-width: {MaxWidth};";
 
@@ -113,7 +122,7 @@
 
     private void OnTouchMove(TouchEventArgs e)
     {
-        if (!_tracking || e.Touches.Length != 1)
+        if (SuppressPull || !_tracking || e.Touches.Length != 1)
         {
             return;
         }

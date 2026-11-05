@@ -219,3 +219,54 @@
         animation: none;
     }
 }
+
+/* ---------- Desktop drawer variant ---------- */
+@media (min-width: 40.0625rem) {
+    .dialog--drawer {
+        margin: 0 0 0 auto;
+        width: min(22rem, 88vw);
+        max-width: none;
+        height: 100vh;
+        height: 100dvh;
+        max-height: none;
+        border-radius: 0;
+        border-width: 0 0 0 1px;
+    }
+
+    .dialog--drawer .dialog__panel {
+        height: 100%;
+        max-height: none;
+    }
+
+    .dialog--drawer .dialog__body {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .dialog--drawer[open] {
+        animation: drawer-in 0.22s ease-out;
+    }
+
+    .dialog--drawer.dialog--closing[open] {
+        animation: drawer-out 0.2s ease-in forwards;
+    }
+}
+
+@media (min-width: 40.0625rem) and (prefers-reduced-motion: reduce) {
+    .dialog--drawer[open],
+    .dialog--drawer.dialog--closing[open] {
+        animation: none;
+    }
+}
+
+@keyframes drawer-in {
+    from {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes drawer-out {
+    to {
+        transform: translateX(100%);
+    }
+}

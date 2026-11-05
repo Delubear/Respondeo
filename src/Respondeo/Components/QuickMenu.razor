@@ -15,19 +15,8 @@
 	<span aria-hidden="true">&#9776;</span>
 </button>
 
-<SectionContent SectionName="quick-menu">
-@if (_open)
-{
-	<div class="quick-menu__backdrop @(_closing ? "quick-menu__backdrop--closing" : null)" @onclick="Close"></div>
-	<nav class="quick-menu @(_closing ? "quick-menu--closing" : null)" role="dialog"
-		 @onkeydown="OnKeyDown" @ref="_panel" style="@PanelStyle"
-		 @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
-		<div class="quick-menu__header" @ontouchstart="() => _fromHeader = true">
-			<h2 class="quick-menu__title">Quick menu</h2>
-			<button type="button" class="quick-menu__close" @onclick="Close" aria-label="Close the quick menu">&times;</button>
-		</div>
-
-		<div class="quick-menu__body @(_pulling ? "quick-menu__body--locked" : null)" @ref="_body">
+<Dialog @ref="_dialog" Title="Quick menu" Class="quick-menu dialog--drawer" SuppressPull="@(_dragIndex >= 0)" OnClosed="OnDialogClosed">
+	<ChildContent>
 		@if (_managingOffline)
 		{
 			<section class="quick-menu__section">
@@ -144,8 +133,8 @@
 				</div>
 			</section>
 		}
-		</div>
-		<div class="quick-menu__footer">
+	</ChildContent>
+	<Footer>
 			@if (_managingOffline)
 			{
 				<button type="button" class="btn" @onclick="() => _managingOffline = false">Done</button>
@@ -162,19 +151,15 @@
 			{
 				<button type="button" class="btn" @onclick="Close">Close</button>
 			}
-		</div>
-	</nav>
-}
-</SectionContent>
+			</Footer>
+		</Dialog>
 
 @code {
 	private bool _open;
 	private bool _customizing;
 	private bool _reordering;
 	private bool _managingOffline;
-	private ElementReference _panel;
-	private ElementReference _body;
-	private bool _focusPanel;
+	private Dialog _dialog = default!;
 	private IReadOnlyList<SiteMap.Entry> _entries = [];
 	private List<SiteMap.Entry> _pinned = [];
 	private IReadOnlyList<SiteMap.Entry> _guides = [];
@@ -191,11 +176,7 @@
 
 	private void OnThemeChanged() => InvokeAsync(StateHasChanged);
 
-	private void OnOpenRequested() => InvokeAsync(() =>
-	{
-		Open();
-		StateHasChanged();
-	});
+	private void OnOpenRequested() => InvokeAsync(Open);
 
 	private RenderFragment RenderLink(SiteMap.Entry entry) =>
 		entry.Action is { } action
@@ -260,137 +241,33 @@
 			await Theme.InitializeAsync();
 			await Packs.StartAsync();
 		}
-
-		if (_focusPanel && _open)
-		{
-			_focusPanel = false;
-			try
-			{
-				await _panel.FocusAsync();
-			}
-			catch (Exception ex) when (ex is InvalidOperationException or Microsoft.JSInterop.JSException)
-			{
-				// The drawer renders through a SectionOutlet, so its element may not be attached yet.
-			}
-		}
 	}
 
 	private void Refresh() =>
 		_pinned = Pins.Pins.Select(h => SiteMap.Find([.. _entries, .. _guides], h)).OfType<SiteMap.Entry>().ToList();
 
-	private void Open()
+	private async Task Open()
 	{
 		_open = true;
-		_focusPanel = true;
+		await _dialog.Show();
 	}
-
-	private bool _closing;
 
 	private async Task Close()
 	{
-		if (!_open || _closing)
+		if (_open)
 		{
-			return;
+			await _dialog.Close();
 		}
+	}
 
-		_closing = true;
-		_tracking = false;
-		StateHasChanged();
-		await Task.Delay(200);
-		_closing = false;
+	private void OnDialogClosed()
+	{
 		_open = false;
 		_customizing = false;
 		_reordering = false;
 		_managingOffline = false;
 		_dragIndex = -1;
 		_dragOffset = 0;
-		_dragY = 0;
-		_tracking = false;
-	}
-
-	private double _touchStartX;
-	private double _touchStartY;
-	private bool _tracking;
-	private double _dragY;
-	private bool _fromHeader;
-	private bool _atTop;
-	private bool _pulling;
-	private const double PullCloseThreshold = 140;
-
-	private string? PanelStyle =>
-		_closing ? $"--qm-from-x: 0px; --qm-from-y: {_dragY:0}px;"
-		: _tracking && _pulling ? $"transform: translateY({_dragY:0}px); transition: none; touch-action: none;"
-		: null;
-
-	private async Task OnTouchStart(TouchEventArgs e)
-	{
-		if (e.Touches.Length != 1)
-		{
-			return;
-		}
-
-		_touchStartX = e.Touches[0].ClientX;
-		_touchStartY = e.Touches[0].ClientY;
-		_tracking = true;
-		_atTop = false;
-		try
-		{
-			// Read scrollTop at gesture start so a drag beginning at the top can pull the sheet closed.
-			_atTop = await JS.InvokeAsync<double>("Reflect.get", _body, "scrollTop") <= 0;
-		}
-		catch (JSException)
-		{
-		}
-	}
-
-	private void OnTouchMove(TouchEventArgs e)
-	{
-		if (_dragIndex >= 0 || !_tracking || e.Touches.Length != 1)
-		{
-			return;
-		}
-
-		var dx = e.Touches[0].ClientX - _touchStartX;
-		var dy = e.Touches[0].ClientY - _touchStartY;
-		if (_pulling)
-		{
-			_dragY = Math.Max(0, dy);
-			return;
-		}
-
-		if (Math.Abs(dy) > 10 && Math.Abs(dy) > Math.Abs(dx))
-		{
-			if ((_fromHeader || _atTop) && dy > 0)
-			{
-				_pulling = true;
-				_touchStartY += 10;
-				_dragY = Math.Max(0, dy - 10);
-				return;
-			}
-
-			_tracking = false;
-		}
-		else if (Math.Abs(dx) > 10)
-		{
-			_tracking = false;
-		}
-	}
-
-	private async Task OnTouchEnd(TouchEventArgs e)
-	{
-		var shouldClose = _tracking && _pulling && _dragY > PullCloseThreshold;
-		_tracking = false;
-		_pulling = false;
-		_fromHeader = false;
-		if (shouldClose)
-		{
-			// Keep the drag offset so the closing animation continues from where the finger let go
-			// (Close resets it once the animation finishes).
-			await Close();
-			return;
-		}
-
-		_dragY = 0;
 	}
 
 	private int _dragIndex = -1;
@@ -458,14 +335,6 @@
 		}
 	}
 
-	private async Task OnKeyDown(KeyboardEventArgs e)
-	{
-		if (e.Key == "Escape")
-		{
-			await Close();
-		}
-	}
-
 	private void OnPinsChanged()
 	{
 		Refresh();
@@ -478,9 +347,7 @@
 	{
 		if (_open)
 		{
-			_open = false;
-			_closing = false;
-			InvokeAsync(StateHasChanged);
+			InvokeAsync(Close);
 		}
 	}
 
