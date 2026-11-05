@@ -297,12 +297,6 @@
     text-align: right;
 }
 
-/* Lock page scroll while the quick menu drawer is open so scrolling the drawer never moves the page behind it. */
-html:has(.quick-menu),
-body:has(.quick-menu) {
-  overflow: hidden;
-}
-
 /* ---------- Page enter fade ---------- */
 /* Gentle fade + rise for content that appears once its data has loaded (Discover lists, detail pages, players).
    The animation runs once when the element is inserted, so it replays only when the content is re-created.

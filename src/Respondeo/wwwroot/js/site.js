@@ -336,6 +336,9 @@ window.respondeoDialog = {
         if (el && typeof el.close === 'function' && el.open) {
             el.close();
         }
+        // The 'close' event never fires if the element is removed from the DOM while open,
+        // so always release the lock here too.
+        this._unlockScroll();
     },
     _lockScroll: function () {
         if (this._prevOverflow === undefined) {
