@@ -1,4 +1,5 @@
 using Microsoft.JSInterop;
+using Respondeo.Services.Interop;
 
 namespace Respondeo.Services.Calendar;
 
@@ -45,7 +46,7 @@ internal sealed class DayWatcher(Func<DateOnly> today, IJSRuntime js) : IDayWatc
 {
     private readonly Func<DateOnly> _today = today;
     private DotNetObjectReference<DayWatcher>? _ref;
-    private IJSObjectReference? _module;
+    private readonly JsModule _module = new(js, "./js/day-watcher.js");
     private bool _disposed;
 
     public DateOnly Today { get; private set; } = today();
@@ -54,12 +55,11 @@ internal sealed class DayWatcher(Func<DateOnly> today, IJSRuntime js) : IDayWatc
 
     public async Task StartAsync()
     {
-        if (_disposed || _module is not null)
+        if (_disposed || _module.IsLoaded)
         {
             return;
         }
 
-        _module = await js.InvokeAsync<IJSObjectReference>("import", "./js/day-watcher.js");
         _ref = DotNetObjectReference.Create(this);
         await _module.InvokeVoidAsync("register", _ref);
     }
@@ -91,19 +91,8 @@ internal sealed class DayWatcher(Func<DateOnly> today, IJSRuntime js) : IDayWatc
     {
         _disposed = true;
 
-        if (_module is not null)
-        {
-            try
-            {
-                await _module.InvokeVoidAsync("unregister");
-                await _module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // The runtime is already gone during teardown; nothing to unregister.
-            }
-        }
-
+        await _module.TryInvokeVoidAsync("unregister");
+        await _module.DisposeAsync();
         _ref?.Dispose();
     }
 }

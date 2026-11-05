@@ -18,7 +18,7 @@ namespace Respondeo.Services.Interop;
 public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
 {
     private DotNetObjectReference<ScrollSubscription>? _ref;
-    private IJSObjectReference? _module;
+    private readonly JsModule _module = new(js, "./js/scroll.js");
     private int _subscription;
     private Action<double, bool>? _onScroll;
 
@@ -29,13 +29,12 @@ public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
     public async Task StartAsync(Action<double, bool> onScroll)
     {
         _onScroll = onScroll;
-        _module = await js.InvokeAsync<IJSObjectReference>("import", "./js/scroll.js");
         _ref = DotNetObjectReference.Create(this);
         _subscription = await _module.InvokeAsync<int>("register", _ref);
     }
 
     /// <summary>Invokes a parameterless void export on the scroll module.</summary>
-    public ValueTask InvokeVoidAsync(string identifier) => _module is null ? ValueTask.CompletedTask : _module.InvokeVoidAsync(identifier);
+    public ValueTask InvokeVoidAsync(string identifier) => _module.IsLoaded ? _module.InvokeVoidAsync(identifier) : ValueTask.CompletedTask;
 
     /// <summary>Invoked by scroll.js on every scroll; forwards the metrics to the component callback.</summary>
     [JSInvokable]
@@ -43,19 +42,8 @@ public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (_module is not null)
-        {
-            try
-            {
-                await _module.InvokeVoidAsync("unregister", _subscription);
-                await _module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit already gone during teardown; nothing to unregister.
-            }
-        }
-
+        await _module.TryInvokeVoidAsync("unregister", _subscription);
+        await _module.DisposeAsync();
         _ref?.Dispose();
     }
 }

@@ -65,7 +65,7 @@
     private StageLink? _nextStage;
     private IReadOnlySet<string> _visited = new HashSet<string>();
     private ElementReference _body;
-    private IJSObjectReference? _tableModule;
+    private JsModule? _tableModule;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -92,7 +92,7 @@
     {
         try
         {
-            _tableModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./js/table-mobile.js");
+            _tableModule ??= new JsModule(JS, "./js/table-mobile.js");
             await _tableModule.InvokeVoidAsync("enhance", _body);
         }
         catch (JSDisconnectedException)
@@ -104,14 +104,8 @@
     {
         if (_tableModule is not null)
         {
-            try
-            {
-                await _tableModule.InvokeVoidAsync("dispose", _body);
-                await _tableModule.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-            }
+            await _tableModule.TryInvokeVoidAsync("dispose", _body);
+            await _tableModule.DisposeAsync();
         }
     }
 
