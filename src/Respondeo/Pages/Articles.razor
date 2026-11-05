@@ -2,8 +2,7 @@
 @inject IArticleService ArticleService
 @inject ArticleBrowse Browser
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 
 <PageShell TabTitle="Articles" Title='@SiteMeta.JoinTitle("Living the Faith", "Articles")' Description="Deeper dives into the Catholic life — Confession, the Eucharist, and the Church's teaching — the why beneath the practice." />
 
@@ -81,7 +80,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Trail.ClearAsync();
-		_browse = Browse.Section("discover/articles", () => BrowseJs.ClearAsync("articles"));
+		_browse = Browse.Section("discover/articles", "articles");
 		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { [ArticleBrowse.TagFacet.Key] = LinkTags });
 		foreach (var facet in ArticleBrowse.AllFacets)
 		{
@@ -98,7 +97,7 @@
 	{
 		if (firstRender)
 		{
-			await BrowseJs.RestoreScrollAsync("articles");
+			await Browse.RestoreScrollAsync("articles");
 		}
 	}
 

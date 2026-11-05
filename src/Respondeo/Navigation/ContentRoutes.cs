@@ -13,6 +13,33 @@ namespace Respondeo.Navigation;
 /// </summary>
 public static class ContentRoutes
 {
+    /// <summary>The Discover hub.</summary>
+    public const string Discover = "discover";
+
+    /// <summary>The articles list.</summary>
+    public const string Articles = "discover/articles";
+
+    /// <summary>The miracles list.</summary>
+    public const string Miracles = "discover/miracles";
+
+    /// <summary>The saints list.</summary>
+    public const string Saints = "discover/saints";
+
+    /// <summary>The prayers list.</summary>
+    public const string Prayers = "discover/prayers";
+
+    /// <summary>The devotions list.</summary>
+    public const string Devotions = "discover/devotions";
+
+    /// <summary>The Liturgy of the Hours list.</summary>
+    public const string Hours = "discover/hours";
+
+    /// <summary>The Bible landing page.</summary>
+    public const string Bible = "bible";
+
+    /// <summary>The Summa landing page.</summary>
+    public const string Summa = "summa";
+
     /// <summary>Builds the href for a node, nesting it under its stage.</summary>
     public static string NodeHref(InquiryNode node) => NodeHref(node.Id, node.Stage);
 
@@ -31,29 +58,29 @@ public static class ContentRoutes
     }
 
     /// <summary>Builds the href for a prayer detail page.</summary>
-    public static string PrayerHref(string id) => $"discover/prayers/{id}";
+    public static string PrayerHref(string id) => $"{Prayers}/{id}";
 
     /// <summary>Builds the href for a saint detail page.</summary>
-    public static string SaintHref(string id) => $"discover/saints/{id}";
+    public static string SaintHref(string id) => $"{Saints}/{id}";
 
     /// <summary>Builds the href for a miracle detail page.</summary>
-    public static string MiracleHref(string id) => $"discover/miracles/{id}";
+    public static string MiracleHref(string id) => $"{Miracles}/{id}";
 
     /// <summary>Builds the href for a devotion detail page.</summary>
-    public static string DevotionHref(string id) => $"discover/devotions/{id}";
+    public static string DevotionHref(string id) => $"{Devotions}/{id}";
 
     /// <summary>Builds the href for an article detail page.</summary>
-    public static string ArticleHref(string id) => $"discover/articles/{id}";
+    public static string ArticleHref(string id) => $"{Articles}/{id}";
 
     /// <summary>Builds the href for a Summa question page from its URL id.</summary>
-    public static string SummaHref(string urlId) => $"summa/{urlId}";
+    public static string SummaHref(string urlId) => $"{Summa}/{urlId}";
 
     /// <summary>Builds the href for a specific article within a Summa question page.</summary>
-    public static string SummaHref(string urlId, int articleNumber) => $"summa/{urlId}#{SummaFragment.ArticleAnchor(articleNumber)}";
+    public static string SummaHref(string urlId, int articleNumber) => $"{Summa}/{urlId}#{SummaFragment.ArticleAnchor(articleNumber)}";
 
     /// <summary>Builds the href for a Summa question page with an explicit fragment (without the leading '#').</summary>
-    public static string SummaHref(string urlId, string fragment) => $"summa/{urlId}#{fragment}";
+    public static string SummaHref(string urlId, string fragment) => $"{Summa}/{urlId}#{fragment}";
 
     /// <summary>Builds the href for a Liturgy of the Hours page.</summary>
-    public static string HourHref(string slug) => $"discover/hours/{slug}";
+    public static string HourHref(string slug) => $"{Hours}/{slug}";
 }

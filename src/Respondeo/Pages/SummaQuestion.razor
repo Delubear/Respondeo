@@ -6,13 +6,13 @@
 @inject SummaQuestionPresenter Presenter
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
-@inject NavigationInterop Navigation
+@inject NavigationInterop NavInterop
 @inject SummaRefInterop SummaRef
 @inject ScrollCoordinator Scroll
 
 <PageShell Title="@_question?.Title" FallbackTitle="Question" Description="@_seoDescription" Article="true" SeoReady="@(_question is not null)"
            TabTitle="@SiteMeta.JoinTitle(_question?.Title, "Summa Theologiae")"
-           StageHref="summa" StageLabel="Summa Theologiae" Crumbs="_crumbs" BackHref="@_backHref" BackLabel="@_backLabel" />
+           StageHref="@ContentRoutes.Summa" StageLabel="Summa Theologiae" Crumbs="_crumbs" BackHref="@_backHref" BackLabel="@_backLabel" />
 
 @if (_loading)
 {
@@ -20,7 +20,7 @@
 }
 else if (_question is null)
 {
-    <ItemNotFound Title="Question not found" BackHref="summa" BackLabel="Return to the Summa" Class="content-article--empty">
+    <ItemNotFound Title="Question not found" BackHref="@ContentRoutes.Summa" BackLabel="Return to the Summa" Class="content-article--empty">
         That question is not part of the Summa.
     </ItemNotFound>
 }
@@ -43,7 +43,7 @@ else
                     @foreach (var article in _question.Articles)
                     {
                         <li class="summa-question__toc-item">
-                            <a href="@(Respondeo.Navigation.ContentRoutes.SummaHref(Id, article.Number))" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
+                            <a href="@(ContentRoutes.SummaHref(Id, article.Number))" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
                                 Article @article.Number. @article.Title
                             </a>
                         </li>
@@ -69,12 +69,12 @@ else
             </div>
         }
 
-        <BackLink Href="summa" Label="All questions" />
+        <BackLink Href="@ContentRoutes.Summa" Label="All questions" />
         <SummaAttribution />
     </article>
 
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="summa" LeaveLabel="Summa" AriaLabel="Summa tools"
+    <ReaderBar LeaveHref="@ContentRoutes.Summa" LeaveLabel="Summa" AriaLabel="Summa tools"
                GuideOrb="@OrbLauncher.Summa" GuideLabel="Guide to the Summa" />
 }
 
@@ -119,14 +119,14 @@ else
     [JSInvokable]
     public async Task OpenArticleFromReference(string fragment)
     {
-        await Navigation.ReplaceUrlAsync(Respondeo.Navigation.ContentRoutes.SummaHref(Id, fragment));
+        await NavInterop.ReplaceUrlAsync(ContentRoutes.SummaHref(Id, fragment));
 
         if (SummaFragment.TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
         {
             StateHasChanged();
         }
 
-        await Navigation.RevealAsync(fragment);
+        await NavInterop.RevealAsync(fragment);
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -138,7 +138,7 @@ else
 
         // A link to a different question fires this before the new question loads; let the normal load path handle it.
         var path = Nav.ToBaseRelativePath(e.Location).Split('#', '?')[0];
-        if (!string.Equals(path, Respondeo.Navigation.ContentRoutes.SummaHref(Id), StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(path, ContentRoutes.SummaHref(Id), StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -161,7 +161,7 @@ else
             StateHasChanged();
         }
 
-        await Navigation.RevealAsync(fragment);
+        await NavInterop.RevealAsync(fragment);
     }
 
     public void Dispose()
@@ -178,7 +178,7 @@ else
         if (canonical is not null)
         {
             var fragment = new Uri(Nav.Uri).Fragment;
-            Nav.NavigateTo(Respondeo.Navigation.ContentRoutes.SummaHref(canonical) + fragment, replace: true);
+            Nav.NavigateTo(ContentRoutes.SummaHref(canonical) + fragment, replace: true);
             return;
         }
 
@@ -252,9 +252,9 @@ else
     {
         _openArticles.Add(articleNumber);
         var fragment = SummaFragment.ArticleAnchor(articleNumber);
-        await Navigation.ReplaceUrlAsync(Respondeo.Navigation.ContentRoutes.SummaHref(Id, fragment));
+        await NavInterop.ReplaceUrlAsync(ContentRoutes.SummaHref(Id, fragment));
         StateHasChanged();
-        await Navigation.RevealAsync(fragment);
+        await NavInterop.RevealAsync(fragment);
     }
 
     // The articles render only after the question content loads, so a "#article-N" fragment in the URL has nothing to open/scroll to at initial navigation.

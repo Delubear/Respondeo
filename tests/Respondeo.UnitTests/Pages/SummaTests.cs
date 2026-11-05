@@ -58,6 +58,7 @@ public class SummaTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddScoped<BrowseState>();
         Services.AddScoped<BrowseStateInterop>();
+        Services.AddScoped<Respondeo.Services.Browse.BrowsePage>();
         Services.AddScoped<SummaSearch>();
         Services.AddScoped<RandomSummaArticle>();
         Services.AddScoped<DialogInterop>();

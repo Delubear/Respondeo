@@ -129,7 +129,7 @@
         // No StateHasChanged here: the router re-renders the layout once the destination is ready. Rendering now would
         // run OnAfterRenderAsync while the old page is still in @Body, applying the scroll landing to it (a visible flash).
         _forcedOrb = null;
-        await AnnounceAsync();
+        await Accessibility.AnnounceAsync();
     }
 
     // Resolve which floating orbs the current route shows from the single source of truth.
@@ -137,20 +137,6 @@
     {
         var path = Nav.ToBaseRelativePath(Nav.Uri);
         _guides = FloatingGuideRoutes.Resolve(path);
-    }
-
-    // FocusOnNavigate moves focus to the main content on navigation, but a SPA route change is otherwise silent to screen readers.
-    // Post the new page title to a polite live region so assistive technology announces the destination page.
-    private async Task AnnounceAsync()
-    {
-        try
-        {
-            await Accessibility.AnnounceAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-            // The circuit/runtime is going away (e.g. during teardown); nothing to announce.
-        }
     }
 
     public void Dispose()

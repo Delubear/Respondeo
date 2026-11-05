@@ -18,7 +18,7 @@ public static class SiteMap
     public sealed record Entry(string Href, string Label, IReadOnlyList<Entry>? Children = null, Func<IServiceProvider, Task>? Action = null);
 
     /// <summary>The href of the Devotions entry, whose children are loaded at runtime.</summary>
-    public const string DevotionsHref = "discover/devotions";
+    public const string DevotionsHref = ContentRoutes.Devotions;
 
     /// <summary>
     /// Builds the pinnable destinations, honoring the feature flags. Devotion children are supplied by the caller
@@ -48,13 +48,13 @@ public static class SiteMap
             return entries;
         }
 
-        Add("discover/miracles", "Miracles", features.MiraclesFeature);
-        Add("discover/saints", "Saints", features.SaintsFeature);
-        Add("discover/prayers", "Prayers", features.PrayerFeature);
+        Add(ContentRoutes.Miracles, "Miracles", features.MiraclesFeature);
+        Add(ContentRoutes.Saints, "Saints", features.SaintsFeature);
+        Add(ContentRoutes.Prayers, "Prayers", features.PrayerFeature);
         Add(DevotionsHref, "Devotions", features.DevotionsFeature, devotions);
-        Add("discover/hours", "Hours", features.LiturgyOfTheHoursFeature,
+        Add(ContentRoutes.Hours, "Hours", features.LiturgyOfTheHoursFeature,
             [.. Enum.GetValues<Hour>().Select(h => new Entry(ContentRoutes.HourHref(Pages.Hours.Slug(h)), Pages.Hours.Label(h)))]);
-        Add("discover/articles", "Articles", features.ArticlesFeature);
+        Add(ContentRoutes.Articles, "Articles", features.ArticlesFeature);
 
         return entries;
 
@@ -107,7 +107,7 @@ public static class SiteMap
         });
 
     private static async Task OpenRandomSummaAsync(IServiceProvider sp) =>
-        sp.GetRequiredService<NavigationManager>().NavigateTo(await sp.GetRequiredService<RandomSummaArticle>().PickUrlAsync() ?? "summa");
+        sp.GetRequiredService<NavigationManager>().NavigateTo(await sp.GetRequiredService<RandomSummaArticle>().PickUrlAsync() ?? ContentRoutes.Summa);
 
     private static string Href(string pillarId) => SitePillars.Items.First(p => p.Id == pillarId).Href;
 }

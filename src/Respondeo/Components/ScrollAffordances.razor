@@ -1,5 +1,5 @@
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject ScrollSubscription ScrollSubscription
 @inject NavigationInterop Navigation
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
@@ -19,7 +19,7 @@
     {
         if (firstRender)
         {
-            _scroll = new ScrollSubscription(JS);
+            _scroll = ScrollSubscription;
             await _scroll.StartAsync(OnScroll);
         }
     }

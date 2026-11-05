@@ -1,4 +1,4 @@
-﻿using Bunit;
+using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -24,6 +24,7 @@ public class PrayersTests : TestContext
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddSingleton(sp => new BrowseState(sp.GetRequiredService<NavigationManager>()));
         Services.AddScoped<BrowseStateInterop>();
+        Services.AddScoped<Respondeo.Services.Browse.BrowsePage>();
         Services.AddScoped<PrayerBrowse>();
         Services.AddScoped<DialogInterop>();
 

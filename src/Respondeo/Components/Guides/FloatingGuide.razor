@@ -1,4 +1,4 @@
-@inject IJSRuntime JS
+@inject ScrollSubscription ScrollSubscription
 @inject Respondeo.Services.OrbLauncher Launcher
 @implements IAsyncDisposable
 @using Respondeo.Services
@@ -86,7 +86,7 @@
                 await OpenAsync();
             }
 
-            _scroll = new ScrollSubscription(JS);
+            _scroll = ScrollSubscription;
             await _scroll.StartAsync(OnScroll);
         }
     }

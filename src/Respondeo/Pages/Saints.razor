@@ -2,8 +2,7 @@
 @inject ISaintService SaintService
 @inject SaintBrowse Browser
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 @inject IFeastOfTheDay FeastOfTheDay
 @inject IDayWatcher DayWatcher
 @implements IDisposable
@@ -106,7 +105,7 @@
     {
         await Trail.ClearAsync();
         DayWatcher.DayChanged += OnDayChanged;
-        _browse = Browse.Section("discover/saints", () => BrowseJs.ClearAsync("saints"));
+        _browse = Browse.Section("discover/saints", "saints");
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
         {
             [SaintBrowse.EraFacet.Key] = LinkEras,
@@ -141,7 +140,7 @@
     {
         if (firstRender)
         {
-            await BrowseJs.RestoreScrollAsync("saints");
+            await Browse.RestoreScrollAsync("saints");
         }
     }
 

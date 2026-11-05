@@ -4,8 +4,8 @@
 @inherits LoadableComponentBase<Prayer>
 
 <DetailPage Loading="IsLoading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
-            LoadingText="Opening the prayer…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
-            ListHref="discover/prayers" BackLabel="Back to all prayers" NotFoundBackLabel="Return to all prayers"
+            LoadingText="Opening the prayer…" StageHref="@ContentRoutes.Discover" StageLabel="Discover" Crumbs="_crumbs"
+            ListHref="@ContentRoutes.Prayers" BackLabel="Back to all prayers" NotFoundBackLabel="Return to all prayers"
             Tags="@(_prayer?.Tags ?? [])">
     <Body>
         <div class="prayer__text" lang="@(ShowingLatin ? "la" : null)">
@@ -22,7 +22,7 @@
 @if (!IsLoading && _prayer is not null)
 {
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="discover/prayers"
+    <ReaderBar LeaveHref="@ContentRoutes.Prayers"
                GuideOrb="@OrbLauncher.Prayers" GuideLabel="Guide to prayers"
                LatinAvailable="HasLatin" ShowLatin="_showLatin" OnLanguageChange="SetLatin" />
 }
@@ -30,7 +30,7 @@
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private static readonly Breadcrumb.Crumb[] _crumbs = [new("prayers", "Prayers", Href: "discover/prayers")];
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("prayers", "Prayers", Href: ContentRoutes.Prayers)];
 
     private Prayer? _prayer => Value;
     private bool _showLatin;

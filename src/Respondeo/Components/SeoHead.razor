@@ -36,11 +36,11 @@
 
     @if (!string.IsNullOrWhiteSpace(JsonLd))
     {
-        <script type="application/ld+json">@((MarkupString)JsonLd!)</script>
+        <JsonLdScript Json="@JsonLd" />
     }
     else if (Article)
     {
-        <script type="application/ld+json">@((MarkupString)SiteMeta.ArticleJsonLd(FullTitle, Meta, CanonicalUrl))</script>
+        <JsonLdScript Json="@SiteMeta.ArticleJsonLd(FullTitle, Meta, CanonicalUrl)" />
     }
 </HeadContent>
 

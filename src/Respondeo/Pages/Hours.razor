@@ -1,9 +1,8 @@
 @page "/discover/hours"
 @using Respondeo.LiturgyOfTheHours
-@inject Func<DateOnly> Today
 
 <PageShell Title="Liturgy of the Hours" Description="Pray Morning, Evening, and Night Prayer of the Liturgy of the Hours, step by step." Article="true" SeoReady="true"
-           StageHref="discover" StageLabel="Discover" />
+           StageHref="@ContentRoutes.Discover" StageLabel="Discover" />
 
 <section class="pillar browse hours fade-enter">
     <PillarHeader Eyebrow="Divine Office" Title="Liturgy of the Hours">
@@ -25,7 +24,6 @@
 </section>
 
 @code {
-    private DateOnly _date => Today();
     private readonly Hour _suggested = DateTime.Now.Hour switch
     {
         < 12 => Hour.MorningPrayer,

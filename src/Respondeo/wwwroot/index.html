@@ -71,6 +71,7 @@
                 document.documentElement.setAttribute('data-theme', theme);
             }
         };
+        // Storage keys mirror StorageKeys.Theme and StorageKeys.TextSize in Services/StorageKeys.cs; keep in sync.
         (function () {
             var stored = null;
             try { stored = localStorage.getItem('respondeo.theme'); } catch (e) { }

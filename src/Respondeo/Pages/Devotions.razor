@@ -2,8 +2,7 @@
 @inject IDevotionService DevotionService
 @inject DevotionBrowse Browser
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 
 <PageShell Title="Catholic Devotions and Sacraments" TabTitle="Devotions and Sacraments"
          Description="Pray the Rosary and the chaplets, and walk through the Mass and Confession, step by step with an interactive guide that explains each moment." />
@@ -83,7 +82,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Trail.ClearAsync();
-		_browse = Browse.Section("discover/devotions", () => BrowseJs.ClearAsync("devotions"));
+		_browse = Browse.Section("discover/devotions", "devotions");
 		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?> { [DevotionBrowse.KindFacet.Key] = LinkKinds });
 		foreach (var facet in DevotionBrowse.AllFacets)
 		{
@@ -99,7 +98,7 @@
 	{
 		if (firstRender)
 		{
-			await BrowseJs.RestoreScrollAsync("devotions");
+			await Browse.RestoreScrollAsync("devotions");
 		}
 	}
 

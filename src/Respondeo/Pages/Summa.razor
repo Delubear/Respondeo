@@ -1,8 +1,7 @@
 @page "/summa"
 @inject ISummaService SummaService
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 @inject SummaSearch Search
 @inject NavigationManager Nav
 @inject RandomSummaArticle RandomArticle
@@ -92,7 +91,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("summa", () => BrowseJs.ClearAsync("summa"));
+        _browse = Browse.Section("summa", "summa");
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>());
         _index = await SummaService.GetIndexAsync();
         _entries = Search.BuildEntries(_index);
@@ -100,7 +99,7 @@
         // Read the JS-owned accordion snapshot (sessionStorage) once, to drive the initial `open` attributes.
         // Blazor never writes `open` again after this render and never handles `toggle` (the browser and browse-state.js own that entirely),
         // so there is no re-render/re-apply feedback loop - the cause of the earlier "endless jump" on Back.
-        var open = await BrowseJs.GetOpenAsync("summa");
+        var open = await Browse.GetOpenAsync("summa");
         foreach (var id in open ?? Array.Empty<string>())
         {
             _openOnMount.Add(id);
@@ -119,7 +118,7 @@
     {
         if (firstRender)
         {
-            await BrowseJs.RestoreScrollAsync("summa");
+            await Browse.RestoreScrollAsync("summa");
         }
     }
 

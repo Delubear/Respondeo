@@ -7,8 +7,8 @@
 
 <DetailPage Loading="IsLoading" Id="@Id" Noun="Saint" Title="@_saint?.Title" Summary="@_saint?.Summary"
             Eyebrow="@(_saint is null ? null : string.Join(" \u00B7 ", _saint.Patronages))" JsonLd="@PersonJsonLd"
-            LoadingText="Opening the life…" StageHref="discover/saints" StageLabel="Saints"
-            ListHref="discover/saints" BackLabel="Back to all saints" NotFoundBackLabel="Return to the gallery"
+            LoadingText="Opening the life…" StageHref="@ContentRoutes.Saints" StageLabel="Saints"
+            ListHref="@ContentRoutes.Saints" BackLabel="Back to all saints" NotFoundBackLabel="Return to the gallery"
             IsUnvetted="@(_saint?.IsUnvetted ?? false)" UnvettedNoun="profile" BodyHtml="@_saint?.BodyHtml"
             Tags="@(_saint?.Tags ?? [])" Sources="@(_saint?.Sources ?? [])" TagsBeforeSources="true">
     <Facts>
@@ -65,7 +65,7 @@
 @if (!IsLoading && _saint is not null)
 {
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="discover/saints" LeaveLabel="Saints" AriaLabel="Saint tools"
+    <ReaderBar LeaveHref="@ContentRoutes.Saints" LeaveLabel="Saints" AriaLabel="Saint tools"
                GuideOrb="@OrbLauncher.Saints" GuideLabel="Glossary: what the saint labels mean" />
 }
 

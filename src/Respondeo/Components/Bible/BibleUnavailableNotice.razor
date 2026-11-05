@@ -12,7 +12,7 @@
             var target = other;
             <button type="button" class="bible-unavailable__switch" @onclick="() => OnSwitch.InvokeAsync(target)">Read in the @target.Name</button>
         }
-        <a href="bible" class="bible-unavailable__back">All books</a>
+        <a href="@ContentRoutes.Bible" class="bible-unavailable__back">All books</a>
     </div>
 </section>
 

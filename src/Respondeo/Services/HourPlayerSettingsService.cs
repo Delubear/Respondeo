@@ -61,7 +61,7 @@ public interface IHourPlayerSettingsService
 /// </summary>
 public sealed class HourPlayerSettingsService(IJSRuntime js) : IHourPlayerSettingsService
 {
-    internal const string StorageKey = "respondeo.hours.settings";
+    internal const string StorageKey = StorageKeys.HourSettings;
     private readonly LocalStorage _storage = new(js);
     private bool _loaded;
 

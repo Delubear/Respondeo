@@ -9,11 +9,11 @@
 @implements IAsyncDisposable
 
 <PageShell Title="@_office?.Title" FallbackTitle="Liturgy of the Hours" Description="Pray the Liturgy of the Hours step by step." Article="true" SeoReady="@(_office is not null)"
-           StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
+           StageHref="@ContentRoutes.Discover" StageLabel="Discover" Crumbs="_crumbs" />
 
 @if (_office is null)
 {
-    <ItemNotFound Title="Hour not found" BackHref="discover/hours" BackLabel="Return to the Liturgy of the Hours">
+    <ItemNotFound Title="Hour not found" BackHref="@ContentRoutes.Hours" BackLabel="Return to the Liturgy of the Hours">
         There is no hour named &ldquo;<code>@Slug</code>&rdquo;.
     </ItemNotFound>
 }
@@ -179,7 +179,7 @@ else
 
     @* Kept outside the fade-enter section: its entry transform would otherwise anchor the fixed bar to the section until the animation ends.  *@
     <PlayerProgressBar Label="@CurrentPart()" Completed="_completed" Total="_office.Steps.Count"
-                       LeaveHref="discover/hours" OnBack="Back" OnNext="Next">
+                       LeaveHref="@ContentRoutes.Hours" OnBack="Back" OnNext="Next">
         <Tools>
             <button type="button" class="hourplayer__settings" aria-label="Hour settings" title="Hour settings"
                     @onclick="() => Launcher.Request(OrbLauncher.HourSettings)">
@@ -194,7 +194,7 @@ else
 @code {
     [Parameter] public string Slug { get; set; } = string.Empty;
 
-    private static readonly Breadcrumb.Crumb[] _crumbs = [new("hours", "Liturgy of the Hours", Href: "discover/hours")];
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("hours", "Liturgy of the Hours", Href: ContentRoutes.Hours)];
 
     private Office? _office;
     private DateOnly _date;

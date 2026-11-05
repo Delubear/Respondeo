@@ -9,7 +9,7 @@
 
 <PageShell Description="@($"{Heading} in the {_translation?.Name}.")" 
            SeoReady="@(!_loading)" TabTitle="@SiteMeta.JoinTitle(Heading, "Holy Bible")"
-           StageHref="bible" StageLabel="Holy Bible" />
+           StageHref="@ContentRoutes.Bible" StageLabel="Holy Bible" />
 
 @if (_loading)
 {
@@ -17,7 +17,7 @@
 }
 else if (_translation is null || _book is null || (_verses is null && !_unavailable))
 {
-    <ItemNotFound Title="Chapter not found" BackHref="bible" BackLabel="Return to the Bible" Class="content-article--empty">
+    <ItemNotFound Title="Chapter not found" BackHref="@ContentRoutes.Bible" BackLabel="Return to the Bible" Class="content-article--empty">
         That chapter is not part of the @(_translation?.Name ?? "Bible").
     </ItemNotFound>
 }
@@ -39,7 +39,7 @@ else
     </article>
 
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="bible" LeaveLabel="Bible" AriaLabel="Bible tools">
+    <ReaderBar LeaveHref="@ContentRoutes.Bible" LeaveLabel="Bible" AriaLabel="Bible tools">
         <ExtraActions>
             <BiblePager Previous="Previous" Next="Next" OnNavigate="_fade.RequestReplay" Compact="true" />
         </ExtraActions>

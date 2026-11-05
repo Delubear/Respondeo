@@ -2,9 +2,8 @@
 @inject IBreadcrumbTrail Trail
 @inject NavigationManager Nav
 @inject IBibleTranslationService Translations
-@inject BrowseState Browse
+@inject BrowsePage Browse
 @inject IBibleTranslations AllTranslations
-@inject BrowseStateInterop BrowseJs
 
 <PageShell Title="Holy Bible" Description="Read the Douay-Rheims Bible online &#x2014; all 73 books of the Catholic canon, Old and New Testament." />
 
@@ -93,9 +92,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _browse = Browse.Section("bible", () => BrowseJs.ClearAsync("bible"));
+        _browse = Browse.Section("bible", "bible");
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>());
-        if (await BrowseJs.GetOpenAsync("bible") is { Length: > 0 } open)
+        if (await Browse.GetOpenAsync("bible") is { Length: > 0 } open)
         {
             _openOnMount = new HashSet<string>(open, StringComparer.Ordinal);
         }
@@ -114,7 +113,7 @@
     {
         if (firstRender)
         {
-            await BrowseJs.RestoreScrollAsync("bible");
+            await Browse.RestoreScrollAsync("bible");
         }
     }
 

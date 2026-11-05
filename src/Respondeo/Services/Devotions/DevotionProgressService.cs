@@ -40,7 +40,7 @@ public interface IDevotionProgressService
 /// </summary>
 public sealed class DevotionProgressService(IJSRuntime js) : IDevotionProgressService
 {
-    private const string StorageKey = "respondeo.devotion.progress";
+    private const string StorageKey = StorageKeys.DevotionProgress;
     private readonly LocalStorage _storage = new(js);
 
     public async Task<DevotionProgress?> LoadAsync(string devotionId)

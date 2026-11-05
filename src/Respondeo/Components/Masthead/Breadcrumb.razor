@@ -8,7 +8,7 @@
 @if (!string.IsNullOrWhiteSpace(CurrentTitle))
 {
     <HeadContent>
-        <script type="application/ld+json">@((MarkupString)BreadcrumbJsonLd)</script>
+        <Respondeo.Components.JsonLdScript Json="@BreadcrumbJsonLd" />
     </HeadContent>
 }
 

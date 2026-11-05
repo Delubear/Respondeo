@@ -4,8 +4,8 @@
 
 <DetailPage Loading="IsLoading" Id="@Id" Noun="Miracle" Title="@_miracle?.Title" Summary="@_miracle?.Summary"
             Eyebrow="@(_miracle is null ? null : string.Join(" \u00B7 ", _miracle.Types.Select(_facets.Category)))"
-            LoadingText="Opening the account…" StageHref="discover/miracles" StageLabel="Miracles"
-            ListHref="discover/miracles" BackLabel="Back to all miracles" NotFoundBackLabel="Return to the catalog"
+            LoadingText="Opening the account…" StageHref="@ContentRoutes.Miracles" StageLabel="Miracles"
+            ListHref="@ContentRoutes.Miracles" BackLabel="Back to all miracles" NotFoundBackLabel="Return to the catalog"
             IsUnvetted="@(_miracle?.IsUnvetted ?? false)" UnvettedNoun="account" BodyHtml="@_miracle?.BodyHtml"
             Tags="@(_miracle?.Tags ?? [])" Sources="@(_miracle?.Sources ?? [])" TagsBeforeSources="true">
     <Facts>
@@ -33,7 +33,7 @@
 @if (!IsLoading && _miracle is not null)
 {
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="discover/miracles" LeaveLabel="Miracles" AriaLabel="Miracle tools" />
+    <ReaderBar LeaveHref="@ContentRoutes.Miracles" LeaveLabel="Miracles" AriaLabel="Miracle tools" />
 }
 
 @code {

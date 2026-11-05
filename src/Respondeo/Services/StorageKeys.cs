@@ -15,7 +15,14 @@ public static class StorageKeys
     public const string PrayerLanguage = "respondeo.prayerLanguage";
     public const string Pins = "respondeo.pins";
     public const string Visited = "respondeo.visited";
+    /// <summary>Breadcrumb trail. Stored in <c>sessionStorage</c>.</summary>
     public const string Breadcrumb = "respondeo.breadcrumb";
+
+    /// <summary>Stage of the current breadcrumb trail. Stored in <c>sessionStorage</c>.</summary>
+    public const string BreadcrumbStage = "respondeo.breadcrumb.stage";
+
     public const string Calendar = "respondeo.calendar";
     public const string BibleTranslation = "respondeo.bibleTranslation";
+    public const string DevotionProgress = "respondeo.devotion.progress";
+    public const string HourSettings = "respondeo.hours.settings";
 }

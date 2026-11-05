@@ -1,4 +1,4 @@
-using Respondeo.Bible.Contracts;
+﻿using Respondeo.Bible.Contracts;
 using Respondeo.Content.Contracts;
 using Respondeo.Content.Summa.Contracts;
 using Respondeo.LiturgyOfTheHours;
@@ -23,7 +23,8 @@ public sealed class RoutePrefetcher(
     IBibleChapterReader bibleReader,
     ILiturgyOfTheHours office,
     IBibleText bibleText,
-    IHourPlayerSettingsService hourSettings)
+    IHourPlayerSettingsService hourSettings,
+    Func<DateOnly> today)
 {
     public async Task PrefetchAsync(string path)
     {
@@ -97,7 +98,7 @@ public sealed class RoutePrefetcher(
         };
         if (hour is not { } h) return;
 
-        var composed = office.Compose(DateOnly.FromDateTime(DateTime.Now), h);
+        var composed = office.Compose(today(), h);
         var citations = new List<string>();
         foreach (var step in composed.Steps)
         {

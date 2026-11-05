@@ -1,30 +1,25 @@
 @page "/discover/articles/{Id}"
+@inherits LoadableComponentBase<Article>
 @inject IArticleService Articles
 
-<DetailPage Loading="_loading" Id="@Id" Noun="Article" Title="@_article?.Title" Summary="@_article?.Summary"
-            LoadingText="Opening the article…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
-            ListHref="discover/articles" BackLabel="Back to all articles" NotFoundBackLabel="Return to all articles"
+<DetailPage Loading="IsLoading" Id="@Id" Noun="Article" Title="@_article?.Title" Summary="@_article?.Summary"
+            LoadingText="Opening the article…" StageHref="@ContentRoutes.Discover" StageLabel="Discover" Crumbs="_crumbs"
+            ListHref="@ContentRoutes.Articles" BackLabel="Back to all articles" NotFoundBackLabel="Return to all articles"
             IsUnvetted="@(_article?.IsUnvetted ?? false)" BodyHtml="@_article?.BodyHtml"
             Tags="@(_article?.Tags ?? [])" Sources="@(_article?.Sources ?? [])" />
 
-@if (!_loading && _article is not null)
+@if (!IsLoading && _article is not null)
 {
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="discover/articles" LeaveLabel="Articles" AriaLabel="Article tools" />
+    <ReaderBar LeaveHref="@ContentRoutes.Articles" LeaveLabel="Articles" AriaLabel="Article tools" />
 }
 
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private static readonly Breadcrumb.Crumb[] _crumbs = [new("articles", "Articles", Href: "discover/articles")];
+    private static readonly Breadcrumb.Crumb[] _crumbs = [new("articles", "Articles", Href: ContentRoutes.Articles)];
 
-    private Article? _article;
-    private bool _loading = true;
+    private Article? _article => Value;
 
-    protected override async Task OnParametersSetAsync()
-    {
-        _loading = true;
-        _article = await Articles.GetArticleAsync(Id);
-        _loading = false;
-    }
+    protected override Task<Article?> LoadAsync(CancellationToken cancellationToken) => Articles.GetArticleAsync(Id);
 }

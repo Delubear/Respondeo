@@ -1,0 +1,10 @@
+@* Emits a JSON-LD structured-data script. Json must be pre-serialized with System.Text.Json (its default encoder escapes '<'). *@
+@if (!string.IsNullOrWhiteSpace(Json))
+{
+    <script type="application/ld+json">@((MarkupString)Json)</script>
+}
+
+@code {
+    /// <summary>Pre-serialized JSON-LD payload. Nothing is rendered when null or blank.</summary>
+    [Parameter, EditorRequired] public string? Json { get; set; }
+}

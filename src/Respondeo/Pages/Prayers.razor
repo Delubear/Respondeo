@@ -2,8 +2,7 @@
 @inject IPrayerService PrayerService
 @inject PrayerBrowse Browser
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 
 <PageShell Title="Catholic Prayers" TabTitle="Prayers"
          Description="A treasury of the Church's traditional prayers — the Our Father, Hail Mary, Glory Be, Apostles' Creed, and more, with the Latin alongside." />
@@ -83,7 +82,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Trail.ClearAsync();
-		_browse = Browse.Section("discover/prayers", () => BrowseJs.ClearAsync("prayers"));
+		_browse = Browse.Section("discover/prayers", "prayers");
 		_browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
 		{
 			[PrayerBrowse.PrayedAtFacet.Key] = LinkPrayedAt,
@@ -104,7 +103,7 @@
 	{
 		if (firstRender)
 		{
-			await BrowseJs.RestoreScrollAsync("prayers");
+			await Browse.RestoreScrollAsync("prayers");
 		}
 	}
 

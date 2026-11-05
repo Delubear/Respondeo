@@ -2,8 +2,7 @@
 @inject IMiracleService MiracleService
 @inject MiracleBrowse Browser
 @inject IBreadcrumbTrail Trail
-@inject BrowseState Browse
-@inject BrowseStateInterop BrowseJs
+@inject BrowsePage Browse
 
 <PageShell Title="Catholic Miracles"
          Description="A growing catalog of reported and recognized Catholic miracles — Eucharistic miracles, Marian apparitions, and healings — with the Church's judgment on each." />
@@ -86,7 +85,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
-        _browse = Browse.Section("discover/miracles", () => BrowseJs.ClearAsync("miracles"));
+        _browse = Browse.Section("discover/miracles", "miracles");
         _browse.ApplyLink(LinkQuery, new Dictionary<string, string[]?>
         {
             [MiracleBrowse.TypeFacet.Key] = LinkTypes,
@@ -114,7 +113,7 @@
     {
         if (firstRender)
         {
-            await BrowseJs.RestoreScrollAsync("miracles");
+            await Browse.RestoreScrollAsync("miracles");
         }
     }
 

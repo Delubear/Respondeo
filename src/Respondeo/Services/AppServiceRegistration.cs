@@ -108,10 +108,12 @@ public static class AppServiceRegistration
     public static IServiceCollection AddRespondeoInterop(this IServiceCollection services)
     {
         services.AddScoped<BrowseStateInterop>();
+        services.AddScoped<BrowsePage>();
         services.AddScoped<NavigationInterop>();
         services.AddScoped<SummaRefInterop>();
         services.AddScoped<DialogInterop>();
         services.AddScoped<AccessibilityInterop>();
+        services.AddTransient<ScrollSubscription>();
         services.AddScoped<InstallInterop>();
         services.AddScoped<TallyInterop>();
         services.AddScoped<OfflinePacksInterop>();
