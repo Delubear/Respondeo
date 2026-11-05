@@ -83,10 +83,13 @@
     // We still hook LocationChanged to announce the new page to assistive technology on every in-app navigation.
     protected override void OnInitialized()
     {
-        Nav.LocationChanged += OnLocationChanged;
-        OrbLauncher.Requested += OnOrbRequested;
-        DayWatcher.DayChanged += OnDayChanged;
+        _subs
+            .Add(() => Nav.LocationChanged += OnLocationChanged, () => Nav.LocationChanged -= OnLocationChanged)
+            .Add(() => OrbLauncher.Requested += OnOrbRequested, () => OrbLauncher.Requested -= OnOrbRequested)
+            .Add(() => DayWatcher.DayChanged += OnDayChanged, () => DayWatcher.DayChanged -= OnDayChanged);
     }
+
+    private readonly EventSubscriptions _subs = new();
 
     // The router re-renders the layout (new @Body) for every navigation, but it handles LocationChanged before this
     // layout does, so resolving orbs in OnLocationChanged left them one page behind. Resolve them on each render instead.
@@ -152,9 +155,7 @@
 
     public void Dispose()
     {
-        Nav.LocationChanged -= OnLocationChanged;
-        OrbLauncher.Requested -= OnOrbRequested;
-        DayWatcher.DayChanged -= OnDayChanged;
+        _subs.Dispose();
         _selfRef?.Dispose();
     }
 }

@@ -196,8 +196,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        DayWatcher.DayChanged += OnDayChanged;
-        Preference.Changed += OnCalendarChanged;
+        _subs
+            .Add(() => DayWatcher.DayChanged += OnDayChanged, () => DayWatcher.DayChanged -= OnDayChanged)
+            .Add(() => Preference.Changed += OnCalendarChanged, () => Preference.Changed -= OnCalendarChanged);
         // Build the view before awaiting the stored preference: that await yields to a first render that reads _view.
         // If the stored calendar differs from the default, Changed reloads the day.
         var load = LoadDayAsync();
@@ -246,10 +247,8 @@
     // orb is tapped. Bring the day up to date before the dialog opens, and open only once its profiles have loaded.
     private Task SyncToToday() => Today() != _loadedFor ? LoadDayAsync() : _profilesLoad;
 
-    public void Dispose()
-    {
-        DayWatcher.DayChanged -= OnDayChanged;
-        Preference.Changed -= OnCalendarChanged;
-    }
+    private readonly EventSubscriptions _subs = new();
+
+    public void Dispose() => _subs.Dispose();
 }
 

@@ -216,11 +216,12 @@
 		_entries = SiteMap.Build(Features);
 		_guides = SiteMap.Guides(Features);
 		Refresh();
-		Pins.Changed += OnPinsChanged;
-		Packs.Changed += OnPacksChanged;
-		Nav.LocationChanged += OnLocationChanged;
-		Theme.Changed += OnThemeChanged;
-		Launcher.OpenRequested += OnOpenRequested;
+		_subs
+			.Add(() => Pins.Changed += OnPinsChanged, () => Pins.Changed -= OnPinsChanged)
+			.Add(() => Packs.Changed += OnPacksChanged, () => Packs.Changed -= OnPacksChanged)
+			.Add(() => Nav.LocationChanged += OnLocationChanged, () => Nav.LocationChanged -= OnLocationChanged)
+			.Add(() => Theme.Changed += OnThemeChanged, () => Theme.Changed -= OnThemeChanged)
+			.Add(() => Launcher.OpenRequested += OnOpenRequested, () => Launcher.OpenRequested -= OnOpenRequested);
 
 		if (Features.DiscoverPillar && Features.DevotionsFeature)
 		{
@@ -351,12 +352,7 @@
 		}
 	}
 
-	public void Dispose()
-	{
-		Pins.Changed -= OnPinsChanged;
-		Packs.Changed -= OnPacksChanged;
-		Nav.LocationChanged -= OnLocationChanged;
-		Theme.Changed -= OnThemeChanged;
-		Launcher.OpenRequested -= OnOpenRequested;
-	}
+	private readonly EventSubscriptions _subs = new();
+
+	public void Dispose() => _subs.Dispose();
 }
