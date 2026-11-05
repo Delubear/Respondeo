@@ -319,7 +319,7 @@
 
 	private string? PanelStyle =>
 		_closing ? $"--qm-from-x: 0px; --qm-from-y: {_dragY:0}px;"
-		: _tracking && _pulling ? "transition: none; touch-action: none;"
+		: _tracking && _pulling ? $"transform: translateY({_dragY:0}px); transition: none; touch-action: none;"
 		: null;
 
 	private async Task OnTouchStart(TouchEventArgs e)
