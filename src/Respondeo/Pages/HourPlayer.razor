@@ -137,11 +137,15 @@ else
                                                                 @onclick="() => _chosenOptions[stepIndex] = oi">@options[oi].Title</button>
                                                     }
                                                 </div>
-                                                @RenderOption(stepIndex, chosen, options[chosen])
+                                                <HourOption Option="options[chosen]" RenderText="@(t => RenderText(t))"
+                                                            Stanzas="@_optionStanzas.GetValueOrDefault((stepIndex, chosen))"
+                                                            Passage="@_optionPassages.GetValueOrDefault((stepIndex, chosen))" />
                                             }
                                             else if (visible.Count == 1)
                                             {
-                                                @RenderOption(stepIndex, visible[0], options[visible[0]])
+                                                <HourOption Option="options[visible[0]]" RenderText="@(t => RenderText(t))"
+                                                            Stanzas="@_optionStanzas.GetValueOrDefault((stepIndex, visible[0]))"
+                                                            Passage="@_optionPassages.GetValueOrDefault((stepIndex, visible[0]))" />
                                             }
                                         </div>
                                     }
@@ -202,7 +206,6 @@ else
     private readonly HashSet<int> _open = [];
     private string? _announcement;
 
-    private const string GloryBe = HourPassageLoader.GloryBe;
 
     private IReadOnlyDictionary<int, string> _passages = HourPassages.Empty.Passages;
     private IReadOnlyDictionary<(int Step, int Option), string> _optionPassages = HourPassages.Empty.OptionPassages;
@@ -259,58 +262,6 @@ else
 
     private int ChosenOption(int stepIndex, IReadOnlyList<int> visible) =>
         _chosenOptions.TryGetValue(stepIndex, out var pick) && visible.Contains(pick) ? pick : visible[0];
-
-    private RenderFragment RenderOption(int stepIndex, int optionIndex, OfficeStep option) => __builder =>
-    {
-        var optionKey = (stepIndex, optionIndex);
-        <div class="hourplayer__option">
-            <p class="hourplayer__option-title">
-                @option.Title@(" ")
-                @if (option.Reference?.DouayCitation is { } optionDouay)
-                {
-                    <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
-                }
-            </p>
-            @if (option.Explanation is not null)
-            {
-                <p class="hourplayer__explain" role="note">@option.Explanation</p>
-            }
-            @if (option.Antiphon is not null)
-            {
-                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
-            }
-            @if (option.Text is not null)
-            {
-                <p class="hourplayer__text">@RenderText(option.Text)</p>
-            }
-            else if (_optionStanzas.TryGetValue(optionKey, out var stanzas))
-            {
-                @foreach (var stanza in stanzas)
-                {
-                    <p class="hourplayer__text">@stanza</p>
-                    @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
-                    {
-                        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
-                    }
-                }
-                <p class="hourplayer__text">@RenderText(GloryBe)</p>
-                @if (option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
-                {
-                    <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(option.Antiphon)</p>
-                }
-                <p class="hourplayer__translation">Douay-Rheims translation</p>
-            }
-            else if (_optionPassages.TryGetValue(optionKey, out var optionPassage))
-            {
-                <p class="hourplayer__text">@RenderText(optionPassage)</p>
-                <p class="hourplayer__translation">Douay-Rheims translation</p>
-            }
-            else if (option.UseOfficialText)
-            {
-                <p class="hourplayer__official">Read the text from an official source below.</p>
-            }
-        </div>
-    };
 
     protected override void OnInitialized() => Settings.Changed += OnSettingsChanged;
 

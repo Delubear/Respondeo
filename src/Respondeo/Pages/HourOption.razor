@@ -1,0 +1,60 @@
+@using Respondeo.LiturgyOfTheHours
+@inject IHourPlayerSettingsService Settings
+
+<div class="hourplayer__option">
+    <p class="hourplayer__option-title">
+        @Option.Title@(" ")
+        @if (Option.Reference?.DouayCitation is { } optionDouay)
+        {
+            <span class="hourplayer__ref" title="Vulgate (Douay-Rheims) numbering">(Vulgate: @optionDouay)</span>
+        }
+    </p>
+    @if (Option.Explanation is not null)
+    {
+        <p class="hourplayer__explain" role="note">@Option.Explanation</p>
+    }
+    @if (Option.Antiphon is not null)
+    {
+        <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(Option.Antiphon)</p>
+    }
+    @if (Option.Text is not null)
+    {
+        <p class="hourplayer__text">@RenderText(Option.Text)</p>
+    }
+    else if (Stanzas is not null)
+    {
+        @foreach (var stanza in Stanzas)
+        {
+            <p class="hourplayer__text">@stanza</p>
+            @if (Option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+            {
+                <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(Option.Antiphon)</p>
+            }
+        }
+        <p class="hourplayer__text">@RenderText(HourPassageLoader.GloryBe)</p>
+        @if (Option.Antiphon is not null && !Settings.Current.AntiphonAtStartOnly)
+        {
+            <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(Option.Antiphon)</p>
+        }
+        <p class="hourplayer__translation">Douay-Rheims translation</p>
+    }
+    else if (Passage is not null)
+    {
+        <p class="hourplayer__text">@RenderText(Passage)</p>
+        <p class="hourplayer__translation">Douay-Rheims translation</p>
+    }
+    else if (Option.UseOfficialText)
+    {
+        <p class="hourplayer__official">Read the text from an official source below.</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public OfficeStep Option { get; set; } = default!;
+
+    [Parameter] public IReadOnlyList<string>? Stanzas { get; set; }
+
+    [Parameter] public string? Passage { get; set; }
+
+    [Parameter, EditorRequired] public RenderFragment<string> RenderText { get; set; } = default!;
+}

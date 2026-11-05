@@ -1,0 +1,69 @@
+/* Shared reading styles mirror HourPlayer.razor.css; scoped CSS does not cross component boundaries. */
+.hourplayer__option-title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    font-family: var(--display, inherit);
+    font-size: calc(1.05rem * var(--reader-scale, 1));
+}
+
+.hourplayer__ref {
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.hourplayer__explain {
+    margin: 0.25rem 0 0.75rem;
+    padding: 0.15rem 0 0.15rem 0.6rem;
+    border-left: 3px solid var(--rubric);
+    color: var(--rubric);
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.hourplayer__official {
+    margin: 0.25rem 0;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+.hourplayer__text,
+.hourplayer__antiphon {
+    margin: 0.5rem 0 0;
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.hourplayer__translation {
+    margin: 0.75rem 0 0;
+    padding-top: 0.35rem;
+    border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    text-align: right;
+    color: var(--ink-soft);
+}
+
+.hourplayer__rubric,
+::deep .hourplayer__rubric,
+::deep .hourplayer__sym {
+    color: var(--liturgical-red, #a4161a);
+    font-weight: 600;
+}
+
+::deep .hourplayer__sym--mediant,
+::deep .hourplayer__sym--flexa {
+    margin-inline: 0.15em;
+}
+
+[data-theme="dark"] .hourplayer__rubric,
+[data-theme="dark"] ::deep .hourplayer__rubric,
+[data-theme="dark"] ::deep .hourplayer__sym {
+    color: #ef6b6f;
+}
