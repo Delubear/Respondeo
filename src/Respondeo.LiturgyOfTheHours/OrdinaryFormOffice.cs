@@ -258,6 +258,11 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 	/// <summary>The psalter short reading, used only on Ordinary Time days that are not solemnities or feasts (First Vespers follows the coming Sunday).</summary>
 	private static string? ShortReadingCitation(HourContext context)
 	{
+		if (context.Day.Celebration is { } celebration && Sanctoral.ShortReading(context.Hour, celebration.Name) is { } sanctoral)
+		{
+			return sanctoral;
+		}
+
 		if (context.Today.Season != LiturgicalSeason.OrdinaryTime || IsFestal(context.Day))
 		{
 			return null;

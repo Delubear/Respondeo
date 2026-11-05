@@ -85,18 +85,26 @@ public class LiturgyOfTheHoursTests
         Hours().Compose(date, Hour.NightPrayer).Steps.First(s => s.Kind == kind);
 
     [Fact]
-    public void MorningPrayer_OrdinaryFeria_ShowsPsalterShortReadingInDouayRheims()
+    public void MorningPrayer_MemorialOfMartyr_ShowsCommonShortReading()
     {
         var reading = Hours().Compose(new DateOnly(2026, 1, 21), Hour.MorningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
 
         Assert.False(reading.UseOfficialText);
-        Assert.Equal("Romans 8:35, 37", reading.Reference?.Citation);
+        Assert.Equal("2 Corinthians 1:3-5", reading.Reference?.Citation);
+    }
+
+    [Fact]
+    public void EveningPrayer_MemorialOfBishop_ShowsCommonOfPastorsReading()
+    {
+        var reading = Hours().Compose(new DateOnly(2026, 11, 4), Hour.EveningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
+
+        Assert.Equal("1 Peter 5:1-4", reading.Reference?.Citation);
     }
 
     [Fact]
     public void EveningPrayer_Advent_FallsBackToProperReading()
     {
-        var reading = Hours().Compose(new DateOnly(2025, 12, 3), Hour.EveningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
+        var reading = Hours().Compose(new DateOnly(2025, 12, 2), Hour.EveningPrayer).Steps.First(s => s.Kind == OfficeStepKind.Reading);
 
         Assert.Null(reading.Reference);
     }

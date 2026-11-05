@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<AssemblyName>Respondeo.LiturgyOfTheHours</AssemblyName>
@@ -29,10 +29,12 @@
 
   <ItemGroup>
 	<None Remove="Data/**" />
+	<None Include="Data\README.md" />
 	<None Include="SampleContent\hours\hours-content.schema.json" />
 	<EmbeddedResource Include="Data/psalter.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Psalter.json" />
 	<EmbeddedResource Include="Data/ordinary-texts.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json" />
 	<EmbeddedResource Include="Data/hours.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Hours.json" />
+	<EmbeddedResource Include="Data/sanctoral.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Sanctoral.json" />
   </ItemGroup>
 
   <ItemGroup>

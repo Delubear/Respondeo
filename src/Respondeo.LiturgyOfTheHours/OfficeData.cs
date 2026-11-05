@@ -14,6 +14,7 @@ internal static partial class OfficeData
     internal const string PsalterResource = "Respondeo.LiturgyOfTheHours.Data.Psalter.json";
     internal const string TextsResource = "Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json";
     internal const string HoursResource = "Respondeo.LiturgyOfTheHours.Data.Hours.json";
+    internal const string SanctoralResource = "Respondeo.LiturgyOfTheHours.Data.Sanctoral.json";
 
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -32,6 +33,10 @@ internal static partial class OfficeData
     public static OrdinaryTextsData Texts => LazyTexts.Value;
 
     public static HoursData Hours => LazyHours.Value;
+
+    private static readonly Lazy<SanctoralData> LazySanctoral = new(() => Load<SanctoralData>(SanctoralResource));
+
+    public static SanctoralData Sanctoral => LazySanctoral.Value;
 
     /// <summary>Joins text lines with newlines, expanding each <c>{key}</c> with the named text from ordinary-texts.json.</summary>
     /// <remarks>Breviary tokens such as <c>{{cross}}</c> are expanded first so they are never mistaken for text references.</remarks>
@@ -60,6 +65,11 @@ internal sealed record PsalterData(
     IReadOnlyList<Dictionary<string, string>>? EveningReadings = null);
 
 internal sealed record NightPsalmodyData(string[] Psalms, string Reading);
+
+/// <summary>Short-reading citations of the Commons of saints and of individual celebrations.</summary>
+internal sealed record SanctoralData(Dictionary<string, SanctoralReadings> Commons, Dictionary<string, SanctoralReadings> Celebrations);
+
+internal sealed record SanctoralReadings(string? Morning = null, string? Evening = null, string? Common = null);
 
 internal sealed record OrdinaryTextsData(Dictionary<string, string[]> Texts, Dictionary<string, string[]> NightConcludingPrayers, IReadOnlyList<MarianAntiphonRule> MarianAntiphons);
 
