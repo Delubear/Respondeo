@@ -63,8 +63,8 @@ public sealed class SummaQuestionPresenter(ISummaService summa, ISummaPartCatalo
         }
 
         var href = origin.ArticleNumber is int articleNumber
-            ? $"summa/{origin.QuestionId}#{SummaFragment.ArticleAnchor(articleNumber)}"
-            : $"summa/{origin.QuestionId}";
+            ? ContentRoutes.SummaHref(origin.QuestionId, articleNumber)
+            : ContentRoutes.SummaHref(origin.QuestionId);
 
         return (href, $"\u2190 {origin.Label}");
     }

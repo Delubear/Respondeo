@@ -1,4 +1,5 @@
 using Respondeo.Content.Contracts;
+using Respondeo.Services.Summa;
 
 namespace Respondeo.Navigation;
 
@@ -43,4 +44,16 @@ public static class ContentRoutes
 
     /// <summary>Builds the href for an article detail page.</summary>
     public static string ArticleHref(string id) => $"discover/articles/{id}";
+
+    /// <summary>Builds the href for a Summa question page from its URL id.</summary>
+    public static string SummaHref(string urlId) => $"summa/{urlId}";
+
+    /// <summary>Builds the href for a specific article within a Summa question page.</summary>
+    public static string SummaHref(string urlId, int articleNumber) => $"summa/{urlId}#{SummaFragment.ArticleAnchor(articleNumber)}";
+
+    /// <summary>Builds the href for a Summa question page with an explicit fragment (without the leading '#').</summary>
+    public static string SummaHref(string urlId, string fragment) => $"summa/{urlId}#{fragment}";
+
+    /// <summary>Builds the href for a Liturgy of the Hours page.</summary>
+    public static string HourHref(string slug) => $"discover/hours/{slug}";
 }

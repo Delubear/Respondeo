@@ -55,6 +55,6 @@ else
 
     // Article matches deep-link to the specific article section; question matches go to the top.
     private string MatchHref(SummaSearchEntry match) => match.ArticleNumber is int articleNumber
-        ? $"summa/{Parts.ToUrlId(match.QuestionId)}#article-{articleNumber}"
-        : $"summa/{Parts.ToUrlId(match.QuestionId)}";
+        ? Respondeo.Navigation.ContentRoutes.SummaHref(Parts.ToUrlId(match.QuestionId), articleNumber)
+        : Respondeo.Navigation.ContentRoutes.SummaHref(Parts.ToUrlId(match.QuestionId));
 }

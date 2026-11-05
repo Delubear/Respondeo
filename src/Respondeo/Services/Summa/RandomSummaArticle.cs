@@ -16,6 +16,6 @@ public sealed class RandomSummaArticle(ISummaService summa, SummaSearch search, 
         }
 
         var pick = articles[Random.Shared.Next(articles.Length)];
-        return $"summa/{parts.ToUrlId(pick.QuestionId)}#article-{pick.ArticleNumber}";
+        return Respondeo.Navigation.ContentRoutes.SummaHref(parts.ToUrlId(pick.QuestionId), pick.ArticleNumber!.Value);
     }
 }

@@ -43,7 +43,7 @@ else
                     @foreach (var article in _question.Articles)
                     {
                         <li class="summa-question__toc-item">
-                            <a href="@($"summa/{Id}#article-{article.Number}")" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
+                            <a href="@(Respondeo.Navigation.ContentRoutes.SummaHref(Id, article.Number))" @onclick="() => OpenArticleAsync(article.Number)" @onclick:preventDefault="true">
                                 Article @article.Number. @article.Title
                             </a>
                         </li>
@@ -119,7 +119,7 @@ else
     [JSInvokable]
     public async Task OpenArticleFromReference(string fragment)
     {
-        await Navigation.ReplaceUrlAsync($"summa/{Id}#{fragment}");
+        await Navigation.ReplaceUrlAsync(Respondeo.Navigation.ContentRoutes.SummaHref(Id, fragment));
 
         if (SummaFragment.TryGetArticleNumber(fragment, out var articleNumber) && _openArticles.Add(articleNumber))
         {
@@ -138,7 +138,7 @@ else
 
         // A link to a different question fires this before the new question loads; let the normal load path handle it.
         var path = Nav.ToBaseRelativePath(e.Location).Split('#', '?')[0];
-        if (!string.Equals(path, $"summa/{Id}", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(path, Respondeo.Navigation.ContentRoutes.SummaHref(Id), StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -178,7 +178,7 @@ else
         if (canonical is not null)
         {
             var fragment = new Uri(Nav.Uri).Fragment;
-            Nav.NavigateTo($"summa/{canonical}{fragment}", replace: true);
+            Nav.NavigateTo(Respondeo.Navigation.ContentRoutes.SummaHref(canonical) + fragment, replace: true);
             return;
         }
 
@@ -252,7 +252,7 @@ else
     {
         _openArticles.Add(articleNumber);
         var fragment = SummaFragment.ArticleAnchor(articleNumber);
-        await Navigation.ReplaceUrlAsync($"summa/{Id}#{fragment}");
+        await Navigation.ReplaceUrlAsync(Respondeo.Navigation.ContentRoutes.SummaHref(Id, fragment));
         StateHasChanged();
         await Navigation.RevealAsync(fragment);
     }

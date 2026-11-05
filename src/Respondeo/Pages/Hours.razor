@@ -15,7 +15,7 @@
     <CardGrid>
         @foreach (var hour in Enum.GetValues<Hour>())
         {
-            <Card Href="@($"discover/hours/{Slug(hour)}")"
+            <Card Href="@(Respondeo.Navigation.ContentRoutes.HourHref(Slug(hour)))"
                   Title="@Label(hour)"
                   Summary="@Subtitle(hour)"
                   Pills="@(hour == _suggested ? ["Now"] : null)"

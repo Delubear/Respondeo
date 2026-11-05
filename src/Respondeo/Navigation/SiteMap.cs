@@ -53,7 +53,7 @@ public static class SiteMap
         Add("discover/prayers", "Prayers", features.PrayerFeature);
         Add(DevotionsHref, "Devotions", features.DevotionsFeature, devotions);
         Add("discover/hours", "Hours", features.LiturgyOfTheHoursFeature,
-            [.. Enum.GetValues<Hour>().Select(h => new Entry($"discover/hours/{Pages.Hours.Slug(h)}", Pages.Hours.Label(h)))]);
+            [.. Enum.GetValues<Hour>().Select(h => new Entry(ContentRoutes.HourHref(Pages.Hours.Slug(h)), Pages.Hours.Label(h)))]);
         Add("discover/articles", "Articles", features.ArticlesFeature);
 
         return entries;

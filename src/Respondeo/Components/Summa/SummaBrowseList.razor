@@ -29,13 +29,13 @@
                             <li class="summa__question">
                                 @if (question.IsPrologue)
                                 {
-                                    <a class="summa__question-link summa__question-link--prologue" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                    <a class="summa__question-link summa__question-link--prologue" href="@(Respondeo.Navigation.ContentRoutes.SummaHref(Parts.ToUrlId(question.Id)))">
                                         <span class="summa__question-title summa__question-title--prologue">@question.Title</span>
                                     </a>
                                 }
                                 else
                                 {
-                                    <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                    <a class="summa__question-link" href="@(Respondeo.Navigation.ContentRoutes.SummaHref(Parts.ToUrlId(question.Id)))">
                                         <span class="summa__question-number">Q@(question.Number)</span>
                                         <span class="summa__question-title">@question.Title</span>
                                         <span class="summa__question-articles">@question.Articles.Count articles</span>
@@ -57,7 +57,7 @@
                             @foreach (var question in group.Questions)
                             {
                                 <li class="summa__question">
-                                    <a class="summa__question-link" href="@($"summa/{Parts.ToUrlId(question.Id)}")">
+                                    <a class="summa__question-link" href="@(Respondeo.Navigation.ContentRoutes.SummaHref(Parts.ToUrlId(question.Id)))">
                                         <span class="summa__question-number">Q@(question.Number)</span>
                                         <span class="summa__question-title">@question.Title</span>
                                         <span class="summa__question-articles">@question.Articles.Count articles</span>
