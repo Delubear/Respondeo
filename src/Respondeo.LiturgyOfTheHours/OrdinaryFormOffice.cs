@@ -124,14 +124,28 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 		return builder.ToString().TrimEnd('-');
 	}
 
+	/// <summary>
+	/// Whether this evening's Vespers is Evening Prayer I of tomorrow (GILH 61; GNLYC 60-61).
+	/// A solemnity keeps its own Evening Prayer II unless tomorrow is a Sunday of Advent, Lent or Easter.
+	/// When two solemnities fall on consecutive days (e.g. 2022: John the Baptist transferred to Thu Jun 23
+	/// because Sacred Heart fell on Jun 24), they are of equal rank, so today's Evening Prayer II prevails.
+	/// Proper/local solemnities that would outrank a universal one are not modeled.
+	/// </summary>
 	internal static bool BeginsWithFirstVespers(LiturgicalDay today, LiturgicalDay tomorrow)
 	{
-		if (today.Season == LiturgicalSeason.Triduum || IsSolemnity(today))
+		if (today.Season == LiturgicalSeason.Triduum)
 		{
 			return false;
 		}
 
-		return tomorrow.Date.DayOfWeek == DayOfWeek.Sunday || IsSolemnity(tomorrow);
+		var tomorrowIsSunday = tomorrow.Date.DayOfWeek == DayOfWeek.Sunday;
+		if (IsSolemnity(today))
+		{
+			// GILH 61: a solemnity keeps its own Vespers unless the next day is a privileged Sunday of Advent, Lent or Easter.
+			return tomorrowIsSunday && tomorrow.Season is LiturgicalSeason.Advent or LiturgicalSeason.Lent or LiturgicalSeason.Easter;
+		}
+
+		return tomorrowIsSunday || IsSolemnity(tomorrow);
 	}
 
 	private static bool IsSolemnity(LiturgicalDay day) => day.Celebration?.Rank == CelebrationRank.Solemnity;

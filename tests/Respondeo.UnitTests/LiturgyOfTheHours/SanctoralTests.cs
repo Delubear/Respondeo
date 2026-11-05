@@ -210,15 +210,13 @@ public class SanctoralTests
             foreach (var hour in new[] { Hour.MorningPrayer, Hour.EveningPrayer })
             {
                 // Evening Prayer before a Sunday or solemnity is its First Vespers, which supersedes the day's celebration.
-                var tomorrow = calendar.ForDate(date.AddDays(1));
-                var firstVespers = hour == Hour.EveningPrayer
-                    && (tomorrow.Date.DayOfWeek == DayOfWeek.Sunday || tomorrow.Celebration?.Rank == CelebrationRank.Solemnity);
-                if (firstVespers || Sanctoral.ShortReading(hour, celebration.Name) is not { } expected)
+                var office = hours.Compose(date, hour);
+                if (office.IsFirstVespers || Sanctoral.ShortReading(hour, celebration.Name) is not { } expected)
                 {
                     continue;
                 }
 
-                var reading = hours.Compose(date, hour).Steps.Single(s => s.Kind == OfficeStepKind.Reading);
+                var reading = office.Steps.Single(s => s.Kind == OfficeStepKind.Reading);
                 Assert.True(expected == reading.Reference?.Citation, $"{date} {hour} ({celebration.Name}): expected {expected}, got {reading.Reference?.Citation}.");
                 Assert.False(reading.UseOfficialText, $"{date} {hour} should not defer to the official text.");
             }

@@ -748,4 +748,40 @@ public class LiturgicalCalendarTests
         var dayAfter = Calendar.ForDate(new DateOnly(2019, 1, 14));
         Assert.Equal(LiturgicalSeason.OrdinaryTime, dayAfter.Season);
     }
+
+    public static TheoryData<CalendarRegion> Regions => new() { CalendarRegion.GeneralRoman, CalendarRegion.UnitedStates };
+
+    [Theory]
+    [MemberData(nameof(Regions))]
+    public void Every_fixed_solemnity_is_celebrated_exactly_once_each_year(CalendarRegion region)
+    {
+        // Sweeps 400 years (a full Gregorian cycle) so every possible collision with a moveable solemnity is exercised.
+        string[] solemnities =
+        [
+            "Saint Joseph, Spouse of the Blessed Virgin Mary",
+            "The Annunciation of the Lord",
+            "The Nativity of Saint John the Baptist",
+            "Saints Peter and Paul, Apostles",
+            "The Assumption of the Blessed Virgin Mary",
+            "The Immaculate Conception of the Blessed Virgin Mary",
+        ];
+        var calendar = new RomanCalendar(LiturgicalCalendarOptions.Default with { Region = region });
+        var failures = new List<string>();
+
+        for (var year = 1900; year < 2300; year++)
+        {
+            var counts = new Dictionary<string, int>();
+            for (var date = new DateOnly(year, 1, 1); date.Year == year; date = date.AddDays(1))
+            {
+                if (calendar.ForDate(date).Celebration?.Name is { } name && solemnities.Contains(name))
+                {
+                    counts[name] = counts.GetValueOrDefault(name) + 1;
+                }
+            }
+
+            failures.AddRange(solemnities.Where(s => counts.GetValueOrDefault(s) != 1).Select(s => $"{year}: {s} x{counts.GetValueOrDefault(s)}"));
+        }
+
+        Assert.Empty(failures);
+    }
 }

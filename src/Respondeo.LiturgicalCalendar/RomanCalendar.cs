@@ -152,14 +152,17 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
 
     // -----------------------------------------------------------------------
     // Solemnity transfers:
-    // Saint Joseph (19 March) and the Annunciation (25 March) are moved when they collide with a Sunday of Lent, Holy Week, or the Octaveof Easter, which always outrank them.
+    // Fixed solemnities are moved when they collide with a Sunday of Lent or Advent, Holy Week, the Octave of Easter,
+    // or a moveable solemnity of the Lord (Corpus Christi or the Sacred Heart on 24 or 29 June), all of which outrank them.
     // -----------------------------------------------------------------------
 
-    private static readonly (int Month, int Day, string Name)[] TransferableSolemnities =
+    private static readonly (int Month, int Day, string Name, LiturgicalColor Color)[] TransferableSolemnities =
     [
-        (3, 19, "Saint Joseph, Spouse of the Blessed Virgin Mary"),
-        (3, 25, "The Annunciation of the Lord"),
-        (12, 8, "The Immaculate Conception of the Blessed Virgin Mary"),
+        (3, 19, "Saint Joseph, Spouse of the Blessed Virgin Mary", LiturgicalColor.White),
+        (3, 25, "The Annunciation of the Lord", LiturgicalColor.White),
+        (6, 24, "The Nativity of Saint John the Baptist", LiturgicalColor.White),
+        (6, 29, "Saints Peter and Paul, Apostles", LiturgicalColor.Red),
+        (12, 8, "The Immaculate Conception of the Blessed Virgin Mary", LiturgicalColor.White),
     ];
 
     /// <summary>True when the given date is the ordinary date of a transferable solemnity that is impeded this year.</summary>
@@ -173,7 +176,7 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
         {
             if (TransferTarget(date.Year, solemnity.Month, solemnity.Day) == date)
             {
-                yield return new LiturgicalCelebration(solemnity.Name, CelebrationRank.Solemnity, LiturgicalColor.White);
+                yield return new LiturgicalCelebration(solemnity.Name, CelebrationRank.Solemnity, solemnity.Color);
             }
         }
     }
@@ -203,6 +206,12 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
         if (original.DayOfWeek == DayOfWeek.Sunday && SeasonFor(original) is LiturgicalSeason.Lent or LiturgicalSeason.Advent)
         {
             return original.AddDays(1);
+        }
+
+        // A moveable solemnity of the Lord (e.g. the Sacred Heart in 2022) displaces the fixed solemnity to the preceding day.
+        if (MoveableCelebration(original) is { Rank: CelebrationRank.Solemnity })
+        {
+            return original.AddDays(-1);
         }
 
         return null;
