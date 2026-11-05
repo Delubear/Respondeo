@@ -28,6 +28,6 @@ public sealed class QuickMenuPinSteps(PlaywrightContext context)
     {
         await Page.Locator(".quick-menu__section--pinned .quick-menu__item")
             .Filter(new LocatorFilterOptions { HasText = label }).First.ClickAsync();
-        await Page.WaitForSelectorAsync(".dialog[open]");
+        await Page.WaitForSelectorAsync(".dialog[open]:not(.quick-menu)");
     }
 }

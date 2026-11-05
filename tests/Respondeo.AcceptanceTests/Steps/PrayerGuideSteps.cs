@@ -13,14 +13,14 @@ public sealed class PrayerGuideSteps(PlaywrightContext context)
     public async Task WhenIOpenThePrayerGuide()
     {
         await Page.Locator("button[aria-label=\"Guide to prayers\"]").First.ClickAsync();
-        await Page.WaitForSelectorAsync(".dialog[open]");
+        await Page.WaitForSelectorAsync(".dialog[open]:not(.quick-menu)");
     }
 
     [When("I close the prayer guide")]
     public async Task WhenICloseThePrayerGuide()
     {
-        await Page.Locator(".dialog[open] .dialog__close").ClickAsync();
-        await Page.WaitForSelectorAsync(".dialog[open]", new PageWaitForSelectorOptions { State = WaitForSelectorState.Detached });
+        await Page.Locator(".dialog[open]:not(.quick-menu) .dialog__close").ClickAsync();
+        await Page.WaitForSelectorAsync(".dialog[open]:not(.quick-menu)", new PageWaitForSelectorOptions { State = WaitForSelectorState.Detached });
     }
 
     [Given("I open the \"(.*)\" prayer directly")]
@@ -33,13 +33,13 @@ public sealed class PrayerGuideSteps(PlaywrightContext context)
     [Then("the prayer guide dialog should be visible")]
     public async Task ThenThePrayerGuideDialogShouldBeVisible()
     {
-        Assert.True(await Page.Locator(".dialog[open]").IsVisibleAsync());
+        Assert.True(await Page.Locator(".dialog[open]:not(.quick-menu)").IsVisibleAsync());
     }
 
     [Then("the prayer guide dialog should explain the versicle and response")]
     public async Task ThenThePrayerGuideDialogShouldExplainTheVersicleAndResponse()
     {
-        var body = await Page.Locator(".dialog[open] .dialog__body").InnerTextAsync();
+        var body = await Page.Locator(".dialog[open]:not(.quick-menu) .dialog__body").InnerTextAsync();
         Assert.Contains("versicle", body, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("response", body, StringComparison.OrdinalIgnoreCase);
     }
@@ -47,7 +47,7 @@ public sealed class PrayerGuideSteps(PlaywrightContext context)
     [Then("the prayer guide dialog should not be visible")]
     public async Task ThenThePrayerGuideDialogShouldNotBeVisible()
     {
-        Assert.Equal(0, await Page.Locator(".dialog[open]").CountAsync());
+        Assert.Equal(0, await Page.Locator(".dialog[open]:not(.quick-menu)").CountAsync());
     }
 
     [Then("the prayer should show at least one embedded prayer")]
