@@ -20,7 +20,7 @@ public sealed class QuickMenuPinSteps(PlaywrightContext context)
     public async Task WhenIOpenTheQuickMenu()
     {
         await Page.Locator(".quick-menu__toggle").ClickAsync();
-        Page.WaitForSelectorAsync("dialog.quick-menu")
+        await Page.WaitForSelectorAsync("dialog.quick-menu");
     }
 
     [When("I choose the \"(.*)\" pin")]

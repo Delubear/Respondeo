@@ -45,22 +45,19 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     public Task WhenISwitchThePrayerLanguage() => Page.Locator(".readerbar .devotion__lang-mini").ClickAsync();
 
     [Then("the prayer text should be in Latin")]
-    public Task ThenThePrayerTextShouldBeInLatin() =>
-        Page.WaitForFunctionAsync("() => document.querySelector('.prayer__text')?.innerText.includes('Sancta Mar')");
+    public Task ThenThePrayerTextShouldBeInLatin() => Page.WaitForFunctionAsync("() => document.querySelector('.prayer__text')?.innerText.includes('Sancta Mar')");
 
     [Then("the prayer text should be in English")]
-    public Task ThenThePrayerTextShouldBeInEnglish() =>
-        Page.WaitForFunctionAsync("() => document.querySelector('.prayer__text')?.innerText.includes('Hail Mary')");
+    public Task ThenThePrayerTextShouldBeInEnglish() => Page.WaitForFunctionAsync("() => document.querySelector('.prayer__text')?.innerText.includes('Hail Mary')");
 
     [When("I open the quick menu from the reader bar")]
     public Task WhenIOpenTheQuickMenuFromTheReaderBar() => Page.Locator(".readerbar .bar-menu").ClickAsync();
 
     [Then("the quick menu should be open")]
-    Page.WaitForSelectorAsync("dialog.quick-menu")
+    public Task ThenTheQuickMenuShouldBeOpen() => Page.WaitForSelectorAsync("dialog.quick-menu");
 
     [When("I choose the dark theme in the quick menu")]
-    public Task WhenIChooseTheDarkThemeInTheQuickMenu() =>
-        Page.Locator(".quick-menu__theme-option", new() { HasText = "Dark" }).ClickAsync();
+    public Task WhenIChooseTheDarkThemeInTheQuickMenu() => Page.Locator(".quick-menu__theme-option", new() { HasText = "Dark" }).ClickAsync();
 
     [When("I leave the prayer from the reader bar")]
     public async Task WhenILeaveThePrayerFromTheReaderBar()
@@ -83,12 +80,10 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     // ---------- Immersive mode and chrome ----------
 
     [Then("the page should be in immersive mode")]
-    public Task ThenThePageShouldBeInImmersiveMode() =>
-        Page.WaitForFunctionAsync("() => document.body.classList.contains('is-immersive')");
+    public Task ThenThePageShouldBeInImmersiveMode() => Page.WaitForFunctionAsync("() => document.body.classList.contains('is-immersive')");
 
     [Then("the page should not be in immersive mode")]
-    public Task ThenThePageShouldNotBeInImmersiveMode() =>
-        Page.WaitForFunctionAsync("() => !document.body.classList.contains('is-immersive')");
+    public Task ThenThePageShouldNotBeInImmersiveMode() => Page.WaitForFunctionAsync("() => !document.body.classList.contains('is-immersive')");
 
     [Then("the masthead should be hidden")]
     public Task ThenTheMastheadShouldBeHidden() => AssertHiddenAsync(".masthead");
@@ -102,8 +97,7 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     // ---------- Player bar (devotions and hours) ----------
 
     [Then("the player bar should be visible")]
-    public async Task ThenThePlayerBarShouldBeVisible() =>
-        Assert.True(await Page.Locator(".playerbar").IsVisibleAsync(), "Expected the player bar to be visible.");
+    public async Task ThenThePlayerBarShouldBeVisible() => Assert.True(await Page.Locator(".playerbar").IsVisibleAsync(), "Expected the player bar to be visible.");
 
     [When("I press Next (\\d+) times in the player bar")]
     public async Task WhenIPressNextTimesInThePlayerBar(int times)
