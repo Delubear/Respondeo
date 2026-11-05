@@ -61,14 +61,18 @@
 
     // The watched day rolled over while the page stayed open; re-resolve today's feast so the
     // "on this day" highlight reflects the new day.
-    private async void OnDayChanged()
+    private void OnDayChanged() => _ = InvokeAsync(async () =>
     {
-        await InvokeAsync(async () =>
+        try
         {
             _feast = await FeastOfTheDay.GetTodayAsync();
             StateHasChanged();
-        });
-    }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+        }
+    });
 
     public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 }

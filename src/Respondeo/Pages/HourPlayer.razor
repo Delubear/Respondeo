@@ -211,7 +211,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _date = DateOnly.FromDateTime(DateTime.Now);
+        _date = Today();
         Hour? hour = Slug.ToLowerInvariant() switch
         {
             "morning" => Hour.MorningPrayer,

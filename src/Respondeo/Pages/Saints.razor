@@ -147,14 +147,18 @@
 
     // The watched day rolled over while the gallery stayed open; re-resolve today's feast ids so the
     // golden shimmer moves to the saints celebrated on the new day.
-    private async void OnDayChanged()
+    private void OnDayChanged() => _ = InvokeAsync(async () =>
     {
-        await InvokeAsync(async () =>
+        try
         {
             _feastIds = await FeastOfTheDay.GetTodayFeastIdsAsync();
             StateHasChanged();
-        });
-    }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+        }
+    });
 
     public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 

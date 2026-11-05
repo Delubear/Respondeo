@@ -229,14 +229,18 @@
 
     // The watched day rolled over (e.g. the tab sat open past midnight); rebuild on the renderer thread so the orb
     // and its dialog reflect the new date without a reload.
-    private async void OnDayChanged()
+    private void OnDayChanged() => _ = InvokeAsync(async () =>
     {
-        await InvokeAsync(async () =>
+        try
         {
             await LoadDayAsync();
             StateHasChanged();
-        });
-    }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+        }
+    });
 
     // The day watcher only re-checks the date when the tab regains focus, which may not have happened yet when the
     // orb is tapped. Bring the day up to date before the dialog opens, and open only once its profiles have loaded.

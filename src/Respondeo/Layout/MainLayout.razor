@@ -110,7 +110,7 @@
 
     // The watched day rolled over while the tab sat open; re-render so the masthead's seasonal portrait
     // (which reads the date live) picks up the new day's image.
-    private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
+    private void OnDayChanged() => _ = InvokeAsync(StateHasChanged);
 
     // An orb opened from a pinned quick-menu entry
     private string? _forcedOrb;

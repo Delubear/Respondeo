@@ -94,7 +94,7 @@
 
     // The watched day rolled over while the profile stayed open; re-render so the "celebrated today"
     // badge (which reads the date live via IsToday) appears or clears for the new day.
-    private async void OnDayChanged() => await InvokeAsync(StateHasChanged);
+    private void OnDayChanged() => _ = InvokeAsync(StateHasChanged);
 
     public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
 }
