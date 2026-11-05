@@ -65,7 +65,6 @@ public class SummaQuestionTests : TestContext
         Services.AddScoped<NavigationInterop>();
         Services.AddScoped<SummaRefInterop>();
         Services.AddScoped<DialogInterop>();
-        Services.AddScoped<ImmersiveInterop>();
         Services.AddSingleton<OrbLauncher>();
         Services.AddSingleton<QuickMenuLauncher>();
         this.AddScrollCoordinator();

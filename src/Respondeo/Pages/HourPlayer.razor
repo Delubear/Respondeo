@@ -3,7 +3,6 @@
 @inject ILiturgyOfTheHours Office
 @inject IBibleText Bible
 @inject IJSRuntime JS
-@inject ImmersiveInterop Immersive
 @inject IHourPlayerSettingsService Settings
 @inject OrbLauncher Launcher
 @inject Func<DateOnly> Today
@@ -20,7 +19,7 @@
 }
 else
 {
-    <section class="reading-wide hourplayer fade-enter" @key="Slug">
+    <section class="reading-wide hourplayer fade-enter immersive-root" @key="Slug">
         <h1 class="hourplayer__title">@_office.Title</h1>
         <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
         @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
@@ -234,11 +233,8 @@ else
 
         if (_office is null)
         {
-            await SetImmersiveAsync(false);
             return;
         }
-
-        await SetImmersiveAsync(true);
 
         var passages = new Dictionary<int, string>();
         var optionPassages = new Dictionary<(int Step, int Option), string>();
@@ -562,23 +558,10 @@ else
 
     private static string ToRoman(int n) => n switch { 1 => "I", 2 => "II", 3 => "III", _ => "IV" };
 
-    // Like the devotion player, the praying view hides the site chrome on phones (CSS gates it to small screens).
-    private async Task SetImmersiveAsync(bool on)
-    {
-        try
-        {
-            await (on ? Immersive.EnterAsync() : Immersive.LeaveAsync());
-        }
-        catch (JSDisconnectedException)
-        {
-            // Circuit going away during teardown; the class resets on next load anyway.
-        }
-    }
-
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
         Settings.Changed -= OnSettingsChanged;
-        await SetImmersiveAsync(false);
+        return ValueTask.CompletedTask;
     }
     private string Expanded(int i) => _open.Contains(i) ? "true" : "false";
 }

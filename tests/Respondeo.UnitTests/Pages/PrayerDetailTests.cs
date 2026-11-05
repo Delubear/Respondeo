@@ -20,7 +20,6 @@ public class PrayerDetailTests : TestContext
         Services.AddSingleton(_prayers);
         Services.AddSingleton(Substitute.For<IBreadcrumbTrail>());
         Services.AddScoped<DialogInterop>();
-        Services.AddScoped<ImmersiveInterop>();
         Services.AddSingleton<OrbLauncher>();
         Services.AddSingleton<QuickMenuLauncher>();
         Services.AddSingleton(Substitute.For<IThemeService>());

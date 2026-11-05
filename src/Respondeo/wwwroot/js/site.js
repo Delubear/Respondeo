@@ -352,19 +352,6 @@ window.respondeoDialog = {
     }
 };
 
-// Toggles a body-level "immersive" class so the layout can hide its chrome (masthead, nav, footer)
-// while the reader is actively praying a devotion. Kept as a body class rather than component state so
-// the shared MainLayout can react without a cascading parameter. Always paired: enter on begin, leave
-// on exit/dispose, so the chrome never stays hidden after leaving the devotion.
-window.respondeoImmersive = {
-    enter: function () {
-        document.body.classList.add('is-immersive');
-    },
-    leave: function () {
-        document.body.classList.remove('is-immersive');
-    }
-};
-
 // Focuses an element by id without scrolling. Used by the devotion player to move keyboard
 // focus onto the next step after one is marked prayed, so pressing Space/Enter walks the thread
 // forward instead of toggling the same step off and on again. (Scrolling lives in respondeoScroll.)

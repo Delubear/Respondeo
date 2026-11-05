@@ -80,10 +80,10 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     // ---------- Immersive mode and chrome ----------
 
     [Then("the page should be in immersive mode")]
-    public Task ThenThePageShouldBeInImmersiveMode() => Page.WaitForFunctionAsync("() => document.body.classList.contains('is-immersive')");
+    public Task ThenThePageShouldBeInImmersiveMode() => Page.WaitForFunctionAsync("() => document.querySelector('.immersive-root') !== null");
 
     [Then("the page should not be in immersive mode")]
-    public Task ThenThePageShouldNotBeInImmersiveMode() => Page.WaitForFunctionAsync("() => !document.body.classList.contains('is-immersive')");
+    public Task ThenThePageShouldNotBeInImmersiveMode() => Page.WaitForFunctionAsync("() => document.querySelector('.immersive-root') === null");
 
     [Then("the masthead should be hidden")]
     public Task ThenTheMastheadShouldBeHidden() => AssertHiddenAsync(".masthead");

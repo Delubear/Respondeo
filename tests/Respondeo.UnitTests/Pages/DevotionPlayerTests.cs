@@ -25,7 +25,6 @@ public class DevotionPlayerTests : TestContext
         Services.AddSingleton(Substitute.For<IThemeService>());
         Services.AddSingleton(Substitute.For<IPrayerLanguageService>());
         Services.AddScoped<NavigationInterop>();
-        Services.AddScoped<ImmersiveInterop>();
         Services.AddSingleton<QuickMenuLauncher>();
         Services.AddScoped<DialogInterop>();
 

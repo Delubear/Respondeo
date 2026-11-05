@@ -281,7 +281,7 @@
 
 @media (max-width: 40rem) {
 	/* Edge to edge like the devotion player. */
-	body.is-immersive .hourplayer {
+	.hourplayer.immersive-root {
 		margin-inline: -1rem;
 		padding-inline: 1rem;
 	}

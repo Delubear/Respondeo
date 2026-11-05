@@ -5,7 +5,6 @@
 @inject IDevotionProgressService Progress
 @inject IPrayerLanguageService PrayerLanguage
 @inject NavigationInterop Navigation
-@inject ImmersiveInterop Immersive
 
 <PageShell Title="@_devotion?.Title" FallbackTitle="Devotion" Description="@_devotion?.Summary" Article="true" SeoReady="@(_devotion is not null)"
            StageHref="discover" StageLabel="Discover" Crumbs="_crumbs" />
@@ -27,7 +26,7 @@ else if (!_started)
 }
 else
 {
-    <section class="reading-wide devotion--praying fade-enter">
+    <section class="reading-wide devotion--praying fade-enter immersive-root">
         <p class="devotion__hint">Select each step to mark it done, in order. Open the book to read its text.</p>
 
         @* Announces progress to screen readers as each step is prayed, without moving focus. *@
@@ -107,9 +106,6 @@ else
         // Restore the reader's remembered Latin/vernacular preference before the thread renders.
         await PrayerLanguage.InitializeAsync();
         _showLatin = PrayerLanguage.ShowLatin;
-
-        // Reset chrome in case we arrived here directly from another devotion's praying view.
-        await LeaveImmersiveAsync();
 
         if (_devotion is not null)
         {
@@ -191,7 +187,6 @@ else
         _started = true;
 
         await SaveProgressAsync();
-        await EnterImmersiveAsync();
 
         // Resuming mid-thread lands on the current step; a fresh start opens at the top so the first section header shows.
         if (_session.CompletedCount > 0 && !_session.IsComplete)
@@ -220,30 +215,6 @@ else
     }
 
     private async Task SaveProgressAsync() => await Progress.SaveAsync(new DevotionProgress(Id, _selectedSetId, _session!.CompletedCount));
-
-    private async Task EnterImmersiveAsync()
-    {
-        try
-        {
-            await Immersive.EnterAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-            // Circuit going away during teardown; nothing to toggle.
-        }
-    }
-
-    private async Task LeaveImmersiveAsync()
-    {
-        try
-        {
-            await Immersive.LeaveAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-            // Circuit going away during teardown; the class resets on next load anyway.
-        }
-    }
 
     // Marks the next prayer complete, or unmarks the most recently completed one. Completion can only move forward one step at a time, so nothing can be marked out of order.
     // Each change is persisted so leaving mid-devotion can be resumed; finishing the devotion clears the saved slot.
@@ -332,8 +303,6 @@ else
             {
                 await _prayerDialog.CloseAsync();
             }
-
-            await Immersive.LeaveAsync();
         }
         catch (JSDisconnectedException)
         {

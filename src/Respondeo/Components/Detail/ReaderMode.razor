@@ -1,34 +1,12 @@
 @* Puts the page into reader mode (the immersive view that hides the surrounding chrome so the pinned ReaderBar
-   stands in for it) while Active, and restores the chrome when Active clears or the page goes away. *@
-@implements IAsyncDisposable
-@inject ImmersiveInterop Immersive
+   stands in for it) while Active. It renders an .immersive-root marker that layout.css detects with :has(), so the
+   chrome follows the DOM and restores itself the moment the marker is gone, with no enter/leave ordering to race. *@
+@if (Active)
+{
+    <span class="immersive-root" hidden></span>
+}
 
 @code {
     /// <summary>Whether reader mode should be on; pages pass true once their item has loaded.</summary>
     [Parameter] public bool Active { get; set; }
-
-    private bool _entered;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (Active == _entered)
-        {
-            return;
-        }
-
-        _entered = Active;
-        await (Active ? Immersive.EnterAsync() : Immersive.LeaveAsync());
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        try
-        {
-            await Immersive.LeaveAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-            // Circuit going away during teardown; nothing to restore.
-        }
-    }
 }

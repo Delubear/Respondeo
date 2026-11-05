@@ -110,7 +110,6 @@ public static class AppServiceRegistration
         services.AddScoped<BrowseStateInterop>();
         services.AddScoped<NavigationInterop>();
         services.AddScoped<SummaRefInterop>();
-        services.AddScoped<ImmersiveInterop>();
         services.AddScoped<DialogInterop>();
         services.AddScoped<AccessibilityInterop>();
         services.AddScoped<InstallInterop>();

@@ -153,30 +153,30 @@ input[type="search"]::-webkit-search-cancel-button {
 
 
 /* ---------- Immersive mode ----------
-   While the reader is praying (a devotion, an hour, or a single prayer), the page toggles
-   body.is-immersive. Each of these pages pins its own bar to the foot of the screen, so the page
+   While the reader is praying (a devotion, an hour, or a single prayer), the page renders an
+   .immersive-root marker, detected here with :has() so the chrome follows the DOM. Each
    simply scrolls as normal and leaves room for that bar. On phones the surrounding chrome also
    steps aside so the prayer gets nearly the whole viewport; desktops keep their full chrome.
    These rules live here (not in a scoped stylesheet) because the nav and footer are separate
    components, so a global selector is needed to reach them all. */
-body.is-immersive .back-link {
+body:has(.immersive-root) .back-link {
     display: none;
 }
 
-body.is-immersive .content__inner {
+body:has(.immersive-root) .content__inner {
     padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
 }
 
 
 @media (max-width: 40rem) {
-    body.is-immersive .masthead,
-    body.is-immersive .pillarnav,
-    body.is-immersive .mastnav,
-    body.is-immersive .breadcrumb,
-    body.is-immersive .quick-menu__toggle,
-    body.is-immersive .float-circle,
-    body.is-immersive .colophon,
-    body.is-immersive .back-to-top {
+    body:has(.immersive-root) .masthead,
+    body:has(.immersive-root) .pillarnav,
+    body:has(.immersive-root) .mastnav,
+    body:has(.immersive-root) .breadcrumb,
+    body:has(.immersive-root) .quick-menu__toggle,
+    body:has(.immersive-root) .float-circle,
+    body:has(.immersive-root) .colophon,
+    body:has(.immersive-root) .back-to-top {
         display: none;
     }
 }
