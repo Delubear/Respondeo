@@ -56,7 +56,7 @@ public sealed class ImmersivePrayingSteps(PlaywrightContext context)
     public Task WhenIOpenTheQuickMenuFromTheReaderBar() => Page.Locator(".readerbar .bar-menu").ClickAsync();
 
     [Then("the quick menu should be open")]
-    public Task ThenTheQuickMenuShouldBeOpen() => Page.WaitForSelectorAsync("nav.quick-menu");
+    Page.WaitForSelectorAsync("dialog.quick-menu")
 
     [When("I choose the dark theme in the quick menu")]
     public Task WhenIChooseTheDarkThemeInTheQuickMenu() =>
