@@ -1,7 +1,8 @@
 @page "/discover/miracles/{Id}"
 @inject IMiracleService Miracles
+@inherits LoadableComponentBase<MiracleRecord>
 
-<DetailPage Loading="_loading" Id="@Id" Noun="Miracle" Title="@_miracle?.Title" Summary="@_miracle?.Summary"
+<DetailPage Loading="IsLoading" Id="@Id" Noun="Miracle" Title="@_miracle?.Title" Summary="@_miracle?.Summary"
             Eyebrow="@(_miracle is null ? null : string.Join(" \u00B7 ", _miracle.Types.Select(_facets.Category)))"
             LoadingText="Opening the account…" StageHref="discover/miracles" StageLabel="Miracles"
             ListHref="discover/miracles" BackLabel="Back to all miracles" NotFoundBackLabel="Return to the catalog"
@@ -29,7 +30,7 @@
     </Facts>
 </DetailPage>
 
-@if (!_loading && _miracle is not null)
+@if (!IsLoading && _miracle is not null)
 {
     <ReaderMode Active="true" />
     <ReaderBar LeaveHref="discover/miracles" LeaveLabel="Miracles" AriaLabel="Miracle tools" />
@@ -38,17 +39,15 @@
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private MiracleRecord? _miracle;
-    private bool _loading = true;
+    private MiracleRecord? _miracle => Value;
     private string? _century;
     private MiracleFacetCatalog _facets = MiracleFacetCatalog.Empty;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task<MiracleRecord?> LoadAsync(CancellationToken cancellationToken)
     {
-        _loading = true;
         _facets = await Miracles.GetFacetsAsync();
-        _miracle = await Miracles.GetByIdAsync(Id);
-        _century = MiracleFacets.CenturyLabel(_miracle?.Year);
-        _loading = false;
+        var miracle = await Miracles.GetByIdAsync(Id);
+        _century = MiracleFacets.CenturyLabel(miracle?.Year);
+        return miracle;
     }
 }

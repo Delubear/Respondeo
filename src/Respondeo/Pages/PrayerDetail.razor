@@ -1,8 +1,9 @@
 @page "/discover/prayers/{Id}"
 @inject IPrayerService Prayers
 @inject IPrayerLanguageService PrayerLanguage
+@inherits LoadableComponentBase<Prayer>
 
-<DetailPage Loading="_loading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
+<DetailPage Loading="IsLoading" Id="@Id" Noun="Prayer" Title="@_prayer?.Title" Summary="@_prayer?.Summary"
             LoadingText="Opening the prayer…" StageHref="discover" StageLabel="Discover" Crumbs="_crumbs"
             ListHref="discover/prayers" BackLabel="Back to all prayers" NotFoundBackLabel="Return to all prayers"
             Tags="@(_prayer?.Tags ?? [])">
@@ -18,7 +19,7 @@
     </Body>
 </DetailPage>
 
-@if (!_loading && _prayer is not null)
+@if (!IsLoading && _prayer is not null)
 {
     <ReaderMode Active="true" />
     <ReaderBar LeaveHref="discover/prayers"
@@ -31,21 +32,19 @@
 
     private static readonly Breadcrumb.Crumb[] _crumbs = [new("prayers", "Prayers", Href: "discover/prayers")];
 
-    private Prayer? _prayer;
-    private bool _loading = true;
+    private Prayer? _prayer => Value;
     private bool _showLatin;
 
     private bool HasLatin => !string.IsNullOrWhiteSpace(_prayer?.LatinHtml);
 
     private bool ShowingLatin => _showLatin && HasLatin;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task<Prayer?> LoadAsync(CancellationToken cancellationToken)
     {
-        _loading = true;
-        _prayer = await Prayers.GetPrayerAsync(Id);
+        var prayer = await Prayers.GetPrayerAsync(Id);
         await PrayerLanguage.InitializeAsync();
         _showLatin = PrayerLanguage.ShowLatin;
-        _loading = false;
+        return prayer;
     }
 
     private async Task SetLatin(bool latin)

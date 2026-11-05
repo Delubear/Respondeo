@@ -3,9 +3,9 @@
 @inject IFeastOfTheDay FeastOfTheDay
 @inject NavigationManager Nav
 @inject IDayWatcher DayWatcher
-@implements IDisposable
+@inherits LoadableComponentBase<SaintRecord>
 
-<DetailPage Loading="_loading" Id="@Id" Noun="Saint" Title="@_saint?.Title" Summary="@_saint?.Summary"
+<DetailPage Loading="IsLoading" Id="@Id" Noun="Saint" Title="@_saint?.Title" Summary="@_saint?.Summary"
             Eyebrow="@(_saint is null ? null : string.Join(" \u00B7 ", _saint.Patronages))" JsonLd="@PersonJsonLd"
             LoadingText="Opening the life…" StageHref="discover/saints" StageLabel="Saints"
             ListHref="discover/saints" BackLabel="Back to all saints" NotFoundBackLabel="Return to the gallery"
@@ -62,7 +62,7 @@
     </Facts>
 </DetailPage>
 
-@if (!_loading && _saint is not null)
+@if (!IsLoading && _saint is not null)
 {
     <ReaderMode Active="true" />
     <ReaderBar LeaveHref="discover/saints" LeaveLabel="Saints" AriaLabel="Saint tools"
@@ -72,8 +72,7 @@
 @code {
     [Parameter] public string Id { get; set; } = string.Empty;
 
-    private SaintRecord? _saint;
-    private bool _loading = true;
+    private SaintRecord? _saint => Value;
     private SaintFacetCatalog _facets = SaintFacetCatalog.Empty;
 
     // A saint is a person, so advertise a schema.org Person node (not a generic Article) for richer results.
@@ -82,12 +81,10 @@
     // The canonical URL resolved against the production origin, matching SeoHead so the JSON-LD url agrees with og:url.
     private string CanonicalUrl => SiteMeta.AbsoluteUrl(Nav.ToBaseRelativePath(Nav.Uri).Split('?', '#')[0]);
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task<SaintRecord?> LoadAsync(CancellationToken cancellationToken)
     {
-        _loading = true;
         _facets = await Saints.GetFacetsAsync();
-        _saint = await Saints.GetByIdAsync(Id);
-        _loading = false;
+        return await Saints.GetByIdAsync(Id);
     }
 
     protected override void OnInitialized() => DayWatcher.DayChanged += OnDayChanged;
@@ -96,5 +93,9 @@
     // badge (which reads the date live via IsToday) appears or clears for the new day.
     private void OnDayChanged() => _ = InvokeAsync(StateHasChanged);
 
-    public void Dispose() => DayWatcher.DayChanged -= OnDayChanged;
+    public override void Dispose()
+    {
+        DayWatcher.DayChanged -= OnDayChanged;
+        base.Dispose();
+    }
 }
