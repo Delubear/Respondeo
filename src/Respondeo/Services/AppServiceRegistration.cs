@@ -29,6 +29,7 @@ public static class AppServiceRegistration
 
         // Liturgy of the Hours player preferences (localStorage).
         services.AddScoped<IHourPlayerSettingsService, HourPlayerSettingsService>();
+        services.AddScoped<HourPassageLoader>();
 
         // Pinned quick-menu destinations (localStorage).
         services.AddScoped<IPinService, PinService>();

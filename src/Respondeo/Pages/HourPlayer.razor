@@ -1,7 +1,7 @@
 @page "/discover/hours/{Slug}"
 @using Respondeo.LiturgyOfTheHours
 @inject ILiturgyOfTheHours Office
-@inject IBibleText Bible
+@inject HourPassageLoader PassageLoader
 @inject NavigationInterop Navigation
 @inject IHourPlayerSettingsService Settings
 @inject OrbLauncher Launcher
@@ -202,12 +202,11 @@ else
     private readonly HashSet<int> _open = [];
     private string? _announcement;
 
-    private const string GloryBe =
-        "Glory be to the Father, and to the Son, * and to the Holy Spirit,\nas it was in the beginning, is now, * and ever shall be,\nworld without end. Amen.";
+    private const string GloryBe = HourPassageLoader.GloryBe;
 
-    private Dictionary<int, string> _passages = [];
-    private Dictionary<(int Step, int Option), string> _optionPassages = [];
-    private Dictionary<(int Step, int Option), List<string>> _optionStanzas = [];
+    private IReadOnlyDictionary<int, string> _passages = HourPassages.Empty.Passages;
+    private IReadOnlyDictionary<(int Step, int Option), string> _optionPassages = HourPassages.Empty.OptionPassages;
+    private IReadOnlyDictionary<(int Step, int Option), List<string>> _optionStanzas = HourPassages.Empty.OptionStanzas;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -227,64 +226,19 @@ else
         _chosenOptions.Clear();
         await Settings.LoadAsync();
         await AdvanceInvitatoryCycleAsync();
-        _passages = [];
-        _optionPassages = [];
-        _optionStanzas = [];
+        _passages = HourPassages.Empty.Passages;
+        _optionPassages = HourPassages.Empty.OptionPassages;
+        _optionStanzas = HourPassages.Empty.OptionStanzas;
 
         if (_office is null)
         {
             return;
         }
 
-        var passages = new Dictionary<int, string>();
-        var optionPassages = new Dictionary<(int Step, int Option), string>();
-        var optionStanzas = new Dictionary<(int Step, int Option), List<string>>();
-        for (var i = 0; i < _office.Steps.Count; i++)
-        {
-            var step = _office.Steps[i];
-            if (step.Text is null && step.Reference is { } reference && await Bible.GetPassageAsync(reference.Citation) is { } text)
-            {
-                passages[i] = step.Kind == OfficeStepKind.Reading ? text : text + "\n\n" + GloryBe;
-            }
-
-            if (step.Options is { } stepOptions)
-            {
-                for (var j = 0; j < stepOptions.Count; j++)
-                {
-                    var option = stepOptions[j];
-                    if (option.Text is null && option.Stanzas is { Count: > 0 } stanzaRefs)
-                    {
-                        List<string>? texts = [];
-                        foreach (var stanzaRef in stanzaRefs)
-                        {
-                            if (await Bible.GetPassageAsync(stanzaRef.Citation) is not { } stanzaText)
-                            {
-                                texts = null;
-                                break;
-                            }
-
-                            texts.Add(stanzaText);
-                        }
-
-                        if (texts is not null)
-                        {
-                            optionStanzas[(i, j)] = texts;
-                            continue;
-                        }
-                    }
-
-                    if (option.Text is null && option.Reference is { } optionReference
-                        && await Bible.GetPassageAsync(optionReference.Citation) is { } optionText)
-                    {
-                        optionPassages[(i, j)] = optionText + "\n\n" + GloryBe;
-                    }
-                }
-            }
-        }
-
-        _passages = passages;
-        _optionPassages = optionPassages;
-        _optionStanzas = optionStanzas;
+        var loaded = await PassageLoader.LoadAsync(_office);
+        _passages = loaded.Passages;
+        _optionPassages = loaded.OptionPassages;
+        _optionStanzas = loaded.OptionStanzas;
 
         if (Settings.Current.ExpandAll)
         {
