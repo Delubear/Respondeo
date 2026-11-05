@@ -1,5 +1,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
+@inject NavigationInterop Navigation
 
 <div class="scroll-progress" style="width:@ProgressStyle"></div>
 
@@ -30,7 +31,7 @@
         StateHasChanged();
     }
 
-    private async Task ScrollToTopAsync() => await JS.InvokeVoidAsync("respondeoScroll.top");
+    private async Task ScrollToTopAsync() => await Navigation.ScrollToTopAsync();
 
     public async ValueTask DisposeAsync()
     {

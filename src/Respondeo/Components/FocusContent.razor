@@ -1,4 +1,4 @@
-@inject IJSRuntime JS
+@inject NavigationInterop Navigation
 
 @* Replaces <FocusOnNavigate>: moves focus to #content after each route change for assistive technology,
    but WITHOUT scrolling. The built-in focus scrolls #content into view after the page renders, which fights
@@ -18,6 +18,6 @@
         }
 
         _focusedFor = RouteData;
-        await JS.InvokeVoidAsync("respondeoFocusContent");
+        await Navigation.FocusContentAsync();
     }
 }

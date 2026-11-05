@@ -5,7 +5,7 @@
 @inject FeatureFlags Features
 @inject ISeasonalPortrait Portrait
 @inject IDayWatcher DayWatcher
-@inject IJSRuntime JS
+@inject NavigationInterop Navigation
 @inject OrbLauncher OrbLauncher
 @inject ScrollCoordinator Scroll
 
@@ -104,7 +104,7 @@
         {
             await DayWatcher.StartAsync();
             _selfRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("respondeoMasthead.attach", _mastheadZone, _selfRef);
+            await Navigation.AttachMastheadAsync(_mastheadZone, _selfRef);
         }
     }
 

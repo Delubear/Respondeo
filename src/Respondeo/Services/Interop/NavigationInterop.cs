@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Respondeo.Services.Interop;
@@ -33,6 +34,16 @@ public sealed class NavigationInterop(IJSRuntime js)
 
     /// <summary>Scrolls the window back to the top.</summary>
     public ValueTask ScrollToTopAsync() => js.InvokeVoidAsync("respondeoScroll.top");
+
+    /// <summary>Attaches the masthead scroll behavior to <paramref name="zone"/>, reporting state changes back to <paramref name="callback"/>.</summary>
+    public ValueTask AttachMastheadAsync<T>(ElementReference zone, DotNetObjectReference<T> callback) where T : class =>
+        js.InvokeVoidAsync("respondeoMasthead.attach", zone, callback);
+
+    /// <summary>Scrolls the element with <paramref name="elementId"/> so a stepped view's current step starts at the top of the viewport.</summary>
+    public ValueTask ScrollToStepStartAsync(string elementId) => js.InvokeVoidAsync("respondeoScroll.toStepStart", elementId);
+
+    /// <summary>Moves keyboard focus to the main #content region without scrolling (used after route changes).</summary>
+    public ValueTask FocusContentAsync() => js.InvokeVoidAsync("respondeoFocusContent");
 
     /// <summary>Moves keyboard focus to the element with <paramref name="elementId"/> without scrolling.</summary>
     public ValueTask FocusAsync(string elementId) => js.InvokeVoidAsync("respondeoFocus.byId", elementId);

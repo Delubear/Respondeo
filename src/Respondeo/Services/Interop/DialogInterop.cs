@@ -19,4 +19,7 @@ public sealed class DialogInterop(IJSRuntime js)
 
     /// <summary>Closes <paramref name="dialog"/> if it is open.</summary>
     public ValueTask CloseAsync(ElementReference dialog) => js.InvokeVoidAsync("respondeoDialog.close", dialog);
+
+    /// <summary>Reads the current <c>scrollTop</c> of <paramref name="element"/>.</summary>
+    public ValueTask<double> GetScrollTopAsync(ElementReference element) => js.InvokeAsync<double>("Reflect.get", element, "scrollTop");
 }

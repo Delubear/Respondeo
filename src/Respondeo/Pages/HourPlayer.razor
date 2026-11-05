@@ -2,7 +2,7 @@
 @using Respondeo.LiturgyOfTheHours
 @inject ILiturgyOfTheHours Office
 @inject IBibleText Bible
-@inject IJSRuntime JS
+@inject NavigationInterop Navigation
 @inject IHourPlayerSettingsService Settings
 @inject OrbLauncher Launcher
 @inject Func<DateOnly> Today
@@ -481,7 +481,7 @@ else
         {
             _scroll = false;
             // Lands on the part banner when the current step opens a new part, and corrects once layout settles.
-            await JS.InvokeVoidAsync("respondeoScroll.toStepStart", "hour-current-step");
+            await Navigation.ScrollToStepStartAsync("hour-current-step");
         }
     }
 

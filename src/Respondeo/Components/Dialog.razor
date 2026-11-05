@@ -1,5 +1,4 @@
 @inject DialogInterop Dialogs
-@inject IJSRuntime JS
 
 @* A shared modal dialog shell built on the native <dialog> element and the window.respondeoDialog interop (focus trapping, Esc-to-close, ::backdrop and body scroll lock for free).
     Callers supply a title, optional eyebrow, body content and optional footer, and drive it via the public Show()/Close() methods through an @ref.
@@ -113,7 +112,7 @@
         try
         {
             // Read scrollTop at gesture start so a drag beginning at the top can pull the sheet closed.
-            _atTop = await JS.InvokeAsync<double>("Reflect.get", _body, "scrollTop") <= 0;
+            _atTop = await Dialogs.GetScrollTopAsync(_body) <= 0;
         }
         catch (JSException)
         {
