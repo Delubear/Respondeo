@@ -7,6 +7,8 @@ namespace Respondeo.Content.Rendering;
 /// Owns the pipeline configuration (advanced extensions plus the shared <see cref="ContentContainerExtension"/> directive vocabulary)
 /// so that Markdig stays entirely behind the abstraction and content pillars need no Markdown-engine reference.
 /// Stateless and thread-safe, so it can be registered as a singleton.
+/// Raw HTML is intentionally not disabled: all input is bundled, repository-authored content, and the output is rendered via
+/// <c>MarkupString</c>. Do not route user-supplied or remote text through this renderer without adding <c>DisableHtml()</c>.
 /// </summary>
 internal sealed class MarkdigContentHtmlRenderer : IContentHtmlRenderer
 {
