@@ -27,7 +27,7 @@
 			<button type="button" class="quick-menu__close" @onclick="Close" aria-label="Close the quick menu">&times;</button>
 		</div>
 
-		<div class="quick-menu__body" @ref="_body">
+		<div class="quick-menu__body @(_pulling ? "quick-menu__body--locked" : null)" @ref="_body">
 		@if (_managingOffline)
 		{
 			<section class="quick-menu__section">

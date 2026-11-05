@@ -183,6 +183,11 @@
     padding: 1rem 1.25rem 2rem;
 }
 
+.quick-menu__body--locked {
+    overflow: hidden;
+    touch-action: none;
+}
+
 .quick-menu__title {
     margin: 0;
     font-family: var(--display);
