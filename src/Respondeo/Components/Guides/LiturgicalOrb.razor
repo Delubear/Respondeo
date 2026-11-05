@@ -1,4 +1,4 @@
-@* A small floating "today in the Church" orb shown only on the Discover root pages.
+﻿@* A small floating "today in the Church" orb shown only on the Discover root pages.
     It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that slides up to stack above the back-to-top arrow.
     It is visually identical to the other circles and differs only by its calendar icon.
     Tapping it opens a Dialog with today's season, color, celebration, the saint of the day, and a short explanation of the liturgical year. *@
@@ -130,27 +130,7 @@
     </ChildContent>
     <Footer>
         <div class="liturgy-foot">
-            <details class="liturgy-menu">
-                <summary class="liturgy-menu__toggle">
-                    <span class="visually-hidden">Calendar: </span>@CalendarName
-                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                </summary>
-                <div class="liturgy-menu__panel">
-                    <fieldset class="liturgy-menu__group">
-                        <legend>Calendar</legend>
-                        <label><input type="radio" name="liturgy-region" checked="@(!IsUs)" @onchange="() => SetCalendarAsync(LiturgicalCalendarOptions.Default)" /> General Roman</label>
-                        <label><input type="radio" name="liturgy-region" checked="@IsUs" @onchange="() => SetCalendarAsync(new(CalendarRegion.UnitedStates))" /> United States (USCCB)</label>
-                    </fieldset>
-                    @if (IsUs)
-                    {
-                        <label class="liturgy-menu__check">
-                            <input type="checkbox" checked="@Preference.Options.AscensionOnThursday"
-                                   @onchange="e => SetCalendarAsync(new(CalendarRegion.UnitedStates, AscensionOnThursday: e.Value is true))" />
-                            Keep the Ascension on Thursday
-                        </label>
-                    }
-                </div>
-            </details>
+            <CalendarMenu />
             <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
         </div>
     </Footer>
@@ -176,14 +156,10 @@
 
     private bool IsUs => Preference.Options.Region == CalendarRegion.UnitedStates;
 
-    private string CalendarName => IsUs ? "United States (USCCB)" : "General Roman Calendar";
-
     private string DisclaimerLead => IsUs
         ? "This follows the proper calendar of the United States (USCCB), with the Ascension kept on "
             + (Preference.Options.AscensionOnThursday ? "Thursday." : "Sunday.")
         : "This follows the General Roman Calendar, the Church's universal calendar for the Ordinary Form.";
-
-    private Task SetCalendarAsync(LiturgicalCalendarOptions options) => Preference.SetAsync(options);
 
     private async void OnCalendarChanged()
     {

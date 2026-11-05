@@ -4,6 +4,7 @@
 @inject HourPassageLoader PassageLoader
 @inject NavigationInterop Navigation
 @inject IHourPlayerSettingsService Settings
+@inject ICalendarPreference CalendarPreference
 @inject OrbLauncher Launcher
 @inject Func<DateOnly> Today
 @implements IAsyncDisposable
@@ -263,9 +264,20 @@ else
     private int ChosenOption(int stepIndex, IReadOnlyList<int> visible) =>
         _chosenOptions.TryGetValue(stepIndex, out var pick) && visible.Contains(pick) ? pick : visible[0];
 
-    protected override void OnInitialized() => Settings.Changed += OnSettingsChanged;
+    protected override void OnInitialized()
+    {
+        Settings.Changed += OnSettingsChanged;
+        CalendarPreference.Changed += OnCalendarChanged;
+    }
 
     private void OnSettingsChanged() => _ = InvokeAsync(StateHasChanged);
+
+    // A different calendar can change the day's celebration, so the office is composed afresh.
+    private void OnCalendarChanged() => _ = InvokeAsync(async () =>
+    {
+        await OnParametersSetAsync();
+        StateHasChanged();
+    });
 
     // Advances the daily invitatory cycle once per calendar day so the day's psalm stays the same on every visit.
     private async Task AdvanceInvitatoryCycleAsync()
@@ -466,6 +478,7 @@ else
     public ValueTask DisposeAsync()
     {
         Settings.Changed -= OnSettingsChanged;
+        CalendarPreference.Changed -= OnCalendarChanged;
         return ValueTask.CompletedTask;
     }
     private string Expanded(int i) => _open.Contains(i) ? "true" : "false";

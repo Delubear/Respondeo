@@ -122,7 +122,10 @@
             </div>
         </ChildContent>
         <Footer>
-            <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+            <div class="liturgy-foot">
+                <CalendarMenu />
+                <button type="button" class="btn" @onclick="context.CloseAsync">Close</button>
+            </div>
         </Footer>
     </FloatingGuide>
 </div>
@@ -148,5 +151,8 @@
 
     private Task SetSpecificAsync(string? psalm) => Settings.UpdateAsync(s => s with { InvitatoryMode = InvitatoryMode.Specific, InvitatoryPsalm = psalm });
 
-    public void Dispose() => Settings.Changed -= OnChanged;
+    public void Dispose()
+    {
+        Settings.Changed -= OnChanged;
+    }
 }

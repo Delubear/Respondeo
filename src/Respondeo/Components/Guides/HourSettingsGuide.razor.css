@@ -45,3 +45,13 @@
     font-weight: 600;
     text-decoration: none;
 }
+
+/* ---------- Footer ---------- */
+
+.liturgy-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+}

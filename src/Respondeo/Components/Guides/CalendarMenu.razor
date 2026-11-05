@@ -1,0 +1,46 @@
+@* The calendar dropdown shared by dialog footers: lets the reader pick the General Roman or United States calendar. *@
+
+@using Respondeo.LiturgicalCalendar
+@using Respondeo.Services.Calendar
+@inject ICalendarPreference Preference
+@implements IDisposable
+
+<details class="liturgy-menu">
+    <summary class="liturgy-menu__toggle">
+        <span class="visually-hidden">Calendar: </span>@CalendarName
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </summary>
+    <div class="liturgy-menu__panel">
+        <fieldset class="liturgy-menu__group">
+            <legend>Calendar</legend>
+            <label><input type="radio" name="@_name" checked="@(!IsUs)" @onchange="() => Preference.SetAsync(LiturgicalCalendarOptions.Default)" /> General Roman</label>
+            <label><input type="radio" name="@_name" checked="@IsUs" @onchange="() => Preference.SetAsync(new(CalendarRegion.UnitedStates))" /> United States (USCCB)</label>
+        </fieldset>
+        @if (IsUs)
+        {
+            <label class="liturgy-menu__check">
+                <input type="checkbox" checked="@Preference.Options.AscensionOnThursday"
+                       @onchange="e => Preference.SetAsync(new(CalendarRegion.UnitedStates, AscensionOnThursday: e.Value is true))" />
+                Keep the Ascension on Thursday
+            </label>
+        }
+    </div>
+</details>
+
+@code {
+    private readonly string _name = $"calendar-region-{Guid.NewGuid():N}";
+
+    private bool IsUs => Preference.Options.Region == CalendarRegion.UnitedStates;
+
+    private string CalendarName => IsUs ? "United States (USCCB)" : "General Roman Calendar";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Preference.Changed += OnChanged;
+        await Preference.InitializeAsync();
+    }
+
+    private void OnChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Preference.Changed -= OnChanged;
+}
