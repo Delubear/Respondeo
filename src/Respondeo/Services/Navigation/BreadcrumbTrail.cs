@@ -29,7 +29,7 @@ public interface IBreadcrumbTrail
 /// </summary>
 public sealed class BreadcrumbTrail(IJSRuntime js) : IBreadcrumbTrail
 {
-    private const string StorageKey = "respondeo.breadcrumb";
+    private const string StorageKey = StorageKeys.Breadcrumb;
     private const string StageKey = "respondeo.breadcrumb.stage";
 
     public async Task<IReadOnlyList<string>> VisitAsync(string nodeId, string? stage = null)

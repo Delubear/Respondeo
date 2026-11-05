@@ -44,7 +44,7 @@ public interface IThemeService
 /// </summary>
 public sealed class ThemeService(IJSRuntime js) : IThemeService
 {
-    private const string StorageKey = "respondeo.theme";
+    private const string StorageKey = StorageKeys.Theme;
     private readonly LocalStorage _storage = new(js);
 
     public Theme Current { get; private set; } = Theme.Light;

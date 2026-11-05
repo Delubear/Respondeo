@@ -24,7 +24,7 @@ public interface IPrayerLanguageService
 /// </summary>
 public sealed class PrayerLanguageService(IJSRuntime js) : IPrayerLanguageService
 {
-    private const string StorageKey = "respondeo.prayerLanguage";
+    private const string StorageKey = StorageKeys.PrayerLanguage;
     private readonly LocalStorage _storage = new(js);
 
     public bool ShowLatin { get; private set; }

@@ -33,7 +33,7 @@ public interface IVisitedNodes
 /// </summary>
 public sealed class VisitedNodes(IJSRuntime js) : IVisitedNodes
 {
-    private const string StorageKey = "respondeo.visited";
+    private const string StorageKey = StorageKeys.Visited;
 
     public async Task MarkVisitedAsync(string nodeId)
     {

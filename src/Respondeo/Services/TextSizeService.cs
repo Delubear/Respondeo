@@ -45,7 +45,7 @@ public interface ITextSizeService
 /// </summary>
 public sealed class TextSizeService(IJSRuntime js) : ITextSizeService
 {
-    private const string StorageKey = "respondeo.textsize";
+    private const string StorageKey = StorageKeys.TextSize;
     private readonly LocalStorage _storage = new(js);
 
     public TextSize Current { get; private set; } = TextSize.Default;

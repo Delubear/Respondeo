@@ -23,7 +23,7 @@ public interface IBibleTranslationService
 /// <summary>An <see cref="IBibleTranslationService"/> backed by <c>localStorage</c>, modeled on <see cref="Prayers.PrayerLanguageService"/>.</summary>
 public sealed class BibleTranslationService(IJSRuntime js, IBibleTranslations translations) : IBibleTranslationService
 {
-    private const string StorageKey = "respondeo.bibleTranslation";
+    private const string StorageKey = StorageKeys.BibleTranslation;
     private readonly LocalStorage _storage = new(js);
 
     public BibleTranslation Current { get; private set; } = default!;

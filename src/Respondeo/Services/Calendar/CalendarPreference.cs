@@ -28,7 +28,7 @@ public interface ICalendarPreference
 /// </summary>
 public sealed class PreferredLiturgicalCalendar(IJSRuntime js) : ICalendarPreference, ILiturgicalCalendar
 {
-    private const string StorageKey = "respondeo.calendar";
+    private const string StorageKey = StorageKeys.Calendar;
     private readonly LocalStorage _storage = new(js);
     private ILiturgicalCalendar _engine = LiturgicalCalendars.Create(LiturgicalCalendarOptions.Default);
     private Task? _initialization;

@@ -32,7 +32,7 @@ public interface IPinService
 /// </summary>
 public sealed class PinService(IJSRuntime js) : IPinService
 {
-    private const string StorageKey = "respondeo.pins";
+    private const string StorageKey = StorageKeys.Pins;
     private readonly LocalStorage _storage = new(js);
     private List<string> _pins = [.. DefaultPins];
     private bool _initialized;
