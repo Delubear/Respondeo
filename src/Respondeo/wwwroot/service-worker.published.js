@@ -129,8 +129,10 @@ async function runPackDownload(pack, notify) {
     const cache = await caches.open(packCacheName(pack));
     const batchSize = 20;
     try {
-        // Drop the marker first so an interrupted download reads as not installed.
-        await cache.delete(packVersionKey);
+        // The marker is only written once every asset is cached. A fresh install has no marker, so an
+        // interrupted first download reads as not installed. A refresh of an installed pack keeps its old
+        // marker, so an interrupted or failed refresh (worker killed, offline, integrity error after an
+        // update) leaves the pack installed and stale instead of appearing deleted.
         for (let i = 0; i < assets.length; i += batchSize) {
             const batch = assets.slice(i, i + batchSize)
                 .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
