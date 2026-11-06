@@ -1,27 +1,27 @@
 @* Floating orbs live in the layout (not in the pages) so each persists as a single element across navigation
    within its area and animates only on true first appearance. The liturgical orb is one instance
-   spanning every Discover-area route; it merely slides when its Raised state changes. Which orbs
-   show on which route is declared in FloatingGuideRoutes (the single source of truth). The layout
-   resolves Guides on each render so the orbs never lag a page behind. *@
+   spanning every Discover-area route; it merely slides when its slot changes. Which orbs show on
+   which route is declared in FloatingGuideRoutes (the single source of truth), and each visible orb
+   gets its own slot from Guides.SlotOf so they never overlap. *@
 @if (Guides.ShowLiturgicalOrb || ForcedOrb == OrbLauncher.Liturgical)
 {
-    <LiturgicalOrb Raised="Guides.LiturgicalOrbRaised" HideTrigger="!Guides.ShowLiturgicalOrb" />
+    <LiturgicalOrb Slot="Guides.SlotOf(OrbLauncher.Liturgical)" HideTrigger="!Guides.ShowLiturgicalOrb" />
 }
 @if (Guides.ShowPrayerGuide || ForcedOrb == OrbLauncher.Prayers)
 {
-    <GuideToPrayers HideTrigger="!Guides.ShowPrayerGuide" />
+    <GuideToPrayers Slot="Guides.SlotOf(OrbLauncher.Prayers)" HideTrigger="!Guides.ShowPrayerGuide" />
 }
 @if (Guides.ShowSaintGlossary || ForcedOrb == OrbLauncher.Saints)
 {
-    <SaintGlossaryOrb HideTrigger="!Guides.ShowSaintGlossary" />
+    <SaintGlossaryOrb Slot="Guides.SlotOf(OrbLauncher.Saints)" HideTrigger="!Guides.ShowSaintGlossary" />
 }
 @if (Guides.ShowSummaGuide || ForcedOrb == OrbLauncher.Summa)
 {
-    <SummaGuide HideTrigger="!Guides.ShowSummaGuide" />
+    <SummaGuide Slot="Guides.SlotOf(OrbLauncher.Summa)" HideTrigger="!Guides.ShowSummaGuide" />
 }
 @if (Guides.ShowBibleGuide || ForcedOrb == OrbLauncher.Bible)
 {
-    <BibleGuide HideTrigger="!Guides.ShowBibleGuide" />
+    <BibleGuide Slot="Guides.SlotOf(OrbLauncher.Bible)" HideTrigger="!Guides.ShowBibleGuide" />
 }
 @if (Guides.ShowHourSettings)
 {

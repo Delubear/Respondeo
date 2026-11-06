@@ -1,4 +1,4 @@
-﻿@* A small floating "today in the Church" orb shown only on the Discover root pages.
+@* A small floating "today in the Church" orb shown only on the Discover root pages.
     It matches the shared floating-circle family (back-to-top, prayer guide, Summa guide): a bottom-right circle that slides up to stack above the back-to-top arrow.
     It is visually identical to the other circles and differs only by its calendar icon.
     Tapping it opens a Dialog with today's season, color, celebration, the saint of the day, and a short explanation of the liturgical year. *@
@@ -12,7 +12,7 @@
 
 <FloatingGuide OrbKey="@OrbLauncher.Liturgical" HideTrigger="HideTrigger" Title="Today in the Church" Eyebrow="Where we are in the liturgical year"
                AriaLabel="@($"Today in the Church: {_view.SeasonName}")" Tooltip="Today in the Church"
-               DialogClass="dialog--liturgy" Raised="Raised" OnOpening="SyncToToday">
+               DialogClass="dialog--liturgy" Slot="Slot" OnOpening="SyncToToday">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
              xmlns="http://www.w3.org/2000/svg">
@@ -147,10 +147,8 @@
     // so opening waits on it; otherwise the top card renders bare and then grows when the dates and summary arrive.
     private Task _profilesLoad = Task.CompletedTask;
 
-    /// <summary>
-    /// When true, the orb sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
-    /// </summary>
-    [Parameter] public bool Raised { get; set; }
+    /// <summary>The zero-based vertical slot the orb occupies, assigned by the layout so visible orbs never overlap.</summary>
+    [Parameter] public int Slot { get; set; }
 
     [Parameter] public bool HideTrigger { get; set; }
 

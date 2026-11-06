@@ -6,7 +6,7 @@
     detail pages are self-explanatory. *@
 
 <FloatingGuide OrbKey="@OrbLauncher.Saints" HideTrigger="HideTrigger" Title="Reading the saints" Eyebrow="What the labels mean" AriaLabel="Glossary: what the saint labels mean"
-               Tooltip="What the labels mean" DialogClass="dialog--glossary" Raised="Raised">
+               Tooltip="What the labels mean" DialogClass="dialog--glossary" Slot="Slot">
     <Icon>
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
@@ -109,11 +109,8 @@
 </FloatingGuide>
 
 @code {
-    /// <summary>
-    /// When true, the orb sits one slot higher so it clears another floating control that already
-    /// occupies the base slot (e.g. the liturgical orb on the Saints browse page).
-    /// </summary>
-    [Parameter] public bool Raised { get; set; }
+    /// <summary>The zero-based vertical slot the orb occupies, assigned by the layout so visible orbs never overlap.</summary>
+    [Parameter] public int Slot { get; set; }
 
     [Parameter] public bool HideTrigger { get; set; }
 }

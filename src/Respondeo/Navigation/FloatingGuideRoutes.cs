@@ -1,3 +1,5 @@
+using Respondeo.Services;
+
 namespace Respondeo.Navigation;
 
 /// <summary>
@@ -6,7 +8,6 @@ namespace Respondeo.Navigation;
 /// this record is the resolved decision the layout binds to.
 /// </summary>
 /// <param name="ShowLiturgicalOrb">Whether the liturgical calendar orb is rendered.</param>
-/// <param name="LiturgicalOrbRaised">Whether that orb sits in its raised slot (above a sibling guide).</param>
 /// <param name="ShowPrayerGuide">Whether the "guide to prayers" orb is rendered.</param>
 /// <param name="ShowSaintGlossary">Whether the saint glossary orb is rendered.</param>
 /// <param name="ShowSummaGuide">Whether the "how to read the Summa" guide is rendered.</param>
@@ -14,12 +15,45 @@ namespace Respondeo.Navigation;
 /// <param name="ShowBibleGuide">Whether the "how to read the Bible" guide is rendered.</param>
 public sealed record FloatingGuideState(
     bool ShowLiturgicalOrb,
-    bool LiturgicalOrbRaised,
     bool ShowPrayerGuide,
     bool ShowSaintGlossary,
     bool ShowSummaGuide,
     bool ShowHourSettings = false,
-    bool ShowBibleGuide = false);
+    bool ShowBibleGuide = false)
+{
+    /// <summary>
+    /// The zero-based vertical slot for an orb. Visible orbs stack bottom-up in a fixed order
+    /// (Bible, Summa, Saints, Prayers, Liturgical) so every visible orb gets its own slot and none overlap,
+    /// whatever combination a route shows. Hidden orbs return 0.
+    /// </summary>
+    public int SlotOf(string orbKey)
+    {
+        (string Key, bool Visible)[] stack =
+        [
+            (OrbLauncher.Bible, ShowBibleGuide),
+            (OrbLauncher.Summa, ShowSummaGuide),
+            (OrbLauncher.Saints, ShowSaintGlossary),
+            (OrbLauncher.Prayers, ShowPrayerGuide),
+            (OrbLauncher.Liturgical, ShowLiturgicalOrb),
+        ];
+
+        var slot = 0;
+        foreach (var (key, visible) in stack)
+        {
+            if (key == orbKey)
+            {
+                return visible ? slot : 0;
+            }
+
+            if (visible)
+            {
+                slot++;
+            }
+        }
+
+        return 0;
+    }
+}
 
 /// <summary>
 /// Single source of truth for which floating guides/orbs appear on which routes.
@@ -54,8 +88,7 @@ public static class FloatingGuideRoutes
     private const string BibleBrowse = "bible";
 
     /// <summary>
-    /// Resolves which orbs a route shows. The prayers and saints browse pages raise the liturgical orb above their sibling guide;
-    /// their detail pages keep only the sibling guide.
+    /// Resolves which orbs a route shows. Vertical placement is derived from the result by <see cref="FloatingGuideState.SlotOf"/>.
     /// The caller may pass either a raw relative URL or an already-normalized route — <see cref="Normalize"/> is idempotent.
     /// </summary>
     public static FloatingGuideState Resolve(string relativePath)
@@ -66,13 +99,12 @@ public static class FloatingGuideRoutes
         var saints = IsIn(route, SaintsBrowse);
         var summa = IsIn(route, SummaBrowse);
 
-        // The orb only raises on the browse pages, where it stacks above the prayer/saint guide.
-        var liturgicalRaised = route == PrayersBrowse || route == SaintsBrowse;
-        var liturgicalBase = Array.IndexOf(LiturgicalBaseRoutes, route) >= 0 || route == HoursBrowse;
+        // On the prayers/saints browse pages the liturgical orb shares the screen with their guide; slots keep them apart.
+        var liturgical = Array.IndexOf(LiturgicalBaseRoutes, route) >= 0 || route == HoursBrowse
+            || route == PrayersBrowse || route == SaintsBrowse;
 
         return new FloatingGuideState(
-            ShowLiturgicalOrb: liturgicalBase || liturgicalRaised,
-            LiturgicalOrbRaised: liturgicalRaised,
+            ShowLiturgicalOrb: liturgical,
             ShowPrayerGuide: prayers,
             ShowSaintGlossary: saints,
             ShowSummaGuide: summa,

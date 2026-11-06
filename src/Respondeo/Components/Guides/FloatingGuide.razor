@@ -10,7 +10,8 @@
 @if (!HideTrigger)
 {
 <button type="button"
-        class="float-circle @TriggerClass @(Raised ? "is-raised" : string.Empty) @(_stacked ? "is-stacked" : string.Empty)"
+        class="float-circle @TriggerClass @(_stacked ? "is-stacked" : string.Empty)"
+        style="--slot: @(Slot + (_stacked ? 1 : 0))"
         @onclick="OpenAsync"
         aria-label="@AriaLabel"
         title="@(Tooltip ?? AriaLabel)">
@@ -55,9 +56,10 @@
     [Parameter] public string? TriggerClass { get; set; }
 
     /// <summary>
-    /// When true, the control sits one slot higher than normal so it clears another floating control that already occupies the base slot (e.g. the Prayer Guide button on the prayers page).
+    /// The zero-based vertical slot this trigger occupies above the base position. Assigned by the layout so that
+    /// every visible orb gets its own slot and orbs never overlap, however many show on a route.
     /// </summary>
-    [Parameter] public bool Raised { get; set; }
+    [Parameter] public int Slot { get; set; }
 
     private FloatingGuideContext Context => new(CloseAsync);
 

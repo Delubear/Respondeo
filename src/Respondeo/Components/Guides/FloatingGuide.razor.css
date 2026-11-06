@@ -6,7 +6,8 @@
 .float-circle {
     position: fixed;
     right: 1.25rem;
-    bottom: 4.75rem;
+    /* --slot is the orb's stack index (0 = base slot), set inline by the component; each slot is one orb height plus gap. */
+    bottom: calc(4.75rem + var(--slot, 0) * 3.5rem);
     z-index: var(--z-float);
     display: inline-flex;
     align-items: center;
@@ -37,20 +38,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Raised sits one slot higher than normal to clear another floating control already in the base slot;
-   when the back-to-top arrow is also visible it climbs one more slot. */
-.float-circle.is-raised {
-    bottom: 8.25rem;
-}
-
-.float-circle.is-stacked {
-    bottom: 8.25rem;
-}
-
-.float-circle.is-raised.is-stacked {
-    bottom: 11.75rem;
 }
 
 /* Touch browsers keep :hover on the last-tapped element (blur does not clear it), so only apply hover on real pointers. */
