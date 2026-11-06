@@ -116,7 +116,7 @@
 06-13 | Memorial         | White  | Saint Anthony of Padua, Priest and Doctor of the Church
 06-19 | OptionalMemorial | White  | Saint Romuald, Abbot
 06-21 | Memorial         | White  | Saint Aloysius Gonzaga, Religious
-06-22 | OptionalMemorial | Red    | Saint Paulinus of Nola, Bishop
+06-22 | OptionalMemorial | White  | Saint Paulinus of Nola, Bishop
 06-22 | OptionalMemorial | Red    | Saints John Fisher, Bishop, and Thomas More, Martyrs
 06-24 | Solemnity        | White  | The Nativity of Saint John the Baptist
 06-27 | OptionalMemorial | White  | Saint Cyril of Alexandria, Bishop and Doctor of the Church

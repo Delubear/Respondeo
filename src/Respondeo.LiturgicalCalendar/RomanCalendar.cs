@@ -63,6 +63,14 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
             return new DayResolution(lordFeast.Celebration, []);
         }
 
+        // Weekdays of Holy Week and of the Octave of Easter outrank every feast and memorial (Table of Precedence I.2);
+        // a saint's feast falling on them (e.g. Saint Mark within the Octave) is simply omitted that year.
+        var easter = LiturgicalDates.Easter(date.Year);
+        if (date >= easter.AddDays(-7) && date <= easter.AddDays(7))
+        {
+            return new DayResolution(null, []);
+        }
+
         var feast = HighestOfRank(named, CelebrationRank.Feast);
         if (feast is { } f)
         {
