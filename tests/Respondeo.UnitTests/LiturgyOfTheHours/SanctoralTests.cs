@@ -389,6 +389,20 @@ public class SanctoralTests
         Assert.Equal(["Psalm 116:10-19", "Psalm 126", "Ephesians 1:3-10"], Psalmody(new DateOnly(2026, 11, 30), Hour.EveningPrayer));
     }
 
+    [Theory]
+    [InlineData(2025, 5, 29, CalendarRegion.GeneralRoman)]
+    [InlineData(2025, 6, 1, CalendarRegion.UnitedStates)]
+    public void Ascension_EveningPrayer_UsesProperPsalmody(int year, int month, int day, CalendarRegion region)
+    {
+        Assert.Contains("Psalm 47", Psalmody(new DateOnly(year, month, day), Hour.EveningPrayer, region));
+    }
+
+    [Fact]
+    public void Pentecost_EveningPrayer_UsesProperPsalmody()
+    {
+        Assert.Contains("Psalm 114", Psalmody(new DateOnly(2025, 6, 8), Hour.EveningPrayer));
+    }
+
     [Fact]
     public void Memorial_EveningPrayer_KeepsPsalter()
     {

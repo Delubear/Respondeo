@@ -48,6 +48,14 @@ public class LiturgyOfTheHoursTests
     public void PsalterWeek_EasterSunday_IsWeekOne() =>
         Assert.Equal(1, PsalterWeek.For(new DateOnly(2025, 4, 20), LiturgicalSeason.Easter));
 
+    [Theory]
+    [InlineData(2025, 5, 25, 2)]
+    [InlineData(2025, 5, 31, 2)]
+    [InlineData(2025, 6, 1, 3)]
+    [InlineData(2025, 6, 7, 3)]
+    public void PsalterWeek_EasterWeeksSixAndSeven_Cycle(int year, int month, int day, int expected) =>
+        Assert.Equal(expected, PsalterWeek.For(new DateOnly(year, month, day), LiturgicalSeason.Easter));
+
     [Fact]
     public void OrdinaryTimeWeek_DayAfterBaptism_IsWeekOne() =>
         Assert.Equal(1, PsalterWeek.OrdinaryTimeWeek(new DateOnly(2025, 1, 13), LiturgicalDates.Easter(2025)));
