@@ -39,6 +39,17 @@ public class SanctoralTests
         }
     }
 
+    [Theory]
+    [InlineData("Mary, the Holy Mother of God")]
+    [InlineData("The Most Holy Name of Jesus")]
+    [InlineData("Saint Joseph the Worker")]
+    [InlineData("The Nativity of the Lord")]
+    public void Celebration_HasMorningAndEveningReadings(string name)
+    {
+        Assert.NotNull(Sanctoral.ShortReading(Hour.MorningPrayer, name));
+        Assert.NotNull(Sanctoral.ShortReading(Hour.EveningPrayer, name));
+    }
+
     // Data integrity
 
     [Fact]

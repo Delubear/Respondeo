@@ -14,6 +14,8 @@
     "dedication-of-a-church": { "morning": "Isaiah 56:7", "evening": "Revelation 21:2-3, 22, 27", "eveningPsalmody": [ "Psalm 46", "Psalm 122", "Revelation 19:1-7" ] }
   },
   "celebrations": {
+    "mary-the-holy-mother-of-god": { "morning": "Micah 5:2-4a", "evening": "Galatians 4:4-5", "eveningPsalmody": [ "Psalm 122", "Psalm 127", "Ephesians 1:3-10" ] },
+    "the-most-holy-name-of-jesus": { "morning": "Philippians 2:10-11", "evening": "Colossians 3:17" },
     "the-epiphany-of-the-lord": { "morning": "Isaiah 52:7-10", "evening": "Titus 3:4-5", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 112", "Revelation 15:3-4" ] },
     "the-baptism-of-the-lord": { "morning": "Isaiah 61:1-2a", "evening": "Acts 10:37-38", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 112", "Revelation 15:3-4" ] },
     "the-holy-family-of-jesus-mary-and-joseph": { "morning": "Romans 12:10-13", "evening": "Ephesians 5:21-25", "eveningPsalmody": [ "Psalm 122", "Psalm 127", "Ephesians 1:3-10" ] },
@@ -86,6 +88,7 @@
     "saint-louis-grignion-de-montfort-priest": { "common": "pastors" },
     "saint-catherine-of-siena-virgin-and-doctor-of-the-church": { "common": "doctors" },
     "saint-pius-v-pope": { "common": "pastors" },
+    "saint-joseph-the-worker": { "morning": "Colossians 3:23-24", "evening": "Colossians 3:23-24", "common": "holy-men" },
     "saint-athanasius-bishop-and-doctor-of-the-church": { "common": "doctors" },
     "saints-philip-and-james-apostles": { "common": "apostles" },
     "saint-john-of-avila-priest-and-doctor-of-the-church": { "common": "doctors" },
@@ -233,6 +236,7 @@
     "saint-john-of-the-cross-priest-and-doctor-of-the-church": { "common": "doctors" },
     "saint-peter-canisius-priest-and-doctor-of-the-church": { "common": "doctors" },
     "saint-john-of-kety-priest": { "common": "pastors" },
+    "the-nativity-of-the-lord": { "morning": "Hebrews 1:1-2", "evening": "1 John 1:1-3", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 130", "Colossians 1:12-20" ] },
     "saint-stephen-the-first-martyr": { "morning": "Acts 6:2b-5a", "evening": "1 John 1:1-3", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 130", "Colossians 1:12-20" ] },
     "saint-john-apostle-and-evangelist": { "morning": "Acts 4:19-20", "evening": "Romans 8:3b-4", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 130", "Colossians 1:12-20" ] },
     "the-holy-innocents-martyrs": { "morning": "Jeremiah 31:15", "evening": "1 John 1:1-3", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 130", "Colossians 1:12-20" ] },
