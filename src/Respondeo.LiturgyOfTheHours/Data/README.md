@@ -37,7 +37,7 @@ Citations were scraped from [liturgies.net](https://www.liturgies.net/Liturgies/
    Presentation of the Lord, the Annunciation, the Visitation, the Nativity of John the Baptist,
    Saints Peter and Paul, the Transfiguration, the Assumption, the Nativity of Mary, the Exaltation of the Cross,
    the Dedication of the Lateran, the Immaculate Conception and Our Lady of Guadalupe (US feast).
-   A second source is needed (for example, the printed breviary).
+   They now carry proper or Common readings and psalmody (see item 8); spot-check them against the printed breviary.
 5. **Missing evening readings.**
    - Saint Stephen and the Holy Innocents: Evening Prayer is of the Christmas Octave; confirm no saint's reading is wanted.
    - Saint Martin of Tours: the site page has no Evening Prayer reading.
