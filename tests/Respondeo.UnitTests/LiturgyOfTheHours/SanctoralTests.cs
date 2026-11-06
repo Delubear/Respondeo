@@ -50,6 +50,13 @@ public class SanctoralTests
         Assert.NotNull(Sanctoral.ShortReading(Hour.EveningPrayer, name));
     }
 
+    [Theory]
+    [InlineData("Saint Stephen, the First Martyr", "1 John 1:1-3")]
+    [InlineData("The Holy Innocents, Martyrs", "1 John 1:1-3")]
+    [InlineData("Saint Martin of Tours, Bishop", "1 Peter 5:1-4")]
+    public void Celebration_HasExpectedEveningReading(string name, string citation) =>
+        Assert.Equal(citation, Sanctoral.ShortReading(Hour.EveningPrayer, name));
+
     // Data integrity
 
     [Fact]

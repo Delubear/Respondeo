@@ -119,8 +119,13 @@ public class LiturgyOfTheHoursTests
     }
 
     [Fact]
-    public void NightPrayer_OrdinaryThursday_FallsBackToOfficialSource() =>
-        Assert.True(NightStep(new DateOnly(2025, 7, 17), OfficeStepKind.Prayer).UseOfficialText);
+    public void NightPrayer_OrdinaryThursday_UsesPublicDomainConcludingPrayer()
+    {
+        var prayer = NightStep(new DateOnly(2025, 7, 17), OfficeStepKind.Prayer);
+
+        Assert.False(prayer.UseOfficialText);
+        Assert.Contains("diurno labore fatigatos", prayer.Text);
+    }
 
     [Fact]
     public void NightPrayer_SaturdayBeforeSunday_UsesFirstVespersPrayer() =>

@@ -69,6 +69,17 @@ public class OfficeDataTests
         Assert.All(OfficeData.Texts.NightConcludingPrayers.Values, lines => Assert.DoesNotContain("{", OfficeData.ResolveText(lines)));
     }
 
+    [Theory]
+    [InlineData("sunday")]
+    [InlineData("monday")]
+    [InlineData("tuesday")]
+    [InlineData("wednesday")]
+    [InlineData("thursday")]
+    [InlineData("friday")]
+    [InlineData("saturday")]
+    public void Texts_NightConcludingPrayers_CoverEveryWeekday(string day) =>
+        Assert.True(OfficeData.Texts.NightConcludingPrayers.ContainsKey(day), $"Missing night concluding prayer for {day}.");
+
     [Fact]
     public void Texts_MarianAntiphons_EndWithCatchAllAndReferenceKnownTexts()
     {
