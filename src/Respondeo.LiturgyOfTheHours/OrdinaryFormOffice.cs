@@ -162,15 +162,47 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 	}
 
 	private static IReadOnlyList<string> MorningPsalmody(LiturgicalDay day, int week) =>
-		IsFestal(day) || day.Date.DayOfWeek == DayOfWeek.Sunday
+		TriduumPsalmody(day, morning: true)
+		?? (IsFestal(day) || day.Date.DayOfWeek == DayOfWeek.Sunday
 			? Psalter.MorningPsalmody(IsFestal(day) ? 1 : week, DayOfWeek.Sunday)
-			: Psalter.MorningPsalmody(week, day.Date.DayOfWeek);
+			: Psalter.MorningPsalmody(week, day.Date.DayOfWeek));
+
+	/// <summary>
+	/// The proper psalmody of the Paschal Triduum, keyed by days from Easter Sunday.
+	/// Holy Thursday morning still belongs to Lent and uses the psalter.
+	/// </summary>
+	private static readonly Dictionary<(int Offset, bool Morning), IReadOnlyList<string>> TriduumPropers = new()
+	{
+		[(-3, false)] = ["Psalm 72:1-11", "Psalm 72:12-19", "Revelation 11:17-18; 12:10b-12a"],
+		[(-2, true)] = ["Psalm 51", "Habakkuk 3:2-4, 13a, 15-19", "Psalm 147:12-20"],
+		[(-2, false)] = ["Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11"],
+		[(-1, true)] = ["Psalm 64", "Isaiah 38:10-14, 17-20", "Psalm 150"],
+		[(-1, false)] = ["Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11"],
+		[(0, true)] = ["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"],
+		[(0, false)] = ["Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7"],
+	};
+
+	private static IReadOnlyList<string>? TriduumPsalmody(LiturgicalDay day, bool morning)
+	{
+		if (day.Season != LiturgicalSeason.Triduum)
+		{
+			return null;
+		}
+
+		var offset = day.Date.DayNumber - LiturgicalDates.Easter(day.Date.Year).DayNumber;
+		return TriduumPropers.GetValueOrDefault((offset, morning));
+	}
 
 	private static IReadOnlyList<string> EveningPsalmody(LiturgicalDay today, LiturgicalDay tomorrow, int week, bool firstVespers)
 	{
 		if (firstVespers)
 		{
 			return Psalter.EveningPsalmody(IsSolemnity(tomorrow) ? 1 : NextSundayWeek(today, week), DayOfWeek.Saturday);
+		}
+
+		if (TriduumPsalmody(today, morning: false) is { } triduum)
+		{
+			return triduum;
 		}
 
 		if (IsFestal(today) && today.Celebration is { } celebration && Sanctoral.EveningPsalmody(celebration.Name) is { } proper)

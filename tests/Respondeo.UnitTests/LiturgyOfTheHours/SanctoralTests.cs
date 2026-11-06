@@ -396,6 +396,19 @@ public class SanctoralTests
         Assert.DoesNotContain("Psalm 112", Psalmody(new DateOnly(2026, 1, 28), Hour.EveningPrayer));
     }
 
+    [Theory]
+    [InlineData(2, Hour.EveningPrayer, "Psalm 72:1-11", "Psalm 72:12-19", "Revelation 11:17-18; 12:10b-12a")]
+    [InlineData(3, Hour.MorningPrayer, "Psalm 51", "Habakkuk 3:2-4, 13a, 15-19", "Psalm 147:12-20")]
+    [InlineData(3, Hour.EveningPrayer, "Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11")]
+    [InlineData(4, Hour.MorningPrayer, "Psalm 64", "Isaiah 38:10-14, 17-20", "Psalm 150")]
+    [InlineData(4, Hour.EveningPrayer, "Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11")]
+    [InlineData(5, Hour.MorningPrayer, "Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149")]
+    [InlineData(5, Hour.EveningPrayer, "Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7")]
+    public void PaschalTriduum_UsesProperPsalmody(int aprilDay, Hour hour, string first, string second, string third)
+    {
+        Assert.Equal([first, second, third], Psalmody(new DateOnly(2026, 4, aprilDay), hour));
+    }
+
 	// Moveable celebrations
 
 	[Theory]
