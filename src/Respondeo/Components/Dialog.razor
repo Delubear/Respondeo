@@ -5,8 +5,8 @@
     The shell, close button and mobile bottom-sheet layout live in Dialog.razor.css so every dialog looks and behaves the same; content-specific styling stays with each caller. *@
 
 <dialog @ref="_dialog" class="dialog @(_closing ? "dialog--closing" : null) @Class" aria-labelledby="@_titleId" style="@DialogStyle"
-        @onclose="OnNativeClose">
-    <div class="dialog__panel"
+        @onclose="OnNativeClose" @onmousedown="() => _pressInside = false" @onclick="OnDialogClick">
+    <div class="dialog__panel" @onmousedown="() => _pressInside = true" @onmousedown:stopPropagation @onclick:stopPropagation
          @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd" @ontouchcancel="OnTouchEnd">
         <header class="dialog__head" @ontouchstart="() => _fromHeader = true">
             @if (!string.IsNullOrWhiteSpace(Eyebrow))
@@ -57,6 +57,21 @@
 
     /// <summary>When true, the pull-to-close gesture is ignored (e.g. while a row is being dragged).</summary>
     [Parameter] public bool SuppressPull { get; set; }
+
+    /// <summary>When true, clicking the backdrop outside the panel closes the dialog.</summary>
+    [Parameter] public bool CloseOnBackdropClick { get; set; }
+
+    private bool _pressInside;
+
+    private async Task OnDialogClick()
+    {
+        var pressedInside = _pressInside;
+        _pressInside = false;
+        if (CloseOnBackdropClick && !pressedInside)
+        {
+            await Close();
+        }
+    }
 
     private Task OnNativeClose() => OnClosed.InvokeAsync();
 

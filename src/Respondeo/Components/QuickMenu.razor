@@ -15,7 +15,8 @@
 	<span aria-hidden="true">&#9776;</span>
 </button>
 
-<Dialog @ref="_dialog" Title="Quick menu" Class="quick-menu dialog--drawer" SuppressPull="@(_dragIndex >= 0)" OnClosed="OnDialogClosed">
+<Dialog @ref="_dialog" Title="Quick menu" Class="quick-menu dialog--drawer" SuppressPull="@(_dragIndex >= 0)" OnClosed="OnDialogClosed"
+		CloseOnBackdropClick="true">
 	<ChildContent>
 		@if (_managingOffline)
 		{
