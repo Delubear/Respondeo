@@ -173,6 +173,11 @@ internal sealed class OrdinaryFormOffice(ILiturgicalCalendar calendar, IHoursTex
 			return Psalter.EveningPsalmody(IsSolemnity(tomorrow) ? 1 : NextSundayWeek(today, week), DayOfWeek.Saturday);
 		}
 
+		if (IsFestal(today) && today.Celebration is { } celebration && Sanctoral.EveningPsalmody(celebration.Name) is { } proper)
+		{
+			return proper;
+		}
+
 		return IsFestal(today) || today.Date.DayOfWeek == DayOfWeek.Sunday
 			? Psalter.EveningPsalmody(IsFestal(today) ? 1 : week, DayOfWeek.Sunday)
 			: Psalter.EveningPsalmody(week, today.Date.DayOfWeek);

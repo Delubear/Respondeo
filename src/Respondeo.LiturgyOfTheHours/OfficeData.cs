@@ -69,7 +69,8 @@ internal sealed record NightPsalmodyData(string[] Psalms, string Reading);
 /// <summary>Short-reading citations of the Commons of saints and of individual celebrations.</summary>
 internal sealed record SanctoralData(Dictionary<string, SanctoralReadings> Commons, Dictionary<string, SanctoralReadings> Celebrations);
 
-internal sealed record SanctoralReadings(string? Morning = null, string? Evening = null, string? Common = null);
+/// <param name="EveningPsalmody">Evening Prayer psalmody used when the celebration is a Feast or Solemnity; memorials keep the psalter.</param>
+internal sealed record SanctoralReadings(string? Morning = null, string? Evening = null, string? Common = null, string[]? EveningPsalmody = null);
 
 internal sealed record OrdinaryTextsData(Dictionary<string, string[]> Texts, Dictionary<string, string[]> NightConcludingPrayers, IReadOnlyList<MarianAntiphonRule> MarianAntiphons);
 

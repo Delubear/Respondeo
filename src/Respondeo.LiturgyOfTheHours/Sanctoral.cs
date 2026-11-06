@@ -22,6 +22,23 @@ internal static class Sanctoral
         return common is not null && data.Commons.TryGetValue(common, out var readings) ? Pick(readings, hour) : null;
     }
 
+    /// <summary>The proper or Common Evening Prayer psalmody of a celebration, or <c>null</c> to use the psalter.</summary>
+    public static IReadOnlyList<string>? EveningPsalmody(string celebrationName)
+    {
+        var data = OfficeData.Sanctoral;
+        if (!data.Celebrations.TryGetValue(OrdinaryFormOffice.CelebrationId(celebrationName), out var proper))
+        {
+            return null;
+        }
+
+        if (proper.EveningPsalmody is not null)
+        {
+            return proper.EveningPsalmody;
+        }
+
+        return proper.Common is not null && data.Commons.TryGetValue(proper.Common, out var common) ? common.EveningPsalmody : null;
+    }
+
     private static string? Pick(SanctoralReadings? readings, Hour hour) => hour switch
     {
         Hour.MorningPrayer => readings?.Morning,

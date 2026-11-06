@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Respondeo.Bible;
 using Respondeo.LiturgicalCalendar;
@@ -45,6 +46,40 @@ public class SanctoralTests
     {
         Assert.NotEmpty(OfficeData.Sanctoral.Commons);
         Assert.NotEmpty(OfficeData.Sanctoral.Celebrations);
+    }
+
+    [Fact]
+    public void Data_HasNoDuplicateKeys()
+    {
+        using var stream = typeof(OfficeData).Assembly.GetManifestResourceStream(OfficeData.SanctoralResource)!;
+        using var buffer = new MemoryStream();
+        stream.CopyTo(buffer);
+
+        var reader = new Utf8JsonReader(buffer.ToArray(), new JsonReaderOptions { CommentHandling = JsonCommentHandling.Skip });
+        var scopes = new Stack<HashSet<string>>();
+        var duplicates = new List<string>();
+        while (reader.Read())
+        {
+            switch (reader.TokenType)
+            {
+                case JsonTokenType.StartObject:
+                    scopes.Push([]);
+                    break;
+                case JsonTokenType.EndObject:
+                    scopes.Pop();
+                    break;
+                case JsonTokenType.PropertyName:
+                    var name = reader.GetString()!;
+                    if (!scopes.Peek().Add(name))
+                    {
+                        duplicates.Add(name);
+                    }
+
+                    break;
+            }
+        }
+
+        Assert.Empty(duplicates);
     }
 
     [Fact]
@@ -138,6 +173,33 @@ public class SanctoralTests
     [InlineData("Our Lady of Guadalupe", Hour.EveningPrayer, "Galatians 4:4-5")]
     public void ShortReading_UsesProperCitations(string name, Hour hour, string expected) =>
         Assert.Equal(expected, Sanctoral.ShortReading(hour, name));
+
+    // Every fixed feast and solemnity has a short reading at both hours and festal Evening Prayer psalmody.
+    [Theory]
+    [InlineData("The Presentation of the Lord")]
+    [InlineData("The Chair of Saint Peter the Apostle")]
+    [InlineData("Saint Joseph, Spouse of the Blessed Virgin Mary")]
+    [InlineData("The Annunciation of the Lord")]
+    [InlineData("The Visitation of the Blessed Virgin Mary")]
+    [InlineData("The Nativity of Saint John the Baptist")]
+    [InlineData("Saints Peter and Paul, Apostles")]
+    [InlineData("The Transfiguration of the Lord")]
+    [InlineData("The Assumption of the Blessed Virgin Mary")]
+    [InlineData("The Nativity of the Blessed Virgin Mary")]
+    [InlineData("The Exaltation of the Holy Cross")]
+    [InlineData("Saints Michael, Gabriel and Raphael, Archangels")]
+    [InlineData("All Saints")]
+    [InlineData("The Dedication of the Lateran Basilica")]
+    [InlineData("The Immaculate Conception of the Blessed Virgin Mary")]
+    [InlineData("Saint Stephen, the First Martyr")]
+    [InlineData("Saint John, Apostle and Evangelist")]
+    [InlineData("The Holy Innocents, Martyrs")]
+    public void FeastsAndSolemnities_HaveReadingsAndPsalmody(string name)
+    {
+        Assert.NotNull(Sanctoral.ShortReading(Hour.MorningPrayer, name));
+        Assert.NotNull(Sanctoral.ShortReading(Hour.EveningPrayer, name));
+        Assert.Equal(3, Sanctoral.EveningPsalmody(name)?.Count);
+    }
 
     // United States observances without a proper office: the office of the day is prayed.
     [Theory]
@@ -263,4 +325,134 @@ public class SanctoralTests
 
         Assert.True(failures.Count == 0, "Unparseable citations: " + string.Join("; ", failures.Take(20)));
     }
+
+    // Festal psalmody
+
+    private static string[] Psalmody(DateOnly date, Hour hour, CalendarRegion region = CalendarRegion.GeneralRoman)
+    {
+        var services = new ServiceCollection().AddRespondeoLiturgy().AddRespondeoHours();
+        services.AddSingleton(LiturgicalCalendars.Create(new LiturgicalCalendarOptions(region)));
+        return services.BuildServiceProvider().CreateScope().ServiceProvider
+            .GetRequiredService<ILiturgyOfTheHours>().Compose(date, hour).Steps
+            .Where(s => s.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle)
+            .Select(s => s.Reference!.Citation.Replace("Canticle: ", string.Empty))
+            .ToArray();
+    }
+
+    [Fact]
+    public void Commons_EachHaveThreeEveningPsalms()
+    {
+        Assert.All(OfficeData.Sanctoral.Commons, pair => Assert.Equal(3, pair.Value.EveningPsalmody?.Length ?? 0));
+    }
+
+    // Dec 12 is a Feast in the United States; 2027 is omitted because it falls on an Advent Sunday,
+    // and 2026 for Evening Prayer because that Saturday evening is First Vespers of the Sunday.
+    [Theory]
+    [InlineData(2025)]
+    [InlineData(2028)]
+    [InlineData(2029)]
+    public void Guadalupe_EveningPrayer_UsesCommonOfTheBlessedVirginMary(int year)
+    {
+        Assert.Equal(["Psalm 122", "Psalm 127", "Ephesians 1:3-10"], Psalmody(new DateOnly(year, 12, 12), Hour.EveningPrayer, CalendarRegion.UnitedStates));
+    }
+
+    [Theory]
+    [InlineData(2025)]
+    [InlineData(2026)]
+    [InlineData(2028)]
+    public void Guadalupe_MorningPrayer_UsesSundayWeekOne(int year)
+    {
+        Assert.Equal(["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"], Psalmody(new DateOnly(year, 12, 12), Hour.MorningPrayer, CalendarRegion.UnitedStates));
+    }
+
+    [Fact]
+    public void ApostleFeast_EveningPrayer_UsesCommonOfApostles()
+    {
+        Assert.Equal(["Psalm 116:10-19", "Psalm 126", "Ephesians 1:3-10"], Psalmody(new DateOnly(2026, 11, 30), Hour.EveningPrayer));
+    }
+
+    [Fact]
+    public void Memorial_EveningPrayer_KeepsPsalter()
+    {
+        // Saint Thomas Aquinas (Jan 28, 2026, a Wednesday memorial) takes the psalter, not the Common of Doctors.
+        Assert.DoesNotContain("Psalm 112", Psalmody(new DateOnly(2026, 1, 28), Hour.EveningPrayer));
+    }
+
+	// Moveable celebrations
+
+	[Theory]
+	[InlineData("The Epiphany of the Lord")]
+	[InlineData("The Baptism of the Lord")]
+	[InlineData("The Holy Family of Jesus, Mary and Joseph")]
+	[InlineData("The Ascension of the Lord")]
+	[InlineData("Pentecost Sunday")]
+	[InlineData("The Most Holy Trinity")]
+	[InlineData("The Most Holy Body and Blood of Christ")]
+	[InlineData("The Most Sacred Heart of Jesus")]
+	[InlineData("Our Lord Jesus Christ, King of the Universe")]
+	public void MoveableFeastsAndSolemnities_HaveReadingsAndPsalmody(string name)
+	{
+		Assert.NotNull(Sanctoral.ShortReading(Hour.MorningPrayer, name));
+		Assert.NotNull(Sanctoral.ShortReading(Hour.EveningPrayer, name));
+		Assert.Equal(3, Sanctoral.EveningPsalmody(name)?.Count);
+	}
+
+	[Theory]
+	[InlineData("The Blessed Virgin Mary, Mother of the Church")]
+	[InlineData("The Immaculate Heart of the Blessed Virgin Mary")]
+	public void MoveableMarianMemorials_UseCommonOfTheBlessedVirginMary(string name)
+	{
+		Assert.Equal(OfficeData.Sanctoral.Commons["blessed-virgin-mary"].Morning, Sanctoral.ShortReading(Hour.MorningPrayer, name));
+		Assert.Equal(OfficeData.Sanctoral.Commons["blessed-virgin-mary"].Evening, Sanctoral.ShortReading(Hour.EveningPrayer, name));
+	}
+
+	// Citation checks
+
+	private static IEnumerable<(string Key, string Citation)> AllSanctoralCitations()
+	{
+		var data = OfficeData.Sanctoral;
+		foreach (var (key, r) in data.Commons.Select(p => ("commons/" + p.Key, p.Value)).Concat(data.Celebrations.Select(p => ("celebrations/" + p.Key, p.Value))))
+		{
+			foreach (var citation in new[] { r.Morning, r.Evening }.Concat(r.EveningPsalmody ?? []))
+			{
+				if (citation is not null)
+				{
+					yield return (key, citation);
+				}
+			}
+		}
+	}
+
+	[Fact]
+	public void SanctoralData_AllCitationsParse()
+	{
+		var failures = AllSanctoralCitations().Where(c => BibleCitation.Parse(c.Citation, TestBible.Drb) is null).Select(c => $"{c.Key}: {c.Citation}").ToList();
+		Assert.True(failures.Count == 0, "Unparseable citations: " + string.Join("; ", failures));
+	}
+
+	[Fact]
+	public void SanctoralData_CommonReferencesExist()
+	{
+		var data = OfficeData.Sanctoral;
+		var missing = data.Celebrations.Where(p => p.Value.Common is { } c && !data.Commons.ContainsKey(c)).Select(p => p.Key).ToList();
+		Assert.Empty(missing);
+	}
+
+	[Fact]
+	public void SanctoralData_EveryCelebrationResolvesReadings()
+	{
+		var data = OfficeData.Sanctoral;
+		var empty = data.Celebrations
+			.Where(p => (p.Value.Morning ?? (p.Value.Common is { } c ? data.Commons[c].Morning : null)) is null)
+			.Select(p => p.Key)
+			.ToList();
+		Assert.Empty(empty);
+	}
+
+	[Fact]
+	public void SanctoralData_PsalmodyHasThreeEntries()
+	{
+		var bad = OfficeData.Sanctoral.Celebrations.Where(p => p.Value.EveningPsalmody is { Length: not 3 }).Select(p => p.Key).ToList();
+		Assert.Empty(bad);
+	}
 }

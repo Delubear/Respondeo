@@ -10,6 +10,9 @@ Citations were scraped from [liturgies.net](https://www.liturgies.net/Liturgies/
 - `celebrations`: keyed by the celebration id (the slugified name from the calendar data).
   Each entry gives its own `morning`/`evening` citations, a `common`, or both.
   A celebration with no entry, or no citation for an hour, falls back to the official source link.
+- `eveningPsalmody`: the psalms and canticle of Evening Prayer on a feast or solemnity, set on a Common or a celebration.
+  A celebration's own list wins; otherwise its Common's list is used. It does not apply when the evening is First Vespers
+  of a Sunday or solemnity, and festal Morning Prayer always uses the psalmody of Sunday, Week I.
 
 ### Outstanding questions
 
@@ -42,3 +45,11 @@ Citations were scraped from [liturgies.net](https://www.liturgies.net/Liturgies/
    Confirm that the breviary indeed does not differ, or that a sub-common (religious, works of mercy, educators) is not intended.
 7. **Optional memorials during privileged seasons** (Lent, late Advent) are commemorations only;
    confirm the short reading should then stay with the weekday rather than the Common.
+8. **Festal psalmody and readings.**
+   - Every fixed feast and solemnity now has proper or Common short readings and Evening Prayer psalmody;
+     festal Morning Prayer uses the Sunday Week I psalmody.
+   - The Passion of Saint John the Baptist and the Lateran Dedication take their Commons.
+   - Moveable feasts and solemnities (Epiphany, Baptism, Holy Family, Ascension, Pentecost, Trinity, Corpus Christi,
+     Sacred Heart, Christ the King) now carry proper readings and psalmody; the moveable Marian memorials take the Common.
+   - Unit tests check that every citation parses, every referenced Common exists, and every psalmody has three entries.
+   - All festal citations still need a spot-check against the printed breviary.
