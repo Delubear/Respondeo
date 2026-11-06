@@ -89,6 +89,7 @@ public static class SiteMap
         }
 
         guides.Add(Orb(OrbLauncher.Summa, "How to read the Summa"));
+        guides.Add(Orb(OrbLauncher.Bible, "How to read the Bible"));
         return guides;
     }
 

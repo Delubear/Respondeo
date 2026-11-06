@@ -19,6 +19,10 @@
 {
     <SummaGuide HideTrigger="!Guides.ShowSummaGuide" />
 }
+@if (Guides.ShowBibleGuide || ForcedOrb == OrbLauncher.Bible)
+{
+    <BibleGuide HideTrigger="!Guides.ShowBibleGuide" />
+}
 @if (Guides.ShowHourSettings)
 {
     <HourSettingsGuide />

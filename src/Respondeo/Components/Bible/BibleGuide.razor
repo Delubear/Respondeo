@@ -1,0 +1,78 @@
+@* A self-contained "How to read the Bible" helper, shown on the Bible home and every book and chapter page.
+   It explains how the canon is arranged, how references read, the two translations, and the older book names. *@
+
+<FloatingGuide OrbKey="@OrbLauncher.Bible" HideTrigger="HideTrigger" Title="How to read the Bible" Eyebrow="A short orientation" AriaLabel="How to read the Bible">
+    <Icon>
+        <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 1.5A1.5 1.5 0 0 1 4.5 0H14v13H4.5a.5.5 0 0 0 0 1H14v2H4.5A2.5 2.5 0 0 1 2 13.5v-12A1.5 1.5 0 0 1 3 1.5zM8 3v2H6v1.5h2V11h1.5V6.5h2V5h-2V3H8z" />
+        </svg>
+    </Icon>
+    <ChildContent>
+        <p>
+            The Bible is one book with many human authors and one divine Author. The Church, guided by the Holy Spirit,
+            discerned which books belong to it, and she reads them together with Sacred Tradition and under the teaching of the Magisterium
+            (<em>Dei Verbum</em> 9-10).
+        </p>
+
+        <GuideSection Title="The shape of the whole work">
+            <GuideList>
+                <GuideItem Term="Old Testament">46 books: the Pentateuch (the five books of Moses), the historical books, the wisdom books, and the prophets.</GuideItem>
+                <GuideItem Term="New Testament">27 books: the four Gospels, the Acts of the Apostles, the epistles of St. Paul, the Catholic epistles, and the Apocalypse.</GuideItem>
+                <GuideItem Term="Deuterocanonical books">
+                    Tobias, Judith, Wisdom, Ecclesiasticus (Sirach), Baruch, 1 and 2 Machabees, and the Greek portions of Esther and Daniel.
+                    The Church has always received them as Scripture; Protestant Bibles set them aside in the sixteenth century, which is why they are shorter.
+                </GuideItem>
+                <GuideItem Term="Appendix">a few texts printed after the Vulgate for reference (such as the Prayer of Manasses); they are not part of the canon.</GuideItem>
+            </GuideList>
+        </GuideSection>
+
+        <GuideSection Title="Reading a reference">
+            <p>A reference names the book, then the chapter, then the verse:</p>
+            <GuideList>
+                <GuideItem Term="John 3:16">the Gospel of St. John, chapter 3, verse 16.</GuideItem>
+                <GuideItem Term="Matthew 5:3-12">chapter 5, verses 3 through 12.</GuideItem>
+            </GuideList>
+            <p>
+                The sacred writers did not number anything. Chapters were added by Stephen Langton in the thirteenth century,
+                and verses by Robert Estienne in 1551, so a chapter break can fall in the middle of a thought.
+            </p>
+        </GuideSection>
+
+        <GuideSection Title="Two translations">
+            <GuideList>
+                <GuideItem Term="Douay-Rheims">
+                    the classic English Catholic Bible, translated from the Latin Vulgate by English exiles (1582-1610) and revised by Bishop Challoner in the eighteenth century.
+                </GuideItem>
+                <GuideItem Term="CPDV">
+                    the Catholic Public Domain Version, a modern English rendering of the same Vulgate. It is easier to read, but it is not an official Church translation.
+                </GuideItem>
+            </GuideList>
+        </GuideSection>
+
+        <GuideSection Title="Old names">
+            <p>Because both follow the Vulgate, some books carry older names:</p>
+            <GuideList>
+                <GuideItem Term="1-2 Kings">1-2 Samuel</GuideItem>
+                <GuideItem Term="3-4 Kings">1-2 Kings</GuideItem>
+                <GuideItem Term="1-2 Paralipomenon">1-2 Chronicles</GuideItem>
+                <GuideItem Term="1-2 Esdras">Ezra and Nehemiah</GuideItem>
+                <GuideItem Term="Abdias">Obadiah</GuideItem>
+                <GuideItem Term="Aggeus">Haggai</GuideItem>
+                <GuideItem Term="Machabees">Maccabees</GuideItem>
+                <GuideItem Term="Apocalypse">Revelation</GuideItem>
+            </GuideList>
+        </GuideSection>
+
+        <PsalmNumberingNote>
+            <p>
+                Both translations number the Psalms by the traditional scheme of the Greek Septuagint and the Latin Vulgate,
+                which the Church used for centuries. Modern Catholic Bibles (such as the NABRE and RSV-CE) and the English Liturgy of the Hours
+                follow the Hebrew numbering instead, so the same psalm may carry two numbers.
+            </p>
+        </PsalmNumberingNote>
+    </ChildContent>
+</FloatingGuide>
+
+@code {
+    [Parameter] public bool HideTrigger { get; set; }
+}

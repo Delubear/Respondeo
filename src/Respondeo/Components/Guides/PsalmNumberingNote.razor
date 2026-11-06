@@ -1,0 +1,14 @@
+@* The shared "Psalm numbering" guide section. Each guide supplies its own opening paragraph (which scheme it uses);
+   the explanation of how the Hebrew and Vulgate schemes differ is common to all. *@
+<GuideSection Title="Psalm numbering">
+    @ChildContent
+    <p>
+        The two schemes differ because the Vulgate joins Psalms 9 and 10, and Psalms 114 and 115, into single psalms,
+        while it splits Psalms 116 and 147 into two each. As a result, most psalms from 10 through 147 are one number lower in the Vulgate.
+        Psalms 1 through 8 and 148 through 150 are numbered the same in both.
+    </p>
+</GuideSection>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

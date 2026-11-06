@@ -39,7 +39,8 @@ else
     </article>
 
     <ReaderMode Active="true" />
-    <ReaderBar LeaveHref="@ContentRoutes.Bible" LeaveLabel="Bible" AriaLabel="Bible tools">
+    <ReaderBar LeaveHref="@ContentRoutes.Bible" LeaveLabel="Bible" AriaLabel="Bible tools"
+               GuideOrb="@OrbLauncher.Bible" GuideLabel="Guide to the Bible">
         <ExtraActions>
             <BiblePager Previous="Previous" Next="Next" OnNavigate="_fade.RequestReplay" Compact="true" />
         </ExtraActions>
