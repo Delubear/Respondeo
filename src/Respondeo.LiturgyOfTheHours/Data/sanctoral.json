@@ -206,7 +206,7 @@
     "saint-juan-diego-cuauhtlatoatzin": { "common": "holy-men" },
     "our-lady-of-loreto": { "common": "blessed-virgin-mary" },
     "saint-damasus-i-pope": { "common": "pastors" },
-    "our-lady-of-guadalupe": { "common": "blessed-virgin-mary" },
+    "our-lady-of-guadalupe": { "morning": "Isaiah 61:10", "evening": "Galatians 4:4-5", "common": "blessed-virgin-mary" },
     "saint-lucy-virgin-and-martyr": { "common": "martyrs" },
     "saint-john-of-the-cross-priest-and-doctor-of-the-church": { "common": "doctors" },
     "saint-peter-canisius-priest-and-doctor-of-the-church": { "common": "doctors" },
@@ -229,6 +229,9 @@
     "saint-john-henry-newman-cardinal": { "common": "pastors" },
     "saint-frances-xavier-cabrini-virgin": { "common": "virgins" },
     "saint-rose-philippine-duchesne-virgin": { "common": "virgins" },
-    "blessed-miguel-agustin-pro-priest-and-martyr": { "common": "martyrs" }
+    "blessed-miguel-agustin-pro-priest-and-martyr": { "common": "martyrs" },
+    "saint-marianne-cope-virgin": { "common": "virgins" },
+    "the-blessed-virgin-mary-mother-of-the-church": { "common": "blessed-virgin-mary" },
+    "the-immaculate-heart-of-the-blessed-virgin-mary": { "common": "blessed-virgin-mary" }
   }
 }

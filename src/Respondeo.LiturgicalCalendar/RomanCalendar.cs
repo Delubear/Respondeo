@@ -139,7 +139,21 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
                 continue;
             }
 
+            // In the United States, when 22 January falls on a Sunday the Day of Prayer is observed on Monday, 23 January.
+            if (IsDayOfPrayerForUnborn(fixedCelebration) && date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                continue;
+            }
+
             candidates.Add(new Candidate(fixedCelebration, SundayReplacingFixedDates.Contains((date.Month, date.Day))));
+        }
+
+        if (IsUnitedStates && date is { Month: 1, Day: 23 } && new DateOnly(date.Year, 1, 22).DayOfWeek == DayOfWeek.Sunday)
+        {
+            foreach (var dayOfPrayer in GeneralRomanCalendarData.ForMonthDay(1, 22, Options.Region).Where(IsDayOfPrayerForUnborn))
+            {
+                candidates.Add(new Candidate(dayOfPrayer, OfTheLord: false));
+            }
         }
 
         foreach (var transferred in TransferredSolemnities(date))
@@ -147,8 +161,24 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
             candidates.Add(new Candidate(transferred, OfTheLord: false));
         }
 
+        // When the Immaculate Heart coincides with another obligatory memorial, both become optional memorials.
+        var memorialCount = candidates.Count(c => c.Celebration.Rank == CelebrationRank.Memorial);
+        if (memorialCount > 1 && candidates.Any(c => c.Celebration.Rank == CelebrationRank.Memorial && c.Celebration.Name.Contains("Immaculate Heart")))
+        {
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                if (candidates[i].Celebration.Rank == CelebrationRank.Memorial)
+                {
+                    candidates[i] = candidates[i] with { Celebration = candidates[i].Celebration with { Rank = CelebrationRank.OptionalMemorial } };
+                }
+            }
+        }
+
         return candidates;
     }
+
+    private bool IsDayOfPrayerForUnborn(LiturgicalCelebration celebration) =>
+        IsUnitedStates && celebration.Name.StartsWith("Day of Prayer for the Legal Protection", StringComparison.Ordinal);
 
     // -----------------------------------------------------------------------
     // Solemnity transfers:
@@ -241,10 +271,17 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
             49 => new("Pentecost Sunday", CelebrationRank.Solemnity, LiturgicalColor.Red),
             56 => new("The Most Holy Trinity", CelebrationRank.Solemnity, LiturgicalColor.White),
             _ when offset == CorpusChristiOffset => new("The Most Holy Body and Blood of Christ", CelebrationRank.Solemnity, LiturgicalColor.White),
+            50 => new("The Blessed Virgin Mary, Mother of the Church", CelebrationRank.Memorial, LiturgicalColor.White),
             68 => new("The Most Sacred Heart of Jesus", CelebrationRank.Solemnity, LiturgicalColor.White),
+            69 => new("The Immaculate Heart of the Blessed Virgin Mary", CelebrationRank.Memorial, LiturgicalColor.White),
+            _ when IsUnitedStates && IsThanksgiving(date) => new("Thanksgiving Day", CelebrationRank.OptionalMemorial, LiturgicalColor.White),
             _ => null,
         };
     }
+
+    /// <summary>US Thanksgiving Day: the fourth Thursday of November.</summary>
+    private static bool IsThanksgiving(DateOnly date) =>
+        date is { Month: 11, DayOfWeek: DayOfWeek.Thursday, Day: >= 22 and <= 28 };
 
     /// <summary>Feasts of the Lord anchored to a Sunday (or the Christmas octave): Holy Family, the Baptism of the Lord, and Christ the King.</summary>
     private IEnumerable<LiturgicalCelebration> SundayLordCelebrations(DateOnly date)

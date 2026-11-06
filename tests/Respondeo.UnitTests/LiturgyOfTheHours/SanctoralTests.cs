@@ -134,6 +134,21 @@ public class SanctoralTests
         Assert.Equal(expected, Sanctoral.ShortReading(hour, name));
 
     [Theory]
+    [InlineData("Our Lady of Guadalupe", Hour.MorningPrayer, "Isaiah 61:10")]
+    [InlineData("Our Lady of Guadalupe", Hour.EveningPrayer, "Galatians 4:4-5")]
+    public void ShortReading_UsesProperCitations(string name, Hour hour, string expected) =>
+        Assert.Equal(expected, Sanctoral.ShortReading(hour, name));
+
+    // United States observances without a proper office: the office of the day is prayed.
+    [Theory]
+    [InlineData("Day of Prayer for the Legal Protection of Unborn Children", Hour.MorningPrayer)]
+    [InlineData("Day of Prayer for the Legal Protection of Unborn Children", Hour.EveningPrayer)]
+    [InlineData("Independence Day", Hour.MorningPrayer)]
+    [InlineData("Independence Day", Hour.EveningPrayer)]
+    public void ShortReading_ObservancesWithoutProperOffice_AreNull(string name, Hour hour) =>
+        Assert.Null(Sanctoral.ShortReading(hour, name));
+
+    [Theory]
     [InlineData(Hour.NightPrayer)]
     public void ShortReading_OtherHours_AreNull(Hour hour) =>
         Assert.All(OfficeData.Sanctoral.Celebrations.Keys, id => Assert.Null(Sanctoral.ShortReading(hour, id)));
