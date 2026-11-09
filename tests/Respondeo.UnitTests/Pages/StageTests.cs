@@ -22,7 +22,7 @@ public class StageTests : TestContext
     public StageTests()
     {
         // The landing node renders through NodeArticle, which imports ./js/table-mobile.js on render.
-        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        var tableModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/table-mobile.js");
         tableModule.SetupVoid("enhance", _ => true);
         tableModule.SetupVoid("dispose", _ => true);
 

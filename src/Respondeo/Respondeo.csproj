@@ -15,15 +15,11 @@
   </ItemGroup>
 
   <!--
-    Emit content-hashed asset file names (css/app.<hash>.css, js/*.<hash>.js) at publish time.
-    Combined with OverrideHtmlAssetPlaceholders, the SDK rewrites the #[.{fingerprint}]
+    The global css/js assets live in Respondeo.UI (served at _content/Respondeo.UI/), which declares the
+    StaticWebAssetFingerprintPattern items. OverrideHtmlAssetPlaceholders rewrites the #[.{fingerprint}]
     placeholders in index.html to the hashed names, so assets can be cached forever yet always
     refresh after a deploy (needed on GitHub Pages, where we cannot set cache headers).
   -->
-  <ItemGroup>
-    <StaticWebAssetFingerprintPattern Include="Css" Pattern="*.css" Expression="#[.{fingerprint}]!" />
-    <StaticWebAssetFingerprintPattern Include="Js" Pattern="*.js" Expression="#[.{fingerprint}]!" />
-  </ItemGroup>
 
   <!--
     Publish-time stylesheet fingerprinting + PWA SRI re-sync. Extracted to its own file to keep

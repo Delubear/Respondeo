@@ -8,7 +8,7 @@ public class BreadcrumbTests : TestContext
     public BreadcrumbTests()
     {
         // Breadcrumb imports ./js/breadcrumb.js on first render and calls init; dispose on teardown.
-        var module = JSInterop.SetupModule("./js/breadcrumb.js");
+        var module = JSInterop.SetupModule("./_content/Respondeo.UI/js/breadcrumb.js");
         module.SetupVoid("init", _ => true);
         module.SetupVoid("refresh", _ => true);
         module.SetupVoid("dispose", _ => true);

@@ -120,7 +120,7 @@
         if (firstRender)
         {
             // Keep the trail on one scrollable line: land on the current (right-most) crumb and show the edge chevrons whenever, and whichever way, it can scroll.
-            _module = new JsModule(JS, "./js/breadcrumb.js");
+            _module = new JsModule(JS, "./_content/Respondeo.UI/js/breadcrumb.js");
             _lastTrailSignature = TrailSignature;
             await _module.InvokeVoidAsync("init", _root);
         }

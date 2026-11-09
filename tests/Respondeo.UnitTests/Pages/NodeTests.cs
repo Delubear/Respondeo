@@ -53,13 +53,13 @@ public class NodeTests : TestContext
         this.AddScrollCoordinator();
 
         // The Breadcrumb component imports ./js/breadcrumb.js on first render for the scroll/fade behavior.
-        var breadcrumbModule = JSInterop.SetupModule("./js/breadcrumb.js");
+        var breadcrumbModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/breadcrumb.js");
         breadcrumbModule.SetupVoid("init", _ => true);
         breadcrumbModule.SetupVoid("refresh", _ => true);
         breadcrumbModule.SetupVoid("dispose", _ => true);
 
         // NodeArticle imports ./js/table-mobile.js during OnAfterRenderAsync to enhance tables.
-        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        var tableModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/table-mobile.js");
         tableModule.SetupVoid("enhance", _ => true);
         tableModule.SetupVoid("dispose", _ => true);
     }

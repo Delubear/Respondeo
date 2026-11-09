@@ -52,7 +52,7 @@
         // Start the reader there, and let the module apply an IntersectionObserver fallback for the turning effect where scroll-driven CSS animations aren't supported.
         if (Stages.Count > 0 && _module is null)
         {
-            _module = new JsModule(JS, "./js/reel.js");
+            _module = new JsModule(JS, "./_content/Respondeo.UI/js/reel.js");
             await _module.InvokeVoidAsync("init", _reel);
         }
     }

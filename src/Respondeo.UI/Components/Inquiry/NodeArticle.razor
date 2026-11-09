@@ -92,7 +92,7 @@
     {
         try
         {
-            _tableModule ??= new JsModule(JS, "./js/table-mobile.js");
+            _tableModule ??= new JsModule(JS, "./_content/Respondeo.UI/js/table-mobile.js");
             await _tableModule.InvokeVoidAsync("enhance", _body);
         }
         catch (JSDisconnectedException)

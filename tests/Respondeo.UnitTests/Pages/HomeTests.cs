@@ -33,7 +33,7 @@ public class HomeTests : TestContext
 
         // Home imports the reel JS module in OnAfterRenderAsync and calls init on it;
         // let bUnit handle the import and the module's method invocations.
-        var reelModule = JSInterop.SetupModule("./js/reel.js");
+        var reelModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/reel.js");
         reelModule.SetupVoid("init", _ => true);
         reelModule.SetupVoid("dispose", _ => true);
     }

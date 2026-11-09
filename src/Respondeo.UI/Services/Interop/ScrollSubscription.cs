@@ -18,7 +18,7 @@ namespace Respondeo.Services.Interop;
 public sealed class ScrollSubscription(IJSRuntime js) : IAsyncDisposable
 {
     private DotNetObjectReference<ScrollSubscription>? _ref;
-    private readonly JsModule _module = new(js, "./js/scroll.js");
+    private readonly JsModule _module = new(js, "./_content/Respondeo.UI/js/scroll.js");
     private int _subscription;
     private Action<double, bool>? _onScroll;
 

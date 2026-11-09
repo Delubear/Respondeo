@@ -9,7 +9,7 @@ public class StageReelTests : TestContext
     public StageReelTests()
     {
         // StageReel imports ./js/reel.js on first render and calls init; dispose on teardown.
-        var reelModule = JSInterop.SetupModule("./js/reel.js");
+        var reelModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/reel.js");
         reelModule.SetupVoid("init", _ => true);
         reelModule.SetupVoid("dispose", _ => true);
         reelModule.SetupVoid("scrollByStep", _ => true);

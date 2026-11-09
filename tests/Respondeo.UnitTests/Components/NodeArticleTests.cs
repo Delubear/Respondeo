@@ -29,7 +29,7 @@ public class NodeArticleTests : TestContext
         Services.AddSingleton(visited);
 
         // NodeArticle imports the table-mobile module during OnAfterRenderAsync to enhance tables.
-        var tableModule = JSInterop.SetupModule("./js/table-mobile.js");
+        var tableModule = JSInterop.SetupModule("./_content/Respondeo.UI/js/table-mobile.js");
         tableModule.SetupVoid("enhance", _ => true);
         tableModule.SetupVoid("dispose", _ => true);
     }

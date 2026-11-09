@@ -46,7 +46,7 @@ internal sealed class DayWatcher(Func<DateOnly> today, IJSRuntime js) : IDayWatc
 {
     private readonly Func<DateOnly> _today = today;
     private DotNetObjectReference<DayWatcher>? _ref;
-    private readonly JsModule _module = new(js, "./js/day-watcher.js");
+    private readonly JsModule _module = new(js, "./_content/Respondeo.UI/js/day-watcher.js");
     private bool _disposed;
 
     public DateOnly Today { get; private set; } = today();
