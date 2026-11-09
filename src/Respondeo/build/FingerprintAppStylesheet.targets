@@ -54,7 +54,7 @@
 		}
 		if (updatedHtml == html)
 		{
-			no stylesheet links rewritten in index.html; nothing to do.
+			Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, "FingerprintAppStylesheet: no stylesheet links rewritten in index.html; nothing to do.");
 			return true;
 		}
 		System.IO.File.WriteAllText(indexHtmlPath, updatedHtml);
