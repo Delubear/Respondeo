@@ -10,7 +10,7 @@ Builds the step-by-step order of the Liturgy of the Hours (Ordinary Form) used b
 
 ## Feature flag
 
-The whole feature is controlled by `FeatureFlags:LiturgyOfTheHoursFeature` in `src/Respondeo/wwwroot/appsettings.json` (default `true`).
+The whole feature is controlled by `FeatureFlags:LiturgyOfTheHoursFeature` in `src/Respondeo.Wasm/wwwroot/appsettings.json` (default `true`).
 
 When it is `false`:
 

@@ -20,7 +20,7 @@
   <Project Path="src/Respondeo.LiturgyOfTheHours/Respondeo.LiturgyOfTheHours.csproj" />
   <Project Path="src/Respondeo.Maui/Respondeo.Maui.csproj" />
   <Project Path="src/Respondeo.UI/Respondeo.UI.csproj" />
-  <Project Path="src/Respondeo/Respondeo.csproj" />
+  <Project Path="src/Respondeo.Wasm/Respondeo.Wasm.csproj" />
   <Folder Name="/Tools/">
     <Project Path="tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj" />
     <Project Path="tools/Respondeo.SummaImporter/Respondeo.SummaImporter.csproj" />

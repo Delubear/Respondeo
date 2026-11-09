@@ -20,7 +20,7 @@ for living it (Discover), and a browsable *Summa Theologiae*. Live at **[respond
 ## Getting started
 
 ```powershell
-dotnet run --project src/Respondeo/Respondeo.csproj
+dotnet run --project src/Respondeo.Wasm/Respondeo.Wasm.csproj
 dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj
 ```
 
@@ -54,7 +54,7 @@ metadata, the sitemap, and static SEO pages.
 ## Feature flags
 
 Optional features can be switched off in the `FeatureFlags` section of
-[`wwwroot/appsettings.json`](src/Respondeo/wwwroot/appsettings.json). Every flag defaults to `true`:
+[`wwwroot/appsettings.json`](src/Respondeo.Wasm/wwwroot/appsettings.json). Every flag defaults to `true`:
 `AquinasPortrait`, `SummaPillar`, `BiblePillar`, `DiscoverPillar`,
 `PrayerFeature`, `DevotionsFeature`, `ArticlesFeature`, and `ExternalFeedback`. See
 [`docs/deployment.md`](docs/deployment.md#feature-flags) for what each one does.

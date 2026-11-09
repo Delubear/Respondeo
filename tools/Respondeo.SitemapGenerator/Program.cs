@@ -6,7 +6,7 @@ using Respondeo.Content.Summa.Contracts;
 
 // Build-time sitemap generator for Respondeo.
 //
-// Invoked by Respondeo.csproj before publish (and build).
+// Invoked by Respondeo.Wasm.csproj before publish (and build).
 // It enumerates every canonical, crawlable route from the content manifests that ship in the site and writes wwwroot/sitemap.xml.
 // Slugs are resolved through the Summa part catalog so the emitted URLs always match the app's real routes.
 //

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<IsPackable>false</IsPackable>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\..\src\Respondeo\Respondeo.csproj" />
+	<ProjectReference Include="..\..\src\Respondeo.Wasm\Respondeo.Wasm.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.UI\Respondeo.UI.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Bible\Respondeo.Bible.csproj" />
 	<ProjectReference Include="..\..\src\Respondeo.Content.Shared\Respondeo.Content.Shared.csproj" />

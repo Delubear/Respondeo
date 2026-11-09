@@ -1,6 +1,6 @@
 // Production service worker: precaches every published asset for full offline use.
 //
-// Swapped in for service-worker.js at publish time by the ServiceWorker item in Respondeo.csproj.
+// Swapped in for service-worker.js at publish time by the ServiceWorker item in Respondeo.Wasm.csproj.
 // It reads service-worker-assets.js (the SDK-generated integrity manifest of every published
 // static file - the app framework, CSS/JS, the Summa corpus JSON, and the Markdown content) and
 // precaches all of it on install, so once the app is installed it runs fully offline.

@@ -103,7 +103,7 @@ jobs:
 
       - name: Publish
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
+        run: dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release
 
       # No base-href rewrite: production serves from the custom apex domain root,
       # so the authored <base href="/"> is correct and the E2E server also serves

@@ -29,16 +29,16 @@ in the deploy workflow.
 Cloudflare records stay on **DNS-only (grey cloud)** because proxying (orange cloud) interferes with
 GitHub Pages' automatic certificate provisioning/renewal. **Cloudflare Web Analytics** still works in
 this mode: it is a client-side beacon (`beacon.min.js` in
-[`index.html`](../src/Respondeo/wwwroot/index.html)) and does not require proxied traffic. Set its site
+[`index.html`](../src/Respondeo.Wasm/wwwroot/index.html)) and does not require proxied traffic. Set its site
 token in `index.html` from **Cloudflare -> Web Analytics**.
 
 ## Feature flags
 
 Optional site features are gated behind deploy-time flags so they can be turned off without a code
 change. The flags live in the **`FeatureFlags`** section of
-[`wwwroot/appsettings.json`](../src/Respondeo/wwwroot/appsettings.json), are bound to
-[`Services/FeatureFlags.cs`](../src/Respondeo/Services/FeatureFlags.cs) in
-[`Program.cs`](../src/Respondeo/Program.cs), and default to `true` (feature on) when absent.
+[`wwwroot/appsettings.json`](../src/Respondeo.Wasm/wwwroot/appsettings.json), are bound to
+[`Services/FeatureFlags.cs`](../src/Respondeo.Wasm/Services/FeatureFlags.cs) in
+[`Program.cs`](../src/Respondeo.Wasm/Program.cs), and default to `true` (feature on) when absent.
 
 | Flag | Effect when `false` |
 | --- | --- |
@@ -67,21 +67,21 @@ Respondeo is an installable PWA and works **fully offline** once installed. Beca
 including the Summa corpus and Markdown content - ships as static files, the service worker can
 precache everything, so there is nothing left to fetch at runtime.
 
-- **Dev vs published worker.** [`wwwroot/service-worker.js`](../src/Respondeo/wwwroot/service-worker.js)
+- **Dev vs published worker.** [`wwwroot/service-worker.js`](../src/Respondeo.Wasm/wwwroot/service-worker.js)
   is a no-op used during development (so changes are never cached). At publish time the SDK swaps in
-  [`wwwroot/service-worker.published.js`](../src/Respondeo/wwwroot/service-worker.published.js), which
+  [`wwwroot/service-worker.published.js`](../src/Respondeo.Wasm/wwwroot/service-worker.published.js), which
   precaches the SDK-generated `service-worker-assets.js` manifest and serves `index.html` for
   navigation requests (so deep links work offline). This wiring lives in the PWA section of
-  [`Respondeo.csproj`](../src/Respondeo/Respondeo.csproj).
+  [`Respondeo.Wasm.csproj`](../src/Respondeo.Wasm/Respondeo.Wasm.csproj).
 - **Install.** Visit the site and use the browser's *Install app* / *Add to Home Screen* option.
   On supported browsers a dismissible in-app banner
-  ([`Components/InstallPrompt.razor`](../src/Respondeo/Components/InstallPrompt.razor)) also appears when
+  ([`Components/InstallPrompt.razor`](../src/Respondeo.Wasm/Components/InstallPrompt.razor)) also appears when
   the app is installable: it captures the browser's `beforeinstallprompt` event (via
-  `respondeoInstall` in [`js/site.js`](../src/Respondeo/wwwroot/js/site.js)) and triggers the native
+  `respondeoInstall` in [`js/site.js`](../src/Respondeo.Wasm/wwwroot/js/site.js)) and triggers the native
   install prompt on click. Dismissing it ("Not now") is remembered in `localStorage`, so it does not
   reappear on future visits. iOS Safari has no such API, so users there install via the Share sheet.
   Installability metadata (name, icons, colors) is in
-  [`wwwroot/manifest.webmanifest`](../src/Respondeo/wwwroot/manifest.webmanifest).
+  [`wwwroot/manifest.webmanifest`](../src/Respondeo.Wasm/wwwroot/manifest.webmanifest).
 - **Online-only extras.** Analytics (Cloudflare Web Analytics) is cross-origin and not precached;
   offline it simply no-ops. The display fonts (EB Garamond, Cinzel) are self-hosted under
   `wwwroot/fonts/`, so they are precached and render identically offline.
@@ -90,14 +90,14 @@ precache everything, so there is nothing left to fetch at runtime.
   to close every tab is unreliable (an installed PWA often keeps the old worker alive in the
   background), so the app surfaces a small **"A new version is available. [Reload]"** prompt instead.
   The detection and prompt wiring live inline in
-  [`wwwroot/index.html`](../src/Respondeo/wwwroot/index.html): it watches for a waiting worker (and for
+  [`wwwroot/index.html`](../src/Respondeo.Wasm/wwwroot/index.html): it watches for a waiting worker (and for
   one that finishes installing while the page is open), and only prompts when an existing worker is
   already in control, so a first-ever install shows no false prompt. Clicking **Reload** posts a
   `skip-waiting` message that
-  [`service-worker.published.js`](../src/Respondeo/wwwroot/service-worker.published.js) handles by
+  [`service-worker.published.js`](../src/Respondeo.Wasm/wwwroot/service-worker.published.js) handles by
   calling `self.skipWaiting()`; the resulting `controllerchange` triggers a single reload into the
   new build. The banner styles (`.pwa-update`) are in
-  [`wwwroot/css/`](../src/Respondeo/wwwroot/css/).
+  [`wwwroot/css/`](../src/Respondeo.Wasm/wwwroot/css/).
 - **Expected console warnings.** Once installed, DevTools may log preload messages for the framework
   files, e.g. *"a preload ... is found, but is not used because it is a cross-world service worker
   resource mismatch"* and *"preloaded ... but not used within a few seconds"*. These are benign:

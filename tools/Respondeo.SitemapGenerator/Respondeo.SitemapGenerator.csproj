@@ -6,7 +6,7 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<!-- Developer/build-only tool: not shipped as part of the app, kept out of the solution's
-		 normal output. It is invoked by Respondeo.csproj to regenerate wwwroot/sitemap.xml. -->
+		 normal output. It is invoked by Respondeo.Wasm.csproj to regenerate wwwroot/sitemap.xml. -->
 	<IsPackable>false</IsPackable>
   </PropertyGroup>
 

@@ -8,6 +8,8 @@
       CurrentCulture string sorting stays correct for the Latin/English content it orders.
     -->
     <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>Respondeo</RootNamespace>
+    <AssemblyName>Respondeo</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

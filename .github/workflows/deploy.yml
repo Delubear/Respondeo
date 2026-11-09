@@ -117,7 +117,7 @@ jobs:
       # at evaluation, globbed as a static web asset, and copied into the published site.
       - name: Generate sitemap
         if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo/wwwroot/sitemap.xml
+        run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo.Wasm/wwwroot/sitemap.xml
 
       # Licensed Liturgy of the Hours texts (ICEL) live in a private repository and are never committed here.
       # When HOURS_CONTENT_TOKEN is configured, check them out beside the source and embed them at publish;
@@ -141,9 +141,9 @@ jobs:
         if: steps.filter.outputs.code-changed == 'true'
         run: |
           if [ -d .licensed/hours ]; then
-            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release "-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours"
+            dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release "-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours"
           else
-            dotnet publish src/Respondeo/Respondeo.csproj -c Release -o release
+            dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release
           fi
 
       # The site is served from the custom apex domain (respondeo.faith), so it
