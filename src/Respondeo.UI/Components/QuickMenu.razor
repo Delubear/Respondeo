@@ -224,14 +224,11 @@
 			.Add(() => Theme.Changed += OnThemeChanged, () => Theme.Changed -= OnThemeChanged)
 			.Add(() => Launcher.OpenRequested += OnOpenRequested, () => Launcher.OpenRequested -= OnOpenRequested);
 
-		if (Features.DiscoverPillar && Features.DevotionsFeature)
-		{
-			var devotions = await DevotionService.GetIndexAsync();
-			_entries = SiteMap.Build(Features,
-				[.. devotions.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)
-					.Select(d => new SiteMap.Entry(ContentRoutes.DevotionHref(d.Id), d.Title))]);
-			Refresh();
-		}
+		var devotions = await DevotionService.GetIndexAsync();
+		_entries = SiteMap.Build(Features,
+			[.. devotions.OrderBy(d => d.SortValue, StringComparer.CurrentCultureIgnoreCase)
+				.Select(d => new SiteMap.Entry(ContentRoutes.DevotionHref(d.Id), d.Title))]);
+		Refresh();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)

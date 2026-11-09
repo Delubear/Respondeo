@@ -9,7 +9,7 @@
 
 <nav class="pillarnav" aria-label="Site areas">
     <ul class="pillarnav__list @(IsPaired ? "pillarnav__list--paired" : "")">
-        @foreach (var pillar in SitePillars.Items.Where(IsEnabled))
+        @foreach (var pillar in SitePillars.Items)
         {
             var isActive = pillar.Id == _activeId;
             var isPaired = IsPaired && (pillar.Id == SitePillars.SummaId || pillar.Id == SitePillars.BibleId);
@@ -81,21 +81,8 @@
 @code {
     private string _activeId = SitePillars.JourneyId;
 
-    // The Journey pillar is the site's spine and always shown; the Summa pill and the merged Discover Catholicism pill are each gated behind deploy-time feature flags.
-    // Discover is gated by its master DiscoverPillar switch and shows only when at least one of its sub-area features is also enabled,
-    // so the pillar hides when the master switch is off or every sub-area is turned off.
-    private bool IsEnabled(SitePillars.Pillar pillar) => pillar.Id switch
-    {
-        SitePillars.SummaId => Features.SummaPillar,
-        SitePillars.BibleId => Features.BiblePillar,
-        SitePillars.DiscoverId => Features.DiscoverPillar
-            && (Features.MiraclesFeature || Features.SaintsFeature || Features.PrayerFeature || Features.DevotionsFeature
-                || Features.ArticlesFeature || Features.LiturgyOfTheHoursFeature),
-        _ => true,
-    };
-
-    // When both are enabled, Scripture and the Summa share one split capsule (Summa left, Bible right) to read as two sides of one coin.
-    private bool IsPaired => Features.BiblePillar && Features.SummaPillar;
+    // Scripture and the Summa share one split capsule (Summa left, Bible right) to read as two sides of one coin.
+    private const bool IsPaired = true;
 
     private static IEnumerable<SitePillars.Pillar> PairedPillars =>
     [

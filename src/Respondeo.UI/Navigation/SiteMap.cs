@@ -43,18 +43,13 @@ public static class SiteMap
             new(Href(SitePillars.BibleId), "Bible"),
         };
 
-        if (!features.DiscoverPillar)
-        {
-            return entries;
-        }
-
-        Add(ContentRoutes.Miracles, "Miracles", features.MiraclesFeature);
-        Add(ContentRoutes.Saints, "Saints", features.SaintsFeature);
-        Add(ContentRoutes.Prayers, "Prayers", features.PrayerFeature);
-        Add(DevotionsHref, "Devotions", features.DevotionsFeature, devotions);
+        Add(ContentRoutes.Miracles, "Miracles", true);
+        Add(ContentRoutes.Saints, "Saints", true);
+        Add(ContentRoutes.Prayers, "Prayers", true);
+        Add(DevotionsHref, "Devotions", true, devotions);
         Add(ContentRoutes.Hours, "Hours", features.LiturgyOfTheHoursFeature,
             [.. Enum.GetValues<Hour>().Select(h => new Entry(ContentRoutes.HourHref(Pages.Hours.Slug(h)), Pages.Hours.Label(h)))]);
-        Add(ContentRoutes.Articles, "Articles", features.ArticlesFeature);
+        Add(ContentRoutes.Articles, "Articles", true);
 
         return entries;
 
@@ -73,23 +68,14 @@ public static class SiteMap
     /// <summary>The pinnable help orbs, honoring the feature flags.</summary>
     public static IReadOnlyList<Entry> Guides(FeatureFlags features)
     {
-        var guides = new List<Entry>();
-        if (features.DiscoverPillar)
+        var guides = new List<Entry>
         {
-            guides.Add(Orb(OrbLauncher.Liturgical, "Today in the Church"));
-            if (features.PrayerFeature)
-            {
-                guides.Add(Orb(OrbLauncher.Prayers, "Guide to Prayers"));
-            }
-
-            if (features.SaintsFeature)
-            {
-                guides.Add(Orb(OrbLauncher.Saints, "Reading the saints"));
-            }
-        }
-
-        guides.Add(Orb(OrbLauncher.Summa, "How to read the Summa"));
-        guides.Add(Orb(OrbLauncher.Bible, "How to read the Bible"));
+            Orb(OrbLauncher.Liturgical, "Today in the Church"),
+            Orb(OrbLauncher.Prayers, "Guide to Prayers"),
+            Orb(OrbLauncher.Saints, "Reading the saints"),
+            Orb(OrbLauncher.Summa, "How to read the Summa"),
+            Orb(OrbLauncher.Bible, "How to read the Bible"),
+        };
         return guides;
     }
 

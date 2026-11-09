@@ -20,16 +20,15 @@ public static class DiscoverNavigation
     /// The Discover landing plus one tab per sub-area, in display order.
     /// Miracles sits alongside the prayers/devotions/articles trio as a peer.
     /// The landing link is exact so it only highlights on /discover itself.
-    /// Every tab is additionally gated by the DiscoverPillar master switch at the call site.
     /// </summary>
     public static readonly IReadOnlyList<Tab> Items =
     [
         new("discover", "Overview", true, _ => true),
-        new("discover/miracles", "Miracles", false, f => f.MiraclesFeature),
-        new("discover/saints", "Saints", false, f => f.SaintsFeature),
-        new("discover/prayers", "Prayers", false, f => f.PrayerFeature),
-        new("discover/devotions", "Devotions", false, f => f.DevotionsFeature),
+        new("discover/miracles", "Miracles", false, _ => true),
+        new("discover/saints", "Saints", false, _ => true),
+        new("discover/prayers", "Prayers", false, _ => true),
+        new("discover/devotions", "Devotions", false, _ => true),
         new("discover/hours", "Hours", false, f => f.LiturgyOfTheHoursFeature),
-        new("discover/articles", "Articles", false, f => f.ArticlesFeature),
+        new("discover/articles", "Articles", false, _ => true),
     ];
 }

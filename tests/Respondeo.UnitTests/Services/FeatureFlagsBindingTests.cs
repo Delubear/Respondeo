@@ -32,13 +32,8 @@ public class FeatureFlagsBindingTests
         var flags = config.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>();
 
         Assert.NotNull(flags);
-        Assert.True(flags!.AquinasPortrait);
-        Assert.True(flags.SummaPillar);
-        Assert.True(flags.DiscoverPillar);
-        Assert.True(flags.MiraclesFeature);
-        Assert.True(flags.PrayerFeature);
-        Assert.True(flags.DevotionsFeature);
-        Assert.True(flags.ArticlesFeature);
+        Assert.True(flags!.LiturgyOfTheHoursFeature);
+        Assert.True(flags.ExternalFeedback);
     }
 
     [Fact]

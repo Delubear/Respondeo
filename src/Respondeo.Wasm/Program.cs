@@ -14,8 +14,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 // Deploy-time feature toggles, bound from the "FeatureFlags" section of wwwroot/appsettings.json.
-var featureFlags = builder.Configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags();
-builder.Services.AddSingleton(featureFlags);
+builder.Services.AddFeatureFlags(builder.Configuration);
 
 // Content libraries: the hand-authored library, the liturgical calendar engine, and the bundled Summa corpus.
 builder.Services

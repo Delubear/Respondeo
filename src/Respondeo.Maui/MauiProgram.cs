@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Respondeo.Content;
 using Respondeo.Content.Summa;
@@ -22,7 +23,16 @@ public static class MauiProgram
         // BlazorWebView serves the bundled static assets from this virtual origin.
         builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://0.0.0.0/") });
 
-        builder.Services.AddSingleton(new FeatureFlags());
+        // Feature toggles, bound from the "FeatureFlags" section of the embedded appsettings.json (same shape as the web host's).
+        using (var settings = typeof(MauiProgram).Assembly.GetManifestResourceStream("Respondeo.Maui.appsettings.json"))
+        {
+            if (settings is not null)
+            {
+                builder.Configuration.AddJsonStream(settings);
+            }
+        }
+
+        builder.Services.AddFeatureFlags(builder.Configuration);
 
         builder.Services
             .AddRespondeoContent()
