@@ -1,1 +1,0 @@
-{"excludes": ["**/wwwroot/**", "wwwroot/**", "**/bin/**", "**/obj/**", "**/node_modules/**", "graphify-out/**", "**/*.json"]}
