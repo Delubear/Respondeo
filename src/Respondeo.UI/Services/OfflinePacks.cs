@@ -7,7 +7,7 @@ namespace Respondeo.Services;
 /// App-wide state for the opt-in offline content packs. One instance listens to the service worker
 /// (through <see cref="OfflinePacksInterop"/>) and raises <see cref="Changed"/> so every pack control stays in sync.
 /// </summary>
-public sealed class OfflinePacks(OfflinePacksInterop interop) : IAsyncDisposable
+public sealed class OfflinePacks(OfflinePacksInterop interop, IHostCapabilities host) : IAsyncDisposable
 {
     public const string Summa = "summa";
     public const string Bible = "bible";
@@ -32,6 +32,12 @@ public sealed class OfflinePacks(OfflinePacksInterop interop) : IAsyncDisposable
 
     private async Task StartCoreAsync()
     {
+        if (!host.SupportsPwa)
+        {
+            Supported = false;
+            Changed?.Invoke();
+            return;
+        }
         _ref = DotNetObjectReference.Create(this);
         Supported = await interop.RegisterAsync(_ref);
         Changed?.Invoke();
@@ -53,7 +59,7 @@ public sealed class OfflinePacks(OfflinePacksInterop interop) : IAsyncDisposable
 
     public ValueTask<bool> IsOnlineAsync() => interop.IsOnlineAsync();
 
-    public ValueTask<bool> ShouldPromptAsync() => interop.ShouldPromptAsync();
+    public ValueTask<bool> ShouldPromptAsync() => host.SupportsPwa ? interop.ShouldPromptAsync() : ValueTask.FromResult(false);
 
     public ValueTask MarkPromptedAsync() => interop.MarkPromptedAsync();
 

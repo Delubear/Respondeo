@@ -1,5 +1,6 @@
 @implements IAsyncDisposable
 @inject InstallInterop Install
+@inject IHostCapabilities Host
 
 @if (_visible)
 {
@@ -28,7 +29,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && Host.SupportsPwa)
         {
             _ref = DotNetObjectReference.Create(this);
             _available = await Install.RegisterAsync(_ref);
@@ -65,6 +66,10 @@
 
     public async ValueTask DisposeAsync()
     {
+        if (_ref is null)
+        {
+            return;
+        }
         try
         {
             await Install.UnregisterAsync();

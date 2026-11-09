@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Respondeo.Bible;
 using Respondeo.LiturgicalCalendar;
 using Respondeo.Services.Devotions;
@@ -117,6 +118,7 @@ public static class AppServiceRegistration
     /// <summary>Typed wrappers over the window-level JS modules.</summary>
     public static IServiceCollection AddRespondeoInterop(this IServiceCollection services)
     {
+        services.TryAddSingleton<IHostCapabilities, BrowserHostCapabilities>();
         services.AddScoped<BrowseStateInterop>();
         services.AddScoped<BrowsePage>();
         services.AddScoped<NavigationInterop>();
