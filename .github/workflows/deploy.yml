@@ -5,6 +5,11 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      release_apk:
+        description: Build APK and publish GitHub Release
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -223,3 +228,83 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  android-release:
+    name: Android APK Release
+    needs: [build, e2e]
+    if: github.event_name == 'workflow_dispatch' && inputs.release_apk && needs.build.outputs.code-changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      VERSION: 1.0.${{ github.run_number }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Workload packs live under root-owned /usr/share/dotnet and cannot be cached; install fresh.
+      - name: Install maui-android workload
+        run: dotnet workload install maui-android
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Checkout licensed Hours content
+        if: env.HOURS_CONTENT_TOKEN != ''
+        uses: actions/checkout@v5
+        with:
+          repository: Delubear/Respondeo-HoursContent
+          token: ${{ secrets.HOURS_CONTENT_TOKEN }}
+          path: .licensed/hours
+
+      # Optional release signing. Without these secrets the APK is signed with a generated debug key,
+      # which installs fine but cannot update a previously installed build signed with a different key.
+      - name: Decode signing keystore
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        run: echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/respondeo.keystore"
+
+      - name: Publish APK
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          args=(-f net10.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
+            "-p:ApplicationVersion=${{ github.run_number }}" "-p:ApplicationDisplayVersion=$VERSION")
+          if [ -f "$RUNNER_TEMP/respondeo.keystore" ]; then
+            args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo.keystore"
+              "-p:AndroidSigningStorePass=$ANDROID_KEYSTORE_PASSWORD" "-p:AndroidSigningKeyAlias=$ANDROID_KEY_ALIAS"
+              "-p:AndroidSigningKeyPass=$ANDROID_KEY_PASSWORD")
+          fi
+          if [ -d .licensed/hours ]; then
+            args+=("-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours")
+          fi
+          dotnet publish src/Respondeo.Maui/Respondeo.Maui.csproj "${args[@]}"
+          apk=$(find apk-out -name '*-Signed.apk' | head -n 1)
+          cp "$apk" "respondeo-$VERSION.apk"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Respondeo ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          files: respondeo-${{ env.VERSION }}.apk
