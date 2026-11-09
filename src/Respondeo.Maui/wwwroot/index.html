@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Respondeo</title>
+    <base href="/" />
+    <link rel="preload" href="_content/Respondeo.UI/fonts/ebgaramond-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="_content/Respondeo.UI/fonts/ebgaramond-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-500-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="_content/Respondeo.UI/css/base.css" />
+    <link rel="stylesheet" href="_content/Respondeo.UI/css/components.css" />
+    <link rel="stylesheet" href="_content/Respondeo.UI/css/shell.css" />
+    <link rel="stylesheet" href="_content/Respondeo.UI/css/layout.css" />
+    <link rel="stylesheet" href="_content/Respondeo.UI/css/content.css" />
+    <link href="Respondeo.Maui.styles.css" rel="stylesheet" />
+    <script>
+        // Applies the persisted theme and text size before first paint; keys mirror Services/StorageKeys.cs.
+        document.documentElement.classList.add('js');
+        window.respondeoTheme = {
+            apply: function (theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+        };
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('respondeo.theme'); } catch (e) { }
+            window.respondeoTheme.apply(stored || 'light');
+        })();
+        window.respondeoTextSize = {
+            apply: function (size) {
+                document.documentElement.setAttribute('data-textsize', size);
+            }
+        };
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('respondeo.textsize'); } catch (e) { }
+            window.respondeoTextSize.apply(stored || 'default');
+        })();
+    </script>
+    <script src="_content/Respondeo.UI/js/site.js" defer></script>
+    <script src="_content/Respondeo.UI/js/summa-refs.js" defer></script>
+    <script src="_content/Respondeo.UI/js/scroll-store.js" defer></script>
+    <script src="_content/Respondeo.UI/js/browse-state.js" defer></script>
+    <script src="_content/Respondeo.UI/js/install.js" defer></script>
+    <script src="_content/Respondeo.UI/js/offline-packs.js" defer></script>
+    <script src="_content/Respondeo.UI/js/masthead-drag.js" defer></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="app-loading" role="status" aria-live="polite">
+            <div class="app-loading__bar is-starting"></div>
+        </div>
+    </div>
+    <div id="blazor-error-ui" role="alert">
+        <span class="blazor-error-ui__mark" aria-hidden="true">&#10013;</span>
+        <span class="blazor-error-ui__text">Something went wrong on this page. Reloading usually sets it right.</span>
+        <a href="." class="reload">Reload</a>
+        <button type="button" class="dismiss" aria-label="Dismiss">&times;</button>
+    </div>
+    <!-- No service worker: the native host bundles every asset. -->
+    <script src="_framework/blazor.webview.js" autostart="true"></script>
+</body>
+
+</html>
