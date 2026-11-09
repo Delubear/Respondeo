@@ -79,6 +79,14 @@ internal static class SitemapGenerator
             "Pray the Rosary and the chaplets bead by bead, and walk through the Mass and Confession step by step with an interactive guide.");
         routes.Add("discover/articles", "Living the Faith" + TitleSeparator + "Articles",
             "Deeper dives into the Catholic life \u2014 Confession, the Eucharist, and the Church's teaching \u2014 the why beneath the practice.");
+        routes.Add("discover/hours", "Liturgy of the Hours",
+            "Pray Morning, Evening, and Night Prayer of the Liturgy of the Hours, step by step.");
+        routes.Add("discover/hours/morning", JoinTitle("Morning Prayer", "Liturgy of the Hours"),
+            "Pray Morning Prayer (Lauds) of the Liturgy of the Hours, step by step.");
+        routes.Add("discover/hours/evening", JoinTitle("Evening Prayer", "Liturgy of the Hours"),
+            "Pray Evening Prayer (Vespers) of the Liturgy of the Hours, step by step.");
+        routes.Add("discover/hours/night", JoinTitle("Night Prayer", "Liturgy of the Hours"),
+            "Pray Night Prayer (Compline) of the Liturgy of the Hours, step by step.");
         routes.Add("thanks", "Thanks & Sources",
             "The inspiration behind Respondeo, the public-domain and open sources it draws on, and further reading we recommend for exploring the Catholic faith.");
     }
@@ -90,6 +98,8 @@ internal static class SitemapGenerator
         foreach (var book in translation.Books())
         {
             var name = translation.BookName(book);
+            routes.Add($"bible/{translation.Code}/{translation.Slug(book)}", JoinTitle(name, "Holy Bible"),
+                $"Read the book of {name} in the {translation.Name} Bible.");
             for (var chapter = 1; chapter <= translation.ChapterCount(book); chapter++)
             {
                 routes.Add(translation.ChapterHref(book, chapter), JoinTitle($"{name} {chapter}", "Holy Bible"),
