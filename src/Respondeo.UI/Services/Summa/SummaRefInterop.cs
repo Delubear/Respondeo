@@ -18,17 +18,13 @@ public sealed class SummaRefInterop(IJSRuntime js)
     /// </summary>
     public ValueTask<ReferenceOrigin?> ReadOriginAsync() => js.InvokeAsync<ReferenceOrigin?>("respondeoSummaRef.read");
 
-    /// <summary>
-    /// Reads and consumes the recorded origin synchronously (WebAssembly in-process interop), so the page can resolve its back crumb
-    /// without yielding and render the new question in a single pass.
-    /// </summary>
-    public ReferenceOrigin? TakeOrigin()
+    /// <summary>Reads and consumes the recorded origin, so a later refresh stops showing the back crumb.</summary>
+    public async ValueTask<ReferenceOrigin?> TakeOriginAsync()
     {
-        var inProcess = (IJSInProcessRuntime)js;
-        var origin = inProcess.Invoke<ReferenceOrigin?>("respondeoSummaRef.read");
+        var origin = await ReadOriginAsync();
         if (origin is not null)
         {
-            inProcess.InvokeVoid("respondeoSummaRef.clear");
+            await ClearOriginAsync();
         }
 
         return origin;

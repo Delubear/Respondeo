@@ -204,8 +204,9 @@ else
         _seoDescription = view.SeoDescription;
         _crumbs = BuildPartCrumbs(view.Part);
 
-        // Resolve the back crumb synchronously so a cached question renders complete in one pass (no second render, no flicker).
-        (_backHref, _backLabel) = Presenter.BuildBackCrumb(SummaRef.TakeOrigin(), Id);
+        // Resolve the back crumb (consumes the recorded cross-reference origin).
+        var origin = await SummaRef.TakeOriginAsync();
+        (_backHref, _backLabel) = Presenter.BuildBackCrumb(origin, Id);
         _loading = false;
     }
 
