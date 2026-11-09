@@ -20,8 +20,9 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
-        // BlazorWebView serves the bundled static assets from this virtual origin.
-        builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://0.0.0.0/") });
+        // BlazorWebView serves the bundled static assets from this virtual origin; .NET-side requests never reach the
+        // WebView, so the handler reads the same files straight from the app package.
+        builder.Services.AddScoped(_ => new HttpClient(new AppPackageHttpHandler()) { BaseAddress = new Uri("https://0.0.0.0/") });
 
         // Feature toggles, bound from the "FeatureFlags" section of the embedded appsettings.json (same shape as the web host's).
         using (var settings = typeof(MauiProgram).Assembly.GetManifestResourceStream("Respondeo.Maui.appsettings.json"))
