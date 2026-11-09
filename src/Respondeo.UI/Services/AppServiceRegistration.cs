@@ -105,6 +105,15 @@ public static class AppServiceRegistration
         return services;
     }
 
+    /// <summary>
+    /// All UI services. Register the content and liturgy libraries first: <see cref="AddRespondeoToday"/> overrides the engine's calendar.
+    /// </summary>
+    public static IServiceCollection AddRespondeoUI(this IServiceCollection services) =>
+        services.AddRespondeoBrowse()
+                .AddRespondeoReaderState()
+                .AddRespondeoToday()
+                .AddRespondeoInterop();
+
     /// <summary>Typed wrappers over the window-level JS modules.</summary>
     public static IServiceCollection AddRespondeoInterop(this IServiceCollection services)
     {

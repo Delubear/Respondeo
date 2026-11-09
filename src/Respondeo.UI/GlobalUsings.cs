@@ -9,3 +9,4 @@ global using Respondeo.Services.Browse;
 global using Respondeo.Services.Calendar;
 global using Respondeo.Services.Navigation;
 global using Respondeo.Services;
+global using Microsoft.Extensions.DependencyInjection;

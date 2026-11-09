@@ -5,6 +5,7 @@ using Respondeo.Content.Summa;
 using Respondeo.Content;
 using Respondeo.LiturgicalCalendar;
 using Respondeo.LiturgyOfTheHours;
+using Respondeo.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,11 +24,7 @@ builder.Services
     .AddRespondeoHours()
     .AddRespondeoSumma();
 
-// App services, grouped by concern (see Services/ServiceCollectionExtensions.cs).
-builder.Services
-    .AddRespondeoBrowse()
-    .AddRespondeoReaderState()
-    .AddRespondeoToday()
-    .AddRespondeoInterop();
+// App services from the Respondeo.UI library (see Services/AppServiceRegistration.cs there).
+builder.Services.AddRespondeoUI();
 
 await builder.Build().RunAsync();
