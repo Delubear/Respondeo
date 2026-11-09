@@ -20,6 +20,15 @@ Feature: Deep links
 	  | discover/saints/augustine-of-hippo                     |
 	  | discover/articles/sacrament-anointing                  |
 	  | discover/miracles/bernadette-soubirous-incorrupt-body  |
+	  | discover/articles                                      |
+	  | discover/miracles                                      |
+	  | discover/hours                                         |
+	  | discover/hours/morning                                 |
+	  | discover/devotions                                     |
+	  | summa/prima-q001                                       |
+	  | bible/drb/john                                         |
+	  | why-god                                                |
+	  | thanks                                                 |
 
   Scenario Outline: An unknown address is served with HTTP 404
 	When I request "<path>" directly
