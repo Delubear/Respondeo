@@ -16,7 +16,7 @@ public class FeatureFlagsBindingTests
     {
         // This file lives at <repo>/tests/Respondeo.UnitTests/Services/FeatureFlagsBindingTests.cs.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo", "wwwroot", "appsettings.json");
+        return Path.Combine(repoRoot, "src", "Respondeo.Wasm", "wwwroot", "appsettings.json");
     }
 
     private static IConfiguration LoadConfiguration() =>

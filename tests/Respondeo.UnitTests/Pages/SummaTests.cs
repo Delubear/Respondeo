@@ -63,6 +63,7 @@ public class SummaTests : TestContext
         Services.AddScoped<RandomSummaArticle>();
         Services.AddScoped<DialogInterop>();
         Services.AddScoped<OfflinePacksInterop>();
+        Services.AddSingleton<IHostCapabilities, BrowserHostCapabilities>();
         Services.AddScoped<OfflinePacks>();
     }
 
