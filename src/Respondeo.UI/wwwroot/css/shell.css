@@ -1,3 +1,8 @@
+/* Preserve layout for scroll measurement while native interop lands the destination. */
+html[data-host="native"][data-navigation-pending] .content {
+    visibility: hidden;
+}
+
 /* ---------- Blazor error UI ---------- */
 /* Blazor sets display:block on unhandled errors; restyled as a site-themed bottom banner. */
 #blazor-error-ui {

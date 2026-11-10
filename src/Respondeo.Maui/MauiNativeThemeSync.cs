@@ -3,8 +3,8 @@ using Respondeo.Services;
 namespace Respondeo.Maui;
 
 /// <summary>
-/// Paints the window, page and Android WebView with the CSS <c>--paper</c> color of the current theme,
-/// so switching back to the app never flashes a mismatched native background.
+/// Matches the content and Android WebView to the theme's CSS <c>--paper</c> color,
+/// while keeping the page's system-bar gutters black.
 /// </summary>
 public sealed class MauiNativeThemeSync : INativeThemeSync
 {
@@ -34,7 +34,7 @@ public sealed class MauiNativeThemeSync : INativeThemeSync
 
     internal static void ApplyToPage(MainPage page, Color color)
     {
-        page.BackgroundColor = color;
+        page.BackgroundColor = Colors.Black;
 
         if (page.Content is VisualElement content)
         {

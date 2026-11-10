@@ -71,6 +71,29 @@ window.respondeoScroll = (function () {
     var reduced = function () {
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     };
+    var navigationPath = window.location.pathname;
+    var navigationTimer = 0;
+    var navigationFrame = 0;
+    var restoreFrame = 0;
+
+    function releaseNavigation() {
+        clearTimeout(navigationTimer);
+        navigationTimer = 0;
+        document.documentElement.removeAttribute('data-navigation-pending');
+    }
+
+    function finishNavigation() {
+        if (!navigationTimer || stopHold || restoreFrame) {
+            return;
+        }
+        cancelAnimationFrame(navigationFrame);
+        navigationFrame = requestAnimationFrame(function () {
+            if (!stopHold && !restoreFrame) {
+                releaseNavigation();
+                window.respondeoFocusContent();
+            }
+        });
+    }
 
     // Document-relative top of the content region. Uses the layout offset (offsetTop chain), not
     // getBoundingClientRect(), because the sticky breadcrumb's rect reads 0 once it is pinned.
@@ -118,6 +141,7 @@ window.respondeoScroll = (function () {
             cancelAnimationFrame(rafId);
             events.forEach(function (type) { window.removeEventListener(type, stop, true); });
             stopHold = null;
+            finishNavigation();
         };
         // Re-apply whenever we're not at the content top: it can move (masthead resizing) or be
         // unreachable at first (the page still too short, so the browser clamped the scroll).
@@ -143,6 +167,30 @@ window.respondeoScroll = (function () {
     }
 
     return {
+        beginNavigation: function (path) {
+            if (document.documentElement.dataset.host !== 'native') {
+                return;
+            }
+            var nextPath = new URL(path, document.baseURI).pathname;
+            if (nextPath === navigationPath) {
+                return;
+            }
+            navigationPath = nextPath;
+            if (stopHold) {
+                stopHold();
+            }
+            cancelAnimationFrame(restoreFrame);
+            restoreFrame = 0;
+            restoredAt = -Infinity;
+            cancelAnimationFrame(navigationFrame);
+            clearTimeout(navigationTimer);
+            document.documentElement.setAttribute('data-navigation-pending', '');
+            // A failed/canceled route must never leave the reader looking at hidden content indefinitely.
+            navigationTimer = setTimeout(function () {
+                console.warn('Native navigation did not finish its scroll landing within 3 seconds; revealing content.');
+                releaseNavigation();
+            }, 3000);
+        },
         // Lands on `target`: 'top' (page top), 'content' (content region), or an element id.
         // Instant unless `smooth`; `center` centers the element instead of aligning its top
         // (CSS scroll-margin-top keeps aligned targets clear of the sticky breadcrumb).
@@ -150,11 +198,13 @@ window.respondeoScroll = (function () {
             // A browse list just restored the reader's remembered position (Back); don't override it
             // with the generic page-top/content landing, whichever of the two runs first.
             if ((target === 'top' || target === 'content') && performance.now() - restoredAt < RESTORE_PRIORITY_MS) {
+                finishNavigation();
                 return;
             }
 
             if (target === 'top') {
                 scrollWindow(0, smooth);
+                finishNavigation();
                 return;
             }
 
@@ -174,6 +224,7 @@ window.respondeoScroll = (function () {
                     stopHold();
                 }
                 el.scrollIntoView({ block: 'center', behavior: smooth && !reduced() ? 'smooth' : 'auto' });
+                finishNavigation();
                 return;
             }
 
@@ -184,6 +235,7 @@ window.respondeoScroll = (function () {
                 top += node.offsetTop;
             }
             scrollWindow(top - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0), smooth);
+            finishNavigation();
         },
         // Smoothly brings element `id` into view after an in-page change (opening an article/section).
         // Runs on the next frame so the just-opened content has laid out. Always glides (scrollWindow
@@ -294,17 +346,23 @@ window.respondeoScroll = (function () {
         // retries briefly while the list grows tall enough to reach the position.
         restore: function (target) {
             restoredAt = performance.now();
+            cancelAnimationFrame(restoreFrame);
+            restoreFrame = -1;
             if (stopHold) {
                 stopHold();
             }
 
             var frames = 0;
-            (function tick() {
+            function tick() {
                 window.scrollTo({ top: target, behavior: 'auto' });
                 if (Math.abs(window.scrollY - target) > 1 && ++frames < MAX_CHASE_FRAMES) {
-                    requestAnimationFrame(tick);
+                    restoreFrame = requestAnimationFrame(tick);
+                } else {
+                    restoreFrame = 0;
+                    finishNavigation();
                 }
-            })();
+            }
+            tick();
         }
     };
 })();

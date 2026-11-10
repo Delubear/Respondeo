@@ -97,39 +97,31 @@ public sealed class ScrollCoordinator : IDisposable
         _claimed = true;
     }
 
-    /// <summary>Applies a landing held by <see cref="Defer"/>.</summary>
-    public ValueTask ApplyDeferredAsync()
-    {
-        if (_deferred is not null)
-        {
-            LandNow(_deferred, center: false);
-        }
+    /// <summary>Masks native route content before rendering, until the asynchronous scroll landing settles.</summary>
+    public ValueTask BeginNavigationAsync(string path) => _js is IJSInProcessRuntime
+        ? ValueTask.CompletedTask
+        : _js.InvokeVoidAsync("respondeoScroll.beginNavigation", path);
 
-        return ValueTask.CompletedTask;
-    }
+    /// <summary>Applies a landing held by <see cref="Defer"/>.</summary>
+    public ValueTask ApplyDeferredAsync() => _deferred is not null
+        ? LandAsync(_deferred, center: false)
+        : ValueTask.CompletedTask;
 
     /// <summary>Lands instantly on the element with <paramref name="id"/> (or centers it when <paramref name="center"/> is set).</summary>
-    /// <remarks>Uses synchronous in-process interop so the scroll runs in the same task as the render, before the browser can paint the new content at the old scroll position.</remarks>
-    public ValueTask LandAtAsync(string id, bool center = false)
-    {
-        LandNow(id, center);
-        return ValueTask.CompletedTask;
-    }
+    /// <remarks>WebAssembly lands synchronously before paint; the native host awaits interop and unmasks content after landing.</remarks>
+    public ValueTask LandAtAsync(string id, bool center = false) => LandAsync(id, center);
 
     /// <summary>Applies the default landing for the last navigation, unless a page claimed it. Called by the layout after each render.</summary>
     public ValueTask ApplyDefaultAsync()
     {
         Sync();
-        if (_pending is not null && !_claimed)
-        {
-            LandNow(_pending, center: false);
-        }
-
-        return ValueTask.CompletedTask;
+        return _pending is not null && !_claimed
+            ? LandAsync(_pending, center: false)
+            : ValueTask.CompletedTask;
     }
 
     // Settles the current navigation's landing: whatever lands now consumes any pending or deferred default.
-    private void LandNow(string target, bool center)
+    private ValueTask LandAsync(string target, bool center)
     {
         _pending = null;
         _deferred = null;
@@ -137,11 +129,10 @@ public sealed class ScrollCoordinator : IDisposable
         if (_js is IJSInProcessRuntime inProcess)
         {
             inProcess.InvokeVoid("respondeoScroll.land", target, smooth, center);
+            return ValueTask.CompletedTask;
         }
-        else
-        {
-            _ = _js.InvokeVoidAsync("respondeoScroll.land", target, smooth, center);
-        }
+
+        return _js.InvokeVoidAsync("respondeoScroll.land", target, smooth, center);
     }
 
     public void Dispose() => _nav.LocationChanged -= OnLocationChanged;

@@ -1,4 +1,5 @@
 @inject RoutePrefetcher Prefetcher
+@inject ScrollCoordinator Scroll
 
 <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)" OnNavigateAsync="OnNavigateAsync">
     <Found Context="routeData">
@@ -8,7 +9,11 @@
 </Router>
 
 @code {
-    // The router awaits this before swapping routes, so the current page stays on screen until the destination's data is cached
-    // and the new page renders complete in one pass.
-    private Task OnNavigateAsync(NavigationContext context) => Prefetcher.PrefetchAsync(context.Path);
+    // Prepare the native mask before any destination render; WebAssembly keeps its synchronous landing.
+    private async Task OnNavigateAsync(NavigationContext context)
+    {
+        await Scroll.BeginNavigationAsync(context.Path);
+        context.CancellationToken.ThrowIfCancellationRequested();
+        await Prefetcher.PrefetchAsync(context.Path);
+    }
 }
