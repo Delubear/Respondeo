@@ -531,36 +531,3 @@
         display: none;
     }
 }
-
-/* Touch devices (Android WebView): 3D rotateY + perspective layers can flash an unpainted black
-   backing while compositing. Flatten the turn to a 2D scale so no 3D layers are created. */
-@keyframes reel-turn-flat {
-    0% {
-        transform: scale(0.86);
-    }
-    50% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(0.86);
-    }
-}
-
-@media (pointer: coarse) {
-    .reel {
-        perspective: none;
-    }
-
-    .reel__step {
-        -webkit-backface-visibility: visible;
-        backface-visibility: visible;
-    }
-
-    .reel--native .reel__step {
-        animation-name: reel-turn-flat;
-    }
-
-    .reel--native.is-ready .reel__step {
-        animation-name: reel-enter, reel-turn-flat;
-    }
-}
