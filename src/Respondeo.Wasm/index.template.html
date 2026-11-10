@@ -37,22 +37,14 @@
          so they are precached by the service worker and render identically offline. Preload the
          primary body font (EB Garamond regular, latin subset) and the Cinzel 500 eyebrow/CTA face
                   to avoid a flash of fallback text. -->
-    <link rel="preload" href="_content/Respondeo.UI/fonts/ebgaramond-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="_content/Respondeo.UI/fonts/ebgaramond-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-500-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="_content/Respondeo.UI/fonts/cinzel-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- shared:fonts -->
     <!-- The _content/Respondeo.UI/css/*.css stylesheets are fingerprinted at publish time by the FingerprintAppStylesheet
          task in Respondeo.Wasm.csproj: it rewrites these hrefs to the content-hashed file names and keeps
          the PWA service-worker manifest in sync. Browsers can cache them forever yet always pick up
          a new version after a deploy (needed on GitHub Pages, where we cannot set cache headers).
          The Blazor SDK does not rewrite <link> hrefs itself (only <script src>), hence the task.
          Order matters: it is the cascade order. -->
-    <link rel="stylesheet" href="_content/Respondeo.UI/css/base.css" />
-    <link rel="stylesheet" href="_content/Respondeo.UI/css/components.css" />
-    <link rel="stylesheet" href="_content/Respondeo.UI/css/shell.css" />
-    <link rel="stylesheet" href="_content/Respondeo.UI/css/layout.css" />
-    <link rel="stylesheet" href="_content/Respondeo.UI/css/content.css" />
+    <!-- shared:styles -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link href="Respondeo.styles.css" rel="stylesheet" />
     <!-- PWA: installability metadata and the iOS home-screen icon + theme color. -->
@@ -61,41 +53,8 @@
     <meta name="theme-color" content="#111111" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0e0d0a" media="(prefers-color-scheme: dark)" />
     <script type="importmap"></script>
-    <script>
-        // Defines the theme helper and applies the persisted (or OS) theme before Blazor boots, so there is no flash of the wrong theme on first paint.
-        // This block MUST stay inline: it has to run before first paint to avoid a flash of the wrong theme (an external fetch could resolve after paint).
-        // Marks JS as available so the static entry-page content (html.js .static-entry) stays hidden behind the spinner.
-        document.documentElement.classList.add('js');
-        window.respondeoTheme = {
-            apply: function (theme) {
-                document.documentElement.setAttribute('data-theme', theme);
-            }
-        };
-        // Storage keys mirror StorageKeys.Theme and StorageKeys.TextSize in Services/StorageKeys.cs; keep in sync.
-        (function () {
-            var stored = null;
-            try { stored = localStorage.getItem('respondeo.theme'); } catch (e) { }
-            var theme = stored || 'light';
-            window.respondeoTheme.apply(theme);
-        })();
-        window.respondeoTextSize = {
-            apply: function (size) {
-                document.documentElement.setAttribute('data-textsize', size);
-            }
-        };
-        (function () {
-            var stored = null;
-            try { stored = localStorage.getItem('respondeo.textsize'); } catch (e) { }
-            window.respondeoTextSize.apply(stored || 'default');
-        })();
-    </script>
-    <script src="_content/Respondeo.UI/js/site#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/summa-refs#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/scroll-store#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/browse-state#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/install#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/offline-packs#[.{fingerprint}].js" defer></script>
-    <script src="_content/Respondeo.UI/js/masthead-drag#[.{fingerprint}].js" defer></script>
+    <!-- shared:preferences -->
+    <!-- shared:scripts -->
 </head>
 
 <body>
@@ -116,12 +75,7 @@
         </div>
     </div>
 
-    <div id="blazor-error-ui" role="alert">
-        <span class="blazor-error-ui__mark" aria-hidden="true">&#10013;</span>
-        <span class="blazor-error-ui__text">Something went wrong on this page. Reloading usually sets it right.</span>
-        <a href="." class="reload">Reload</a>
-        <button type="button" class="dismiss" aria-label="Dismiss">&times;</button>
-    </div>
+    <!-- shared:error -->
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" defer></script>
     <script>
         // Two-phase loading bar. Phase 1 is a real download progress fill driven by

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" data-host="native">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Respondeo</title>
+    <base href="/" />
+    <!-- shared:fonts -->
+    <!-- shared:styles -->
+    <link href="Respondeo.Maui.styles.css" rel="stylesheet" />
+    <!-- shared:preferences -->
+    <!-- shared:scripts -->
+</head>
+
+<body>
+    <div id="app">
+        <div class="app-loading" role="status" aria-live="polite">
+            <div class="app-loading__bar is-starting"></div>
+        </div>
+    </div>
+    <!-- shared:error -->
+    <!-- No service worker: the native host bundles every asset. -->
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+</body>
+
+</html>

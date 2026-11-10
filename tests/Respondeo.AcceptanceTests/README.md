@@ -8,6 +8,8 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
 - **BuildIdentityTests** — a published PWA reloads offline, displays the same full build identity as its packaged manifest,
   and retains the Hours feature enabled by its embedded configuration.
+- **StartupPreferencesTests** — the served shell initializes theme/text size before deferred scripts, including persisted settings,
+  missing settings, and blocked local storage; shared error markup retains its accessible role and controls.
 - **AppPackageHttpHandlerTests** — the exact native transport implementation handles in-memory package bytes, decoded paths,
   missing files, cancellation, and unexpected errors without networking.
 - **AndroidPackageTransportTests** (`Category=AndroidArtifact`) — an explicitly selected final APK supplies real manifests and all listed articles

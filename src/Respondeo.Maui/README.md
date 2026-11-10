@@ -7,6 +7,10 @@ shared `Respondeo.UI` pages inside a `BlazorWebView`. All content is bundled, so
 Both hosts embed `Respondeo.UI/Configuration/appsettings.json`; missing or invalid required settings fail startup.
 See [deployment configuration](../../docs/deployment.md#feature-flags) for the shared baseline and override precedence.
 
+The authored native shell is `index.template.html`. Both hosts compose shared startup blocks from `build/ShellFragments.xml` at build time;
+`wwwroot/index.html` is generated under `obj` and packaged at the unchanged WebView host-page path.
+See [shared HTML startup](../../docs/deployment.md#shared-html-startup) before editing startup scripts, links, or error markup.
+
 ## Android presentation
 
 The page's safe-area gutters stay black with light system-bar icons; only the inner grid and WebView follow the paper theme.

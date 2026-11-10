@@ -81,6 +81,29 @@ Run the path-rule, build-identity, and packaging regression tests locally with t
 python -m unittest discover -s .github\scripts -p 'test_*.py'
 ```
 
+## Shared HTML startup
+
+Edit [`build/ShellFragments.xml`](../build/ShellFragments.xml) for the ordered shared font preloads, stylesheet links, scripts,
+inline theme/text-size initialization, and error UI. The fragment bodies are HTML inside XML CDATA; HTML entities stay unchanged.
+Each host's `index.template.html` places these blocks with `<!-- shared:name -->` markers, each required exactly once.
+Keep browser-only SEO, PWA registration/update UI, analytics, and download progress in
+[`Respondeo.Wasm/index.template.html`](../src/Respondeo.Wasm/index.template.html). Keep the native marker, native loading UI, and WebView bootstrap in
+[`Respondeo.Maui/index.template.html`](../src/Respondeo.Maui/index.template.html).
+
+Both projects import [`build/ComposeHostShell.targets`](../build/ComposeHostShell.targets). Before build preparation and target-path assignment,
+it composes `obj/<Configuration>/<TargetFramework>/host-shell/index.html` and links that generated content as `wwwroot/index.html`.
+The SDK discovers it even on the first clean build; generated files are build outputs, not checked-in or hand-edited source.
+Unchanged content is not rewritten. Missing inputs, duplicate/missing markers, and unknown markers fail the build.
+
+The preference initializer stays inline in the head, ahead of the deferred scripts, preserving first-paint defaults and persisted settings.
+The shared script list retains WASM fingerprint placeholders; composition removes those placeholders only for Android's plain-name assets.
+The existing browser SDK fingerprinting, publish-time stylesheet rewriting, and PWA integrity resync still process the generated shell normally.
+Neither deployment needs runtime template fetching or a new startup request. The public entry point and Android `HostPage` stay `wwwroot/index.html`.
+
+`test_host_shell.py` exercises the real MSBuild target, including propagation of a shared edit to both hosts, unchanged-output timestamps,
+clean/incremental equivalence, ordering, host isolation, and invalid input failures. `StartupPreferencesTests` uses the served shell to check
+missing/persisted settings and blocked storage before deferred scripts execute. Run these with the existing contract and acceptance commands above.
+
 ## Build identity and content pinning
 
 Both hosts import `build/BuildManifest.targets`. Each host embeds its own `Respondeo.BuildManifest.json` resource and packages
@@ -146,8 +169,8 @@ in the deploy workflow.
 Cloudflare records stay on **DNS-only (grey cloud)** because proxying (orange cloud) interferes with
 GitHub Pages' automatic certificate provisioning/renewal. **Cloudflare Web Analytics** still works in
 this mode: it is a client-side beacon (`beacon.min.js` in
-[`index.html`](../src/Respondeo.Wasm/wwwroot/index.html)) and does not require proxied traffic. Set its site
-token in `index.html` from **Cloudflare -> Web Analytics**.
+[`index.template.html`](../src/Respondeo.Wasm/index.template.html)) and does not require proxied traffic. Set its site
+token in that browser template from **Cloudflare -> Web Analytics**.
 
 ## Feature flags
 
@@ -209,7 +232,7 @@ precache everything, so there is nothing left to fetch at runtime.
   to close every tab is unreliable (an installed PWA often keeps the old worker alive in the
   background), so the app surfaces a small **"A new version is available. [Reload]"** prompt instead.
   The detection and prompt wiring live inline in
-  [`wwwroot/index.html`](../src/Respondeo.Wasm/wwwroot/index.html): it watches for a waiting worker (and for
+  [`index.template.html`](../src/Respondeo.Wasm/index.template.html): it watches for a waiting worker (and for
   one that finishes installing while the page is open), and only prompts when an existing worker is
   already in control, so a first-ever install shows no false prompt. Clicking **Reload** posts a
   `skip-waiting` message that

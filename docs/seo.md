@@ -8,7 +8,7 @@ that do). All values share a single source of truth in
 [`SiteMeta.cs`](../src/Respondeo.Wasm/SiteMeta.cs) so the static tags, per-page overrides, and generated
 sitemap agree on the canonical origin, name, and default description.
 
-- **Static baseline.** [`wwwroot/index.html`](../src/Respondeo.Wasm/wwwroot/index.html) carries a default
+- **Static baseline.** [`index.template.html`](../src/Respondeo.Wasm/index.template.html) supplies the generated `wwwroot/index.html` with a default
   meta description, a canonical link, and Open Graph / Twitter Card tags. These are what non-JS
   social scrapers (Slack, Facebook, X, etc.) see, so every share has a sane title, description, and
   preview image regardless of route.

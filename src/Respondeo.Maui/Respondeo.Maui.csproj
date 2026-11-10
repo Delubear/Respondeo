@@ -62,5 +62,6 @@
   </ItemGroup>
 
   <Import Project="..\..\build\BuildManifest.targets" />
+  <Import Project="..\..\build\ComposeHostShell.targets" />
 
 </Project>

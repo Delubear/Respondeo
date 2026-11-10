@@ -6,10 +6,10 @@ namespace Respondeo.Services;
 /// </summary>
 public static class StorageKeys
 {
-    /// <summary>Theme preference. Also read by the pre-render script in <c>wwwroot/index.html</c>; keep in sync.</summary>
+    /// <summary>Theme preference. Also read by the inline initializer in <c>build/ShellFragments.xml</c>; keep in sync.</summary>
     public const string Theme = "respondeo.theme";
 
-    /// <summary>Text size preference. Also read by the pre-render script in <c>wwwroot/index.html</c>; keep in sync.</summary>
+    /// <summary>Text size preference. Also read by the inline initializer in <c>build/ShellFragments.xml</c>; keep in sync.</summary>
     public const string TextSize = "respondeo.textsize";
 
     public const string PrayerLanguage = "respondeo.prayerLanguage";

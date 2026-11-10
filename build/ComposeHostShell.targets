@@ -1,0 +1,73 @@
+<Project>
+  <PropertyGroup>
+	<HostShellTemplate>$(MSBuildProjectDirectory)\index.template.html</HostShellTemplate>
+	<HostShellFragments>$(MSBuildThisFileDirectory)ShellFragments.xml</HostShellFragments>
+	<HostShellPath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)',
+	  '$(Configuration)', '$(TargetFramework)', 'host-shell', 'index.html'))</HostShellPath>
+	<_HostShellNative Condition="'$(UseMaui)' == 'true'">true</_HostShellNative>
+	<_HostShellNative Condition="'$(UseMaui)' != 'true'">false</_HostShellNative>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Content Include="$(HostShellPath)" Link="wwwroot\index.html" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <UsingTask TaskName="ComposeHostShell" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+	<ParameterGroup>
+	  <Template ParameterType="System.String" Required="true" />
+	  <Fragments ParameterType="System.String" Required="true" />
+	  <OutputPath ParameterType="System.String" Required="true" />
+	  <Native ParameterType="System.Boolean" Required="true" />
+	</ParameterGroup>
+	<Task>
+	  <Using Namespace="System" />
+	  <Using Namespace="System.IO" />
+	  <Using Namespace="System.Linq" />
+	  <Using Namespace="System.Text" />
+	  <Using Namespace="System.Text.RegularExpressions" />
+	  <Using Namespace="System.Xml.Linq" />
+	  <Code Type="Fragment" Language="cs"><![CDATA[
+		var html = File.ReadAllText(Template).Replace("\r\n", "\n");
+		var fragments = XDocument.Load(Fragments).Root.Elements("fragment").ToArray();
+		var names = fragments.Select(fragment => (string)fragment.Attribute("name")).ToArray();
+		if (names.Any(string.IsNullOrWhiteSpace) || names.Distinct().Count() != names.Length || names.Length == 0)
+		{
+			Log.LogError("Shell fragments must have nonempty, unique names.");
+			return false;
+		}
+		foreach (var fragment in fragments)
+		{
+			var marker = "    <!-- shared:" + (string)fragment.Attribute("name") + " -->";
+			if (html.Split(new[] { marker }, StringSplitOptions.None).Length != 2)
+			{
+				Log.LogError("Host shell must contain exactly one marker: " + marker.Trim());
+				return false;
+			}
+			var text = fragment.Value.Replace("\r\n", "\n").Trim('\n');
+			if (Native)
+			{
+				text = text.Replace("#[.{fingerprint}]", "");
+			}
+			html = html.Replace(marker, text);
+		}
+		if (Regex.IsMatch(html, @"<!--\s*shared:"))
+		{
+			Log.LogError("Host shell contains an unknown shared-fragment marker.");
+			return false;
+		}
+		Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+		if (!File.Exists(OutputPath) || File.ReadAllText(OutputPath) != html)
+		{
+			File.WriteAllText(OutputPath, html, new UTF8Encoding(false));
+		}
+	  ]]></Code>
+	</Task>
+  </UsingTask>
+
+  <Target Name="GenerateHostShell" BeforeTargets="PrepareForBuild;ResolveProjectStaticWebAssets;AssignTargetPaths">
+	<ComposeHostShell Template="$(HostShellTemplate)" Fragments="$(HostShellFragments)" OutputPath="$(HostShellPath)" Native="$(_HostShellNative)" />
+	<ItemGroup>
+	  <FileWrites Include="$(HostShellPath)" />
+	</ItemGroup>
+  </Target>
+</Project>
