@@ -24,9 +24,15 @@
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */
     touch-action: pan-y;
+    /* Keep the 3D-turned cards in one isolated, paint-contained stacking context with a shared
+       perspective. Per-card perspective() layers get torn down and re-rasterized when the Android
+       WebView resizes (minimize / window drag), briefly exposing an unpainted black backing. */
+    isolation: isolate;
+    contain: paint;
+    perspective: 50rem;
 }
 
-
+.reel:focus-visible {
     outline: none;
 }
 
@@ -61,6 +67,8 @@
     justify-content: center;
     padding: 0 0.5rem;
     transform-origin: center center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     cursor: pointer;
 }
 
@@ -185,6 +193,13 @@
     }
 }
 
+/* Before reel.js picks a mode (reel--native / reel--js), keep the peeking neighbors hidden so they
+   don't paint visible on first load and then fade out. Stage 1 is the initially centered card. */
+.reel:not(.reel--native):not(.reel--js) .reel__step:not(:first-child) {
+    opacity: 0;
+    transition: none;
+}
+
 /* Native scroll-driven turn: the scroll-timeline drives only the cosmetic lean/scale as a card
    passes through. It does NOT control opacity — view-timeline progress is approximate geometry, so
    neighbors land at a progress value that varies with viewport/card size and would leak into view.
@@ -214,13 +229,13 @@
 
 @keyframes reel-turn {
     0% {
-        transform: perspective(50rem) rotateY(24deg) scale(0.86);
+        transform: rotateY(24deg) scale(0.86);
     }
     50% {
-        transform: perspective(50rem) rotateY(0deg) scale(1);
+        transform: rotateY(0deg) scale(1);
     }
     100% {
-        transform: perspective(50rem) rotateY(-24deg) scale(0.86);
+        transform: rotateY(-24deg) scale(0.86);
     }
 }
 
