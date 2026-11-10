@@ -181,7 +181,7 @@
    animated value and overrides the static .is-centered opacity below, which would keep every card
    visible. Visibility is owned solely by the static rules on .reel__step / .is-centered. */
 .reel.is-ready .reel__step {
-    animation: reel-enter var(--dur-4) var(--ease-page) both;
+    animation: reel-enter var(--dur-4) var(--ease-page) backwards;
 }
 
 @keyframes reel-enter {
@@ -218,7 +218,7 @@
    both animations rather than letting the higher-specificity entrance rule override the turn. Only
    reel-turn is tied to the view timeline; reel-enter plays once on the default (time) timeline. */
 .reel--native.is-ready .reel__step {
-    animation: reel-enter var(--dur-4) var(--ease-page) both, reel-turn linear both;
+    animation: reel-enter var(--dur-4) var(--ease-page) backwards, reel-turn linear both;
     animation-timeline: auto, view(inline);
     animation-range: normal, cover;
 }

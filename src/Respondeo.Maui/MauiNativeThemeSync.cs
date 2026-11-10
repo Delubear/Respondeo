@@ -27,7 +27,7 @@ public sealed class MauiNativeThemeSync : INativeThemeSync
             }
 
 #if ANDROID
-            Platform.CurrentActivity?.Window?.DecorView.SetBackgroundColor(ToAndroid(color));
+            ApplyToWindow();
 #endif
         });
     }
@@ -48,10 +48,28 @@ public sealed class MauiNativeThemeSync : INativeThemeSync
         {
             webView.SetBackgroundColor(ToAndroid(color));
         }
+
+        ApplyToWindow();
 #endif
     }
 
 #if ANDROID
+    internal static void ApplyToWindow()
+    {
+        var window = Platform.CurrentActivity?.Window;
+        if (window is null)
+        {
+            return;
+        }
+
+        // The system bar gutters stay black to match the masthead; only the content area follows the theme.
+        window.DecorView.SetBackgroundColor(Android.Graphics.Color.Black);
+
+        var controller = AndroidX.Core.View.WindowCompat.GetInsetsController(window, window.DecorView);
+        controller.AppearanceLightStatusBars = false;
+        controller.AppearanceLightNavigationBars = false;
+    }
+
     private static Android.Graphics.Color ToAndroid(Color color) =>
         Android.Graphics.Color.Argb(
             (int)(color.Alpha * 255), (int)(color.Red * 255), (int)(color.Green * 255), (int)(color.Blue * 255));
