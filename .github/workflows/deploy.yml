@@ -243,6 +243,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -301,6 +303,37 @@ jobs:
           apk=$(find apk-out -name '*-Signed.apk' | head -n 1)
           cp "$apk" "respondeo-$VERSION.apk"
 
+      # List first-parent commits since the previous release tag this job created.
+      # Direct trunk commits show their subject; PR merge commits show the PR title and number.
+      - name: Build changelog
+        run: |
+          prev=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+          if [ -n "$prev" ]; then
+            echo "## Changes since $prev" > CHANGELOG.md
+            range="$prev..HEAD"
+          else
+            echo "## Recent changes" > CHANGELOG.md
+            range="-n 30 HEAD"
+          fi
+          echo >> CHANGELOG.md
+          git log $range --first-parent --pretty=format:'%h%x1f%s%x1f%b%x1e' \
+            | awk 'BEGIN { RS = "\036"; FS = "\037" }
+                NF >= 2 {
+                  h = $1; gsub(/^[ \t\r\n]+/, "", h); s = $2
+                  if (s ~ /^Merge pull request #/) {
+                    n = split($3, b, "\n"); t = ""
+                    for (i = 1; i <= n; i++) if (b[i] != "") { t = b[i]; break }
+                    num = s; sub(/^Merge pull request /, "", num); sub(/ from .*/, "", num)
+                    s = (t != "" ? t : s) " (" num ")"
+                  } else if (s ~ /^Merge (branch|remote-tracking branch) /) next
+                  print "- " s " (" h ")"
+                }' >> CHANGELOG.md
+          echo >> CHANGELOG.md
+          if [ -n "$prev" ]; then
+            echo >> CHANGELOG.md
+            echo "**Full changelog:** https://github.com/${{ github.repository }}/compare/$prev...v$VERSION" >> CHANGELOG.md
+          fi
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -308,3 +341,4 @@ jobs:
           name: Respondeo ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
           files: respondeo-${{ env.VERSION }}.apk
+          body_path: CHANGELOG.md
