@@ -21,8 +21,9 @@
 	</PropertyGroup>
 
 	<!--
-	  Release trimming disables reflection-based System.Text.Json by default and strips DTO members the content
-	  loaders deserialize by reflection; keep both so data loads on device.
+	  Trimming and AOT are disabled above (trimming stripped DTO members the content loaders deserialize
+	  by reflection, hanging the APK). Reflection-based System.Text.Json stays enabled explicitly as a
+	  safeguard in case Release trimming is ever re-enabled.
 	-->
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
 	  <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
