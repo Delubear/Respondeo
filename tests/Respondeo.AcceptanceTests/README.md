@@ -7,6 +7,9 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
 - **BuildIdentityTests** — a published PWA reloads offline and displays the same full build identity as its packaged manifest.
+- **NativeNavigationTests** — native Back/link events mask the scrolling shell before route handling, including masthead exposure
+  during scroll restoration; native page-entry motion is disabled while web fades and reduced-motion behavior are preserved.
+  These DOM timing checks do not replace physical Android WebView verification.
 - **StageReelSlidingTests** — the flat reel shows only the active card, without 3D transforms or card animations;
   arrows, keyboard, swipe handling, and dots work across screen sizes and reduced motion.
 - **Breadcrumb.feature** — the breadcrumb grows as you go deeper and resets when you return to Start.

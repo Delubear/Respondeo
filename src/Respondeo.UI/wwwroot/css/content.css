@@ -306,6 +306,11 @@
     animation: fade-enter var(--dur-4) var(--ease-page) backwards;
 }
 
+/* The APK reveals pages after scroll landing; a second fade/rise would expose only the tail of the animation. */
+html[data-host="native"] .fade-enter {
+    animation: none;
+}
+
 @keyframes fade-enter {
     from {
         opacity: 0;

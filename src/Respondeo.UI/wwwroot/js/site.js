@@ -1,8 +1,7 @@
 // Site-wide browser helpers for Respondeo.
 //
-// These are loaded after the theme anti-flash snippet in index.html (which must stay inline
-// so it runs before first paint). Everything here is invoked at runtime (via JS interop from
-// Blazor components or a delegated DOM listener), so it has no before-paint timing constraint.
+// Loaded after the inline theme anti-flash snippet. Native navigation listeners must be installed
+// before the reader can navigate, so route masking does not wait for a .NET interop round trip.
 
 // Updates the address bar without triggering a Blazor navigation (no focus shift or scroll).
 // Used to keep accordion state shareable while staying put on the page.
@@ -365,6 +364,30 @@ window.respondeoScroll = (function () {
             tick();
         }
     };
+})();
+
+// Native routing crosses asynchronous interop. Mask in the DOM event itself, before the router can
+// replace a tall page with a short one and clamp the viewport back onto the masthead.
+(function () {
+    window.addEventListener('popstate', function () {
+        window.respondeoScroll.beginNavigation(window.location.href);
+    }, true);
+
+    document.addEventListener('click', function (event) {
+        if (document.documentElement.dataset.host !== 'native' || event.defaultPrevented || event.button !== 0 ||
+            event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+        }
+        var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+        if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) {
+            return;
+        }
+        var destination = new URL(anchor.href, document.baseURI);
+        var base = new URL(document.baseURI);
+        if (destination.origin === base.origin && destination.pathname.startsWith(base.pathname)) {
+            window.respondeoScroll.beginNavigation(destination.href);
+        }
+    }, true);
 })();
 
 // Opens/closes a native <dialog> by element reference. Native dialogs give us focus trapping,

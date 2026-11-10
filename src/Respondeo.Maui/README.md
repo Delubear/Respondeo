@@ -6,9 +6,13 @@ shared `Respondeo.UI` pages inside a `BlazorWebView`. All content is bundled, so
 ## Android presentation
 
 The page's safe-area gutters stay black with light system-bar icons; only the inner grid and WebView follow the paper theme.
-Native route changes briefly hide the content region while asynchronous WebView interop applies the destination's scroll position.
+Native route changes briefly hide the scrolling page shell, including its masthead and footer, while asynchronous WebView interop
+applies the destination's scroll position. Internal link clicks and history Back/Forward start the mask synchronously in JavaScript,
+before routing can shorten the document and expose the masthead. The router's interop call also covers programmatic navigation.
 The mask preserves layout for measurement and waits for content/remembered-position scrolling to settle. A three-second timeout
-reveals content and logs a warning if navigation fails or never lands. The website retains its synchronous, unmasked navigation.
+reveals the page and logs a warning if navigation fails or never lands. Native pages skip the shared entry fade/rise, so they appear
+fully drawn at their landing position; the reel's independent card transition is unchanged.
+The website retains its synchronous, unmasked navigation and page-entry fades.
 
 ## Building and installing
 

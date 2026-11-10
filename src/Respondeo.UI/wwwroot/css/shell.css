@@ -1,5 +1,6 @@
-/* Preserve layout for scroll measurement while native interop lands the destination. */
-html[data-host="native"][data-navigation-pending] .content {
+/* Preserve layout while native interop lands the destination, including when a shorter render exposes the masthead. */
+html[data-host="native"][data-navigation-pending] .page,
+html[data-host="native"][data-navigation-pending] .page * {
     visibility: hidden;
 }
 
