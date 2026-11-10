@@ -33,6 +33,8 @@ jobs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
       web-changed: ${{ steps.filter.outputs.web-changed }}
       apk-changed: ${{ steps.filter.outputs.apk-changed }}
+      hours-revision: ${{ steps.identity.outputs.hours-revision }}
+      content-sha256: ${{ steps.identity.outputs.content-sha256 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -92,14 +94,29 @@ jobs:
           HOURS_CONTENT_DIR: ${{ github.workspace }}/.licensed/hours
         run: dotnet test tests/Respondeo.UnitTests -c Release --filter "FullyQualifiedName~HoursContentFileTests"
 
+      - name: Resolve build identity
+        id: identity
+        if: steps.filter.outputs.code-changed == 'true'
+        run: |
+          args=(-p:Configuration=Release)
+          if [ -d .licensed/hours ]; then
+            revision=$(git -C .licensed/hours rev-parse HEAD)
+            args+=("-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours" "-p:HoursContentRevision=$revision")
+          fi
+          dotnet msbuild src/Respondeo.Wasm/Respondeo.Wasm.csproj -t:CreateBuildManifest "${args[@]}"
+          python3 .github/scripts/verify_build_identity.py src/Respondeo.Wasm/obj/Release/net10.0/build-manifest.json \
+            --host wasm --version "1.0.$GITHUB_RUN_NUMBER" --source "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
       - name: Publish
         if: steps.filter.outputs.web-changed == 'true'
+        env:
+          HOURS_REVISION: ${{ steps.identity.outputs.hours-revision }}
         run: |
-          if [ -d .licensed/hours ]; then
-            dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release "-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours"
-          else
-            dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release
+          args=(-c Release -o release)
+          if [ "$HOURS_REVISION" != "sample" ]; then
+            args+=("-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours" "-p:HoursContentRevision=$HOURS_REVISION")
           fi
+          dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj "${args[@]}"
 
       # The site is served from the custom apex domain (respondeo.faith), so it
       # lives at the domain root and <base href="/"> (as authored) is correct.
@@ -121,6 +138,17 @@ jobs:
       - name: Disable Jekyll processing
         if: steps.filter.outputs.web-changed == 'true'
         run: touch release/wwwroot/.nojekyll
+
+      - name: Verify published web identity and record hashes
+        if: steps.filter.outputs.web-changed == 'true'
+        env:
+          EXPECTED_CONTENT: ${{ steps.identity.outputs.content-sha256 }}
+        run: |
+          python3 .github/scripts/verify_build_identity.py release/wwwroot/build-manifest.json \
+            --host wasm --version "1.0.$GITHUB_RUN_NUMBER" --source "$GITHUB_SHA" --content "$EXPECTED_CONTENT"
+          (cd release/wwwroot && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          echo '### Website build identity' >> "$GITHUB_STEP_SUMMARY"
+          cat release/wwwroot/build-manifest.json >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Pages artifact
         if: steps.filter.outputs.web-changed == 'true'
@@ -187,18 +215,16 @@ jobs:
     needs: build
     if: needs.build.outputs.apk-changed == 'true'
     runs-on: ubuntu-latest
-    env:
-      HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Checkout licensed Hours content
-        id: hours
-        if: env.HOURS_CONTENT_TOKEN != ''
+      - name: Checkout pinned licensed Hours content
+        if: needs.build.outputs.hours-revision != 'sample'
         uses: actions/checkout@v5
         with:
           repository: Delubear/Respondeo-HoursContent
+          ref: ${{ needs.build.outputs.hours-revision }}
           token: ${{ secrets.HOURS_CONTENT_TOKEN }}
           path: .licensed/hours
 
@@ -213,7 +239,9 @@ jobs:
           version: 1.0.${{ github.run_number }}
           version-code: ${{ github.run_number }}
           artifact-name: android-release
-          hours-content-directory: ${{ steps.hours.outcome == 'success' && format('{0}/.licensed/hours', github.workspace) || '' }}
+          hours-content-directory: ${{ needs.build.outputs.hours-revision != 'sample' && format('{0}/.licensed/hours', github.workspace) || '' }}
+          hours-content-revision: ${{ needs.build.outputs.hours-revision }}
+          expected-content-sha256: ${{ needs.build.outputs.content-sha256 }}
 
   android-release:
     name: Android APK Release
@@ -276,6 +304,11 @@ jobs:
             echo >> CHANGELOG.md
             echo "**Full changelog:** https://github.com/${{ github.repository }}/compare/$prev...v$VERSION" >> CHANGELOG.md
           fi
+          printf '\n## Build identity\n\n```json\n' >> CHANGELOG.md
+          cat android-release/build-manifest.json >> CHANGELOG.md
+          printf '```\n\n## Artifact SHA-256\n\n```text\n' >> CHANGELOG.md
+          cat android-release/SHA256SUMS >> CHANGELOG.md
+          printf '```\n' >> CHANGELOG.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
@@ -285,6 +318,7 @@ jobs:
           target_commitish: ${{ github.sha }}
           files: |
             android-release/respondeo-${{ env.VERSION }}.apk
+            android-release/build-manifest.json
             android-release/SHA256SUMS
           fail_on_unmatched_files: true
           body_path: CHANGELOG.md

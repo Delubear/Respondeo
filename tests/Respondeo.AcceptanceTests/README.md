@@ -6,6 +6,7 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 ## What they cover
 
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
+- **BuildIdentityTests** — a published PWA reloads offline and displays the same full build identity as its packaged manifest.
 - **StageReelSlidingTests** — the flat reel shows only the active card, without 3D transforms or card animations;
   arrows, keyboard, swipe handling, and dots work across screen sizes and reduced motion.
 - **Breadcrumb.feature** — the breadcrumb grows as you go deeper and resets when you return to Start.
@@ -51,6 +52,11 @@ These are intentionally few and focused on the core journey. Unit and component 
    ```
 
    Set `$env:RESPONDEO_HEADED = "1"` to watch the browser.
+
+   `BuildIdentityTests` requires Option B's published service worker and a secure origin (localhost or HTTPS).
+   For a loopback base URL, it uses `respondeo.localhost` on the same port so the app's bare-localhost worker opt-out
+   does not suppress production caching. Chromium resolves this trustworthy local subdomain to loopback.
+   When using the development server, exclude published-only checks with `dotnet test --filter 'Category!=Published'`.
 
 ## Playwright browsers
 

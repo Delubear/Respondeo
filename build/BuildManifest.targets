@@ -1,0 +1,47 @@
+<Project>
+  <Import Project="HoursContent.props" />
+
+  <PropertyGroup>
+	<_ManifestRoot>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..'))</_ManifestRoot>
+	<BuildManifestPath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)', '$(Configuration)', '$(TargetFramework)', 'build-manifest.json'))</BuildManifestPath>
+	<BuildKind Condition="'$(BuildKind)' == '' And '$(GITHUB_ACTIONS)' == 'true'">ci</BuildKind>
+	<BuildKind Condition="'$(BuildKind)' == ''">development</BuildKind>
+	<BuildVersion Condition="'$(BuildVersion)' == '' And '$(GITHUB_ACTIONS)' == 'true'">1.0.$(GITHUB_RUN_NUMBER)</BuildVersion>
+	<BuildVersion Condition="'$(BuildVersion)' == ''">0.0.0-dev</BuildVersion>
+	<BuildSourceRevision Condition="'$(BuildSourceRevision)' == '' And '$(GITHUB_ACTIONS)' == 'true'">$(GITHUB_SHA)</BuildSourceRevision>
+	<BuildSourceRevision Condition="'$(BuildSourceRevision)' == ''">development</BuildSourceRevision>
+	<BuildHost Condition="'$(UseMaui)' == 'true'">android</BuildHost>
+	<BuildHost Condition="'$(UseMaui)' != 'true'">wasm</BuildHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Include="$(BuildManifestPath)" LogicalName="Respondeo.BuildManifest.json" />
+	<Content Include="$(BuildManifestPath)" Link="wwwroot\build-manifest.json" CopyToOutputDirectory="PreserveNewest" Condition="'$(UseMaui)' != 'true'" />
+	<MauiAsset Include="$(BuildManifestPath)" LogicalName="wwwroot\build-manifest.json" Condition="'$(UseMaui)' == 'true'" />
+  </ItemGroup>
+
+  <UsingTask TaskName="GenerateBuildManifest" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+	<Task>
+	  <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)GenerateBuildManifest.cs" />
+	</Task>
+  </UsingTask>
+
+  <Target Name="CreateBuildManifest" BeforeTargets="PrepareForBuild" DependsOnTargets="ValidateHoursContentInputs">
+	<ItemGroup>
+	  <_IdentityContent Include="$(_ManifestRoot)\src\Respondeo.Content\wwwroot\**\*" />
+	  <_IdentityContent Include="$(_ManifestRoot)\src\Respondeo.Content.Summa\wwwroot\**\*" />
+	  <_IdentityContent Include="$(_ManifestRoot)\src\Respondeo.Bible\wwwroot\**\*" />
+	  <_IdentityContent Include="$(_ManifestRoot)\src\Respondeo.LiturgyOfTheHours\Data\*.json" />
+	  <_IdentityContent Include="$(_ManifestRoot)\src\Respondeo.LiturgicalCalendar\*.txt" />
+	</ItemGroup>
+	<GenerateBuildManifest Root="$(_ManifestRoot)" OutputPath="$(BuildManifestPath)" Host="$(BuildHost)"
+						   Version="$(BuildVersion)" SourceRevision="$(BuildSourceRevision)" BuildKind="$(BuildKind)"
+						   ContentFiles="@(_IdentityContent)" HoursFiles="@(HoursContentItem)" HoursDirectory="$(HoursContentDir)"
+						   HoursSingleFile="$(HoursContentSingleFile)" LicensedDirectory="$(HoursLicensedContentDir)"
+						   LicensedRevision="$(HoursContentRevision)" />
+  </Target>
+
+  <Target Name="ExportBuildManifest" AfterTargets="Publish">
+	<Copy SourceFiles="$(BuildManifestPath)" DestinationFiles="$(PublishDir)build-manifest.json" />
+  </Target>
+</Project>

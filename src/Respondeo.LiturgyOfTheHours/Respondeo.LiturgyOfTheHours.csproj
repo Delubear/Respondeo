@@ -14,16 +14,10 @@
 	-p:HoursLicensedContentDir=<directory> (every *.json in it, except *.schema.json, is embedded and merged),
 	or the older single-file -p:HoursLicensedContentPath=<file>. Every other build embeds the invented sample directory.
   -->
-  <PropertyGroup>
-	<HoursContentDir>SampleContent/hours</HoursContentDir>
-	<HoursContentDir Condition="'$(HoursLicensedContentDir)' != '' And Exists('$(HoursLicensedContentDir)')">$(HoursLicensedContentDir)</HoursContentDir>
-	<HoursContentSingleFile Condition="'$(HoursLicensedContentDir)' == '' And '$(HoursLicensedContentPath)' != '' And Exists('$(HoursLicensedContentPath)')">$(HoursLicensedContentPath)</HoursContentSingleFile>
-  </PropertyGroup>
+  <Import Project="..\..\build\HoursContent.props" />
 
   <ItemGroup>
 	<None Remove="SampleContent/**" />
-	<HoursContentItem Include="$(HoursContentDir)/**/*.json" Exclude="$(HoursContentDir)/**/*.schema.json" Condition="'$(HoursContentSingleFile)' == ''" />
-	<HoursContentItem Include="$(HoursContentSingleFile)" Condition="'$(HoursContentSingleFile)' != ''" />
 	<EmbeddedResource Include="@(HoursContentItem)" LogicalName="Respondeo.LiturgyOfTheHours.Content.%(Filename)%(Extension)" />
   </ItemGroup>
 

@@ -64,4 +64,6 @@
 	<ProjectReference Include="..\Respondeo.UI\Respondeo.UI.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\build\BuildManifest.targets" />
+
 </Project>

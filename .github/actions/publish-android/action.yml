@@ -29,6 +29,12 @@ inputs:
   hours-content-directory:
     description: Optional checked-out licensed Hours content directory.
     default: ''
+  hours-content-revision:
+    description: Pinned licensed Hours commit, or sample when licensed content is not selected.
+    default: sample
+  expected-content-sha256:
+    description: Expected content digest resolved by the common release build job.
+    default: ''
 
 runs:
   using: composite
@@ -76,12 +82,13 @@ runs:
         VERSION: ${{ inputs.version }}
         VERSION_CODE: ${{ inputs.version-code }}
         HOURS_CONTENT_DIRECTORY: ${{ inputs.hours-content-directory }}
+        HOURS_CONTENT_REVISION: ${{ inputs.hours-content-revision }}
         ANDROID_KEYSTORE_PASSWORD: ${{ inputs.keystore-password }}
         ANDROID_KEY_ALIAS: ${{ inputs.key-alias }}
         ANDROID_KEY_PASSWORD: ${{ inputs.key-password }}
       run: |
         args=(-f net10.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
-          "-p:ApplicationVersion=$VERSION_CODE" "-p:ApplicationDisplayVersion=$VERSION")
+          "-p:ApplicationVersion=$VERSION_CODE" "-p:ApplicationDisplayVersion=$VERSION" "-p:BuildVersion=$VERSION")
         if [ "$RELEASE_SIGNING" = "true" ]; then
           args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo-release.keystore"
             -p:AndroidSigningStorePass=env:ANDROID_KEYSTORE_PASSWORD "-p:AndroidSigningKeyAlias=$ANDROID_KEY_ALIAS"
@@ -92,7 +99,12 @@ runs:
             echo "::error::The requested licensed Hours content directory is missing."
             exit 1
           fi
-          args+=("-p:HoursLicensedContentDir=$HOURS_CONTENT_DIRECTORY")
+          actual_revision=$(git -C "$HOURS_CONTENT_DIRECTORY" rev-parse HEAD)
+          if [ "$actual_revision" != "$HOURS_CONTENT_REVISION" ]; then
+            echo "::error::The checked-out Hours commit does not match the selected release revision."
+            exit 1
+          fi
+          args+=("-p:HoursLicensedContentDir=$HOURS_CONTENT_DIRECTORY" "-p:HoursContentRevision=$HOURS_CONTENT_REVISION")
         fi
         dotnet publish src/Respondeo.Maui/Respondeo.Maui.csproj "${args[@]}"
 
@@ -101,7 +113,14 @@ runs:
       env:
         RELEASE_SIGNING: ${{ inputs.release-signing }}
         VERSION: ${{ inputs.version }}
+        EXPECTED_CONTENT: ${{ inputs.expected-content-sha256 }}
       run: |
+        if [ "$RELEASE_SIGNING" = "true" ] && [[ ! "$EXPECTED_CONTENT" =~ ^[0-9a-f]{64}$ ]]; then
+          echo "::error::Public APK releases require the common build's content identity."
+          exit 1
+        fi
+        python3 .github/scripts/verify_build_identity.py apk-out/build-manifest.json \
+          --host android --version "$VERSION" --source "$GITHUB_SHA" --content "$EXPECTED_CONTENT"
         mapfile -d '' apks < <(find apk-out -type f -name '*-Signed.apk' -print0)
         if [ "${#apks[@]}" -ne 1 ]; then
           echo "::error::Expected exactly one signed APK, found ${#apks[@]}."
@@ -118,7 +137,8 @@ runs:
           filename="respondeo-validation-$VERSION.apk"
         fi
         cp "${apks[0]}" "android-artifact/$filename"
-        (cd android-artifact && sha256sum "$filename" > SHA256SUMS)
+        cp apk-out/build-manifest.json android-artifact/build-manifest.json
+        (cd android-artifact && sha256sum "$filename" build-manifest.json > SHA256SUMS)
 
     - name: Upload verified APK
       uses: actions/upload-artifact@v7

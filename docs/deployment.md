@@ -37,20 +37,66 @@ All four secrets are mandatory: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PAS
 The temporary keystore is removed after the build, including on failure.
 
 The shared `.github/actions/publish-android` action checks that exactly one signed APK was produced and verifies its ZIP archive,
-Android signature, and ZIP alignment before uploading it with `SHA256SUMS`. The `android-release` job has release-write permission
-but no signing credentials or build step. It downloads that run's `android-release` artifact, checks the checksum, and attaches the
-unchanged APK and checksum file to the GitHub Release. Applicable browser acceptance checks must also pass; skipped browser checks
-are allowed for MAUI-only changes. Failed or canceled checks block APK publication.
+Android signature, ZIP alignment, and build identity before uploading it with `build-manifest.json` and `SHA256SUMS`.
+The `android-release` job has release-write permission but no signing credentials or build step. It downloads that run's
+`android-release` artifact, checks both checksums, and attaches the unchanged APK, manifest, and checksum file to the GitHub Release.
+Applicable browser acceptance checks must also pass; skipped browser checks are allowed for MAUI-only changes.
+Failed or canceled checks block APK publication.
 
 Pages similarly deploys the published output already exercised by browser acceptance tests, rather than rebuilding it.
 An Android build failure does not block a validated website deployment. Pages permissions are limited to the Pages deployment job.
 APK structure/signature checks do not replace device testing for startup, app switching, system bars, or upgrade persistence.
 
-Run the path-rule regression tests locally with:
+Run the path-rule and build-identity regression tests locally with the repository .NET SDK installed:
 
 ```powershell
-python -m unittest discover -s .github\scripts -p test_workflow_paths.py
+python -m unittest discover -s .github\scripts -p 'test_*.py'
 ```
+
+## Build identity and content pinning
+
+Both hosts import `build/BuildManifest.targets`. Each host embeds its own `Respondeo.BuildManifest.json` resource and packages
+`wwwroot/build-manifest.json`; publishing also exports a sidecar at the publish root. The shared footer's
+**Version & build details** disclosure reads the embedded resource, not a network request. It therefore identifies the actual
+installed APK or cached PWA, even when a newer website deployment exists.
+
+The manifest contains only these public metadata fields:
+
+| Field | Meaning |
+| --- | --- |
+| `version` | CI version `1.0.<run number>`, matching the APK display version. |
+| `sourceRevision` | The workflow's source commit SHA. |
+| `host` | `wasm` or `android`. |
+| `buildKind` | `ci` or `development`. |
+| `contentSha256` | Deterministic SHA-256 of the selected shared content inputs. |
+| `hoursMode` | `licensed` or `sample`. |
+| `hoursRevision` | Pinned licensed-content commit, or `sample`. |
+
+Deployment resolves the licensed Hours repository commit once in the common build job, then checks out that exact commit for
+Android. Both hosts receive the same revision. Without the token, both use the invented samples. Invalid requested paths or
+empty selections fail instead of silently substituting samples. CI licensed builds also fail without a pinned commit.
+`build/HoursContent.props` supplies the same selected JSON files to Hours resource embedding and manifest generation;
+the legacy single-file `HoursLicensedContentPath` remains supported.
+
+The digest covers the Content, Summa, and Bible libraries' `wwwroot` trees, Hours `Data` JSON, liturgical calendar text files,
+and the selected Hours JSON (excluding schema files). Sort logical paths ordinally, use repository-relative paths for shared
+files and `hours/content/<relative path>` for selected Hours files, then hash this UTF-8 inventory:
+
+```text
+respondeo-content-v1\n
+<logical path>\0<lowercase SHA-256 of exact file bytes>\n
+```
+
+Here `\n` and `\0` denote LF and NUL, not literal backslashes. Absolute checkout paths, timestamps, build outputs, and host identity
+are excluded. Exact-byte hashing deliberately detects line-ending changes; cross-machine comparisons require identical checkout
+bytes. This is a shared-content identity, not a claim of byte-for-byte reproducible binaries or identical host configuration.
+
+The deployment workflow compares the actual published web manifest and the APK build manifest against the common content digest.
+Release notes include the APK's manifest and artifact hashes; website artifacts include a final `SHA256SUMS` inventory.
+The service worker caches the web manifest alongside the app shell. Local builds explicitly report `0.0.0-dev` and
+`development`, including for source revision; local licensed content without a supplied revision reports `development` for that
+revision too. Build properties `BuildVersion`, `BuildSourceRevision`, `BuildKind`, and `HoursContentRevision` support explicit
+verification builds without changing Android package IDs, version-code rules, signing keys, or reader storage keys.
 
 ## DNS
 

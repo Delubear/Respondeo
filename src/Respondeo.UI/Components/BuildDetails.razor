@@ -1,0 +1,19 @@
+@inject BuildInfo Build
+
+<details class="build-details">
+    <summary>Version &amp; build details</summary>
+    <dl>
+        <dt>Version</dt>
+        <dd>@Build.Version (@Build.BuildKind)</dd>
+        <dt>Host</dt>
+        <dd>@Build.Host</dd>
+        <dt>Source commit</dt>
+        <dd>@Build.SourceRevision</dd>
+        <dt>Content SHA-256</dt>
+        <dd>@Build.ContentSha256</dd>
+        <dt>Hours content</dt>
+        <dd>@Build.HoursMode</dd>
+        <dt>Hours revision</dt>
+        <dd>@Build.HoursRevision</dd>
+    </dl>
+</details>

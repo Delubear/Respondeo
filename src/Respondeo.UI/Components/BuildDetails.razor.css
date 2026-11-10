@@ -1,0 +1,23 @@
+.build-details {
+    max-width: 40rem;
+    margin: 0.75rem auto 0;
+    font-size: 0.72rem;
+}
+
+summary {
+    cursor: pointer;
+}
+
+dl {
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+dt {
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+dd {
+    margin: 0;
+}

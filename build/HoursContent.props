@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+	<HoursContentDir>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'src', 'Respondeo.LiturgyOfTheHours', 'SampleContent', 'hours'))</HoursContentDir>
+	<HoursContentDir Condition="'$(HoursLicensedContentDir)' != ''">$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(HoursLicensedContentDir)'))</HoursContentDir>
+	<HoursContentSingleFile Condition="'$(HoursLicensedContentDir)' == '' And '$(HoursLicensedContentPath)' != ''">$(HoursLicensedContentPath)</HoursContentSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<HoursContentItem Include="$(HoursContentDir)\**\*.json" Exclude="$(HoursContentDir)\**\*.schema.json" Condition="'$(HoursContentSingleFile)' == ''" />
+	<HoursContentItem Include="$(HoursContentSingleFile)" Condition="'$(HoursContentSingleFile)' != ''" />
+  </ItemGroup>
+
+  <Target Name="ValidateHoursContentInputs" BeforeTargets="PrepareForBuild">
+	<Error Condition="'$(HoursLicensedContentDir)' != '' And !Exists('$(HoursLicensedContentDir)')" Text="The requested licensed Hours content directory does not exist." />
+	<Error Condition="'$(HoursContentSingleFile)' != '' And !Exists('$(HoursContentSingleFile)')" Text="The requested licensed Hours content file does not exist." />
+	<Error Condition="'@(HoursContentItem)' == ''" Text="The selected Hours content contains no JSON files." />
+  </Target>
+</Project>
