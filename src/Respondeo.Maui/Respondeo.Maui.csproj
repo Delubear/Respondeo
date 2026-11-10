@@ -11,6 +11,7 @@
 	<EnableDefaultCssItems>false</EnableDefaultCssItems>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<PublishTrimmed>false</PublishTrimmed>
+	<RunAOTCompilation>false</RunAOTCompilation>
 
 	<ApplicationTitle>Respondeo</ApplicationTitle>
 	<ApplicationId>faith.respondeo.app</ApplicationId>
