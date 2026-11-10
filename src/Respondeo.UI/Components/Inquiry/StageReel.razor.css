@@ -1,9 +1,7 @@
 /* ---------- Journey reel ----------
-   A horizontal scroll-snap "reel": one stage is centered at a time while its
-   neighbors peek left and right. Stage 1 sits at the LEFT and the final stage at
-   the RIGHT, so scrolling the journey walks forward along the path. As you flick /
-   drag / scroll, each card turns toward center using a scroll-driven animation (view
-   timeline), with an IntersectionObserver fallback where that isn't supported. */
+   A flat horizontal scroll-snap reel: stages slide left and right, with only the
+   centered question visible. Stage 1 starts at the left and the final stage
+   sits at the right. */
 .reel-wrap {
     position: relative;
     margin: 0.25rem auto 0;
@@ -24,12 +22,6 @@
     scrollbar-width: none;
     /* Let vertical swipes scroll the page; the reel only pans horizontally. */
     touch-action: pan-y;
-    /* Keep the 3D-turned cards in one isolated, paint-contained stacking context with a shared
-       perspective. Per-card perspective() layers get torn down and re-rasterized when the Android
-       WebView resizes (minimize / window drag), briefly exposing an unpainted black backing. */
-    isolation: isolate;
-    contain: paint;
-    perspective: 50rem;
 }
 
 .reel:focus-visible {
@@ -66,14 +58,15 @@
     display: flex;
     justify-content: center;
     padding: 0 0.5rem;
-    transform-origin: center center;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-page);
     cursor: pointer;
 }
 
-/* The centered card behaves as a normal link; only peeking neighbors are "tap to center". */
-.reel__step.is-centered {
+/* Keep every step in the scroll layout; show Stage 1 until the module selects a center. */
+.reel__step.is-centered,
+.reel:not(:has(.is-centered)) .reel__step:first-child {
+    opacity: 1;
     cursor: default;
 }
 
@@ -91,8 +84,6 @@
     text-align: center;
     text-decoration: none;
     color: inherit;
-    /* Peeking neighbors read as quieter until they reach center (reinforced by the turn/JS rules). */
-    transition: color var(--dur-3) var(--ease-page);
 }
 
 .reel__q-text {
@@ -118,9 +109,7 @@
     color: var(--accent);
 }
 
-/* Click affordance: a small "Step in →" cue that makes the pointer explicit. It stays
-   quiet (dimmed, tucked up) until the question reaches center or the reader hovers/focuses,
-   then it settles into view and the arrow nudges forward on hover to signal it's actionable. */
+/* Show the invitation on the centered question, or when a link is hovered/focused. */
 .reel__q-cue {
     display: inline-flex;
     align-items: center;
@@ -133,8 +122,6 @@
     font-weight: 700;
     color: var(--accent);
     opacity: 0;
-    transform: translateY(-0.35rem);
-    transition: opacity var(--dur-3) var(--ease-page), transform var(--dur-3) var(--ease-page);
 }
 
 .reel__q-cue-arrow {
@@ -142,7 +129,6 @@
     height: 1px;
     position: relative;
     background: currentColor;
-    transition: transform var(--dur-3) var(--ease-page);
 }
 
 .reel__q-cue-arrow::after {
@@ -161,94 +147,6 @@
 .reel__q:hover .reel__q-cue,
 .reel__q:focus-visible .reel__q-cue {
     opacity: 1;
-    transform: translateY(0);
-}
-
-.reel__q:hover .reel__q-cue-arrow,
-.reel__q:focus-visible .reel__q-cue-arrow {
-    transform: translateX(0.25rem);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .reel__q-cue,
-    .reel__q-cue-arrow {
-        transition: none;
-    }
-}
-
-/* Entrance: cards drift gently into place once the reel is positioned on load.
-   Transform ONLY — never animate opacity here. An opacity keyframe with fill-mode `both` pins the
-   animated value and overrides the static .is-centered opacity below, which would keep every card
-   visible. Visibility is owned solely by the static rules on .reel__step / .is-centered. */
-.reel.is-ready .reel__step {
-    animation: reel-enter var(--dur-4) var(--ease-page) backwards;
-}
-
-@keyframes reel-enter {
-    from {
-        transform: translateX(0.75rem);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-/* Before reel.js picks a mode (reel--native / reel--js), keep the peeking neighbors hidden so they
-   don't paint visible on first load and then fade out. Stage 1 is the initially centered card. */
-.reel:not(.reel--native):not(.reel--js) .reel__step:not(:first-child) {
-    opacity: 0;
-    transition: none;
-}
-
-/* Native scroll-driven turn: the scroll-timeline drives only the cosmetic lean/scale as a card
-   passes through. It does NOT control opacity — view-timeline progress is approximate geometry, so
-   neighbors land at a progress value that varies with viewport/card size and would leak into view.
-   Visibility is instead driven by the deterministic .is-centered class (updated every scroll frame
-   by reel.js), so a non-centered card is always exactly transparent and the centered one fully
-   opaque, regardless of width. The opacity lives on the item, so the centered card is never masked. */
-.reel--native .reel__step {
-    animation: reel-turn linear both;
-    animation-timeline: view(inline);
-    animation-range: cover;
-    opacity: 0;
-    transition: opacity var(--dur-3) var(--ease-page);
-}
-
-/* When both the entrance and the native turn apply (the reel has is-ready AND reel--native), run
-   both animations rather than letting the higher-specificity entrance rule override the turn. Only
-   reel-turn is tied to the view timeline; reel-enter plays once on the default (time) timeline. */
-.reel--native.is-ready .reel__step {
-    animation: reel-enter var(--dur-4) var(--ease-page) backwards, reel-turn linear both;
-    animation-timeline: auto, view(inline);
-    animation-range: normal, cover;
-}
-
-.reel--native .reel__step.is-centered {
-    opacity: 1;
-}
-
-@keyframes reel-turn {
-    0% {
-        transform: rotateY(24deg) scale(0.86);
-    }
-    50% {
-        transform: rotateY(0deg) scale(1);
-    }
-    100% {
-        transform: rotateY(-24deg) scale(0.86);
-    }
-}
-
-/* JS fallback: hide every step, then reveal only whichever is centered. */
-.reel--js .reel__step {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity var(--dur-3) var(--ease-page), transform var(--dur-3) var(--ease-page);
-}
-
-.reel--js .reel__step.is-in-view {
-    opacity: 1;
-    transform: scale(1);
 }
 
 /* ---------- Progress dots ----------
@@ -382,51 +280,19 @@
     border-bottom: 2px solid var(--accent);
 }
 
-/* Prev chevron nudges leftward; next chevron nudges rightward — a gentle "more here" cue. */
 .reel__hint--prev .reel__chevron {
     transform: rotate(135deg);
-    animation: reel-bob-prev 1.8s ease-in-out infinite;
 }
 
 .reel__hint--next .reel__chevron {
     transform: rotate(-45deg);
-    animation: reel-bob-next 1.8s ease-in-out infinite;
 }
 
-@keyframes reel-bob-prev {
-    0%, 100% { transform: rotate(135deg) translate(0, 0); }
-    50%      { transform: rotate(135deg) translate(-0.15rem, -0.15rem); }
-}
-
-@keyframes reel-bob-next {
-    0%, 100% { transform: rotate(-45deg) translate(0, 0); }
-    50%      { transform: rotate(-45deg) translate(-0.15rem, -0.15rem); }
-}
-
-/* Honor reduced-motion: drop the turning, bobbing, entrance and glow transitions,
-   keep the snap reel + affordances so navigation still works. */
 @media (prefers-reduced-motion: reduce) {
-    .reel--native .reel__step {
-        animation: none;
-    }
-
-    /* Visibility is already handled by the .is-centered rule above; here we only drop the
-       animation and the opacity transition so the centered-card reveal is instant. */
-    .reel--native .reel__step {
+    .reel__step,
+    .reel-dots ::deep .reel-dots__dot,
+    .reel__hint {
         transition: none;
-    }
-
-    .reel.is-ready .reel__step {
-        animation: none;
-    }
-
-    .reel-dots ::deep .reel-dots__dot {
-        transition: none;
-    }
-
-    .reel__hint--prev .reel__chevron,
-    .reel__hint--next .reel__chevron {
-        animation: none;
     }
 }
 

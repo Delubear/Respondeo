@@ -5,19 +5,11 @@
 //   1. Starts the reader at the left (Stage 1) on load.
 //   2. Tracks the centered step and, from a single notify path, updates the prev/next
 //      hint visibility, per-step "centered" classes, and the progress-dot rail.
-//   3. Provides a fallback "turning"/emphasis effect via IntersectionObserver for
-//      browsers without scroll-driven CSS animations (animation-timeline).
-//   4. Adds guided interactions: click the hint buttons, use the keyboard (arrows /
+//   3. Adds guided interactions: click the hint buttons, use the keyboard (arrows /
 //      page keys / home / end), flick the mouse wheel one card at a time, click a
 //      peeking neighbor to center it, or click a progress dot to jump.
 
 const state = new WeakMap();
-
-function supportsScrollTimeline() {
-    return typeof CSS !== 'undefined'
-        && typeof CSS.supports === 'function'
-        && CSS.supports('animation-timeline', 'view()');
-}
 
 function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -65,8 +57,7 @@ function goToIndex(reel, index, moveFocus = false) {
     }
 }
 
-// The single source of truth for "which card is centered": updates hints, the
-// per-step centered class (used by the JS fallback + emblem glow), and the dot rail.
+// The single source of truth for the centered question, hint visibility, and dot rail.
 function notify(reel) {
     const entry = state.get(reel);
     const steps = stepsOf(reel);
@@ -78,7 +69,6 @@ function notify(reel) {
         entry.centered = nearest;
     }
 
-    // Mark the centered step so CSS can emphasize it (fallback turn + emblem glow).
     steps.forEach((step, i) => step.classList.toggle('is-centered', i === nearest));
 
     // Hint visibility. The reel renders left-to-right as Stage 1 … final stage, so index 0
@@ -151,8 +141,6 @@ export function init(reel) {
     requestAnimationFrame(() => {
         reel.scrollLeft = 0;
         notify(reel);
-        // Reveal the cards with a gentle entrance once positioned (CSS gates on reduced motion).
-        reel.classList.add('is-ready');
     });
 
     // --- Scroll: keep the centered state in sync (throttled to animation frames). ---
@@ -297,31 +285,9 @@ export function init(reel) {
     reel.addEventListener('touchstart', onTouchStart, { passive: true });
     reel.addEventListener('touchend', onTouchEnd, { passive: true });
 
-    // --- Turn effect: native scroll-timeline where supported, else IO fallback. ---
-    const observers = [];
-    if (supportsScrollTimeline()) {
-        reel.classList.add('reel--native');
-    } else {
-        reel.classList.add('reel--js');
-        const observer = new IntersectionObserver((entries) => {
-            for (const item of entries) {
-                item.target.classList.toggle('is-in-view', item.isIntersecting);
-            }
-        }, {
-            root: reel,
-            rootMargin: '-45% 0px -45% 0px',
-            threshold: 0
-        });
-        for (const step of stepsOf(reel)) {
-            observer.observe(step);
-        }
-        observers.push(observer);
-    }
-
     entry.onScroll = onScroll;
     entry.onKeyDown = onKeyDown;
     entry.onWheel = onWheel;
-    entry.observers = observers;
     entry.disposeDots = disposeDots;
     entry.onClick = onClick;
     entry.onTouchStart = onTouchStart;
@@ -349,9 +315,6 @@ export function dispose(reel) {
     reel.removeEventListener('click', entry.onClick, true);
     reel.removeEventListener('touchstart', entry.onTouchStart);
     reel.removeEventListener('touchend', entry.onTouchEnd);
-    for (const observer of entry.observers || []) {
-        observer.disconnect();
-    }
     if (entry.disposeDots) {
         entry.disposeDots();
     }

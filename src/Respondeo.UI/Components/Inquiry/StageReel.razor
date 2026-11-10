@@ -48,8 +48,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // The reel renders Stage 1 (the starting point) at the LEFT so the journey walks rightward along the path.
-        // Start the reader there, and let the module apply an IntersectionObserver fallback for the turning effect where scroll-driven CSS animations aren't supported.
+        // Start at Stage 1 on the left; the module handles sliding and the navigation controls.
         if (Stages.Count > 0 && _module is null)
         {
             _module = new JsModule(JS, "./_content/Respondeo.UI/js/reel.js");

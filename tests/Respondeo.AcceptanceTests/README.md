@@ -6,6 +6,8 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 ## What they cover
 
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
+- **StageReelSlidingTests** — the flat reel shows only the active card, without 3D transforms or card animations;
+  arrows, keyboard, swipe handling, and dots work across screen sizes and reduced motion.
 - **Breadcrumb.feature** — the breadcrumb grows as you go deeper and resets when you return to Start.
 - **Sections.feature** — collapsible sections open/close and deep-link via the URL.
 - **StageNavigation.feature** — stage URLs load directly, unknown paths show the not-found page, and the breadcrumb is rooted at the stage.
