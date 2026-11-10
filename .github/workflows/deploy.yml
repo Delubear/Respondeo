@@ -17,8 +17,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Allow one concurrent deployment, cancelling in-progress runs for the same ref.
 concurrency:
@@ -42,111 +40,17 @@ jobs:
           # Full history so the sitemap's <lastmod> reflects each content file's last commit.
           fetch-depth: 0
 
-      # Detect whether any non-docs file changed. Docs-only pushes (READMEs,
-      # TODO.md, AI instruction files) leave code-changed=false so the build,
-      # tests, and deploy are skipped while the workflow still reports success.
-      - name: Detect changed paths
-        id: paths
-        uses: dorny/paths-filter@v4
-        with:
-          # code=true when anything OTHER than project docs changed. With
-          # predicate-quantifier=every, a file counts only if it matches EVERY
-          # pattern: it must match '**' AND not match any of the docs negations.
-          # Without this, the default 'some' quantifier makes the '!' patterns
-          # useless (every file matches '**'), so docs-only pushes still ran.
-          # Content markdown under wwwroot is website content and must still deploy.
-          predicate-quantifier: 'every'
-          filters: |
-            code:
-              - '**'
-              - '!README.md'
-              - '!**/README.md'
-              - '!**/DISCOVER.md'
-              - '!**/INQUIRY.md'
-              - '!**/TODO.md'
-              - '!.github/copilot-instructions.md'
-              - '!.github/instructions/**'
-            # web=true when something other than docs or the MAUI app changed.
-            # MAUI-only pushes still build and run unit tests but skip the
-            # website publish, acceptance tests, and Pages deploy.
-            web:
-              - '**'
-              - '!README.md'
-              - '!**/README.md'
-              - '!**/DISCOVER.md'
-              - '!**/INQUIRY.md'
-              - '!**/TODO.md'
-              - '!.github/copilot-instructions.md'
-              - '!.github/instructions/**'
-              - '!src/Respondeo.Maui/**'
-            # apk=true when something that ships in the Android app changed.
-            # Website-only projects (WASM host, acceptance tests, sitemap tool) are excluded.
-            apk:
-              - '**'
-              - '!README.md'
-              - '!**/README.md'
-              - '!**/DISCOVER.md'
-              - '!**/INQUIRY.md'
-              - '!**/TODO.md'
-              - '!.github/copilot-instructions.md'
-              - '!.github/instructions/**'
-              - '!src/Respondeo.Wasm/**'
-              - '!tests/Respondeo.AcceptanceTests/**'
-              - '!tools/Respondeo.SitemapGenerator/**'
-              - '!.github/scripts/prepare-pages-site.sh'
-
-      - name: Decide whether to run
+      - name: Select host checks
         id: filter
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ "${{ steps.paths.outputs.code }}" = "true" ]; then
-            echo "code-changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "code-changed=false" >> "$GITHUB_OUTPUT"
-          fi
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ "${{ steps.paths.outputs.web }}" = "true" ]; then
-            echo "web-changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "web-changed=false" >> "$GITHUB_OUTPUT"
-          fi
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "apk-changed=${{ inputs.release_apk }}" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ "${{ steps.paths.outputs.apk }}" = "true" ]; then
-            echo "apk-changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "apk-changed=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Setup .NET
-        if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/setup-dotnet@v5
+        uses: ./.github/actions/changed-paths
         with:
-          global-json-file: global.json
+          manual-apk: ${{ inputs.release_apk || false }}
 
-      # Install the WebAssembly build tools so Publish natively relinks the .NET
-      # runtime (trims unused runtime code, ~halving dotnet.native.wasm). Without
-      # this the SDK silently falls back to the larger prebuilt runtime, so the
-      # deployed site would lose the first-load size win. Relinking only runs at
-      # publish, so this step is unnecessary for the build/test steps above.
-      #
-      # The workload packs live under root-owned /usr/share/dotnet, so caching
-      # them with actions/cache is not viable: tar restores under the non-root
-      # runner user and fails with "Cannot change mode ... Operation not
-      # permitted" (exit code 2), breaking the whole job. Installing fresh each
-      # run is slower but reliable; NuGet packages are still cached below.
-      - name: Install wasm-tools workload
-        if: steps.filter.outputs.web-changed == 'true'
-        run: dotnet workload install wasm-tools
-
-      # Cache restored NuGet packages keyed on the project files. Any dependency
-      # change edits a .csproj, busting the key; otherwise restore is near-instant.
-      - name: Cache NuGet packages
+      - name: Setup build
         if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/cache@v6
+        uses: ./.github/actions/setup-build
         with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          workload: ${{ steps.filter.outputs.web-changed == 'true' && 'wasm-tools' || '' }}
 
       # Compile the app and unit tests once; later steps reuse this output via --no-build.
       # Building the test project also builds the app it references.
@@ -267,6 +171,9 @@ jobs:
     needs: [build, e2e]
     if: needs.build.outputs.web-changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -275,52 +182,19 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
-  android-release:
-    name: Android APK Release
-    needs: [build, e2e]
-    # Runs on every push that changes app-relevant files (or a manual dispatch with release_apk).
-    # always() lets it run when e2e was skipped on MAUI-only pushes; it still requires e2e not to fail.
-    if: >-
-      always() && needs.build.result == 'success' &&
-      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') &&
-      needs.build.outputs.apk-changed == 'true'
+  android-build:
+    name: Build & Verify Release APK
+    needs: build
+    if: needs.build.outputs.apk-changed == 'true'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     env:
       HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
-      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      VERSION: 1.0.${{ github.run_number }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          global-json-file: global.json
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      # Workload packs live under root-owned /usr/share/dotnet and cannot be cached; install fresh.
-      - name: Install maui-android workload
-        run: dotnet workload install maui-android
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
 
       - name: Checkout licensed Hours content
+        id: hours
         if: env.HOURS_CONTENT_TOKEN != ''
         uses: actions/checkout@v5
         with:
@@ -328,31 +202,49 @@ jobs:
           token: ${{ secrets.HOURS_CONTENT_TOKEN }}
           path: .licensed/hours
 
-      # Optional release signing. Without these secrets the APK is signed with a generated debug key,
-      # which installs fine but cannot update a previously installed build signed with a different key.
-      - name: Decode signing keystore
-        if: env.ANDROID_KEYSTORE_BASE64 != ''
-        run: echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/respondeo.keystore"
+      - name: Publish and verify release APK
+        uses: ./.github/actions/publish-android
+        with:
+          release-signing: 'true'
+          keystore-base64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          keystore-password: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          key-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          key-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          version: 1.0.${{ github.run_number }}
+          version-code: ${{ github.run_number }}
+          artifact-name: android-release
+          hours-content-directory: ${{ steps.hours.outcome == 'success' && format('{0}/.licensed/hours', github.workspace) || '' }}
 
-      - name: Publish APK
-        env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  android-release:
+    name: Android APK Release
+    needs: [build, e2e, android-build]
+    # Skipped browser checks are expected on MAUI-only pushes; failed or canceled checks must block publication.
+    if: >-
+      !cancelled() && needs.build.result == 'success' && needs.android-build.result == 'success' &&
+      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') &&
+      needs.build.outputs.apk-changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VERSION: 1.0.${{ github.run_number }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download verified APK
+        uses: actions/download-artifact@v8
+        with:
+          name: android-release
+          path: android-release
+
+      - name: Check release artifact integrity
+        working-directory: android-release
         run: |
-          args=(-f net10.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
-            "-p:ApplicationVersion=${{ github.run_number }}" "-p:ApplicationDisplayVersion=$VERSION")
-          if [ -f "$RUNNER_TEMP/respondeo.keystore" ]; then
-            args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo.keystore"
-              "-p:AndroidSigningStorePass=$ANDROID_KEYSTORE_PASSWORD" "-p:AndroidSigningKeyAlias=$ANDROID_KEY_ALIAS"
-              "-p:AndroidSigningKeyPass=$ANDROID_KEY_PASSWORD")
-          fi
-          if [ -d .licensed/hours ]; then
-            args+=("-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours")
-          fi
-          dotnet publish src/Respondeo.Maui/Respondeo.Maui.csproj "${args[@]}"
-          apk=$(find apk-out -name '*-Signed.apk' | head -n 1)
-          cp "$apk" "respondeo-$VERSION.apk"
+          sha256sum --check SHA256SUMS
+          test -f "respondeo-$VERSION.apk"
 
       # List first-parent commits since the previous release tag this job created.
       # Direct trunk commits show their subject; PR merge commits show the PR title and number.
@@ -391,7 +283,10 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: Respondeo ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
-          files: respondeo-${{ env.VERSION }}.apk
+          files: |
+            android-release/respondeo-${{ env.VERSION }}.apk
+            android-release/SHA256SUMS
+          fail_on_unmatched_files: true
           body_path: CHANGELOG.md
 
       # Keep only the 50 newest APK releases (and their tags). Opt-in via manual run.

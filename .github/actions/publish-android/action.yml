@@ -1,0 +1,133 @@
+name: Publish and verify Android
+description: Publish one APK, verify its archive and signature, and upload it with a checksum without creating a release.
+
+inputs:
+  release-signing:
+    description: Require the stable release key instead of the development debug key.
+    default: 'false'
+  keystore-base64:
+    description: Base64-encoded release keystore; never supplied by PR validation.
+    default: ''
+  keystore-password:
+    description: Release keystore password.
+    default: ''
+  key-alias:
+    description: Release signing key alias.
+    default: ''
+  key-password:
+    description: Release signing key password.
+    default: ''
+  version:
+    description: Application display version and artifact filename version.
+    required: true
+  version-code:
+    description: Numeric Android application version code.
+    required: true
+  artifact-name:
+    description: Uploaded artifact name; validation and public-release artifacts must be distinct.
+    required: true
+  hours-content-directory:
+    description: Optional checked-out licensed Hours content directory.
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Require release signing credentials
+      if: inputs.release-signing == 'true'
+      shell: bash
+      env:
+        ANDROID_KEYSTORE_BASE64: ${{ inputs.keystore-base64 }}
+        ANDROID_KEYSTORE_PASSWORD: ${{ inputs.keystore-password }}
+        ANDROID_KEY_ALIAS: ${{ inputs.key-alias }}
+        ANDROID_KEY_PASSWORD: ${{ inputs.key-password }}
+      run: |
+        for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+          if [ -z "${!name}" ]; then
+            echo "::error::Public APK releases require the $name secret; debug signing is not allowed."
+            exit 1
+          fi
+        done
+
+    - name: Setup Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: '21'
+
+    - name: Setup Android build
+      uses: ./.github/actions/setup-build
+      with:
+        workload: maui-android
+
+    - name: Decode release keystore
+      if: inputs.release-signing == 'true'
+      shell: bash
+      env:
+        ANDROID_KEYSTORE_BASE64: ${{ inputs.keystore-base64 }}
+      run: |
+        umask 077
+        printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/respondeo-release.keystore"
+
+    - name: Publish APK
+      shell: bash
+      env:
+        RELEASE_SIGNING: ${{ inputs.release-signing }}
+        VERSION: ${{ inputs.version }}
+        VERSION_CODE: ${{ inputs.version-code }}
+        HOURS_CONTENT_DIRECTORY: ${{ inputs.hours-content-directory }}
+        ANDROID_KEYSTORE_PASSWORD: ${{ inputs.keystore-password }}
+        ANDROID_KEY_ALIAS: ${{ inputs.key-alias }}
+        ANDROID_KEY_PASSWORD: ${{ inputs.key-password }}
+      run: |
+        args=(-f net10.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
+          "-p:ApplicationVersion=$VERSION_CODE" "-p:ApplicationDisplayVersion=$VERSION")
+        if [ "$RELEASE_SIGNING" = "true" ]; then
+          args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo-release.keystore"
+            -p:AndroidSigningStorePass=env:ANDROID_KEYSTORE_PASSWORD "-p:AndroidSigningKeyAlias=$ANDROID_KEY_ALIAS"
+            -p:AndroidSigningKeyPass=env:ANDROID_KEY_PASSWORD)
+        fi
+        if [ -n "$HOURS_CONTENT_DIRECTORY" ]; then
+          if [ ! -d "$HOURS_CONTENT_DIRECTORY" ]; then
+            echo "::error::The requested licensed Hours content directory is missing."
+            exit 1
+          fi
+          args+=("-p:HoursLicensedContentDir=$HOURS_CONTENT_DIRECTORY")
+        fi
+        dotnet publish src/Respondeo.Maui/Respondeo.Maui.csproj "${args[@]}"
+
+    - name: Verify final APK and prepare artifact
+      shell: bash
+      env:
+        RELEASE_SIGNING: ${{ inputs.release-signing }}
+        VERSION: ${{ inputs.version }}
+      run: |
+        mapfile -d '' apks < <(find apk-out -type f -name '*-Signed.apk' -print0)
+        if [ "${#apks[@]}" -ne 1 ]; then
+          echo "::error::Expected exactly one signed APK, found ${#apks[@]}."
+          exit 1
+        fi
+        build_tools=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
+        unzip -t "${apks[0]}"
+        "$build_tools/apksigner" verify --verbose --print-certs "${apks[0]}"
+        "$build_tools/zipalign" -c 4 "${apks[0]}"
+        mkdir -p android-artifact
+        if [ "$RELEASE_SIGNING" = "true" ]; then
+          filename="respondeo-$VERSION.apk"
+        else
+          filename="respondeo-validation-$VERSION.apk"
+        fi
+        cp "${apks[0]}" "android-artifact/$filename"
+        (cd android-artifact && sha256sum "$filename" > SHA256SUMS)
+
+    - name: Upload verified APK
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: android-artifact/
+        if-no-files-found: error
+
+    - name: Remove release keystore
+      if: always() && inputs.release-signing == 'true'
+      shell: bash
+      run: rm -f "$RUNNER_TEMP/respondeo-release.keystore"

@@ -1,0 +1,44 @@
+name: Select host checks
+description: Classify shared, host-only, and documentation changes consistently for PRs and releases.
+
+inputs:
+  manual-apk:
+    description: Include Android on workflow_dispatch; deployment callers must pass their release_apk selection.
+    default: 'true'
+
+outputs:
+  code-changed:
+    description: Run shared checks.
+    value: ${{ steps.select.outputs.code-changed }}
+  web-changed:
+    description: Publish and validate the browser host.
+    value: ${{ steps.select.outputs.web-changed }}
+  apk-changed:
+    description: Publish and validate the Android host.
+    value: ${{ steps.select.outputs.apk-changed }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect changed paths
+      id: paths
+      uses: dorny/paths-filter@v4
+      with:
+        list-files: json
+        filters: |
+          all:
+            - '**'
+
+    - name: Verify path selection rules
+      shell: bash
+      run: python3 -m unittest discover -s .github/scripts -p 'test_workflow_paths.py'
+
+    - name: Select checks
+      id: select
+      shell: bash
+      env:
+        CHANGED_FILES: ${{ steps.paths.outputs.all_files }}
+        EVENT_NAME: ${{ github.event_name }}
+        BEFORE: ${{ github.event.before }}
+        MANUAL_APK: ${{ inputs.manual-apk }}
+      run: python3 .github/scripts/workflow_paths.py

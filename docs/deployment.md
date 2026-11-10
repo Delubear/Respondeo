@@ -1,13 +1,56 @@
 # Deployment
 
 The site is published to **GitHub Pages** by the `Deploy to GitHub Pages` workflow
-([`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)) on every push to `master` that
-changes non-docs files.
+([`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)) on pushes to `master` that change web-relevant files.
+App-relevant pushes also build and release an Android APK. Manual runs always validate/deploy the website and release an APK
+only when `release_apk` is selected; this preserves the existing release cadence.
 
 It is served from the custom apex domain **`respondeo.faith`**, so the app lives at the domain root
 and the authored `<base href="/" />` is used as-is (no base-href rewrite). The deploy writes a
 `CNAME` file into the published output on every run to keep the custom-domain binding. GitHub
 automatically redirects the old project URL (`delubear.github.io/Respondeo/`) to the custom domain.
+
+## Validation and release gates
+
+PRs and deployment runs share path selection in `.github/actions/changed-paths` and SDK/workload setup in
+`.github/actions/setup-build`. Path rules are implemented and tested in `.github/scripts/workflow_paths.py` and
+`.github/scripts/test_workflow_paths.py`. Documentation-only runs skip expensive builds, not the path-rule checks.
+
+| Change | Shared unit/component tests | WASM publish and browser acceptance | Android Release publish and package verification |
+| --- | --- | --- | --- |
+| Shared UI/content, dependency, build, or workflow configuration | Yes | Yes | Yes |
+| MAUI host only | Yes | No | Yes |
+| WASM host, browser acceptance tests, or sitemap tooling only | Yes | Yes | No |
+| READMEs, authoring instructions/prompts, or Markdown under docs | No | No | No |
+
+Authored Inquiry/Discover Markdown is application content, not documentation, and validates both hosts.
+Other changes conservatively validate both hosts. Manual PR workflow runs validate both hosts.
+
+The PR workflow uses read-only repository/PR permissions and does not receive release signing or licensed-content secrets.
+Its Android action produces an `android-validation` artifact using a development debug key. Add **Android Release Validation**
+to the repository's required PR checks alongside unit/component and browser acceptance checks to enforce it before merge.
+This branch-protection setting must be configured in GitHub; editing workflow files alone does not require the check.
+
+The trusted deployment workflow builds the signed public APK in `android-build`, with read-only repository permissions.
+All four secrets are mandatory: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and
+`ANDROID_KEY_PASSWORD`. Never rotate the signing identity casually: a differently signed APK cannot update an existing installation.
+The temporary keystore is removed after the build, including on failure.
+
+The shared `.github/actions/publish-android` action checks that exactly one signed APK was produced and verifies its ZIP archive,
+Android signature, and ZIP alignment before uploading it with `SHA256SUMS`. The `android-release` job has release-write permission
+but no signing credentials or build step. It downloads that run's `android-release` artifact, checks the checksum, and attaches the
+unchanged APK and checksum file to the GitHub Release. Applicable browser acceptance checks must also pass; skipped browser checks
+are allowed for MAUI-only changes. Failed or canceled checks block APK publication.
+
+Pages similarly deploys the published output already exercised by browser acceptance tests, rather than rebuilding it.
+An Android build failure does not block a validated website deployment. Pages permissions are limited to the Pages deployment job.
+APK structure/signature checks do not replace device testing for startup, app switching, system bars, or upgrade persistence.
+
+Run the path-rule regression tests locally with:
+
+```powershell
+python -m unittest discover -s .github\scripts -p test_workflow_paths.py
+```
 
 ## DNS
 

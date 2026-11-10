@@ -64,9 +64,14 @@ The app is an installable PWA that works fully offline. See [`docs/deployment.md
 for DNS, the full feature-flag reference, and PWA details, and [`docs/seo.md`](docs/seo.md) for
 metadata, the sitemap, and static SEO pages.
 
-The Android APK is built by the `android-release` job, which runs only on a manual `workflow_dispatch` with
-`release_apk` enabled. It is signed when the `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
-`ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD` secrets are set (otherwise with a debug key) and is attached to a GitHub Release.
+App-relevant pushes to `master` also build and verify an Android APK; a manual `workflow_dispatch` can request one with
+`release_apk` enabled. Public APK releases require the `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+`ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD` secrets. The release job downloads the verified APK rather than rebuilding it
+and attaches it, with `SHA256SUMS`, to a GitHub Release. Missing signing credentials fail the Android build instead of using a debug key.
+
+PRs validate both Release publications for shared changes. Android-only changes skip browser publication; web-only changes skip Android.
+PR APKs are debug-signed validation artifacts, not public releases, and receive no release secrets. See
+[`docs/deployment.md`](docs/deployment.md) for the validation and release gates.
 
 ## Feature flags
 

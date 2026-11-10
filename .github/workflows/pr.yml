@@ -5,6 +5,10 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: read
+
 # Cancel superseded runs for the same PR: a new push makes the previous run's
 # result irrelevant, so free the runner immediately instead of finishing it.
 concurrency:
@@ -17,74 +21,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
+      web-changed: ${{ steps.filter.outputs.web-changed }}
+      apk-changed: ${{ steps.filter.outputs.apk-changed }}
     steps:
       - uses: actions/checkout@v5
 
-      # Detect whether any non-docs file changed. Docs-only changes (READMEs,
-      # TODO.md, AI instruction files) leave code-changed=false so the heavy
-      # steps below are skipped while the job itself still reports success —
-      # keeping required status checks green without doing needless work.
-      - name: Detect changed paths
-        id: paths
-        uses: dorny/paths-filter@v4
-        with:
-          # code=true when anything OTHER than project docs changed. With
-          # predicate-quantifier=every, a file counts only if it matches EVERY
-          # pattern: it must match '**' AND not match any of the docs negations.
-          # Without this, the default 'some' quantifier makes the '!' patterns
-          # useless (every file matches '**'), so docs-only changes still ran.
-          # Content markdown under wwwroot is website content and must still deploy.
-          predicate-quantifier: 'every'
-          filters: |
-            code:
-              - '**'
-              - '!README.md'
-              - '!**/README.md'
-              - '!**/DISCOVER.md'
-              - '!**/INQUIRY.md'
-              - '!**/TODO.md'
-              - '!.github/copilot-instructions.md'
-              - '!.github/instructions/**'
-
-      - name: Decide whether to run
+      - name: Select host checks
         id: filter
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ steps.paths.outputs.code }}" = "true" ]; then
-            echo "code-changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "code-changed=false" >> "$GITHUB_OUTPUT"
-          fi
+        uses: ./.github/actions/changed-paths
 
-      - name: Setup .NET
+      - name: Setup build
         if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/setup-dotnet@v5
+        uses: ./.github/actions/setup-build
         with:
-          global-json-file: global.json
-
-      # Install the WebAssembly build tools so Publish natively relinks the .NET
-      # runtime, matching what the deploy workflow ships. This keeps the E2E site
-      # (and any relinking/trimming regressions) representative of production.
-      # Relinking only runs at publish, so the build/test steps do not need it.
-      #
-      # The workload packs live under root-owned /usr/share/dotnet, so caching
-      # them with actions/cache is not viable: tar restores under the non-root
-      # runner user and fails with "Cannot change mode ... Operation not
-      # permitted" (exit code 2), breaking the whole job. Installing fresh each
-      # run is slower but reliable; NuGet packages are still cached below.
-      - name: Install wasm-tools workload
-        if: steps.filter.outputs.code-changed == 'true'
-        run: dotnet workload install wasm-tools
-
-      # Cache restored NuGet packages keyed on the project files. Any dependency
-      # change edits a .csproj, busting the key; otherwise restore is near-instant.
-      - name: Cache NuGet packages
-        if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/cache@v6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          workload: ${{ steps.filter.outputs.web-changed == 'true' && 'wasm-tools' || '' }}
 
       - name: Build tests
         if: steps.filter.outputs.code-changed == 'true'
@@ -102,7 +52,7 @@ jobs:
           path: TestResults/*.trx
 
       - name: Publish
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release
 
       # No base-href rewrite: production serves from the custom apex domain root,
@@ -110,7 +60,7 @@ jobs:
       # from the root.
 
       - name: Upload site for E2E
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: site
@@ -119,11 +69,11 @@ jobs:
       # Build the acceptance tests once here so the e2e job can reuse the
       # compiled output via --no-build instead of rebuilding it.
       - name: Build acceptance tests
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
 
       - name: Upload acceptance test binaries
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: acceptance-tests
@@ -133,10 +83,26 @@ jobs:
           include-hidden-files: true
           path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
 
+  android:
+    name: Android Release Validation
+    needs: unit-tests
+    if: needs.unit-tests.outputs.apk-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Publish and verify validation APK
+        uses: ./.github/actions/publish-android
+        with:
+          version: 1.0.${{ github.run_number }}
+          version-code: ${{ github.run_number }}
+          artifact-name: android-validation
+
   e2e:
     name: Acceptance Tests (Playwright)
     needs: unit-tests
-    if: needs.unit-tests.outputs.code-changed == 'true'
+    if: needs.unit-tests.outputs.web-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

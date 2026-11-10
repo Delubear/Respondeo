@@ -1,0 +1,31 @@
+name: Set up .NET build
+description: Use the repository SDK, cache NuGet inputs, and optionally install a publish workload.
+
+inputs:
+  workload:
+    description: Optional .NET workload to install.
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: global.json
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v6
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', 'Directory.Packages.props', 'Directory.Build.props', 'global.json', '**/NuGet.Config') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    # Workload packs are root-owned on hosted runners and cannot be reliably restored from a user-owned cache.
+    - name: Install publish workload
+      if: inputs.workload != ''
+      shell: bash
+      env:
+        WORKLOAD: ${{ inputs.workload }}
+      run: dotnet workload install "$WORKLOAD"
