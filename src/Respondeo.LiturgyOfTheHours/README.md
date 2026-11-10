@@ -14,11 +14,10 @@ The whole feature is controlled by `FeatureFlags:LiturgyOfTheHoursFeature` in `s
 
 When it is `false`:
 
-from the Discover dropdown menu (`DiscoverNavigation`)
+- the Hours link is removed from the Discover dropdown menu (`DiscoverNavigation`);
 - the Hours card is hidden on the Discover overview (`Discover.razor`);
 - it no longer counts toward showing the Discover pillar (`PillarNav.razor`).
 
-The feature is also hidden whenever the `DiscoverPillar` master switch is off.
 The `discover/hours` routes stay reachable by direct URL, which matches how the other Discover sub-areas behave.
 
 ## Content strategy: the hybrid approach

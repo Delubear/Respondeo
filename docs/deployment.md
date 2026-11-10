@@ -36,21 +36,13 @@ token in `index.html` from **Cloudflare -> Web Analytics**.
 
 Optional site features are gated behind deploy-time flags so they can be turned off without a code
 change. The flags live in the **`FeatureFlags`** section of
-[`wwwroot/appsettings.json`](../src/Respondeo.Wasm/wwwroot/appsettings.json), are bound to
-[`Services/FeatureFlags.cs`](../src/Respondeo.Wasm/Services/FeatureFlags.cs) in
-[`Program.cs`](../src/Respondeo.Wasm/Program.cs), and default to `true` (feature on) when absent.
+[`wwwroot/appsettings.json`](../src/Respondeo.Wasm/wwwroot/appsettings.json) (the Android app reads its own embedded
+`appsettings.json`), are bound to [`Services/FeatureFlags.cs`](../src/Respondeo.UI/Services/FeatureFlags.cs),
+and default to `true` (feature on) when absent.
 
 | Flag | Effect when `false` |
 | --- | --- |
-| `AquinasPortrait` | Hides the St. Thomas Aquinas portrait in the masthead. |
-| `SummaPillar` | Hides the Summa Theologiae pill in the pillar switcher. |
-| `BiblePillar` | Hides the Holy Bible pill in the pillar switcher. |
-| `DiscoverPillar` | Hides the entire Discover pill in the pillar switcher (supersedes the per-feature flags). |
-| `MiraclesFeature` | Hides the Miracles area within Discover. |
-| `SaintsFeature` | Hides the Saints area within Discover. |
-| `PrayerFeature` | Hides the Prayers area within Discover. |
-| `DevotionsFeature` | Hides the Devotions area within Discover. |
-| `ArticlesFeature` | Hides the Articles area within Discover. |
+| `LiturgyOfTheHoursFeature` | Hides the Liturgy of the Hours area within Discover. |
 | `ExternalFeedback` | Skips the feedback choice dialog so the trigger goes straight to opening a GitHub issue (instead of also offering the hosted Tally form). |
 
 To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a

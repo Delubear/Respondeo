@@ -1,17 +1,22 @@
 # Respondeo
 
-A Catholic resource built with Blazor WebAssembly: a reasoned path into the faith (Inquiry), resources
-for living it (Discover), and a browsable *Summa Theologiae*. Live at **[respondeo.faith](https://respondeo.faith)**.
+A Catholic resource built with Blazor: a reasoned path into the faith (Inquiry), resources for living it (Discover),
+the Bible, the Liturgy of the Hours, and a browsable *Summa Theologiae*. Live at **[respondeo.faith](https://respondeo.faith)**,
+and available as an Android app built with .NET MAUI Blazor Hybrid.
 
 ## Projects
 
 | Project | Purpose |
 | --- | --- |
-| `Respondeo` | The Blazor WebAssembly front end. |
+| `Respondeo.UI` | Razor class library with all shared pages, components, services, and static assets. |
+| `Respondeo.Wasm` | The Blazor WebAssembly host (the website and PWA). |
+| `Respondeo.Maui` | The .NET MAUI Blazor Hybrid Android app hosting the same UI. |
 | `Respondeo.Content` | Authored Inquiry and Discover content, with its parsers and services. |
 | `Respondeo.Content.Shared` | Shared content contracts and Markdown rendering. |
 | `Respondeo.Content.Summa` | The generated *Summa Theologiae* corpus and its service. |
+| `Respondeo.Bible` | The bundled Douay-Rheims Bible text and its service. |
 | `Respondeo.LiturgicalCalendar` | The liturgical calendar engine (season, color, and celebration of the day), with the General Roman Calendar and a USCCB (United States) calendar selectable from the calendar dialog. |
+| `Respondeo.LiturgyOfTheHours` | Builds the order of Morning, Evening, and Night Prayer. |
 | `tools/Respondeo.SummaImporter` | Builds the Summa corpus from `docs/summa.txt`. |
 | `tools/Respondeo.SitemapGenerator` | Generates `sitemap.xml` and static SEO pages at deploy time. |
 | `tests/Respondeo.UnitTests` | Unit and bUnit component tests. |
@@ -26,6 +31,14 @@ dotnet test tests/Respondeo.UnitTests/Respondeo.UnitTests.csproj
 
 See [`tests/Respondeo.AcceptanceTests/README.md`](tests/Respondeo.AcceptanceTests/README.md) for the
 browser tests.
+
+To build and install the Android app on a connected device (requires the `maui-android` workload):
+
+```powershell
+dotnet build src/Respondeo.Maui -f net10.0-android -c Release -t:Install
+```
+
+See [`src/Respondeo.Maui/README.md`](src/Respondeo.Maui/README.md) for details.
 
 ## Authoring content
 
@@ -51,12 +64,15 @@ The app is an installable PWA that works fully offline. See [`docs/deployment.md
 for DNS, the full feature-flag reference, and PWA details, and [`docs/seo.md`](docs/seo.md) for
 metadata, the sitemap, and static SEO pages.
 
+The Android APK is built by the `android-release` job, which runs only on a manual `workflow_dispatch` with
+`release_apk` enabled. It is signed when the `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+`ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD` secrets are set (otherwise with a debug key) and is attached to a GitHub Release.
+
 ## Feature flags
 
 Optional features can be switched off in the `FeatureFlags` section of
-[`wwwroot/appsettings.json`](src/Respondeo.Wasm/wwwroot/appsettings.json). Every flag defaults to `true`:
-`AquinasPortrait`, `SummaPillar`, `BiblePillar`, `DiscoverPillar`,
-`PrayerFeature`, `DevotionsFeature`, `ArticlesFeature`, and `ExternalFeedback`. See
-[`docs/deployment.md`](docs/deployment.md#feature-flags) for what each one does.
+[`wwwroot/appsettings.json`](src/Respondeo.Wasm/wwwroot/appsettings.json). Both flags default to `true`:
+`LiturgyOfTheHoursFeature` and `ExternalFeedback`. They are defined in
+[`FeatureFlags.cs`](src/Respondeo.UI/Services/FeatureFlags.cs).
 
 > `appsettings.json` is publicly downloadable in a WebAssembly app, so never put secrets in it.

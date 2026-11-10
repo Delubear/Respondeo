@@ -17,6 +17,12 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **PrayerGuide.feature** — the Guide to Prayers explains the prayer notation and inline prayer references render in full.
 - **Saints.feature** — the saints browser lists saint cards and opening one shows the saint's profile.
 - **ImmersivePraying.feature** — single prayers, devotions, and the Liturgy of the Hours: the pinned bottom bar (leave, EN/LA, text size, theme, guide), the site chrome stepping aside on phones, and Next/Back keeping the current step in view.
+- **Bible.feature** — the Bible reader.
+- **DeepLinks.feature** — deep links load their target directly.
+- **Miracles.feature** — the miracles browser and articles.
+- **QuickMenuPins.feature** — pinned help orbs in the quick menu.
+- **Scrolling.feature** — navigation lands at the expected scroll position.
+- **Smoke.feature** — a quick check that the app starts and renders.
 
 These are intentionally few and focused on the core journey. Unit and component tests
 (in `Respondeo.UnitTests`) cover the fine-grained logic.

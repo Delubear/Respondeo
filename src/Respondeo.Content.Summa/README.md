@@ -53,4 +53,4 @@ To change how content is parsed, rendered, or cross-referenced, edit the importe
 Blazor pages depend only on `ISummaService`, which loads the index once and fetches each question's
 full content on demand, caching both. The bundled assets are fingerprinted per deploy, so the
 service caches them aggressively without risk of serving stale content. See the Summa browse and
-question pages in the main app for usage.
+question pages in `Respondeo.UI` for usage.

@@ -46,10 +46,12 @@ public MyService(ILiturgicalCalendar calendar)
 ```
 
 In the main app the calendar is the source of truth for two features:
-[`FeastOfTheDay`](../Respondeo/Services/FeastOfTheDay.cs) (the "today the Church celebrates…"
+[`FeastOfTheDay`](../Respondeo.UI/Services/Calendar/FeastOfTheDay.cs) (the "today the Church celebrates…"
 saint highlight, linked to `discover/saints/{Id}`) and
-[`SeasonalPortrait`](../Respondeo/Services/SeasonalPortrait.cs) (the masthead Aquinas portrait that
+[`SeasonalPortrait`](../Respondeo.UI/Services/Calendar/SeasonalPortrait.cs) (the masthead Aquinas portrait that
 changes for Christmas Time and Ash Wednesday).
+
+Besides the General Roman Calendar, a USCCB (United States) calendar is available; readers choose it from the calendar dialog.
 
 ## Editing the calendar data
 
