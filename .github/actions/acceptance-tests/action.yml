@@ -20,7 +20,7 @@ runs:
 
     # Cache the Playwright browser download so reruns reuse the same binaries.
     - name: Cache Playwright browsers
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.cache/ms-playwright
         key: ${{ runner.os }}-playwright-${{ hashFiles('**/*.csproj') }}
@@ -28,7 +28,7 @@ runs:
           ${{ runner.os }}-playwright-
 
     - name: Download published site
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: ${{ inputs.site-artifact }}
         # Served from the root to match production on the custom apex domain (<base href="/">).
@@ -36,7 +36,7 @@ runs:
 
     # Reuse the acceptance binaries built once in the build job; no rebuild here.
     - name: Download acceptance test binaries
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: acceptance-tests
         path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0

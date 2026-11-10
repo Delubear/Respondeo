@@ -26,7 +26,7 @@ jobs:
       # keeping required status checks green without doing needless work.
       - name: Detect changed paths
         id: paths
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           # code=true when anything OTHER than project docs changed. With
           # predicate-quantifier=every, a file counts only if it matches EVERY
@@ -79,7 +79,7 @@ jobs:
       # change edits a .csproj, busting the key; otherwise restore is near-instant.
       - name: Cache NuGet packages
         if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
@@ -96,7 +96,7 @@ jobs:
 
       - name: Upload test results
         if: always() && steps.filter.outputs.code-changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: unit-test-results
           path: TestResults/*.trx
@@ -111,7 +111,7 @@ jobs:
 
       - name: Upload site for E2E
         if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: site
           path: release/wwwroot
@@ -124,7 +124,7 @@ jobs:
 
       - name: Upload acceptance test binaries
         if: steps.filter.outputs.code-changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: acceptance-tests
           # Playwright's driver lives in a hidden .playwright folder; without this
