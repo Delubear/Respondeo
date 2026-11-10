@@ -10,6 +10,10 @@ on:
         description: Build APK and publish GitHub Release
         type: boolean
         default: false
+      prune_releases:
+        description: Delete old APK releases (keep 50 newest)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -30,6 +34,7 @@ jobs:
     outputs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
       web-changed: ${{ steps.filter.outputs.web-changed }}
+      apk-changed: ${{ steps.filter.outputs.apk-changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -74,6 +79,21 @@ jobs:
               - '!.github/copilot-instructions.md'
               - '!.github/instructions/**'
               - '!src/Respondeo.Maui/**'
+            # apk=true when something that ships in the Android app changed.
+            # Website-only projects (WASM host, acceptance tests, sitemap tool) are excluded.
+            apk:
+              - '**'
+              - '!README.md'
+              - '!**/README.md'
+              - '!**/DISCOVER.md'
+              - '!**/INQUIRY.md'
+              - '!**/TODO.md'
+              - '!.github/copilot-instructions.md'
+              - '!.github/instructions/**'
+              - '!src/Respondeo.Wasm/**'
+              - '!tests/Respondeo.AcceptanceTests/**'
+              - '!tools/Respondeo.SitemapGenerator/**'
+              - '!.github/scripts/prepare-pages-site.sh'
 
       - name: Decide whether to run
         id: filter
@@ -87,6 +107,13 @@ jobs:
             echo "web-changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "web-changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "apk-changed=${{ inputs.release_apk }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ "${{ steps.paths.outputs.apk }}" = "true" ]; then
+            echo "apk-changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "apk-changed=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Setup .NET
@@ -251,7 +278,12 @@ jobs:
   android-release:
     name: Android APK Release
     needs: [build, e2e]
-    if: github.event_name == 'workflow_dispatch' && inputs.release_apk && needs.build.outputs.code-changed == 'true'
+    # Runs on every push that changes app-relevant files (or a manual dispatch with release_apk).
+    # always() lets it run when e2e was skipped on MAUI-only pushes; it still requires e2e not to fail.
+    if: >-
+      always() && needs.build.result == 'success' &&
+      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') &&
+      needs.build.outputs.apk-changed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -361,3 +393,14 @@ jobs:
           target_commitish: ${{ github.sha }}
           files: respondeo-${{ env.VERSION }}.apk
           body_path: CHANGELOG.md
+
+      # Keep only the 50 newest APK releases (and their tags). Opt-in via manual run.
+      - name: Prune old releases
+        if: github.event_name == 'workflow_dispatch' && inputs.prune_releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release list --repo "${{ github.repository }}" --limit 100 --json tagName,createdAt \
+            --jq 'sort_by(.createdAt) | reverse | .[].tagName' \
+            | grep '^v' | tail -n +51 \
+            | xargs -r -I{} gh release delete {} --repo "${{ github.repository }}" --yes --cleanup-tag
