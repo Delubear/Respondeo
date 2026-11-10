@@ -19,6 +19,24 @@
 	</PropertyGroup>
 
 	<!--
+	  Release trimming disables reflection-based System.Text.Json by default and strips DTO members the content
+	  loaders deserialize by reflection; keep both so data loads on device.
+	-->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+	  <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+	  <TrimmerRootAssembly Include="Respondeo.Bible" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.Content" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.Content.Shared" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.Content.Summa" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.LiturgicalCalendar" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.LiturgyOfTheHours" RootMode="All" />
+	  <TrimmerRootAssembly Include="Respondeo.UI" RootMode="All" />
+	</ItemGroup>
+
+	<!--
 	  Respondeo.UI fingerprints its css/js filenames for the Wasm host, which rewrites index.html at publish.
 	  The native host has no such rewrite, so package the plain-named copies that wwwroot/index.html links.
 	-->
