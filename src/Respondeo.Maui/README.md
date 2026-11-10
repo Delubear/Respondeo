@@ -3,6 +3,10 @@
 The Android app: a .NET MAUI Blazor Hybrid host (`net10.0-android`, package id `faith.respondeo.app`) that renders the
 shared `Respondeo.UI` pages inside a `BlazorWebView`. All content is bundled, so the app works offline.
 
+`MauiProgram` supplies native adapters and package transport, then calls the shared `AddRespondeoApplication` registration.
+Both hosts embed `Respondeo.UI/Configuration/appsettings.json`; missing or invalid required settings fail startup.
+See [deployment configuration](../../docs/deployment.md#feature-flags) for the shared baseline and override precedence.
+
 ## Android presentation
 
 The page's safe-area gutters stay black with light system-bar icons; only the inner grid and WebView follow the paper theme.

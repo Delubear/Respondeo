@@ -13,6 +13,9 @@
 
   <ItemGroup>
 	<InternalsVisibleTo Include="Respondeo.UnitTests" />
+	<!-- Hosts link this file into their own configuration location; do not copy it transitively. -->
+	<Content Remove="Configuration\appsettings.json" />
+	<None Include="Configuration\appsettings.json" />
   </ItemGroup>
 
   <!--
@@ -27,6 +30,7 @@
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
   </ItemGroup>
 
   <ItemGroup>

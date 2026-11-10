@@ -1,6 +1,10 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Respondeo.Bible;
+using Respondeo.Content;
+using Respondeo.Content.Summa;
 using Respondeo.LiturgicalCalendar;
+using Respondeo.LiturgyOfTheHours;
 using Respondeo.Services.Devotions;
 using Respondeo.Services.Prayers;
 using Respondeo.Services.Summa;
@@ -8,11 +12,20 @@ using Respondeo.Services.Summa;
 namespace Respondeo.Services;
 
 /// <summary>
-/// Groups the app's service registrations by concern so Program.cs reads as a short table of contents.
-/// The content, liturgy, and Summa libraries register themselves through their own extension methods.
+/// Registers the shared application and groups its services by concern.
+/// Hosts supply transport and platform adapters before calling AddRespondeoApplication.
 /// </summary>
 public static class AppServiceRegistration
 {
+    /// <summary>Registers configuration, content engines, and UI services in calendar-override order.</summary>
+    public static IServiceCollection AddRespondeoApplication(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddFeatureFlags(configuration)
+                .AddRespondeoContent()
+                .AddRespondeoLiturgy()
+                .AddRespondeoHours()
+                .AddRespondeoSumma()
+                .AddRespondeoUI();
+
     /// <summary>Per-reader state: navigation memory, preferences, and progress, persisted in session or local storage.</summary>
     public static IServiceCollection AddRespondeoReaderState(this IServiceCollection services)
     {

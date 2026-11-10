@@ -45,5 +45,8 @@ public sealed class BuildIdentityTests
         await Assertions.Expect(disclosure).ToHaveAttributeAsync("open", "");
         await Assertions.Expect(disclosure.Locator("dd")).ToHaveTextAsync(expected);
         Assert.Matches("^[0-9a-f]{64}$", expected[3]);
+
+        await page.GotoAsync(new Uri(site.Uri, "discover").AbsoluteUri);
+        await Assertions.Expect(page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Liturgy of the Hours", Exact = false })).ToBeVisibleAsync();
     }
 }

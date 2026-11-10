@@ -3,9 +3,9 @@ namespace Respondeo.Services;
 /// <summary>
 /// Deploy-time toggles for optional site features.
 /// Bound from the "FeatureFlags" configuration section by <see cref="FeatureFlagsServiceCollectionExtensions.AddFeatureFlags"/>:
-/// the web host reads <c>wwwroot/appsettings.json</c> and the MAUI host reads its embedded <c>appsettings.json</c>,
-/// so flipping a flag there turns the feature off for a build or deploy without a code change.
-/// Every flag defaults to <see langword="true"/> so features are on unless explicitly disabled.
+/// both hosts package the shared <c>Configuration/appsettings.json</c> baseline in their startup configuration location.
+/// Host/environment overrides merge before registration. Startup requires every flag; property initializers are only
+/// conveniences for explicitly constructed instances, not fallbacks for missing deployment configuration.
 /// </summary>
 public sealed class FeatureFlags
 {

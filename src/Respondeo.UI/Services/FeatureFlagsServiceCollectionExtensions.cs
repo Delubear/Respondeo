@@ -5,7 +5,17 @@ namespace Respondeo.Services;
 /// <summary>Registers <see cref="FeatureFlags"/> bound from configuration, shared by every host.</summary>
 public static class FeatureFlagsServiceCollectionExtensions
 {
-    /// <summary>Binds the "FeatureFlags" section (falling back to all-on defaults) and registers it as a singleton.</summary>
-    public static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddSingleton(configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags());
+    /// <summary>Binds required deploy-time flags and registers them as a singleton; incomplete configuration fails at startup.</summary>
+    public static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration)
+    {
+        var section = configuration.GetRequiredSection(FeatureFlags.SectionName);
+        var flags = new FeatureFlags
+        {
+            LiturgyOfTheHoursFeature = section.GetValue<bool?>(nameof(FeatureFlags.LiturgyOfTheHoursFeature))
+                ?? throw new InvalidOperationException("Required feature flag 'LiturgyOfTheHoursFeature' is missing."),
+            ExternalFeedback = section.GetValue<bool?>(nameof(FeatureFlags.ExternalFeedback))
+                ?? throw new InvalidOperationException("Required feature flag 'ExternalFeedback' is missing.")
+        };
+        return services.AddSingleton(flags);
+    }
 }

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Respondeo.UnitTests" />
+    <EmbeddedResource Include="..\Respondeo.UI\Configuration\appsettings.json" Link="appsettings.json" LogicalName="Respondeo.appsettings.json" />
   </ItemGroup>
 
   <!--

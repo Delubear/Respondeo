@@ -75,9 +75,10 @@ PR APKs are debug-signed validation artifacts, not public releases, and receive 
 
 ## Feature flags
 
-Optional features can be switched off in the `FeatureFlags` section of
-[`wwwroot/appsettings.json`](src/Respondeo.Wasm/wwwroot/appsettings.json). Both flags default to `true`:
-`LiturgyOfTheHoursFeature` and `ExternalFeedback`. They are defined in
-[`FeatureFlags.cs`](src/Respondeo.UI/Services/FeatureFlags.cs).
+Optional features can be switched off in the `FeatureFlags` section of the shared
+[`Configuration/appsettings.json`](src/Respondeo.UI/Configuration/appsettings.json), embedded by both hosts.
+The baseline explicitly enables `LiturgyOfTheHoursFeature` and `ExternalFeedback`, defined in
+[`FeatureFlags.cs`](src/Respondeo.UI/Services/FeatureFlags.cs). Missing or invalid settings fail startup.
+See [deployment configuration](docs/deployment.md#feature-flags) for host/environment override precedence.
 
-> `appsettings.json` is publicly downloadable in a WebAssembly app, so never put secrets in it.
+> Bundled settings are public, including embedded resources; never put secrets in them.

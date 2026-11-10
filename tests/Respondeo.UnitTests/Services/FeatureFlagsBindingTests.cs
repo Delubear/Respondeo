@@ -6,9 +6,8 @@ using Respondeo.Services;
 namespace Respondeo.UnitTests.Services;
 
 /// <summary>
-/// Guards that the publicly shipped <c>wwwroot/appsettings.json</c> stays in sync with the
-/// <see cref="FeatureFlags"/> model. Because this is a Blazor WebAssembly app, the config file is a
-/// static asset bound at startup, so a rename in one place but not the other silently drops a flag.
+/// Guards that the shared settings baseline packaged by both hosts stays in sync with the
+/// <see cref="FeatureFlags"/> model.
 /// </summary>
 public class FeatureFlagsBindingTests
 {
@@ -16,7 +15,7 @@ public class FeatureFlagsBindingTests
     {
         // This file lives at <repo>/tests/Respondeo.UnitTests/Services/FeatureFlagsBindingTests.cs.
         var repoRoot = Directory.GetParent(thisFile)!.Parent!.Parent!.Parent!.FullName;
-        return Path.Combine(repoRoot, "src", "Respondeo.Wasm", "wwwroot", "appsettings.json");
+        return Path.Combine(repoRoot, "src", "Respondeo.UI", "Configuration", "appsettings.json");
     }
 
     private static IConfiguration LoadConfiguration() =>

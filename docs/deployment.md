@@ -123,22 +123,32 @@ token in `index.html` from **Cloudflare -> Web Analytics**.
 
 ## Feature flags
 
-Optional site features are gated behind deploy-time flags so they can be turned off without a code
-change. The flags live in the **`FeatureFlags`** section of
-[`wwwroot/appsettings.json`](../src/Respondeo.Wasm/wwwroot/appsettings.json) (the Android app reads its own embedded
-`appsettings.json`), are bound to [`Services/FeatureFlags.cs`](../src/Respondeo.UI/Services/FeatureFlags.cs),
-and default to `true` (feature on) when absent.
+Both hosts call `AddRespondeoApplication(configuration)` in the shared UI layer. It registers feature flags,
+content, calendar, Hours, Summa, and UI services in order, preserving the reader-preferred calendar override.
+Each host still owns its HttpClient transport, platform adapters, build identity, and logging. Native adapters
+registered before this call win over the shared browser `TryAdd` defaults.
+
+The **`FeatureFlags`** baseline lives in
+[`Configuration/appsettings.json`](../src/Respondeo.UI/Configuration/appsettings.json), linked as an embedded resource
+in both host assemblies. There are no hand-maintained host copies. Both flags are explicitly `true` in that baseline;
+a missing embedded resource, missing flag, or invalid boolean fails startup rather than silently enabling features.
+The flags are represented by [`Services/FeatureFlags.cs`](../src/Respondeo.UI/Services/FeatureFlags.cs).
 
 | Flag | Effect when `false` |
 | --- | --- |
 | `LiturgyOfTheHoursFeature` | Hides the Liturgy of the Hours area within Discover. |
 | `ExternalFeedback` | Skips the feedback choice dialog so the trigger goes straight to opening a GitHub issue (instead of also offering the hosted Tally form). |
 
-To disable a feature for a deploy, set its flag to `false` in `appsettings.json`, or add a
-per-environment override at `wwwroot/appsettings.{Environment}.json` (it merges over the base file).
+To disable a feature for both deployments, change the shared baseline and rebuild. For an intentional browser-only
+difference, add `src/Respondeo.Wasm/wwwroot/appsettings.json` or `appsettings.{Environment}.json` with only the changed keys.
+WASM precedence is embedded baseline, then browser host settings, then environment settings (later values win).
+These optional browser files are loaded by the normal WASM bootstrap and do not affect Android.
+Android uses only the baseline today; an intentional native override must be added to `builder.Configuration` after
+`AddRequiredEmbeddedSettings` and before `AddRespondeoApplication` in `MauiProgram.cs`. Flags are a startup snapshot,
+not runtime switches. Do not copy the baseline to introduce an override.
 
-> **This is a WebAssembly app, so `appsettings.json` is published as a static asset and is publicly
-> downloadable in the browser.** It is safe for UI toggles like these but must never contain secrets,
+> **Bundled configuration is public**, whether embedded in an assembly or shipped as a browser static asset.
+> It is safe for UI toggles like these but must never contain secrets,
 > API keys, or connection strings. Note also that hiding a pillar only removes its nav pill ΓÇö the
 > underlying route (e.g. `/summa`) remains reachable by direct URL.
 
