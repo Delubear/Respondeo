@@ -21,7 +21,7 @@ internal sealed class AppPackageHttpHandler : HttpMessageHandler
 
             return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(buffer), RequestMessage = request };
         }
-        catch (Exception ex) when (ex is FileNotFoundException or DirectoryNotFoundException or Java.IO.FileNotFoundException)
+        catch (Exception ex) when (ex is IOException or Java.IO.IOException)
         {
             return new HttpResponseMessage(HttpStatusCode.NotFound) { RequestMessage = request };
         }
