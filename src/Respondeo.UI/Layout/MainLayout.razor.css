@@ -1,4 +1,4 @@
-﻿.page {
+.page {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -9,6 +9,7 @@
 .masthead {
     position: relative;
     z-index: calc(var(--z-sticky) + 1);
+    isolation: isolate;
     background: var(--masthead-bg);
     color: var(--masthead-fg);
     text-align: center;
