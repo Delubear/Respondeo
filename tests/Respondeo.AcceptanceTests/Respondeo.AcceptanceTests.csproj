@@ -13,4 +13,8 @@
 	<PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
+  <ItemGroup>
+	<Compile Include="..\..\src\Respondeo.Maui\AppPackageHttpHandler.cs" Link="Support\AppPackageHttpHandler.cs" />
+  </ItemGroup>
+
 </Project>

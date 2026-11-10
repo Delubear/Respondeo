@@ -8,20 +8,32 @@ namespace Respondeo.Maui;
 /// </summary>
 internal sealed class AppPackageHttpHandler : HttpMessageHandler
 {
+    private readonly Func<string, Task<Stream>> _openFile;
+
+#if ANDROID
+    public AppPackageHttpHandler() : this(FileSystem.OpenAppPackageFileAsync) { }
+#endif
+
+    internal AppPackageHttpHandler(Func<string, Task<Stream>> openFile) => _openFile = openFile;
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var path = Uri.UnescapeDataString(request.RequestUri?.AbsolutePath.TrimStart('/') ?? string.Empty);
 
         try
         {
-            using var stream = await FileSystem.OpenAppPackageFileAsync($"wwwroot/{path}");
+            using var stream = await _openFile($"wwwroot/{path}");
             var buffer = new MemoryStream();
             await stream.CopyToAsync(buffer, cancellationToken);
             buffer.Position = 0;
 
             return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(buffer), RequestMessage = request };
         }
-        catch (Exception ex) when (ex is IOException or Java.IO.IOException)
+        catch (Exception ex) when (ex is IOException
+#if ANDROID
+            or Java.IO.IOException
+#endif
+        )
         {
             return new HttpResponseMessage(HttpStatusCode.NotFound) { RequestMessage = request };
         }

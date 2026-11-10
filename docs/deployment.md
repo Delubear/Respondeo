@@ -47,7 +47,35 @@ Pages similarly deploys the published output already exercised by browser accept
 An Android build failure does not block a validated website deployment. Pages permissions are limited to the Pages deployment job.
 APK structure/signature checks do not replace device testing for startup, app switching, system bars, or upgrade persistence.
 
-Run the path-rule and build-identity regression tests locally with the repository .NET SDK installed:
+### Packaging contracts
+
+The shared browser acceptance action validates the downloaded site before testing it. The Android publish action validates the final signed APK
+and runs package-transport tests before uploading it. Both use `.github/scripts/verify_packaging.py`; validation failures block the relevant release.
+
+The verifier checks shell scripts/styles/fonts/icons, CSS URLs and isolation imports, literal shared JavaScript imports and .NET interop module URLs,
+Discover/Inquiry manifest entries, and all four shared projects' static-asset bytes against their sources. Browser fingerprinted names are resolved
+through emitted import maps or verified by SHA-256, not compared literally to native names. PWA inventory URLs and integrity hashes are checked as well.
+
+Intentional differences are narrow: the website requires fingerprinted WASM bootstrap and a service worker; Android requires its native marker,
+WebView bootstrap, and plain-name CSS/JS assets. Android must not package the PWA worker or include browser bootstrap, worker registration,
+or Cloudflare analytics in its shell. Native light/dark paper constants must match the shared CSS tokens. Feature defaults remain the shared embedded
+baseline described below; Phase 3 registration tests verify required settings and override precedence.
+
+The native tests compile the actual `AppPackageHttpHandler` source and replace only its package-file opener. In-memory tests cover URI decoding,
+query stripping, byte delivery, missing files, cancellation, and unexpected errors. Artifact tests read real Inquiry, Miracles, and Prayers manifests
+and every listed article from `assets/wwwroot/` in the selected APK, through that handler and without a network handler.
+These checks do not exercise Android's `FileSystem` API, WebView rendering, lifecycle, or upgrade persistence. Static import checks cover literal URLs,
+not arbitrary computed runtime paths; they complement, rather than replace, browser journeys and device verification.
+
+From the repository root, validate previously published artifacts with:
+
+```powershell
+python .github\scripts\verify_packaging.py --web publish\wwwroot --apk apk-out\faith.respondeo.app-Signed.apk
+$env:RESPONDEO_APK_PATH = (Resolve-Path apk-out\faith.respondeo.app-Signed.apk).Path
+dotnet test tests\Respondeo.AcceptanceTests -c Release --filter 'Category=AndroidArtifact|FullyQualifiedName~AppPackageHttpHandlerTests'
+```
+
+Run the path-rule, build-identity, and packaging regression tests locally with the repository .NET SDK installed:
 
 ```powershell
 python -m unittest discover -s .github\scripts -p 'test_*.py'

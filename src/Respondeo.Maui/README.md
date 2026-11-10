@@ -37,7 +37,10 @@ App-relevant pushes to `master`, or a manual `workflow_dispatch` with `release_a
 Missing credentials fail the build; public releases never fall back to debug signing. Keep the same signing key across releases
 so updates can replace installed versions without losing reader data.
 
-The shared publish action checks the signed APK's archive, signature, and ZIP alignment, then uploads it with `SHA256SUMS`.
+The shared publish action checks the signed APK's archive, signature, ZIP alignment, shell references, shared asset hashes, and bundled manifest targets.
+It also tests native content transport against the final APK's `assets/wwwroot/` entries before uploading it with `SHA256SUMS`.
+Native plain-name CSS/JS packaging is intentional; browser fingerprint mappings and native paper-color parity are checked separately.
+See [packaging contracts](../../docs/deployment.md#packaging-contracts) for commands, host exceptions, and the limits of ZIP-backed tests.
 The `android-release` job waits for shared checks, Android verification, and applicable browser acceptance tests.
 It downloads the verified artifact, checks its checksum, and publishes `respondeo-$VERSION.apk` without rebuilding or re-signing it.
 Release notes list commits since the previous release tag (`v$VERSION`), with a compare link; the first release lists the last 30 commits.

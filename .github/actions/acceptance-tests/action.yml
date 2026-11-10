@@ -34,6 +34,10 @@ runs:
         # Served from the root to match production on the custom apex domain (<base href="/">).
         path: site
 
+    - name: Verify published packaging
+      shell: bash
+      run: python3 .github/scripts/verify_packaging.py --web site
+
     # Reuse the acceptance binaries built once in the build job; no rebuild here.
     - name: Download acceptance test binaries
       uses: actions/download-artifact@v8
@@ -74,4 +78,4 @@ runs:
           sleep 1
         done
 
-        dotnet test tests/Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build
+        dotnet test tests/Respondeo.AcceptanceTests/bin/Release/net10.0/Respondeo.AcceptanceTests.dll --no-build --filter 'Category!=AndroidArtifact'

@@ -34,9 +34,6 @@
 	  The native host has no such rewrite, so package the plain-named copies that wwwroot/index.html links.
 	-->
 	<ItemGroup>
-	  <MauiAsset Include="..\Respondeo.UI\wwwroot\css\*.css;..\Respondeo.UI\wwwroot\js\*.js"
-				 LogicalName="wwwroot\_content\Respondeo.UI\%(RecursiveDir)$([System.IO.Path]::GetFileName('%(Identity)').Replace('.css','').Replace('.js',''))"
-				 Condition="false" />
 	  <MauiAsset Include="..\Respondeo.UI\wwwroot\css\*.css" LogicalName="wwwroot\_content\Respondeo.UI\css\%(Filename)%(Extension)" />
 	  <MauiAsset Include="..\Respondeo.UI\wwwroot\js\*.js" LogicalName="wwwroot\_content\Respondeo.UI\js\%(Filename)%(Extension)" />
 	</ItemGroup>

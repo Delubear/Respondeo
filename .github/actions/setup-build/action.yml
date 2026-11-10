@@ -22,9 +22,9 @@ runs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
-    - name: Verify build identity contracts
+    - name: Verify build identity and packaging contracts
       shell: bash
-      run: python3 .github/scripts/test_build_manifest.py
+      run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
 
     # Workload packs are root-owned on hosted runners and cannot be reliably restored from a user-owned cache.
     - name: Install publish workload

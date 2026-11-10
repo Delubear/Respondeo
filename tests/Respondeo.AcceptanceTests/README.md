@@ -8,6 +8,10 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
 - **BuildIdentityTests** — a published PWA reloads offline, displays the same full build identity as its packaged manifest,
   and retains the Hours feature enabled by its embedded configuration.
+- **AppPackageHttpHandlerTests** — the exact native transport implementation handles in-memory package bytes, decoded paths,
+  missing files, cancellation, and unexpected errors without networking.
+- **AndroidPackageTransportTests** (`Category=AndroidArtifact`) — an explicitly selected final APK supplies real manifests and all listed articles
+  through the native transport. ZIP-backed tests do not exercise Android's package API or a running WebView.
 - **NativeNavigationTests** — native Back/link events mask the scrolling shell before route handling, including masthead exposure
   during scroll restoration; native page-entry motion is disabled while web fades and reduced-motion behavior are preserved.
   These DOM timing checks do not replace physical Android WebView verification.
@@ -52,7 +56,7 @@ These are intentionally few and focused on the core journey. Unit and component 
 
    ```powershell
    $env:RESPONDEO_BASE_URL = "http://localhost:5000"
-   dotnet test
+   dotnet test --filter 'Category!=AndroidArtifact'
    ```
 
    Set `$env:RESPONDEO_HEADED = "1"` to watch the browser.
@@ -60,7 +64,20 @@ These are intentionally few and focused on the core journey. Unit and component 
    `BuildIdentityTests` requires Option B's published service worker and a secure origin (localhost or HTTPS).
    For a loopback base URL, it uses `respondeo.localhost` on the same port so the app's bare-localhost worker opt-out
    does not suppress production caching. Chromium resolves this trustworthy local subdomain to loopback.
-   When using the development server, exclude published-only checks with `dotnet test --filter 'Category!=Published'`.
+   For the development server, exclude both artifact-dependent categories:
+   `dotnet test --filter 'Category!=Published&Category!=AndroidArtifact'`.
+
+## Native package transport
+
+These tests need no browser, HTTP server, emulator, or network. From the repository root:
+
+```powershell
+$env:RESPONDEO_APK_PATH = (Resolve-Path apk-out\faith.respondeo.app-Signed.apk).Path
+dotnet test tests\Respondeo.AcceptanceTests -c Release --filter 'Category=AndroidArtifact|FullyQualifiedName~AppPackageHttpHandlerTests'
+```
+
+The APK category fails explicitly if `RESPONDEO_APK_PATH` is absent or invalid; it never silently skips artifact verification.
+CI runs it in the Android publish action after signing and before artifact upload. The browser action excludes it.
 
 ## Playwright browsers
 
