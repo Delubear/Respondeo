@@ -40,12 +40,20 @@ else
 }
 
 @code {
-    private List<StageReel.ReelStage>? _stages;
+    // Stage cards never change at runtime, so cache them across visits; a revisit then renders the
+    // reel on the first pass instead of flashing the Loading placeholder and swapping it out.
+    private static List<StageReel.ReelStage>? s_stages;
+    private List<StageReel.ReelStage>? _stages = s_stages;
 
     protected override async Task OnInitializedAsync()
     {
         await Trail.ClearAsync();
         await Visited.ClearAsync();
+
+        if (_stages is not null)
+        {
+            return;
+        }
 
         // A card for each stage landing node (id == the stage slug), linking to the stage page.
         var stages = new List<StageReel.ReelStage>();
@@ -58,6 +66,7 @@ else
             }
         }
 
+        s_stages = stages;
         _stages = stages;
     }
 }
