@@ -29,6 +29,7 @@ jobs:
       HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
     outputs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
+      web-changed: ${{ steps.filter.outputs.web-changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -60,6 +61,19 @@ jobs:
               - '!**/TODO.md'
               - '!.github/copilot-instructions.md'
               - '!.github/instructions/**'
+            # web=true when something other than docs or the MAUI app changed.
+            # MAUI-only pushes still build and run unit tests but skip the
+            # website publish, acceptance tests, and Pages deploy.
+            web:
+              - '**'
+              - '!README.md'
+              - '!**/README.md'
+              - '!**/DISCOVER.md'
+              - '!**/INQUIRY.md'
+              - '!**/TODO.md'
+              - '!.github/copilot-instructions.md'
+              - '!.github/instructions/**'
+              - '!src/Respondeo.Maui/**'
 
       - name: Decide whether to run
         id: filter
@@ -68,6 +82,11 @@ jobs:
             echo "code-changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "code-changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ "${{ steps.paths.outputs.web }}" = "true" ]; then
+            echo "web-changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "web-changed=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Setup .NET
@@ -88,7 +107,7 @@ jobs:
       # permitted" (exit code 2), breaking the whole job. Installing fresh each
       # run is slower but reliable; NuGet packages are still cached below.
       - name: Install wasm-tools workload
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: dotnet workload install wasm-tools
 
       # Cache restored NuGet packages keyed on the project files. Any dependency
@@ -121,7 +140,7 @@ jobs:
       # Running the generator as its own step fixes the ordering: the file is present
       # at evaluation, globbed as a static web asset, and copied into the published site.
       - name: Generate sitemap
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo.Wasm/wwwroot/sitemap.xml
 
       # Licensed Liturgy of the Hours texts (ICEL) live in a private repository and are never committed here.
@@ -143,7 +162,7 @@ jobs:
         run: dotnet test tests/Respondeo.UnitTests -c Release --filter "FullyQualifiedName~HoursContentFileTests"
 
       - name: Publish
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: |
           if [ -d .licensed/hours ]; then
             dotnet publish src/Respondeo.Wasm/Respondeo.Wasm.csproj -c Release -o release "-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours"
@@ -159,27 +178,27 @@ jobs:
       # Bind the custom domain. GitHub Pages reads a CNAME file at the site root
       # on every deploy; without it, the custom domain setting is cleared.
       - name: Add custom domain (CNAME)
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: echo "respondeo.faith" > release/wwwroot/CNAME
 
       # 404.html SPA fallback plus per-route entry pages with their own canonical URLs.
       # See .github/scripts/prepare-pages-site.sh for the rationale.
       - name: Prepare site for GitHub Pages
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: bash .github/scripts/prepare-pages-site.sh release/wwwroot
 
       - name: Disable Jekyll processing
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: touch release/wwwroot/.nojekyll
 
       - name: Upload Pages artifact
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: release/wwwroot
 
       - name: Upload site for E2E
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: site
@@ -188,11 +207,11 @@ jobs:
       # Build the acceptance tests once here so the e2e job can reuse the
       # compiled output via --no-build instead of rebuilding it.
       - name: Build acceptance tests
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         run: dotnet build tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj -c Release
 
       - name: Upload acceptance test binaries
-        if: steps.filter.outputs.code-changed == 'true'
+        if: steps.filter.outputs.web-changed == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: acceptance-tests
@@ -205,7 +224,7 @@ jobs:
   e2e:
     name: Acceptance Tests (Playwright)
     needs: build
-    if: needs.build.outputs.code-changed == 'true'
+    if: needs.build.outputs.web-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -219,7 +238,7 @@ jobs:
   deploy:
     name: Deploy
     needs: [build, e2e]
-    if: needs.build.outputs.code-changed == 'true'
+    if: needs.build.outputs.web-changed == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
