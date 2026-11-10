@@ -119,6 +119,7 @@ public static class AppServiceRegistration
     public static IServiceCollection AddRespondeoInterop(this IServiceCollection services)
     {
         services.TryAddSingleton<IHostCapabilities, BrowserHostCapabilities>();
+        services.TryAddSingleton<INativeThemeSync, NoOpNativeThemeSync>();
         services.AddScoped<BrowseStateInterop>();
         services.AddScoped<BrowsePage>();
         services.AddScoped<NavigationInterop>();

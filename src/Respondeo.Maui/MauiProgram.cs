@@ -17,6 +17,7 @@ public static class MauiProgram
 
         // Registered before AddRespondeoUI so it wins over the RCL's TryAddSingleton browser default.
         builder.Services.AddSingleton<IHostCapabilities, MauiHostCapabilities>();
+        builder.Services.AddSingleton<INativeThemeSync, MauiNativeThemeSync>();
 
         builder.Services.AddMauiBlazorWebView();
 

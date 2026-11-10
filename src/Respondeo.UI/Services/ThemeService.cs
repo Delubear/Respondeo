@@ -42,7 +42,7 @@ public interface IThemeService
 /// (so it survives across sessions) and applies it by setting <c>data-theme</c> on the document root.
 /// When no preference has been stored it falls back to the operating system's color scheme.
 /// </summary>
-public sealed class ThemeService(IJSRuntime js) : IThemeService
+public sealed class ThemeService(IJSRuntime js, INativeThemeSync nativeSync) : IThemeService
 {
     private const string StorageKey = StorageKeys.Theme;
     private readonly LocalStorage _storage = new(js);
@@ -73,7 +73,11 @@ public sealed class ThemeService(IJSRuntime js) : IThemeService
         Changed?.Invoke();
     }
 
-    private async Task ApplyAsync() => await js.InvokeVoidAsync("respondeoTheme.apply", Name(Current));
+    private async Task ApplyAsync()
+    {
+        nativeSync.Apply(Current);
+        await js.InvokeVoidAsync("respondeoTheme.apply", Name(Current));
+    }
 
     private static string Name(Theme theme) => theme == Theme.Dark ? "dark" : "light";
 }

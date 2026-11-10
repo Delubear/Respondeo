@@ -10,7 +10,7 @@ public class ThemeServiceTests
     {
         var js = new FakeThemeJs();
         js.Set("respondeo.theme", "dark");
-        var service = new ThemeService(js);
+        var service = new ThemeService(js, new NoOpNativeThemeSync());
 
         await service.InitializeAsync();
 
@@ -22,7 +22,7 @@ public class ThemeServiceTests
     public async Task Initialize_defaults_to_light_when_no_preference()
     {
         var js = new FakeThemeJs();
-        var service = new ThemeService(js);
+        var service = new ThemeService(js, new NoOpNativeThemeSync());
 
         await service.InitializeAsync();
 
@@ -34,7 +34,7 @@ public class ThemeServiceTests
     public async Task Toggle_switches_persists_and_applies()
     {
         var js = new FakeThemeJs();
-        var service = new ThemeService(js);
+        var service = new ThemeService(js, new NoOpNativeThemeSync());
         await service.InitializeAsync();
 
         await service.ToggleAsync();

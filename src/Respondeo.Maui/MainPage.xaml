@@ -4,10 +4,12 @@
              xmlns:respondeo="clr-namespace:Respondeo;assembly=Respondeo.UI"
              xmlns:web="clr-namespace:Microsoft.AspNetCore.Components.Web;assembly=Microsoft.AspNetCore.Components.Web"
              x:Class="Respondeo.Maui.MainPage"
-             SafeAreaEdges="Container">
+             SafeAreaEdges="Container"
+             BackgroundColor="#FAF9F6">
 
-    <Grid SafeAreaEdges="Container">
-        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+    <Grid SafeAreaEdges="Container" BackgroundColor="#FAF9F6">
+        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html" BackgroundColor="#FAF9F6"
+                       BlazorWebViewInitialized="OnBlazorWebViewInitialized">
             <BlazorWebView.RootComponents>
                 <RootComponent Selector="#app" ComponentType="{x:Type respondeo:App}" />
                 <RootComponent Selector="head::after" ComponentType="{x:Type web:HeadOutlet}" />
