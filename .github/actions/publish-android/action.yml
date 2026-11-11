@@ -136,7 +136,7 @@ runs:
         "$build_tools/apksigner" verify --verbose --print-certs "${apks[0]}"
         "$build_tools/zipalign" -c 4 "${apks[0]}"
         python3 .github/scripts/verify_packaging.py --apk "${apks[0]}"
-        RESPONDEO_APK_PATH="${apks[0]}" dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj \
+        RESPONDEO_APK_PATH="$(realpath "${apks[0]}")" dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj \
           -c Release --filter 'Category=AndroidArtifact|FullyQualifiedName~AppPackageHttpHandlerTests'
         mkdir -p android-artifact
         if [ "$RELEASE_SIGNING" = "true" ]; then
