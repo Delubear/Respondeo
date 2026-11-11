@@ -20,11 +20,18 @@ def classify_paths(paths):
 		result["code-changed"] = True
 		if not path.startswith("src/Respondeo.Maui/"):
 			result["web-changed"] = True
-		if not path.startswith((
+		native_acceptance = path.startswith((
+			"tests/Respondeo.AcceptanceTests/Android",
+			"tests/Respondeo.AcceptanceTests/Support/Android",
+		)) or path in {
+			"tests/Respondeo.AcceptanceTests/AppPackageHttpHandlerTests.cs",
+			"tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj",
+		}
+		if native_acceptance or (not path.startswith((
 			"src/Respondeo.Wasm/",
 			"tests/Respondeo.AcceptanceTests/",
 			"tools/Respondeo.SitemapGenerator/",
-		)) and path != ".github/scripts/prepare-pages-site.sh":
+		)) and path != ".github/scripts/prepare-pages-site.sh"):
 			result["apk-changed"] = True
 	return result
 

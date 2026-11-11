@@ -108,6 +108,11 @@ runs:
         fi
         dotnet publish src/Respondeo.Maui/Respondeo.Maui.csproj "${args[@]}"
 
+    - name: Remove release keystore
+      if: always() && inputs.release-signing == 'true'
+      shell: bash
+      run: rm -f "$RUNNER_TEMP/respondeo-release.keystore"
+
     - name: Verify final APK and prepare artifact
       shell: bash
       env:
@@ -143,14 +148,14 @@ runs:
         cp apk-out/build-manifest.json android-artifact/build-manifest.json
         (cd android-artifact && sha256sum "$filename" build-manifest.json > SHA256SUMS)
 
+    - name: Verify final APK on Android
+      uses: ./.github/actions/android-device-tests
+      with:
+        artifact-name: ${{ inputs.artifact-name }}-device-results
+
     - name: Upload verified APK
       uses: actions/upload-artifact@v7
       with:
         name: ${{ inputs.artifact-name }}
         path: android-artifact/
         if-no-files-found: error
-
-    - name: Remove release keystore
-      if: always() && inputs.release-signing == 'true'
-      shell: bash
-      run: rm -f "$RUNNER_TEMP/respondeo-release.keystore"

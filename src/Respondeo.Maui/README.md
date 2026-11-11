@@ -42,7 +42,8 @@ Missing credentials fail the build; public releases never fall back to debug sig
 so updates can replace installed versions without losing reader data.
 
 The shared publish action checks the signed APK's archive, signature, ZIP alignment, shell references, shared asset hashes, and bundled manifest targets.
-It also tests native content transport against the final APK's `assets/wwwroot/` entries before uploading it with `SHA256SUMS`.
+It also tests native content transport against the final APK's `assets/wwwroot/` entries and runs the focused API 36 emulator smoke
+before uploading it with `SHA256SUMS`. The signing keystore is removed before device tooling starts; the tested APK is not rebuilt or resigned.
 Native plain-name CSS/JS packaging is intentional; browser fingerprint mappings and native paper-color parity are checked separately.
 See [packaging contracts](../../docs/deployment.md#packaging-contracts) for commands, host exceptions, and the limits of ZIP-backed tests.
 The `android-release` job waits for shared checks, Android verification, and applicable browser acceptance tests.
@@ -51,7 +52,9 @@ Release notes list commits since the previous release tag (`v$VERSION`), with a 
 
 PRs use the same publish/verification action without release secrets. Their debug-signed APKs are uploaded as `android-validation`
 with `respondeo-validation-$VERSION.apk` filenames. They are for testing only and cannot update a release-signed installation.
-Device lifecycle, visual rendering, and upgrade persistence still require the focused Android checks described in the streamlining plan.
+See [native test commands](../../tests/Respondeo.AcceptanceTests/README.md#native-lifecycle-and-upgrade) to run the same APK checks locally
+or explicitly test a prior same-key APK upgrade. Emulator results do not close physical-device flicker, icon-contrast, or stored-progress checks;
+use the [release checklist](../../docs/deployment.md#physical-device-release-checklist) as well.
 
 ## Icon
 

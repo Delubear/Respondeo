@@ -1,0 +1,60 @@
+name: Verify Android lifecycle
+description: Run focused native acceptance checks against the already signed APK, without rebuilding or resigning it.
+
+inputs:
+  artifact-name:
+    description: Unique name for retained Android device evidence.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Select the verified APK
+      shell: bash
+      run: |
+        mapfile -d '' apks < <(find android-artifact -type f -name '*.apk' -print0)
+        if [ "${#apks[@]}" -ne 1 ]; then
+          echo "::error::Expected exactly one verified APK for device testing."
+          exit 1
+        fi
+        echo "RESPONDEO_APK_PATH=$(realpath "${apks[0]}")" >> "$GITHUB_ENV"
+        echo "RESPONDEO_ANDROID_RESULTS=$GITHUB_WORKSPACE/TestResults/android" >> "$GITHUB_ENV"
+
+    - name: Enable emulator acceleration
+      shell: bash
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+        test -r /dev/kvm && test -w /dev/kvm
+
+    - name: Exercise the final APK offline
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 36
+        target: google_apis
+        arch: x86_64
+        profile: pixel_7
+        avd-name: respondeo-acceptance
+        emulator-port: 5554
+        ram-size: 2048M
+        disable-animations: false
+        script: >-
+          RESPONDEO_ADB_PATH="$ANDROID_HOME/platform-tools/adb"
+          RESPONDEO_ANDROID_SERIAL=emulator-5554 RESPONDEO_ANDROID_ALLOW_MUTATION=1
+          dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj
+          -c Release --no-build --filter 'Category=AndroidDevice&Category!=AndroidUpgrade'
+          --logger 'trx;LogFileName=android-smoke.trx' --results-directory TestResults/android
+
+    - name: Confirm tested artifact is unchanged
+      shell: bash
+      working-directory: android-artifact
+      run: sha256sum -c SHA256SUMS
+
+    - name: Upload Android device evidence
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: TestResults/android/
+        if-no-files-found: warn

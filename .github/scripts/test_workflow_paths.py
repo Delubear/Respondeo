@@ -25,6 +25,12 @@ class WorkflowPathsTests(unittest.TestCase):
 			"Directory.Packages.props", "Directory.Build.props", "global.json",
 			".github/actions/publish-android/action.yml", ".github/scripts/workflow_paths.py",
 			".github/workflows/pr.yml", "tests/Respondeo.UnitTests/Services/ThemeServiceTests.cs",
+			".github/actions/android-device-tests/action.yml",
+			"tests/Respondeo.AcceptanceTests/AndroidLifecycleTests.cs",
+			"tests/Respondeo.AcceptanceTests/Support/AndroidDevice.cs",
+			"tests/Respondeo.AcceptanceTests/AndroidDeviceHelperTests.cs",
+			"tests/Respondeo.AcceptanceTests/AppPackageHttpHandlerTests.cs",
+			"tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj",
 		):
 			with self.subTest(path=path):
 				self.assertEqual(classify_paths([path]), {

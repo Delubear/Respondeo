@@ -14,6 +14,10 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
   missing files, cancellation, and unexpected errors without networking.
 - **AndroidPackageTransportTests** (`Category=AndroidArtifact`) — an explicitly selected final APK supplies real manifests and all listed articles
   through the native transport. ZIP-backed tests do not exercise Android's package API or a running WebView.
+- **AndroidLifecycleTests** (`Category=AndroidDevice`) — a dedicated emulator installs the selected APK and checks offline startup/content,
+  rendered theme/text-size persistence, pins, repeated bottom-bar navigation with remembered scroll, and background/resume.
+  The separately selected `AndroidUpgrade` case verifies an increasing-version, same-key in-place upgrade without clearing app data.
+- **AndroidDeviceHelperTests** — deterministic coordinate, visibility, and label matching checks need no device or browser.
 - **NativeNavigationTests** — native Back/link events mask the scrolling shell before route handling, including masthead exposure
   during scroll restoration; native page-entry motion is disabled while web fades and reduced-motion behavior are preserved.
   These DOM timing checks do not replace physical Android WebView verification.
@@ -58,7 +62,7 @@ These are intentionally few and focused on the core journey. Unit and component 
 
    ```powershell
    $env:RESPONDEO_BASE_URL = "http://localhost:5000"
-   dotnet test --filter 'Category!=AndroidArtifact'
+   dotnet test --filter 'Category!=AndroidArtifact&Category!=AndroidDevice'
    ```
 
    Set `$env:RESPONDEO_HEADED = "1"` to watch the browser.
@@ -66,8 +70,8 @@ These are intentionally few and focused on the core journey. Unit and component 
    `BuildIdentityTests` requires Option B's published service worker and a secure origin (localhost or HTTPS).
    For a loopback base URL, it uses `respondeo.localhost` on the same port so the app's bare-localhost worker opt-out
    does not suppress production caching. Chromium resolves this trustworthy local subdomain to loopback.
-   For the development server, exclude both artifact-dependent categories:
-   `dotnet test --filter 'Category!=Published&Category!=AndroidArtifact'`.
+   For the development server, also exclude published-worker tests:
+   `dotnet test --filter 'Category!=Published&Category!=AndroidArtifact&Category!=AndroidDevice'`.
 
 ## Native package transport
 
@@ -80,6 +84,42 @@ dotnet test tests\Respondeo.AcceptanceTests -c Release --filter 'Category=Androi
 
 The APK category fails explicitly if `RESPONDEO_APK_PATH` is absent or invalid; it never silently skips artifact verification.
 CI runs it in the Android publish action after signing and before artifact upload. The browser action excludes it.
+
+## Native lifecycle and upgrade
+
+Use an explicitly selected, disposable emulator, not a personal phone or an AVD containing valuable state.
+The harness installs/replaces `faith.respondeo.app`, changes reader preferences/pins, backgrounds the app, and temporarily enables airplane mode.
+It restores the original airplane/Wi-Fi settings, but leaves app state as tested. Physical-device serials are rejected.
+No APK is rebuilt/resigned by the tests, no app data is cleared, and failed installs never retry with uninstall or downgrade flags.
+
+From the repository root, with the emulator already booted:
+
+```powershell
+$env:RESPONDEO_ADB_PATH = 'C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe'
+$env:RESPONDEO_ANDROID_SERIAL = 'emulator-5554'
+$env:RESPONDEO_ANDROID_ALLOW_MUTATION = '1'
+$env:RESPONDEO_ANDROID_RESULTS = (Join-Path $PWD 'TestResults\android')
+$env:RESPONDEO_APK_PATH = (Resolve-Path apk-out\faith.respondeo.app-Signed.apk).Path
+dotnet test tests\Respondeo.AcceptanceTests -c Release --filter 'Category=AndroidDevice&Category!=AndroidUpgrade'
+```
+
+To test an upgrade, start with an emulator that has no newer app installed. Select a real prior compatible APK signed with the same key:
+
+```powershell
+$env:RESPONDEO_ANDROID_BASELINE_APK = (Resolve-Path previous-release.apk).Path
+dotnet test tests\Respondeo.AcceptanceTests -c Release --filter 'Category=AndroidUpgrade'
+```
+
+The candidate must have a strictly greater version code. Android itself enforces signing continuity during `adb install -r`.
+Evidence includes both APK hashes/manifests for upgrades, observed version codes, API/fingerprint/WebView information, XML trees, PNG screenshots,
+and app logs. Known UIAutomator startup/termination retries are bounded and recorded; other command failures fail the test.
+Screens/logs are captured independently so unavailable accessibility does not suppress all diagnostics.
+Release builds do not enable WebView debugging for these checks.
+
+The native smoke measures actual lede enlargement (over 10%) and requires it to remain within two device pixels after lifecycle changes.
+The repeated Miracles round trip requires the catalog anchor to return within 12 device pixels. These are settled-layout checks, not frame-level flicker detection.
+`AndroidUpgrade` covers theme/text size and pins, not every stored progress format. See the
+[physical-device release checklist](../../docs/deployment.md#physical-device-release-checklist) for the remaining release checks.
 
 ## Playwright browsers
 

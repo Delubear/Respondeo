@@ -16,7 +16,7 @@ PRs and deployment runs share path selection in `.github/actions/changed-paths` 
 `.github/actions/setup-build`. Path rules are implemented and tested in `.github/scripts/workflow_paths.py` and
 `.github/scripts/test_workflow_paths.py`. Documentation-only runs skip expensive builds, not the path-rule checks.
 
-| Change | Shared unit/component tests | WASM publish and browser acceptance | Android Release publish and package verification |
+| Change | Shared unit/component tests | WASM publish and browser acceptance | Android Release publish, packaging, and emulator smoke |
 | --- | --- | --- | --- |
 | Shared UI/content, dependency, build, or workflow configuration | Yes | Yes | Yes |
 | MAUI host only | Yes | No | Yes |
@@ -24,7 +24,8 @@ PRs and deployment runs share path selection in `.github/actions/changed-paths` 
 | READMEs, authoring instructions/prompts, or Markdown under docs | No | No | No |
 
 Authored Inquiry/Discover Markdown is application content, not documentation, and validates both hosts.
-Other changes conservatively validate both hosts. Manual PR workflow runs validate both hosts.
+Native acceptance tests/helpers, package transport tests, and the acceptance project file also validate both hosts;
+browser-only acceptance files retain the web-only path. Other changes conservatively validate both hosts. Manual PR workflow runs validate both hosts.
 
 The PR workflow uses read-only repository/PR permissions and does not receive release signing or licensed-content secrets.
 Its Android action produces an `android-validation` artifact using a development debug key. Add **Android Release Validation**
@@ -46,6 +47,45 @@ Failed or canceled checks block APK publication.
 Pages similarly deploys the published output already exercised by browser acceptance tests, rather than rebuilding it.
 An Android build failure does not block a validated website deployment. Pages permissions are limited to the Pages deployment job.
 APK structure/signature checks do not replace device testing for startup, app switching, system bars, or upgrade persistence.
+
+### Native lifecycle gate
+
+Both Android publication callers run `.github/actions/android-device-tests` after packaging/transport verification and before APK upload.
+The action boots an accelerated API 36 x86_64 Pixel 7 emulator and runs only `Category=AndroidDevice&Category!=AndroidUpgrade`
+from the existing acceptance project. It installs the exact signed artifact without rebuilding or resigning it, then rechecks `SHA256SUMS`.
+The release keystore is already removed before emulator tooling starts. Browser acceptance explicitly excludes all `AndroidDevice` cases.
+
+The focused smoke checks airplane-mode cold startup, real offline Miracles catalog/article loading, rendered theme/text-size persistence,
+a pinned page, remembered browse position across two bottom-bar round trips, background/resume in both themes, and Android Back/relaunch from Home.
+It measures settled content geometry, not intermediate frames: a successful scroll check cannot prove the masthead never flashed.
+The original OS app-switch/reel rasterization issue remains a physical-device check, not an emulator acceptance claim.
+
+Each Android job retains `<APK artifact name>-device-results`, including TRX output, device API/fingerprint/WebView version, selected APK SHA-256,
+build identity, accessibility XML, screenshots, and app logs. Missing inputs and unexpected device failures fail explicitly.
+The first hosted run still needs confirmation; local Windows emulator success is not evidence that the GitHub-hosted gate has run.
+
+Upgrade verification is separate and opt-in because it requires a selected prior APK signed with the same stable key and a strictly newer candidate.
+It uses `adb install -r`, never uninstall/clear-data/downgrade recovery. It verifies theme, rendered reading size, and a pinned page,
+retaining both artifact identities and observed version codes. A controlled development-key version pair tests the harness only;
+it does not prove a public release will update an existing release-signed installation or preserve every progress format.
+See [native test commands](../tests/Respondeo.AcceptanceTests/README.md#native-lifecycle-and-upgrade).
+
+### Physical-device release checklist
+
+Use the actual final public APK and record its SHA-256/build details, phone model, Android API level, and WebView version.
+Keep a short screen recording or screenshots/logs when a check fails. Do not clear existing data to make an upgrade pass.
+
+- [ ] From a prior public same-key APK, create representative prayer/devotion/Hours progress, pins, and reader preferences.
+  Install the newer public APK in place; verify those exact values and resume points remain.
+- [ ] Cold-start offline and open Miracles, a prayer, the Summa, and the Bible; confirm real content, not just headings.
+- [ ] Open a lower Miracles card and repeatedly use the bottom-bar arrow; confirm the remembered card position without a masthead flash.
+  Repeat quickly, including Android Back/gesture behavior while reading and in dialogs.
+- [ ] On Home in light and dark themes, swipe the reel, open Recents, switch to another app, lock/unlock, and return.
+  Look specifically for the original flickering/rasterized cards and intermediate-page exposure.
+- [ ] Check black status/navigation gutters and legible light icons in both themes, with gesture and three-button navigation where available.
+- [ ] Force-stop/restart and repeat background/resume; verify preferences, pins, and reading progress persist.
+
+These manual checks remain required even when all browser, package, and emulator gates pass.
 
 ### Packaging contracts
 
