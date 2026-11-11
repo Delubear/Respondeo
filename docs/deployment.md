@@ -54,6 +54,7 @@ Both Android publication callers run `.github/actions/android-device-tests` afte
 The action boots an accelerated API 36 x86_64 Pixel 7 emulator and runs only `Category=AndroidDevice&Category!=AndroidUpgrade`
 from the existing acceptance project. It installs the exact signed artifact without rebuilding or resigning it, then rechecks `SHA256SUMS`.
 The release keystore is already removed before emulator tooling starts. Browser acceptance explicitly excludes all `AndroidDevice` cases.
+The Linux runner must expose `/dev/kvm`; the action grants device access directly and fails explicitly if acceleration is unavailable or inaccessible.
 
 The focused smoke checks airplane-mode cold startup, real offline Miracles catalog/article loading, rendered theme/text-size persistence,
 a pinned page, remembered browse position across two bottom-bar round trips, background/resume in both themes, and Android Back/relaunch from Home.
