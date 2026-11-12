@@ -23,7 +23,63 @@ else
     <section class="reading-wide hourplayer fade-enter immersive-root" @key="Slug">
         <h1 class="hourplayer__title">@_office.Title</h1>
         <p class="hourplayer__meta">@_date.ToString("dddd, MMMM d, yyyy") &middot; Psalter Week @ToRoman(_office.PsalterWeek)</p>
-        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
+        @if (_office.Day.Occurrence is { Rule: LiturgicalOccurrenceRule.UnresolvedEqualPrecedence } occurrence)
+        {
+            <div class="hourplayer__calendar-warning" role="note">
+                <p>The calendar's precedence rules do not determine which equal-ranked celebration is observed.</p>
+                <p>This choice selects the Office to pray; it does not resolve or change the calendar observance.</p>
+                @if (occurrence.ContendingCelebrations.All(contender => contender.CalendarKey is not null))
+                {
+                    <label for="hour-calendar-celebration">Celebration for this Office</label>
+                    <select id="hour-calendar-celebration" value="@(_selectedCalendarCelebrationKey ?? _office.Day.Celebration?.CalendarKey)"
+                            @onchange="ChangeCalendarCelebrationAsync">
+                        @foreach (var contender in occurrence.ContendingCelebrations)
+                        {
+                            <option value="@contender.CalendarKey">@contender.Name (@contender.Rank)</option>
+                        }
+                    </select>
+                }
+                <p>Possible celebrations:</p>
+                <ul class="hourplayer__calendar-candidates">
+                    @foreach (var contender in occurrence.ContendingCelebrations)
+                    {
+                        <li>@contender.Name (@contender.Rank)</li>
+                    }
+                </ul>
+            </div>
+        }
+        <div class="hourplayer__service-date">
+            <label for="hour-service-date">Service date</label>
+            <input id="hour-service-date" type="date" value="@_date.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)"
+                   @onchange="ChangeServiceDateAsync" aria-describedby="hour-service-date-help hour-service-date-error"
+                   aria-invalid="@(_dateError is not null ? "true" : "false")" />
+            <p id="hour-service-date-help" class="hourplayer__explain" role="note">
+                Choose the day whose Office you are praying. For Night Prayer after midnight, you may need the preceding date (GILH 84).
+            </p>
+            @if (_dateError is not null)
+            {
+                <p id="hour-service-date-error" role="alert">@_dateError</p>
+            }
+        </div>
+        @if ((_office.Hour is Hour.MorningPrayer or Hour.EveningPrayer)
+            && _office.Day.MemorialCommemorations.Any(commemoration => commemoration.CalendarKey is not null))
+        {
+            <div class="hourplayer__service-date">
+                <label for="hour-memorial-commemoration">Memorial commemoration</label>
+                <select id="hour-memorial-commemoration" value="@(_selectedMemorialCommemorationCalendarKey ?? string.Empty)"
+                        @onchange="ChangeMemorialCommemorationAsync" aria-describedby="hour-memorial-commemoration-help">
+                    <option value="">No commemoration</option>
+                    @foreach (var commemoration in _office.Day.MemorialCommemorations.Where(commemoration => commemoration.CalendarKey is not null))
+                    {
+                        <option value="@commemoration.CalendarKey">@commemoration.Name</option>
+                    }
+                </select>
+                <p id="hour-memorial-commemoration-help" class="hourplayer__explain" role="note">
+                    Add only the memorial's antiphon and prayer after the day's collect (GILH 239); the temporal Office remains in place.
+                </p>
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.HasProviderText))
         {
             <p class="hourplayer__ack" role="note">@_office.Acknowledgment</p>
         }
@@ -31,14 +87,58 @@ else
         @if (_office.IsSampleContent)
         {
             <p class="hourplayer__sample" role="note">
-                The hymns, antiphons, readings, responsories, intercessions, and prayers shown here are sample placeholder text, not the approved translation.
+                Some elements use invented sample text to demonstrate official-content loading. Sample text is not approved; Scripture fallbacks and other supplied texts are labeled separately.
             </p>
         }
-        <p class="hourplayer__hint">Select each step to mark it prayed, in order.</p>
+        @if (_office.SelectedComplineForm is { } complineForm)
+        {
+            <div class="hourplayer__compline-form">
+                <label for="hour-compline-form">Night Prayer form</label>
+                <select id="hour-compline-form" value="@complineForm" @onchange="ChangeComplineFormAsync" aria-describedby="hour-compline-form-help">
+                    <option value="SundayI">Sunday I (Psalms 4 and 134)</option>
+                    <option value="SundayII">Sunday II (Psalm 91)</option>
+                </select>
+                <p id="hour-compline-form-help" class="hourplayer__explain" role="note">
+                    During the Easter octave, either complete Sunday form may be used. This changes the psalms, reading, and concluding prayer together.
+                </p>
+            </div>
+        }
+        @if (_office.SelectedComplinePsalmody is { } complinePsalmody)
+        {
+            <div class="hourplayer__compline-psalmody">
+                <label for="hour-compline-psalmody">Night Prayer psalms</label>
+                <select id="hour-compline-psalmody" value="@complinePsalmody" @onchange="ChangeComplinePsalmodyAsync" aria-describedby="hour-compline-psalmody-help">
+                    <option value="Weekday">Weekday psalms</option>
+                    <option value="SundayI">Sunday I psalms (4 and 134)</option>
+                    <option value="SundayII">Sunday II psalm (91)</option>
+                </select>
+                <p id="hour-compline-psalmody-help" class="hourplayer__explain" role="note">
+                    Sunday psalms may replace weekday psalms (GILH 88). The weekday reading and concluding prayer stay unchanged.
+                </p>
+            </div>
+        }
+        @if (_office.ConditionalOmission is { } omission)
+        {
+            <div class="hourplayer__participation">
+                <label>
+                    <input type="checkbox" checked="@_office.IsOmitted" @onchange="ChangeParticipationAsync" aria-describedby="hour-participation-rule" />
+                    @omission.AttendanceLabel
+                </label>
+                <p id="hour-participation-rule" class="hourplayer__explain" role="note">@omission.Explanation (@omission.SourceLocator)</p>
+            </div>
+        }
+        @if (_office.IsOmitted)
+        {
+            <p class="hourplayer__omission" role="status">This Hour is not said separately because of the liturgy you selected above.</p>
+        }
+        else
+        {
+            <p class="hourplayer__hint">Select each step to mark it prayed, in order.</p>
+        }
 
         <p class="sr-only" role="status" aria-live="polite">@_announcement</p>
 
-        <ol class="hourplayer__list">
+        <ol class="hourplayer__list" hidden="@_office.IsOmitted">
             @for (var i = 0; i < _office.Steps.Count; i++)
             {
                 var index = i;
@@ -91,18 +191,28 @@ else
                             <div class="hourplayer__content">
                                 @if (step.IntroText is not null && Settings.Current.InvitatoryMode == InvitatoryMode.None)
                                 {
-                                    <p class="hourplayer__explain" role="note">The Invitatory was already prayed at an earlier Hour today, so this Hour opens with the usual introduction.</p>
+                                    <p class="hourplayer__explain" role="note">Use this ordinary opening when the Invitatory was already prayed at an earlier Hour.</p>
                                     <p class="hourplayer__text">@RenderText(step.IntroText)</p>
                                 }
                                 else
                                 {
-                                    @if (step.Explanation is not null)
+                                    @if (step.IntroText is not null && step.Options is { Count: > 0 } && Settings.Current.InvitatoryMode == InvitatoryMode.OmitPsalm)
+                                    {
+                                        <p class="hourplayer__explain" role="note">
+                                            Before Morning Prayer, the Invitatory psalm and its antiphon may be omitted; the opening verse remains (GILH 35).
+                                        </p>
+                                    }
+                                    else if (step.Explanation is not null)
                                     {
                                         <p class="hourplayer__explain" role="note">@step.Explanation</p>
                                     }
                                     @if (step.Antiphon is not null)
                                     {
                                         <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(step.Antiphon)</p>
+                                    }
+                                    @if (step.IsSampleText)
+                                    {
+                                        <p class="hourplayer__translation hourplayer__provider-sample">Includes sample provider content; not approved liturgical text.</p>
                                     }
                                     @if (step.Text is not null)
                                     {
@@ -111,11 +221,15 @@ else
                                     else if (_passages.TryGetValue(index, out var passage))
                                     {
                                         <p class="hourplayer__text">@RenderText(passage)</p>
-                                        <p class="hourplayer__translation">Douay-Rheims translation</p>
+                                        <p class="hourplayer__translation">@(step.Passage?.Translation ?? "Douay-Rheims translation")</p>
                                     }
-                                    else if (step.UseOfficialText)
+                                    else if (step.UseOfficialText || step.Passage is not null || step.Reference is not null)
                                     {
                                         <p class="hourplayer__official">Read today's text from an official source below.</p>
+                                    }
+                                    @if (step.UseOfficialText && step.Antiphon is null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle))
+                                    {
+                                        <p class="hourplayer__official" role="note">This psalmody's prescribed antiphon is not available here. Read it from an official source below.</p>
                                     }
                                     @if (step.Antiphon is not null && step.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle or OfficeStepKind.GospelCanticle))
                                     {
@@ -129,13 +243,14 @@ else
                                             @if (visible.Count > 1)
                                             {
                                                 var chosen = ChosenOption(stepIndex, visible);
-                                                <div class="hourplayer__picker" role="group" aria-label="@($"Choose the {step.Title} psalm")">
+                                                <div class="hourplayer__picker" role="group"
+                                                     aria-label="@(step.Kind == OfficeStepKind.MarianAntiphon ? "Choose the Marian antiphon" : $"Choose the {step.Title} psalm")">
                                                     @foreach (var optionIndex in visible)
                                                     {
                                                         var oi = optionIndex;
                                                         <button type="button" class="hourplayer__picker-btn"
                                                                 aria-pressed="@(oi == chosen ? "true" : "false")"
-                                                                @onclick="() => _chosenOptions[stepIndex] = oi">@options[oi].Title</button>
+                                                                @onclick="() => ChooseOption(stepIndex, oi)">@options[oi].Title</button>
                                                     }
                                                 </div>
                                                 <HourOption Option="options[chosen]" RenderText="@(t => RenderText(t))"
@@ -158,7 +273,7 @@ else
             }
         </ol>
 
-        @if (_completed >= _office.Steps.Count)
+        @if (!_office.IsOmitted && _completed >= _office.Steps.Count)
         {
             <div class="hourplayer__done">
                 <p class="eyebrow">Thanks be to God</p>
@@ -174,7 +289,7 @@ else
             }
         </ul>
 
-        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.IsLicensedText))
+        @if (!string.IsNullOrWhiteSpace(_office.Acknowledgment) && _office.Steps.Any(s => s.HasProviderText))
         {
             <p class="hourplayer__ack hourplayer__ack--end" role="note">@_office.Acknowledgment</p>
         }
@@ -183,6 +298,8 @@ else
     </section>
 
     @* Kept outside the fade-enter section: its entry transform would otherwise anchor the fixed bar to the section until the animation ends.  *@
+    @if (!_office.IsOmitted)
+    {
     <PlayerProgressBar Label="@CurrentPart()" Completed="_completed" Total="_office.Steps.Count"
                        LeaveHref="@ContentRoutes.Hours" OnBack="Back" OnNext="Next">
         <Tools>
@@ -194,6 +311,7 @@ else
             </button>
         </Tools>
     </PlayerProgressBar>
+    }
 }
 
 @code {
@@ -203,6 +321,11 @@ else
 
     private Office? _office;
     private DateOnly _date;
+    private string? _dateError;
+    private string? _selectedCalendarCelebrationKey;
+    private string? _selectedMemorialCommemorationCalendarKey;
+    private string? _loadedSlug;
+    private int _loadVersion;
     private int _completed;
     private readonly HashSet<int> _open = [];
     private string? _announcement;
@@ -212,9 +335,69 @@ else
     private IReadOnlyDictionary<(int Step, int Option), string> _optionPassages = HourPassages.Empty.OptionPassages;
     private IReadOnlyDictionary<(int Step, int Option), List<string>> _optionStanzas = HourPassages.Empty.OptionStanzas;
 
-    protected override async Task OnParametersSetAsync()
+    protected override Task OnParametersSetAsync()
     {
-        _date = Today();
+        if (!string.Equals(_loadedSlug, Slug, StringComparison.OrdinalIgnoreCase))
+        {
+            _loadedSlug = Slug;
+            _selectedCalendarCelebrationKey = null;
+            _selectedMemorialCommemorationCalendarKey = null;
+        }
+
+        return LoadOfficeAsync(LiturgicalParticipation.None);
+    }
+
+    private async Task ChangeServiceDateAsync(ChangeEventArgs args)
+    {
+        if (!DateOnly.TryParseExact(args.Value as string, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.None, out var date))
+        {
+            _dateError = "Choose a valid service date.";
+            return;
+        }
+
+        _dateError = null;
+        _date = date;
+        _selectedCalendarCelebrationKey = null;
+        _selectedMemorialCommemorationCalendarKey = null;
+        await LoadOfficeAsync(LiturgicalParticipation.None);
+    }
+
+    private Task ChangeCalendarCelebrationAsync(ChangeEventArgs args)
+    {
+        _selectedCalendarCelebrationKey = args.Value as string;
+        return LoadOfficeAsync(LiturgicalParticipation.None);
+    }
+
+    private Task ChangeMemorialCommemorationAsync(ChangeEventArgs args)
+    {
+        var calendarKey = args.Value as string;
+        _selectedMemorialCommemorationCalendarKey = string.IsNullOrEmpty(calendarKey) ? null : calendarKey;
+        return LoadOfficeAsync(LiturgicalParticipation.None);
+    }
+
+    private Task ChangeParticipationAsync(ChangeEventArgs args) =>
+        LoadOfficeAsync(args.Value is true && _office?.ConditionalOmission is { } rule ? rule.Participation : LiturgicalParticipation.None);
+
+    private Task ChangeComplineFormAsync(ChangeEventArgs args) => LoadOfficeAsync(LiturgicalParticipation.None, args.Value switch
+    {
+        "SundayI" => ComplineSundayForm.SundayI,
+        "SundayII" => ComplineSundayForm.SundayII,
+        _ => throw new ArgumentException("Choose one of the offered Sunday Compline forms.", nameof(args)),
+    });
+
+    private Task ChangeComplinePsalmodyAsync(ChangeEventArgs args) => LoadOfficeAsync(LiturgicalParticipation.None, complinePsalmody: args.Value switch
+    {
+        "Weekday" => ComplinePsalmodyChoice.Weekday,
+        "SundayI" => ComplinePsalmodyChoice.SundayI,
+        "SundayII" => ComplinePsalmodyChoice.SundayII,
+        _ => throw new ArgumentException("Choose one of the offered Compline psalm options.", nameof(args)),
+    });
+
+    private async Task LoadOfficeAsync(LiturgicalParticipation participation, ComplineSundayForm complineForm = ComplineSundayForm.Automatic,
+        ComplinePsalmodyChoice complinePsalmody = ComplinePsalmodyChoice.Weekday)
+    {
+        var version = ++_loadVersion;
         Hour? hour = Slug.ToLowerInvariant() switch
         {
             "morning" => Hour.MorningPrayer,
@@ -222,24 +405,38 @@ else
             "night" => Hour.NightPrayer,
             _ => null,
         };
-        _office = hour is { } h ? Office.Compose(_date, h) : null;
+        _office = hour is { } h ? Office.Compose(_date, h, participation: participation, complineForm: complineForm,
+            complinePsalmody: complinePsalmody, memorialCommemorationCalendarKey: _selectedMemorialCommemorationCalendarKey,
+            celebrationCalendarKey: _selectedCalendarCelebrationKey) : null;
+        _selectedMemorialCommemorationCalendarKey = _office?.SelectedMemorialCommemorationCalendarKey;
         _completed = 0;
+        _announcement = null;
+        _scroll = false;
         _open.Clear();
         _open.Add(0);
         _randomPicks.Clear();
         _chosenOptions.Clear();
-        await Settings.LoadAsync();
-        await AdvanceInvitatoryCycleAsync();
         _passages = HourPassages.Empty.Passages;
         _optionPassages = HourPassages.Empty.OptionPassages;
         _optionStanzas = HourPassages.Empty.OptionStanzas;
+        await Settings.LoadAsync();
+        if (version != _loadVersion)
+        {
+            return;
+        }
 
-        if (_office is null)
+        await AdvanceInvitatoryCycleAsync();
+        if (version != _loadVersion || _office is null || _office.IsOmitted)
         {
             return;
         }
 
         var loaded = await PassageLoader.LoadAsync(_office);
+        if (version != _loadVersion)
+        {
+            return;
+        }
+
         _passages = loaded.Passages;
         _optionPassages = loaded.OptionPassages;
         _optionStanzas = loaded.OptionStanzas;
@@ -266,6 +463,7 @@ else
 
     protected override void OnInitialized()
     {
+        _date = Today();
         Settings.Changed += OnSettingsChanged;
         CalendarPreference.Changed += OnCalendarChanged;
     }
@@ -275,7 +473,8 @@ else
     // A different calendar can change the day's celebration, so the office is composed afresh.
     private void OnCalendarChanged() => _ = InvokeAsync(async () =>
     {
-        await OnParametersSetAsync();
+        _selectedMemorialCommemorationCalendarKey = null;
+        await LoadOfficeAsync(LiturgicalParticipation.None);
         StateHasChanged();
     });
 
@@ -283,8 +482,8 @@ else
     private async Task AdvanceInvitatoryCycleAsync()
     {
         var current = Settings.Current;
-        var count = _office?.Steps.FirstOrDefault(s => s.Options is { Count: > 0 })?.Options!.Count ?? 0;
-        if (current.InvitatoryMode != InvitatoryMode.Cycle || count == 0)
+        var count = _office?.Steps.FirstOrDefault(s => s.IntroText is not null && s.Options is { Count: > 0 })?.Options!.Count ?? 0;
+        if (current.InvitatoryMode != InvitatoryMode.Cycle || count == 0 || _date != Today())
         {
             return;
         }
@@ -296,8 +495,24 @@ else
         }
     }
 
+    private void ChooseOption(int stepIndex, int optionIndex)
+    {
+        var changed = _chosenOptions.GetValueOrDefault(stepIndex) != optionIndex;
+        _chosenOptions[stepIndex] = optionIndex;
+        if (changed && _office!.Steps[stepIndex].Kind == OfficeStepKind.MarianAntiphon && _completed > stepIndex)
+        {
+            _completed = stepIndex;
+            _announcement = "Marian antiphon changed. Pray the selected ending to complete this Hour.";
+        }
+    }
+
     private IReadOnlyList<int> VisibleOptions(int stepIndex, IReadOnlyList<OfficeStep> options)
     {
+        if (_office!.Steps[stepIndex].Kind == OfficeStepKind.MarianAntiphon)
+        {
+            return Enumerable.Range(0, options.Count).ToArray();
+        }
+
         var current = Settings.Current;
         if (current.InvitatoryMode == InvitatoryMode.Random)
         {
@@ -364,7 +579,7 @@ else
     {
         "Introduction" => "The Hour opens by asking God's help and, at the first Hour of the day, with the Invitatory calling us to praise.",
         "Hymn" => "A hymn sets the tone of the Hour and the season.",
-        "Psalmody" => "The heart of the Hour: psalms and canticles prayed with their antiphons, each ending with the Glory Be.",
+        "Psalmody" => "The heart of the Hour: psalms and canticles prayed with their antiphons, ending with the Glory Be or the canticle's own concluding blessing.",
         "Word of God" => "A short reading from Scripture, followed by a responsory that lets the word sink in.",
         "Gospel Canticle" => "A canticle from the Gospel of Luke, the high point of Morning, Evening, or Night Prayer.",
         "Prayers" => "Intercessions, the Our Father, and the concluding prayer gather up the needs of the Church and the world.",
@@ -415,7 +630,8 @@ else
         OfficeStepKind.Psalm or OfficeStepKind.Canticle => "Psalmody",
         OfficeStepKind.Reading or OfficeStepKind.Responsory => "Word of God",
         OfficeStepKind.GospelCanticle => "Gospel Canticle",
-        OfficeStepKind.Intercessions or OfficeStepKind.LordsPrayer or OfficeStepKind.Prayer => "Prayers",
+        OfficeStepKind.Antiphon or OfficeStepKind.Intercessions
+            or OfficeStepKind.LordsPrayer or OfficeStepKind.Prayer => "Prayers",
         OfficeStepKind.Conclusion or OfficeStepKind.MarianAntiphon => "Conclusion",
         _ => "Introduction",
     };

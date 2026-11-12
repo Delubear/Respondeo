@@ -5,8 +5,8 @@ namespace Respondeo.UnitTests.LiturgyOfTheHours;
 
 public class CalendarAccuracyTests
 {
-    private static readonly RomanCalendar Universal = new();
-    private static readonly RomanCalendar UnitedStates = new(LiturgicalCalendarOptions.Default with { Region = CalendarRegion.UnitedStates });
+    private static readonly ILiturgicalCalendar Universal = new RomanCalendar();
+    private static readonly ILiturgicalCalendar UnitedStates = new RomanCalendar(LiturgicalCalendarOptions.Default with { Region = CalendarRegion.UnitedStates });
 
     [Theory]
     [InlineData(1900, 4, 15)]
@@ -141,7 +141,7 @@ public class CalendarAccuracyTests
                 Assert.Equal(expected, date);
             }
 
-            var psalter = PsalterWeek.For(date, season, unitedStates);
+            var psalter = calendar.ForWeek(date).PsalterWeek;
             Assert.InRange(psalter, 1, 4);
 
             if (date.DayOfWeek == DayOfWeek.Sunday && previousPsalter is { } prior)
@@ -165,9 +165,10 @@ public class CalendarAccuracyTests
 
             if (season == LiturgicalSeason.OrdinaryTime)
             {
-                var week = PsalterWeek.OrdinaryTimeWeek(date, easter, unitedStates);
-                Assert.InRange(week, 1, 34);
-                Assert.Equal(((week - 1) % 4) + 1, psalter);
+                var week = calendar.ForWeek(date).TemporalWeek;
+                Assert.NotNull(week);
+                Assert.InRange(week.Value, 1, 34);
+                Assert.Equal(((week.Value - 1) % 4) + 1, psalter);
             }
 
             previousSeason = season;
@@ -181,12 +182,14 @@ public class CalendarAccuracyTests
         {
             var easter = LiturgicalDates.Easter(year);
             var advent = LiturgicalDates.FirstSundayOfAdvent(year);
-            Assert.Equal(34, PsalterWeek.OrdinaryTimeWeek(advent.AddDays(-1), easter));
-            Assert.Equal(34, PsalterWeek.OrdinaryTimeWeek(advent.AddDays(-7), easter));
+            Assert.Equal(34, Universal.ForWeek(advent.AddDays(-1)).TemporalWeek);
+            Assert.Equal(34, Universal.ForWeek(advent.AddDays(-7)).TemporalWeek);
 
-            var lastBeforeLent = PsalterWeek.OrdinaryTimeWeek(LiturgicalDates.AshWednesday(year).AddDays(-1), easter);
-            var firstAfterPentecost = PsalterWeek.OrdinaryTimeWeek(easter.AddDays(50), easter);
-            Assert.InRange(firstAfterPentecost - lastBeforeLent, 1, 2);
+            var lastBeforeLent = Universal.ForWeek(LiturgicalDates.AshWednesday(year).AddDays(-1)).TemporalWeek;
+            var firstAfterPentecost = Universal.ForWeek(easter.AddDays(50)).TemporalWeek;
+            Assert.NotNull(lastBeforeLent);
+            Assert.NotNull(firstAfterPentecost);
+            Assert.InRange(firstAfterPentecost.Value - lastBeforeLent.Value, 1, 2);
         }
     }
 }

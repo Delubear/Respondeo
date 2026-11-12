@@ -13,7 +13,7 @@ public class FirstVespersPrecedenceTests
     private static bool FirstVespers(DateOnly date)
     {
         var calendar = Calendar();
-        return OrdinaryFormOffice.BeginsWithFirstVespers(calendar.ForDate(date), calendar.ForDate(date.AddDays(1)));
+        return calendar.ForEvening(date).IsFirstVespers;
     }
 
     private static DateOnly Find(Func<LiturgicalDay, LiturgicalDay, bool> predicate)
@@ -78,7 +78,7 @@ public class FirstVespersPrecedenceTests
             && t.Celebration is not null && !Solemnity(n));
         var today = calendar.ForDate(date);
         today = today with { Celebration = today.Celebration! with { Rank = CelebrationRank.Solemnity } };
-        Assert.True(OrdinaryFormOffice.BeginsWithFirstVespers(today, calendar.ForDate(date.AddDays(1))));
+        Assert.True(LiturgicalEveningResolver.Resolve(today, calendar.ForDate(date.AddDays(1)), calendar.Options).IsFirstVespers);
     }
 
     [Fact]
@@ -105,6 +105,6 @@ public class FirstVespersPrecedenceTests
         Assert.Equal("The Nativity of Saint John the Baptist", today.Celebration?.Name);
         var tomorrow = calendar.ForDate(new DateOnly(2022, 6, 24));
         Assert.Equal("The Most Sacred Heart of Jesus", tomorrow.Celebration?.Name);
-        Assert.False(OrdinaryFormOffice.BeginsWithFirstVespers(today, tomorrow));
+        Assert.False(calendar.ForEvening(today.Date).IsFirstVespers);
     }
 }

@@ -38,6 +38,12 @@ public class InvitatorySelectorTests
     [InlineData(5, 1)]
     public void Cycle_WrapsTheIndex(int cycleIndex, int expected) => Assert.Equal([expected], InvitatorySelector.Select(Options, InvitatoryMode.Cycle, null, cycleIndex, new Random(1)));
 
+    [Theory]
+    [InlineData(InvitatoryMode.None)]
+    [InlineData(InvitatoryMode.OmitPsalm)]
+    public void Omission_modes_select_no_psalm_even_when_options_exist(InvitatoryMode mode) =>
+        Assert.Empty(InvitatorySelector.Select(Options, mode, "Psalm 67", 2, new Random(1)));
+
     [Fact]
     public void Select_NoOptions_ReturnsNothing() =>
         Assert.Empty(InvitatorySelector.Select([], InvitatoryMode.Cycle, null, 2, new Random(1)));
@@ -75,6 +81,21 @@ public class InvitatorySelectorTests
 
     [Fact]
     public void Settings_DefaultsWhenCorrupt() => Assert.Equal(new HourPlayerSettings(), HourPlayerSettingsService.Deserialize("{not json"));
+
+    [Theory]
+    [InlineData(0, InvitatoryMode.ShowAll)]
+    [InlineData(1, InvitatoryMode.Specific)]
+    [InlineData(2, InvitatoryMode.Random)]
+    [InlineData(3, InvitatoryMode.Cycle)]
+    [InlineData(4, InvitatoryMode.None)]
+    [InlineData(5, InvitatoryMode.OmitPsalm)]
+    public void Persisted_mode_values_remain_compatible(int value, InvitatoryMode expected)
+    {
+        var settings = HourPlayerSettingsService.Deserialize($"{{\"InvitatoryMode\":{value}}}");
+
+        Assert.Equal(expected, settings.InvitatoryMode);
+        Assert.Equal(settings, HourPlayerSettingsService.Deserialize(System.Text.Json.JsonSerializer.Serialize(settings)));
+    }
 
     [Fact]
     public void Settings_RoundTrip()

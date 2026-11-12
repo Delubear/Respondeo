@@ -14,7 +14,7 @@
       "",
       "{glory-be}"
     ],
-    "alleluia-note": [ "Outside Lent, add: Alleluia." ],
+    "alleluia": [ "Alleluia." ],
     "invitatory-verse": [
       "{{V}} {{cross}} Lord, open my lips.",
       "{{R}} And my mouth will proclaim your praise."
@@ -181,6 +181,86 @@
       "Fairest thou where all are fair,",
       "plead with Christ our sins to spare."
     ]
+  },
+
+  // Daniel's liturgical form omits the second part of verse 88 and inserts its own Trinitarian blessing before verse 56.
+  // Scripture wording is public-domain Douay-Rheims; the ancient Latin blessing has a contributor's unofficial English translation.
+  "psalmodyPassages": {
+    "Daniel 3:57-88, 56": {
+      "translation": "Douay-Rheims Scripture; Latin doxology with an unofficial English translation. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "Daniel 3:57-87" },
+        { "text": "Ananias, Azarias, and Misael, bless ye our Lord: praise and superexalt him for ever." },
+        { "text": "Benedicamus Patrem et Filium cum Sancto Spiritu;\nlaudemus et superexaltemus eum in saecula." },
+        { "text": "(Unofficial translation: Let us bless the Father and the Son together with the Holy Spirit;\nlet us praise and exalt him for all ages.)" },
+        { "citation": "Daniel 3:56" }
+      ]
+    }
+  },
+
+  "readingPassages": {
+    "Hebrews 13:7-9a": {
+      "translation": "Douay-Rheims Scripture; verse 9 ends after its first sentence. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "Hebrews 13:7-8" },
+        { "text": "With various & strange doctrines be not led away." }
+      ]
+    },
+    "1 Peter 5:8-9a": {
+      "translation": "Douay-Rheims Scripture; verse 9 ends after 'strong in faith' with closing punctuation. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "1 Peter 5:8" },
+        { "text": "Whom resist ye, strong in faith." }
+      ]
+    },
+    "Jeremiah 14:9a": {
+      "translation": "Douay-Rheims Scripture; the closing plea of verse 9, not its opening question. Not the approved English liturgical translation.",
+      "parts": [
+        { "text": "But thou o Lord art in us, and thy name is invocated upon us, forsake us not." }
+      ]
+    },
+    "Job 1:21; 2:10b": {
+      "translation": "Douay-Rheims Scripture; Job 2:10 includes only the question about receiving good and evil, with initial capitalization. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "Job 1:21" },
+        { "text": "If we have received good things of the hand of God, evil things why should we not receive?" }
+      ]
+    },
+    "2 Peter 3:13-15a": {
+      "translation": "Douay-Rheims Scripture; verse 15 ends after 'salvation', with initial capitalization and closing punctuation. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "2 Peter 3:13-14" },
+        { "text": "And the longanimity of our Lord, do ye account salvation." }
+      ]
+    },
+    "Ezekiel 37:12b-14": {
+      "translation": "Douay-Rheims Scripture; verse 12 begins at 'Thus saith our Lord God'. Not the approved English liturgical translation.",
+      "parts": [
+        { "text": "Thus saith our Lord God: Behold I will open your graves, and will bring you out of your sepulchres o my people: and will bring you into the land of Israel." },
+        { "citation": "Ezekiel 37:13-14" }
+      ]
+    },
+    "1 Peter 5:5b-7": {
+      "translation": "Douay-Rheims Scripture; verse 5 begins at 'And do ye all insinuate humility'. Not the approved English liturgical translation.",
+      "parts": [
+        { "text": "And do ye all insinuate humility one to another, because God resisteth the proud, and to the humble he giveth grace." },
+        { "citation": "1 Peter 5:6-7" }
+      ]
+    },
+    "1 Corinthians 2:7-10a": {
+      "translation": "Douay-Rheims Scripture; verse 10 ends after its first sentence. Not the approved English liturgical translation.",
+      "parts": [
+        { "citation": "1 Corinthians 2:7-9" },
+        { "text": "But to us God hath revealed by his Spirit." }
+      ]
+    },
+    "Colossians 1:9b-11": {
+      "translation": "Douay-Rheims Scripture; verse 9 begins at 'That you may be filled', with initial capitalization. Not the approved English liturgical translation.",
+      "parts": [
+        { "text": "That you may be filled with the knowledge of his will, in all wisdom, and spiritual understanding:" },
+        { "citation": "Colossians 1:10-11" }
+      ]
+    }
   },
 
   // Concluding prayers of Night Prayer from the Latin typical edition, keyed by the night of the weekly cycle.

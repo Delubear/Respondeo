@@ -1,0 +1,22 @@
+// Citation assignments only. Date, season, octave, and First Vespers rules remain in C#.
+// Keys are days from Easter Sunday. Holy Thursday morning retains the Holy Week psalter.
+{
+  "triduum": {
+    "-3": {
+      "evening": [ "Psalm 72:1-11", "Psalm 72:12-19", "Revelation 11:17-18; 12:10b-12a" ]
+    },
+    "-2": {
+      "morning": [ "Psalm 51", "Habakkuk 3:2-4, 13a, 15-19", "Psalm 147:12-20" ],
+      "evening": [ "Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11" ]
+    },
+    "-1": {
+      "morning": [ "Psalm 64", "Isaiah 38:10-14, 17-20", "Psalm 150" ],
+      "evening": [ "Psalm 116:10-19", "Psalm 143:1-11", "Philippians 2:6-11" ]
+    },
+    "0": {
+      "morning": [ "Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149" ],
+      "evening": [ "Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7" ]
+    }
+  },
+  "lentenSundayEveningCanticle": "1 Peter 2:21-24"
+}

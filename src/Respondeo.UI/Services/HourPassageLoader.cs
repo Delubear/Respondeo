@@ -29,9 +29,9 @@ public sealed class HourPassageLoader(IBibleText bible)
         for (var i = 0; i < office.Steps.Count; i++)
         {
             var step = office.Steps[i];
-            if (step.Text is null && step.Reference is { } reference && await bible.GetPassageAsync(reference.Citation) is { } text)
+            if (step.Text is null && await LoadPassageAsync(step) is { } text)
             {
-                passages[i] = step.Kind == OfficeStepKind.Reading ? text : text + "\n\n" + GloryBe;
+                passages[i] = text;
             }
 
             if (step.Options is not { } stepOptions)
@@ -42,12 +42,13 @@ public sealed class HourPassageLoader(IBibleText bible)
             for (var j = 0; j < stepOptions.Count; j++)
             {
                 var option = stepOptions[j];
-                if (option.Text is null && option.Stanzas is { Count: > 0 } stanzaRefs)
+                if (option.Text is null && option.Passage is null && option.Stanzas is { Count: > 0 } stanzaRefs)
                 {
                     List<string>? texts = [];
                     foreach (var stanzaRef in stanzaRefs)
                     {
-                        if (await bible.GetPassageAsync(stanzaRef.Citation) is not { } stanzaText)
+                        var stanzaText = await bible.GetPassageAsync(stanzaRef.Citation);
+                        if (string.IsNullOrWhiteSpace(stanzaText))
                         {
                             texts = null;
                             break;
@@ -59,18 +60,59 @@ public sealed class HourPassageLoader(IBibleText bible)
                     if (texts is not null)
                     {
                         optionStanzas[(i, j)] = texts;
-                        continue;
                     }
+                    continue;
                 }
 
-                if (option.Text is null && option.Reference is { } optionReference
-                    && await bible.GetPassageAsync(optionReference.Citation) is { } optionText)
+                if (option.Text is null && await LoadPassageAsync(option) is { } optionText)
                 {
-                    optionPassages[(i, j)] = optionText + "\n\n" + GloryBe;
+                    optionPassages[(i, j)] = optionText;
                 }
             }
         }
 
         return new HourPassages(passages, optionPassages, optionStanzas);
+    }
+
+    private async Task<string?> LoadPassageAsync(OfficeStep step)
+    {
+        if (step.Passage is { } passage)
+        {
+            if (passage.Parts.Count == 0 || string.IsNullOrWhiteSpace(passage.Translation))
+            {
+                throw new InvalidDataException($"The liturgical passage '{step.Title}' needs parts and a translation label.");
+            }
+
+            var parts = new List<string>(passage.Parts.Count);
+            foreach (var part in passage.Parts)
+            {
+                if (string.IsNullOrWhiteSpace(part.Citation) == string.IsNullOrWhiteSpace(part.Text))
+                {
+                    throw new InvalidDataException($"Each part of '{step.Title}' must supply either a citation or text, not both.");
+                }
+
+                var text = part.Citation is { } citation ? await bible.GetPassageAsync(citation) : part.Text;
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    return null;
+                }
+
+                parts.Add(text);
+            }
+
+            return string.Join("\n\n", parts);
+        }
+
+        if (step.Reference is not { } reference)
+        {
+            return null;
+        }
+
+        if (await bible.GetPassageAsync(reference.Citation) is not { } body)
+        {
+            return null;
+        }
+
+        return step.Kind == OfficeStepKind.Reading ? body : body + "\n\n" + GloryBe;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
+using Respondeo.LiturgicalCalendar;
 using Respondeo.LiturgyOfTheHours;
 
 namespace Respondeo.UnitTests.LiturgyOfTheHours;
@@ -76,6 +77,35 @@ public class HoursContentFileTests
                 Assert.Contains(common, commons);
             }
         }
+    }
+
+    [Theory]
+    [InlineData(CalendarRegion.GeneralRoman)]
+    [InlineData(CalendarRegion.UnitedStates)]
+    public void ContentDirectory_ComposesWithoutMismatchedPsalmodyBodies(CalendarRegion region)
+    {
+        var content = LoadDirectory(ContentDirectory());
+        var engine = new OrdinaryFormOffice(LiturgicalCalendars.Create(new LiturgicalCalendarOptions(region)), new FileTextProvider(content));
+        var end = new DateOnly(2041, 1, 1);
+        for (var date = new DateOnly(2020, 1, 1); date < end; date = date.AddDays(1))
+        {
+            foreach (var hour in Enum.GetValues<Hour>())
+            {
+                var office = engine.Compose(date, hour);
+                Assert.All(office.Steps.Where(s => s.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle), step => Assert.NotNull(step.Reference));
+            }
+        }
+    }
+
+    private sealed class FileTextProvider(HoursContentFile content) : IHoursTextProvider
+    {
+        public bool IsSample => content.IsSample;
+
+        public string Acknowledgment => content.Acknowledgment;
+
+        public LicensedText? Find(IEnumerable<string> keys) => keys.Select(k => content.Texts.GetValueOrDefault(k)).FirstOrDefault(t => t is not null);
+
+        public HoursCelebration? FindCelebration(string id) => content.Celebrations.GetValueOrDefault(id);
     }
 
     [Fact]

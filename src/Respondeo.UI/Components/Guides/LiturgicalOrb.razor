@@ -29,6 +29,7 @@
                         <p class="liturgy__season">@_view.SeasonName</p>
                         <p class="liturgy__ferial">@_view.DayLabel</p>
                         <p class="liturgy__color">Liturgical color: @_view.ColorName</p>
+                        <p class="liturgy__color">@_view.MassObligationMessage</p>
                         @if (_view.ColorClue is { } clue)
                         {
                             <p class="liturgy__color-clue">@clue</p>
@@ -36,7 +37,24 @@
                     </div>
                 </div>
 
-                @if (_view.Celebration is { } celebration)
+                @if (_view.HasUnresolvedTie)
+                {
+                    <div class="liturgy__celebrations">
+                        <p class="liturgy__saint-intro">@_view.CelebrationIntro</p>
+                        <ul class="liturgy__contenders" aria-label="Possible celebrations with unresolved precedence">
+                            @foreach (var contender in _view.ContendingCelebrations)
+                            {
+                                var profile = contender.Id is not null ? _profiles.GetValueOrDefault(contender.Id) : null;
+                                <li class="liturgy__contender">
+                                    <p class="liturgy__contender-rank">Possible @contender.Rank</p>
+                                    <SaintHighlightCard Name="@contender.Name" Slug="@contender.Id" Note="Possible celebration" Dates="@profile?.Dates"
+                                                        Summary="@(profile?.Summary ?? contender.Summary)" OnNavigate="context.CloseAsync" />
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else if (_view.Celebration is { } celebration)
                 {
                     var profile = celebration.Id is not null ? _profiles.GetValueOrDefault(celebration.Id) : null;
                     <div class="liturgy__celebrations">
@@ -123,7 +141,8 @@
 
             <p class="liturgy__disclaimer">
                 @DisclaimerLead Your own country, diocese, or religious community may keep additional
-                feasts or observe some days differently, so the celebration near you can vary. For what
+                feasts or observe some days differently, so the celebration near you can vary. Mass-obligation
+                status follows the selected calendar profile and may not reflect a local dispensation. For what
                 is kept locally, always defer to your diocese or parish.
             </p>
         </div>
@@ -156,7 +175,8 @@
 
     private string DisclaimerLead => IsUs
         ? "This follows the proper calendar of the United States (USCCB), with the Ascension kept on "
-            + (Preference.Options.AscensionOnThursday ? "Thursday." : "Sunday.")
+            + (Preference.Options.AscensionOnThursday ? "Thursday. " : "Sunday. ")
+            + "The U.S. holy-day policy is provisional pending direct source verification."
         : "This follows the General Roman Calendar, the Church's universal calendar for the Ordinary Form.";
 
     private async void OnCalendarChanged()

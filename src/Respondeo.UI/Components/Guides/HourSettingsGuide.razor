@@ -81,9 +81,14 @@
                         <span class="hoursettings__label">Cycle through them, one per day</span>
                     </label>
                     <label class="hoursettings__check">
+                        <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.OmitPsalm)"
+                               @onchange="() => SetModeAsync(InvitatoryMode.OmitPsalm)" />
+                        <span class="hoursettings__label">Omit the psalm and antiphon before Morning Prayer; keep "Lord, open my lips" (GILH 35)</span>
+                    </label>
+                    <label class="hoursettings__check">
                         <input type="radio" name="hoursettings-invitatory" checked="@(Mode == InvitatoryMode.None)"
                                @onchange="() => SetModeAsync(InvitatoryMode.None)" />
-                        <span class="hoursettings__label">None (already prayed at an earlier Hour; open with "O God, come to my assistance")</span>
+                        <span class="hoursettings__label">Use the ordinary opening if the Invitatory was already prayed at an earlier Hour</span>
                     </label>
                 </fieldset>
                 </GuideSection>

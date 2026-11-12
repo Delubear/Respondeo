@@ -17,6 +17,9 @@ public enum InvitatoryMode
 
     /// <summary>Skip the Invitatory (already prayed at an earlier Hour) and open with "O God, come to my assistance".</summary>
     None,
+
+    /// <summary>Before Lauds, omit the Invitatory psalm and antiphon but retain its opening verse (GILH 35).</summary>
+    OmitPsalm,
 }
 
 /// <summary>
@@ -28,13 +31,13 @@ public static class InvitatorySelector
     public static string Key(OfficeStep option) => option.Reference?.Citation ?? option.Title;
 
     /// <summary>
-    /// Returns the indices (into <paramref name="options"/>) to render. Every mode except
-    /// <see cref="InvitatoryMode.ShowAll"/> returns exactly one index when there are options.
+    /// Returns the indices (into <paramref name="options"/>) to render. None and OmitPsalm return no indices;
+    /// ShowAll returns every index, and the other modes return one when options exist.
     /// </summary>
     public static IReadOnlyList<int> Select(
         IReadOnlyList<OfficeStep> options, InvitatoryMode mode, string? specificKey, int cycleIndex, Random random)
     {
-        if (options.Count == 0 || mode == InvitatoryMode.None)
+        if (options.Count == 0 || mode is InvitatoryMode.None or InvitatoryMode.OmitPsalm)
         {
             return [];
         }

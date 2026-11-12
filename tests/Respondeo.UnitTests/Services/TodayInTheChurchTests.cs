@@ -40,6 +40,23 @@ public class TodayInTheChurchTests
         Assert.Null(TodayInTheChurch.For(Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.Green)).ColorClue);
     }
 
+    [Theory]
+    [InlineData(LiturgicalObligationStatus.Obligatory, LiturgicalObligationRule.Sunday, "Mass obligation: Sunday")]
+    [InlineData(LiturgicalObligationStatus.Obligatory, LiturgicalObligationRule.UnitedStatesNationalPolicy, "Mass obligation: Holy day of obligation")]
+    [InlineData(LiturgicalObligationStatus.NotObligatory, LiturgicalObligationRule.NoApplicableObligation, "No holy day of obligation identified by this calendar profile")]
+    [InlineData(LiturgicalObligationStatus.Unknown, LiturgicalObligationRule.TransferEffectNotModeled, "Mass-obligation status is not determined by this calendar profile")]
+    public void MassObligationMessage_reports_status_without_using_celebration_rank(
+        LiturgicalObligationStatus status,
+        LiturgicalObligationRule rule,
+        string expected)
+    {
+        var day = Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.White,
+            new LiturgicalCelebration("Saint Example", CelebrationRank.Solemnity, LiturgicalColor.White))
+            with { Obligation = new LiturgicalObligation(status, rule) };
+
+        Assert.Equal(expected, TodayInTheChurch.For(day).MassObligationMessage);
+    }
+
     [Fact]
     public void ColorClue_explains_a_color_that_departs_from_the_season()
     {
@@ -73,6 +90,34 @@ public class TodayInTheChurchTests
         Assert.False(view.IsOptionalMemorial);
         Assert.Equal("Today the Church keeps the feast of", view.CelebrationIntro);
         Assert.Equal(["benedict"], view.LinkedSlugs());
+    }
+
+    [Fact]
+    public void Equal_precedence_contenders_are_exposed_with_a_neutral_day_label()
+    {
+        var first = new LiturgicalCelebration("Corpus Christi", CelebrationRank.Solemnity, LiturgicalColor.White)
+        {
+            Id = "corpus-christi",
+        };
+        var second = new LiturgicalCelebration("Nativity of Saint John the Baptist", CelebrationRank.Solemnity, LiturgicalColor.White)
+        {
+            Id = "nativity-of-saint-john-the-baptist",
+        };
+        var day = Day(LiturgicalSeason.OrdinaryTime, LiturgicalColor.White, first) with
+        {
+            Occurrence = new(LiturgicalOccurrenceRule.UnresolvedEqualPrecedence, [])
+            {
+                ContendingCelebrations = [first, second],
+            },
+        };
+
+        var view = TodayInTheChurch.For(day);
+
+        Assert.True(view.HasUnresolvedTie);
+        Assert.Equal("Equal-precedence celebration; observance unresolved", view.DayLabel);
+        Assert.Equal([first, second], view.ContendingCelebrations);
+        Assert.Equal("Possible celebrations; equal precedence leaves the choice unresolved", view.CelebrationIntro);
+        Assert.Equal(["corpus-christi", "nativity-of-saint-john-the-baptist"], view.LinkedSlugs());
     }
 
     [Fact]

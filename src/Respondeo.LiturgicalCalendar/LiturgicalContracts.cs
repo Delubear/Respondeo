@@ -80,6 +80,34 @@ public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, Li
     /// Null when the day relies on a linked saint profile for its summary, or carries no summary at all.
     /// </summary>
     public string? Summary { get; init; }
+
+    /// <summary>Authored stable calendar identity, independent of the display name and saint-profile Id; null for not-yet-migrated entries.</summary>
+    public string? CalendarKey { get; init; }
+
+    /// <summary>Explicit precedence-table category where rank alone is insufficient; null uses the general-calendar category for Rank.</summary>
+    public LiturgicalPrecedenceClass? Precedence { get; init; }
+}
+
+/// <summary>A candidate-generation rank change made by a source-backed liturgical collision rule.</summary>
+public enum LiturgicalRankAdjustmentRule
+{
+    /// <summary>The Immaculate Heart and coinciding obligatory memorials become optional memorials (USCCB 2027 note 6c).</summary>
+    ImmaculateHeartMemorialCollision,
+}
+
+/// <summary>The original celebration and rank, adjusted rank, and rule responsible for a candidate-generation change.</summary>
+public sealed record LiturgicalCelebrationRankAdjustment(
+    LiturgicalCelebration Celebration,
+    CelebrationRank OriginalRank,
+    CelebrationRank AdjustedRank,
+    LiturgicalRankAdjustmentRule Rule)
+{
+    /// <summary>A stable identifier within the CAL-02 occurrence rule family.</summary>
+    public string RuleId => Rule switch
+    {
+        LiturgicalRankAdjustmentRule.ImmaculateHeartMemorialCollision => "CAL-02/immaculate-heart-memorial-collision",
+        _ => throw new InvalidOperationException($"Unknown rank adjustment rule: {Rule}."),
+    };
 }
 
 /// <summary>
@@ -91,17 +119,95 @@ public sealed record LiturgicalCelebration(string Name, CelebrationRank Rank, Li
 /// <param name="Celebration">The principal named celebration on this day, or <c>null</c> for a ferial day.</param>
 public sealed record LiturgicalDay(DateOnly Date, LiturgicalSeason Season, LiturgicalColor Color, LiturgicalCelebration? Celebration)
 {
+    /// <summary>The day's ordinal within the eight-day Easter octave (1-8), or null (Universal Norms 24).</summary>
+    public int? EasterOctaveDay
+    {
+        get
+        {
+            var offset = Date.DayNumber - LiturgicalDates.Easter(Date.Year).DayNumber;
+            return offset is >= 0 and <= 7 ? offset + 1 : null;
+        }
+    }
+
+    /// <summary>Whether this is Monday through Thursday of Holy Week (Universal Norms 16a), independent of the legacy celebration rank.</summary>
+    public bool IsHolyWeekWeekday => Date.DayNumber - LiturgicalDates.Easter(Date.Year).DayNumber is >= -6 and <= -3;
+
+    /// <summary>The season for Lauds: Holy Thursday remains Lenten; Easter Sunday is Easter Time despite the overlapping Triduum (Universal Norms 19, 22, 28).</summary>
+    public LiturgicalSeason MorningPrayerSeason => (Date.DayNumber - LiturgicalDates.Easter(Date.Year).DayNumber) switch
+    {
+        -3 => LiturgicalSeason.Lent,
+        0 => LiturgicalSeason.Easter,
+        _ => Season,
+    };
+
     /// <summary>
     /// The ferial description of the day when there is no principal <see cref="Celebration"/>, e.g. "Monday of the Third Week of Lent" or "Tuesday of the Twenty-first Week in Ordinary Time".
     /// Null whenever <see cref="Celebration"/> is set.
     /// </summary>
     public string? FerialName { get; init; }
 
-    /// <summary>
-    /// Optional memorials available on this day that are not the principal celebration (empty on most days).
-    /// These are offered to the celebrant but may be omitted; they are suppressed entirely on Sundays, solemnities, feasts, and privileged weekdays.
-    /// </summary>
+    /// <summary>Memorials available as full Office choices; never contains restricted privileged-weekday commemorations.</summary>
     public IReadOnlyList<LiturgicalCelebration> OptionalMemorials { get; init; } = [];
+
+    /// <summary>Memorials that may be commemorated in the limited form allowed on privileged weekdays (GILH 238-239).</summary>
+    public IReadOnlyList<LiturgicalCelebration> MemorialCommemorations { get; init; } = [];
+
+    /// <summary>The decisive occurrence rule and candidates suppressed at that stage; null for manually supplied days without diagnostics.</summary>
+    public LiturgicalOccurrence? Occurrence { get; init; }
+
+    /// <summary>Candidate-generation rank changes, including their original celebration and source-backed rule.</summary>
+    public IReadOnlyList<LiturgicalCelebrationRankAdjustment> RankAdjustments { get; init; } = [];
+
+    /// <summary>Fixed solemnity transfers touching this date, including nominal dates and observed dates.</summary>
+    public IReadOnlyList<LiturgicalTransfer> Transfers { get; init; } = [];
+
+    /// <summary>Mass-obligation status under the calendar profile; local diocesan dispensations are not modeled.</summary>
+    public LiturgicalObligation Obligation { get; init; } = LiturgicalObligation.Unknown;
+
+    /// <summary>The precedence-table category of the resolved observance, combining the temporal day and principal celebration.</summary>
+    public LiturgicalPrecedenceClass Precedence => LiturgicalPrecedence.ForDay(this);
+
+    public bool Equals(LiturgicalDay? other) => other is not null
+        && Date == other.Date
+        && Season == other.Season
+        && Color == other.Color
+        && EqualityComparer<LiturgicalObligation>.Default.Equals(Obligation, other.Obligation)
+        && EqualityComparer<LiturgicalCelebration?>.Default.Equals(Celebration, other.Celebration)
+        && FerialName == other.FerialName
+        && OptionalMemorials.SequenceEqual(other.OptionalMemorials)
+        && MemorialCommemorations.SequenceEqual(other.MemorialCommemorations)
+        && EqualityComparer<LiturgicalOccurrence?>.Default.Equals(Occurrence, other.Occurrence)
+        && RankAdjustments.SequenceEqual(other.RankAdjustments)
+        && Transfers.SequenceEqual(other.Transfers);
+
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+        hash.Add(Date);
+        hash.Add(Season);
+        hash.Add(Color);
+        hash.Add(Obligation);
+        hash.Add(Celebration);
+        hash.Add(FerialName);
+        foreach (var memorial in OptionalMemorials)
+        {
+            hash.Add(memorial);
+        }
+        foreach (var commemoration in MemorialCommemorations)
+        {
+            hash.Add(commemoration);
+        }
+        hash.Add(Occurrence);
+        foreach (var adjustment in RankAdjustments)
+        {
+            hash.Add(adjustment);
+        }
+        foreach (var transfer in Transfers)
+        {
+            hash.Add(transfer);
+        }
+        return hash.ToHashCode();
+    }
 }
 
 /// <summary>
@@ -112,6 +218,32 @@ public interface ILiturgicalCalendar
 {
     /// <summary>Returns the season, color, and principal celebration (if any) for the given date.</summary>
     LiturgicalDay ForDate(DateOnly date);
+
+    /// <summary>Returns the date's background temporal and Psalter weeks; proper psalmody and weekly Compline forms are separate.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The date is DateOnly.MinValue, whose prior-year Christmas cannot be represented.</exception>
+    LiturgicalWeek ForWeek(DateOnly date)
+    {
+        if (date == DateOnly.MinValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(date), date,
+                "The calendar week requires the preceding Christmas date, which is outside the DateOnly range.");
+        }
+
+        return LiturgicalWeekResolver.Resolve(ForDate(date), Options);
+    }
+
+    /// <summary>Resolves Sunday/solemnity evening concurrence for Vespers and Compline, preserving the Triduum's proper Office.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The date is DateOnly.MaxValue, which has no following civil date.</exception>
+    LiturgicalEvening ForEvening(DateOnly date)
+    {
+        if (date == DateOnly.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(date), date,
+                "Evening context requires the following civil date, which is outside the DateOnly range.");
+        }
+
+        return LiturgicalEveningResolver.Resolve(ForDate(date), ForDate(date.AddDays(1)), Options);
+    }
 
     /// <summary>The options this calendar was built with.</summary>
     LiturgicalCalendarOptions Options => LiturgicalCalendarOptions.Default;

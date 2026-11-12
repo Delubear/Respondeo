@@ -13,10 +13,15 @@ public enum CalendarRegion
 /// <summary>Selects which calendar the engine computes.</summary>
 /// <param name="Region">The calendar region.</param>
 /// <param name="AscensionOnThursday">
-/// United States only: keep the Ascension on Thursday (as in the ecclesiastical provinces of Boston, Hartford, New York, Newark, Omaha and Philadelphia)
-/// rather than transferring it to the Seventh Sunday of Easter.
+/// United States only: keep the Ascension on Thursday rather than transferring it to the Seventh Sunday of Easter.
+/// The USCCB 2026 calendar lists Boston, Hartford, New York, Omaha, and Philadelphia as Thursday provinces.
+/// This explicit preference does not resolve historical policies or diocese membership.
 /// </param>
-public sealed record LiturgicalCalendarOptions(CalendarRegion Region = CalendarRegion.GeneralRoman, bool AscensionOnThursday = false)
+/// <param name="SaintJohnTheBaptistIsPatron">Whether Saint John the Baptist is a patron in the selected local calendar.</param>
+public sealed record LiturgicalCalendarOptions(
+    CalendarRegion Region = CalendarRegion.GeneralRoman,
+    bool AscensionOnThursday = false,
+    bool SaintJohnTheBaptistIsPatron = false)
 {
     public static LiturgicalCalendarOptions Default { get; } = new();
 }

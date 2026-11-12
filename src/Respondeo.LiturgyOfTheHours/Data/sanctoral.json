@@ -1,7 +1,40 @@
 // Short-reading citations for Morning and Evening Prayer on celebrations of the saints (citations only; texts are read from official sources).
-// "commons": the readings of each Common. "celebrations": keyed by celebration id (the slugified name); gives proper citations and/or the Common.
-// Celebrations with proper readings not listed here fall back to the official source link.
+// "calendarBindings": authored calendar keys mapped to established Hours content IDs, independent of display names.
+// "commons": the readings of each Common. "celebrations": keyed by Hours content ID; gives proper citations and/or the Common.
+// A binding does not imply that references or provider bodies exist. Missing content retains the existing fallback.
 {
+  "calendarBindings": {
+    "ash-wednesday": "ash-wednesday",
+    "palm-sunday": "palm-sunday-of-the-passion-of-the-lord",
+    "holy-thursday": "holy-thursday",
+    "good-friday": "good-friday-of-the-passion-of-the-lord",
+    "holy-saturday": "holy-saturday",
+    "easter-sunday": "easter-sunday-of-the-resurrection-of-the-lord",
+    "ascension": "the-ascension-of-the-lord",
+    "pentecost": "pentecost-sunday",
+    "trinity": "the-most-holy-trinity",
+    "corpus-christi": "the-most-holy-body-and-blood-of-christ",
+    "mother-of-the-church": "the-blessed-virgin-mary-mother-of-the-church",
+    "sacred-heart": "the-most-sacred-heart-of-jesus",
+    "immaculate-heart": "the-immaculate-heart-of-the-blessed-virgin-mary",
+    "thanksgiving": "thanksgiving-day",
+    "holy-family": "the-holy-family-of-jesus-mary-and-joseph",
+    "epiphany": "the-epiphany-of-the-lord",
+    "baptism-of-the-lord": "the-baptism-of-the-lord",
+    "christ-the-king": "our-lord-jesus-christ-king-of-the-universe",
+    "presentation": "the-presentation-of-the-lord",
+    "transfiguration": "the-transfiguration-of-the-lord",
+    "exaltation-of-the-holy-cross": "the-exaltation-of-the-holy-cross",
+    "all-souls": "the-commemoration-of-all-the-faithful-departed",
+    "lateran-dedication": "the-dedication-of-the-lateran-basilica",
+    "christmas": "the-nativity-of-the-lord",
+    "saint-joseph": "saint-joseph-spouse-of-the-blessed-virgin-mary",
+    "annunciation": "the-annunciation-of-the-lord",
+    "nativity-of-saint-john-the-baptist": "the-nativity-of-saint-john-the-baptist",
+    "saints-peter-and-paul": "saints-peter-and-paul-apostles",
+    "immaculate-conception": "the-immaculate-conception-of-the-blessed-virgin-mary",
+    "day-of-prayer-for-unborn-children": "day-of-prayer-for-the-legal-protection-of-unborn-children"
+  },
   "commons": {
     "blessed-virgin-mary": { "morning": "Isaiah 61:10", "evening": "Galatians 4:4-5", "eveningPsalmody": [ "Psalm 122", "Psalm 127", "Ephesians 1:3-10" ] },
     "apostles": { "morning": "Ephesians 2:19-22", "evening": "Ephesians 4:11-13", "eveningPsalmody": [ "Psalm 116:10-19", "Psalm 126", "Ephesians 1:3-10" ] },
@@ -16,7 +49,11 @@
   "celebrations": {
     "mary-the-holy-mother-of-god": { "morning": "Micah 5:2-4a", "evening": "Galatians 4:4-5", "eveningPsalmody": [ "Psalm 122", "Psalm 127", "Ephesians 1:3-10" ] },
     "the-most-holy-name-of-jesus": { "morning": "Philippians 2:10-11", "evening": "Colossians 3:17" },
-    "the-epiphany-of-the-lord": { "morning": "Isaiah 52:7-10", "evening": "Titus 3:4-5", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 112", "Revelation 15:3-4" ] },
+    "the-epiphany-of-the-lord": {
+      "morning": "Isaiah 52:7-10", "evening": "Titus 3:4-5",
+      "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 112", "1 Timothy 3:16" ],
+      "firstEveningCanticle": "1 Timothy 3:16"
+    },
     "the-baptism-of-the-lord": { "morning": "Isaiah 61:1-2a", "evening": "Acts 10:37-38", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 112", "Revelation 15:3-4" ] },
     "the-holy-family-of-jesus-mary-and-joseph": { "morning": "Romans 12:10-13", "evening": "Ephesians 5:21-25", "eveningPsalmody": [ "Psalm 122", "Psalm 127", "Ephesians 1:3-10" ] },
     "the-ascension-of-the-lord": { "morning": "Hebrews 10:12-14", "evening": "1 Peter 3:18, 22", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 47", "Revelation 11:17-18; 12:10b-12a" ] },
@@ -31,7 +68,11 @@
     "the-visitation-of-the-blessed-virgin-mary": { "morning": "Joel 2:27-3:1a", "evening": "1 Peter 5:5b-7", "common": "blessed-virgin-mary" },
     "the-nativity-of-saint-john-the-baptist": { "morning": "Malachi 3:23-24", "evening": "Acts 13:23-25", "eveningPsalmody": [ "Psalm 16", "Psalm 21:2-8, 14", "Revelation 15:3-4" ] },
     "saints-peter-and-paul-apostles": { "morning": "Acts 5:12a, 14-16", "evening": "Romans 1:1-2, 7", "common": "apostles" },
-    "the-transfiguration-of-the-lord": { "morning": "Revelation 21:10, 23", "evening": "Romans 8:16-17", "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 121", "1 Timothy 3:16" ] },
+    "the-transfiguration-of-the-lord": {
+      "morning": "Revelation 21:10, 23", "evening": "Romans 8:16-17",
+      "eveningPsalmody": [ "Psalm 110:1-5, 7", "Psalm 121", "1 Timothy 3:16" ],
+      "firstEveningCanticle": "1 Timothy 3:16"
+    },
     "the-assumption-of-the-blessed-virgin-mary": { "morning": "Isaiah 61:10", "evening": "1 Corinthians 15:22-23", "common": "blessed-virgin-mary" },
     "the-passion-of-saint-john-the-baptist": { "common": "martyrs" },
     "the-nativity-of-the-blessed-virgin-mary": { "morning": "Isaiah 11:1-2", "evening": "Romans 9:4-5", "common": "blessed-virgin-mary" },
@@ -210,7 +251,11 @@
     "saint-martin-de-porres-religious": { "common": "holy-men" },
     "saint-charles-borromeo-bishop": { "common": "pastors" },
     "saint-leo-the-great-pope-and-doctor-of-the-church": { "common": "doctors" },
-    "saint-martin-of-tours-bishop": { "morning": "Hebrews 13:7-8", "common": "pastors" },
+    "saint-martin-of-tours-bishop": {
+      "morning": "Hebrews 13:7-9a", "evening": "1 Peter 5:1-4", "common": "pastors",
+      "morningPsalmody": [ "Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149" ],
+      "eveningPsalmody": [ "Psalm 15", "Psalm 112", "Revelation 15:3-4" ]
+    },
     "saint-josaphat-bishop-and-martyr": { "common": "martyrs" },
     "saint-albert-the-great-bishop-and-doctor-of-the-church": { "common": "doctors" },
     "saint-margaret-of-scotland": { "common": "holy-women" },
@@ -252,7 +297,7 @@
     "saint-kateri-tekakwitha-virgin": { "common": "virgins" },
     "saint-teresa-of-calcutta-virgin": { "common": "virgins" },
     "blessed-marie-rose-durocher-virgin": { "common": "virgins" },
-    "saint-john-henry-newman-cardinal": { "common": "pastors" },
+    "saint-john-henry-newman-priest-and-doctor-of-the-church": { "common": "pastors" },
     "saint-frances-xavier-cabrini-virgin": { "common": "virgins" },
     "saint-rose-philippine-duchesne-virgin": { "common": "virgins" },
     "blessed-miguel-agustin-pro-priest-and-martyr": { "common": "martyrs" },

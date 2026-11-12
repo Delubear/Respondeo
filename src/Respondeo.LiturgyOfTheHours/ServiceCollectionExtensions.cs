@@ -7,9 +7,13 @@ internal sealed class HoursEngine(IEnumerable<IOfficeForm> forms) : ILiturgyOfTh
 {
     private readonly Dictionary<OfficeForm, IOfficeForm> _forms = forms.ToDictionary(f => f.Form);
 
-    public Office Compose(DateOnly date, Hour hour, OfficeForm form = OfficeForm.OrdinaryForm1970) =>
+    public Office Compose(DateOnly date, Hour hour, OfficeForm form = OfficeForm.OrdinaryForm1970,
+        LiturgicalParticipation participation = LiturgicalParticipation.None, ComplineSundayForm complineForm = ComplineSundayForm.Automatic,
+        ComplinePsalmodyChoice complinePsalmody = ComplinePsalmodyChoice.Weekday, bool preferOfficialText = true,
+        string? memorialCommemorationCalendarKey = null, string? celebrationCalendarKey = null) =>
         _forms.TryGetValue(form, out var engine)
-            ? engine.Compose(date, hour)
+            ? engine.Compose(date, hour, participation, complineForm, complinePsalmody, preferOfficialText,
+                memorialCommemorationCalendarKey, celebrationCalendarKey)
             : throw new NotSupportedException($"The office form {form} is not registered.");
 }
 

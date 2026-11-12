@@ -69,6 +69,18 @@ public class OfficeDataTests
         Assert.All(OfficeData.Texts.NightConcludingPrayers.Values, lines => Assert.DoesNotContain("{", OfficeData.ResolveText(lines)));
     }
 
+    [Fact]
+    public void LiturgicalPassages_DeclareOrderedPartsAndTheirTranslation()
+    {
+        Assert.NotEmpty(OfficeData.Texts.PsalmodyPassages);
+        Assert.All(OfficeData.Texts.PsalmodyPassages.Values, passage =>
+        {
+            Assert.False(string.IsNullOrWhiteSpace(passage.Translation));
+            Assert.NotEmpty(passage.Parts);
+            Assert.All(passage.Parts, part => Assert.NotEqual(string.IsNullOrWhiteSpace(part.Text), string.IsNullOrWhiteSpace(part.Citation)));
+        });
+    }
+
     [Theory]
     [InlineData("sunday")]
     [InlineData("monday")]
@@ -99,13 +111,20 @@ public class OfficeDataTests
 
         Assert.False(string.IsNullOrWhiteSpace(template.Page));
         Assert.Single(template.Steps, s => s.Source == StepSource.Psalmody);
-        Assert.All(template.Steps.Where(s => s.Source == StepSource.Fixed), s =>
+        Assert.All(template.Steps.Where(s => s.Source is StepSource.Fixed or StepSource.NightResponsory), s =>
         {
             Assert.NotNull(s.Text);
             Assert.DoesNotContain("{", OfficeData.ResolveText(s.Text));
+            if (s.Invitatory)
+            {
+                Assert.NotNull(s.IntroText);
+                Assert.DoesNotContain("{", OfficeData.ResolveText(s.IntroText));
+            }
+
             foreach (var o in s.Seasons?.Values.ToList() ?? new List<SeasonOverride>())
             {
                 Assert.DoesNotContain("{", OfficeData.ResolveText(o.Text ?? Array.Empty<string>()));
+                Assert.DoesNotContain("{", OfficeData.ResolveText(o.IntroText ?? Array.Empty<string>()));
             }
         });
         Assert.All(template.Steps.Where(s => s.Source != StepSource.Psalmody && s.Source != StepSource.MarianAntiphon), s =>

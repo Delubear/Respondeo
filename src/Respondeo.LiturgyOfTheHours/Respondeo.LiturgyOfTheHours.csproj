@@ -29,6 +29,7 @@
 	<EmbeddedResource Include="Data/ordinary-texts.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.OrdinaryTexts.json" />
 	<EmbeddedResource Include="Data/hours.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Hours.json" />
 	<EmbeddedResource Include="Data/sanctoral.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.Sanctoral.json" />
+	<EmbeddedResource Include="Data\temporal-psalmody.json" LogicalName="Respondeo.LiturgyOfTheHours.Data.TemporalPsalmody.json" />
   </ItemGroup>
 
   <ItemGroup>

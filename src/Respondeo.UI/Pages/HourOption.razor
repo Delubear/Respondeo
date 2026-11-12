@@ -17,6 +17,10 @@
     {
         <p class="hourplayer__antiphon"><span class="hourplayer__rubric">Ant.</span> @RenderText(Option.Antiphon)</p>
     }
+    @if (Option.IsSampleText)
+    {
+        <p class="hourplayer__translation hourplayer__provider-sample">Includes sample provider content; not approved liturgical text.</p>
+    }
     @if (Option.Text is not null)
     {
         <p class="hourplayer__text">@RenderText(Option.Text)</p>
@@ -41,11 +45,16 @@
     else if (Passage is not null)
     {
         <p class="hourplayer__text">@RenderText(Passage)</p>
-        <p class="hourplayer__translation">Douay-Rheims translation</p>
+        <p class="hourplayer__translation">@(Option.Passage?.Translation ?? "Douay-Rheims translation")</p>
     }
-    else if (Option.UseOfficialText)
+    else if (Option.UseOfficialText || Option.Passage is not null || Option.Reference is not null
+        || Option.Stanzas is { Count: > 0 })
     {
         <p class="hourplayer__official">Read the text from an official source below.</p>
+    }
+    @if (Option.UseOfficialText && Option.Antiphon is null && Option.Kind is (OfficeStepKind.Psalm or OfficeStepKind.Canticle))
+    {
+        <p class="hourplayer__official" role="note">This psalmody's prescribed antiphon is not available here. Read it from an official source below.</p>
     }
 </div>
 

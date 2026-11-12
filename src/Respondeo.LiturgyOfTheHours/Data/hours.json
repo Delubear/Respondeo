@@ -1,5 +1,5 @@
 // The order and presentation of each hour of the post-1970 Liturgy of the Hours.
-// Rules of precedence (first vespers, psalter week, festal psalmody) stay in OrdinaryFormOffice; this file holds what is shown.
+// Calendar resolves evening ownership; OrdinaryFormOffice selects psalter week and festal psalmody. This file holds what is shown.
 //
 // Each step has a "kind" (OfficeStepKind), a "title", an "explanation", and a "source":
 //   fixed            "text" is shown (lines; {key} embeds a text from ordinary-texts.json)
@@ -8,6 +8,7 @@
 //   collect          the concluding prayer; "celebrationExplanation" is used when the day has a celebration ({celebration} is its name)
 //   night-reading    the short reading fixed for the night of the week
 //   night-prayer     the Latin concluding prayer for the night; falls back to proper when none is verified
+//   night-responsory the special Easter response through Saturday; afterward uses a proper Easter placeholder with alleluias
 //   marian-antiphon  the seasonal antiphon to Our Lady
 // "seasons" overrides text/explanation for the named liturgical seasons; "reference" is a fixed Scripture citation;
 // "invitatory" attaches the Invitatory psalms as options.
@@ -20,10 +21,36 @@
     "NightPrayerFirstVespers": "Night Prayer after Evening Prayer I: {day}"
   },
 
-  "psalmodyExplanation": "Psalmody {n}: pray with its antiphon before and after, concluding with the Glory Be.",
+  "psalmodyExplanation": "Psalmody {n}: pray with its antiphon before and after. Use the Glory Be unless this canticle supplies its own concluding blessing.",
+
+  "participationOmissions": {
+    "HolyThursdayEveningMass": {
+      "participation": "HolyThursdayEveningMass",
+      "attendanceLabel": "I am attending the evening Mass of the Lord's Supper.",
+      "explanation": "Those attending the evening Mass of the Lord's Supper do not say Holy Thursday Vespers separately.",
+      "sourceLocator": "General Instruction of the Liturgy of the Hours, no. 209"
+    },
+    "GoodFridayPassion": {
+      "participation": "GoodFridayPassion",
+      "attendanceLabel": "I am attending the celebration of the Lord's Passion.",
+      "explanation": "Those attending the celebration of the Lord's Passion do not say Good Friday Vespers separately.",
+      "sourceLocator": "General Instruction of the Liturgy of the Hours, no. 209"
+    },
+    "EasterVigil": {
+      "participation": "EasterVigil",
+      "attendanceLabel": "I am attending the Easter Vigil.",
+      "explanation": "Holy Saturday Compline is said only by those who are not attending the Easter Vigil.",
+      "sourceLocator": "General Instruction of the Liturgy of the Hours, no. 211"
+    },
+    "ChristmasOfficeOfReadingsVigil": {
+      "participation": "ChristmasOfficeOfReadingsVigil",
+      "attendanceLabel": "I am attending the solemn Office of Readings vigil before the Midnight Mass of Christmas.",
+      "explanation": "Those attending this Office of Readings vigil do not say Compline separately. Attendance at Midnight Mass alone is not this condition.",
+      "sourceLocator": "General Instruction of the Liturgy of the Hours, no. 215"
+    }
+  },
 
   "invitatory": {
-    "antiphon": "Come, let us worship the Lord, the King who is to come. (Sample antiphon; use the approved text of the day.)",
     // Stanza verse ranges use modern numbering, so any translation can supply its own text.
     "psalms": [
       { "citation": "Psalm 95", "explanation": "The customary Invitatory psalm, a call to praise and to hear God's voice today.", "stanzas": [ "1-2", "3-5", "6-7", "8-9", "10-11" ] },
@@ -46,13 +73,18 @@
       "steps": [
         {
           "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitatory-verse}" ], "invitatory": true,
-          "explanation": "When Morning Prayer is the first hour of the day, it opens with the Invitatory (Psalm 95, 100, 67, or 24) instead of \"O God, come to my assistance.\" Expand a psalm below to view it."
+          "introText": [ "{invitation}", "", "{alleluia}" ],
+          "explanation": "When Morning Prayer is the first hour, use the Invitatory (Psalm 95, 100, 67, or 24); otherwise use the introductory verse. Expand a psalm below to view it.",
+          "seasons": {
+            "Lent": { "introText": [ "{invitation}" ] },
+            "Triduum": { "introText": [ "{invitation}" ] }
+          }
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Morning Prayer and to the day or season." },
         { "source": "psalmody" },
         {
           "kind": "Reading", "title": "Reading", "source": "short-reading",
-          "explanation": "A short passage of Scripture from the psalter for this day. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below.",
+          "explanation": "A short passage of Scripture assigned to this day. Matching provider text is preferred; otherwise the public-domain Douay-Rheims text is used.",
           "fallbackExplanation": "A short passage of Scripture proper to the day or season."
         },
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
@@ -75,14 +107,18 @@
       "page": "vespers",
       "steps": [
         {
-          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
-          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2)."
+          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia}" ],
+          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2).",
+          "seasons": {
+            "Lent": { "text": [ "{invitation}" ] },
+            "Triduum": { "text": [ "{invitation}" ] }
+          }
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Evening Prayer and to the day or season." },
         { "source": "psalmody" },
         {
           "kind": "Reading", "title": "Reading", "source": "short-reading",
-          "explanation": "A short passage of Scripture from the psalter for this day. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below.",
+          "explanation": "A short passage of Scripture assigned to this day. Matching provider text is preferred; otherwise the public-domain Douay-Rheims text is used.",
           "fallbackExplanation": "A short passage of Scripture proper to the day or season."
         },
         { "kind": "Responsory", "title": "Responsory", "source": "proper", "explanation": "A brief responsory that echoes the reading." },
@@ -105,8 +141,12 @@
       "page": "comp",
       "steps": [
         {
-          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia-note}" ],
-          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2)."
+          "kind": "Versicle", "title": "Introductory Verse", "source": "fixed", "text": [ "{invitation}", "", "{alleluia}" ],
+          "explanation": "Each hour opens by asking God's help to pray (Psalm 70:2).",
+          "seasons": {
+            "Lent": { "text": [ "{invitation}" ] },
+            "Triduum": { "text": [ "{invitation}" ] }
+          }
         },
         {
           "kind": "Examen", "title": "Examination of Conscience", "source": "fixed", "text": [ "{examen}" ],
@@ -114,14 +154,18 @@
         },
         { "kind": "Hymn", "title": "Hymn", "source": "proper", "explanation": "A hymn suited to Night Prayer and to the day or season." },
         { "source": "psalmody" },
-        { "kind": "Reading", "title": "Reading", "source": "night-reading", "explanation": "A brief reading fixed for this night of the week. Shown here in the public-domain Douay-Rheims translation; the official liturgical English text is available from the sources linked below." },
         {
-          "kind": "Responsory", "title": "Responsory", "source": "fixed", "text": [ "{night-responsory}" ],
+          "kind": "Reading", "title": "Reading", "source": "night-reading",
+          "explanation": "A brief reading fixed for this night. Matching provider text is preferred; otherwise the public-domain Douay-Rheims text is used."
+        },
+        {
+          "kind": "Responsory", "title": "Responsory", "source": "night-responsory", "text": [ "{night-responsory}" ],
           "explanation": "Christ's own words from the Cross (Luke 23:46; Psalm 31:6), entrusting ourselves to the Father as we go to rest.",
+          "fallbackExplanation": "From the Second Sunday of Easter through Pentecost, use the ordinary Night Prayer responsory with its Easter alleluias from the linked source.",
           "seasons": {
             "Easter": {
               "text": [ "{easter-night-responsory}" ],
-              "explanation": "In Easter Time the responsory gives way to the Easter verse from Psalm 118 (117), celebrating the day of the Resurrection."
+              "explanation": "From Easter Sunday through Easter Saturday, the Easter verse from Psalm 118 (117) replaces the responsory, including Saturday after First Vespers."
             }
           }
         },
@@ -139,7 +183,12 @@
         { "kind": "Conclusion", "title": "Blessing", "source": "fixed", "text": [ "{night-blessing}" ] },
         {
           "kind": "MarianAntiphon", "source": "marian-antiphon",
-          "explanation": "The day ends with an antiphon to Our Lady. Any of the Marian antiphons may be used; this one is traditional for the season."
+          "explanation": "The day ends with an antiphon to Our Lady. Outside Easter Time, another approved Marian antiphon may be chosen; this one is a traditional seasonal suggestion.",
+          "seasons": {
+            "Easter": {
+              "explanation": "In Easter Time, Regina Caeli must be used as the final Marian antiphon (General Instruction of the Liturgy of the Hours, no. 92)."
+            }
+          }
         }
       ]
     }

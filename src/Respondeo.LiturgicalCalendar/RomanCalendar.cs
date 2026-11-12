@@ -6,143 +6,72 @@ namespace Respondeo.LiturgicalCalendar;
 /// the fixed civil dates (Christmas is always 25 December) and Gregorian Easter (from which every moveable feast is an offset).
 /// No per-day data is stored; the whole year is computed on demand.
 /// </summary>
-internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturgicalCalendar
+internal sealed class RomanCalendar : ILiturgicalCalendar
 {
     public RomanCalendar() : this(LiturgicalCalendarOptions.Default) { }
 
-    public LiturgicalCalendarOptions Options { get; } = options;
+    public RomanCalendar(LiturgicalCalendarOptions options)
+    {
+        Options = options;
+        Profile = CalendarProfile.From(options);
+        CalendarCatalog.EnsureValid(Profile.CatalogRegion);
+    }
 
-    private bool IsUnitedStates => Options.Region == CalendarRegion.UnitedStates;
+    public LiturgicalCalendarOptions Options { get; }
+
+    private CalendarProfile Profile { get; }
 
     public LiturgicalDay ForDate(DateOnly date)
     {
         var season = SeasonFor(date);
-        var resolution = ResolveCelebrations(date, season);
+        var candidateGeneration = NamedCelebrations(date);
+        var resolution = LiturgicalOccurrenceResolver.Resolve(date, season, candidateGeneration.Candidates);
         var color = resolution.Principal?.Color ?? SeasonColor(season, date);
         var ferialName = resolution.Principal is null ? FerialName(date, season) : null;
+        var transfers = TransfersFor(date);
 
         return new LiturgicalDay(date, season, color, resolution.Principal)
         {
             FerialName = ferialName,
             OptionalMemorials = resolution.OptionalMemorials,
+            MemorialCommemorations = resolution.MemorialCommemorations,
+            Occurrence = resolution.Decision,
+            RankAdjustments = candidateGeneration.RankAdjustments,
+            Transfers = transfers,
+            Obligation = LiturgicalObligationResolver.Resolve(date, Profile, transfers),
         };
     }
 
-    // -----------------------------------------------------------------------
-    // Precedence resolution: choose the single principal celebration for the day and the optional memorials offered alongside it,
-    // following the Church's order of precedence.
-    // -----------------------------------------------------------------------
+    private sealed record CandidateGeneration(
+        IReadOnlyList<CelebrationCandidate> Candidates,
+        IReadOnlyList<LiturgicalCelebrationRankAdjustment> RankAdjustments);
 
-    /// <summary>A named celebration claiming a day, flagged when it is a celebration of the Lord.</summary>
-    private readonly record struct Candidate(LiturgicalCelebration Celebration, bool OfTheLord);
-
-    private readonly record struct DayResolution(LiturgicalCelebration? Principal, IReadOnlyList<LiturgicalCelebration> OptionalMemorials);
-
-    /// <summary>Fixed feasts/commemorations of the Lord (or the equivalent) that replace a Sunday.</summary>
-    private static readonly HashSet<(int, int)> SundayReplacingFixedDates = [(2, 2), (8, 6), (9, 14), (11, 9), (11, 2)];
-
-    private DayResolution ResolveCelebrations(DateOnly date, LiturgicalSeason season)
+    /// <summary>All named celebrations claiming the day, plus any candidate-generation adjustments.</summary>
+    private CandidateGeneration NamedCelebrations(DateOnly date, string? excludedTransferKey = null)
     {
-        var named = NamedCelebrations(date, season);
+        var candidates = new List<CelebrationCandidate>();
+        var rankAdjustments = new List<LiturgicalCelebrationRankAdjustment>();
 
-        var solemnity = HighestOfRank(named, CelebrationRank.Solemnity);
-        var isSunday = date.DayOfWeek == DayOfWeek.Sunday;
-        var sundayIsPrivileged = isSunday && season is LiturgicalSeason.Advent or LiturgicalSeason.Lent or LiturgicalSeason.Easter;
-
-        // A solemnity outranks everything except a privileged Sunday (Advent/Lent/Easter),
-        // onto which a non-dominical solemnity would be transferred rather than celebrated (transfer handled elsewhere).
-        if (solemnity is { } sol && !(sundayIsPrivileged && !sol.OfTheLord))
+        if (MoveableCelebration(date) is { } moveable && !IsTransferredAway(date, moveable, excludedTransferKey))
         {
-            return new DayResolution(sol.Celebration, []);
-        }
-
-        // On any Sunday only a feast OF THE LORD may replace the Sunday; saints' feasts and memorials are omitted.
-        if (isSunday)
-        {
-            var lordFeast = named.FirstOrDefault(c => c.OfTheLord && c.Celebration.Rank == CelebrationRank.Feast);
-            return new DayResolution(lordFeast.Celebration, []);
-        }
-
-        // Weekdays of Holy Week and of the Octave of Easter outrank every feast and memorial (Table of Precedence I.2);
-        // a saint's feast falling on them (e.g. Saint Mark within the Octave) is simply omitted that year.
-        var easter = LiturgicalDates.Easter(date.Year);
-        if (date >= easter.AddDays(-7) && date <= easter.AddDays(7))
-        {
-            return new DayResolution(null, []);
-        }
-
-        var feast = HighestOfRank(named, CelebrationRank.Feast);
-        if (feast is { } f)
-        {
-            return new DayResolution(f.Celebration, []);
-        }
-
-        // Weekdays: an obligatory memorial is the principal unless the weekday is privileged
-        // (Lent, the Octaves, and the final Advent days), where every memorial is reduced to optional.
-        var privilegedWeekday = IsPrivilegedWeekday(date, season);
-        LiturgicalCelebration? principal = null;
-        var optional = new List<LiturgicalCelebration>();
-        foreach (var candidate in named.Where(c => c.Celebration.Rank is CelebrationRank.Memorial or CelebrationRank.OptionalMemorial))
-        {
-            var isObligatory = candidate.Celebration.Rank == CelebrationRank.Memorial;
-            if (isObligatory && !privilegedWeekday && principal is null)
-            {
-                principal = candidate.Celebration;
-            }
-            else
-            {
-                optional.Add(candidate.Celebration);
-            }
-        }
-
-        return new DayResolution(principal, optional);
-    }
-
-    private Candidate? HighestOfRank(IReadOnlyList<Candidate> candidates, CelebrationRank rank)
-    {
-        Candidate? match = null;
-        foreach (var candidate in candidates)
-        {
-            if (candidate.Celebration.Rank != rank)
-            {
-                continue;
-            }
-
-            // Prefer a celebration of the Lord when several share the same rank on one day.
-            if (match is null || (candidate.OfTheLord && !match.Value.OfTheLord))
-            {
-                match = candidate;
-            }
-        }
-
-        return match;
-    }
-
-    /// <summary>All named celebrations claiming the day: moveable, Sunday-based feasts of the Lord, and fixed dataset entries.</summary>
-    private IReadOnlyList<Candidate> NamedCelebrations(DateOnly date, LiturgicalSeason season)
-    {
-        var candidates = new List<Candidate>();
-
-        if (MoveableCelebration(date) is { } moveable)
-        {
-            candidates.Add(new Candidate(moveable, OfTheLord: true));
+            candidates.Add(new CelebrationCandidate(moveable));
         }
 
         foreach (var lordFeast in SundayLordCelebrations(date))
         {
-            candidates.Add(new Candidate(lordFeast, OfTheLord: true));
+            candidates.Add(new CelebrationCandidate(lordFeast));
         }
 
-        foreach (var fixedCelebration in GeneralRomanCalendarData.ForMonthDay(date.Month, date.Day, Options.Region))
+        foreach (var fixedCelebration in GeneralRomanCalendarData.ForMonthDay(date.Month, date.Day, Profile.CatalogRegion))
         {
-            // In the United States the Epiphany is transferred to the Sunday between 2 and 8 January (emitted below).
-            if (IsUnitedStates && date is { Month: 1, Day: 6 } && fixedCelebration.Rank == CelebrationRank.Solemnity)
+            // Sunday Epiphany is emitted separately below.
+            if (Profile.EpiphanyOnSunday && date is { Month: 1, Day: 6 } && fixedCelebration.Rank == CelebrationRank.Solemnity)
             {
                 continue;
             }
 
-            // A solemnity impeded by a Lenten Sunday, Holy Week, or the Octave of Easter is suppressed here and re-emitted on its transfer date below.
-            if (IsTransferredAway(date))
+            // Suppress only the impeded solemnity, retaining any other candidates on its nominal date.
+            if (IsTransferredAway(date, fixedCelebration, excludedTransferKey))
             {
                 continue;
             }
@@ -153,115 +82,118 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
                 continue;
             }
 
-            candidates.Add(new Candidate(fixedCelebration, SundayReplacingFixedDates.Contains((date.Month, date.Day))));
+            candidates.Add(new CelebrationCandidate(fixedCelebration));
         }
 
-        if (IsUnitedStates && date is { Month: 1, Day: 23 } && new DateOnly(date.Year, 1, 22).DayOfWeek == DayOfWeek.Sunday)
+        if (Profile.TransfersDayOfPrayerFromSunday && date is { Month: 1, Day: 23 }
+            && new DateOnly(date.Year, 1, 22).DayOfWeek == DayOfWeek.Sunday)
         {
-            foreach (var dayOfPrayer in GeneralRomanCalendarData.ForMonthDay(1, 22, Options.Region).Where(IsDayOfPrayerForUnborn))
+            foreach (var dayOfPrayer in GeneralRomanCalendarData.ForMonthDay(1, 22, Profile.CatalogRegion).Where(IsDayOfPrayerForUnborn))
             {
-                candidates.Add(new Candidate(dayOfPrayer, OfTheLord: false));
+                candidates.Add(new CelebrationCandidate(dayOfPrayer));
             }
         }
 
-        foreach (var transferred in TransferredSolemnities(date))
+        foreach (var transferred in TransferredSolemnities(date, excludedTransferKey))
         {
-            candidates.Add(new Candidate(transferred, OfTheLord: false));
+            candidates.Add(new CelebrationCandidate(transferred));
         }
 
         // When the Immaculate Heart coincides with another obligatory memorial, both become optional memorials.
         var memorialCount = candidates.Count(c => c.Celebration.Rank == CelebrationRank.Memorial);
-        if (memorialCount > 1 && candidates.Any(c => c.Celebration.Rank == CelebrationRank.Memorial && c.Celebration.Name.Contains("Immaculate Heart")))
+        if (memorialCount > 1 && candidates.Any(c => c.Celebration.CalendarKey == "immaculate-heart"))
         {
             for (var i = 0; i < candidates.Count; i++)
             {
                 if (candidates[i].Celebration.Rank == CelebrationRank.Memorial)
                 {
-                    candidates[i] = candidates[i] with { Celebration = candidates[i].Celebration with { Rank = CelebrationRank.OptionalMemorial } };
+                    var original = candidates[i].Celebration;
+                    var adjusted = original with { Rank = CelebrationRank.OptionalMemorial, Precedence = null };
+                    rankAdjustments.Add(new(original, original.Rank, adjusted.Rank,
+                        LiturgicalRankAdjustmentRule.ImmaculateHeartMemorialCollision));
+                    candidates[i] = candidates[i] with { Celebration = adjusted };
                 }
             }
         }
 
-        return candidates;
+        return new(candidates, rankAdjustments);
     }
 
     private bool IsDayOfPrayerForUnborn(LiturgicalCelebration celebration) =>
-        IsUnitedStates && celebration.Name.StartsWith("Day of Prayer for the Legal Protection", StringComparison.Ordinal);
+        Profile.TransfersDayOfPrayerFromSunday && celebration.CalendarKey == "day-of-prayer-for-unborn-children";
 
     // -----------------------------------------------------------------------
     // Solemnity transfers:
-    // Fixed solemnities are moved when they collide with a Sunday of Lent or Advent, Holy Week, the Octave of Easter,
-    // or a moveable solemnity of the Lord (Corpus Christi or the Sacred Heart on 24 or 29 June), all of which outrank them.
+    // Pair-specific collision policies are explicit; unrelated equal-class collisions remain unresolved.
     // -----------------------------------------------------------------------
 
-    private static readonly (int Month, int Day, string Name, LiturgicalColor Color)[] TransferableSolemnities =
-    [
-        (3, 19, "Saint Joseph, Spouse of the Blessed Virgin Mary", LiturgicalColor.White),
-        (3, 25, "The Annunciation of the Lord", LiturgicalColor.White),
-        (6, 24, "The Nativity of Saint John the Baptist", LiturgicalColor.White),
-        (6, 29, "Saints Peter and Paul, Apostles", LiturgicalColor.Red),
-        (12, 8, "The Immaculate Conception of the Blessed Virgin Mary", LiturgicalColor.White),
-    ];
+    /// <summary>True only for the identified solemnity on its impeded nominal date.</summary>
+    private bool IsTransferredAway(DateOnly date, LiturgicalCelebration celebration, string? excludedTransferKey) =>
+        CalendarCatalog.TransferableSolemnities.Any(item => item.Key == celebration.CalendarKey && item.Key != excludedTransferKey
+            && item.Month == date.Month && item.Day == date.Day
+            && TransferResolution(date.Year, item.Month, item.Day, item.Key) is not null);
 
-    /// <summary>True when the given date is the ordinary date of a transferable solemnity that is impeded this year.</summary>
-    private bool IsTransferredAway(DateOnly date) =>
-        TransferableSolemnities.Any(s => s.Month == date.Month && s.Day == date.Day && TransferTarget(date.Year, s.Month, s.Day) is not null);
-
-    /// <summary>Transferable solemnities whose transfer date is the given date this year.</summary>
-    private IEnumerable<LiturgicalCelebration> TransferredSolemnities(DateOnly date)
+    /// <summary>Transfers retain the region's complete authored celebration instead of reconstructing it from a name and color.</summary>
+    private IEnumerable<LiturgicalCelebration> TransferredSolemnities(DateOnly date, string? excludedTransferKey)
     {
-        foreach (var solemnity in TransferableSolemnities)
+        foreach (var item in CalendarCatalog.TransferableSolemnities)
         {
-            if (TransferTarget(date.Year, solemnity.Month, solemnity.Day) == date)
+            if (item.Key != excludedTransferKey
+                && TransferResolution(date.Year, item.Month, item.Day, item.Key) is { } transfer && transfer.Target == date)
             {
-                yield return new LiturgicalCelebration(solemnity.Name, CelebrationRank.Solemnity, solemnity.Color);
+                if (item.Key == "sacred-heart")
+                {
+                    yield return ComputedCelebrationData.Get(item.Key);
+                    continue;
+                }
+
+                yield return GeneralRomanCalendarData.ForMonthDay(item.Month, item.Day, Profile.CatalogRegion)
+                    .Single(celebration => celebration.CalendarKey == item.Key);
             }
         }
     }
 
-    /// <summary>
-    /// The date a solemnity is transferred to when its ordinary date is impeded, or <c>null</c> when it is free.
-    /// Holy Week and the Octave of Easter push the solemnity to the Monday after the Second Sunday of Easter;
-    /// a Sunday of Lent pushes it to the following Monday.
-    /// </summary>
-    private DateOnly? TransferTarget(int year, int month, int day)
+    private IReadOnlyList<LiturgicalTransfer> TransfersFor(DateOnly date)
     {
-        var original = new DateOnly(year, month, day);
-        var easter = LiturgicalDates.Easter(year);
-
-        // Saint Joseph falling in Holy Week is anticipated to the Saturday before Palm Sunday.
-        if (month == 3 && day == 19 && original >= easter.AddDays(-7) && original < easter)
+        var transfers = new List<LiturgicalTransfer>();
+        foreach (var item in CalendarCatalog.TransferableSolemnities)
         {
-            return easter.AddDays(-8);
+            var nominal = new DateOnly(date.Year, item.Month, item.Day);
+            if (TransferResolution(date.Year, item.Month, item.Day, item.Key) is not { } resolution)
+            {
+                continue;
+            }
+
+            if (date == nominal || date == resolution.Target)
+            {
+                transfers.Add(new LiturgicalTransfer(
+                    item.Key, nominal, resolution.Target, resolution.Rule, resolution.SkippedDateRange));
+            }
         }
 
-        // Holy Week, the Triduum, and the Octave of Easter (Palm Sunday through Divine Mercy Sunday).
-        if (original >= easter.AddDays(-7) && original <= easter.AddDays(7))
-        {
-            return easter.AddDays(8);
-        }
-
-        if (original.DayOfWeek == DayOfWeek.Sunday && SeasonFor(original) is LiturgicalSeason.Lent or LiturgicalSeason.Advent)
-        {
-            return original.AddDays(1);
-        }
-
-        // A moveable solemnity of the Lord (e.g. the Sacred Heart in 2022) displaces the fixed solemnity to the preceding day.
-        if (MoveableCelebration(original) is { Rank: CelebrationRank.Solemnity })
-        {
-            return original.AddDays(-1);
-        }
-
-        return null;
+        return transfers;
     }
 
-    /// <summary>Days from Easter to the Ascension: Thursday (39) universally, Sunday (42) in most United States provinces.</summary>
-    private int AscensionOffset => IsUnitedStates && !Options.AscensionOnThursday ? 42 : 39;
+    private LiturgicalTransferResolution? TransferResolution(int year, int month, int day, string celebrationKey)
+    {
+        var original = new DateOnly(year, month, day);
+        return LiturgicalTransferResolver.Resolve(
+            original,
+            LiturgicalDates.Easter(year),
+            SeasonFor(original),
+            celebrationKey,
+            Options.SaintJohnTheBaptistIsPatron,
+            IsAvailableForTransferredSolemnity);
+    }
 
-    /// <summary>Days from Easter to Corpus Christi: Thursday (60) universally, transferred to Sunday (63) in the United States.</summary>
-    private int CorpusChristiOffset => IsUnitedStates ? 63 : 60;
+    private bool IsAvailableForTransferredSolemnity(DateOnly date)
+    {
+        var season = SeasonFor(date);
+        var candidates = NamedCelebrations(date, "saints-peter-and-paul").Candidates;
+        return LiturgicalPrecedence.CanReceiveTransferredSolemnity(date, season, candidates);
+    }
 
-    /// <summary>Moveable feasts, each a fixed offset
+    /// <summary>Moveable dates remain explicit domain rules; their celebration facts come from the authored catalog.</summary>
     private LiturgicalCelebration? MoveableCelebration(DateOnly date)
     {
         var easter = LiturgicalDates.Easter(date.Year);
@@ -269,20 +201,20 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
 
         return offset switch
         {
-            -46 => new("Ash Wednesday", CelebrationRank.Feast, LiturgicalColor.Violet),
-            -7 => new("Palm Sunday of the Passion of the Lord", CelebrationRank.Solemnity, LiturgicalColor.Red),
-            -3 => new("Holy Thursday", CelebrationRank.Solemnity, LiturgicalColor.White),
-            -2 => new("Good Friday of the Passion of the Lord", CelebrationRank.Solemnity, LiturgicalColor.Red),
-            -1 => new("Holy Saturday", CelebrationRank.Solemnity, LiturgicalColor.White),
-            0 => new("Easter Sunday of the Resurrection of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White),
-            _ when offset == AscensionOffset => new("The Ascension of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White),
-            49 => new("Pentecost Sunday", CelebrationRank.Solemnity, LiturgicalColor.Red),
-            56 => new("The Most Holy Trinity", CelebrationRank.Solemnity, LiturgicalColor.White),
-            _ when offset == CorpusChristiOffset => new("The Most Holy Body and Blood of Christ", CelebrationRank.Solemnity, LiturgicalColor.White),
-            50 => new("The Blessed Virgin Mary, Mother of the Church", CelebrationRank.Memorial, LiturgicalColor.White),
-            68 => new("The Most Sacred Heart of Jesus", CelebrationRank.Solemnity, LiturgicalColor.White),
-            69 => new("The Immaculate Heart of the Blessed Virgin Mary", CelebrationRank.Memorial, LiturgicalColor.White),
-            _ when IsUnitedStates && IsThanksgiving(date) => new("Thanksgiving Day", CelebrationRank.OptionalMemorial, LiturgicalColor.White),
+            -46 => ComputedCelebrationData.Get("ash-wednesday"),
+            -7 => ComputedCelebrationData.Get("palm-sunday"),
+            -3 => ComputedCelebrationData.Get("holy-thursday"),
+            -2 => ComputedCelebrationData.Get("good-friday"),
+            -1 => ComputedCelebrationData.Get("holy-saturday"),
+            0 => ComputedCelebrationData.Get("easter-sunday"),
+            _ when offset == Profile.AscensionOffset => ComputedCelebrationData.Get("ascension"),
+            49 => ComputedCelebrationData.Get("pentecost"),
+            56 => ComputedCelebrationData.Get("trinity"),
+            _ when offset == Profile.CorpusChristiOffset => ComputedCelebrationData.Get("corpus-christi"),
+            50 => ComputedCelebrationData.Get("mother-of-the-church"),
+            68 => ComputedCelebrationData.Get("sacred-heart"),
+            69 => ComputedCelebrationData.Get("immaculate-heart"),
+            _ when Profile.IncludesThanksgiving && IsThanksgiving(date) => ComputedCelebrationData.Get("thanksgiving"),
             _ => null,
         };
     }
@@ -298,22 +230,22 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
 
         if (date == HolyFamily(year))
         {
-            yield return new LiturgicalCelebration("The Holy Family of Jesus, Mary and Joseph", CelebrationRank.Feast, LiturgicalColor.White);
+            yield return ComputedCelebrationData.Get("holy-family");
         }
 
-        if (IsUnitedStates && date == Epiphany(year))
+        if (Profile.EpiphanyOnSunday && date == Epiphany(year))
         {
-            yield return new LiturgicalCelebration("The Epiphany of the Lord", CelebrationRank.Solemnity, LiturgicalColor.White);
+            yield return ComputedCelebrationData.Get("epiphany");
         }
 
         if (date == BaptismOfTheLord(year))
         {
-            yield return new LiturgicalCelebration("The Baptism of the Lord", CelebrationRank.Feast, LiturgicalColor.White);
+            yield return ComputedCelebrationData.Get("baptism-of-the-lord");
         }
 
         if (date == AdventStart(year).AddDays(-7))
         {
-            yield return new LiturgicalCelebration("Our Lord Jesus Christ, King of the Universe", CelebrationRank.Solemnity, LiturgicalColor.White);
+            yield return ComputedCelebrationData.Get("christ-the-king");
         }
     }
 
@@ -328,19 +260,6 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
 
         var daysUntilSunday = (7 - (int)christmas.DayOfWeek) % 7;
         return christmas.AddDays(daysUntilSunday == 0 ? 7 : daysUntilSunday);
-    }
-
-    /// <summary>True on weekdays whose rank reduces every memorial to optional: Lenten/Triduum weekdays, the Octaves, and 17-24 December.</summary>
-    private bool IsPrivilegedWeekday(DateOnly date, LiturgicalSeason season)
-    {
-        return season switch
-        {
-            LiturgicalSeason.Lent or LiturgicalSeason.Triduum => true,
-            LiturgicalSeason.Advent => date is { Month: 12, Day: >= 17 },
-            LiturgicalSeason.Christmas => date is { Month: 12, Day: >= 25 },
-            LiturgicalSeason.Easter => date <= LiturgicalDates.Easter(date.Year).AddDays(7),
-            _ => false,
-        };
     }
 
     // -----------------------------------------------------------------------
@@ -407,10 +326,10 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
     /// <summary>
     /// The Baptism of the Lord, which closes Christmas Time: the Sunday after Epiphany (6 January).
     /// </summary>
-    private DateOnly BaptismOfTheLord(int year) => LiturgicalDates.BaptismOfTheLord(year, IsUnitedStates);
+    private DateOnly BaptismOfTheLord(int year) => LiturgicalDates.BaptismOfTheLord(year, Profile.EpiphanyOnSunday);
 
     /// <summary>The Epiphany: 6 January, or in the United States the Sunday between 2 and 8 January.</summary>
-    private DateOnly Epiphany(int year) => LiturgicalDates.Epiphany(year, IsUnitedStates);
+    private DateOnly Epiphany(int year) => LiturgicalDates.Epiphany(year, Profile.EpiphanyOnSunday);
 
     private LiturgicalColor SeasonColor(LiturgicalSeason season, DateOnly date) => season switch
     {
@@ -517,25 +436,7 @@ internal sealed class RomanCalendar(LiturgicalCalendarOptions options) : ILiturg
     }
 
     /// <summary>The week of Ordinary Time, numbered 1-34 across the two spans before Lent and after Pentecost.</summary>
-    private int OrdinaryTimeWeek(DateOnly date)
-    {
-        var year = date.Year;
-        var precedingSunday = date.AddDays(-(int)date.DayOfWeek);
-        var ashWednesday = LiturgicalDates.AshWednesday(year);
-
-        if (date < ashWednesday)
-        {
-            // First span: counted from the Baptism of the Lord, whose week is the First Week in Ordinary Time.
-            // The Baptism may fall on a Monday (United States), so anchor on the Sunday that begins its week.
-            var baptism = BaptismOfTheLord(year);
-            var baptismWeekSunday = baptism.AddDays(-(int)baptism.DayOfWeek);
-            return ((precedingSunday.DayNumber - baptismWeekSunday.DayNumber) / 7) + 1;
-        }
-
-        // Second span: counted back from the Thirty-Fourth Sunday (Christ the King), the last before Advent.
-        var christKingSunday = AdventStart(year).AddDays(-7);
-        return 34 - ((christKingSunday.DayNumber - precedingSunday.DayNumber) / 7);
-    }
+    private int OrdinaryTimeWeek(DateOnly date) => LiturgicalWeekResolver.OrdinaryTimeWeek(date, Options);
 
     private string SeasonDayName(DateOnly date, int week, string season, string preposition)
     {

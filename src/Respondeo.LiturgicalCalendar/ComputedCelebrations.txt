@@ -1,0 +1,19 @@
+# Computed calendar celebration definitions: stable key | rank | color | name | precedence
+ash-wednesday | Feast | Violet | Ash Wednesday | PrincipalTemporalDay
+palm-sunday | Solemnity | Red | Palm Sunday of the Passion of the Lord | PrincipalTemporalDay
+holy-thursday | Solemnity | White | Holy Thursday | PaschalTriduum
+good-friday | Solemnity | Red | Good Friday of the Passion of the Lord | PaschalTriduum
+holy-saturday | Solemnity | White | Holy Saturday | PaschalTriduum
+easter-sunday | Solemnity | White | Easter Sunday of the Resurrection of the Lord | PaschalTriduum
+ascension | Solemnity | White | The Ascension of the Lord | PrincipalTemporalDay
+pentecost | Solemnity | Red | Pentecost Sunday | PrincipalTemporalDay
+trinity | Solemnity | White | The Most Holy Trinity | GeneralSolemnityOrAllSouls
+corpus-christi | Solemnity | White | The Most Holy Body and Blood of Christ | GeneralSolemnityOrAllSouls
+mother-of-the-church | Memorial | White | The Blessed Virgin Mary, Mother of the Church | GeneralMemorial
+sacred-heart | Solemnity | White | The Most Sacred Heart of Jesus | GeneralSolemnityOrAllSouls
+immaculate-heart | Memorial | White | The Immaculate Heart of the Blessed Virgin Mary | GeneralMemorial
+thanksgiving | OptionalMemorial | White | Thanksgiving Day | OptionalMemorial
+holy-family | Feast | White | The Holy Family of Jesus, Mary and Joseph | FeastOfTheLord
+epiphany | Solemnity | White | The Epiphany of the Lord | PrincipalTemporalDay
+baptism-of-the-lord | Feast | White | The Baptism of the Lord | FeastOfTheLord
+christ-the-king | Solemnity | White | Our Lord Jesus Christ, King of the Universe | GeneralSolemnityOrAllSouls

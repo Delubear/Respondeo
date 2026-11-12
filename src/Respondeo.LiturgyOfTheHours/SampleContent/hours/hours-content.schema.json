@@ -46,8 +46,12 @@
         "additionalProperties": false,
         "required": ["text"],
         "properties": {
-          "text": { "description": "The text, with line breaks preserved.", "type": "string" },
-          "antiphon": { "description": "The antiphon said before and after.", "type": ["string", "null"] }
+          "text": { "description": "The complete text, including any prescribed doxology, with line breaks preserved.", "type": "string" },
+          "antiphon": { "description": "The antiphon said before and after.", "type": ["string", "null"] },
+          "citation": {
+            "description": "Exact canonical psalmody citation; required when a psalm-antiphon entry supplies a nonempty text body.",
+            "type": ["string", "null"]
+          }
         }
       }
     }

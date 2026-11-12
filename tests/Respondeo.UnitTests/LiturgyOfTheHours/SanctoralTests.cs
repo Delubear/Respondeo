@@ -161,7 +161,7 @@ public class SanctoralTests
                 ids.Add(OrdinaryFormOffice.CelebrationId(celebration.Name));
             }
 
-            foreach (var memorial in day.OptionalMemorials)
+            foreach (var memorial in day.OptionalMemorials.Concat(day.MemorialCommemorations))
             {
                 ids.Add(OrdinaryFormOffice.CelebrationId(memorial.Name));
             }
@@ -313,7 +313,7 @@ public class SanctoralTests
 
                 var reading = office.Steps.Single(s => s.Kind == OfficeStepKind.Reading);
                 Assert.True(expected == reading.Reference?.Citation, $"{date} {hour} ({celebration.Name}): expected {expected}, got {reading.Reference?.Citation}.");
-                Assert.False(reading.UseOfficialText, $"{date} {hour} should not defer to the official text.");
+                Assert.False(reading.UseOfficialText);
             }
 
             checkedDays++;
@@ -381,6 +381,52 @@ public class SanctoralTests
     public void Guadalupe_MorningPrayer_UsesSundayWeekOne(int year)
     {
         Assert.Equal(["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"], Psalmody(new DateOnly(year, 12, 12), Hour.MorningPrayer, CalendarRegion.UnitedStates));
+    }
+
+    [Theory]
+    [InlineData(2025, CalendarRegion.GeneralRoman)]
+    [InlineData(2026, CalendarRegion.GeneralRoman)]
+    [InlineData(2027, CalendarRegion.GeneralRoman)]
+    [InlineData(2026, CalendarRegion.UnitedStates)]
+    public void MartinOfTours_MorningPrayer_UsesProperPsalmody(int year, CalendarRegion region)
+    {
+        Assert.Equal(["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"], Psalmody(new DateOnly(year, 11, 11), Hour.MorningPrayer, region));
+    }
+
+    [Fact]
+    public void MartinOfTours_MorningReading_IncludesTheFirstPartOfVerseNine()
+    {
+        Assert.Equal("Hebrews 13:7-9a", Sanctoral.ShortReading(Hour.MorningPrayer, "Saint Martin of Tours, Bishop"));
+    }
+
+    [Theory]
+    [InlineData(CalendarRegion.GeneralRoman)]
+    [InlineData(CalendarRegion.UnitedStates)]
+    public void MartinOfTours_OnSunday_DoesNotReplaceSundayPsalmody(CalendarRegion region)
+    {
+        Assert.Equal(["Psalm 118", "Daniel 3:52-57", "Psalm 150"], Psalmody(new DateOnly(2029, 11, 11), Hour.MorningPrayer, region));
+    }
+
+    [Theory]
+    [InlineData(CalendarRegion.GeneralRoman)]
+    [InlineData(CalendarRegion.UnitedStates)]
+    public void MemorialWithoutProperMorningPsalmody_KeepsWeekdayPsalter(CalendarRegion region)
+    {
+        Assert.Equal(["Psalm 101", "Daniel 3:26-27, 29, 34-41", "Psalm 144:1-10"], Psalmody(new DateOnly(2026, 11, 10), Hour.MorningPrayer, region));
+    }
+
+    [Theory]
+    [InlineData(2025)]
+    [InlineData(2026)]
+    public void MartinOfTours_EveningPrayer_UsesProperPsalmody(int year)
+    {
+        Assert.Equal(["Psalm 15", "Psalm 112", "Revelation 15:3-4"], Psalmody(new DateOnly(year, 11, 11), Hour.EveningPrayer));
+    }
+
+    [Fact]
+    public void MartinOfTours_OnSaturday_YieldsToSundayFirstVespers()
+    {
+        Assert.Equal(["Psalm 122", "Psalm 130", "Philippians 2:6-11"], Psalmody(new DateOnly(2028, 11, 11), Hour.EveningPrayer));
     }
 
     [Fact]
@@ -458,7 +504,7 @@ public class SanctoralTests
 		var data = OfficeData.Sanctoral;
 		foreach (var (key, r) in data.Commons.Select(p => ("commons/" + p.Key, p.Value)).Concat(data.Celebrations.Select(p => ("celebrations/" + p.Key, p.Value))))
 		{
-			foreach (var citation in new[] { r.Morning, r.Evening }.Concat(r.EveningPsalmody ?? []))
+			foreach (var citation in new[] { r.Morning, r.Evening, r.FirstEveningCanticle }.Concat(r.MorningPsalmody ?? []).Concat(r.EveningPsalmody ?? []))
 			{
 				if (citation is not null)
 				{
@@ -497,7 +543,9 @@ public class SanctoralTests
 	[Fact]
 	public void SanctoralData_PsalmodyHasThreeEntries()
 	{
-		var bad = OfficeData.Sanctoral.Celebrations.Where(p => p.Value.EveningPsalmody is { Length: not 3 }).Select(p => p.Key).ToList();
+		var bad = OfficeData.Sanctoral.Celebrations
+			.Where(p => p.Value.MorningPsalmody is { Length: not 3 } || p.Value.EveningPsalmody is { Length: not 3 })
+			.Select(p => p.Key).ToList();
 		Assert.Empty(bad);
 	}
 }

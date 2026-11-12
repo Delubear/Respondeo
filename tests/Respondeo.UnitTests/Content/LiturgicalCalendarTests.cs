@@ -217,14 +217,16 @@ public class LiturgicalCalendarTests
     }
 
     [Fact]
-    public void An_obligatory_memorial_is_reduced_to_optional_on_a_Lenten_weekday()
+    public void An_obligatory_memorial_is_a_commemoration_on_a_Lenten_weekday()
     {
-        // 7 March 2025 (Friday of Lent) is the Memorial of Saints Perpetua and Felicity, made optional.
+        // 7 March 2025 (Friday of Lent) is the Memorial of Saints Perpetua and Felicity.
         var day = Calendar.ForDate(new DateOnly(2025, 3, 7));
 
         Assert.Null(day.Celebration);
-        var memorial = Assert.Single(day.OptionalMemorials);
-        Assert.Equal("Saints Perpetua and Felicity, Martyrs", memorial.Name);
+        Assert.Empty(day.OptionalMemorials);
+        var commemoration = Assert.Single(day.MemorialCommemorations);
+        Assert.Equal("saints-perpetua-and-felicity-martyrs", commemoration.CalendarKey);
+        Assert.Equal(LiturgicalOccurrenceRule.MemorialCommemorations, day.Occurrence?.Rule);
     }
 
     [Fact]
@@ -753,9 +755,9 @@ public class LiturgicalCalendarTests
 
     [Theory]
     [MemberData(nameof(Regions))]
-    public void Every_fixed_solemnity_is_celebrated_exactly_once_each_year(CalendarRegion region)
+    public void Every_fixed_solemnity_remains_a_calendar_candidate_exactly_once_each_year(CalendarRegion region)
     {
-        // Sweeps 400 years (a full Gregorian cycle) so every possible collision with a moveable solemnity is exercised.
+        // The cycle exercises weekday placements; unresolved same-class collisions remain diagnostics, not transfers.
         string[] solemnities =
         [
             "Saint Joseph, Spouse of the Blessed Virgin Mary",
@@ -773,9 +775,14 @@ public class LiturgicalCalendarTests
             var counts = new Dictionary<string, int>();
             for (var date = new DateOnly(year, 1, 1); date.Year == year; date = date.AddDays(1))
             {
-                if (calendar.ForDate(date).Celebration?.Name is { } name && solemnities.Contains(name))
+                var resolved = calendar.ForDate(date);
+                var candidateNames = resolved.Occurrence!.SuppressedCelebrations
+                    .Concat(resolved.Occurrence.ContendingCelebrations)
+                    .Select(celebration => celebration.Name)
+                    .Append(resolved.Celebration?.Name);
+                foreach (var name in candidateNames.Where(name => name is not null && solemnities.Contains(name)))
                 {
-                    counts[name] = counts.GetValueOrDefault(name) + 1;
+                    counts[name!] = counts.GetValueOrDefault(name!) + 1;
                 }
             }
 

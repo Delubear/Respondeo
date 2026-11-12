@@ -99,12 +99,140 @@ public class HourOptionTests : TestContext
     }
 
     [Fact]
+    public void Arranged_passage_displays_its_unofficial_translation_label()
+    {
+        var option = Step() with { Passage = new([new(Text: "Synthetic text")], "Latin with an unofficial English translation") };
+
+        var cut = Render(option, passage: "Assembled text");
+
+        Assert.Equal("Assembled text", cut.Find(".hourplayer__text").TextContent);
+        Assert.Equal("Latin with an unofficial English translation", cut.Find(".hourplayer__translation").TextContent);
+    }
+
+    [Fact]
     public void Points_to_official_source_when_no_text_is_available()
     {
         var cut = Render(Step() with { UseOfficialText = true });
 
         Assert.Equal("Read the text from an official source below.", cut.Find(".hourplayer__official").TextContent);
         Assert.Empty(cut.FindAll(".hourplayer__text"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Unresolved_partial_reference_or_stanza_shows_an_official_source_notice(bool stanza)
+    {
+        var option = Step() with
+        {
+            Reference = new(stanza ? "Psalm 95" : "Isaiah 66:10-14a"),
+            Stanzas = stanza ? [new("Psalm 95:1-7a")] : null,
+        };
+
+        var cut = Render(option);
+
+        Assert.Equal("Read the text from an official source below.", cut.Find(".hourplayer__official").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__text"));
+        Assert.Empty(cut.FindAll(".hourplayer__translation"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Loaded_partial_option_renders_whole_verses_without_a_missing_notice(bool stanza)
+    {
+        var bible = Substitute.For<Respondeo.Bible.Contracts.IBibleText>();
+        const string citation = "Isaiah 66:10-14a";
+        bible.GetPassageAsync(citation).Returns("Synthetic whole boundary verses");
+        var option = new OfficeStep(OfficeStepKind.Canticle, citation)
+        {
+            Reference = new(citation),
+            Stanzas = stanza ? [new(citation)] : null,
+        };
+        var date = new DateOnly(2026, 11, 11);
+        var office = new Office(date, Hour.MorningPrayer, "Synthetic office",
+            new(date, Respondeo.LiturgicalCalendar.LiturgicalSeason.OrdinaryTime, Respondeo.LiturgicalCalendar.LiturgicalColor.Green, null), 4,
+            [new OfficeStep(OfficeStepKind.Rubric, "Options") { Options = [option] }]);
+        var loaded = await new HourPassageLoader(bible).LoadAsync(office);
+
+        var cut = Render(option, loaded.OptionStanzas.GetValueOrDefault((0, 0)), loaded.OptionPassages.GetValueOrDefault((0, 0)));
+
+        Assert.Equal(citation, cut.Find(".hourplayer__option-title").TextContent.Trim());
+        Assert.Equal(stanza ? new[] { "Synthetic whole boundary verses", HourPassageLoader.GloryBe }
+            : new[] { "Synthetic whole boundary verses\n\n" + HourPassageLoader.GloryBe },
+            cut.FindAll(".hourplayer__text").Select(element => element.TextContent));
+        Assert.Equal("Douay-Rheims translation", cut.Find(".hourplayer__translation").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__official"));
+    }
+
+    [Fact]
+    public void Missing_arranged_option_shows_an_official_source_notice()
+    {
+        var cut = Render(Step() with { Passage = new([new(Citation: "Psalm 95")], "Synthetic source") });
+
+        Assert.Equal("Read the text from an official source below.", cut.Find(".hourplayer__official").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__text"));
+    }
+
+    [Fact]
+    public void Inline_partial_option_keeps_its_body_without_a_missing_notice()
+    {
+        var cut = Render(Step() with { Reference = new("Isaiah 66:10-14a"), Text = "Synthetic authorized canticle" });
+
+        Assert.Equal("Synthetic authorized canticle", cut.Find(".hourplayer__text").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__official"));
+    }
+
+    [Fact]
+    public void SampleAntiphon_IsLabeledSeparatelyFromTheBibleFallback()
+    {
+        var cut = Render(Step() with { Antiphon = "Invented sample antiphon", IsSampleText = true }, passage: "Synthetic Bible body");
+
+        Assert.Equal("Synthetic Bible body", cut.Find(".hourplayer__text").TextContent);
+        Assert.Equal("Includes sample provider content; not approved liturgical text.", cut.Find(".hourplayer__provider-sample").TextContent);
+        Assert.Contains(cut.FindAll(".hourplayer__translation"), element => element.TextContent == "Douay-Rheims translation");
+    }
+
+    [Fact]
+    public void MissingProviderAntiphon_IsExplicitEvenWithABibleBody()
+    {
+        var option = new OfficeStep(OfficeStepKind.Psalm, "Psalm 95") { Reference = new("Psalm 95"), UseOfficialText = true };
+
+        var cut = Render(option, passage: "Synthetic Bible body");
+
+        Assert.Equal("Synthetic Bible body", cut.Find(".hourplayer__text").TextContent);
+        Assert.Equal("This psalmody's prescribed antiphon is not available here. Read it from an official source below.",
+            cut.Find(".hourplayer__official[role=note]").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__antiphon"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Missing_required_stanza_shows_a_notice_without_partial_text_or_doxology(bool missingFirst)
+    {
+        var bible = Substitute.For<Respondeo.Bible.Contracts.IBibleText>();
+        bible.GetPassageAsync("Psalm 95:1-5").Returns(missingFirst ? null : "Synthetic first stanza");
+        bible.GetPassageAsync("Psalm 95:6-11").Returns(missingFirst ? "Synthetic second stanza" : null);
+        bible.GetPassageAsync("Psalm 95").Returns("Wrong full psalm");
+        var option = new OfficeStep(OfficeStepKind.Psalm, "Psalm 95")
+        {
+            Reference = new("Psalm 95"),
+            Stanzas = [new("Psalm 95:1-5"), new("Psalm 95:6-11")],
+            Antiphon = "Synthetic antiphon",
+        };
+        var date = new DateOnly(2026, 11, 11);
+        var office = new Office(date, Hour.MorningPrayer, "Synthetic Office",
+            new(date, Respondeo.LiturgicalCalendar.LiturgicalSeason.OrdinaryTime, Respondeo.LiturgicalCalendar.LiturgicalColor.Green, null),
+            4, [new OfficeStep(OfficeStepKind.Rubric, "Options") { Options = [option] }]);
+        var loaded = await new HourPassageLoader(bible).LoadAsync(office);
+
+        var cut = Render(option, loaded.OptionStanzas.GetValueOrDefault((0, 0)), loaded.OptionPassages.GetValueOrDefault((0, 0)));
+
+        Assert.Equal("Read the text from an official source below.", cut.Find(".hourplayer__official").TextContent);
+        Assert.Empty(cut.FindAll(".hourplayer__text"));
+        Assert.Empty(cut.FindAll(".hourplayer__translation"));
+        Assert.Equal("Ant. Synthetic antiphon", cut.Find(".hourplayer__antiphon").TextContent);
     }
 
     [Fact]

@@ -38,6 +38,25 @@
     text-align: center;
 }
 
+.liturgy__contenders {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.liturgy__contender {
+    min-width: 0;
+}
+
+.liturgy__contender-rank {
+    margin: 0 0 0.4rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
 .liturgy__headline {
     display: flex;
     flex-direction: column;

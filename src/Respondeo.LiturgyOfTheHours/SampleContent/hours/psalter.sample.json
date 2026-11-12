@@ -16,6 +16,10 @@
     "psalm-antiphon-1": { "text": "", "antiphon": "Sample antiphon for the first psalm, {{star}} with its second half." },
     "psalm-antiphon-2": { "text": "", "antiphon": "Sample antiphon for the second psalm {{star}} or canticle." },
     "psalm-antiphon-3": { "text": "", "antiphon": "Sample antiphon for the third psalm {{star}} or canticle." },
+    "invitatory/psalm-95": { "text": "", "antiphon": "Sample Invitatory antiphon for layout testing only." },
+    "invitatory/psalm-100": { "text": "", "antiphon": "Sample Invitatory antiphon for layout testing only." },
+    "invitatory/psalm-67": { "text": "", "antiphon": "Sample Invitatory antiphon for layout testing only." },
+    "invitatory/psalm-24": { "text": "", "antiphon": "Sample Invitatory antiphon for layout testing only." },
     "responsory": {
       "text": "Sample responsory, first part, {{star}} sample responsory, second part.\n— Sample responsory, first part, {{star}} sample responsory, second part.\nSample verse of the responsory,\n— sample responsory, second part.\nGlory to the Father, and to the Son, and to the Holy Spirit.\n— Sample responsory, first part, {{star}} sample responsory, second part."
     },

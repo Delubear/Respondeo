@@ -461,7 +461,8 @@
     line-height: 1.6;
 }
 
-.hourplayer__sample {
+.hourplayer__sample,
+.hourplayer__calendar-warning {
     max-width: 42rem;
     margin: 1rem auto;
     padding: 0.6rem 0.9rem;
@@ -469,6 +470,27 @@
     border-radius: 0.25rem;
     color: var(--ink-soft);
     font-size: 0.9rem;
+}
+
+.hourplayer__calendar-warning p {
+    margin: 0.25rem 0;
+}
+
+.hourplayer__calendar-warning select {
+    display: block;
+    width: min(100%, 28rem);
+    margin: 0.35rem auto 0.75rem;
+    padding: 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.25rem;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+}
+
+.hourplayer__calendar-candidates {
+    margin: 0.25rem 0 0;
+    padding-inline-start: 1.25rem;
 }
 
 .hourplayer__ack {

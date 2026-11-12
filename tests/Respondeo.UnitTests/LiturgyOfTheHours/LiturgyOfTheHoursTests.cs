@@ -33,20 +33,58 @@ public class LiturgyOfTheHoursTests
     }
 
     [Fact]
+    public void Hours_UseTheSelectedCelebrationWithoutResolvingTheCalendarTie()
+    {
+        var date = new DateOnly(2038, 6, 24);
+        var calendarDay = LiturgicalCalendars.Create(LiturgicalCalendarOptions.Default).ForDate(date);
+        var john = Assert.Single(calendarDay.Occurrence!.ContendingCelebrations,
+            contender => contender.CalendarKey == "nativity-of-saint-john-the-baptist");
+        var hours = Hours();
+
+        var defaultOffice = hours.Compose(date, Hour.MorningPrayer);
+        var selectedOffice = hours.Compose(date, Hour.MorningPrayer, celebrationCalendarKey: john.CalendarKey);
+        var selectedVespers = hours.Compose(date, Hour.EveningPrayer, celebrationCalendarKey: john.CalendarKey);
+        var defaultVespers = hours.Compose(date, Hour.EveningPrayer);
+        var vespersBefore = hours.Compose(date.AddDays(-1), Hour.EveningPrayer, celebrationCalendarKey: john.CalendarKey);
+
+        Assert.Equal(calendarDay.Celebration?.CalendarKey, defaultOffice.Day.Celebration?.CalendarKey);
+        Assert.Null(defaultOffice.SelectedCelebrationCalendarKey);
+        Assert.Equal(john.CalendarKey, selectedOffice.SelectedCelebrationCalendarKey);
+        Assert.Equal(john.CalendarKey, selectedOffice.Day.Celebration?.CalendarKey);
+        Assert.Equal(john.Color, selectedOffice.Day.Color);
+        Assert.Equal(LiturgicalOccurrenceRule.UnresolvedEqualPrecedence, selectedOffice.Day.Occurrence?.Rule);
+        Assert.Equal(2, selectedOffice.Day.Occurrence?.ContendingCelebrations.Count);
+        Assert.Equal(john.CalendarKey, selectedVespers.Day.Celebration?.CalendarKey);
+        Assert.Equal(["Psalm 16", "Psalm 21:2-8, 14", "Revelation 15:3-4"], selectedVespers.Steps
+            .Where(step => step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle)
+            .Select(step => step.Reference?.Citation));
+        Assert.Equal(["Psalm 110:1-5, 7", "Psalm 111", "Revelation 19:1-7"], defaultVespers.Steps
+            .Where(step => step.Kind is OfficeStepKind.Psalm or OfficeStepKind.Canticle)
+            .Select(step => step.Reference?.Citation));
+        Assert.True(vespersBefore.IsFirstVespers);
+        Assert.Equal(john.CalendarKey, vespersBefore.Day.Celebration?.CalendarKey);
+        Assert.Throws<ArgumentException>(() => hours.Compose(date.AddDays(1), Hour.MorningPrayer,
+            celebrationCalendarKey: john.CalendarKey));
+    }
+
+    private static LiturgicalWeek Week(DateOnly date, bool unitedStates = false) =>
+        LiturgicalCalendars.Create(new(unitedStates ? CalendarRegion.UnitedStates : CalendarRegion.GeneralRoman)).ForWeek(date);
+
+    [Fact]
     public void PsalterWeek_FirstSundayOfAdvent_IsWeekOne() =>
-        Assert.Equal(1, PsalterWeek.For(new DateOnly(2024, 12, 1), LiturgicalSeason.Advent));
+        Assert.Equal(1, Week(new(2024, 12, 1)).PsalterWeek);
 
     [Fact]
     public void PsalterWeek_AshWednesday_IsWeekFour() =>
-        Assert.Equal(4, PsalterWeek.For(new DateOnly(2025, 3, 5), LiturgicalSeason.Lent));
+        Assert.Equal(4, Week(new(2025, 3, 5)).PsalterWeek);
 
     [Fact]
     public void PsalterWeek_FirstSundayOfLent_IsWeekOne() =>
-        Assert.Equal(1, PsalterWeek.For(new DateOnly(2025, 3, 9), LiturgicalSeason.Lent));
+        Assert.Equal(1, Week(new(2025, 3, 9)).PsalterWeek);
 
     [Fact]
     public void PsalterWeek_EasterSunday_IsWeekOne() =>
-        Assert.Equal(1, PsalterWeek.For(new DateOnly(2025, 4, 20), LiturgicalSeason.Easter));
+        Assert.Equal(1, Week(new(2025, 4, 20)).PsalterWeek);
 
     [Theory]
     [InlineData(2025, 5, 25, 2)]
@@ -54,7 +92,7 @@ public class LiturgyOfTheHoursTests
     [InlineData(2025, 6, 1, 3)]
     [InlineData(2025, 6, 7, 3)]
     public void PsalterWeek_EasterWeeksSixAndSeven_Cycle(int year, int month, int day, int expected) =>
-        Assert.Equal(expected, PsalterWeek.For(new DateOnly(year, month, day), LiturgicalSeason.Easter));
+        Assert.Equal(expected, Week(new(year, month, day)).PsalterWeek);
 
     [Theory]
     [InlineData(2023, 12, 29, 1)]
@@ -65,20 +103,20 @@ public class LiturgyOfTheHoursTests
     [InlineData(2026, 1, 4, 2)]
     [InlineData(2022, 12, 30, 1)]
     [InlineData(2023, 1, 1, 1)]
-    public void PsalterWeek_ChristmasTime_Cycle(int year, int month, int day, int expected) =>
-        Assert.Equal(expected, PsalterWeek.For(new DateOnly(year, month, day), LiturgicalSeason.Christmas));
+    public void PsalterWeek_ChristmasTime_PreservesProvisionalBackgroundCycle(int year, int month, int day, int expected) =>
+        Assert.Equal(expected, Week(new(year, month, day)).PsalterWeek);
 
     [Fact]
     public void OrdinaryTimeWeek_DayAfterBaptism_IsWeekOne() =>
-        Assert.Equal(1, PsalterWeek.OrdinaryTimeWeek(new DateOnly(2025, 1, 13), LiturgicalDates.Easter(2025)));
+        Assert.Equal(1, Week(new(2025, 1, 13)).TemporalWeek);
 
     [Fact]
     public void OrdinaryTimeWeek_UsMondayBaptismRule_IsWeekOne() =>
-        Assert.Equal(1, PsalterWeek.OrdinaryTimeWeek(new DateOnly(2024, 1, 9), LiturgicalDates.Easter(2024), epiphanyTransferredToSunday: true));
+        Assert.Equal(1, Week(new(2024, 1, 9), unitedStates: true).TemporalWeek);
 
     [Fact]
     public void OrdinaryTimeWeek_LastSaturdayBeforeAdvent_IsWeekThirtyFour() =>
-        Assert.Equal(34, PsalterWeek.OrdinaryTimeWeek(new DateOnly(2025, 11, 29), LiturgicalDates.Easter(2025)));
+        Assert.Equal(34, Week(new(2025, 11, 29)).TemporalWeek);
 
     [Fact]
     public void Easter_2025_IsApril20() =>
@@ -152,8 +190,8 @@ public class LiturgyOfTheHoursTests
         Assert.Contains("Visita", NightStep(new DateOnly(2025, 7, 19), OfficeStepKind.Prayer).Text);
 
     [Fact]
-    public void NightPrayer_EasterTime_UsesHaecDiesResponsory() =>
-        Assert.Contains("Haec dies", NightStep(new DateOnly(2025, 5, 6), OfficeStepKind.Responsory).Text);
+    public void NightPrayer_EasterWeek_UsesHaecDiesResponsory() =>
+        Assert.Contains("Haec dies", NightStep(new DateOnly(2027, 3, 30), OfficeStepKind.Responsory).Text);
 
     [Fact]
     public void MorningPrayer_DefaultBuild_UsesMarkedSampleContent()

@@ -1,30 +1,28 @@
 # Proper Calendar for the Dioceses of the United States of America (USCCB), overlaid on GeneralRomanCalendar.txt.
 # '-MM-DD | Name' removes a General Roman entry; an entry whose name matches one on the same date replaces it; any other entry is added.
-01-04 | Memorial         | White  | Saint Elizabeth Ann Seton, Religious
-01-05 | Memorial         | White  | Saint John Neumann, Bishop
-01-06 | OptionalMemorial | White  | Saint André Bessette, Religious
-01-22 | Memorial         | Violet | Day of Prayer for the Legal Protection of Unborn Children
+01-04 | Memorial         | White  | Saint Elizabeth Ann Seton, Religious | | | saint-elizabeth-ann-seton-religious | ProperMemorial
+01-05 | Memorial         | White  | Saint John Neumann, Bishop | | | saint-john-neumann-bishop | ProperMemorial
+01-06 | OptionalMemorial | White  | Saint André Bessette, Religious | | | saint-andre-bessette-religious | OptionalMemorial
+01-22 | Memorial         | Violet | Day of Prayer for the Legal Protection of Unborn Children | | | day-of-prayer-for-unborn-children | ProperMemorial
 -01-22 | Saint Vincent, Deacon and Martyr
-01-23 | OptionalMemorial | Red    | Saint Vincent, Deacon and Martyr
-01-23 | OptionalMemorial | White  | Saint Marianne Cope, Virgin
-03-03 | OptionalMemorial | White  | Saint Katharine Drexel, Virgin
-05-10 | OptionalMemorial | White  | Saint Damien de Veuster, Priest
-05-15 | OptionalMemorial | White  | Saint Isidore
-07-01 | OptionalMemorial | White  | Saint Junípero Serra, Priest
-07-04 | OptionalMemorial | White  | Independence Day
-07-14 | Memorial         | White  | Saint Kateri Tekakwitha, Virgin
+01-23 | OptionalMemorial | Red    | Saint Vincent, Deacon and Martyr | | | saint-vincent-deacon-and-martyr | OptionalMemorial
+01-23 | OptionalMemorial | White  | Saint Marianne Cope, Virgin | | | saint-marianne-cope-virgin | OptionalMemorial
+03-03 | OptionalMemorial | White  | Saint Katharine Drexel, Virgin | | | saint-katharine-drexel-virgin | OptionalMemorial
+05-10 | OptionalMemorial | White  | Saint Damien de Veuster, Priest | | | saint-damien-de-veuster-priest | OptionalMemorial
+05-15 | OptionalMemorial | White  | Saint Isidore | | | saint-isidore | OptionalMemorial
+07-01 | OptionalMemorial | White  | Saint Junípero Serra, Priest | | | saint-junipero-serra-priest | OptionalMemorial
+07-04 | OptionalMemorial | White  | Independence Day | | | independence-day | OptionalMemorial
+07-14 | Memorial         | White  | Saint Kateri Tekakwitha, Virgin | | | saint-kateri-tekakwitha-virgin | ProperMemorial
 -07-14 | Saint Camillus de Lellis, Priest
-07-18 | OptionalMemorial | White  | Saint Camillus de Lellis, Priest
+07-18 | OptionalMemorial | White  | Saint Camillus de Lellis, Priest | | | saint-camillus-de-lellis-priest | OptionalMemorial
 -08-12 | Saint Jane Frances de Chantal, Religious
-08-18 | OptionalMemorial | White  | Saint Jane Frances de Chantal, Religious
-09-05 | OptionalMemorial | White  | Saint Teresa of Calcutta, Virgin
-09-09 | Memorial         | White  | Saint Peter Claver, Priest
-10-06 | OptionalMemorial | White  | Blessed Marie-Rose Durocher, Virgin
-10-09 | OptionalMemorial | White  | Saint John Henry Newman, Cardinal
-10-19 | Memorial         | Red    | Saints John de Brébeuf and Isaac Jogues, Priests, and Companions, Martyrs
+08-18 | OptionalMemorial | White  | Saint Jane Frances de Chantal, Religious | | | saint-jane-frances-de-chantal-religious | OptionalMemorial
+09-09 | Memorial         | White  | Saint Peter Claver, Priest | | | saint-peter-claver-priest | ProperMemorial
+10-06 | OptionalMemorial | White  | Blessed Marie-Rose Durocher, Virgin | | | blessed-marie-rose-durocher-virgin | OptionalMemorial
+10-19 | Memorial         | Red    | Saints John de Brébeuf and Isaac Jogues, Priests, and Companions, Martyrs | | | saints-john-de-brebeuf-and-isaac-jogues-priests-and-companions-martyrs | ProperMemorial
 -10-19 | Saint Paul of the Cross, Priest
-10-20 | OptionalMemorial | White  | Saint Paul of the Cross, Priest
-11-13 | Memorial         | White  | Saint Frances Xavier Cabrini, Virgin
-11-18 | OptionalMemorial | White  | Saint Rose Philippine Duchesne, Virgin
-11-23 | OptionalMemorial | Red    | Blessed Miguel Agustín Pro, Priest and Martyr
-12-12 | Feast            | White  | Our Lady of Guadalupe
+10-20 | OptionalMemorial | White  | Saint Paul of the Cross, Priest | | | saint-paul-of-the-cross-priest | OptionalMemorial
+11-13 | Memorial         | White  | Saint Frances Xavier Cabrini, Virgin | | | saint-frances-xavier-cabrini-virgin | ProperMemorial
+11-18 | OptionalMemorial | White  | Saint Rose Philippine Duchesne, Virgin | | | saint-rose-philippine-duchesne-virgin | OptionalMemorial
+11-23 | OptionalMemorial | Red    | Blessed Miguel Agustín Pro, Priest and Martyr | | | blessed-miguel-agustin-pro-priest-and-martyr | OptionalMemorial
+12-12 | Feast            | White  | Our Lady of Guadalupe | | | our-lady-of-guadalupe | ProperFeast

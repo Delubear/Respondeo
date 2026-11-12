@@ -15,7 +15,8 @@ namespace Respondeo.LiturgyOfTheHours;
 /// <summary>One licensed text, optionally with the antiphon that frames it.</summary>
 /// <param name="Text">The text to pray, with line breaks preserved as authored.</param>
 /// <param name="Antiphon">The antiphon said before and after, when the element has one.</param>
-public sealed record LicensedText(string Text, string? Antiphon = null);
+/// <param name="Citation">Canonical citation; required for a full psalmody body and checked against the selected reference.</param>
+public sealed record LicensedText(string Text, string? Antiphon = null, string? Citation = null);
 
 /// <summary>The serialized shape of an embedded content file.</summary>
 internal sealed record HoursContentFile
@@ -76,6 +77,12 @@ internal sealed record HoursContentFile
 
             foreach (var (key, text) in file.Texts)
             {
+                if (key.Split('/')[^1].StartsWith("psalm-antiphon-", StringComparison.Ordinal)
+                    && !string.IsNullOrEmpty(text.Text) && string.IsNullOrWhiteSpace(text.Citation))
+                {
+                    throw new InvalidDataException($"Hours psalmody body '{key}' in '{name}' must declare its canonical citation.");
+                }
+
                 if (!texts.TryAdd(key, text))
                 {
                     throw new InvalidDataException($"Hours content key '{key}' is defined more than once (again in '{name}').");

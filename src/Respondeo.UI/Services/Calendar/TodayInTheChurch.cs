@@ -30,8 +30,18 @@ public sealed class TodayInTheChurch
         return new TodayInTheChurch(day, start);
     }
 
+    /// <summary>The contenders shown when the calendar cannot resolve an equal-precedence tie.</summary>
+    public IReadOnlyList<LiturgicalCelebration> ContendingCelebrations =>
+        _day.Occurrence is { Rule: LiturgicalOccurrenceRule.UnresolvedEqualPrecedence } occurrence
+            ? occurrence.ContendingCelebrations
+            : [];
+
+    /// <summary>Whether equal-precedence contenders prevent the calendar from determining the observance.</summary>
+    public bool HasUnresolvedTie => _day.Occurrence?.Rule == LiturgicalOccurrenceRule.UnresolvedEqualPrecedence;
+
     /// <summary>
     /// The celebration shown as a card: the principal celebration when there is one, otherwise the currently selected optional memorial of a ferial day.
+    /// Unresolved contenders are displayed separately and are not represented by this provisional principal.
     /// </summary>
     public LiturgicalCelebration? Celebration => _day.Celebration ?? (_optionalMemorials.Count > 0 ? _optionalMemorials[_index] : null);
 
@@ -75,7 +85,17 @@ public sealed class TodayInTheChurch
     /// <summary>Slugs of every saint the day links to, so their profiles can be loaded together.</summary>
     public IEnumerable<string> LinkedSlugs()
     {
-        if (_day.Celebration?.Id is { } celebrationId)
+        if (HasUnresolvedTie)
+        {
+            foreach (var contender in ContendingCelebrations)
+            {
+                if (contender.Id is { } contenderId)
+                {
+                    yield return contenderId;
+                }
+            }
+        }
+        else if (_day.Celebration?.Id is { } celebrationId)
         {
             yield return celebrationId;
         }
@@ -89,11 +109,16 @@ public sealed class TodayInTheChurch
         }
     }
 
-    /// <summary>A short lead-in above the card, phrased to fit the celebration's rank.</summary>
+    /// <summary>A short lead-in above the celebration card or unresolved contender list.</summary>
     public string CelebrationIntro
     {
         get
         {
+            if (HasUnresolvedTie)
+            {
+                return "Possible celebrations; equal precedence leaves the choice unresolved";
+            }
+
             if (IsOptionalMemorial)
             {
                 return "The Church also remembers today";
@@ -158,6 +183,15 @@ public sealed class TodayInTheChurch
 
     public string ColorClass => _day.Color.ToString().ToLowerInvariant();
 
+    public string MassObligationMessage => _day.Obligation.Status switch
+    {
+        LiturgicalObligationStatus.Obligatory when _day.Obligation.Rule == LiturgicalObligationRule.Sunday => "Mass obligation: Sunday",
+        LiturgicalObligationStatus.Obligatory => "Mass obligation: Holy day of obligation",
+        LiturgicalObligationStatus.NotObligatory => "No holy day of obligation identified by this calendar profile",
+        LiturgicalObligationStatus.Unknown => "Mass-obligation status is not determined by this calendar profile",
+        _ => throw new InvalidOperationException($"Unknown mass-obligation status: {_day.Obligation.Status}."),
+    };
+
     /// <summary>
     /// The headline's second line. On a ferial day it is the "Monday of the Nth Week…" title;
     /// on a celebration day it names the day by rank, e.g. "The Feast of the Transfiguration" or "The Memorial of Saint Benedict".
@@ -166,6 +200,11 @@ public sealed class TodayInTheChurch
     {
         get
         {
+            if (HasUnresolvedTie)
+            {
+                return "Equal-precedence celebration; observance unresolved";
+            }
+
             if (_day.Celebration is not { } celebration)
             {
                 return _day.FerialName ?? SeasonName;
