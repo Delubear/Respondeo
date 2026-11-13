@@ -24,6 +24,17 @@
     refresh after a deploy (needed on GitHub Pages, where we cannot set cache headers).
   -->
 
+  <!-- .NET 11 packages this asset with an optional fingerprint. Static hosting needs a fingerprinted
+       physical file, not just a server endpoint alias. Set this before HTML and PWA inventory generation. -->
+  <Target Name="RequireFingerprintedBlazorBootstrap" AfterTargets="ReadPackageStaticWebAssetManifests">
+    <ItemGroup>
+      <StaticWebAsset Update="@(StaticWebAsset)"
+        Condition="'%(StaticWebAsset.RelativePath)' == '_framework/blazor.webassembly#[.{fingerprint}]?.js'">
+        <RelativePath>_framework/blazor.webassembly#[.{fingerprint}]!.js</RelativePath>
+      </StaticWebAsset>
+    </ItemGroup>
+  </Target>
+
   <!--
     Publish-time stylesheet fingerprinting + PWA SRI re-sync. Extracted to its own file to keep
     this project file readable; see build/FingerprintAppStylesheet.targets for the rationale.

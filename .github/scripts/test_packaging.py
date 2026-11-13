@@ -86,6 +86,15 @@ class PackagingTests(unittest.TestCase):
 				archive.writestr("assets/wwwroot/" + name, body)
 		verify(apk, "android", self.repository)
 
+	def test_unfingerprinted_bootstrap_is_rejected_even_with_valid_inventory(self):
+		self.assets["_framework/blazor.webassembly.js"] = self.assets.pop("_framework/blazor.webassembly.abcdefghij.js")
+		self.assets["index.html"] = self.shell().replace(b"blazor.webassembly.abcdefghij.js", b"blazor.webassembly.js")
+		self.assert_rejected("WASM bootstrap is not fingerprinted")
+
+	def test_missing_fingerprinted_bootstrap_is_rejected(self):
+		del self.assets["_framework/blazor.webassembly.abcdefghij.js"]
+		self.assert_rejected("references missing asset.*blazor.webassembly.abcdefghij.js")
+
 	def test_missing_font(self):
 		del self.assets["_content/Respondeo.UI/fonts/body.woff2"]
 		self.assert_rejected("references missing asset.*body.woff2")

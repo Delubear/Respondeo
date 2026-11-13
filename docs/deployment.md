@@ -102,6 +102,13 @@ WebView bootstrap, and plain-name CSS/JS assets. Android must not package the PW
 or Cloudflare analytics in its shell. Native light/dark paper constants must match the shared CSS tokens. Feature defaults remain the shared embedded
 baseline described below; Phase 3 registration tests verify required settings and override precedence.
 
+.NET 11 supplies the WASM bootstrap as a package static asset with an optional fingerprint. The WASM project makes that fingerprint required
+before the SDK generates HTML, compressed assets, and the PWA inventory. GitHub Pages needs the fingerprinted physical file, not just an
+ASP.NET Core endpoint alias; keep the packaging check strict rather than accepting an unversioned bootstrap.
+
+The browser gate uses Playwright 1.64.1 and its bundled Chromium to support .NET 11's WASM exception handling. The former Chromium 131
+cannot start this runtime. Browser cache keys include `Directory.Packages.props`, where the Playwright version is pinned.
+
 The native tests compile the actual `AppPackageHttpHandler` source and replace only its package-file opener. In-memory tests cover URI decoding,
 query stripping, byte delivery, missing files, cancellation, and unexpected errors. Artifact tests read real Inquiry, Miracles, and Prayers manifests
 and every listed article from `assets/wwwroot/` in the selected APK, through that handler and without a network handler.

@@ -23,7 +23,7 @@ runs:
       uses: actions/cache@v6
       with:
         path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ hashFiles('**/*.csproj') }}
+        key: ${{ runner.os }}-playwright-${{ hashFiles('Directory.Packages.props', '**/*.csproj') }}
         restore-keys: |
           ${{ runner.os }}-playwright-
 
