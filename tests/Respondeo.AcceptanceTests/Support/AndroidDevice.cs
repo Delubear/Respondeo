@@ -174,7 +174,7 @@ internal sealed class AndroidDevice
         await RunAsync("shell", "input", "tap", ((bounds.Left + bounds.Right) / 2).ToString(), ((bounds.Top + bounds.Bottom) / 2).ToString());
     }
 
-    internal async Task<XElement> ScrollToAsync(string label, bool contains = false)
+    internal async Task<XElement> ScrollToAsync(string label, bool contains = false, bool towardTop = false)
     {
         for (var attempt = 0; attempt < 10; attempt++)
         {
@@ -189,7 +189,7 @@ internal sealed class AndroidDevice
                     return false;
                 }
                 var bounds = ParseBounds((string?)node.Attribute("bounds") ?? "");
-                return bounds.Top > viewport.Top + 100 && bounds.Bottom < viewport.Bottom - 200;
+                return (towardTop ? bounds.Top >= viewport.Top : bounds.Top > viewport.Top + 100) && bounds.Bottom < viewport.Bottom - 200;
             });
             if (match is not null)
             {
@@ -197,8 +197,9 @@ internal sealed class AndroidDevice
             }
             var x = ((viewport.Left + viewport.Right) / 2).ToString();
             var height = viewport.Bottom - viewport.Top;
-            await RunAsync("shell", "input", "swipe", x, (viewport.Top + height * 3 / 4).ToString(),
-                x, (viewport.Top + height / 3).ToString(), "500");
+            var upper = (viewport.Top + height / 3).ToString();
+            var lower = (viewport.Top + height * 3 / 4).ToString();
+            await RunAsync("shell", "input", "swipe", x, towardTop ? upper : lower, x, towardTop ? lower : upper, "500");
         }
         throw new TimeoutException($"Could not scroll '{label}' into the Android viewport. Evidence: {EvidenceDirectory}");
     }

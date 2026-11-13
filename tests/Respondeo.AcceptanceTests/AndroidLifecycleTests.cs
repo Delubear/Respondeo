@@ -39,7 +39,7 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
             await device.LaunchAsync();
             await device.WaitAsync("Catholic Miracles", contains: true);
             await device.CaptureAsync("resumed-after-back");
-            await device.TapAsync("Back to top");
+            await device.ScrollToAsync("RESPONDEO", towardTop: true);
             await device.TapAsync("RESPONDEO");
             await AssertPreferencesAsync(device, textHeight);
         });
@@ -111,7 +111,7 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
     private static async Task AssertPreferencesAsync(AndroidDevice device, int textHeight)
     {
         await device.WaitAsync("One question leads to the next");
-        await device.WaitAsync("Switch to light theme");
+        await device.ScrollToAsync("Switch to light theme", towardTop: true);
         var lede = await device.WaitAsync(Lede, contains: true, predicate: node => Math.Abs(Height(node) - textHeight) <= 2);
         Assert.InRange(Height(lede), textHeight - 2, textHeight + 2);
         await device.TapAsync("Open the quick menu");
@@ -168,7 +168,7 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
             Assert.InRange(AndroidDevice.ParseBounds((string?)restored.Attribute("bounds") ?? "").Top, originalTop - 12, originalTop + 12);
         }
         await device.CaptureAsync("miracles-restored");
-        await device.TapAsync("Back to top");
+        await device.ScrollToAsync("RESPONDEO", towardTop: true);
         await device.TapAsync("RESPONDEO");
         await device.WaitAsync("One question leads to the next");
     }
