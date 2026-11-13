@@ -2,6 +2,7 @@
 @implements IDisposable
 @inject NavigationManager Nav
 @inject AccessibilityInterop Accessibility
+@inject Respondeo.Services.FeatureFlags Features
 @inject ISeasonalPortrait Portrait
 @inject IDayWatcher DayWatcher
 @inject NavigationInterop Navigation
@@ -132,7 +133,7 @@
     private void UpdateGuides()
     {
         var path = Nav.ToBaseRelativePath(Nav.Uri);
-        _guides = FloatingGuideRoutes.Resolve(path);
+        _guides = FloatingGuideRoutes.Resolve(path, Features.LiturgicalCalendarFeature);
     }
 
     public void Dispose()

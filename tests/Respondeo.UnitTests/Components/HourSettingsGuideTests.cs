@@ -24,6 +24,7 @@ public class HourSettingsGuideTests : TestContext
             return Task.CompletedTask;
         });
         Services.AddSingleton(settings);
+        Services.AddSingleton(new FeatureFlags());
         var cut = RenderComponent<HourSettingsGuide>();
         var omitLabel = cut.FindAll("label").Single(label => label.TextContent.Contains("GILH 35", StringComparison.Ordinal));
         var ordinaryLabel = cut.FindAll("label").Single(label => label.TextContent.Contains("already prayed", StringComparison.Ordinal));

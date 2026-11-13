@@ -68,14 +68,19 @@ public static class SiteMap
     /// <summary>The pinnable help orbs, honoring the feature flags.</summary>
     public static IReadOnlyList<Entry> Guides(FeatureFlags features)
     {
-        var guides = new List<Entry>
+        var guides = new List<Entry>();
+        if (features.LiturgicalCalendarFeature)
         {
-            Orb(OrbLauncher.Liturgical, "Today in the Church"),
+            guides.Add(Orb(OrbLauncher.Liturgical, "Today in the Church"));
+        }
+
+        guides.AddRange(
+        [
             Orb(OrbLauncher.Prayers, "Guide to Prayers"),
             Orb(OrbLauncher.Saints, "Reading the saints"),
             Orb(OrbLauncher.Summa, "How to read the Summa"),
             Orb(OrbLauncher.Bible, "How to read the Bible"),
-        };
+        ]);
         return guides;
     }
 

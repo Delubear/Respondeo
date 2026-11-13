@@ -3,7 +3,9 @@
    spanning every Discover-area route; it merely slides when its slot changes. Which orbs show on
    which route is declared in FloatingGuideRoutes (the single source of truth), and each visible orb
    gets its own slot from Guides.SlotOf so they never overlap. *@
-@if (Guides.ShowLiturgicalOrb || ForcedOrb == OrbLauncher.Liturgical)
+@inject Respondeo.Services.FeatureFlags Features
+
+@if (Features.LiturgicalCalendarFeature && (Guides.ShowLiturgicalOrb || ForcedOrb == OrbLauncher.Liturgical))
 {
     <LiturgicalOrb Slot="Guides.SlotOf(OrbLauncher.Liturgical)" HideTrigger="!Guides.ShowLiturgicalOrb" />
 }

@@ -222,12 +222,13 @@ registered before this call win over the shared browser `TryAdd` defaults.
 
 The **`FeatureFlags`** baseline lives in
 [`Configuration/appsettings.json`](../src/Respondeo.UI/Configuration/appsettings.json), linked as an embedded resource
-in both host assemblies. There are no hand-maintained host copies. Both flags are explicitly `true` in that baseline;
+in both host assemblies. There are no hand-maintained host copies. All flags are explicitly `true` in that baseline;
 a missing embedded resource, missing flag, or invalid boolean fails startup rather than silently enabling features.
 The flags are represented by [`Services/FeatureFlags.cs`](../src/Respondeo.UI/Services/FeatureFlags.cs).
 
 | Flag | Effect when `false` |
 | --- | --- |
+| `LiturgicalCalendarFeature` | Hides the Today in the Church guide and General Roman/United States calendar-profile selector. The calendar engine remains active for the Liturgy of the Hours and other date-based displays. |
 | `LiturgyOfTheHoursFeature` | Hides the Liturgy of the Hours area within Discover. |
 | `ExternalFeedback` | Skips the feedback choice dialog so the trigger goes straight to opening a GitHub issue (instead of also offering the hosted Tally form). |
 

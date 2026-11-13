@@ -12,6 +12,9 @@ public sealed class FeatureFlags
     /// <summary>The configuration section these flags bind from.</summary>
     public const string SectionName = "FeatureFlags";
 
+    /// <summary>Shows the standalone Today in the Church guide and calendar-profile selector when enabled.</summary>
+    public bool LiturgicalCalendarFeature { get; set; } = true;
+
     /// <summary>Shows the Liturgy of the Hours sub-area within the Discover pillar when enabled.</summary>
     public bool LiturgyOfTheHoursFeature { get; set; } = true;
 

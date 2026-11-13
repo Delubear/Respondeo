@@ -91,7 +91,7 @@ public static class FloatingGuideRoutes
     /// Resolves which orbs a route shows. Vertical placement is derived from the result by <see cref="FloatingGuideState.SlotOf"/>.
     /// The caller may pass either a raw relative URL or an already-normalized route — <see cref="Normalize"/> is idempotent.
     /// </summary>
-    public static FloatingGuideState Resolve(string relativePath)
+    public static FloatingGuideState Resolve(string relativePath, bool liturgicalCalendarEnabled = true)
     {
         var route = Normalize(relativePath);
 
@@ -100,8 +100,8 @@ public static class FloatingGuideRoutes
         var summa = IsIn(route, SummaBrowse);
 
         // On the prayers/saints browse pages the liturgical orb shares the screen with their guide; slots keep them apart.
-        var liturgical = Array.IndexOf(LiturgicalBaseRoutes, route) >= 0 || route == HoursBrowse
-            || route == PrayersBrowse || route == SaintsBrowse;
+        var liturgical = liturgicalCalendarEnabled && (Array.IndexOf(LiturgicalBaseRoutes, route) >= 0 || route == HoursBrowse
+            || route == PrayersBrowse || route == SaintsBrowse);
 
         return new FloatingGuideState(
             ShowLiturgicalOrb: liturgical,

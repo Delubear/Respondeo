@@ -66,11 +66,13 @@ public class AppServiceRegistrationTests
         Assert.NotNull(scoped.GetRequiredService<IBibleText>());
         Assert.NotNull(scoped.GetRequiredService<ScrollCoordinator>());
         Assert.NotNull(scoped.GetRequiredService<RoutePrefetcher>());
+        Assert.True(scoped.GetRequiredService<FeatureFlags>().LiturgicalCalendarFeature);
         Assert.True(scoped.GetRequiredService<FeatureFlags>().LiturgyOfTheHoursFeature);
         Assert.True(scoped.GetRequiredService<FeatureFlags>().ExternalFeedback);
     }
 
     [Theory]
+    [InlineData("LiturgicalCalendarFeature")]
     [InlineData("LiturgyOfTheHoursFeature")]
     [InlineData("ExternalFeedback")]
     public void Later_override_changes_only_its_flag_and_configuration(string flag)
@@ -82,24 +84,28 @@ public class AppServiceRegistrationTests
         var services = new ServiceCollection().AddRespondeoApplication(configuration);
         using var provider = services.BuildServiceProvider();
         var flags = provider.GetRequiredService<FeatureFlags>();
+        Assert.Equal(flag != nameof(FeatureFlags.LiturgicalCalendarFeature), flags.LiturgicalCalendarFeature);
         Assert.Equal(flag != nameof(FeatureFlags.LiturgyOfTheHoursFeature), flags.LiturgyOfTheHoursFeature);
         Assert.Equal(flag != nameof(FeatureFlags.ExternalFeedback), flags.ExternalFeedback);
 
         using var unchanged = new ServiceCollection().AddRespondeoApplication(Baseline().Build()).BuildServiceProvider();
+        Assert.True(unchanged.GetRequiredService<FeatureFlags>().LiturgicalCalendarFeature);
         Assert.True(unchanged.GetRequiredService<FeatureFlags>().LiturgyOfTheHoursFeature);
         Assert.True(unchanged.GetRequiredService<FeatureFlags>().ExternalFeedback);
     }
 
     [Theory]
-    [InlineData(null, null)]
-    [InlineData("true", null)]
-    [InlineData(null, "false")]
-    [InlineData("invalid", "true")]
-    [InlineData("true", "")]
-    public void Missing_or_invalid_configuration_fails_at_registration(string? hours, string? feedback)
+    [InlineData(null, null, null)]
+    [InlineData("true", null, null)]
+    [InlineData("true", "true", null)]
+    [InlineData("invalid", "true", "true")]
+    [InlineData("true", "", "true")]
+    [InlineData("true", "true", "")]
+    public void Missing_or_invalid_configuration_fails_at_registration(string? calendar, string? hours, string? feedback)
     {
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         {
+            ["FeatureFlags:LiturgicalCalendarFeature"] = calendar,
             ["FeatureFlags:LiturgyOfTheHoursFeature"] = hours,
             ["FeatureFlags:ExternalFeedback"] = feedback
         }).Build();
@@ -123,6 +129,7 @@ public class AppServiceRegistrationTests
         var builder = Baseline();
         var configuration = builder.Build();
 
+        Assert.Equal("True", configuration["FeatureFlags:LiturgicalCalendarFeature"], ignoreCase: true);
         Assert.Equal("True", configuration["FeatureFlags:LiturgyOfTheHoursFeature"], ignoreCase: true);
         Assert.Equal("True", configuration["FeatureFlags:ExternalFeedback"], ignoreCase: true);
     }

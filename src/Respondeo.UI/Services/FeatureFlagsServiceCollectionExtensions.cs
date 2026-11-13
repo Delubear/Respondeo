@@ -11,6 +11,8 @@ public static class FeatureFlagsServiceCollectionExtensions
         var section = configuration.GetRequiredSection(FeatureFlags.SectionName);
         var flags = new FeatureFlags
         {
+            LiturgicalCalendarFeature = section.GetValue<bool?>(nameof(FeatureFlags.LiturgicalCalendarFeature))
+                ?? throw new InvalidOperationException("Required feature flag 'LiturgicalCalendarFeature' is missing."),
             LiturgyOfTheHoursFeature = section.GetValue<bool?>(nameof(FeatureFlags.LiturgyOfTheHoursFeature))
                 ?? throw new InvalidOperationException("Required feature flag 'LiturgyOfTheHoursFeature' is missing."),
             ExternalFeedback = section.GetValue<bool?>(nameof(FeatureFlags.ExternalFeedback))

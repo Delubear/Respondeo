@@ -24,6 +24,17 @@ public class FloatingGuideRoutesTests
     }
 
     [Fact]
+    public void Disabled_liturgical_calendar_hides_its_route_orb_and_pin_option()
+    {
+        var state = FloatingGuideRoutes.Resolve("discover", liturgicalCalendarEnabled: false);
+        var guides = SiteMap.Guides(new FeatureFlags { LiturgicalCalendarFeature = false });
+
+        Assert.False(state.ShowLiturgicalOrb);
+        Assert.DoesNotContain(guides, guide => guide.Href == SiteMap.OrbPrefix + OrbLauncher.Liturgical);
+        Assert.Equal(4, guides.Count);
+    }
+
+    [Fact]
     public void Every_visible_orb_gets_a_distinct_slot()
     {
         var state = new FloatingGuideState(true, true, true, true, ShowBibleGuide: true);

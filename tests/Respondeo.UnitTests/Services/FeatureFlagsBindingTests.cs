@@ -31,7 +31,8 @@ public class FeatureFlagsBindingTests
         var flags = config.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>();
 
         Assert.NotNull(flags);
-        Assert.True(flags!.LiturgyOfTheHoursFeature);
+        Assert.True(flags!.LiturgicalCalendarFeature);
+        Assert.True(flags.LiturgyOfTheHoursFeature);
         Assert.True(flags.ExternalFeedback);
     }
 
