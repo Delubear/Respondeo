@@ -1,7 +1,7 @@
 ---
 id: five-ways-motion
 title: "The First Way &mdash; Motion"
-summary: "From the fact of change to an unmoved mover."
+summary: "Things change. Can everything making change happen depend on something else?"
 ---
 
 > It is certain, and evident to our senses, that in the world some things are in motion.
@@ -22,21 +22,27 @@ from cold coffee warming to a seed becoming a tree to a mind moving from not-kno
 
 **Why premise 2 holds.**
 To change is for a potential to be made actual, and nothing can give itself what it does not yet have.
-The cold coffee cannot warm *itself*, because it is only potentially hot; something already actually hot (the stove) must bring that potential into act.
-A thing that could actualize its own potential would have to already possess the very actuality it still lacks, which is a contradiction.
-So every change points beyond the changing thing to a cause already in act.
+The cold coffee cannot warm *itself* merely by being able to become hot; something already actual must bring that potential into act.
+A hot stove can do this, though heat can also be produced in other ways, such as through electrical activity.
+The point is not that every cause must possess its effect in exactly the same form. It is that a mere possibility cannot do any causing.
+A thing cannot be merely potential and already actual in the same respect.
+Even when an animal moves itself, already-active parts bring about the movement; its capacity to move doesn't act on its own.
 
 **Why the chain cannot run forever.**
 The regress Aquinas rules out is not a line of dominoes stretching back in time, but a chain of dependence happening *right now*.
-Think of a hand moving a stick that moves a stone: the stick moves only because the hand moves it, here and this instant.
-Remove the hand and the whole series goes still, however many sticks you add in the middle.
-A series like this cannot have infinitely many members each borrowing its motion from the one before, 
-because then there would be no one actually *doing* the moving &mdash; nothing from which the motion originates &mdash; and so no motion at all. Yet motion plainly happens.
+Think of a hand moving a stick that moves a stone: the stick moves the stone because the hand is moving it.
+Add another stick, and then another: each passes along the movement, but none supplies it on its own.
+Without something doing the moving, adding more sticks &mdash; even endlessly &mdash; would not move the stone.
+The hand supplies the movement in this example, but it also depends on other causes, so we must follow the dependence further.
 
 **First in explanation, not first in time.**
-The point is not a *first* domino at the start of history, but a **first** in the order of explanation: something whose actuality is not borrowed from anything else.
-Change happening here and now needs a source of actuality that is not itself waiting to be actualized: 
-a mover that is **pure act**, with no unrealized potential to be moved by another.
+The point is not a *first* domino at the start of history, but a **first** in the order of explanation: a source whose activity is not borrowed from anything else.
+
+The hand shows us the kind of source the sticks need, but it cannot be the ultimate source: it too can change and depends on other things.
+Aquinas argues that anything with potential still depends on what makes it actual.
+The ultimate source must therefore be more than something that happens not to be moving at the moment.
+It must be **pure act**, with no unrealized potential waiting to be made actual.
+[What is God like?](node/what-is-god-like) explores what follows from this.
 
 > It is necessary to arrive at a first mover, put in motion by no other; and this everyone understands to be God.
 >
@@ -44,10 +50,10 @@ a mover that is **pure act**, with no unrealized potential to be moved by anothe
 
 **"But what moves God, then?"**
 Nothing &mdash; and that is not special pleading.
-The argument does not conclude to "something that just happens to be first"; 
+The argument does not conclude to something that just happens to be first;
 it concludes to something that *cannot* be moved, because it has no potential waiting to be actualized.
-To ask what changes the unmoved mover is to ask what actualizes pure actuality, which is like asking what warms a thing that is already warmth itself.
-The chain stops not because we grow tired of asking, but because at pure act there is nothing left to explain.
+We don't simply declare an exception for God. The reasoning leads to a source that does not need the actualization it gives to others.
+The chain stops not because we grow tired of asking, but because pure act has no potential left to be actualized.
 
 ## See it today: the kettle on the stove
 
@@ -58,27 +64,32 @@ the water heats now because I lit the burner a minute ago, and I lit it because 
 But this is a chain of **history**, not of *actualization*. Those past events are done; they are not *doing* anything now. 
 The First Way is not about who started the sequence long ago; it is about what is making the water hotter *this very instant*.
 
-**The essential chain runs downward, into what is actualizing the change right now.** Ask not "what happened earlier?" 
-but "**what is turning this water's potential-to-be-hot into actual heat, right now?**" &mdash; and follow that question down:
+**Follow what is actualizing the change.** Ask not only "what happened earlier?" but **what is turning this water's potential-to-be-hot into actual heat?**
+Then follow the sources of that heat:
 
-1. The **water** warms only because the **kettle's metal** is hotter than it *right now*, handing on heat it does not generate itself.
-2. The metal is hot only because the **flame** is heating it *right now*; cut the gas and the metal's warmth is merely what it borrowed.
-3. The flame burns only because **fuel and oxygen** are combining *right now*, releasing energy neither holds in reserve.
-4. That heating happens at all only because, beneath the chemistry, **physical reality itself is behaving as it does** *right now* &mdash; 
-electromagnetic forces, fields, the lawful order of nature &mdash; none of which switches itself on.
+1. The **water** warms as it receives heat from the hotter **metal** of the kettle.
+2. The **flame** transfers energy to the metal, keeping the kettle hot as it gives heat to the water.
+3. The flame depends on a reaction between **fuel and oxygen**, which releases chemical energy as the reactants form products.
 
-At *every* level the heat is **passed along, not originated**. 
-And notice the tell-tale sign of an essential series: the instant any level fails, 
-the water does not keep warming from leftover momentum; the actualizing *stops*. 
-Each member is an *instrument*, moving the next only insofar as it is itself being moved this moment.
+Each step helps explain the one before it: the water receives heat from the metal, the metal receives energy from the flame, and the flame depends on the fuel and oxygen.
+The kettle can also *store* thermal energy. Turn off the gas, and its hot metal can continue warming the water for a time.
+Even then, the warming water depends on the heat the metal has; it is not warming itself merely by being able to become hot.
 
-**Where the ladder points.** Physics can keep naming deeper rungs: fields, particles, perhaps something below. 
-But each rung it names is another *mover-that-is-moved*: something whose power to actualize is received and governed, never self-possessed. 
-Descend as far as you like and you never reach a rung that is **actualizing without itself being actualized**.
+**Where the ladder points.** The chemical reaction is a real explanation of the flame.
+But fuel and oxygen are not just labels for an unexplained event: they have particular properties and powers that make the reaction possible.
+The fuel can react, and under the right conditions that possibility becomes actual.
 
-That is the whole point. An endless stack of instruments is still nothing but borrowed motion &mdash; a line of sticks with no hand still moves no stone. 
-So the entire present change must terminate in something that does not *receive* its activity 
-but *is* pure act &mdash; actualizing every level without waiting on anything to actualize it.
+We can ask how those powers arise and how the reaction works, following the explanation into chemistry and physics.
+Aquinas's question goes further: do the things doing the explaining have their powers and activity independently, or do they depend on something else?
+
+**Why not stop with the physical world?** That would be an answer if physical reality were the independent source the argument is looking for.
+But Aquinas argues that things with unrealized potentials are not independent in that way: they depend on something already actual to bring about their changes.
+He follows that dependence toward a source that is not itself waiting to be made actual.
+The kettle shows us causes at work; it does not by itself tell us that every physical cause is an instrument.
+
+Where a cause acts only through another, it passes the question along. Adding more such causes does not provide the source of their activity &mdash;
+just as a line of sticks with no hand moves no stone.
+Aquinas argues that the explanation must reach a source that does not receive its activity from another: **pure act**.
 
 The consequence is intimate, not distant: God is not merely a mover who set things going long ago. 
 He is holding the water's warming &mdash; and every change in you, 

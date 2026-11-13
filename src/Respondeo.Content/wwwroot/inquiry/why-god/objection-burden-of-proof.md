@@ -1,7 +1,7 @@
 ---
 id: objection-burden-of-proof
 title: "The Burden of Proof"
-summary: "Isn't the believer the one who has to prove God, like a teapot orbiting the sun?"
+summary: "What reasons does a believer owe someone who isn't convinced?"
 ---
 
 **The objection, at its strongest:**
@@ -13,18 +13,19 @@ summary: "Isn't the believer the one who has to prove God, like a teapot orbitin
 
 **In response:**
 
-- **The teapot is a bad analogy.** A teapot is a contingent physical object that *would* leave detectable traces: its absence of evidence really is evidence of absence. 
-  God is not proposed as an object within the universe, but as the necessary ground of the universe. The two claims are in entirely different categories, so the intuition doesn't transfer.
-- **"Lack of belief" still owes an account.** If the question is "does an ultimate explanation of contingent reality exist?", 
-  then *both* answers are substantive positions about the way things are. 
-  Saying "I simply lack belief" does not exempt one from explaining why contingent things exist at all. 
-  There is also no neutral *default* here: treating disbelief as the automatic starting point is not neutrality 
-  but a conclusion smuggled in as a premise: the true zero point is "I do not know," which is itself a substantive stance, not an exemption from the question.
-- **There is an argument, not a mere assertion.** The believer is not saying "prove me wrong." 
-  Classical natural theology offers positive arguments &mdash; from contingency, causation, and order &mdash; that reason from features of the world to their necessary source. 
-  One may dispute those arguments, but they are evidence offered, which is exactly what "meeting the burden" looks like.
+- **The believer does owe reasons.** Someone who isn't convinced does not have to explain the whole universe before asking whether our argument works.
+- **Not knowing and believing otherwise are different.** Someone who says "I don't know whether God exists" is not making the same claim as someone who says "I believe God does not exist."
+  Neither needs to explain the universe before examining an argument for God. But someone arguing that God does not exist is also making a claim that calls for reasons.
+  People use *disbelief* and *atheism* differently: some mean they aren't convinced God exists; others mean they believe God does not exist.
+  It is worth understanding what a person means rather than assuming the label settles it.
+- **The teapot makes a useful point, but it doesn't settle the question.** Merely being unable to disprove an invisible teapot gives us no reason to believe in it.
+  The same applies to an unsupported assertion about God. But Aquinas does not propose God as a hidden object somewhere in space.
+  He argues from observable change and dependence to their ultimate source: things we can examine together, rather than a hidden object we are asked to take on trust.
+- **There is an argument, not a mere assertion.** The believer is not saying "prove me wrong."
+  Classical natural theology reasons from contingency, causation, and order toward their necessary source.
+  The way to assess that case is to examine its premises and follow the reasoning, just as we would with any other argument.
 
-  Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from his effects, the same logic by which we infer any unseen cause from what it produces:
+  Aquinas insists the burden *can* be met, not by inspecting God directly, but by reasoning from His effects:
 
   > When an effect is better known to us than its cause, from the effect we proceed to the
   > knowledge of the cause. And from every effect the existence of its proper cause can be
@@ -34,7 +35,7 @@ summary: "Isn't the believer the one who has to prove God, like a teapot orbitin
   >
   > &mdash; [*Summa Theologiae* I, Q. 2, A. 2](summa/prima-q002#article-2)
 
-- **Everyone reasons past strict proof.** We accept other minds, the reliability of memory, and the external world without deductive proof. 
-  Demanding a standard for God that we apply to nothing else we actually believe is special pleading in the other direction.
+- **The standard should fit the claim.** Aquinas aims at demonstration, not merely a plausible guess.
+  You are entitled to examine that claim closely. The argument should earn your assent through its reasoning, not by shifting the burden back onto you.
 
 *The positive arguments offered in place of mere assertion are laid out in [The Five Ways](node/aquinas-five-ways).*

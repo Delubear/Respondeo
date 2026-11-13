@@ -1,7 +1,7 @@
 ---
 id: five-ways-governance
 title: "The Fifth Way &mdash; Governance of the World"
-summary: "From the purposeful order of nature to an intelligent designer."
+summary: "Why do things without minds act toward definite outcomes?"
 ---
 
 > We see that things which lack intelligence, such as natural bodies, act for an end.
@@ -47,22 +47,29 @@ Consider everything the plant does, none of which it *understands*:
 Notice two things at once. First, the plant has **no awareness** of any of this: it does not know what water is, or light, or sugar. 
 Second, its parts and processes are unmistakably **aimed**: each reliably tends toward the plant's flourishing, "nearly always in the same way, so as to obtain the best result."
 
-Here is the pivot. **Tending toward a specific outcome is a kind of pointing** &mdash; and pointing is aimed at something that does not exist yet (the mature plant, the sugar not-yet-made). 
-How can a present, mindless process be *aimed at* a future good it cannot picture or understand?
+**Doesn't biology explain this?** Yes: biology explains how plants respond to light and water, and evolution helps explain the development of their capacities.
+The argument does not require those explanations to fail.
+Nor does it require chance to be unreal. Random events can occur within stable natural processes, and natural selection is not simply random scattering.
 
-- It cannot be **chance**: chance does not repeat "nearly always in the same way." Randomness scatters; the plant converges.
-- It cannot come **from the plant's own knowledge**: it has none.
-- The tendency must therefore be **built into its nature** &mdash; and a directedness written into a thing that cannot author it must be set there by an intellect that *can* hold the end in view.
+Aquinas asks about the **directed powers** these explanations describe.
+The plant responds as it does because of its nature; its chemistry has characteristic effects rather than producing anything whatsoever.
+Even a probabilistic process has definite possible outcomes and a characteristic pattern.
+Explaining one tendency through another can deepen our understanding, but it still leaves a world of tendencies to explain.
 
-The plant *reaches* for the light because its nature is aimed &mdash; 
-and a nature aimed without a mind of its own points beyond itself to a **directing intelligence**.
+**Why does Aquinas infer intelligence?** The seed's growth is ordered toward a mature plant before that plant is there.
+The future plant cannot reach backward and guide the seed, and the seed cannot picture what it is becoming.
+Its directedness belongs to its nature. But why does that nature order these processes toward this outcome?
 
-**Where this leads.** Follow the aiming, as you followed the chain of causes in the Second Way. 
-The plant is directed toward its end; its cellular machinery is directed toward the plant; the chemistry is directed toward the machinery; the physical laws are directed toward the chemistry. 
-At every level you find not blind indifference but *ordered tending*. 
-And order-toward-an-end throughout all of nature &mdash; in things that could never intend it &mdash; is precisely what "everyone understands to be God."
+Aquinas argues that something entirely without knowledge cannot itself originate the ordering of means to an end.
+An intellect can grasp an outcome before it exists and order causes toward it.
+The plant *reaches* for the light because its nature is aimed &mdash; and a nature aimed without knowledge of its own points beyond itself to a **directing intelligence**.
+This does not make the plant a puppet: its own nature is the means by which it grows toward the light.
 
-Like the arrow directed by an archer, the ordered striving of unknowing nature points to a directing intelligence.
+**Where this leads.** The Fifth Way is not looking for a missing biological mechanism or an unusually clever engineer inside the universe.
+It asks why natural causes have their definite orientation toward effects at all.
+Aquinas concludes to an intelligence ordering nature as a whole &mdash; and this is what he calls God.
+
+For a related discussion, The Thomistic Institute's *Creation and Governance* considers this broader subject.
 
 ::: youtube oU48R8ZJ2HA
 :::

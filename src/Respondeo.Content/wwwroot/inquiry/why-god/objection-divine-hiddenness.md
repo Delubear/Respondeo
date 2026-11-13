@@ -1,7 +1,7 @@
 ---
 id: objection-divine-hiddenness
 title: "Divine Hiddenness"
-summary: "If God wanted a relationship with us, why isn't his existence obvious?"
+summary: "Why do some people sincerely seek God and still struggle to find Him?"
 ---
 
 **The objection, at its strongest:**
@@ -13,17 +13,25 @@ summary: "If God wanted a relationship with us, why isn't his existence obvious?
 
 **In response:**
 
-- **Overwhelming proof would coerce.** A God who blazed across the sky would compel assent the way a proof of arithmetic does, leaving no room for a *free* turning of the heart. 
-  Love that cannot be declined is not love. A degree of hiddenness may be the necessary space in which a real "yes" becomes possible.
-- ***Hidden* is not *absent*.** The claim is not that there is *no* evidence, but that it does not force the will. 
-  Contingent existence, the intelligibility of nature, moral obligation, and conscience are all pointers: enough to seek by, not enough to bully.
-- **Disposition shapes sight.** Knowing a person is not like reading a gauge; it depends on the posture of the one seeking. 
-  Scripture frames God as found by those who seek him honestly, which is a different epistemic situation than detecting a distant object.
-- **The search itself is data.** 
-  The very longing that fuels the objection &mdash; that things *ought* to be more clear, more just, more whole &mdash; is itself difficult to explain if there is nothing answering to it.
+- **Would overwhelming proof leave room for a free response?** Imagine God blazing across the sky in a display no one could ignore.
+  Such a display might convince us that He exists, but it might also leave us responding out of fear or sheer pressure before we have considered who He is and whether we trust Him.
 
-Aquinas grants the core of the objection &mdash; God's existence is *not* obvious to us &mdash; but explains why: 
-what is most knowable in itself can be least evident to minds like ours, so it must be reasoned to rather than simply seen:
+  God may instead draw us through signs we can reflect on, questions we can pursue, and invitations we can accept or refuse.
+  That doesn't mean clearer evidence would make love impossible: knowing someone exists does not force us to love them.
+  But it gives a reason to consider why God might approach us without overwhelming us.
+- ***Hidden* is not *absent*.** The claim is not that there is no evidence for God.
+  Contingent existence, the intelligibility of nature, moral obligation, and conscience have all been offered as pointers worth examining.
+  Aquinas begins with change, dependence, and natural order, and reasons toward their source: not another object in the sky, but the source sustaining the world we encounter.
+- **The search is personal.** Knowing a person involves more than detecting an object: it calls for attention, trust, and openness.
+  Scripture speaks of seeking God, and the longing for truth and goodness can give that search its urgency.
+  Longing alone does not prove that God exists, but it can lead us to consider the reasons for believing.
+  A sincere seeker can still remain unconvinced; difficulty is not proof of dishonesty or a secret refusal of God.
+- **Why permit uncertainty at all?** A believer may see goods in seeking, learning, and coming to know God with the help of others.
+  Those goods do not tell us why a particular person struggles, or why God does not make Himself clearer to them.
+  The question remains a serious one to weigh alongside the positive reasons for belief.
+
+Aquinas helps with one part of this question: why God's existence is not **self-evident to us**.
+We do not directly know God's nature, so we begin with His effects &mdash; things we know better &mdash; and reason toward their cause:
 
 > A thing can be self-evident in either of two ways: on the one hand, self-evident in
 > itself, though not to us; on the other, self-evident in itself, and to us... Therefore I
@@ -34,9 +42,9 @@ what is most knowable in itself can be least evident to minds like ours, so it m
 >
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 1](summa/prima-q002#article-1)
 
-In plainer terms: that one line &mdash; "the predicate is the same as the subject" &mdash; is the key. 
-Aquinas is saying that for God, *to be* and *to exist* aren't two separate things: existence isn't something God has, it's what God *is*. 
-So "God exists" is a bit like saying "the existing one exists": true by its very nature. 
-The catch is that we can't see God's nature directly, so this built-in truth doesn't feel obvious to us; we have to arrive at it the long way, through the things God has made.
+In plainer terms: for Aquinas, existence isn't something God receives; it belongs to what God is.
+If we could directly grasp God's nature, saying "God exists" would be, in this respect, like saying "the existing one exists": existence belongs to the subject itself.
+But we don't directly know that divine nature, and calling God *the existing one* does not prove that such a being exists.
+We begin instead with what we do know &mdash; change, causes, and dependent things &mdash; and reason toward whether there is such a source.
 
-*On knowing God through his effects rather than face-to-face, see [The Five Ways](node/aquinas-five-ways).*
+*On knowing God through His effects rather than face-to-face, see [The Five Ways](node/aquinas-five-ways).*

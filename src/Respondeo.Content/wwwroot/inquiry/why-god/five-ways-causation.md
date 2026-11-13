@@ -1,7 +1,7 @@
 ---
 id: five-ways-causation
 title: "The Second Way &mdash; Efficient Causation"
-summary: "From ordered efficient causes to a first cause."
+summary: "Causes act through other causes. Must there be a source of their power to act?"
 ---
 
 > In the world of sense we find there is an order of efficient causes.
@@ -32,11 +32,11 @@ This is the point most often missed.
 Aquinas is *not* arguing about a chain stretching back in time (a father begets a son, who begets a son&hellip;). 
 That is an **accidentally ordered** series: once a cause has done its part, it is no longer needed for the effect to keep going. Your grandfather can die and you carry on existing.
 
-He means an **essentially ordered** series, where every member depends *at this very moment* on the one before it for its power to act:
+He means an **essentially ordered** series, where the intermediate causes depend *at this very moment* on another for their power to act:
 
 - Links hold a chandelier: each link hangs only because the one above holds it right now.
-- A gear turns only while the gear meshed before it is turning; stop the first and the whole train halts at once.
-- A brush paints only as the painter guides it; take the painter away and the motion stops instantly.
+- A gear turns the next gear because it is being driven in turn; each passes along the motor's driving force.
+- A brush paints only as the painter guides it; take the painter away and the brush no longer makes the painter's stroke.
 
 In such a series, the intermediate causes are *instruments*: they pass along a causal power they do not originate.
 An infinite regress of instruments explains nothing: a chain of infinitely many links, with no ceiling to hang from, holds up no chandelier at all. 
@@ -59,32 +59,32 @@ We must reach a first that gives without receiving.
 
 The argument can feel abstract until you watch it in a single ordinary object. Take the **chair** you are sitting on.
 
-**First, a common misstep.** It is tempting to build the chain *outward*: my body rests on the chair, the chair on the floor, 
-the floor on the house, the house on its foundation, the foundation on the planet. 
-But this is a chain of **weight and location**, not of *being*. Remove the chair and you do not stop existing &mdash; you simply fall. 
-Each link here sustains a thing's *position*, not its *existence*, so the series is only *accidentally* ordered.
+**First, look outward.** My body rests on the chair, the chair on the floor,
+the floor on the house, the house on its foundation, the foundation on the planet.
+This is a chain of **support**: the chair holds you up while being supported itself.
+Remove the chair and you do not stop existing &mdash; you fall. That does not make the support merely *accidentally* ordered;
+it illustrates dependence for a particular effect, rather than explaining your existence as a whole.
 
-**The essential chain runs inward, into the chair's depth.** Ask not "what is underneath it?" but 
-"**what is holding this in existence, right now?**" &mdash; and follow that question down:
+**Now follow the dependence inward, into the chair's depth.** Ask not only "what is underneath it?" but
+"**what keeps this chair in existence, right now?**" &mdash; and follow that question down:
 
 1. The **chair** is a chair only because its **wooden structure** holds its shape *right now*.
-2. That wood holds together only because its **molecules** are bonded *right now*.
-3. Those molecules cohere only because **chemical bonds** &mdash; electrons shared between atoms &mdash; hold *right now*.
-4. Those bonds hold only because each **atom** keeps its electrons bound to its nucleus *right now*.
-5. Each nucleus holds only because the **strong force** binds its **protons and neutrons** *right now*.
-6. Each neutron holds only because its **quarks** are bound *right now*.
-7. And all of it obtains only because the **fundamental laws and fields** that ground these forces are in force *right now*.
+2. The wood holds together only because its **molecules** remain bonded together.
+3. Those molecules retain their structure only because **chemical bonds** hold their atoms together.
+4. Those bonds depend on **electromagnetic interactions** involving electrons and atomic nuclei.
+5. The protons and neutrons within those nuclei are held together by the **strong nuclear interaction**.
+6. Those protons and neutrons themselves depend on the strong interaction binding their **quarks**.
 
-At *every* level the chair **has its cohesion on loan** from a deeper actuality it is not the source of. 
-And notice the tell-tale sign of an essential series: the instant any level fails, the chair does not fall &mdash; it *ceases to be a chair at all*. 
-Its very being is held, this moment, by what lies beneath it in the order of explanation.
+The chair is not something that was assembled once and now exists independently of its parts.
+Its structure depends on those parts and their interactions *right now*.
 
-**Where the ladder points.** Physics can keep naming deeper rungs: quarks, fields, perhaps something below. 
-But each rung it names is another *borrower*: something whose *holding-together-now* is received and governed, never self-explaining. 
-Descend as far as you like and you never reach a rung that **holds itself in being**.
+**Where the ladder points.** Follow that dependence as deeply as physics can take us, and Aquinas's question remains:
+do these causes have their power independently, or do they depend on something else in turn?
+Whatever receives its being or causal power is another *borrower*, not the ultimate source.
 
-That is the whole point. An endless stack of borrowers is still nothing but borrowed &mdash; a chandelier of infinite links with no ceiling still hangs from nothing. 
-So the entire present order must terminate in something that does not *receive* existence but *is* existence &mdash; pure act, holding every level in being at this very instant.
+That is the whole point. An endless stack of borrowers is still nothing but borrowed &mdash; a chandelier of infinite links with no ceiling still hangs from nothing.
+So an order whose members all receive their being must ultimately depend on something that does not *receive* existence but *is* existence &mdash;
+pure act, holding every level in being at this very instant.
 
 The consequence is intimate, not distant: God is not merely a first cause long ago, at the bottom of some pile. 
 He is holding your chair &mdash; and you, and every neutron in each &mdash; in being *right now*, more inwardly than any part holds any other.

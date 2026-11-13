@@ -1,10 +1,10 @@
 ---
 id: five-ways-act-potency
 title: "Act & Potency &mdash; The Foundation"
-summary: "Aristotle's and Aquinas's distinction between actuality and potentiality."
+summary: "What does it mean for something to change, and why does change need a cause?"
 ---
 
-Before walking the Five Ways, it helps to grasp the single distinction they all lean on: **act** and **potency**.
+Before walking the Five Ways, it helps to grasp a distinction at the heart of Aquinas's reasoning: **act** and **potency**.
 Aristotle introduced it to solve an ancient puzzle about change; Aquinas made it the backbone of his demonstrations.
 
 **The puzzle of change.**
@@ -30,17 +30,24 @@ And here is the key principle Aquinas draws out:
 The cold coffee does not warm itself &mdash; the hot stove, already actually hot, turns its potential warmth into real warmth.
 A potential cannot make itself actual, because then it would already have to possess the very thing it still lacks.
 
+That doesn't mean a thing can never change through its own activity. An animal moves itself, and your body heals a cut.
+But something already active &mdash; the animal's muscles, the body's living processes &mdash; brings about the change.
+The mere possibility of healing doesn't heal anything.
+Aquinas's point is that something cannot be merely potential and already actual **in the same respect**.
+The coffee can become hot, but its ability to become hot isn't what heats it.
+
 **Why this matters for the Five Ways.**
-Each way, especially the First Way from **motion**, is really an argument about act and potency:
+The First Way from **motion** begins here:
 
 1. Change is real: potencies are being actualized all around us.
-2. No potency actualizes itself; each is actualized by something already in act.
-3. This cannot regress infinitely through things that are *themselves* mixtures of act and potency, for the whole chain would then have no source of actuality.
-4. Therefore there must be something that is **Pure Act** &mdash; actual through and through, with no unrealized potential &mdash; the source of all actualization.
+2. A potential cannot actualize itself; something already actual must bring about the change.
+3. We can then ask whether everything bringing about change could depend on something else for its activity.
 
-*This being of Pure Actuality, Aquinas says, is what everyone understands to be God.*
+The [First Way](node/aquinas-five-ways?section=five-ways-motion) develops that further question.
+It leads toward **Pure Act** &mdash; a source with no unrealized potential &mdash; but we still need to understand why that conclusion follows.
+For now, keep the basic distinction in mind: a real capacity for change is not yet the activity that brings it about.
 
-Keep this distinction in mind as you read the ways below: wherever you see *motion*, *cause*, or *dependence*, you are watching potency being reduced to act.
+For a video explanation of this distinction, The Thomistic Institute offers *Act and Potency*.
 
 ::: youtube 7AzrbXjDLiM
 :::
