@@ -39,7 +39,7 @@ Watch a houseplant for a week and you will see the Fifth Way unfold &mdash; not 
 Consider everything the plant does, none of which it *understands*:
 
 - Its **roots grow downward** and toward water, though the seed has no map of the soil.
-- Its **leaves turn to face the light** (phototropism), tracking the sun across the day.
+- Its **shoots grow toward the light** (phototropism), helping the leaves receive it.
 - Its **stomata open and close** to balance moisture and gas exchange.
 - **Photosynthesis** converts light, water, and air into sugar: a chemistry aimed with precision at the plant's nourishment.
 - Its cells **divide, specialize, and repair** in an ordered sequence toward a mature, reproducing organism.

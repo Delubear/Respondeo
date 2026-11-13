@@ -13,13 +13,13 @@ summary: "If everything needs a cause, doesn't God need one too?"
 
 **In response:**
 
-- **It misstates the premise.** The classical arguments never say *everything* needs a cause. 
-  They say everything *that begins to exist*, or everything *whose existence is dependent/contingent*, needs a cause. 
-  God is not proposed as one more contingent item, but as the one necessary being whose essence *is* to exist. 
+- **It misstates the premise.** The classical arguments never say *everything* needs a cause.
+  Aquinas asks what explains things whose existence or power to act depends on something else.
+  God is not proposed as one more contingent item, but as the one necessary being whose essence *is* to exist.
   Asking "who made the uncaused cause?" is like asking "what is north of the North Pole?"
-- **This is not special pleading.** Special pleading would be exempting God for no reason. 
-  But there *is* a reason: a chain of dependent causes cannot be dependent all the way down, or it never gets started. 
-  The regress terminates in something non-dependent by definition: that is the whole point of the argument, not a cheat added at the end.
+- **This is not special pleading.** Special pleading would be exempting God for no reason.
+  But there *is* a reason: a chain in which every cause receives its power to act from another cannot supply that power on its own.
+  Aquinas argues that it must depend on a source that does not receive its power from another, not merely a first event long ago.
 
   St. Thomas makes exactly this move in the Second Way, and gives the uncaused cause its name:
 

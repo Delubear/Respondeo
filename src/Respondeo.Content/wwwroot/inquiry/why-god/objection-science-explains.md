@@ -50,11 +50,17 @@ so both are themselves caused, which means they point beyond themselves rather t
 
 *That nature is directed to an end rather than self-explaining is developed in [the Fifth Way &mdash; Governance](node/aquinas-five-ways?section=five-ways-governance).*
 
+The Thomistic Institute's *Does Science Explain Everything?* considers what scientific explanations leave us to ask:
+
 ::: youtube VPZfmpEkal4
 :::
 
+*The Scientific Method* asks whether science can be used to disprove God's existence:
+
 ::: youtube JAkj5P6IHUQ
 :::
+
+*Scientific Evidence Against Reductionism* examines the idea that everything can be fully explained by reducing it to its parts:
 
 ::: youtube tNJbhQVVz8I
 :::

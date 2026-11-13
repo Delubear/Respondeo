@@ -9,7 +9,7 @@ tags:
 
 Welcome.
 
-Whatever brought you to here, whether it be curiosity, doubt, hope, or a restlessness you can't quite name, you've arrived to ask one question:
+Whatever brought you here, whether it be curiosity, doubt, hope, or a restlessness you can't quite name, you've arrived to ask one question:
 
 ***Is there a God?***
 

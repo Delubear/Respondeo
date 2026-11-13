@@ -32,8 +32,9 @@ St. Thomas takes it seriously enough to make it the *first* objection against Go
 - **Evil is not a *thing*.** In the classical view evil is not a substance God created, but a *privation*: 
   a lack of some good that ought to be present, as blindness is the absence of sight. 
   God does not author evil; he permits the possibility of it as the shadow side of real goods like freedom and a lawful, causal world.
-- **Free will has a price.** Genuine love and virtue are impossible without the freedom to refuse them. 
-  A world of puppets who could not do wrong would also be a world with no courage, forgiveness, or love freely given.
+- **Free will has a price.** Love cannot be forced: a world of puppets acting without choosing would have no courage, forgiveness, or love freely given.
+  But the freedom we have can be misused: intelligence can be used to deceive, and strength to oppress.
+  The price of that freedom is the possibility of evil. God permits its misuse without making the evil choice Himself.
 - **This is an answer, not an anesthetic.** Showing that evil and God are not contradictory is not the same as explaining away a particular grief. 
   Reason can clear the objection without pretending the wound isn't real, and a fuller response to suffering itself belongs further along the journey.
 
@@ -46,21 +47,26 @@ Aquinas's own reply turns the objection on its head: evil does not disprove God,
 >
 > &mdash; [*Summa Theologiae* I, Q. 2, A. 3, ad 1](summa/prima-q002#article-3-reply-1)
 
-**A closer look at freedom.** It is worth dwelling on the third point, because the free-will reply is often heard as a glib trade, 
-as if God weighed our comfort against our autonomy and simply chose autonomy. 
-That is not the claim. The claim is that a *will truly able to love* and a *will unable to do harm* are not two options God could pick between; 
-they are a contradiction, like a square that is also a circle. 
-Love, by its nature, is a gift that must be freely given, and a gift that cannot be withheld is not a gift at all. 
-To make a creature who could genuinely choose the good is to make one who could also refuse it: the very same power aimed the other way. 
-God could, of course, have made a world of creatures that never sin, but only by making creatures that never freely choose anything, 
-automatons running on rails, incapable of courage, mercy, or love. 
-The wrong such freedom makes possible is real, and its cost is terrible; but the alternative is not a better world with free beings in it; 
-it is a world with no one in it to love at all. 
-That God permits the misuse of freedom rather than abolishing freedom is not indifference to the harm; 
-it is the price of making persons rather than puppets, and of holding open the possibility that they will one day choose him back.
+**A closer look at freedom.** It is worth dwelling on the third point, because the free-will reply is often heard as a glib trade,
+as if God weighed our comfort against our autonomy and simply chose autonomy.
+God makes persons who can know and choose, not puppets acting without understanding.
+Love involves willing another's good: a person who understands and freely helps a neighbor does more than a machine programmed to deliver assistance.
+Someone forced to act as though they love has not, by that force, been made to love. Love must come from the person, not from a command overriding the will.
+
+The freedom we possess also gives us the ability to refuse the good. The same person who can choose to help a neighbor can choose to harm or deceive instead.
+That possibility is the price of our freedom: God permits its misuse rather than reducing our choices to the motions of puppets.
+The evil lies in the wrong choice, not in God's gift of the power to choose.
+
+This does not mean that a person *must* do wrong to be free. A person can freely choose the good without ever committing an evil act.
+The question, then, is why God permits freedom to be misused, not whether love requires wrongdoing.
+Aquinas's answer is that God can permit evil and bring good out of it &mdash; even though we cannot always see how.
+
+The Thomistic Institute's *The Problem of Evil* examines Aquinas's response to the objection:
 
 ::: youtube Oo4hF3IYGp4
 :::
+
+In *Psychological Illnesses and the Problem of Evil*, a Dominican friar addresses the question in relation to psychological illness:
 
 ::: youtube TrghmTBYROI
 :::

@@ -40,7 +40,8 @@ The First Way ends in something that is actual through and through. From this si
 > &mdash; [*Summa Theologiae* I, Q. 10, A. 2](summa/prima-q010#article-2)
 
 **Being Itself: existence without limit.**
-The Third Way ends in something whose very essence is to exist. Because its existence is not received into any limiting essence, 
+The Third Way ends in something necessary of itself. Aquinas's argument from [essence and existence](node/aquinas-five-ways?section=five-ways-essence-existence)
+helps explain why this source's very essence is to exist. Because its existence is not received into any limiting essence,
 it is unlimited: **infinite** and **perfect**, lacking no perfection of being.
 
 - **Simple.** It has no parts to be composed: no body, no distinction between what it is and that it is. It does not *have* existence or goodness; it *is* them.
@@ -70,6 +71,8 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 >
 > &mdash; [*Summa Theologiae* I, Q. 14, A. 1](summa/prima-q014#article-1)
 
+The Thomistic Institute's *God's Knowledge* explores what it means to say that God knows:
+
 ::: youtube 3j79qY0RqRw
 :::
 
@@ -77,8 +80,7 @@ The Fourth and Fifth Ways end in the source of every perfection and the intellig
 Reason, then, carries us further than *some first cause*. It arrives at a being that is one, simple, eternal, 
 immutable, infinite, perfect, good, all-knowing, and all-powerful: the God of classical theism.
 
-But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, 
-yet it has not told us *which* God this is among the ones people actually worship: whether He is a distant abstraction or a personal God who knows and loves, 
-and whether He has ever *spoken*, entered history, and drawn near. 
+But this is still the God of the *philosophers*. Reason has shown us a great deal about His nature, including that He knows.
+It has not yet told us *which* God this is among the ones people actually worship, or whether He has ever *spoken*, entered history, and drawn near.
 
 That is a further question, and the beginning of a different road.
