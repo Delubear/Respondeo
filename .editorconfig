@@ -21,3 +21,7 @@ indent_size = 2
 # Teardown callers handle JSDisconnectedException; do not mask other failures here.
 [src/Respondeo.UI/Services/{Interop/{BrowseStateInterop,DialogInterop,TallyInterop},Summa/SummaRefInterop,TextSizeService,ThemeService}.cs]
 dotnet_diagnostic.BL0016.severity = none
+
+# Navigation services must not hide JS failures behind successful storage or scroll results.
+[src/Respondeo.UI/Services/Navigation/{BreadcrumbTrail,ScrollCoordinator,VisitedNodes}.cs]
+dotnet_diagnostic.BL0016.severity = none
