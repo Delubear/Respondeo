@@ -14,6 +14,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<IHostCapabilities, MauiHostCapabilities>();
         builder.Services.AddSingleton<INativeThemeSync, MauiNativeThemeSync>();
         builder.Services.AddSingleton(BuildInfo.Load(typeof(MauiProgram).Assembly));
+#if ANDROID && APK_UPDATES
+        builder.Services.AddSingleton<IAppUpdateService, ApkUpdater>();
+#endif
 
         builder.Services.AddMauiBlazorWebView();
 

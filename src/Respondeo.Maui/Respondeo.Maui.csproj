@@ -29,6 +29,10 @@
 	  <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(EnableApkUpdates)' == 'true'">
+	  <DefineConstants>$(DefineConstants);APK_UPDATES</DefineConstants>
+	</PropertyGroup>
+
 	<!--
 	  Respondeo.UI fingerprints its css/js filenames for the Wasm host, which rewrites index.html at publish.
 	  The native host has no such rewrite, so package the plain-named copies that wwwroot/index.html links.

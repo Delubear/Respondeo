@@ -25,6 +25,7 @@ def classify_paths(paths):
 			"tests/Respondeo.AcceptanceTests/Support/Android",
 		)) or path in {
 			"tests/Respondeo.AcceptanceTests/AppPackageHttpHandlerTests.cs",
+			"tests/Respondeo.AcceptanceTests/ApkUpdateReleaseTests.cs",
 			"tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj",
 		}
 		if native_acceptance or (not path.startswith((

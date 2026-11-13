@@ -9,6 +9,7 @@
 @inject IThemeService Theme
 @inject QuickMenuLauncher Launcher
 @inject IJSRuntime JS
+@inject IAppUpdateService Updates
 
 <button type="button" class="quick-menu__toggle" @onclick="Open"
 		aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")" aria-label="Open the quick menu">
@@ -133,6 +134,14 @@
 					</button>
 				</div>
 			</section>
+			@if (Updates.Supported)
+			{
+				<section class="quick-menu__section">
+					<button type="button" class="quick-menu__link quick-menu__link--button" disabled="@_checkingUpdates" @onclick="CheckForUpdatesAsync">
+						@(_checkingUpdates ? "Checking for updates..." : "Check for updates")
+					</button>
+				</section>
+			}
 		}
 	</ChildContent>
 	<Footer>
@@ -166,6 +175,25 @@
 	private IReadOnlyList<SiteMap.Entry> _guides = [];
 
 	private bool IsDark => Theme.Current == Respondeo.Services.Theme.Dark;
+	private bool _checkingUpdates;
+
+	private async Task CheckForUpdatesAsync()
+	{
+		if (_checkingUpdates)
+		{
+			return;
+		}
+		_checkingUpdates = true;
+		try
+		{
+			await Close();
+			await Updates.CheckAsync(userInitiated: true);
+		}
+		finally
+		{
+			_checkingUpdates = false;
+		}
+	}
 
 	private async Task SetThemeAsync(bool dark)
 	{

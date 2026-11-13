@@ -274,6 +274,11 @@ jobs:
           sha256sum --check SHA256SUMS
           test -f "respondeo-$VERSION.apk"
 
+      - name: Generate Android update manifest
+        run: |
+          python3 .github/scripts/android_update_manifest.py "android-release/respondeo-$VERSION.apk" "$GITHUB_RUN_NUMBER"
+          (cd android-release && sha256sum android-update.json >> SHA256SUMS)
+
       # List first-parent commits since the previous release tag this job created.
       # Direct trunk commits show their subject; PR merge commits show the PR title and number.
       - name: Build changelog
@@ -318,6 +323,7 @@ jobs:
           target_commitish: ${{ github.sha }}
           files: |
             android-release/respondeo-${{ env.VERSION }}.apk
+            android-release/android-update.json
             android-release/build-manifest.json
             android-release/SHA256SUMS
           fail_on_unmatched_files: true

@@ -32,10 +32,12 @@ public class AppServiceRegistrationTests
         services.AddScoped(_ => transport);
         var capabilities = Substitute.For<IHostCapabilities>();
         var themeSync = Substitute.For<INativeThemeSync>();
+        var updates = Substitute.For<IAppUpdateService>();
         if (native)
         {
             services.AddSingleton(capabilities);
             services.AddSingleton(themeSync);
+            services.AddSingleton(updates);
         }
 
         var configuration = Baseline().Build();
@@ -49,15 +51,19 @@ public class AppServiceRegistrationTests
         {
             Assert.Same(capabilities, scoped.GetRequiredService<IHostCapabilities>());
             Assert.Same(themeSync, scoped.GetRequiredService<INativeThemeSync>());
+            Assert.Same(updates, scoped.GetRequiredService<IAppUpdateService>());
         }
         else
         {
             Assert.IsType<BrowserHostCapabilities>(scoped.GetRequiredService<IHostCapabilities>());
             Assert.IsType<NoOpNativeThemeSync>(scoped.GetRequiredService<INativeThemeSync>());
             Assert.True(scoped.GetRequiredService<IHostCapabilities>().SupportsPwa);
+            Assert.IsType<UnsupportedAppUpdates>(scoped.GetRequiredService<IAppUpdateService>());
+            Assert.False(scoped.GetRequiredService<IAppUpdateService>().Supported);
         }
         Assert.Single(scoped.GetServices<IHostCapabilities>());
         Assert.Single(scoped.GetServices<INativeThemeSync>());
+        Assert.Single(scoped.GetServices<IAppUpdateService>());
         var calendar = scoped.GetRequiredService<PreferredLiturgicalCalendar>();
         Assert.Same(calendar, scoped.GetRequiredService<ILiturgicalCalendar>());
         Assert.Same(calendar, scoped.GetRequiredService<ICalendarPreference>());

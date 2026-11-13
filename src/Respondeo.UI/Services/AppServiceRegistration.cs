@@ -133,6 +133,7 @@ public static class AppServiceRegistration
     {
         services.TryAddSingleton<IHostCapabilities, BrowserHostCapabilities>();
         services.TryAddSingleton<INativeThemeSync, NoOpNativeThemeSync>();
+        services.TryAddSingleton<IAppUpdateService, UnsupportedAppUpdates>();
         services.AddScoped<BrowseStateInterop>();
         services.AddScoped<BrowsePage>();
         services.AddScoped<NavigationInterop>();

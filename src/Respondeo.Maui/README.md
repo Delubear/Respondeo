@@ -56,6 +56,29 @@ See [native test commands](../../tests/Respondeo.AcceptanceTests/README.md#nativ
 or explicitly test a prior same-key APK upgrade. Emulator results do not close physical-device flicker, icon-contrast, or stored-progress checks;
 use the [release checklist](../../docs/deployment.md#physical-device-release-checklist) as well.
 
+## In-app APK updates
+
+Release-key builds enable `EnableApkUpdates=true`. Development and PR builds do not check for public updates.
+On startup and foreground activation, the app checks the latest GitHub Release's `android-update.json` over HTTPS.
+Automatic successful checks are limited to once every six hours per process; failed checks wait at least 15 minutes. Automatic prompts offer a version only once per process.
+The quick menu's **Check for updates** action bypasses both limits, so a declined or failed update can be retried immediately.
+Manual checks report when the app is up to date, offline, or unable to retrieve update information. The action is hidden in browser and update-disabled builds.
+No network connection is required to keep using the app, and declining an update never blocks reading.
+
+The release job generates the manifest from the verified APK: package id, numeric Android version code, display version,
+immutable release download URL, byte length, and SHA-256. The current version convention is `1.0.<versionCode>`.
+Downloads show progress and can be canceled. Partial or corrupt downloads are deleted. Only the dedicated update cache is shared with Android's installer.
+The APK must have the expected package/version and the same signing certificate set as the installed app; Android performs final signature verification and asks for installation consent.
+On Android 8+, first-time users must allow installs from Respondeo in system settings. The pending handoff survives process recreation and asks again before opening the installer.
+Updates replace the installed app without clearing its data. Signing-key rotation is not supported by this flow; retain the existing release key.
+
+The first APK containing this feature must still be installed manually. It can then offer later releases; older APKs cannot acquire update checking on their own.
+Automatic check failures are logged under `Respondeo.Update` in Android logcat without interrupting reading; failures after accepting a download also show an alert.
+
+Verify the real update flow on a dedicated Android device before release: decline, cancel a download, deny/allow install permission,
+return from settings, cancel the installer, then complete a same-key, higher-version update and confirm reading preferences and progress remain intact.
+The deterministic parser/download tests do not replace these Android installer checks.
+
 ## Icon
 
 The app icon (`Resources/AppIcon`) matches the site favicon.

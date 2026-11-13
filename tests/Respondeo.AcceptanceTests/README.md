@@ -12,6 +12,8 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
   missing settings, and blocked local storage; shared error markup retains its accessible role and controls.
 - **AppPackageHttpHandlerTests** — the exact native transport implementation handles in-memory package bytes, decoded paths,
   missing files, cancellation, and unexpected errors without networking.
+- **ApkUpdateReleaseTests** — the native update parser and downloader reject invalid release identities, corrupt/truncated/oversized downloads,
+  HTTP failures, and cancellation; verified bytes and progress are checked without network access. These do not exercise Android's permission or installer UI.
 - **AndroidPackageTransportTests** (`Category=AndroidArtifact`) — an explicitly selected final APK supplies real manifests and all listed articles
   through the native transport. ZIP-backed tests do not exercise Android's package API or a running WebView.
 - **AndroidLifecycleTests** (`Category=AndroidDevice`) — a dedicated emulator installs the selected APK and checks offline startup/content,

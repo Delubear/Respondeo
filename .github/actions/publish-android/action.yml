@@ -90,7 +90,7 @@ runs:
         args=(-f net11.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
           "-p:ApplicationVersion=$VERSION_CODE" "-p:ApplicationDisplayVersion=$VERSION" "-p:BuildVersion=$VERSION")
         if [ "$RELEASE_SIGNING" = "true" ]; then
-          args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo-release.keystore"
+          args+=(-p:EnableApkUpdates=true -p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo-release.keystore"
             -p:AndroidSigningStorePass=env:ANDROID_KEYSTORE_PASSWORD "-p:AndroidSigningKeyAlias=$ANDROID_KEY_ALIAS"
             -p:AndroidSigningKeyPass=env:ANDROID_KEY_PASSWORD)
         fi
@@ -137,7 +137,7 @@ runs:
         "$build_tools/zipalign" -c 4 "${apks[0]}"
         python3 .github/scripts/verify_packaging.py --apk "${apks[0]}"
         RESPONDEO_APK_PATH="$(realpath "${apks[0]}")" dotnet test tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj \
-          -c Release --filter 'Category=AndroidArtifact|FullyQualifiedName~AppPackageHttpHandlerTests'
+          -c Release --filter 'Category=AndroidArtifact|FullyQualifiedName~AppPackageHttpHandlerTests|FullyQualifiedName~ApkUpdateReleaseTests'
         mkdir -p android-artifact
         if [ "$RELEASE_SIGNING" = "true" ]; then
           filename="respondeo-$VERSION.apk"

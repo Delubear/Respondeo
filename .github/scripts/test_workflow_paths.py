@@ -30,6 +30,7 @@ class WorkflowPathsTests(unittest.TestCase):
 			"tests/Respondeo.AcceptanceTests/Support/AndroidDevice.cs",
 			"tests/Respondeo.AcceptanceTests/AndroidDeviceHelperTests.cs",
 			"tests/Respondeo.AcceptanceTests/AppPackageHttpHandlerTests.cs",
+			"tests/Respondeo.AcceptanceTests/ApkUpdateReleaseTests.cs",
 			"tests/Respondeo.AcceptanceTests/Respondeo.AcceptanceTests.csproj",
 		):
 			with self.subTest(path=path):

@@ -15,6 +15,7 @@
 
   <ItemGroup>
 	<Compile Include="..\..\src\Respondeo.Maui\AppPackageHttpHandler.cs" Link="Support\AppPackageHttpHandler.cs" />
+	<Compile Include="..\..\src\Respondeo.Maui\ApkUpdateRelease.cs" Link="Support\ApkUpdateRelease.cs" />
   </ItemGroup>
 
 </Project>
