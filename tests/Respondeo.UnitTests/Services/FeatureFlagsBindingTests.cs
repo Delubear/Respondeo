@@ -29,11 +29,14 @@ public class FeatureFlagsBindingTests
         var config = LoadConfiguration();
 
         var flags = config.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>();
+        using var expected = JsonDocument.Parse(File.ReadAllText(AppSettingsPath()),
+            new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip });
+        var defaults = expected.RootElement.GetProperty(FeatureFlags.SectionName);
 
         Assert.NotNull(flags);
-        Assert.True(flags!.LiturgicalCalendarFeature);
-        Assert.True(flags.LiturgyOfTheHoursFeature);
-        Assert.True(flags.ExternalFeedback);
+        Assert.Equal(defaults.GetProperty(nameof(FeatureFlags.LiturgicalCalendarFeature)).GetBoolean(), flags.LiturgicalCalendarFeature);
+        Assert.Equal(defaults.GetProperty(nameof(FeatureFlags.LiturgyOfTheHoursFeature)).GetBoolean(), flags.LiturgyOfTheHoursFeature);
+        Assert.Equal(defaults.GetProperty(nameof(FeatureFlags.ExternalFeedback)).GetBoolean(), flags.ExternalFeedback);
     }
 
     [Fact]

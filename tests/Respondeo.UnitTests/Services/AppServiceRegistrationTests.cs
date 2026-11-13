@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,8 @@ public class AppServiceRegistrationTests
             services.AddSingleton(themeSync);
         }
 
-        services.AddRespondeoApplication(Baseline().Build());
+        var configuration = Baseline().Build();
+        services.AddRespondeoApplication(configuration);
         using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
         using var scope = provider.CreateScope();
         var scoped = scope.ServiceProvider;
@@ -66,32 +68,41 @@ public class AppServiceRegistrationTests
         Assert.NotNull(scoped.GetRequiredService<IBibleText>());
         Assert.NotNull(scoped.GetRequiredService<ScrollCoordinator>());
         Assert.NotNull(scoped.GetRequiredService<RoutePrefetcher>());
-        Assert.True(scoped.GetRequiredService<FeatureFlags>().LiturgicalCalendarFeature);
-        Assert.True(scoped.GetRequiredService<FeatureFlags>().LiturgyOfTheHoursFeature);
-        Assert.True(scoped.GetRequiredService<FeatureFlags>().ExternalFeedback);
+        var flags = scoped.GetRequiredService<FeatureFlags>();
+        Assert.Equal(configuration.GetValue<bool>("FeatureFlags:LiturgicalCalendarFeature"), flags.LiturgicalCalendarFeature);
+        Assert.Equal(configuration.GetValue<bool>("FeatureFlags:LiturgyOfTheHoursFeature"), flags.LiturgyOfTheHoursFeature);
+        Assert.Equal(configuration.GetValue<bool>("FeatureFlags:ExternalFeedback"), flags.ExternalFeedback);
     }
 
     [Theory]
-    [InlineData("LiturgicalCalendarFeature")]
-    [InlineData("LiturgyOfTheHoursFeature")]
-    [InlineData("ExternalFeedback")]
-    public void Later_override_changes_only_its_flag_and_configuration(string flag)
+    [InlineData("LiturgicalCalendarFeature", false)]
+    [InlineData("LiturgicalCalendarFeature", true)]
+    [InlineData("LiturgyOfTheHoursFeature", false)]
+    [InlineData("LiturgyOfTheHoursFeature", true)]
+    [InlineData("ExternalFeedback", false)]
+    [InlineData("ExternalFeedback", true)]
+    public void Later_override_changes_only_its_flag_and_configuration(string flag, bool enabled)
     {
-        var configuration = Baseline().AddInMemoryCollection(new Dictionary<string, string?>
+        var baseline = Baseline().Build();
+        var calendar = baseline.GetValue<bool>("FeatureFlags:LiturgicalCalendarFeature");
+        var hours = baseline.GetValue<bool>("FeatureFlags:LiturgyOfTheHoursFeature");
+        var feedback = baseline.GetValue<bool>("FeatureFlags:ExternalFeedback");
+        var configuration = new ConfigurationBuilder().AddConfiguration(baseline).AddInMemoryCollection(new Dictionary<string, string?>
         {
-            [$"FeatureFlags:{flag}"] = "false"
+            [$"FeatureFlags:{flag}"] = enabled.ToString()
         }).Build();
         var services = new ServiceCollection().AddRespondeoApplication(configuration);
         using var provider = services.BuildServiceProvider();
         var flags = provider.GetRequiredService<FeatureFlags>();
-        Assert.Equal(flag != nameof(FeatureFlags.LiturgicalCalendarFeature), flags.LiturgicalCalendarFeature);
-        Assert.Equal(flag != nameof(FeatureFlags.LiturgyOfTheHoursFeature), flags.LiturgyOfTheHoursFeature);
-        Assert.Equal(flag != nameof(FeatureFlags.ExternalFeedback), flags.ExternalFeedback);
+        Assert.Equal(flag == nameof(FeatureFlags.LiturgicalCalendarFeature) ? enabled : calendar, flags.LiturgicalCalendarFeature);
+        Assert.Equal(flag == nameof(FeatureFlags.LiturgyOfTheHoursFeature) ? enabled : hours, flags.LiturgyOfTheHoursFeature);
+        Assert.Equal(flag == nameof(FeatureFlags.ExternalFeedback) ? enabled : feedback, flags.ExternalFeedback);
 
-        using var unchanged = new ServiceCollection().AddRespondeoApplication(Baseline().Build()).BuildServiceProvider();
-        Assert.True(unchanged.GetRequiredService<FeatureFlags>().LiturgicalCalendarFeature);
-        Assert.True(unchanged.GetRequiredService<FeatureFlags>().LiturgyOfTheHoursFeature);
-        Assert.True(unchanged.GetRequiredService<FeatureFlags>().ExternalFeedback);
+        using var unchanged = new ServiceCollection().AddRespondeoApplication(baseline).BuildServiceProvider();
+        var unchangedFlags = unchanged.GetRequiredService<FeatureFlags>();
+        Assert.Equal(calendar, unchangedFlags.LiturgicalCalendarFeature);
+        Assert.Equal(hours, unchangedFlags.LiturgyOfTheHoursFeature);
+        Assert.Equal(feedback, unchangedFlags.ExternalFeedback);
     }
 
     [Theory]
@@ -128,10 +139,14 @@ public class AppServiceRegistrationTests
     {
         var builder = Baseline();
         var configuration = builder.Build();
+        using var stream = System.Reflection.Assembly.Load("Respondeo").GetManifestResourceStream("Respondeo.appsettings.json");
+        Assert.NotNull(stream);
+        using var expected = JsonDocument.Parse(stream, new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip });
 
-        Assert.Equal("True", configuration["FeatureFlags:LiturgicalCalendarFeature"], ignoreCase: true);
-        Assert.Equal("True", configuration["FeatureFlags:LiturgyOfTheHoursFeature"], ignoreCase: true);
-        Assert.Equal("True", configuration["FeatureFlags:ExternalFeedback"], ignoreCase: true);
+        foreach (var flag in expected.RootElement.GetProperty(FeatureFlags.SectionName).EnumerateObject())
+        {
+            Assert.Equal(flag.Value.GetBoolean().ToString(), configuration[$"FeatureFlags:{flag.Name}"], ignoreCase: true);
+        }
     }
 
     private sealed class TestNavigationManager : NavigationManager
