@@ -27,8 +27,6 @@ jobs:
   build:
     name: Build & Verify
     runs-on: ubuntu-latest
-    env:
-      HOURS_CONTENT_TOKEN: ${{ secrets.HOURS_CONTENT_TOKEN }}
     outputs:
       code-changed: ${{ steps.filter.outputs.code-changed }}
       web-changed: ${{ steps.filter.outputs.web-changed }}
@@ -76,12 +74,11 @@ jobs:
         if: steps.filter.outputs.web-changed == 'true'
         run: dotnet run --project tools/Respondeo.SitemapGenerator/Respondeo.SitemapGenerator.csproj -c Release -- . src/Respondeo.Wasm/wwwroot/sitemap.xml
 
-      # Licensed Liturgy of the Hours texts (ICEL) live in a private repository and are never committed here.
-      # When HOURS_CONTENT_TOKEN is configured, check them out beside the source and embed them at publish;
-      # otherwise the build embeds the invented sample texts.
+      # Private Hours downloads are temporarily disabled so an expired token cannot break deployment.
+      # Both hosts use the committed sample texts; re-enable both Hours checkouts together with a valid token.
       - name: Checkout licensed Hours content
         id: hours
-        if: steps.filter.outputs.code-changed == 'true' && env.HOURS_CONTENT_TOKEN != ''
+        if: ${{ false }}
         uses: actions/checkout@v5
         with:
           repository: Delubear/Respondeo-HoursContent
@@ -219,8 +216,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # Keep disabled alongside the build job's Hours checkout.
       - name: Checkout pinned licensed Hours content
-        if: needs.build.outputs.hours-revision != 'sample'
+        if: ${{ false }}
         uses: actions/checkout@v5
         with:
           repository: Delubear/Respondeo-HoursContent

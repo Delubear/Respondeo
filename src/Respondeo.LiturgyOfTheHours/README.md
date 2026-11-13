@@ -221,9 +221,11 @@ Licensed bodies can replace dummy content through the existing embedded JSON pip
 - **Never committed.** Licensed texts stay out of this public repository. `.gitignore` excludes `.licensed/` and any `hours-content.json`.
 Local and fork builds embed `SampleContent/hours/*.sample.json`: invented placeholder wording,
   flagged `"isSample": true`, which makes the player show a "sample text" notice. It is never the ICEL text or a paraphrase of it.
-- **Injected at deploy.** `deploy.yml` checks out the private repository `Delubear/Respondeo-HoursContent` (secret `HOURS_CONTENT_TOKEN`)
-  into `.licensed/hours/`, validates it with `HoursContentFileTests` (`HOURS_CONTENT_DIR`), and publishes with `-p:HoursLicensedContentDir=.../.licensed/hours`.
-  Without the secret, the deployment falls back to the sample files.
+- **Deployment downloads temporarily disabled.** Both private Hours repository checkouts in `deploy.yml` are explicitly disabled,
+  so an expired `HOURS_CONTENT_TOKEN` cannot fail web or APK deployments. Both hosts use the committed sample files; licensed-content validation is skipped.
+  To restore downloads, configure a valid token and re-enable both checkout conditions together, preserving the APK's pinned `hours-revision`.
+  The retained steps check out `Delubear/Respondeo-HoursContent` into `.licensed/hours/`, validate with `HoursContentFileTests` (`HOURS_CONTENT_DIR`),
+  and publish with `-p:HoursLicensedContentDir=.../.licensed/hours`.
 - **Embedded, not served as a file.** The content is compiled into the assembly as an embedded resource, so it is not a separately downloadable
   static asset. It still ships inside the public WASM bundle, so it is publicly readable in principle; confirm this is acceptable under the license.
 - **Non-psalmody lookup keys**, most specific first: `proper/{celebration}/{hour}/{element}`, `proper/{celebration}/{element}`,
