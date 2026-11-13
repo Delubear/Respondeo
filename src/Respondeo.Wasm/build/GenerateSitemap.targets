@@ -31,7 +31,7 @@
 	<!-- Off by default; the deploy workflow passes -p:GenerateSitemapOnBuild=true on publish. -->
 	<GenerateSitemapOnBuild Condition="'$(GenerateSitemapOnBuild)' == ''">false</GenerateSitemapOnBuild>
 	<SitemapGeneratorProject>$(MSBuildThisFileDirectory)..\..\..\tools\Respondeo.SitemapGenerator\Respondeo.SitemapGenerator.csproj</SitemapGeneratorProject>
-	<SitemapGeneratorDll>$(MSBuildThisFileDirectory)..\..\..\tools\Respondeo.SitemapGenerator\bin\$(Configuration)\net10.0\Respondeo.SitemapGenerator.dll</SitemapGeneratorDll>
+	<SitemapGeneratorDll>$(MSBuildThisFileDirectory)..\..\..\tools\Respondeo.SitemapGenerator\bin\$(Configuration)\net11.0\Respondeo.SitemapGenerator.dll</SitemapGeneratorDll>
 	<SitemapOutputPath>$(MSBuildProjectDirectory)\wwwroot\sitemap.xml</SitemapOutputPath>
 	<!-- No trailing slash: a trailing '\' immediately before the closing quote in the Exec command
 		 would escape the quote and merge the arguments. -->

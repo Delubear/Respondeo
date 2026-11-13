@@ -127,7 +127,7 @@ The first run needs browsers installed:
 
 ```powershell
 dotnet build
-pwsh bin\Debug\net10.0\playwright.ps1 install --with-deps chromium
+pwsh bin\Debug\net11.0\playwright.ps1 install --with-deps chromium
 ```
 
 CI performs this automatically before running the suite.

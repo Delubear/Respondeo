@@ -81,7 +81,7 @@ jobs:
           # it is dropped from the artifact and the e2e job fails with
           # "missing required assets".
           include-hidden-files: true
-          path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
+          path: tests/Respondeo.AcceptanceTests/bin/Release/net11.0
 
   android:
     name: Android Release Validation

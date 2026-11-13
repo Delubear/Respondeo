@@ -35,7 +35,7 @@ browser tests.
 To build and install the Android app on a connected device (requires the `maui-android` workload):
 
 ```powershell
-dotnet build src/Respondeo.Maui -f net10.0-android -c Release -t:Install
+dotnet build src/Respondeo.Maui -f net11.0-android -c Release -t:Install
 ```
 
 See [`src/Respondeo.Maui/README.md`](src/Respondeo.Maui/README.md) for details.

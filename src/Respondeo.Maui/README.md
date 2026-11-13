@@ -1,6 +1,6 @@
 # Respondeo.Maui
 
-The Android app: a .NET MAUI Blazor Hybrid host (`net10.0-android`, package id `faith.respondeo.app`) that renders the
+The Android app: a .NET MAUI Blazor Hybrid host (`net11.0-android`, package id `faith.respondeo.app`) that renders the
 shared `Respondeo.UI` pages inside a `BlazorWebView`. All content is bundled, so the app works offline.
 
 `MauiProgram` supplies native adapters and package transport, then calls the shared `AddRespondeoApplication` registration.
@@ -27,11 +27,11 @@ The website retains its synchronous, unmasked navigation and page-entry fades.
 Requires the `maui-android` workload (`dotnet workload install maui-android`) and a device or emulator.
 
 ```powershell
-dotnet build src/Respondeo.Maui -f net10.0-android -c Release -t:Install
+dotnet build src/Respondeo.Maui -f net11.0-android -c Release -t:Install
 ```
 
-Trimming and AOT are disabled, including in Release builds, because content loaders deserialize DTOs through reflection.
-Re-enabling them requires separate compatibility work and published-APK verification.
+Trimming is disabled because content loaders deserialize DTOs through reflection. ReadyToRun compilation is also disabled,
+preserving the previous non-AOT build policy. Changes to these settings require published-APK verification.
 
 ## Releases
 

@@ -87,7 +87,7 @@ runs:
         ANDROID_KEY_ALIAS: ${{ inputs.key-alias }}
         ANDROID_KEY_PASSWORD: ${{ inputs.key-password }}
       run: |
-        args=(-f net10.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
+        args=(-f net11.0-android -c Release -o apk-out -p:AndroidPackageFormat=apk
           "-p:ApplicationVersion=$VERSION_CODE" "-p:ApplicationDisplayVersion=$VERSION" "-p:BuildVersion=$VERSION")
         if [ "$RELEASE_SIGNING" = "true" ]; then
           args+=(-p:AndroidKeyStore=true "-p:AndroidSigningKeyStore=$RUNNER_TEMP/respondeo-release.keystore"

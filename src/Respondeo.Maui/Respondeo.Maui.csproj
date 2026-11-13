@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-	<TargetFramework>net10.0-android</TargetFramework>
+	<TargetFramework>net11.0-android</TargetFramework>
 	<OutputType>Exe</OutputType>
 	<RootNamespace>Respondeo.Maui</RootNamespace>
 	<UseMaui>true</UseMaui>
@@ -11,7 +11,7 @@
 	<EnableDefaultCssItems>false</EnableDefaultCssItems>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<PublishTrimmed>false</PublishTrimmed>
-	<RunAOTCompilation>false</RunAOTCompilation>
+	<PublishReadyToRun>false</PublishReadyToRun>
 
 	<ApplicationTitle>Respondeo</ApplicationTitle>
 	<ApplicationId>faith.respondeo.app</ApplicationId>
@@ -21,9 +21,9 @@
 	</PropertyGroup>
 
 	<!--
-	  Trimming and AOT are disabled above (trimming stripped DTO members the content loaders deserialize
-	  by reflection, hanging the APK). Reflection-based System.Text.Json stays enabled explicitly as a
-	  safeguard in case Release trimming is ever re-enabled.
+	  Trimming is disabled because it stripped DTO members the content loaders deserialize by reflection,
+	  hanging the APK. Reflection-based System.Text.Json stays enabled explicitly as a safeguard in case
+	  Release trimming is ever re-enabled. ReadyToRun is also disabled to preserve the previous build policy.
 	-->
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
 	  <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>

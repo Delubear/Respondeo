@@ -104,7 +104,7 @@ jobs:
             args+=("-p:HoursLicensedContentDir=$GITHUB_WORKSPACE/.licensed/hours" "-p:HoursContentRevision=$revision")
           fi
           dotnet msbuild src/Respondeo.Wasm/Respondeo.Wasm.csproj -t:CreateBuildManifest "${args[@]}"
-          python3 .github/scripts/verify_build_identity.py src/Respondeo.Wasm/obj/Release/net10.0/build-manifest.json \
+          python3 .github/scripts/verify_build_identity.py src/Respondeo.Wasm/obj/Release/net11.0/build-manifest.json \
             --host wasm --version "1.0.$GITHUB_RUN_NUMBER" --source "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Publish
@@ -178,7 +178,7 @@ jobs:
           # it is dropped from the artifact and the e2e job fails with
           # "missing required assets".
           include-hidden-files: true
-          path: tests/Respondeo.AcceptanceTests/bin/Release/net10.0
+          path: tests/Respondeo.AcceptanceTests/bin/Release/net11.0
 
   e2e:
     name: Acceptance Tests (Playwright)
