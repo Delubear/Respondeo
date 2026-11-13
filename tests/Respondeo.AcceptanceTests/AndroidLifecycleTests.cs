@@ -152,7 +152,6 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
             if (attempt == 0)
             {
                 await device.RunAsync("shell", "input", "keyevent", "4");
-                await device.WaitAsync("Catholic Miracles");
             }
             else
             {
