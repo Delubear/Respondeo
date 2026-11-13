@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-11-11",
+  "reviewYear": 2026,
+  "status": "reviewed-nominal-assignments-reconciled",
+  "scope": "Nominal universal date/rank assignments only; not a complete calendar, occurrence review, or full Hours review.",
+  "applicationMode": "current-rules-forward",
+  "forwardFrom": "2026-11-11",
+  "datePolicy": "Current rules apply going forward. Historical reconstruction is out of scope; null effectiveFrom is unknown provenance, not a runtime gate or blocker.",
+  "rightsPolicy": "Facts, references, and paraphrased findings only. No protected prayer bodies or Latin translations are imported.",
+  "sources": [
+    {
+      "id": "AM-TERESA",
+      "protocol": "703/24",
+      "decreeDate": "2024-12-24",
+      "publishedOn": "2025-02-11",
+      "url": "https://press.vatican.va/content/salastampa/it/bollettino/pubblico/2025/02/11/0125/00250.html",
+      "sha256": "05215c010046e685b24da3e0faf0205e743440a4cd9e7b14cb1cabe2588cd621",
+      "locator": "Decree operative paragraphs, Prefect commentary, and Latin IN LITURGIAM HORARUM Common instruction",
+      "reviewStatus": "calendar-and-common-instruction-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-NEWMAN",
+      "protocol": "760/25",
+      "decreeDate": "2025-11-09",
+      "publishedOn": "2026-02-03",
+      "url": "https://press.vatican.va/content/salastampa/en/bollettino/pubblico/2026/02/03/260203a.html",
+      "sha256": "2b5c7d049dd2a2595e523997fd2d7da80bd0df64da72f277bc14e2391bdf8491",
+      "locator": "Decree operative paragraphs, Prefect commentary, and Latin IN LITURGIAM HORARUM Common instruction",
+      "reviewStatus": "calendar-and-common-instruction-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-DOCTORS",
+      "protocol": "40/21",
+      "decreeDate": "2021-01-25",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20210125_decreto-dottori_en.html",
+      "sha256": "ebd3e08b5ff60f9e6a5fc17165d264f4536d1b2fa5c15da9221dfeac3b4170d2",
+      "locator": "Operative paragraph listing the three optional memorials and instruction for all calendars and Hours books",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-BETHANY",
+      "protocol": "35/21",
+      "decreeDate": "2021-01-26",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20210126_decreto-santi_en.html",
+      "sha256": "fafb29cfeb70ecc1ab7c25e90a8584f8cd52c5ce54a9fb7cd72836bf711d45b7",
+      "locator": "Operative paragraphs naming Martha, Mary and Lazarus on July 29 and instruction for the Hours",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-MOTHER",
+      "protocol": null,
+      "decreeDate": "2018-02-11",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20180211_decreto-mater-ecclesiae_en.html",
+      "sha256": "dc738d05155d715e45f293303e11090462d4b74570654123f020cd0a7e2bb740",
+      "locator": "Operative paragraphs prescribing the Monday after Pentecost and preserving higher particular-calendar ranks",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-PAUL",
+      "protocol": "29/19",
+      "decreeDate": "2019-01-25",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20190125_decreto-celebrazione-paolovi_en.html",
+      "sha256": "5cc4c0292bc6ce0dad2ddeb6e7d0e5f88244df95d824482ace1481266e70f3d9",
+      "locator": "Final operative paragraphs assigning May 29, optional memorial, and insertion into the Hours",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-FAUSTINA",
+      "protocol": "229/20",
+      "decreeDate": "2020-05-18",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20200518_decreto-celebrazione-santafaustina_en.html",
+      "sha256": "d60674d26d2758a90ff45fda5ba1815f39d966458e92c1fe4714f8f646cbd322",
+      "locator": "Final operative paragraphs assigning October 5, optional memorial, and insertion into the Hours",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-LORETO",
+      "protocol": "404/19",
+      "decreeDate": "2019-10-07",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20191007_decreto-celebrazione-verginediloreto_en.html",
+      "sha256": "df52dbf553bea9cd360fae9e95170ee0f8301bce37d01ff07f4e485f15fbbfc1",
+      "locator": "Final operative paragraphs assigning December 10, optional memorial, and insertion into the Hours",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    },
+    {
+      "id": "AM-MAGDALENE",
+      "protocol": "257/16",
+      "decreeDate": "2016-06-03",
+      "publishedOn": null,
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/sanctae-m-magdalenae-decretum_en.pdf",
+      "sha256": "c205f5d1a7f7d9470efe1d18c94ac0381b45ca3d4c6bdb68f25bc8621737d42f",
+      "locator": "PDF p. 1: change of rank, clauses a/b, and preservation of particular solemnities",
+      "reviewStatus": "calendar-assignment-reviewed-not-full-proper"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "mary-magdalene", "source": "AM-MAGDALENE", "name": "Saint Mary Magdalene",
+      "monthDay": "07-22", "easterOffset": null, "rank": "Feast", "effectiveFrom": null,
+      "notes": "Rank raised from memorial to feast; existing Hours texts retained. The new Mass preface is not an Hours element."
+    },
+    {
+      "id": "mary-mother-of-the-church", "source": "AM-MOTHER", "name": "The Blessed Virgin Mary, Mother of the Church",
+      "monthDay": null, "easterOffset": 50, "rank": "Memorial", "effectiveFrom": null,
+      "notes": "Monday after Pentecost; already approved higher particular-calendar rank may remain. Full proper/notification review remains open."
+    },
+    {
+      "id": "paul-vi", "source": "AM-PAUL", "name": "Saint Paul VI, Pope",
+      "monthDay": "05-29", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null
+    },
+    {
+      "id": "our-lady-of-loreto", "source": "AM-LORETO", "name": "Our Lady of Loreto",
+      "monthDay": "12-10", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null
+    },
+    {
+      "id": "faustina-kowalska", "source": "AM-FAUSTINA", "name": "Saint Faustina Kowalska, Virgin",
+      "monthDay": "10-05", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null,
+      "notes": "Short display label matches the repository; the decree also supplies the fuller name Maria Faustina (Helena) Kowalska."
+    },
+    {
+      "id": "gregory-of-narek", "source": "AM-DOCTORS", "name": "Saint Gregory of Narek, Abbot and Doctor of the Church",
+      "monthDay": "02-27", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null
+    },
+    {
+      "id": "john-of-avila", "source": "AM-DOCTORS", "name": "Saint John of Avila, Priest and Doctor of the Church",
+      "monthDay": "05-10", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null,
+      "repositoryName": "Saint John of Ávila, Priest and Doctor of the Church"
+    },
+    {
+      "id": "hildegard-of-bingen", "source": "AM-DOCTORS", "name": "Saint Hildegard of Bingen, Virgin and Doctor of the Church",
+      "monthDay": "09-17", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null
+    },
+    {
+      "id": "martha-mary-lazarus", "source": "AM-BETHANY", "name": "Saints Martha, Mary and Lazarus",
+      "monthDay": "07-29", "easterOffset": null, "rank": "Memorial", "effectiveFrom": null,
+      "notes": "Replaces Martha-only designation; calendar title review is not verification of all proper antiphons/readings."
+    },
+    {
+      "id": "teresa-of-calcutta", "source": "AM-TERESA", "name": "Saint Teresa of Calcutta, Virgin",
+      "monthDay": "09-05", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null,
+      "firstAnnualDateAfterPublication": "2025-09-05",
+      "hoursCommonChoices": ["virgins", "holy-women:works-of-mercy"],
+      "notes": "Universal scope, not a US-only addition. Common choices are alternative routes, not simultaneous psalmody or mandatory memorial psalm substitution."
+    },
+    {
+      "id": "john-henry-newman", "source": "AM-NEWMAN", "name": "Saint John Henry Newman, Priest and Doctor of the Church",
+      "monthDay": "10-09", "easterOffset": null, "rank": "OptionalMemorial", "effectiveFrom": null,
+      "firstAnnualDateAfterPublication": "2026-10-09",
+      "hoursCommonChoices": ["pastors:priests", "doctors"],
+      "notes": "Signed in 2025 but published in 2026. Do not equate either date to a fully established historical effective interval or infer US national insertion history."
+    }
+  ],
+  "openCalendarDiscrepancies": [],
+  "implementation": {
+    "reviewedOn": "2026-11-11",
+    "detail": "Teresa/Newman now belong to General; US inherits both. Newman's Hours key follows the Priest and Doctor title, retaining the permitted Pastors default.",
+    "fullHoursReviewComplete": false
+  },
+  "remainingWork": [
+    "Introduce stable celebration identity as part of the shared calendar-context migration; current name-derived bindings were migrated together.",
+    "Model both permitted Common routes for Teresa/Newman without conflating them with mandatory memorial psalmody or copying protected text.",
+    "Review full proper assignments and the rest of the 222-entry baseline, US operations, and all later or omitted amendments.",
+    "Monitor new decrees and national policies going forward; earlier historical applicability is explicitly out of scope."
+  ]
+}

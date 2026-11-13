@@ -1,0 +1,524 @@
+{
+  "schemaVersion": 1,
+  "recordedOn": "2026-11-11",
+  "status": "in-progress",
+  "amendmentRegister": "liturgical-calendar-amendments.json",
+  "scope": {
+    "applicationMode": "current-rules-forward",
+    "forwardFrom": "2026-11-11",
+    "candidateYears": [2026, 2027, 2028],
+    "certifiedYears": [],
+    "profiles": ["general", "us", "us-thursday"],
+    "hours": ["lauds", "vespers", "compline"],
+    "scripture": "public-domain-bibles-including-biblical-canticles",
+    "protectedBodies": "labeled-placeholders",
+    "latin": "optional-separate-layer-rights-review-required",
+    "historicalReconstruction": false,
+    "completeDiocesanPropers": false
+  },
+  "catalogSnapshots": [
+    {
+      "resource": "GeneralRomanCalendar.txt",
+      "evidenceKind": "repository-consistency-only",
+      "assignmentReview": "pending",
+      "normalizedSha256": "76221f3983c79ad7ac7055cb3e64dfd72eaf63791f9f52b898d2aa6a83d8d319",
+      "metadataChange": "2026-11-11: keys/categories for all 222 General fixed entries; all preexisting fields and rows unchanged.",
+      "rows": 222,
+      "monthlyRows": [17, 15, 9, 15, 19, 17, 20, 28, 21, 22, 20, 19],
+      "rankRows": { "Solemnity": 10, "Feast": 25, "Memorial": 67, "OptionalMemorial": 120 }
+    },
+    {
+      "resource": "UnitedStatesProper.txt",
+      "evidenceKind": "repository-consistency-only",
+      "assignmentReview": "pending",
+      "normalizedSha256": "6bc3eb976439462d84a34ea4fe60cfe19580196a13c857680d9c1ee8d1401d7d",
+      "metadataChange": "2026-11-11: stable keys and explicit categories for all 22 celebrations; existing fields and all 26 operations unchanged.",
+      "rows": 26,
+      "additions": 19,
+      "replacements": 3,
+      "removals": 4
+    }
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Universal Norms on the Liturgical Year and the Calendar",
+      "url": "https://www.liturgyoffice.org.uk/Calendar/Info/GNLY.pdf",
+      "retrievedOn": "2026-11-11",
+      "sha256": "f6bab320bcd547a450c3017ac9e26cec7fb3c96afdbb42ba09432639609b39b1",
+      "reviewStatus": "partial",
+      "locator": "nn. 1-61; especially 59-61",
+      "limitation": "Universal rule source; subsequent decrees and edition-specific exceptions still require reconciliation."
+    },
+    {
+      "id": "S2",
+      "title": "General Instruction of the Liturgy of the Hours",
+      "url": "https://www.liturgyoffice.org.uk/Resources/Rites/GILH.pdf",
+      "retrievedOn": "2026-11-11",
+      "sha256": "8cc5d8e4db14bbb91fd0f64c468c842e5e46ec22cf6cd3854fbe48f6130f5f85",
+      "reviewStatus": "partial",
+      "locator": "nn. 35-54, 84-92, 126-135, 204-215, 225-240",
+      "limitation": "Universal rubrics, not permission to redistribute text or proof of US-edition element assignments."
+    },
+    {
+      "id": "S5",
+      "title": "USCCB Liturgical Calendar 2026",
+      "url": "https://www.usccb.org/resources/2026cal.pdf",
+      "retrievedOn": "2026-11-11",
+      "sha256": "4bd9add07512396a2323aa977bc4816a5fad6348262e12740bcee97c77372d02",
+      "reviewStatus": "partial",
+      "locator": "Printed p. 7 note 6a and p. 26 May 14/17; PDF pp. 9 and 28",
+      "limitation": "2026 national policy evidence only; Mass Scripture citations are not Hours short readings."
+    },
+    {
+      "id": "S6",
+      "title": "USCCB Liturgical Calendar 2027, emended February 2026",
+      "url": "https://www.usccb.org/resources/2027cal.pdf",
+      "retrievedOn": "2026-11-11",
+      "sha256": "d7997b57de96fdbf6433af917a65597b108c720c930f3c39356bf0f5058074ce",
+      "reviewStatus": "partial",
+      "locator": "Printed p. 7 notes 6a-6c; PDF p. 9",
+      "limitation": "Selected transfer, Ascension-policy, and memorial-collision notes reviewed; full year and Saturday Marian Office option remain unreviewed."
+    },
+    {
+      "id": "S7",
+      "title": "USCCB Liturgical Calendar 2028",
+      "url": "https://www.usccb.org/resources/2028cal.pdf",
+      "retrievedOn": "2026-11-11",
+      "sha256": "2115e0240517c8d2ba1f0b684ab809921e1fe9cc67fa25ae20a7d98261663116",
+      "reviewStatus": "partial",
+      "locator": "Printed p. 7 notes 6c-6e, p. 14 January 1-2, and p. 29 June 5; PDF pp. 9, 16, and 31",
+      "limitation": "Selected dates, transfer, Ascension-policy, and memorial-collision cases only; Mass citations are not Hours short readings."
+    },
+    {
+      "id": "S10",
+      "title": "Applicable approved Latin and US Hours books, supplements, propers, and ordines",
+      "reviewStatus": "not-acquired",
+      "limitation": "Exact edition and full assignment review pending; consultation does not authorize redistribution."
+    },
+    {
+      "id": "S11",
+      "title": "CDW Notification on the Memorial of the Blessed Virgin Mary, Mother of the Church, March 24, 2018",
+      "url": "https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20180324_notificazione-mater-ecclesiae_en.html",
+      "retrievedOn": "2026-11-11",
+      "sha256": "16f3ab8f954cdd6624c5b32b4536285fa7878e2562b67e5850cbf2a1eec1e2ee",
+      "reviewStatus": "partial",
+      "locator": "Final paragraph: precedence over another memorial of a saint or blessed",
+      "limitation": "Memorial occurrence reviewed, corroborated by S7 note 6e; Mass-reading directions do not define Hours short readings."
+    }
+  ],
+  "ruleReviews": [
+    {
+      "id": "CAL-01", "sources": ["S1", "S2"], "status": "pending-reconciliation",
+      "reviewedCase": "Calendar owns morning/evening seasons: Holy Thursday Lauds remains Lenten; Easter Lauds is Easter Time despite Triduum overlap. Aggregate day labels remain unchanged.",
+      "locators": ["S1 n. 16a, PDF p. 6", "S1 nn. 19, 22, PDF p. 7", "S1 n. 28, PDF p. 8", "S2 nn. 208-213, PDF p. 34"]
+    },
+    {
+      "id": "CAL-02", "sources": ["S1", "S6", "S7", "S11"], "status": "pending-reconciliation",
+      "reviewedCase": "An obligatory memorial excludes competing memorials; Mother of the Church suppresses Boniface on June 5, 2028. Immaculate Heart reduction is preserved."
+    },
+    { "id": "CAL-03", "sources": ["S1", "S6", "S7"], "status": "pending-reconciliation" },
+    {
+      "id": "CAL-04", "sources": ["S1", "S2", "S6", "S7"], "status": "pending-reconciliation",
+      "reviewedCase": "Sunday/solemnity concurrence uses higher precedence, retaining today on equality; Easter Sunday-season and US Epiphany regression cases are rule-derived."
+    },
+    { "id": "CAL-05", "sources": ["S1", "S2"], "status": "pending-reconciliation" },
+    {
+      "id": "CAL-06", "sources": ["S5", "S6", "S7"], "status": "pending-reconciliation",
+      "implementation": "src/Respondeo.LiturgicalCalendar/LiturgicalObligation.cs",
+      "ruleIds": ["OBL-02/united-states-national-policy", "OBL-02/united-states-saturday-monday-exception", "OBL-03/transfer-effect-not-modeled"],
+      "policyStatus": "provisional-national-profile",
+      "decreeReview": "pending-direct-source-review",
+      "openIssue": "AUTH-09",
+      "reviewedCase": "US weekday obligation policy is separate from celebration rank, including Saturday/Monday exceptions and the configured Ascension profile.",
+      "limitation": "Annual calendars are contextual evidence, not direct decree verification. Transfer effects can remain Unknown; local law and dispensations are not modeled."
+    },
+    {
+      "id": "HOUR-01", "sources": ["S1", "S2", "S10"], "status": "pending-reconciliation",
+      "reviewedCase": "Opening Alleluia is rendered outside Lent and omitted through the pre-Easter Triduum, including Lauds' alternative introduction; the Invitatory verse is unchanged.",
+      "locators": ["S1 n. 28, PDF p. 8", "S2 n. 41, PDF p. 15", "S2 n. 85, PDF p. 19"],
+      "invitatoryOmissionReview": {
+        "authority": "S2",
+        "locators": ["S2 nn. 34-35, PDF p. 14"],
+        "status": "normative-rule-implemented-not-full-proper-certification",
+        "scope": "invitatory-before-lauds",
+        "mode": "OmitPsalm",
+        "omittedElements": ["invitatory-psalm", "invitatory-antiphon"],
+        "openingVerseRetained": true,
+        "priorPrayerInferred": false,
+        "defaultChanged": false
+      },
+      "limitation": "The opening review does not certify all proper Triduum elements. Participation-dependent omissions are reviewed separately under HOUR-05."
+    },
+    {
+      "id": "HOUR-02", "sources": ["S1", "S2", "S6", "S7", "S10"], "status": "pending-reconciliation",
+      "reviewedCase": "Calendar owns weeks and octave ordinals. Holy Thursday retains weekday psalms/proper antiphons; Easter octave Lauds/Vespers override the background cycle. Approved-book review is pending.",
+      "locators": ["S1 n. 24, PDF p. 7", "S2 nn. 133-135, PDF p. 26", "S2 n. 137, PDF p. 26", "S2 n. 204, PDF p. 34"],
+      "seasonalReview": "Lenten Sunday Vespers II replaces Revelation with 1 Peter 2:21-24. Palm Sunday Vespers I/II retains Week II; First Vespers retains Philippians.",
+      "supplementaryEvidence": ["OBS-LAUDS-01", "OBS-OCTAVE-01", "OBS-LENT-01"],
+      "assignmentReview": {
+        "resource": "Respondeo.LiturgyOfTheHours.Data.TemporalPsalmody.json",
+        "sources": ["S2", "S10"],
+        "status": "approved-book-check-pending",
+        "evidenceKind": "behavior-preserving-extraction-not-new-authority",
+        "normativeVerification": false,
+        "triduumAssignments": ["-3/evening", "-2/morning", "-2/evening", "-1/morning", "-1/evening", "0/morning", "0/evening"],
+        "lentenSundayEveningCanticle": "1 Peter 2:21-24",
+        "holyThursdayMorning": "holy-week-psalter-not-an-override",
+        "easterOctave": "reuse-offset-zero",
+        "limitation": "Structural validation does not certify exact citations or verse limits. Existing assignments still require the applicable approved Hours books."
+      }
+    },
+    {
+      "id": "HOUR-03", "sources": ["S2", "S10"], "status": "pending-reconciliation",
+      "reviewedCase": "GILH 137 prescribes Timothy at Epiphany/Transfiguration Vespers. Use existing 1 Timothy 3:16 reference in both phases; full First Vespers psalm sets remain unverified.",
+      "locators": ["S2 n. 137, PDF p. 26", "S2 nn. 204-205, PDF p. 34", "S2 nn. 225-226, PDF p. 35"],
+      "limitation": "GILH identifies the biblical book, not the exact verse limits. The existing Transfiguration citation is retained; approved-proper verification remains pending."
+    },
+    { "id": "HOUR-04", "sources": ["S2", "S10"], "status": "pending-reconciliation" },
+    {
+      "id": "HOUR-05", "sources": ["S1", "S2", "S10"], "status": "pending-reconciliation",
+      "reviewedCase": "GILH 92 requires Regina Caeli in Easter Time, including Easter Sunday Compline; other seasonal Marian suggestions are not mandatory. Full Compline propers remain open.",
+      "octavePsalmodyReview": "Calendar's eight-day Easter octave uses a complete Sunday schema: Sunday II by default, Sunday I after First Vespers. Exact approved-proper review remains pending.",
+      "locators": ["S1 n. 24, PDF p. 7", "S2 n. 88, PDF p. 19", "S2 nn. 209, 211, 215, PDF p. 34", "S2 nn. 230, 233, 236, PDF p. 36"],
+      "marianChoiceReview": {
+        "authority": "S2",
+        "locators": ["S2 n. 92, PDF p. 20"],
+        "status": "normative-rule-implemented-not-full-proper-certification",
+        "scope": "night-prayer-outside-easter",
+        "inventory": "four-distinct-existing-embedded-antiphons",
+        "easterChoice": "Regina Caeli",
+        "easterAlternativesOffered": false,
+        "seasonalDefaultChanged": false,
+        "invitatoryPreferenceApplied": false,
+        "choicePersisted": false,
+        "limitation": "No texts imported. Existing Latin/unofficial translations and additional conference-approved alternatives still require separate review."
+      },
+      "octaveFormChoiceReview": {
+        "status": "secondary-rubric-implemented-approved-book-check-pending",
+        "evidence": "OBS-COMPLINE-01",
+        "scope": "civil-easter-octave-days-1-8-night-prayer",
+        "choices": ["SundayI", "SundayII"],
+        "coordinatedElements": ["psalmody", "reading", "concluding-prayer", "psalmody-text-bindings"],
+        "calendarOwnershipChanged": false,
+        "defaultChanged": false,
+        "choicePersisted": false
+      },
+      "weekdayPsalmSubstitutionReview": {
+        "authority": "S2",
+        "locators": ["S2 nn. 88-90, PDF p. 19"],
+        "status": "normative-rule-implemented-not-full-proper-certification",
+        "scope": "weekday-cycle-night-prayer",
+        "choices": ["Weekday", "SundayI", "SundayII"],
+        "changedElements": ["psalmody", "psalmody-text-bindings"],
+        "readingChanged": false,
+        "concludingPrayerChanged": false,
+        "calendarOwnershipChanged": false,
+        "defaultChanged": false,
+        "choicePersisted": false
+      },
+      "participationOmissionReview": {
+        "authority": "S2",
+        "status": "normative-rule-implemented-not-full-proper-certification",
+        "serviceDateBased": true,
+        "attendanceInferred": false,
+        "conditions": [
+          { "participation": "HolyThursdayEveningMass", "day": "holy-thursday", "hour": "EveningPrayer", "paragraph": 209 },
+          { "participation": "GoodFridayPassion", "day": "good-friday", "hour": "EveningPrayer", "paragraph": 209 },
+          { "participation": "EasterVigil", "day": "holy-saturday", "hour": "NightPrayer", "paragraph": 211 },
+          { "participation": "ChristmasOfficeOfReadingsVigil", "day": "december-24", "hour": "NightPrayer", "paragraph": 215 }
+        ],
+        "limitation": "Christmas requires the Office of Readings vigil, not Midnight Mass alone. Omission does not certify the remaining Triduum or Christmas proper texts."
+      },
+      "supplementaryEvidence": ["OBS-COMPLINE-01"]
+    },
+    { "id": "HOUR-06", "sources": ["S2", "S10"], "status": "pending-reconciliation" }
+  ],
+  "calendarFixtures": [
+    {
+      "date": "2026-05-14", "profile": "us", "source": "S5", "locator": "Printed p. 26; PDF p. 28",
+      "celebration": "Saint Matthias, Apostle", "ferialName": null, "rank": "Feast", "color": "Red", "season": "Easter"
+    },
+    {
+      "date": "2026-05-14", "profile": "us-thursday", "source": "S5", "locator": "Printed p. 26; PDF p. 28",
+      "celebration": "The Ascension of the Lord", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Easter"
+    },
+    {
+      "date": "2026-05-17", "profile": "us", "source": "S5", "locator": "Printed p. 26; PDF p. 28",
+      "celebration": "The Ascension of the Lord", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Easter"
+    },
+    {
+      "date": "2026-05-17", "profile": "us-thursday", "source": "S5", "locator": "Printed p. 26; PDF p. 28",
+      "celebration": null, "ferialName": "Seventh Sunday of Easter", "rank": null, "color": "White", "season": "Easter"
+    },
+    {
+      "date": "2027-04-05", "profile": "us", "source": "S6", "locator": "Printed p. 7 note 6a; PDF p. 9",
+      "celebration": "The Annunciation of the Lord", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Easter"
+    },
+    {
+      "date": "2027-04-05", "profile": "us-thursday", "source": "S6", "locator": "Printed p. 7 note 6a; PDF p. 9",
+      "celebration": "The Annunciation of the Lord", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Easter"
+    },
+    {
+      "date": "2028-03-20", "profile": "us", "source": "S7", "locator": "Printed p. 7 note 6c; PDF p. 9",
+      "celebration": "Saint Joseph, Spouse of the Blessed Virgin Mary", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Lent"
+    },
+    {
+      "date": "2028-03-20", "profile": "us-thursday", "source": "S7", "locator": "Printed p. 7 note 6c; PDF p. 9",
+      "celebration": "Saint Joseph, Spouse of the Blessed Virgin Mary", "ferialName": null, "rank": "Solemnity", "color": "White", "season": "Lent"
+    },
+    {
+      "date": "2028-06-05", "profile": "us", "source": "S7", "locator": "Printed p. 7 note 6e and p. 29 June 5; PDF pp. 9 and 31",
+      "celebration": "The Blessed Virgin Mary, Mother of the Church", "ferialName": null, "rank": "Memorial", "color": "White", "season": "OrdinaryTime"
+    },
+    {
+      "date": "2028-06-05", "profile": "us-thursday", "source": "S7", "locator": "Printed p. 7 note 6e and p. 29 June 5; PDF pp. 9 and 31",
+      "celebration": "The Blessed Virgin Mary, Mother of the Church", "ferialName": null, "rank": "Memorial", "color": "White", "season": "OrdinaryTime"
+    }
+  ],
+  "eveningFixtures": [
+    {
+      "date": "2027-04-04", "profile": "general", "sources": ["S1", "S2", "S6"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 table I.2/I.3 and n. 61; S2 nn. 204, 225; S6 printed p. 7 note 6a identifies April 5 as transferred Annunciation",
+      "officeDate": "2027-04-04", "phase": "SecondVespers", "celebration": null, "ferialName": "Second Sunday of Easter"
+    },
+    {
+      "date": "2027-04-04", "profile": "us", "sources": ["S1", "S2", "S6"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 table I.2/I.3 and n. 61; S2 nn. 204, 225; S6 printed p. 7 note 6a identifies April 5 as transferred Annunciation",
+      "officeDate": "2027-04-04", "phase": "SecondVespers", "celebration": null, "ferialName": "Second Sunday of Easter"
+    },
+    {
+      "date": "2027-04-04", "profile": "us-thursday", "sources": ["S1", "S2", "S6"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 table I.2/I.3 and n. 61; S2 nn. 204, 225; S6 printed p. 7 note 6a identifies April 5 as transferred Annunciation",
+      "officeDate": "2027-04-04", "phase": "SecondVespers", "celebration": null, "ferialName": "Second Sunday of Easter"
+    },
+    {
+      "date": "2028-01-01", "profile": "general", "sources": ["S1", "S2"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 nn. 7, 37, table I.3/II.6 and n. 61; S2 nn. 225, 228; January 2 is a Christmas Sunday, not transferred Epiphany",
+      "officeDate": "2028-01-01", "phase": "SecondVespers", "celebration": "Mary, the Holy Mother of God", "ferialName": null
+    },
+    {
+      "date": "2028-01-01", "profile": "us", "sources": ["S1", "S2", "S7"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 table I.2/I.3 and n. 61; S2 nn. 225, 228; S7 printed p. 14 January 1-2; PDF p. 16",
+      "officeDate": "2028-01-02", "phase": "FirstVespers", "celebration": "The Epiphany of the Lord", "ferialName": null
+    },
+    {
+      "date": "2028-01-01", "profile": "us-thursday", "sources": ["S1", "S2", "S7"], "evidenceKind": "rule-derived-not-ordo-transcribed",
+      "locator": "S1 table I.2/I.3 and n. 61; S2 nn. 225, 228; S7 printed p. 14 January 1-2; PDF p. 16",
+      "officeDate": "2028-01-02", "phase": "FirstVespers", "celebration": "The Epiphany of the Lord", "ferialName": null
+    }
+  ],
+  "weekFixtures": [
+    {
+      "date": "2026-11-29", "source": "S6", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 11; PDF p. 13: First Sunday of Advent, Pss I; footnote 3 explicitly identifies Hours Psalter annotations",
+      "temporalWeek": 1, "psalterWeek": 1
+    },
+    {
+      "date": "2027-02-10", "source": "S6", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 18; PDF p. 20: Ash Wednesday, Pss IV",
+      "temporalWeek": null, "psalterWeek": 4
+    },
+    {
+      "date": "2027-02-14", "source": "S6", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 18; PDF p. 20: First Sunday of Lent, Pss I",
+      "temporalWeek": 1, "psalterWeek": 1
+    },
+    {
+      "date": "2027-05-17", "source": "S6", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 27; PDF p. 29: Mother of the Church, Seventh Week in Ordinary Time, Pss III",
+      "temporalWeek": 7, "psalterWeek": 3
+    },
+    {
+      "date": "2028-06-05", "source": "S7", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 29; PDF p. 31: Mother of the Church, Ninth Week in Ordinary Time, Pss I",
+      "temporalWeek": 9, "psalterWeek": 1
+    },
+    {
+      "date": "2028-06-12", "source": "S7", "evidenceKind": "annual-calendar-explicit-psalter-annotation",
+      "locator": "Printed p. 29; PDF p. 31: Monday, Tenth Week in Ordinary Time, Pss II",
+      "temporalWeek": 10, "psalterWeek": 2
+    }
+  ],
+  "supplementaryHoursEvidence": [
+    {
+      "id": "OBS-COMPLINE-01",
+      "title": "Date-selected iBreviary English Night Prayer observations",
+      "evidenceKind": "secondary-digital-observation-not-approved-book-verification",
+      "retrievedOn": "2026-11-11",
+      "normativeVerification": false,
+      "reviewStatus": "approved-book-check-pending",
+      "settingsUrl": "https://www.ibreviary.com/m2/opzioni.php?b=1",
+      "settingsMethod": "POST",
+      "settingsFields": ["lang", "giorno", "mese", "anno", "ok"],
+      "language": "en",
+      "selectionVerification": "Each response's settings page explicitly reported the requested 2027 date; the following GET shared only that isolated session's cookies.",
+      "url": "https://www.ibreviary.com/m2/breviario.php?s=compieta&b=1",
+      "limitation": "Not an acquired approved edition or a national-variant certification; settings dates do not prove returned Office identity (AUTH-08). Bodies were hashed, not retained or imported.",
+      "octavePsalmodyObservation": {
+        "requestedDate": "2027-03-29",
+        "sha256": "9f69092c63d35362fa02511a84cf33b98df4c6ceb76a5f5d694d70aa39a721e8",
+        "rubricSummary": "The returned page explicitly assigns either Sunday Night Prayer schema during the Easter octave; no unique celebration or year identity was independently established.",
+        "schemas": [
+          { "form": "sunday-i", "psalmody": ["Psalm 4", "Psalm 134"], "reading": "Deuteronomy 6:4-7" },
+          { "form": "sunday-ii", "psalmody": ["Psalm 91"], "reading": "Revelation 22:4-5" }
+        ]
+      },
+      "observations": [
+        {
+          "date": "2027-03-28", "form": "haec-dies",
+          "sha256": "8cef0d625a9a584afcc2eb192feab3dbb9bce636bf3ec7ce0d492276b29b341e"
+        },
+        {
+          "date": "2027-04-03", "form": "haec-dies",
+          "sha256": "ebe6eca359230350a459b317b206a013fcf1c89720244b68660ade608efa610d"
+        },
+        {
+          "date": "2027-04-04", "form": "in-manus-with-easter-alleluias",
+          "sha256": "f87117bf119684f9db911d9d72061e24b47fdba4751230c58b09327bb786b020"
+        },
+        {
+          "date": "2027-04-05", "form": "in-manus-with-easter-alleluias",
+          "sha256": "65c0ef529cdb1b6bd9c6ddde4a46aafc81a7c5b8f24520a8b342989068e2a18d"
+        },
+        {
+          "date": "2027-04-06", "form": "in-manus-with-easter-alleluias",
+          "sha256": "9fe457427af60d31197d28001a0bf23e38f170fbd5bbedc68a712db1fb219cad"
+        }
+      ]
+    },
+    {
+      "id": "OBS-LAUDS-01",
+      "title": "Date-selected iBreviary English Holy Thursday Lauds references",
+      "evidenceKind": "secondary-digital-observation-not-approved-book-verification",
+      "retrievedOn": "2026-11-11",
+      "normativeVerification": false,
+      "reviewStatus": "approved-book-check-pending",
+      "settingsUrl": "https://www.ibreviary.com/m2/opzioni.php?b=1",
+      "settingsMethod": "POST",
+      "settingsFields": ["lang", "giorno", "mese", "anno", "ok"],
+      "language": "en",
+      "selectionVerification": "Each settings response reported the requested date; the following Lauds GET used the same isolated cookie session.",
+      "url": "https://www.ibreviary.com/m2/breviario.php?s=lodi&b=1",
+      "limitation": "No approved edition or national-variant certification; only references and hashes retained, not protected bodies. Shared psalms do not imply shared antiphons.",
+      "observations": [
+        {
+          "date": "2027-03-25", "psalmody": ["Psalm 80", "Isaiah 12:1-6", "Psalm 81"],
+          "sha256": "2a10ca43262a70f9617254d71fa1f3171418445fd5dc0bbf399a2aa6a0f5ce5f"
+        },
+        {
+          "date": "2028-04-13", "psalmody": ["Psalm 80", "Isaiah 12:1-6", "Psalm 81"],
+          "sha256": "2a10ca43262a70f9617254d71fa1f3171418445fd5dc0bbf399a2aa6a0f5ce5f"
+        }
+      ],
+      "weekdayComparison": {
+        "date": "2027-02-25", "differentFirstAntiphon": true,
+        "sha256": "d691c099a7c982af165333e9a8056b146e3fd74ac32d2b24c9b6f4b0c8b09179"
+      }
+    },
+    {
+      "id": "OBS-OCTAVE-01",
+      "title": "Date-selected iBreviary English Easter octave Lauds and Vespers references",
+      "evidenceKind": "secondary-digital-observation-not-approved-book-verification",
+      "retrievedOn": "2026-11-11",
+      "normativeVerification": false,
+      "reviewStatus": "approved-book-check-pending",
+      "settingsUrl": "https://www.ibreviary.com/m2/opzioni.php?b=1",
+      "settingsMethod": "POST",
+      "settingsFields": ["lang", "giorno", "mese", "anno", "ok"],
+      "language": "en",
+      "selectionVerification": "Each settings response reported the requested date; subsequent Lauds/Vespers GETs shared the cookie session. Hashes identify complete response bytes.",
+      "urls": {
+        "lauds": "https://www.ibreviary.com/m2/breviario.php?s=lodi&b=1",
+        "vespers": "https://www.ibreviary.com/m2/breviario.php?s=vespri&b=1"
+      },
+      "limitation": "No approved edition or national-variant certification; only references and hashes retained, not protected bodies. Antiphons require their own proper keys.",
+      "observations": [
+        {
+          "date": "2027-03-29", "hour": "lauds", "psalmody": ["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"],
+          "sha256": "a3bd751039a546b748bccc51fbebba2470728d34e38b0c31e380650643754e57"
+        },
+        {
+          "date": "2027-03-29", "hour": "vespers", "psalmody": ["Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7"],
+          "sha256": "6e4c8de50d4fcc0c7c4c383b376f8510bd58af3c51c422ef2e011fc6e753c9aa"
+        },
+        {
+          "date": "2027-04-03", "hour": "lauds", "psalmody": ["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"],
+          "sha256": "f352b01ef10a5e5d226f68cd3f77e142e0c609c8c485f477a5ae05622a651ba8"
+        },
+        {
+          "date": "2027-04-03", "hour": "vespers", "psalmody": ["Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7"],
+          "sha256": "32146c0ca7ce88a4ea5d32d2a9717a1876cd8d8e6116ecdd39ff79eac41ff177"
+        },
+        {
+          "date": "2027-04-04", "hour": "lauds", "psalmody": ["Psalm 63:2-9", "Daniel 3:57-88, 56", "Psalm 149"],
+          "sha256": "eb0e7acb88410b4bf99bad3f9ccc0413f6634c4d233c1d72fe53a29a8769b748"
+        },
+        {
+          "date": "2027-04-04", "hour": "vespers", "psalmody": ["Psalm 110:1-5, 7", "Psalm 114", "Revelation 19:1-7"],
+          "sha256": "63e0cb9daccc1469299529232e7492d9a857faf92e0beb38f178c46e192c2af1"
+        }
+      ]
+    },
+    {
+      "id": "OBS-LENT-01",
+      "title": "Date-selected iBreviary English Lenten Sunday Vespers references",
+      "evidenceKind": "secondary-digital-observation-not-approved-book-verification",
+      "retrievedOn": "2026-11-11",
+      "normativeVerification": false,
+      "reviewStatus": "approved-book-check-pending",
+      "settingsUrl": "https://www.ibreviary.com/m2/opzioni.php?b=1",
+      "settingsMethod": "POST",
+      "settingsFields": ["lang", "giorno", "mese", "anno", "ok"],
+      "language": "en",
+      "selectionVerification": "Each settings response reported the requested date; Vespers GETs shared the cookie session. Hashes identify complete response bytes.",
+      "url": "https://www.ibreviary.com/m2/breviario.php?s=vespri&b=1",
+      "limitation": "No approved edition or national-variant certification; references and hashes only, not protected bodies. Shared psalms do not authorize shared antiphons.",
+      "observations": [
+        {
+          "date": "2027-02-14", "phase": "second-vespers", "psalmody": ["Psalm 110:1-5, 7", "Psalm 114", "1 Peter 2:21-24"],
+          "sha256": "9def2e71112ba99edf071f1d6ed1f61e3af044cb8d15c36e06418c4bdb200192"
+        },
+        {
+          "date": "2027-03-20", "phase": "first-vespers", "psalmody": ["Psalm 119:105-112", "Psalm 16", "Philippians 2:6-11"],
+          "sha256": "9feb21609a01db1b6d01d5853b64c9ec54d387183776507d3887e68fd1ac83fc"
+        },
+        {
+          "date": "2027-03-21", "phase": "second-vespers", "psalmody": ["Psalm 110:1-5, 7", "Psalm 115", "1 Peter 2:21-24"],
+          "sha256": "3566314b17ddfe9369463de80a6ed4899ee2c70c3362965d9db4b7587d868123"
+        }
+      ]
+    }
+  ],
+  "openIssues": [
+    { "id": "AUTH-01", "status": "open", "detail": "Approved Hours edition and full proper/reference inventory remain unreviewed; Phase 0 is not complete." },
+    { "id": "AUTH-02", "status": "open", "detail": "The 11 reviewed nominal amendments match; remaining calendar amendments and full Office propers/Common routing still need review." },
+    { "id": "AUTH-03", "status": "open", "detail": "Verify current Ascension province/diocese memberships and prospective changes; historical Newark transition is out of scope." },
+    { "id": "AUTH-04", "status": "open", "detail": "Memorial suppression corrected; full precedence, transfers, evening concurrence, All Souls, and Triduum review remains open." },
+    { "id": "AUTH-05", "status": "open", "detail": "Verify public-domain Bible provenance and exact verse/canticle excerpts; catalog descriptions alone are not rights evidence." },
+    { "id": "AUTH-06", "status": "open", "detail": "Optional Latin requires per-source rights and edition review, distinct labeling, and exclusion/removal checks before import." },
+    { "id": "AUTH-07", "status": "open", "detail": "2027/2028 selected transfer/memorial cases reviewed; full calendars and the forward validation horizon remain unreviewed." },
+    {
+      "id": "AUTH-08", "status": "open",
+      "detail": "Digital feast responses conflict with Calendar/GILH despite date-confirmed settings. Verify actual returned Office identity and year; existing secondary observations need revalidation.",
+      "rejectedChecks": [
+        {
+          "requestedDate": "2027-01-03", "hour": "vespers", "expectedFeast": "US Epiphany",
+          "returnedCanticle": "Revelation 15:3-4",
+          "sha256": "ae0d58b97b9777e8a20856aaa7416f30315d93deea9da1e160ac266cba6c57da"
+        },
+        {
+          "requestedDate": "2028-08-06", "hour": "vespers", "expectedFeast": "Transfiguration",
+          "returnedCanticle": "Revelation 19:1-7",
+          "sha256": "f5b883f4261422a1e5e0f88f6af97996a8af823acd02bde966282ad650394441"
+        }
+      ],
+      "authority": "rejected-as-reference-fixtures; cause unresolved; not used to override normative rules"
+    },
+    {
+      "id": "AUTH-09", "status": "open",
+      "detail": "Directly reconcile US obligation decrees, Saturday/Monday exceptions, and transferred obligations before treating the national profile as verified.",
+      "ruleReview": "CAL-06"
+    }
+  ]
+}
