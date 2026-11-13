@@ -149,7 +149,15 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
             await device.WaitAsync(article);
             await device.WaitAsync("Miracle tools");
             await device.CaptureAsync("miracle-detail-" + attempt);
-            await device.TapAsync("Miracles");
+            if (attempt == 0)
+            {
+                await device.RunAsync("shell", "input", "keyevent", "4");
+                await device.WaitAsync("Catholic Miracles");
+            }
+            else
+            {
+                await device.TapAsync("Miracles");
+            }
             var restored = await device.WaitAsync(article, contains: true, predicate: node =>
                 Math.Abs(AndroidDevice.ParseBounds((string?)node.Attribute("bounds") ?? "").Top - originalTop) <= 12);
             Assert.InRange(AndroidDevice.ParseBounds((string?)restored.Attribute("bounds") ?? "").Top, originalTop - 12, originalTop + 12);
