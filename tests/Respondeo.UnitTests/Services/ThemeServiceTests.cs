@@ -50,12 +50,34 @@ public class ThemeServiceTests
         Assert.Equal("light", js.Get("respondeo.theme"));
     }
 
+    [Theory]
+    [InlineData("localStorage.getItem", false)]
+    [InlineData("localStorage.getItem", true)]
+    [InlineData("respondeoTheme.apply", false)]
+    [InlineData("respondeoTheme.apply", true)]
+    public async Task Initialize_propagates_interop_failures_without_notifying_success(string identifier, bool disconnected)
+    {
+        Exception failure = disconnected ? new JSDisconnectedException("Runtime disconnected") : new JSException("Script failed");
+        var js = new FakeThemeJs { FailureIdentifier = identifier, Failure = failure };
+        var service = new ThemeService(js, new NoOpNativeThemeSync());
+        var notifications = 0;
+        service.Changed += () => notifications++;
+
+        var actual = await Assert.ThrowsAsync(failure.GetType(), () => service.InitializeAsync());
+
+        Assert.Same(failure, actual);
+        Assert.Null(js.AppliedTheme);
+        Assert.Equal(0, notifications);
+    }
+
     /// <summary>Minimal in-memory IJSRuntime emulating localStorage and the respondeoTheme helper.</summary>
     private sealed class FakeThemeJs : IJSRuntime
     {
         private readonly Dictionary<string, string> _store = new();
 
         public string? AppliedTheme { get; private set; }
+        public string? FailureIdentifier { get; init; }
+        public Exception? Failure { get; init; }
 
         public void Set(string key, string value) => _store[key] = value;
 
@@ -65,6 +87,11 @@ public class ThemeServiceTests
 
         public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
         {
+            if (identifier == FailureIdentifier && Failure is not null)
+            {
+                return ValueTask.FromException<TValue>(Failure);
+            }
+
             switch (identifier)
             {
                 case "localStorage.getItem":

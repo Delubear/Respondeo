@@ -16,3 +16,8 @@ trim_trailing_whitespace = false
 [*.{yml,yaml}]
 indent_style = space
 indent_size = 2
+
+# These service wrappers intentionally propagate JS failures to callers/Blazor.
+# Teardown callers handle JSDisconnectedException; do not mask other failures here.
+[src/Respondeo.UI/Services/{Interop/{BrowseStateInterop,DialogInterop,TallyInterop},Summa/SummaRefInterop,TextSizeService,ThemeService}.cs]
+dotnet_diagnostic.BL0016.severity = none
