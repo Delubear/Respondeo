@@ -121,6 +121,8 @@ Release builds do not enable WebView debugging for these checks.
 The native smoke measures actual lede enlargement (over 10%) and requires it to remain within two device pixels after lifecycle changes.
 The repeated Miracles round trip requires the catalog anchor to return within 12 device pixels after both Android Back and the bottom-bar link.
 It waits for that anchor, not the catalog heading, which can be offscreen at the restored position. These are settled-layout checks, not frame-level flicker detection.
+After returning Home, Android Back must revisit Miracles, not exit the app. The smoke backgrounds and resumes that page, verifies its title,
+then explicitly returns Home to measure retained preferences.
 `AndroidUpgrade` covers theme/text size and pins, not every stored progress format. See the
 [physical-device release checklist](../../docs/deployment.md#physical-device-release-checklist) for the remaining release checks.
 

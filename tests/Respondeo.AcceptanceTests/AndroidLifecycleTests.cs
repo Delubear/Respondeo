@@ -34,7 +34,13 @@ public sealed class AndroidLifecycleTests(ITestOutputHelper output)
             await device.CaptureAsync("resumed-dark");
             await BrowseMiraclesAsync(device);
             await device.RunAsync("shell", "input", "keyevent", "4");
+            await device.WaitAsync("Catholic Miracles", contains: true);
+            await device.RunAsync("shell", "input", "keyevent", "3");
             await device.LaunchAsync();
+            await device.WaitAsync("Catholic Miracles", contains: true);
+            await device.CaptureAsync("resumed-after-back");
+            await device.TapAsync("Back to top");
+            await device.TapAsync("RESPONDEO");
             await AssertPreferencesAsync(device, textHeight);
         });
     });
