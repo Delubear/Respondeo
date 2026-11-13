@@ -22,8 +22,13 @@ public sealed class BuildIdentityTests
         }
         await page.RouteAsync("https://static.cloudflareinsights.com/**", route => route.AbortAsync());
         await page.GotoAsync(site.Uri.AbsoluteUri);
+        await Assertions.Expect(page.GetByRole(AriaRole.Contentinfo)).ToBeVisibleAsync();
         var disclosure = page.Locator(".build-details");
+        await Assertions.Expect(disclosure).ToHaveCountAsync(0);
+        await page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Thanks & sources", Exact = true }).ClickAsync();
         await Assertions.Expect(disclosure.Locator("summary")).ToHaveTextAsync("Version & build details");
+        await Assertions.Expect(disclosure).Not.ToHaveAttributeAsync("open", "");
+        await Assertions.Expect(page.GetByRole(AriaRole.Contentinfo).Locator(".build-details")).ToHaveCountAsync(0);
         using var manifest = JsonDocument.Parse(await page.EvaluateAsync<string>("async () => (await fetch('build-manifest.json')).text()"));
         var identity = manifest.RootElement;
         var expected = new[]
@@ -46,7 +51,11 @@ public sealed class BuildIdentityTests
         await Assertions.Expect(disclosure.Locator("dd")).ToHaveTextAsync(expected);
         Assert.Matches("^[0-9a-f]{64}$", expected[3]);
 
-        await page.GotoAsync(new Uri(site.Uri, "discover").AbsoluteUri);
-        await Assertions.Expect(page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Liturgy of the Hours", Exact = false })).ToBeVisibleAsync();
+        await page.GotoAsync(site.Uri.AbsoluteUri);
+        await Assertions.Expect(page.GetByRole(AriaRole.Contentinfo)).ToBeVisibleAsync();
+        await Assertions.Expect(disclosure).ToHaveCountAsync(0);
+        await page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Thanks & sources", Exact = true }).ClickAsync();
+        await disclosure.Locator("summary").ClickAsync();
+        await Assertions.Expect(disclosure.Locator("dd")).ToHaveTextAsync(expected);
     }
 }

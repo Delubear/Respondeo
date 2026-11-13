@@ -6,8 +6,8 @@ driven through a real browser with [Playwright](https://playwright.dev/dotnet/).
 ## What they cover
 
 - **Home.feature** — the start page shows entry-point cards and navigating opens a node.
-- **BuildIdentityTests** — a published PWA reloads offline, displays the same full build identity as its packaged manifest,
-  and retains the Hours feature enabled by its embedded configuration.
+- **BuildIdentityTests** — build details stay off the global footer and collapsed at the bottom of Thanks & sources.
+  A published PWA reloads and navigates there offline, displaying the same full build identity as its packaged manifest.
 - **StartupPreferencesTests** — the served shell initializes theme/text size before deferred scripts, including persisted settings,
   missing settings, and blocked local storage; shared error markup retains its accessible role and controls.
 - **AppPackageHttpHandlerTests** — the exact native transport implementation handles in-memory package bytes, decoded paths,

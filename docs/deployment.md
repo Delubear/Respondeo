@@ -155,9 +155,9 @@ missing/persisted settings and blocked storage before deferred scripts execute. 
 ## Build identity and content pinning
 
 Both hosts import `build/BuildManifest.targets`. Each host embeds its own `Respondeo.BuildManifest.json` resource and packages
-`wwwroot/build-manifest.json`; publishing also exports a sidecar at the publish root. The shared footer's
-**Version & build details** disclosure reads the embedded resource, not a network request. It therefore identifies the actual
-installed APK or cached PWA, even when a newer website deployment exists.
+`wwwroot/build-manifest.json`; publishing also exports a sidecar at the publish root. Open **Thanks & sources** from the footer,
+then expand **Version & build details** at the bottom of that page. This disclosure reads the embedded resource, not a network request.
+It therefore identifies the actual installed APK or cached PWA, even when a newer website deployment exists.
 
 The manifest contains only these public metadata fields:
 
